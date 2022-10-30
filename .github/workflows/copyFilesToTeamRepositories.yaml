@@ -47,7 +47,7 @@ jobs:
       with:
         github_token: ${{ secrets.GH_TOKEN }}
         patterns_to_include: .github
-        patterns_to_ignore: /.github/workflows
+        patterns_to_ignore: .github/workflows
         committer_username: asyncapi-bot
         committer_email: info@asyncapi.io
         commit_message: "chore: update respository settings"
