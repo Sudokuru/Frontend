@@ -1,0 +1,121 @@
+name: Copy Files to Team Repositories
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/**'
+      - 'License.md'
+      - 'openAPIs/**'
+  workflow_dispatch:
+    inputs:
+      repo_name:
+        description: |
+          You can specify name of the repository where workflows should be pushed manually. As long as repository is not ignored by workflow settings.
+          If you do not specify exact repository name, the workflow will try to replicate all missing changes to all repositories.
+        required: false
+
+jobs:
+
+  # This replicates all Licenses to repos with the production topic
+  replicate_license:
+      name: Replicate License in all repositories
+      runs-on: ubuntu-latest
+      environment: copyFiles
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Replicating file
+        uses: derberg/copy-files-to-other-repositories@v1.0.0
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          patterns_to_include: License.md
+          committer_username: asyncapi-bot
+          committer_email: info@asyncapi.io
+          commit_message: "chore: update License.md"
+          topics_to_include: production
+          
+  replicate_repository_settings:
+    name: Replicate Repository Settings in all repositories
+    runs-on: ubuntu-latest
+    environment: copyFiles
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Replicating file
+      uses: derberg/copy-files-to-other-repositories@v1.0.0
+      with:
+        github_token: ${{ secrets.GH_TOKEN }}
+        patterns_to_include: '.github'
+        patterns_to_ignore: '.github/workflows'
+        committer_username: asyncapi-bot
+        committer_email: info@asyncapi.io
+        commit_message: "chore: update respository settings"
+        topics_to_include: production
+
+  # This replicates all openAPIs to repos with the openapi3 topic
+  replicate_openAPIs:
+      name: Replicate openAPIs to all repositories
+      runs-on: ubuntu-latest
+      environment: copyFiles
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Replicating file
+        uses: derberg/copy-files-to-other-repositories@v1.0.0
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          patterns_to_include: openAPIs/**
+          committer_username: asyncapi-bot
+          committer_email: info@asyncapi.io
+          commit_message: "chore: update openAPIs"
+          topics_to_include: openapi3
+
+#   replicate_go_workflows:
+#       name: Replicate workflows for Go projects
+#       runs-on: ubuntu-latest
+#       steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#       - name: Replicating file
+#         uses: derberg/copy-files-to-other-repositories@v1.0.0
+#         with:
+#           github_token: ${{ secrets.GH_TOKEN }}
+#           patterns_to_include: .github/workflows/if-go-pr-testing.yml
+#           topics_to_include: golang
+#           committer_username: asyncapi-bot
+#           committer_email: info@asyncapi.io
+#           commit_message: "ci: update workflows for go projects"
+#           topics_to_include: production
+
+#   replicate_nodejs_workflows:
+#       name: Replicate workflows for Nodejs projects
+#       runs-on: ubuntu-latest
+#       steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#       - name: Replicating file
+#         uses: derberg/copy-files-to-other-repositories@v1.0.0
+#         with:
+#           github_token: ${{ secrets.GH_TOKEN }}
+#           patterns_to_include: .github/workflows/if-nodejs-pr-testing.yml,.github/workflows/if-nodejs-release.yml,.github/workflows/if-nodejs-version-bump.yml,.github/workflows/bump.yml
+#           topics_to_include: nodejs
+#           committer_username: asyncapi-bot
+#           committer_email: info@asyncapi.io
+#           commit_message: "ci: update workflows for nodejs projects"
+      
+#   replicate_generic_workflows:
+#       name: Replicate generic workflows needed for any project
+#       runs-on: ubuntu-latest
+#       steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#       - name: Replicating file
+#         uses: derberg/copy-files-to-other-repositories@v1.0.0
+#         with:
+#           github_token: ${{ secrets.GH_TOKEN }}
+#           patterns_to_include: .github/workflows/automerge-for-humans-add-ready-to-merge-or-do-not-merge-label.yml,.github/workflows/add-good-first-issue-labels.yml,.github/workflows/automerge-for-humans-merging.yml,.github/workflows/automerge-for-humans-remove-ready-to-merge-label-on-edit.yml,.github/workflows/automerge-orphans.yml,.github/workflows/automerge.yml,.github/workflows/autoupdate.yml,.github/workflows/help-command.yml,.github/workflows/issues-prs-notifications.yml,.github/workflows/lint-pr-title.yml,.github/workflows/notify-tsc-members-mention.yml,.github/workflows/sentiment-analysis.yml,.github/workflows/stale-issues-prs.yml,.github/workflows/welcome-first-time-contrib.yml,.github/workflows/release-announcements.yml,
+#           committer_username: asyncapi-bot
+#           committer_email: info@asyncapi.io
+#           commit_message: "ci: update generic workflows"
+#           repos_to_ignore: shape-up-process,glee-hello-world
