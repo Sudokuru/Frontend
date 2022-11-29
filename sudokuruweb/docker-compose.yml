@@ -7,6 +7,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./src:/app/src:ro
+      - ./src:/app/src/app:ro
     env_file:
       - ./.env
