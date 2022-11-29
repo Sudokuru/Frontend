@@ -1,5 +1,6 @@
-import logo from './logo.svg';
 import React from 'react';
+//@ts-ignore
+import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.ts</code> and save to reload.
+          Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <p>
         {`This is ${process.env.REACT_APP_NAME}`}
