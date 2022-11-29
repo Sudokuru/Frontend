@@ -1,13 +1,10 @@
 version: "3"
 services:
   react-app:
-    # stdin_open: true
-    # tty: true
-    build: sudokuruweb/
+    build: .
     ports:
       - "3000:3000"
-    container_name: sudokuru-frontend
-#    volumes:
-#      - ./src:
+    volumes:
+      - ./:/usr/src/app
     env_file:
       - ./.env
