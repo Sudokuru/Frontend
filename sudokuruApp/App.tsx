@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
@@ -13,22 +14,20 @@ import { DOMAIN, CLIENT_ID} from "./config"
 //
 // You can open this app in the Expo client and check your logs to find out your redirect URL.
 
+WebBrowser.maybeCompleteAuthSession();
+
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 
-console.log(DOMAIN);
-
-const useProxy = Platform.select({ web: true, ios: true, android: true });
+const useProxy = Platform.select({ web: false, ios: true, android: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
-
-console.log(redirectUri);
 
 export default function App() {
     const [name, setName] = useState(null);
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
         {
-            redirectUri,
+            redirectUri: redirectUri,
             clientId: auth0ClientId,
             // id_token will return a JWT token
             responseType: "id_token",
@@ -41,10 +40,6 @@ export default function App() {
         },
         { authorizationEndpoint }
     );
-
-    // Retrieve the redirect URL, add this to the callback URL list
-    // of your Auth0 application.
-    console.log(`Redirect URL: ${redirectUri}`);
 
     useEffect(() => {
         if (result) {
