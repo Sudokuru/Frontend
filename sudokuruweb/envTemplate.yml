@@ -1,6 +1,8 @@
 WATCHPACK_POLLING=
 REACT_APP_NAME=
-# retrieve domain value from Auth0
+
+# retrieve below values from Auth0
 DOMAIN=
-# retrieve client id value from Auth0
 CLIENT_ID=
+REACT_APP_AUDIENCE=
+REACT_APP_SCOPE=

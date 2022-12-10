@@ -14,6 +14,8 @@ root.render(
           domain={process.env.REACT_APP_DOMAIN as string}
           clientId={process.env.REACT_APP_CLIENT_ID as string}
           redirectUri={window.location.origin}
+          audience={process.env.REACT_APP_AUDIENCE as string}
+          scope={process.env.REACT_APP_SCOPE as string}
       >
           <App />
       </Auth0Provider>,
