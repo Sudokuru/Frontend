@@ -1,5 +1,7 @@
 import 'dotenv/config';
 
+// this config file may override the app.json config file. Will have to experiment.
+
 export interface AppConfig {
     DOMAIN: string,
     CLIENT_ID: string,
