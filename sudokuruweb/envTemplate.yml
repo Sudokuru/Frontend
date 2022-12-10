@@ -1,0 +1,6 @@
+WATCHPACK_POLLING=
+REACT_APP_NAME=
+# retrieve domain value from Auth0
+DOMAIN=
+# retrieve client id value from Auth0
+CLIENT_ID=
