@@ -1,10 +1,19 @@
 import 'dotenv/config';
+import {JwtPayload} from "jwt-decode";
 
 // this config file may override the app.json config file. Will have to experiment.
 
 export interface AppConfig {
     DOMAIN: string,
     CLIENT_ID: string,
+}
+
+export interface Auth0JwtPayload extends JwtPayload {
+    nickname: string,
+    name: string,
+    picture: string,
+    updated_at: string,
+    nonce?: string
 }
 
 export default {

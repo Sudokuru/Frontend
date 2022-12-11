@@ -1,10 +1,11 @@
 import * as React from 'react'
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
-import jwtDecode from "jwt-decode";
+import jwtDecode, {JwtPayload} from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
-import { DOMAIN, CLIENT_ID} from "./config"
+import { DOMAIN, CLIENT_ID } from "./config"
+import { Auth0JwtPayload } from "./app.config"
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -23,7 +24,7 @@ const useProxy = Platform.select({ web: false, ios: true, android: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 export default function App() {
-    const [name, setName] = useState(null);
+    const [name, setName] = useState<string>("");
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
         {
@@ -53,7 +54,8 @@ export default function App() {
             if (result.type === "success") {
                 // Retrieve the JWT token and decode it
                 const jwtToken = result.params.id_token;
-                const decoded = jwtDecode(jwtToken);
+                console.log(jwtToken);
+                const decoded = jwtDecode<Auth0JwtPayload>(jwtToken);
 
                 const { name } = decoded;
                 setName(name);
@@ -66,7 +68,7 @@ export default function App() {
             {name ? (
                 <>
                     <Text style={styles.title}>You are logged in, {name}!</Text>
-                    <Button title="Log out" onPress={() => setName(null)} />
+                    <Button title="Log out" onPress={() => setName("")} />
                 </>
             ) : (
                 <Button
