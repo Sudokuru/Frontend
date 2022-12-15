@@ -54,7 +54,6 @@ export default function App() {
             if (result.type === "success") {
                 // Retrieve the JWT token and decode it
                 const jwtToken = result.params.id_token;
-                console.log(jwtToken);
                 const decoded = jwtDecode<Auth0JwtPayload>(jwtToken);
 
                 const { name } = decoded;
