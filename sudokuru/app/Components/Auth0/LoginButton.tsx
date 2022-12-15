@@ -45,7 +45,7 @@ const LoginButton = () => {
 
     useEffect(() => {
         if (result) {
-            if (result.error) {
+            if (result.type === "error") {
                 Alert.alert(
                     "Authentication error",
                     result.params.error_description || "something went wrong"
