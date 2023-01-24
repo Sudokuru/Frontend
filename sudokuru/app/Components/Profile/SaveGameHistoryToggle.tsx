@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import { Appbar, Switch } from 'react-native-paper';
+import { Switch, Text } from 'react-native-paper';
+import {View} from "react-native";
 
 const SaveGameHistoryToggle = () => {
 
@@ -7,14 +8,14 @@ const SaveGameHistoryToggle = () => {
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     return (
-        <Appbar.Header>
-            <Appbar.Content title="SaveGameHistory" />
+        <View>
+            <Text>SaveGameHistory</Text>
             <Switch
                 color={'red'}
                 value={isEnabled}
                 onValueChange={toggleSwitch}
             />
-        </Appbar.Header>
+        </View>
     );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useTheme, Appbar, TouchableRipple, Switch } from 'react-native-paper';
+import { View } from 'react-native';
+import { useTheme, Switch, Text } from 'react-native-paper';
 import { PreferencesContext } from '../../Contexts/PreferencesContext';
 
 const ThemeToggle = () => {
@@ -7,20 +8,14 @@ const ThemeToggle = () => {
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
 
     return (
-        <Appbar.Header
-            theme={{
-                colors: {
-                    primary: theme?.colors.surface,
-                },
-            }}
-        >
-            <Appbar.Content title="Theme" />
+        <View>
+            <Text>Theme</Text>
             <Switch
                 color={'red'}
                 value={isThemeDark}
                 onValueChange={toggleTheme}
             />
-        </Appbar.Header>
+        </View>
     );
 };
 
