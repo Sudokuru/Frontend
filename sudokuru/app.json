@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "SudokuruBackup",
-    "slug": "sudokurubackup",
-    "scheme": "sudokurubackup",
+    "name": "Sudokuru",
+    "slug": "sudokuru",
+    "scheme": "sudokuru",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -35,6 +35,6 @@
         "projectId": "23c4c607-ead6-4786-9a9c-03f57a97dac7"
       }
     },
-    "owner": "sudokurubackup"
+    "owner": "sudokuru"
   }
 }
