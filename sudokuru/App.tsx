@@ -46,7 +46,9 @@ export default function App() {
       <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
               <NavigationContainer theme={theme}>
-                  <Stack.Navigator initialRouteName="Home">
+                  <Stack.Navigator initialRouteName="Home" screenOptions={{
+                      headerShown: false
+                  }}>
                       <Stack.Screen name="Profile" component={ProfilePage} />
                   </Stack.Navigator>
               </NavigationContainer>
