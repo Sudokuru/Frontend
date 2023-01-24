@@ -1,7 +1,5 @@
 import 'react-native-gesture-handler';
 import * as React from 'react'
-import LoginButton from "./app/Components/Auth0/LoginButton"
-import ThemeToggle from "./app/Components/Profile/ThemeToggle"
 import { PreferencesContext } from './app/Contexts/PreferencesContext';
 import {adaptNavigationTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from "@react-navigation/stack";
@@ -16,6 +14,7 @@ import {
     MD3LightTheme,
 } from 'react-native-paper';
 import merge from 'deepmerge';
+import ProfilePage from "./app/Pages/ProfilePage";
 
 export default function App() {
 
@@ -48,7 +47,7 @@ export default function App() {
           <PaperProvider theme={theme}>
               <NavigationContainer theme={theme}>
                   <Stack.Navigator initialRouteName="Home">
-                      <Stack.Screen name="Details" component={ThemeToggle} />
+                      <Stack.Screen name="Profile" component={ProfilePage} />
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>
