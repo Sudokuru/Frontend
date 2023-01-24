@@ -3,7 +3,8 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Button, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, StyleSheet, Text, View } from "react-native";
+import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
 
@@ -65,33 +66,27 @@ const LoginButton = () => {
     }, [result]);
 
     return (
-        <View style={styles.container}>
-            {name ? (
+            name ? (
                 <>
-                    <Text style={styles.title}>You are logged in, {name}!</Text>
-                    <Button title="Logout" onPress={() => setName("")}/>
+                    <Button mode="contained" onPress={() => setName("")}>
+                        Logout
+                    </Button>
                 </>
             ) : (
-                <Button
-                    disabled={!request}
-                    title="Login"
-                    onPress={() => promptAsync({useProxy})}
-                />
-            )}
-        </View>
+                <Button mode="contained" onPress={() => promptAsync({useProxy})}>
+                    Login
+                </Button>
+            )
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "flex-end",
-        margin: 10
+    header: {
+        fontSize: 40,
     },
-    title: {
-        fontSize: 20,
-        textAlign: "center",
-    },
+    loginButton: {
+        textAlign: "left"
+    }
 });
 
 export default LoginButton;

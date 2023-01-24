@@ -9,7 +9,9 @@ const ProfilePage = () => {
 
     return (
         <View>
-            <LoginButton></LoginButton>
+            <View style={styles.loginButton}>
+                <LoginButton></LoginButton>
+            </View>
             <Text style={styles.header}>Profile Page</Text>
             <ThemeToggle></ThemeToggle>
             <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
@@ -21,6 +23,10 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 40,
     },
+    loginButton: {
+        alignItems: 'flex-start',
+        margin: 5
+    }
 });
 
 
