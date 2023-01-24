@@ -15,28 +15,28 @@ const SaveGamePreferencesToggle = () => {
     const toggleNotifyOnWrongCellSwitch = () => setIsNotifyOnWrongCellEnabled(previousState => !previousState);
     // mock function
     function getNotifyOnWrongCellState(): boolean {
-        return false;
+        return true;
     }
 
     const [isHighlightAllSelectedNumberEnabled, setIsHighlightAllSelectedNumberEnabled] = useState(getHighlightAllSelectedNumber);
     const toggleHighlightAllSelectedNumberSwitch = () => setIsHighlightAllSelectedNumberEnabled(previousState => !previousState);
     // mock function
     function getHighlightAllSelectedNumber(): boolean {
-        return false;
+        return true;
     }
 
     const [isHighlightSelectedBoxEnabled, setIsHighlightSelectedBoxEnabled] = useState(getHighlightSelectedBox);
     const toggleHighlightSelectedBoxSwitch = () => setIsHighlightSelectedBoxEnabled(previousState => !previousState);
     // mock function
     function getHighlightSelectedBox(): boolean {
-        return false;
+        return true;
     }
 
     const [isHighlightSelectedRowEnabled, setIsHighlightSelectedRowEnabled] = useState(getHighlightSelectedRow);
     const toggleHighlightSelectedRowSwitch = () => setIsHighlightSelectedRowEnabled(previousState => !previousState);
     // mock function
     function getHighlightSelectedRow(): boolean {
-        return false;
+        return true;
     }
 
     const [isPlayMusicEnabled, setIsPlayMusicEnabled] = useState(getPlayMusic);
