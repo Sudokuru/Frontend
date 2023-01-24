@@ -17,9 +17,9 @@ export interface Auth0JwtPayload extends JwtPayload {
 }
 
 export default {
-    name: 'Sudokuru',
-    slug: 'sudokuru',
-    scheme: 'sudokuru',
+    name: 'SudokuruBackup',
+    slug: 'sudokurubackup',
+    scheme: 'sudokurubackup',
     version: '1.0.0',
     extra: {
         DOMAIN: process.env.DOMAIN,
