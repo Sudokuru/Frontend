@@ -69,12 +69,12 @@ const LoginButton = () => {
             {name ? (
                 <>
                     <Text style={styles.title}>You are logged in, {name}!</Text>
-                    <Button title="Log out" onPress={() => setName("")}/>
+                    <Button title="Logout" onPress={() => setName("")}/>
                 </>
             ) : (
                 <Button
                     disabled={!request}
-                    title="Log in with Auth0"
+                    title="Login"
                     onPress={() => promptAsync({useProxy})}
                 />
             )}
@@ -85,13 +85,12 @@ const LoginButton = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "flex-end",
+        margin: 10
     },
     title: {
         fontSize: 20,
         textAlign: "center",
-        marginTop: 40,
     },
 });
 
