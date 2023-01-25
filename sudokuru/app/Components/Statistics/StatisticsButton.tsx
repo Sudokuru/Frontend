@@ -8,7 +8,7 @@ const StatisticsButton = () => {
     const navigation = useNavigation();
 
     return (
-        <Button mode="contained" onPress={() => navigation.navigate('Statistics')}>
+        <Button mode="contained" testID={"ViewStatisticsPageButton"} onPress={() => navigation.navigate('Statistics')}>
              <AntDesign name="calculator" size={24} color="black" />
         </Button>
     );

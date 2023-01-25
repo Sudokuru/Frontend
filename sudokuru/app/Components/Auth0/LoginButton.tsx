@@ -68,12 +68,12 @@ const LoginButton = () => {
     return (
             name ? (
                 <>
-                    <Button mode="contained" onPress={() => setName("")}>
+                    <Button mode="contained" testID={"Logout Button"} onPress={() => setName("")}>
                         Logout
                     </Button>
                 </>
             ) : (
-                <Button mode="contained" onPress={() => promptAsync({useProxy})}>
+                <Button mode="contained" testID={"Login Button"} onPress={() => promptAsync({useProxy})}>
                     Login
                 </Button>
             )
