@@ -120,14 +120,15 @@ const HomeMenu = () => {
 
 const menuStyle = StyleSheet.create({
     menu: {
-        width: "15%",
+        //width: "15%",
         height: "100%",
         // outlineStyle: "solid",
         // outlineWidth: 4,
-        minWidth: 100 //todo set min width
+        minWidth: 100, //todo set min width
+        backgroundColor: "green"
     },
     collapsedMenu: {
-        width: "5%",
+        //width: "5%",
         height: "100%",
         // outlineStyle: "solid",
         // outlineWidth: 4,
