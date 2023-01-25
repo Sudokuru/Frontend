@@ -17,6 +17,7 @@ import merge from 'deepmerge';
 import ProfilePage from "./app/Pages/ProfilePage";
 import HomePage from "./app/Pages/HomePage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
+import LearnPage from "./app/Pages/LearnPage";
 
 export default function App() {
 
@@ -54,6 +55,8 @@ export default function App() {
                       <Stack.Screen name="Home" component={HomePage} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
+
+                      <Stack.Screen name="Learn" component={LearnPage}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>

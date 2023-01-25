@@ -2,10 +2,13 @@ import * as React from 'react';
 import {Drawer} from 'react-native-paper';
 import {StyleSheet} from "react-native";
 import {getTheme} from "react-native-paper/lib/typescript/core/theming";
+import {useNavigation} from "@react-navigation/native";
 
 const HomeMenu = () => {
     const [active, setActive] = React.useState('');
     const [collapsed, setCollapsed] = React.useState(false);
+
+    const navigation = useNavigation();
 
     return (
             collapsed ? (
@@ -26,7 +29,7 @@ const HomeMenu = () => {
                         focusedIcon="book-open-page-variant"
                         unfocusedIcon="book-open-page-variant"
                         active={active === 'third'}
-                        onPress={() => setActive('third')}
+                        onPress={() => navigation.navigate('Learn')}
                     />
                     <Drawer.CollapsedItem
                         focusedIcon="traffic-cone"
@@ -75,9 +78,10 @@ const HomeMenu = () => {
                     />
                     <Drawer.Item
                         label="Learn"
+
                         icon="book-open-page-variant"
                         active={active === 'third'}
-                        onPress={() => setActive('third')}
+                        onPress={() => navigation.navigate('Learn')}
                     />
                     <Drawer.Item
                         label="Drills"
@@ -117,16 +121,16 @@ const HomeMenu = () => {
 const menuStyle = StyleSheet.create({
     menu: {
         width: "15%",
-        outlineStyle: "solid",
-        outlineWidth: 4,
-        minHeight: 100, //todo set min height
+        height: "100%",
+        // outlineStyle: "solid",
+        // outlineWidth: 4,
         minWidth: 100 //todo set min width
     },
     collapsedMenu: {
         width: "5%",
-        outlineStyle: "solid",
-        outlineWidth: 4,
-        minHeight: 100, //todo set min height
+        height: "100%",
+        // outlineStyle: "solid",
+        // outlineWidth: 4,
         minWidth: 100 //todo set min width
     }
 });

@@ -20,9 +20,7 @@ const ProfilePage = () => {
                     <LoginButton></LoginButton>
                 </View>
             </View>
-            <View>
-                <HomeMenu></HomeMenu>
-            </View>
+            <HomeMenu></HomeMenu>
         </View>
     );
 };
