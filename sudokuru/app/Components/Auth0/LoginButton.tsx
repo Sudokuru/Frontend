@@ -81,11 +81,11 @@ const LoginButton = () => {
 }
 
 const styles = StyleSheet.create({
-    header: {
+    profileHeader: {
         fontSize: 40,
     },
     loginButton: {
-        textAlign: "left"
+        textAlign: "right"
     }
 });
 

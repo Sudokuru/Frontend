@@ -15,6 +15,8 @@ import {
 } from 'react-native-paper';
 import merge from 'deepmerge';
 import ProfilePage from "./app/Pages/ProfilePage";
+import HomePage from "./app/Pages/HomePage";
+import StatisticsPage from "./app/Pages/StatisticsPage";
 
 export default function App() {
 
@@ -49,7 +51,9 @@ export default function App() {
                   <Stack.Navigator initialRouteName="Home" screenOptions={{
                       headerShown: false
                   }}>
+                      <Stack.Screen name="Home" component={HomePage} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
+                      <Stack.Screen name="Statistics" component={StatisticsPage}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>
