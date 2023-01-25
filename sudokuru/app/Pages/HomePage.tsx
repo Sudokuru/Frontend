@@ -4,6 +4,7 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
+import HomeMenu from "../Components/Home/HomeMenu";
 
 const ProfilePage = () => {
 
@@ -18,6 +19,9 @@ const ProfilePage = () => {
                     <ProfileButton></ProfileButton>
                     <LoginButton></LoginButton>
                 </View>
+            </View>
+            <View>
+                <HomeMenu></HomeMenu>
             </View>
         </View>
     );
