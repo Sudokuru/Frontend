@@ -23,8 +23,6 @@ const ProfilePage = () => {
                     <LoginButton></LoginButton>
                 </View>
             </View>
-            <ThemeToggle></ThemeToggle>
-            <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
             <View style={homeScreenStyles.home}>
                 <View style={homeScreenStyles.homeMenu}>
                     <HomeMenu></HomeMenu>
@@ -72,7 +70,7 @@ const homeScreenStyles = StyleSheet.create({
         //backgroundColor: 'blue',
         width: "85%",
         alignContent: "flex-start",
-        flexDirection: 'row',
+        flexDirection: 'column',
         flexWrap: "wrap",
     },
 });
