@@ -1,4 +1,4 @@
-import {StyleSheet, View, ViewComponent} from "react-native";
+import {StyleSheet, View} from "react-native";
 import React from "react";
 import LessonCard from "../Components/Learn/LessonCard";
 import HomeMenu from "../Components/Home/HomeMenu";
@@ -6,16 +6,15 @@ import {Text} from "react-native-paper";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import ProfileButton from "../Components/Profile/ProfileButton";
 import LoginButton from "../Components/Auth0/LoginButton";
-import {blue50} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
-const LearnPage = () => {
+const DrillPage = () => {
 
     return (
         <View>
             <View style={styles.toggleIcons}>
                 <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Learn Strategies</Text>
+                    <Text style={styles.profileText}>Drills</Text>
                 </View>
                 <View style={styles.profileButtons}>
                     <StatisticsButton></StatisticsButton>
@@ -95,4 +94,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default LearnPage;
+export default DrillPage;

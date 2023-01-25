@@ -4,6 +4,7 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import HomeButton from "../Components/Home/HomeButton";
+import HomeMenu from "../Components/Home/HomeMenu";
 
 const ProfilePage = () => {
 
@@ -17,6 +18,13 @@ const ProfilePage = () => {
                     <HomeButton></HomeButton>
                     <ProfileButton></ProfileButton>
                     <LoginButton></LoginButton>
+                </View>
+            </View>
+            <View style={homeScreenStyles.home}>
+                <View style={homeScreenStyles.homeMenu}>
+                    <HomeMenu></HomeMenu>
+                </View>
+                <View style={homeScreenStyles.lessons}>
                 </View>
             </View>
         </View>
@@ -40,6 +48,25 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
+    },
+});
+
+const homeScreenStyles = StyleSheet.create({
+    home: {
+        display: "flex",
+        flexDirection: 'row',
+        //backgroundColor: 'red',
+    },
+    homeMenu: {
+        //backgroundColor: 'red',
+        width: "15%",
+    },
+    lessons: {
+        //backgroundColor: 'blue',
+        width: "85%",
+        alignContent: "flex-start",
+        flexDirection: 'row',
+        flexWrap: "wrap",
     },
 });
 

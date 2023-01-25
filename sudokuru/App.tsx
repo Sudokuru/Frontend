@@ -18,6 +18,7 @@ import ProfilePage from "./app/Pages/ProfilePage";
 import HomePage from "./app/Pages/HomePage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import LearnPage from "./app/Pages/LearnPage";
+import DrillPage from "./app/Pages/DrillPage";
 
 export default function App() {
 
@@ -57,6 +58,7 @@ export default function App() {
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
 
                       <Stack.Screen name="Learn" component={LearnPage}/>
+                      <Stack.Screen name="Drill" component={DrillPage}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>

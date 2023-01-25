@@ -23,7 +23,7 @@ const HomeMenu = () => {
                         focusedIcon="home-variant-outline"
                         unfocusedIcon="home-variant-outline"
                         active={active === 'second'}
-                        onPress={() => setActive('second')}
+                        onPress={() => navigation.navigate('Home')}
                     />
                     <Drawer.CollapsedItem
                         focusedIcon="book-open-page-variant"
@@ -35,7 +35,7 @@ const HomeMenu = () => {
                         focusedIcon="traffic-cone"
                         unfocusedIcon="traffic-cone"
                         active={active === 'forth'}
-                        onPress={() => setActive('forth')}
+                        onPress={() => navigation.navigate('Drill')}
                     />
                     <Drawer.CollapsedItem
                         focusedIcon="play-box"
@@ -74,7 +74,7 @@ const HomeMenu = () => {
                         label="Home"
                         icon="home-variant-outline"
                         active={active === 'second'}
-                        onPress={() => setActive('second')}
+                        onPress={() => navigation.navigate('Home')}
                     />
                     <Drawer.Item
                         label="Learn"
@@ -87,7 +87,7 @@ const HomeMenu = () => {
                         label="Drills"
                         icon="traffic-cone"
                         active={active === 'forth'}
-                        onPress={() => setActive('forth')}
+                        onPress={() => navigation.navigate('Drill')}
                     />
                     <Drawer.Item
                         label="Play"
@@ -120,19 +120,15 @@ const HomeMenu = () => {
 
 const menuStyle = StyleSheet.create({
     menu: {
-        //width: "15%",
         height: "100%",
         // outlineStyle: "solid",
         // outlineWidth: 4,
-        minWidth: 100, //todo set min width
-        backgroundColor: "green"
+        //backgroundColor: "green"
     },
     collapsedMenu: {
-        //width: "5%",
         height: "100%",
         // outlineStyle: "solid",
         // outlineWidth: 4,
-        minWidth: 100 //todo set min width
     }
 });
 
