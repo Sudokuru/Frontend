@@ -60,42 +60,49 @@ const SaveGamePreferencesToggle = () => {
                 color={'red'}
                 value={isSaveGameHistoryEnabled}
                 onValueChange={toggleSaveGameHistorySwitch}
+                testID={isSaveGameHistoryEnabled ? "SaveGameHistoryEnabled" : "SaveGameHistoryDisabled"}
             />
             <Text>NotifyOnWrongCell</Text>
             <Switch
                 color={'red'}
                 value={isNotifyOnWrongCellEnabled}
                 onValueChange={toggleNotifyOnWrongCellSwitch}
+                testID={isNotifyOnWrongCellEnabled ? "NotifyOnWrongCellEnabled" : "NotifyOnWrongCellDisabled"}
             />
             <Text>HighlightAllSelectedNumber</Text>
             <Switch
                 color={'red'}
                 value={isHighlightAllSelectedNumberEnabled}
                 onValueChange={toggleHighlightAllSelectedNumberSwitch}
+                testID={isHighlightAllSelectedNumberEnabled ? "HighlightAllSelectedNumberEnabled" : "HighlightAllSelectedNumberDisabled"}
             />
             <Text>HighlightSelectedBox</Text>
             <Switch
                 color={'red'}
                 value={isHighlightSelectedBoxEnabled}
                 onValueChange={toggleHighlightSelectedBoxSwitch}
+                testID={isHighlightSelectedBoxEnabled ? "HighlightSelectedBoxEnabled" : "HighlightSelectedBoxDisabled"}
             />
             <Text>HighlightSelectedRow</Text>
             <Switch
                 color={'red'}
                 value={isHighlightSelectedRowEnabled}
                 onValueChange={toggleHighlightSelectedRowSwitch}
+                testID={isHighlightSelectedRowEnabled ? "HighlightSelectedRowEnabled" : "HighlightSelectedRowDisabled"}
             />
             <Text>PlayMusic</Text>
             <Switch
                 color={'red'}
                 value={isPlayMusicEnabled}
                 onValueChange={togglePlayMusicSwitch}
+                testID={isPlayMusicEnabled ? "PlayMusicEnabled" : "PlayMusicDisabled"}
             />
             <Text>MusicIntensify</Text>
             <Switch
                 color={'red'}
                 value={isMusicIntensifyEnabled}
                 onValueChange={toggleMusicIntensifySwitch}
+                testID={isMusicIntensifyEnabled ? "MusicIntensifyEnabled" : "MusicIntensifyDisabled"}
             />
         </View>
     );

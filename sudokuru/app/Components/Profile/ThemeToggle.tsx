@@ -14,6 +14,7 @@ const ThemeToggle = () => {
                 color={'red'}
                 value={isThemeDark}
                 onValueChange={toggleTheme}
+                testID={isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"}
             />
         </View>
     );
