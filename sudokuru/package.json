@@ -10,7 +10,7 @@
     "web": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider expo start --web --https"
   },
   "dependencies": {
-    "@expo/webpack-config": "^0.17.2",
+    "@expo/webpack-config": "^18.0.1",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/stack": "^6.3.11",
     "expo": "~47.0.8",
