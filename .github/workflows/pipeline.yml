@@ -22,5 +22,5 @@ jobs:
       - run: npm ci
         working-directory: ./sudokuru
 
-      - run: npx vercel --prod --token ${{secrets.VERCEL_TOKEN}}
+      - run: npx vercel --yes --prod --token ${{secrets.VERCEL_TOKEN}}
         working-directory: ./sudokuru
