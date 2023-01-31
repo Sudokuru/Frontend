@@ -23,7 +23,11 @@ For Web, hit the w key to start up the website at ```localhost:19006```
 
 In order to deploy your local branch in preview mode, run the following command:<br>
 ```npm run vercel:dev```<br>
+You will need to log in with our team email account.<br>
 The console will output a preview url for viewing.<br>
+
+Preview mode can be run on any branch to preview how the site will look on Vercel.<br>
+It is encouraged to use preview mode before merging changes into main.<br>
 
 
 ## This Project uses React-Native-Web. This means we will share code for the app and the website and avoid duplicating our work. 
