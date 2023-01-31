@@ -1,0 +1,26 @@
+name: "Pipeline"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency: main_workflow
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - run: npm ci
+        working-directory: ./sudokuru
+
+      - run: npx vercel --yes --prod --token ${{secrets.VERCEL_TOKEN}}
+        working-directory: ./sudokuru
