@@ -3,7 +3,6 @@ import * as React from 'react'
 import { PreferencesContext } from './app/Contexts/PreferencesContext';
 import {adaptNavigationTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from "@react-navigation/stack";
-const Stack = createStackNavigator();
 import {
     NavigationContainer,
     DarkTheme as NavigationDarkTheme,
@@ -45,6 +44,8 @@ export default function App() {
         }),
         [toggleTheme, isThemeDark]
     );
+
+    const Stack = createStackNavigator();
 
   return (
       <PreferencesContext.Provider value={preferences}>
