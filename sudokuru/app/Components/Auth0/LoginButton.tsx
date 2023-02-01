@@ -3,10 +3,11 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, StyleSheet} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
+import {revokeAsync} from "expo-auth-session";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -20,6 +21,8 @@ WebBrowser.maybeCompleteAuthSession();
 
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
+// this is the correct logout url, when navigate on another tab it logs me out!
+const revokeEndpoint = "https://" + DOMAIN + "/logout";
 
 const useProxy = Platform.select({ web: false, ios: true, android: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -27,6 +30,8 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 const LoginButton = () => {
 
     const [name, setName] = useState<string>("");
+
+    const [authTokens, setAuthTokens] = React.useState<string>("");
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
         {
@@ -44,6 +49,7 @@ const LoginButton = () => {
         { authorizationEndpoint }
     );
 
+
     useEffect(() => {
         if (result) {
             if (result.type === "error") {
@@ -56,6 +62,7 @@ const LoginButton = () => {
             if (result.type === "success") {
                 // Retrieve the JWT token and decode it
                 const jwtToken = result.params.id_token;
+                setAuthTokens(jwtToken)
                 console.log(jwtToken);
                 const decoded = jwtDecode<Auth0JwtPayload>(jwtToken);
 
@@ -65,10 +72,29 @@ const LoginButton = () => {
         }
     }, [result]);
 
+    // const logout = async () => {
+    //     if (result){
+    //         const revokeResponse = await revokeAsync(
+    //             {
+    //                 clientId: auth0ClientId,
+    //                 token: authTokens
+    //             },
+    //             { revocationEndpoint: revokeEndpoint }
+    //         );
+    //         if (revokeResponse) {
+    //             setAuthTokens("");
+    //             setName("");
+    //         }
+    //     }
+    // };
+
     return (
             name ? (
                 <>
-                    <Button mode="contained" testID={"Logout Button"} onPress={() => setName("")}>
+                    <Button mode="contained" testID={"Logout Button"} onPress={() => {
+                        WebBrowser.openBrowserAsync(revokeEndpoint).then(r => setName("")).then(r => setAuthTokens(""));
+                        }
+                    }>
                         Logout
                     </Button>
                 </>
@@ -79,6 +105,8 @@ const LoginButton = () => {
             )
     );
 }
+
+
 
 const styles = StyleSheet.create({
     profileHeader: {
