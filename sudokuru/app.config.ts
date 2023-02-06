@@ -27,13 +27,16 @@ export default {
     ],
     orientation: "portrait",
     updates: {
-        "fallbackToCacheTimeout": 0
+        fallbackToCacheTimeout: 0
     },
     assetBundlePatterns: [
         "**/*"
     ],
     ios: {
-        "supportsTablet": true
+        supportsTablet: true
+    },
+    android: {
+        package: "sudokuru.vercel.app"
     },
     extra: {
         DOMAIN: process.env.DOMAIN,
