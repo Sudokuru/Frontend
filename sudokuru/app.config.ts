@@ -21,6 +21,26 @@ export default {
     slug: 'sudokuru',
     scheme: 'sudokuru',
     version: '1.0.0',
+    platforms: [
+        "ios",
+        "android"
+    ],
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    splash: {
+        image: "./assets/splash.png",
+        resizeMode: "contain",
+        backgroundColor: "#ffffff"
+    },
+    updates: {
+        "fallbackToCacheTimeout": 0
+    },
+    assetBundlePatterns: [
+        "**/*"
+    ],
+    ios: {
+        "supportsTablet": true
+    },
     extra: {
         DOMAIN: process.env.DOMAIN,
         CLIENT_ID: process.env.CLIENT_ID,

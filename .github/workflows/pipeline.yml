@@ -38,6 +38,7 @@ jobs:
 
       - name: 💬 Comment preview
         uses: expo/expo-github-action/preview-comment@v7
+        working-directory: ./sudokuru
         with:
           channel: pr-${{ github.event.number }}
   app_build:
