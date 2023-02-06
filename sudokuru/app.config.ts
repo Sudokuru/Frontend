@@ -24,5 +24,8 @@ export default {
     extra: {
         DOMAIN: process.env.DOMAIN,
         CLIENT_ID: process.env.CLIENT_ID,
+        eas: {
+            projectId: "23c4c607-ead6-4786-9a9c-03f57a97dac7"
+        }
     },
 };
