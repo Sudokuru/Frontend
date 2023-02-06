@@ -29,10 +29,12 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ./sudokuru
 
       - name: 🚀 Publish preview
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+        working-directory: ./sudokuru
 
       - name: 💬 Comment preview
         uses: expo/expo-github-action/preview-comment@v7
@@ -57,10 +59,12 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ./sudokuru
 
       - name: 🚀 Build app
         run: eas build --non-interactive --platform all
+        working-directory: ./sudokuru
   deploy:
     name: Deploy to Vercel
     needs: [ app_build, app_preview ]
