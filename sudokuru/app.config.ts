@@ -20,6 +20,7 @@ export default {
     name: 'Sudokuru',
     slug: 'sudokuru',
     scheme: 'sudokuru',
+    owner: "sudokuru",
     version: '1.0.0',
     platforms: [
         "ios",
@@ -33,6 +34,7 @@ export default {
         "**/*"
     ],
     ios: {
+        bundleIdentifier: "sudokuru.vercel.app",
         supportsTablet: true
     },
     android: {
