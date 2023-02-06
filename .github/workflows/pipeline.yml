@@ -29,7 +29,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci && npx expo install expo-updates
         working-directory: ./sudokuru
 
       - name: 🚀 Publish preview
