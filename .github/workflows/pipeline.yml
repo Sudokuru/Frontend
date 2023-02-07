@@ -68,11 +68,26 @@ jobs:
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
 
-#      - uses: actions/upload-artifact@v3
-#        with:
-#          name: my-artifact
-#          path: output.txt
-  deploy:
+      - name: Upload SDK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android SDK
+          path: Build/*.apk
+
+  deploy_app:
+    name: Deploy to Itch.io
+    needs: [ app_build, app_preview ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download SDK Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Android SDK
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+  deploy_website:
     name: Deploy to Vercel
     needs: [ app_build, app_preview ]
     if: ${{ github.ref == 'refs/heads/main' }}
