@@ -74,6 +74,15 @@ jobs:
           name: Android SDK
           path: Build/*.apk
 
+      - name: Upload SDK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android SDK
+          path: Build
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
   deploy_app:
     name: Deploy to Itch.io
     needs: [ app_build, app_preview ]
