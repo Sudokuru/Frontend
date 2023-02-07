@@ -21,7 +21,7 @@ export default {
     slug: 'sudokuru',
     scheme: 'sudokuru',
     owner: "sudokuru",
-    version: '1.0.0',
+    version: '0.0.0',
     platforms: [
         "ios",
         "android"
