@@ -36,11 +36,6 @@ jobs:
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
         working-directory: ./sudokuru
 
-      - name: 💬 Comment preview
-        uses: expo/expo-github-action/preview-comment@v7
-        with:
-          channel: pr-${{ github.event.number }}
-
   app_build_dev:
     runs-on: ubuntu-latest
     steps:
