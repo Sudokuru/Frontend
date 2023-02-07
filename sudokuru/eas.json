@@ -16,7 +16,6 @@
     "production": {
       "android": {
         "buildType": "apk",
-        "autoIncrement": "version"
       }
     }
   },
