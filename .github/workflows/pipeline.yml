@@ -85,7 +85,7 @@ jobs:
 
   deploy_app:
     name: Deploy to Itch.io
-    needs: [ app_build ]
+    needs: [ app_build_dev ]
     runs-on: ubuntu-latest
     steps:
       - name: Download SDK Artifact
@@ -107,7 +107,7 @@ jobs:
 
   deploy_website_prod:
     name: Deploy to Vercel
-    needs: [ app_build ]
+    needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
