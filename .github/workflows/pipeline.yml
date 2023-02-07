@@ -17,6 +17,13 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
 
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          comment: |
+            Preview App for PR:
+            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
@@ -35,6 +42,13 @@ jobs:
       - name: 🚀 Publish preview
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
         working-directory: ./sudokuru
+
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          comment: |
+            Preview App for PR:
+            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
 
   app_build_dev:
     runs-on: ubuntu-latest
