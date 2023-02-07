@@ -11,7 +11,7 @@ on:
 concurrency: main_workflow
 
 jobs:
-  app_preview:
+  app_preview_dev:
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
