@@ -87,6 +87,13 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
 
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
       - name: Update App
         run: butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:sudokuru-android
         env:
