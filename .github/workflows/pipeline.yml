@@ -42,7 +42,6 @@ jobs:
 #          channel: pr-${{ github.event.number }}
   app_build:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -64,8 +63,13 @@ jobs:
         working-directory: ./sudokuru
 
       - name: 🚀 Build app
-        run: eas build --non-interactive --platform android
+        run: eas build --non-interactive --platform android > output.txt && cat output.txt
         working-directory: ./sudokuru
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: output.txt
   deploy:
     name: Deploy to Vercel
     needs: [ app_build, app_preview ]
