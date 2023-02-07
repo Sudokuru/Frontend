@@ -74,9 +74,6 @@ jobs:
           name: Android SDK
           path: sudokuru/Build/*.apk
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
   deploy_app:
     name: Deploy to Itch.io
     needs: [ app_build, app_preview ]
@@ -89,6 +86,14 @@ jobs:
 
       - name: Display structure of downloaded files
         run: ls -R
+
+      - uses: KikimoraGames/itch-publish@v0.0.3
+        with:
+          butlerApiKey: ${{secrets.BUTLER_API_KEY}}
+          gameData: .
+          itchUsername: ${{env.ITCH_USERNAME}}
+          itchGameId: ${{ env.ITCH_GAME_ID }}
+          buildChannel: sudokuru-android
 
   deploy_website:
     name: Deploy to Vercel
