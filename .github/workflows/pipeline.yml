@@ -107,7 +107,7 @@ jobs:
           ./butler -V
 
       - name: Update App
-        run: butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:sudokuru-alpha-android
+        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:sudokuru-alpha-android
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
