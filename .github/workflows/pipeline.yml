@@ -62,6 +62,15 @@ jobs:
         run: npm ci
         working-directory: ./sudokuru
 
+      - name: Add .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_SOME_DEV_DOMAIN: ${{ secrets.DEV_DOMAIN }}
+          envkey_SECRET_DEV_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          directory: sudokuru
+          file_name: .env
+          fail_on_empty: true
+
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
