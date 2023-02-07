@@ -17,13 +17,6 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
 
-      - name: Post comment with preview link
-        uses: KeisukeYamashita/create-comment@v1
-        with:
-          comment: |
-            Preview App for PR:
-            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
