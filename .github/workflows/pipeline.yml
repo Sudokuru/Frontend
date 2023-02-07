@@ -87,6 +87,7 @@ jobs:
   deploy_app:
     name: Deploy to Itch.io
     needs: [ app_build_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download SDK Artifact
