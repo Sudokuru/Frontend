@@ -63,13 +63,13 @@ jobs:
         working-directory: ./sudokuru
 
       - name: 🚀 Build app
-        run: eas build --non-interactive --platform android > output.txt && cat output.txt
+        run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: output.txt
+#      - uses: actions/upload-artifact@v3
+#        with:
+#          name: my-artifact
+#          path: output.txt
   deploy:
     name: Deploy to Vercel
     needs: [ app_build, app_preview ]
