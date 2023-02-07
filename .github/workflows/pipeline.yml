@@ -87,12 +87,17 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -R
 
+      - name: Update App
+        run: butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:sudokuru-android
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+
       - uses: KikimoraGames/itch-publish@v0.0.3
         with:
           butlerApiKey: ${{secrets.BUTLER_API_KEY}}
           gameData: .
-          itchUsername: ${{env.ITCH_USERNAME}}
-          itchGameId: ${{ env.ITCH_GAME_ID }}
+          itchUsername: ${{secrets.ITCH_USERNAME}}
+          itchGameId: ${{ secrets.ITCH_GAME_ID }}
           buildChannel: sudokuru-android
 
   deploy_website:
