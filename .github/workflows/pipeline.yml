@@ -119,7 +119,7 @@ jobs:
           itchGameId: ${{ secrets.ITCH_GAME_ID }}
           buildChannel: sudokuru-android
 
-  deploy_website:
+  deploy_website_prod:
     name: Deploy to Vercel
     needs: [ app_build ]
     if: ${{ github.ref == 'refs/heads/main' }}
