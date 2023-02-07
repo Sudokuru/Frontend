@@ -71,9 +71,6 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
@@ -96,9 +93,6 @@ jobs:
         with:
           name: Android SDK
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: Install Butler
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -106,18 +100,10 @@ jobs:
           chmod +x butler
           ./butler -V
 
-      - name: Update App
+      - name: Update Itch.io Android Alpha App
         run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:sudokuru-alpha-android
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
-
-      - uses: KikimoraGames/itch-publish@v0.0.3
-        with:
-          butlerApiKey: ${{secrets.BUTLER_API_KEY}}
-          gameData: .
-          itchUsername: ${{secrets.ITCH_USERNAME}}
-          itchGameId: ${{ secrets.ITCH_GAME_ID }}
-          buildChannel: sudokuru-android
 
   deploy_website_prod:
     name: Deploy to Vercel
