@@ -72,13 +72,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Android SDK
-          path: Build/*.apk
-
-      - name: Upload SDK Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Android SDK
-          path: Build
+          path: sudokuru/Build/*.apk
 
       - name: Display structure of downloaded files
         run: ls -R
