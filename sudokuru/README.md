@@ -21,6 +21,7 @@ For Web, hit the w key to start up the website at ```localhost:19006```
 
 # Deployments
 
+### Preview Branch
 In order to deploy your local branch in preview mode, run the following command:<br>
 ```npm run vercel:dev```<br>
 You will need to log in with our team email account.<br>
@@ -28,6 +29,14 @@ The console will output a preview url for viewing.<br>
 
 Preview mode can be run on any branch to preview how the site will look on Vercel.<br>
 It is encouraged to use preview mode before merging changes into main.<br>
+
+### Preview PR
+PR Previews can be viewed from the bot comment at the bottom of the PR.<br>
+PR Previews can also be viewed in the ```Publish Preview``` task of the ```app_preview``` job.<br>
+Here is an example preview URL: https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-41<br>
+The URL will always be the same except for the release-channel name which will be ```pr-${{github.event.number}}```<br>
+
+
 
 
 ## This Project uses React-Native-Web. This means we will share code for the app and the website and avoid duplicating our work. 
