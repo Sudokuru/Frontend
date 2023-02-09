@@ -12,6 +12,7 @@ concurrency: main_workflow
 
 jobs:
   app_preview_dev:
+    if: ${{ github.ref != 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
