@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import {Alert, Platform, StyleSheet, View} from "react-native";
+import {Alert, Platform, StyleSheet, View, Text} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
@@ -31,6 +31,11 @@ const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), and
 const redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
+
+let newUseProxy: string;
+let newRedirectURI: string;
+let newDOMAIN: string;
+let newCLIENT_ID: string;
 
 const LoginButton = () => {
 
@@ -76,6 +81,20 @@ const LoginButton = () => {
         }
     }, [result]);
 
+    const styles = StyleSheet.create({
+        button: {
+            width: 200,
+            height: 300,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 30,
+            backgroundColor: "#94C100",
+            // position: "absolute",
+            // bottom: 0,
+            // right: 10,
+        },
+    });
+
     return (
             name ? (
                 <>
@@ -93,14 +112,25 @@ const LoginButton = () => {
                     </Button>
                 </>
             ) : (
-                <Button mode="contained" testID={"Login Button"} onPress={() => {
-                    promptAsync({useProxy: useProxy})
-
-                }}>
-                    Login
-                </Button>
+                <View>
+                    <Button mode="contained" testID={"Login Button"} style={styles.button} onPress={() => {
+                        promptAsync({useProxy: useProxy});
+                    }}>
+                        Login
+                        {newUseProxy}
+                        {redirectUri}
+                        {CLIENT_ID}
+                        {DOMAIN}
+                    </Button>
+                    <Text>{useProxy}</Text>
+                    <Text>{redirectUri}</Text>
+                    <Text>{CLIENT_ID}</Text>
+                    <Text>{DOMAIN}</Text>
+                </View>
             )
     );
 }
+
+
 
 export default LoginButton;
