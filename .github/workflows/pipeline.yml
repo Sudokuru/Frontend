@@ -36,13 +36,14 @@ jobs:
       - name: Add .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_SOME_DEV_DOMAIN: ${{ secrets.DEV_DOMAIN }}
-          envkey_SECRET_DEV_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          envkey_SOME_DEV_DOMAIN: TestValue
+          envkey_SECRET_DEV_CLIENT_ID: Banana
           directory: ./sudokuru
           file_name: .env
           fail_on_empty: true
 
-      - run: ls -a -R
+      - run: cat ".env"
+        working-directory: ./sudokuru
 
       - name: 🚀 Publish preview
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
