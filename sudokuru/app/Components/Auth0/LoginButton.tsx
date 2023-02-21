@@ -21,7 +21,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
-// this is the correct logout url, when navigate on another tab it logs me out!
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 
 // we do not want to use the proxy in production
@@ -30,6 +29,7 @@ export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnersh
 const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
 let redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
 
+// Setting the redirect url for mobile for apk/iso builds
 if ((Platform.OS == "ios" || Platform.OS == "android") && !useProxy){
     redirectUri = "sudokuru.vercel.app://" + DOMAIN + "/" + Platform.OS + "/sudokuru.vercel.app/callback";
 }
