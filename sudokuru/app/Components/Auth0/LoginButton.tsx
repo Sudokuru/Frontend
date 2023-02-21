@@ -81,20 +81,6 @@ const LoginButton = () => {
         }
     }, [result]);
 
-    const styles = StyleSheet.create({
-        button: {
-            width: 200,
-            height: 300,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 30,
-            backgroundColor: "#94C100",
-            // position: "absolute",
-            // bottom: 0,
-            // right: 10,
-        },
-    });
-
     return (
             name ? (
                 <>
@@ -117,10 +103,6 @@ const LoginButton = () => {
                         promptAsync({useProxy: useProxy});
                     }}>
                         Login
-                        {newUseProxy}
-                        {redirectUri}
-                        {CLIENT_ID}
-                        {DOMAIN}
                     </Button>
                     <Text>{useProxy}</Text>
                     <Text>{redirectUri}</Text>
