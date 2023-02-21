@@ -35,11 +35,10 @@ jobs:
 
       - name: Add .env file
         uses: SpicyPizza/create-envfile@v1.3
-        working-directory: ./sudokuru
         with:
           envkey_SOME_DEV_DOMAIN: ${{ secrets.DEV_DOMAIN }}
           envkey_SECRET_DEV_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
-          directory: .
+          directory: ./sudokuru
           file_name: .env
           fail_on_empty: true
 
