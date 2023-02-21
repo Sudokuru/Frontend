@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet} from "react-native";
+import {Alert, Platform, StyleSheet, View} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
@@ -99,12 +99,11 @@ const LoginButton = () => {
                     promptAsync({useProxy: useProxy})
 
                 }}>
-                    Login
+                    Login {redirectUri}
                 </Button>
             )
     );
 }
-
 
 
 const styles = StyleSheet.create({
