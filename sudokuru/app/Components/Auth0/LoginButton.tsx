@@ -96,7 +96,7 @@ const LoginButton = () => {
                 <Button mode="contained" testID={"Login Button"} onPress={() => {
                     console.log(useProxy);
                     console.log(redirectUri);
-                    promptAsync({useProxy})
+                    promptAsync({useProxy: useProxy})
 
                 }}>
                     Login
