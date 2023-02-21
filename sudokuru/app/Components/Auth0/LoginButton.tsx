@@ -7,6 +7,7 @@ import { Alert, Platform, StyleSheet} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
+import Constants, {AppOwnership} from "expo-constants";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -23,7 +24,10 @@ const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 // this is the correct logout url, when navigate on another tab it logs me out!
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 
-const useProxy = Platform.select({ web: false, ios: true, android: true });
+// we do not want to use the proxy in production
+export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
+
+const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
