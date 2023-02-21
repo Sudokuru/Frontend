@@ -99,7 +99,7 @@ const LoginButton = () => {
                 </>
             ) : (
                 <View>
-                    <Button mode="contained" testID={"Login Button"} style={styles.button} onPress={() => {
+                    <Button mode="contained" testID={"Login Button"} onPress={() => {
                         promptAsync({useProxy: useProxy});
                     }}>
                         Login
