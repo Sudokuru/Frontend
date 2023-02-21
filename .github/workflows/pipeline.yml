@@ -55,9 +55,6 @@ jobs:
 
   app_build_dev:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        platform: [android, ios]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -87,17 +84,17 @@ jobs:
         run: npm ci
         working-directory: ./sudokuru
 
-      - name: 🚀 Build ${{ matrix.version }} app
-        run: eas build --non-interactive --platform ${{ matrix.platform }} --local
+      - name: 🚀 Build app
+        run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
         env:
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build-${{ matrix.version }}
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
 
-      - name: Upload Artifact
+      - name: Upload SDK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.version }}
-          path: sudokuru/Build-${{ matrix.version }}
+          name: Android SDK
+          path: sudokuru/Build/*.apk
 
   deploy_app:
     name: Deploy to Itch.io
@@ -108,7 +105,7 @@ jobs:
       - name: Download SDK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: android
+          name: Android SDK
 
       - name: Install Butler
         run: |
