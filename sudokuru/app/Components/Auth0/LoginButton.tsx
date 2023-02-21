@@ -32,11 +32,6 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
 
-let newUseProxy: string;
-let newRedirectURI: string;
-let newDOMAIN: string;
-let newCLIENT_ID: string;
-
 const LoginButton = () => {
 
     const [name, setName] = useState<string>("");
