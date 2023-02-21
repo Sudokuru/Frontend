@@ -20,9 +20,31 @@ export default {
     name: 'Sudokuru',
     slug: 'sudokuru',
     scheme: 'sudokuru',
-    version: '1.0.0',
+    owner: "sudokuru",
+    version: '0.0.0',
+    platforms: [
+        "ios",
+        "android"
+    ],
+    orientation: "portrait",
+    updates: {
+        fallbackToCacheTimeout: 0
+    },
+    assetBundlePatterns: [
+        "**/*"
+    ],
+    ios: {
+        bundleIdentifier: "sudokuru.vercel.app",
+        supportsTablet: true
+    },
+    android: {
+        package: "sudokuru.vercel.app"
+    },
     extra: {
         DOMAIN: process.env.DOMAIN,
         CLIENT_ID: process.env.CLIENT_ID,
+        eas: {
+            projectId: "23c4c607-ead6-4786-9a9c-03f57a97dac7"
+        }
     },
 };

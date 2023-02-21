@@ -11,8 +11,108 @@ on:
 concurrency: main_workflow
 
 jobs:
-  deploy:
+  app_preview_dev:
+    if: ${{ github.ref != 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: npm ci && npx expo install expo-updates
+        working-directory: ./sudokuru
+
+      - name: 🚀 Publish preview
+        run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+        working-directory: ./sudokuru
+
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          comment: |
+            Preview App for PR:
+            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+
+  app_build_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: npm ci
+        working-directory: ./sudokuru
+
+      - name: Add .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_SOME_DEV_DOMAIN: ${{ secrets.DEV_DOMAIN }}
+          envkey_SECRET_DEV_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          directory: sudokuru
+          file_name: .env
+          fail_on_empty: true
+
+      - name: 🚀 Build app
+        run: eas build --non-interactive --platform android --local
+        working-directory: ./sudokuru
+        env:
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
+
+      - name: Upload SDK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android SDK
+          path: sudokuru/Build/*.apk
+
+  deploy_app:
+    name: Deploy to Itch.io
+    needs: [ app_build_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download SDK Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Android SDK
+
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      - name: Update Itch.io Android Alpha App
+        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-android
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+
+  deploy_website_prod:
     name: Deploy to Vercel
+    needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
