@@ -28,7 +28,7 @@ const revokeEndpoint = "https://" + DOMAIN + "/logout";
 export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
 
 const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
-const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+const redirectUri = AuthSession.makeRedirectUri({ native: "sudokuru.vercel.app", useProxy: useProxy });
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
 
@@ -95,6 +95,7 @@ const LoginButton = () => {
             ) : (
                 <Button mode="contained" testID={"Login Button"} onPress={() => {
                     console.log(useProxy);
+                    console.log(redirectUri);
                     promptAsync({useProxy})
 
                 }}>
