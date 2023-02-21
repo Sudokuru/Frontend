@@ -94,16 +94,10 @@ const LoginButton = () => {
                 </>
             ) : (
                 <Button mode="contained" testID={"Login Button"} onPress={() => {
-                    console.log(useProxy);
-                    console.log(redirectUri);
                     promptAsync({useProxy: useProxy})
 
                 }}>
                     Login
-                    {redirectUri}
-                    {useProxy}
-                    {CLIENT_ID}
-                    {DOMAIN}
                 </Button>
             )
     );
