@@ -78,11 +78,14 @@ jobs:
       - name: Add .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
-          envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          envkey_DOMAIN: Testing
+          envkey_CLIENT_ID: Testing
           directory: ./sudokuru
           file_name: .env
           fail_on_empty: true
+
+      - run: cat ".env"
+        working-directory: ./sudokuru
 
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
