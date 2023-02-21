@@ -58,46 +58,46 @@ jobs:
     strategy:
       matrix:
         platform: [android, ios]
-        steps:
-          - name: 🏗 Setup repo
-            uses: actions/checkout@v3
+          steps:
+            - name: 🏗 Setup repo
+              uses: actions/checkout@v3
 
-          - name: 🏗 Setup Node
-            uses: actions/setup-node@v3
-            with:
-              node-version: 16.x
+            - name: 🏗 Setup Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 16.x
 
-          - name: Add .env file
-            uses: SpicyPizza/create-envfile@v1.3
-            with:
-              envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
-              envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
-              directory: ./sudokuru
-              file_name: .env
-              fail_on_empty: true
+            - name: Add .env file
+              uses: SpicyPizza/create-envfile@v1.3
+              with:
+                envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
+                envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+                directory: ./sudokuru
+                file_name: .env
+                fail_on_empty: true
 
-          - name: 🏗 Setup Expo and EAS
-            uses: expo/expo-github-action@v7
-            with:
-              expo-version: latest
-              eas-version: latest
-              token: ${{ secrets.EXPO_TOKEN }}
+            - name: 🏗 Setup Expo and EAS
+              uses: expo/expo-github-action@v7
+              with:
+                expo-version: latest
+                eas-version: latest
+                token: ${{ secrets.EXPO_TOKEN }}
 
-          - name: 📦 Install dependencies
-            run: npm ci
-            working-directory: ./sudokuru
+            - name: 📦 Install dependencies
+              run: npm ci
+              working-directory: ./sudokuru
 
-          - name: 🚀 Build app
-            run: eas build --non-interactive --platform ${{ matrix.platform }} --local
-            working-directory: ./sudokuru
-            env:
-              EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
+            - name: 🚀 Build app
+              run: eas build --non-interactive --platform ${{ matrix.platform }} --local
+              working-directory: ./sudokuru
+              env:
+                EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
 
-          - name: Upload SDK Artifact
-            uses: actions/upload-artifact@v3
-            with:
-              name: ${{ matrix.version }}
-              path: sudokuru/Build-${{ matrix.version }}
+            - name: Upload SDK Artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: ${{ matrix.version }}
+                path: sudokuru/Build-${{ matrix.version }}
 
   deploy_app:
     name: Deploy to Itch.io
