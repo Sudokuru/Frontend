@@ -35,7 +35,8 @@ export default {
     ],
     ios: {
         bundleIdentifier: "sudokuru.vercel.app",
-        supportsTablet: true
+        supportsTablet: true,
+        simulator: true
     },
     android: {
         package: "sudokuru.vercel.app"
