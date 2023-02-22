@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import {Alert, Platform, StyleSheet, View} from "react-native";
+import {Alert, Platform} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
@@ -21,14 +21,18 @@ WebBrowser.maybeCompleteAuthSession();
 
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
-// this is the correct logout url, when navigate on another tab it logs me out!
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 
 // we do not want to use the proxy in production
 export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
 
 const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
-const redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
+let redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
+
+// Setting the redirect url for mobile for apk/iso builds
+if ((Platform.OS == "ios" || Platform.OS == "android") && !useProxy){
+    redirectUri = "sudokuru.vercel.app://" + DOMAIN + "/" + Platform.OS + "/sudokuru.vercel.app/callback";
+}
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
 
