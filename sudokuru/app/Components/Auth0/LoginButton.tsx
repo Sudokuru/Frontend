@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import {Alert, Platform, StyleSheet, View, Text} from "react-native";
+import {Alert, Platform} from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
@@ -98,14 +98,13 @@ const LoginButton = () => {
                 </>
             ) : (
                 <Button mode="contained" testID={"Login Button"} onPress={() => {
-                    promptAsync({useProxy: useProxy});
+                    promptAsync({useProxy: useProxy})
+
                 }}>
                     Login
                 </Button>
             )
     );
 }
-
-
 
 export default LoginButton;
