@@ -63,6 +63,27 @@ const LoginButton = () => {
     );
 
 
+    // todo figure out how to do silent auth when token expires after 10 hours
+    // https://auth0.com/docs/authenticate/login/configure-silent-authentication
+    // may need to retrieve refresh token and use that?
+    const [silentRequest, silentResult, silentAsync] = AuthSession.useAuthRequest(
+        {
+            redirectUri: redirectUri,
+            clientId: auth0ClientId,
+            // id_token will return a JWT token
+            responseType: "id_token",
+            // retrieve the user's profile
+            scopes: ["openid", "profile"],
+            extraParams: {
+                // ideally, this will be a random value
+                nonce: "nonce",
+                prompt: "none"
+            },
+        },
+        { authorizationEndpoint }
+    );
+
+
     useEffect(() => {
         if (result) {
             if (result.type === "error") {
