@@ -49,23 +49,38 @@ const LoginButton = () => {
         }
     }
 
+    const storeData = async (key: string, value: any) => {
+        try {
+            //const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem(key, value);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     const getKey = async (key: string) => {
         try {
             let jsonValue = await AsyncStorage.getItem(key);
-            return jsonValue != null ? JSON.parse(jsonValue) : null;
+            if (jsonValue != null){
+                return  jwtDecode<Auth0JwtPayload>(jsonValue);
+            }
         } catch(e) {
             console.log(e);
         }
     }
     async function getName(){
-        let value: Auth0JwtPayload = await getKey("token") || "";
-        let { name } = value;
-        return name;
+        let value: any = await getKey("token");
+        if (value != null){
+            let { name } = value;
+            return name;
+        }
+        return "";
     }
 
     // initialize name with value found in token (if exists).
     useEffect(() => {
         getName().then(data => setName(data));
+        console.log(name);
     });
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
@@ -98,9 +113,9 @@ const LoginButton = () => {
                 // Retrieve the JWT token and decode it
                 const jwtToken = result.params.id_token;
 
-                const decoded: Auth0JwtPayload = jwtDecode<Auth0JwtPayload>(jwtToken);
+                storeData("token", jwtToken);
 
-                storeData("token", decoded);
+                const decoded: Auth0JwtPayload = jwtDecode<Auth0JwtPayload>(jwtToken);
 
                 const { name } = decoded;
                 setName(name);
@@ -108,16 +123,6 @@ const LoginButton = () => {
             }
         }
     }, [result]);
-
-    const storeData = async (key: string, value: any) => {
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem(key, jsonValue);
-            await AsyncStorage.setItem(key + "TestKey", value);
-        } catch (e) {
-            console.log(e);
-        }
-    }
 
 
     return (
