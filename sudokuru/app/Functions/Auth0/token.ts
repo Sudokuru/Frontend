@@ -31,11 +31,26 @@ export const storeData = async (key: string, value: any) => {
  * Returns the JSON value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
-export const getKey = async (key: string) => {
+export const getKeyJSON = async (key: string) => {
     try {
         let jsonValue = await AsyncStorage.getItem(key);
         if (jsonValue != null){
             return jwtDecode<Auth0JwtPayload>(jsonValue);
+        }
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+/*
+ * Returns the String value of an item in AsyncStorage
+ * Takes in the key of the item to be returned
+ */
+export const getKeyString = async (key: string) => {
+    try {
+        let value = await AsyncStorage.getItem(key);
+        if (value != null){
+            return value;
         }
     } catch(e) {
         console.log(e);
@@ -51,7 +66,7 @@ export const getKey = async (key: string) => {
  * Returns the name value of a token
  */
 export async function getTokenName(){
-    let value: any = await getKey("token");
+    let value: any = await getKeyJSON("token");
     if (value != null){
         let { name } = value;
         return name;
@@ -63,7 +78,7 @@ export async function getTokenName(){
  * Returns the expiration value of a token
  */
 export async function getTokenExp(){
-    let value: any = await getKey("token");
+    let value: any = await getKeyJSON("token");
     if (value != null){
         let { exp } = value;
         return exp;
