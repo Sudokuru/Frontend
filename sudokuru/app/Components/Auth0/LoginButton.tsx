@@ -9,6 +9,7 @@ import { DOMAIN, CLIENT_ID } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getTokenExp, getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -41,46 +42,9 @@ const LoginButton = () => {
 
     const [name, setName] = useState<string>();
 
-    const removeValue = async (key: string) => {
-        try {
-            await AsyncStorage.removeItem(key);
-        } catch(e) {
-            console.log(e);
-        }
-    }
-
-    const storeData = async (key: string, value: any) => {
-        try {
-            //const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem(key, value);
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    const getKey = async (key: string) => {
-        try {
-            let jsonValue = await AsyncStorage.getItem(key);
-            if (jsonValue != null){
-                return  jwtDecode<Auth0JwtPayload>(jsonValue);
-            }
-        } catch(e) {
-            console.log(e);
-        }
-    }
-    async function getName(){
-        let value: any = await getKey("token");
-        if (value != null){
-            let { name } = value;
-            return name;
-        }
-        return "";
-    }
-
     // initialize name with value found in token (if exists).
     useEffect(() => {
-        getName().then(data => setName(data));
-        console.log(name);
+        getTokenName().then(data => setName(data));
     });
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
