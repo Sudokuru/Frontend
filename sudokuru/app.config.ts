@@ -6,6 +6,8 @@ import {JwtPayload} from "jwt-decode";
 export interface AppConfig {
     DOMAIN: string,
     CLIENT_ID: string,
+    AUDIENCE: string,
+    SCOPE: string
 }
 
 export interface Auth0JwtPayload extends JwtPayload {
@@ -43,6 +45,8 @@ export default {
     extra: {
         DOMAIN: process.env.DOMAIN,
         CLIENT_ID: process.env.CLIENT_ID,
+        AUDIENCE: process.env.AUDIENCE,
+        SCOPE: process.env.SCOPE,
         eas: {
             projectId: "23c4c607-ead6-4786-9a9c-03f57a97dac7"
         }

@@ -5,7 +5,7 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import {Alert, Platform} from "react-native";
 import {Button} from "react-native-paper"
-import { DOMAIN, CLIENT_ID } from "../../../config"
+import { DOMAIN, CLIENT_ID, AUDIENCE, SCOPE } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
@@ -23,6 +23,8 @@ WebBrowser.maybeCompleteAuthSession();
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
+const audience = AUDIENCE;
+const scope = SCOPE;
 
 // we do not want to use the proxy in production
 export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
@@ -51,12 +53,13 @@ const LoginButton = () => {
             redirectUri: redirectUri,
             clientId: auth0ClientId,
             // id_token will return a JWT token
-            responseType: "id_token",
+            responseType: "id_token token",
             // retrieve the user's profile
-            scopes: ["openid", "profile"],
+            scopes: ["openid", "profile", scope],
             extraParams: {
                 // ideally, this will be a random value
                 nonce: "nonce",
+                audience: audience
             },
         },
         { authorizationEndpoint }
@@ -95,11 +98,14 @@ const LoginButton = () => {
             }
             if (result.type === "success") {
                 // Retrieve the JWT token and decode it
-                const jwtToken = result.params.id_token;
 
-                storeData("token", jwtToken);
+                const accessToken = result.params.access_token;
+                const idToken = result.params.id_token;
 
-                const decoded: Auth0JwtPayload = jwtDecode<Auth0JwtPayload>(jwtToken);
+                storeData("access_token", accessToken);
+                storeData("id_token", idToken);
+
+                const decoded: Auth0JwtPayload = jwtDecode<Auth0JwtPayload>(idToken);
 
                 const { name } = decoded;
                 setName(name);
@@ -116,9 +122,13 @@ const LoginButton = () => {
                         () => {
                             // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
                             if (Platform.OS == "ios" || Platform.OS == "android"){
-                                WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName("")).then(r => removeValue("token"));
+                                WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
+                                    .then(r => removeValue("access_token"))
+                                    .then(r => removeValue("id_token"));
                             } else {
-                                WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName("")).then(r => removeValue("token"));
+                                WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
+                                    .then(r => removeValue("access_token"))
+                                    .then(r => removeValue("id_token"));
                             }
                         }
                     }>

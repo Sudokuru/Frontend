@@ -66,7 +66,7 @@ export const getKeyString = async (key: string) => {
  * Returns the name value of a token
  */
 export async function getTokenName(){
-    let value: any = await getKeyJSON("token");
+    let value: any = await getKeyJSON("id_token");
     if (value != null){
         let { name } = value;
         return name;
@@ -78,7 +78,7 @@ export async function getTokenName(){
  * Returns the expiration value of a token
  */
 export async function getTokenExp(){
-    let value: any = await getKeyJSON("token");
+    let value: any = await getKeyJSON("id_token");
     if (value != null){
         let { exp } = value;
         return exp;
