@@ -38,6 +38,8 @@ jobs:
         with:
           envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
           envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          envkey_AUDIENCE: ${{ secrets.DEV_AUDIENCE }}
+          envkey_SCOPE: ${{ secrets.DEV_SCOPE }}
           directory: ./sudokuru
           file_name: .env
           fail_on_empty: true
@@ -69,6 +71,8 @@ jobs:
         with:
           envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
           envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+          envkey_AUDIENCE: ${{ secrets.DEV_AUDIENCE }}
+          envkey_SCOPE: ${{ secrets.DEV_SCOPE }}
           directory: ./sudokuru
           file_name: .env
           fail_on_empty: true
@@ -85,7 +89,7 @@ jobs:
         working-directory: ./sudokuru
 
       - name: 🚀 Build app
-        run: DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} eas build --non-interactive --platform android --local
+        run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
