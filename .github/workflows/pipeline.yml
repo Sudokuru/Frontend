@@ -87,7 +87,7 @@ jobs:
         working-directory: ./sudokuru
 
       - name: 🚀 Build app
-        run: DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE}} eas build --non-interactive --platform android --local
+        run: eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
