@@ -44,8 +44,12 @@ jobs:
           file_name: .env
           fail_on_empty: true
 
-      - name: 🚀 Publish preview
+      - name: 🚀 Publish App preview
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+        working-directory: ./sudokuru
+
+      - name: Publish Website Preview
+        run: echo "previewUrl-$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
         working-directory: ./sudokuru
 
       - name: Post comment with preview link
@@ -54,6 +58,8 @@ jobs:
           comment: |
             Preview App for PR:
             https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+            Preview Website for PR:
+            ${{ env.previewUrl }}
 
   app_build_dev:
     runs-on: ubuntu-latest
