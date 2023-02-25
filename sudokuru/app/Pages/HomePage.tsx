@@ -5,7 +5,8 @@ import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeMenu from "../Components/Home/HomeMenu";
-import LessonCard from "../Components/Learn/LessonCard";
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import {StatusBar} from "expo-status-bar";
 
 const ProfilePage = () => {
 
@@ -26,6 +27,11 @@ const ProfilePage = () => {
                     <HomeMenu></HomeMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
+                    <View style={styles.container}>
+                        <Text>Sudoku Board Demo</Text>
+                        <SudokuBoard/>
+                        <StatusBar style="auto" />
+                    </View>
                 </View>
             </View>
         </View>
@@ -49,6 +55,12 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
 
