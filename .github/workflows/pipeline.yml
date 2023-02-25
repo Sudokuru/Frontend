@@ -123,6 +123,21 @@ jobs:
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
+  deploy_website_dev:
+    name: Deploy to Vercel
+    needs: [ app_build_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - run: npm ci
+        working-directory: ./sudokuru
+
+      - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
+        working-directory: ./sudokuru
+
   deploy_website_prod:
     name: Deploy to Vercel
     needs: [ app_build_dev ]

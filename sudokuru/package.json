@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider expo start --web --https",
     "build:webpack": "npx expo export:web",
-    "vercel:dev": "vercel"
+    "vercel:preview": "vercel --name sudokuru-dev --yes"
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
@@ -31,7 +31,7 @@
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-web": "^0.18.10",
-    "vercel": "^28.14.1"
+    "vercel": "^28.16.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
