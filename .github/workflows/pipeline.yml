@@ -124,7 +124,7 @@ jobs:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
   deploy_website_dev:
-    name: Deploy to Vercel
+    name: Deploy Dev Website
     needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -139,7 +139,7 @@ jobs:
         working-directory: ./sudokuru
 
   deploy_website_prod:
-    name: Deploy to Vercel
+    name: Deploy Prod Website
     needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
