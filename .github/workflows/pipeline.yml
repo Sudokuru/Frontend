@@ -58,9 +58,6 @@ jobs:
           comment: |
             Preview App for PR:
             https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-            > **Warning**
-            > Website Preview can be overridden by other PRs
-            > Or anyone using the ```npm run vercel:preview``` command!
             Preview Website for PR:
             ${{ env.previewUrl }}
 
