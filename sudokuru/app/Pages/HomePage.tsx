@@ -8,7 +8,17 @@ import HomeMenu from "../Components/Home/HomeMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
 
+import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+
 const ProfilePage = () => {
+
+    let [fontsLoaded] = useFonts({
+        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <View>
@@ -28,7 +38,7 @@ const ProfilePage = () => {
                 </View>
                 <View style={homeScreenStyles.lessons}>
                     <View style={styles.container}>
-                        <Text>Sudoku Board Demo</Text>
+                        <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 40 }}>Sudoku Board Demo</Text>
                         <SudokuBoard/>
                         <StatusBar style="auto" />
                     </View>

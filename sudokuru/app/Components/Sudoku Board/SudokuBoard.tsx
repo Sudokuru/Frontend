@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
@@ -11,7 +10,7 @@ import NoteIcon from '../assets/note.svg';
 import NoteOffIcon from '../assets/noteoff.svg';
 import UndoIcon from '../assets/undo.svg';
 
-import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
+import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku.js';
 
 // Add parameterized colors here
 
@@ -23,7 +22,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    numberText: {
+    numberControlText: {
+        fontFamily: 'Inter_400Regular',
         fontSize: 20,
     },
     controlStyle: {
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        fontFamily: 'Inter',
         transition: 'filter .5s ease-in-out',
         width: '100%'
     },
@@ -59,21 +58,42 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    noteNumber: {
-        fontSize: 12,
-        width: '33%',
-        height: '33%',
-        display: 'flex',
+    // justifycontent space
+    noteViewParent: {
+        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
+        borderWidth: 2,
     },
-    cell: {
+    noteViewRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        borderWidth: 1,
+        borderColor: 'red'
+    },
+    noteViewElement: {
+        height: '33%',
+        width: '33%',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    noteText: {
+        fontSize: 10,
+        fontFamily: 'Inter_100Thin',
+    },
+    cellView: {
         height: 40,
         width: 40,
         display: 'flex',
+        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: 1,
+    },
+    cellText: {
+        fontFamily: 'Inter_400Regular',
+        fontSize: 31,
     },
     borderThick: {
         borderLeftWidth: 10,
@@ -141,7 +161,7 @@ const NumberControl = ({ number, onClick, completionPercentage }) => (
             className="number"
             style={styles.numberContainer}
         >
-            <View><Text style={styles.numberText}>{number}</Text></View>
+            <View><Text style={styles.numberControlText}>{number}</Text></View>
         </View>
     </TouchableOpacity>
 );
@@ -181,7 +201,7 @@ const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     return (
         <TouchableOpacity onPress={() => onClick(x, y)}>
-            <View style={[styles.cell,
+            <View style={[styles.cellView,
                 (x % 3 === 0) && {borderLeftWidth: styles.hardLineThickness.thickness},
                 (y % 3 === 0) && {borderTopWidth: styles.hardLineThickness.thickness},
                 (x === 8) && {borderRightWidth: styles.hardLineThickness.thickness},
@@ -193,11 +213,36 @@ const Cell = (props) => {
                 (conflict && isSelected) && styles.selectedConflict,
                 isSelected && styles.selected]}>
                 {
-                    notes ? range(9).map(i => (
-                        <View key={i} style={styles.noteNumber}>
-                            {notes.has(i + 1) && <Text>{i + 1}</Text>}
+                    notes ? // range(9).map(i => (
+                            //           <View style={styles.noteViewElement} key={i} >
+                            //             {notes.has(i + 1) && <Text>{i + 1}</Text>}
+                            //           </View>
+                            //         ))
+                        <View style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <View style={{
+                                flexDirection: 'row',}}>
+                                <View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(1) && <Text style={styles.noteText}>{1}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(4) && <Text style={styles.noteText}>{4}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(7) && <Text style={styles.noteText}>{7}</Text>}</View>
+                                </View>
+                                <View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(2) && <Text style={styles.noteText}>{2}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(5) && <Text style={styles.noteText}>{5}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(8) && <Text style={styles.noteText}>{8}</Text>}</View>
+                                </View>
+                                <View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(3) && <Text style={styles.noteText}>{3}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(6) && <Text style={styles.noteText}>{6}</Text>}</View>
+                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(9) && <Text style={styles.noteText}>{9}</Text>}</View>
+                                </View>
+                            </View>
                         </View>
-                    )) : value && <Text style={[styles.cell,
+                        : value && <Text style={[styles.cellText,
                         conflict && styles.conflict,
                         (conflict && isSelected) && styles.selectedConflict,
                         prefilled && styles.prefilled]}>{value}
