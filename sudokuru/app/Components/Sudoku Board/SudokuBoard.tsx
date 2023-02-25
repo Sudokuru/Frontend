@@ -10,7 +10,7 @@ import NoteIcon from '../assets/note.svg';
 import NoteOffIcon from '../assets/noteoff.svg';
 import UndoIcon from '../assets/undo.svg';
 
-import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku.js';
+import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 
 // Add parameterized colors here
 
