@@ -14,17 +14,24 @@ import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku
 
 // Add parameterized colors here
 
+// we need to check for the height, as the total height of the app will be:
+//      cellHeight * 9 + Top(cellHeight) + Bottom(cellHeight),
+//      where Top(cellHeight) will be the height of the difficulty, time, and pause section
+//      and Bottom(cellHeight) will be the height of the hint, undo, and number input sections
+
+let cellHeight = 60;
+
 const styles = StyleSheet.create({
     hardLineThickness : {thickness: 3},
     numberContainer: {
-        width: 40,
-        height: 40,
+        width: cellHeight,
+        height: cellHeight,
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberControlText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: 20,
+        fontSize: cellHeight / 2,
     },
     controlStyle: {
         padding: 0,
@@ -52,8 +59,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cellContainer: {
-        height: 40,
-        width: 40,
+        height: cellHeight,
+        width: cellHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -61,42 +68,32 @@ const styles = StyleSheet.create({
     // justifycontent space
     noteViewParent: {
         flex: 1,
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        borderWidth: 2,
-    },
-    noteViewRow: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        borderWidth: 1,
-        borderColor: 'red'
     },
     noteViewElement: {
-        height: '33%',
-        width: '33%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: cellHeight / 4 + 1, height: cellHeight / 4 + 1, paddingLeft: cellHeight / 20
     },
     noteText: {
-        fontSize: 10,
+        fontSize: cellHeight / 4,
         fontFamily: 'Inter_100Thin',
     },
     cellView: {
-        height: 40,
-        width: 40,
+        height: cellHeight,
+        width: cellHeight,
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+        borderWidth: cellHeight / 40,
     },
     cellText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: 31,
+        fontSize: cellHeight * (3 / 4) + 1, // 31
     },
     borderThick: {
-        borderLeftWidth: 10,
+        borderLeftWidth: cellHeight / 4,
     },
     conflict: {
         // styles for cells with conflict prop
@@ -218,27 +215,22 @@ const Cell = (props) => {
                             //             {notes.has(i + 1) && <Text>{i + 1}</Text>}
                             //           </View>
                             //         ))
-                        <View style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',}}>
+                        <View style={styles.noteViewParent}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(1) && <Text style={styles.noteText}>{1}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(4) && <Text style={styles.noteText}>{4}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(7) && <Text style={styles.noteText}>{7}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(1) && <Text style={styles.noteText}>{1}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(4) && <Text style={styles.noteText}>{4}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(7) && <Text style={styles.noteText}>{7}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(2) && <Text style={styles.noteText}>{2}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(5) && <Text style={styles.noteText}>{5}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(8) && <Text style={styles.noteText}>{8}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(2) && <Text style={styles.noteText}>{2}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(5) && <Text style={styles.noteText}>{5}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(8) && <Text style={styles.noteText}>{8}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(3) && <Text style={styles.noteText}>{3}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(6) && <Text style={styles.noteText}>{6}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(9) && <Text style={styles.noteText}>{9}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(3) && <Text style={styles.noteText}>{3}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(6) && <Text style={styles.noteText}>{6}</Text>}</View>
+                                    <View style={styles.noteViewElement} >{notes.has(9) && <Text style={styles.noteText}>{9}</Text>}</View>
                                 </View>
                             </View>
                         </View>
