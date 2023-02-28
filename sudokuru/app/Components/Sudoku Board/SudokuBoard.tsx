@@ -1,14 +1,14 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
-import EraseIcon from '../assets/erase.svg';
-import HintIcon from '../assets/hint.svg';
-import NoteIcon from '../assets/note.svg';
-import NoteOffIcon from '../assets/noteoff.svg';
-import UndoIcon from '../assets/undo.svg';
+import EraseIcon from '../../assets/erase.svg';
+import HintIcon from '../../assets/hint.svg';
+import NoteIcon from '../../assets/note.svg';
+import NoteOffIcon from '../../assets/noteoff.svg';
+import UndoIcon from '../../assets/undo.svg';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 
@@ -19,13 +19,33 @@ import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku
 //      where Top(cellHeight) will be the height of the difficulty, time, and pause section
 //      and Bottom(cellHeight) will be the height of the hint, undo, and number input sections
 
-let cellHeight = 60;
+/* 
+    Top(cellHeight) = cellHeight * (32 / 40)
+*/ 
+/*
+    Bottom(cellHeight) = Actions(cellHeight) + numberControl(cellHeight),
+    where Actions(cellHeight) = cellHeight * (48 / 40)
+    // TODO: VERIFY THE BELOW
+    and numberControl(cellHeight) = cellHeight * 1.25,
+    and so
+    Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
+*/
+
+let cellHeight = 10;
 
 const styles = StyleSheet.create({
-    hardLineThickness : {thickness: 3},
+    hardLineThickness : {thickness: cellHeight * (3 / 40)},
     numberContainer: {
         width: cellHeight,
-        height: cellHeight,
+        height: cellHeight * 1.25,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    numberControlRow: {
+        width: cellHeight * 9,
+        height: cellHeight * 1.25,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -43,7 +63,7 @@ const styles = StyleSheet.create({
         transition: 'filter .5s ease-in-out',
         width: '100%'
     },
-    controls: {
+    bottomActions: {
         marginTop: 0.25,
         display: 'flex',
         alignItems: 'center',
@@ -65,15 +85,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    // justifycontent space
     noteViewParent: {
-        flex: 1,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
     noteViewElement: {
-        width: cellHeight / 4 + 1, height: cellHeight / 4 + 1, paddingLeft: cellHeight / 20
+        width: cellHeight / 4 + 1, 
+        height: cellHeight / 4 + 1, 
+        paddingLeft: cellHeight / 20
     },
     noteText: {
         fontSize: cellHeight / 4,
@@ -210,11 +230,7 @@ const Cell = (props) => {
                 (conflict && isSelected) && styles.selectedConflict,
                 isSelected && styles.selected]}>
                 {
-                    notes ? // range(9).map(i => (
-                            //           <View style={styles.noteViewElement} key={i} >
-                            //             {notes.has(i + 1) && <Text>{i + 1}</Text>}
-                            //           </View>
-                            //         ))
+                    notes ? 
                         <View style={styles.noteViewParent}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View>
@@ -536,7 +552,7 @@ export default class SudokuBoard extends React.Component {
         const inNoteMode = board.get('inNoteMode');
 
         return (
-            <View className="control">
+            <View style={ styles.numberControlRow }>
                 {range(9).map((i) => {
                     const number = i + 1;
                     const onClick = !prefilled
@@ -575,7 +591,9 @@ export default class SudokuBoard extends React.Component {
                     <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
+                    {/* <Text>Erase</Text> */}
                     <Text>Erase</Text>
+                    {/* <SVGImg width={200} height={200} /> */}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
                     <Text>Hint</Text>
@@ -586,9 +604,9 @@ export default class SudokuBoard extends React.Component {
 
     renderControls = () => {
         return (
-            <View style={styles.controls}>
-                {this.renderNumberControl()}
+            <View style={styles.bottomActions}>
                 {this.renderActions()}
+                {this.renderNumberControl()}
             </View>
         );
     }
@@ -613,3 +631,8 @@ export default class SudokuBoard extends React.Component {
         );
     }
 }
+/*
+    if the user clicks off of a cell with notes,
+        if the user does not have the correct(solution) value as a note for that cell
+
+*/
