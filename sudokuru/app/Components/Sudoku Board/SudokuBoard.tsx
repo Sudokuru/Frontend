@@ -31,25 +31,27 @@ import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku
     Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
 */
 
+let fallbackHeight = 30;
+
 const styles = (cellHeight) => StyleSheet.create({
     hardLineThickness : {thickness: cellHeight * (3 / 40)},
     numberContainer: {
-        width: cellHeight,
-        height: cellHeight * 1.25,
+        width: cellHeight ? cellHeight : fallbackHeight,
+        height: cellHeight ? cellHeight * 1.25 : fallbackHeight * 1.25,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberControlRow: {
-        width: cellHeight * 9,
-        height: cellHeight * 1.25,
+        width: cellHeight ? cellHeight * 9 : fallbackHeight * 9,
+        height: cellHeight ? cellHeight * 1.25 : fallbackHeight * 9,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberControlText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: cellHeight / 2,
+        fontSize: cellHeight ? cellHeight / 2 : fallbackHeight / 2,
     },
     controlStyle: {
         padding: 0,
@@ -77,8 +79,8 @@ const styles = (cellHeight) => StyleSheet.create({
         justifyContent: 'center',
     },
     cellContainer: {
-        height: cellHeight,
-        width: cellHeight,
+        height: cellHeight ? cellHeight : fallbackHeight,
+        width: cellHeight ? cellHeight : fallbackHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -89,29 +91,29 @@ const styles = (cellHeight) => StyleSheet.create({
         alignItems: 'center',
     },
     noteViewElement: {
-        width: cellHeight / 4 + 1, 
-        height: cellHeight / 4 + 1, 
-        paddingLeft: cellHeight / 20
+        width: cellHeight ? cellHeight / 4 + 1 : fallbackHeight / 4 + 1,
+        height: cellHeight ? cellHeight / 4 + 1 : fallbackHeight / 4 + 1,
+        paddingLeft: cellHeight ? cellHeight / 20 : fallbackHeight / 20
     },
     noteText: {
-        fontSize: cellHeight / 4,
+        fontSize: cellHeight ? cellHeight / 4 : fallbackHeight / 4,
         fontFamily: 'Inter_100Thin',
     },
     cellView: {
-        height: cellHeight,
-        width: cellHeight,
+        height: cellHeight ? cellHeight : fallbackHeight,
+        width: cellHeight ? cellHeight : fallbackHeight,
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: cellHeight / 40,
+        borderWidth: cellHeight ? cellHeight / 40 : fallbackHeight / 40,
     },
     cellText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: cellHeight * (3 / 4) + 1, // 31
+        fontSize: cellHeight ? cellHeight * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
     },
     borderThick: {
-        borderLeftWidth: cellHeight / 4,
+        borderLeftWidth: cellHeight ? cellHeight / 4 : fallbackHeight / 4,
     },
     conflict: {
         // styles for cells with conflict prop
@@ -171,7 +173,7 @@ const styles = (cellHeight) => StyleSheet.create({
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const size = useWindowDimensions();
-    const cellSize = size.width / 25;
+    const cellSize = Math.min(size.width, size.height) / 12;
 
     return (
         <TouchableOpacity onPress={onClick}>
@@ -220,7 +222,7 @@ NumberControl.defaultProps = {
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const size = useWindowDimensions();
-    const cellSize = size.width / 25;
+    const cellSize = Math.min(size.width, size.height) / 12;
     return (
         <TouchableOpacity onPress={() => onClick(x, y)}>
             <View style={[styles(cellSize).cellView,
