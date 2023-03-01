@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import LoginButton from '../Auth0/LoginButton';
-import TypeWriter from 'react-native-typewriter'
 
 export default class Boxes extends React.Component {
+
     render() {
         return(
             <View style={styles.container}>
@@ -28,7 +28,7 @@ export default class Boxes extends React.Component {
                 <View style={styles.boxtext}>
                     <View style={styles.inner3}>
                         <Text style={{ fontSize: 45, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
-                        <TypeWriter typing={1} style={{ fontSize: 45, color: '#D9A05B' }}> Sudoku Guru </TypeWriter>
+                        <Text style={{ fontSize: 45, color: '#D9A05B' }}> Sudoku Guru </Text>
                         <Pressable
                             style={({ pressed }) => [
                             { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }

@@ -40,12 +40,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginRight: 10,
     },
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
 });
 
 const homeScreenStyles = StyleSheet.create({
