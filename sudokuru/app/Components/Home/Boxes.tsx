@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import LoginButton from '../Auth0/LoginButton';
+import {useNavigation} from "@react-navigation/native";
 
-export default class Boxes extends React.Component {
+const Boxes = () => {
 
-    render() {
+    const navigation: any = useNavigation();
+
         return(
             <View style={styles.container}>
                 <View style={styles.box1}>
@@ -52,7 +54,6 @@ export default class Boxes extends React.Component {
                 </View>
             </View>
         );
-    }
 }
 
 const styles = StyleSheet.create({
@@ -118,3 +119,5 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
 })
+
+export default Boxes;
