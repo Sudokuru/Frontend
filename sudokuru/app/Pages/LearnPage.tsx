@@ -6,7 +6,6 @@ import {Text} from "react-native-paper";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import ProfileButton from "../Components/Profile/ProfileButton";
 import LoginButton from "../Components/Auth0/LoginButton";
-import {blue50} from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
 const LearnPage = () => {

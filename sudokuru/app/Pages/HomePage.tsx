@@ -1,11 +1,5 @@
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View, Image} from "react-native";
-import {Text} from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import HomeMenu from "../Components/Home/HomeMenu";
-import LessonCard from "../Components/Learn/LessonCard";
 import Boxes from '../Components/Home/Boxes';
 
 const HomePage = () => {
