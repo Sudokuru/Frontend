@@ -283,7 +283,7 @@ Cell.defaultProps = {
 };
 
 /*
- * This function retrieves the user's device
+ * This function retrieves the user's device size and calculates the cell size
  */
 function getCellSize() {
     const size = useWindowDimensions();
