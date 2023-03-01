@@ -5,7 +5,7 @@ import {useNavigation} from "@react-navigation/native";
 
 const StatisticsButton = () => {
 
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
 
     return (
         <Button mode="contained" testID={"ViewStatisticsPageButton"} onPress={() => navigation.navigate('Statistics')}>

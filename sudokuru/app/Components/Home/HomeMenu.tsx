@@ -8,7 +8,7 @@ const HomeMenu = () => {
     const [active, setActive] = React.useState('');
     const [collapsed, setCollapsed] = React.useState(false);
 
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
 
     return (
             collapsed ? (

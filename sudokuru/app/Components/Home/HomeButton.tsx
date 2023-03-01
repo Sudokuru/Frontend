@@ -5,7 +5,7 @@ import React from "react";
 
 const ProfileButton = () => {
 
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
 
     return (
         <Button mode="contained" testID={"ViewHomePageButton"} onPress={() => navigation.navigate('Home')}>

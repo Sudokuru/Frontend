@@ -5,8 +5,10 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
 import {Button} from "react-native-paper"
-import { DOMAIN, CLIENT_ID } from "../../../config"
+import { DOMAIN, CLIENT_ID, AUDIENCE, SCOPE } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
+import Constants, {AppOwnership} from "expo-constants";
+import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -20,15 +22,54 @@ WebBrowser.maybeCompleteAuthSession();
 
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
+const revokeEndpoint = "https://" + DOMAIN + "/logout";
+const audience = AUDIENCE;
+const scope = SCOPE;
 
-const useProxy = Platform.select({ web: false, ios: true, android: true });
-const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+// we do not want to use the proxy in production
+export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
+
+const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
+let redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
+
+// Setting the redirect url for mobile for apk/iso builds
+if ((Platform.OS == "ios" || Platform.OS == "android") && !useProxy){
+    redirectUri = "sudokuru.vercel.app://" + DOMAIN + "/" + Platform.OS + "/sudokuru.vercel.app/callback";
+}
+
+const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
 
 const LoginButton = () => {
 
-    const [name, setName] = useState<string>("");
+    const [name, setName] = useState<string>();
+
+    // initialize name with value found in token (if exists).
+    useEffect(() => {
+        getTokenName().then(data => setName(data));
+    });
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
+        {
+            redirectUri: redirectUri,
+            clientId: auth0ClientId,
+            // id_token will return a JWT token
+            responseType: "id_token token",
+            // retrieve the user's profile
+            scopes: ["openid", "profile", scope],
+            extraParams: {
+                // ideally, this will be a random value
+                nonce: "nonce",
+                audience: audience
+            },
+        },
+        { authorizationEndpoint }
+    );
+
+
+    // todo figure out how to do silent auth when token expires after 10 hours
+    // https://auth0.com/docs/authenticate/login/configure-silent-authentication
+    // may need to retrieve refresh token and use that?
+    const [silentRequest, silentResult, silentAsync] = AuthSession.useAuthRequest(
         {
             redirectUri: redirectUri,
             clientId: auth0ClientId,
@@ -39,10 +80,12 @@ const LoginButton = () => {
             extraParams: {
                 // ideally, this will be a random value
                 nonce: "nonce",
+                prompt: "none"
             },
         },
         { authorizationEndpoint }
     );
+
 
     useEffect(() => {
         if (result) {
@@ -55,25 +98,47 @@ const LoginButton = () => {
             }
             if (result.type === "success") {
                 // Retrieve the JWT token and decode it
-                const jwtToken = result.params.id_token;
-                console.log(jwtToken);
-                const decoded = jwtDecode<Auth0JwtPayload>(jwtToken);
+
+                const accessToken = result.params.access_token;
+                const idToken = result.params.id_token;
+
+                storeData("access_token", accessToken);
+                storeData("id_token", idToken);
+
+                const decoded: Auth0JwtPayload = jwtDecode<Auth0JwtPayload>(idToken);
 
                 const { name } = decoded;
                 setName(name);
+
             }
         }
     }, [result]);
 
+
     return (
-            name ? (
+        name ? (
                 <>
-                    <Button mode="contained" testID={"Logout Button"} onPress={() => setName("")}>
+                    <Button mode="contained" testID={"Logout Button"} onPress={
+                        () => {
+                            // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
+                            if (Platform.OS == "ios" || Platform.OS == "android"){
+                                WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
+                                    .then(r => removeValue("access_token"))
+                                    .then(r => removeValue("id_token"));
+                            } else {
+                                WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
+                                    .then(r => removeValue("access_token"))
+                                    .then(r => removeValue("id_token"));
+                            }
+                        }
+                    }>
                         Logout
                     </Button>
                 </>
             ) : (
-                <Button mode="contained" testID={"Login Button"} onPress={() => promptAsync({useProxy})}>
+                <Button mode="contained" testID={"Login Button"} onPress={() => {
+                    promptAsync({useProxy: useProxy})
+                }}>
                     Login
                 </Button>
             )
