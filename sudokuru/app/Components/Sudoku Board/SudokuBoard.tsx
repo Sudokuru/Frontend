@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
@@ -31,9 +31,7 @@ import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku
     Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
 */
 
-let cellHeight = 10;
-
-const styles = StyleSheet.create({
+const styles = (cellHeight) => StyleSheet.create({
     hardLineThickness : {thickness: cellHeight * (3 / 40)},
     numberContainer: {
         width: cellHeight,
@@ -171,17 +169,22 @@ const styles = StyleSheet.create({
 //   return false;
 // }
 
-const NumberControl = ({ number, onClick, completionPercentage }) => (
-    <TouchableOpacity onPress={onClick}>
-        <View
-            key={number}
-            className="number"
-            style={styles.numberContainer}
-        >
-            <View><Text style={styles.numberControlText}>{number}</Text></View>
-        </View>
-    </TouchableOpacity>
-);
+const NumberControl = ({ number, onClick, completionPercentage }) => {
+    const size = useWindowDimensions();
+    const cellSize = size.width * 0.08;
+
+    return (
+        <TouchableOpacity onPress={onClick}>
+            <View
+                key={number}
+                className="number"
+                style={styles(cellSize).numberContainer}
+            >
+                <View><Text style={styles(cellSize).numberControlText}>{number}</Text></View>
+            </View>
+        </TouchableOpacity>
+    )
+}
 
 NumberControl.propTypes = {
     number: PropTypes.number.isRequired,
@@ -216,44 +219,46 @@ NumberControl.defaultProps = {
 
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
+    const size = useWindowDimensions();
+    const cellSize = size.width * 0.08;
     return (
         <TouchableOpacity onPress={() => onClick(x, y)}>
-            <View style={[styles.cellView,
-                (x % 3 === 0) && {borderLeftWidth: styles.hardLineThickness.thickness},
-                (y % 3 === 0) && {borderTopWidth: styles.hardLineThickness.thickness},
-                (x === 8) && {borderRightWidth: styles.hardLineThickness.thickness},
-                (y === 8) && {borderBottomWidth: styles.hardLineThickness.thickness},
+            <View style={[styles(cellSize).cellView,
+                (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
+                (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
+                (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
+                (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
-                conflict && styles.conflict,
-                isPeer && styles.peer,
-                sameValue && styles.sameValue,
-                (conflict && isSelected) && styles.selectedConflict,
-                isSelected && styles.selected]}>
+                conflict && styles(cellSize).conflict,
+                isPeer && styles(cellSize).peer,
+                sameValue && styles(cellSize).sameValue,
+                (conflict && isSelected) && styles(cellSize).selectedConflict,
+                isSelected && styles(cellSize).selected]}>
                 {
                     notes ? 
-                        <View style={styles.noteViewParent}>
+                        <View style={styles(cellSize).noteViewParent}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View>
-                                    <View style={styles.noteViewElement} >{notes.has(1) && <Text style={styles.noteText}>{1}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(4) && <Text style={styles.noteText}>{4}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(7) && <Text style={styles.noteText}>{7}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={styles.noteViewElement} >{notes.has(2) && <Text style={styles.noteText}>{2}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(5) && <Text style={styles.noteText}>{5}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(8) && <Text style={styles.noteText}>{8}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={styles.noteViewElement} >{notes.has(3) && <Text style={styles.noteText}>{3}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(6) && <Text style={styles.noteText}>{6}</Text>}</View>
-                                    <View style={styles.noteViewElement} >{notes.has(9) && <Text style={styles.noteText}>{9}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
                                 </View>
                             </View>
                         </View>
-                        : value && <Text style={[styles.cellText,
-                        conflict && styles.conflict,
-                        (conflict && isSelected) && styles.selectedConflict,
-                        prefilled && styles.prefilled]}>{value}
+                        : value && <Text style={[styles(cellSize).cellText,
+                        conflict && styles(cellSize).conflict,
+                        (conflict && isSelected) && styles(cellSize).selectedConflict,
+                        prefilled && styles(cellSize).prefilled]}>{value}
                     </Text>
                 }
             </View>
@@ -535,9 +540,9 @@ export default class SudokuBoard extends React.Component {
     renderPuzzle = () => {
         const { board } = this.state;
         return (
-            <View style={styles.boardContainer}>
+            <View style={styles().boardContainer}>
                 {board.get('puzzle').map((row, i) => (
-                    <View key={i} style={styles.rowContainer}>
+                    <View key={i} style={styles().rowContainer}>
                         { row.map((cell, j) => this.renderCell(cell, i, j)).toArray() }
                     </View>
                 )).toArray()}
@@ -547,12 +552,14 @@ export default class SudokuBoard extends React.Component {
 
     renderNumberControl = () => {
         const { board } = this.state;
+        const size = useWindowDimensions();
+        const cellSize = size.width * 0.08;
         const selectedCell = this.getSelectedCell();
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
 
         return (
-            <View style={ styles.numberControlRow }>
+            <View style={ styles(cellSize).numberControlRow }>
                 {range(9).map((i) => {
                     const number = i + 1;
                     const onClick = !prefilled
@@ -565,7 +572,7 @@ export default class SudokuBoard extends React.Component {
 
                     return (
                         <NumberControl
-                            style={styles.controlStyle}
+                            style={styles(cellSize).controlStyle}
                             key={number}
                             number={number}
                             onClick={onClick}
@@ -604,7 +611,7 @@ export default class SudokuBoard extends React.Component {
 
     renderControls = () => {
         return (
-            <View style={styles.bottomActions}>
+            <View style={styles().bottomActions}>
                 {this.renderActions()}
                 {this.renderNumberControl()}
             </View>
