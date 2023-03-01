@@ -7,16 +7,12 @@ import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferences
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeButton from "../Components/Home/HomeButton";
 import HomeMenu from "../Components/Home/HomeMenu";
-import LessonCard from "../Components/Learn/LessonCard";
 
 const ProfilePage = () => {
 
     return (
         <View>
             <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Profile Page</Text>
-                </View>
                 <View style={styles.profileButtons}>
                     <StatisticsButton></StatisticsButton>
                     <HomeButton></HomeButton>
@@ -24,9 +20,6 @@ const ProfilePage = () => {
                 </View>
             </View>
             <View style={homeScreenStyles.home}>
-                <View style={homeScreenStyles.homeMenu}>
-                    <HomeMenu></HomeMenu>
-                </View>
                 <View style={homeScreenStyles.lessons}>
                     <ThemeToggle></ThemeToggle>
                     <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
@@ -48,6 +41,7 @@ const styles = StyleSheet.create({
     },
     profileText: {
         fontSize: 20,
+        margin: 5,
     },
     profileButtons: {
         flex: 1,

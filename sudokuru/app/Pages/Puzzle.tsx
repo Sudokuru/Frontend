@@ -6,13 +6,13 @@ import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeMenu from "../Components/Home/HomeMenu";
 import LessonCard from "../Components/Learn/LessonCard";
-import Boxes from '../Components/Home/Boxes';
+import BoardBox from '../Components/Learn/BoardBox';
 
-const HomePage = () => {
+const PuzzlePage = () => {
 
     return (
        <View style={styles.container}>
-        <Boxes/>
+        <BoardBox/>
        </View>
     );
 };
@@ -61,4 +61,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default HomePage;
+export default PuzzlePage;

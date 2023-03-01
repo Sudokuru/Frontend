@@ -9,7 +9,7 @@ const StatisticsButton = () => {
 
     return (
         <Button mode="contained" testID={"ViewStatisticsPageButton"} onPress={() => navigation.navigate('Statistics')}>
-             <AntDesign name="calculator" size={24} color="black" />
+             <AntDesign name="calculator" size={24} color="#F2F2F2" />
         </Button>
     );
 };

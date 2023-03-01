@@ -10,7 +10,6 @@ import {blue50} from "react-native-paper/lib/typescript/styles/themes/v2/colors"
 
 
 const LearnPage = () => {
-
     return (
         <View>
             <View style={styles.toggleIcons}>

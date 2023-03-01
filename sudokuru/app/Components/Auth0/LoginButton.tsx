@@ -85,7 +85,8 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     loginButton: {
-        textAlign: "right"
+        textAlign: "right",
+        backgroundColor: '#f2f2f2'
     }
 });
 
