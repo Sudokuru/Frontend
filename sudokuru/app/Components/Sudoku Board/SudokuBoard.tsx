@@ -171,7 +171,7 @@ const styles = (cellHeight) => StyleSheet.create({
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const size = useWindowDimensions();
-    const cellSize = size.width * 0.08;
+    const cellSize = size.width / 25;
 
     return (
         <TouchableOpacity onPress={onClick}>
@@ -220,7 +220,7 @@ NumberControl.defaultProps = {
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const size = useWindowDimensions();
-    const cellSize = size.width * 0.08;
+    const cellSize = size.width / 25;
     return (
         <TouchableOpacity onPress={() => onClick(x, y)}>
             <View style={[styles(cellSize).cellView,
@@ -552,14 +552,12 @@ export default class SudokuBoard extends React.Component {
 
     renderNumberControl = () => {
         const { board } = this.state;
-        const size = useWindowDimensions();
-        const cellSize = size.width * 0.08;
         const selectedCell = this.getSelectedCell();
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
 
         return (
-            <View style={ styles(cellSize).numberControlRow }>
+            <View style={ styles().numberControlRow }>
                 {range(9).map((i) => {
                     const number = i + 1;
                     const onClick = !prefilled
@@ -572,7 +570,7 @@ export default class SudokuBoard extends React.Component {
 
                     return (
                         <NumberControl
-                            style={styles(cellSize).controlStyle}
+                            style={styles().controlStyle}
                             key={number}
                             number={number}
                             onClick={onClick}
