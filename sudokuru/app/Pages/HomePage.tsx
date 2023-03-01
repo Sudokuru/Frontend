@@ -38,7 +38,6 @@ const ProfilePage = () => {
                 </View>
                 <View style={homeScreenStyles.lessons}>
                     <View style={styles.container}>
-                        <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 40 }}>Sudoku Board Demo</Text>
                         <SudokuBoard/>
                         <StatusBar style="auto" />
                     </View>

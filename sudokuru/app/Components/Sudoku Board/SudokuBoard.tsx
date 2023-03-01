@@ -1,30 +1,57 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
-import EraseIcon from '../assets/erase.svg';
-import HintIcon from '../assets/hint.svg';
-import NoteIcon from '../assets/note.svg';
-import NoteOffIcon from '../assets/noteoff.svg';
-import UndoIcon from '../assets/undo.svg';
+import EraseIcon from '../../assets/erase.svg';
+import HintIcon from '../../assets/hint.svg';
+import NoteIcon from '../../assets/note.svg';
+import NoteOffIcon from '../../assets/noteoff.svg';
+import UndoIcon from '../../assets/undo.svg';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 
 // Add parameterized colors here
 
-const styles = StyleSheet.create({
-    hardLineThickness : {thickness: 3},
+// we need to check for the height, as the total height of the app will be:
+//      cellHeight * 9 + Top(cellHeight) + Bottom(cellHeight),
+//      where Top(cellHeight) will be the height of the difficulty, time, and pause section
+//      and Bottom(cellHeight) will be the height of the hint, undo, and number input sections
+
+/* 
+    Top(cellHeight) = cellHeight * (32 / 40)
+*/ 
+/*
+    Bottom(cellHeight) = Actions(cellHeight) + numberControl(cellHeight),
+    where Actions(cellHeight) = cellHeight * (48 / 40)
+    // TODO: VERIFY THE BELOW
+    and numberControl(cellHeight) = cellHeight * 1.25,
+    and so
+    Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
+*/
+
+let fallbackHeight = 30;
+
+const styles = (cellSize) => StyleSheet.create({
+    hardLineThickness : {thickness: cellSize * (3 / 40)},
     numberContainer: {
-        width: 40,
-        height: 40,
+        width: cellSize ? cellSize : fallbackHeight,
+        height: cellSize ? cellSize * 1.25 : fallbackHeight * 1.25,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    numberControlRow: {
+        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+        height: cellSize ? cellSize * 1.25 : fallbackHeight * 9,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     numberControlText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: 20,
+        fontSize: cellSize ? cellSize / 2 : fallbackHeight / 2,
     },
     controlStyle: {
         padding: 0,
@@ -36,7 +63,7 @@ const styles = StyleSheet.create({
         transition: 'filter .5s ease-in-out',
         width: '100%'
     },
-    controls: {
+    bottomActions: {
         marginTop: 0.25,
         display: 'flex',
         alignItems: 'center',
@@ -52,51 +79,41 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cellContainer: {
-        height: 40,
-        width: 40,
+        height: cellSize ? cellSize : fallbackHeight,
+        width: cellSize ? cellSize : fallbackHeight,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    // justifycontent space
     noteViewParent: {
         flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        borderWidth: 2,
-    },
-    noteViewRow: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        borderWidth: 1,
-        borderColor: 'red'
     },
     noteViewElement: {
-        height: '33%',
-        width: '33%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+        height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+        paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
     },
     noteText: {
-        fontSize: 10,
+        fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
         fontFamily: 'Inter_100Thin',
     },
     cellView: {
-        height: 40,
-        width: 40,
+        height: cellSize ? cellSize : fallbackHeight,
+        width: cellSize ? cellSize : fallbackHeight,
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+        borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
     },
     cellText: {
         fontFamily: 'Inter_400Regular',
-        fontSize: 31,
+        fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
     },
     borderThick: {
-        borderLeftWidth: 10,
+        borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
     },
     conflict: {
         // styles for cells with conflict prop
@@ -154,17 +171,20 @@ const styles = StyleSheet.create({
 //   return false;
 // }
 
-const NumberControl = ({ number, onClick, completionPercentage }) => (
-    <TouchableOpacity onPress={onClick}>
-        <View
-            key={number}
-            className="number"
-            style={styles.numberContainer}
-        >
-            <View><Text style={styles.numberControlText}>{number}</Text></View>
-        </View>
-    </TouchableOpacity>
-);
+const NumberControl = ({ number, onClick, completionPercentage }) => {
+    const cellSize = getCellSize();
+    return (
+        <TouchableOpacity onPress={onClick}>
+            <View
+                key={number}
+                className="number"
+                style={styles(cellSize).numberContainer}
+            >
+                <View><Text style={styles(cellSize).numberControlText}>{number}</Text></View>
+            </View>
+        </TouchableOpacity>
+    )
+}
 
 NumberControl.propTypes = {
     number: PropTypes.number.isRequired,
@@ -199,53 +219,45 @@ NumberControl.defaultProps = {
 
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
+    const cellSize = getCellSize();
     return (
         <TouchableOpacity onPress={() => onClick(x, y)}>
-            <View style={[styles.cellView,
-                (x % 3 === 0) && {borderLeftWidth: styles.hardLineThickness.thickness},
-                (y % 3 === 0) && {borderTopWidth: styles.hardLineThickness.thickness},
-                (x === 8) && {borderRightWidth: styles.hardLineThickness.thickness},
-                (y === 8) && {borderBottomWidth: styles.hardLineThickness.thickness},
+            <View style={[styles(cellSize).cellView,
+                (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
+                (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
+                (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
+                (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
-                conflict && styles.conflict,
-                isPeer && styles.peer,
-                sameValue && styles.sameValue,
-                (conflict && isSelected) && styles.selectedConflict,
-                isSelected && styles.selected]}>
+                conflict && styles(cellSize).conflict,
+                isPeer && styles(cellSize).peer,
+                sameValue && styles(cellSize).sameValue,
+                (conflict && isSelected) && styles(cellSize).selectedConflict,
+                isSelected && styles(cellSize).selected]}>
                 {
-                    notes ? // range(9).map(i => (
-                            //           <View style={styles.noteViewElement} key={i} >
-                            //             {notes.has(i + 1) && <Text>{i + 1}</Text>}
-                            //           </View>
-                            //         ))
-                        <View style={{
-                            flex: 1,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}>
-                            <View style={{
-                                flexDirection: 'row',}}>
+                    notes ? 
+                        <View style={styles(cellSize).noteViewParent}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(1) && <Text style={styles.noteText}>{1}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(4) && <Text style={styles.noteText}>{4}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(7) && <Text style={styles.noteText}>{7}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(2) && <Text style={styles.noteText}>{2}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(5) && <Text style={styles.noteText}>{5}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(8) && <Text style={styles.noteText}>{8}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
                                 </View>
                                 <View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(3) && <Text style={styles.noteText}>{3}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(6) && <Text style={styles.noteText}>{6}</Text>}</View>
-                                    <View style={{width: 11, height: 11, paddingLeft: 2}} >{notes.has(9) && <Text style={styles.noteText}>{9}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
+                                    <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
                                 </View>
                             </View>
                         </View>
-                        : value && <Text style={[styles.cellText,
-                        conflict && styles.conflict,
-                        (conflict && isSelected) && styles.selectedConflict,
-                        prefilled && styles.prefilled]}>{value}
+                        : value && <Text style={[styles(cellSize).cellText,
+                        conflict && styles(cellSize).conflict,
+                        (conflict && isSelected) && styles(cellSize).selectedConflict,
+                        prefilled && styles(cellSize).prefilled]}>{value}
                     </Text>
                 }
             </View>
@@ -269,6 +281,14 @@ Cell.defaultProps = {
     notes: null,
     value: null,
 };
+
+/*
+ * This function retrieves the user's device size and calculates the cell size
+ */
+function getCellSize() {
+    const size = useWindowDimensions();
+    return Math.min(size.width, size.height) / 12;
+}
 
 function makeCountObject() {
     const countObj = [];
@@ -527,9 +547,9 @@ export default class SudokuBoard extends React.Component {
     renderPuzzle = () => {
         const { board } = this.state;
         return (
-            <View style={styles.boardContainer}>
+            <View style={styles().boardContainer}>
                 {board.get('puzzle').map((row, i) => (
-                    <View key={i} style={styles.rowContainer}>
+                    <View key={i} style={styles().rowContainer}>
                         { row.map((cell, j) => this.renderCell(cell, i, j)).toArray() }
                     </View>
                 )).toArray()}
@@ -544,7 +564,7 @@ export default class SudokuBoard extends React.Component {
         const inNoteMode = board.get('inNoteMode');
 
         return (
-            <View className="control">
+            <View style={ styles().numberControlRow }>
                 {range(9).map((i) => {
                     const number = i + 1;
                     const onClick = !prefilled
@@ -557,7 +577,7 @@ export default class SudokuBoard extends React.Component {
 
                     return (
                         <NumberControl
-                            style={styles.controlStyle}
+                            style={styles().controlStyle}
                             key={number}
                             number={number}
                             onClick={onClick}
@@ -583,7 +603,9 @@ export default class SudokuBoard extends React.Component {
                     <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
+                    {/* <Text>Erase</Text> */}
                     <Text>Erase</Text>
+                    {/* <SVGImg width={200} height={200} /> */}
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
                     <Text>Hint</Text>
@@ -594,9 +616,9 @@ export default class SudokuBoard extends React.Component {
 
     renderControls = () => {
         return (
-            <View style={styles.controls}>
-                {this.renderNumberControl()}
+            <View style={styles().bottomActions}>
                 {this.renderActions()}
+                {this.renderNumberControl()}
             </View>
         );
     }
@@ -621,3 +643,8 @@ export default class SudokuBoard extends React.Component {
         );
     }
 }
+/*
+    if the user clicks off of a cell with notes,
+        if the user does not have the correct(solution) value as a note for that cell
+
+*/
