@@ -5,8 +5,8 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import HomeButton from "../Components/Home/HomeButton";
-import HomeMenu from "../Components/Home/HomeMenu";
+import HomeButton from "../Components/Landing/HomeButton";
+import SidebarMenu from "../Components/SidebarMenu";
 
 const ProfilePage = () => {
 

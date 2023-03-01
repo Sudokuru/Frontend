@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import LoginButton from '../Auth0/LoginButton';
+import SudokuBoard from "../Sudoku Board/SudokuBoard";
 
 export default class BoardBox extends React.Component {
     render() {
@@ -11,7 +12,7 @@ export default class BoardBox extends React.Component {
             resizeMode: 'cover',
             height: 100,
             width: 200,
-          }} source={require('../Home/goldLogoText.png')} />
+          }} source={require('../Landing/goldLogoText.png')} />
                 </View>
             
                 <View style={styles.midbox}>
@@ -26,7 +27,9 @@ export default class BoardBox extends React.Component {
                 <View style={styles.puzzlebox}>
                     <View style={styles.inner}>
                         <Text> Sudoku Board hereee </Text>
-                        </View></View>
+                        <SudokuBoard></SudokuBoard>
+                    </View>
+                </View>
             </View>
             
         );

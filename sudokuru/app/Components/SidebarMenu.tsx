@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {Drawer} from 'react-native-paper';
 import {StyleSheet} from "react-native";
-import {getTheme} from "react-native-paper/lib/typescript/core/theming";
 import {useNavigation} from "@react-navigation/native";
 
-const HomeMenu = () => {
+const SidebarMenu = () => {
     const [active, setActive] = React.useState('');
     const [collapsed, setCollapsed] = React.useState(false);
 
@@ -61,6 +60,12 @@ const HomeMenu = () => {
                         active={active === 'eighth'}
                         onPress={() => setActive('eighth')}
                     />
+                    <Drawer.CollapsedItem
+                        focusedIcon="code-braces-box"
+                        unfocusedIcon="code-braces-box"
+                        active={active === 'ninth'}
+                        onPress={() => navigation.navigate('Landing')}
+                    />
                 </Drawer.Section>
             ) : (
                 <Drawer.Section style={menuStyle.menu} showDivider={false}>
@@ -113,6 +118,12 @@ const HomeMenu = () => {
                         active={active === 'eighth'}
                         onPress={() => setActive('eighth')}
                     />
+                    <Drawer.Item
+                        label="Landing Page"
+                        icon="code-braces-box"
+                        active={active === 'ninth'}
+                        onPress={() => navigation.navigate('Landing')}
+                    />
                 </Drawer.Section>
             )
     );
@@ -132,4 +143,4 @@ const menuStyle = StyleSheet.create({
     }
 });
 
-export default HomeMenu;
+export default SidebarMenu;

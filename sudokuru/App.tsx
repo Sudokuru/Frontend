@@ -14,11 +14,12 @@ import {
 } from 'react-native-paper';
 import merge from 'deepmerge';
 import ProfilePage from "./app/Pages/ProfilePage";
-import HomePage from "./app/Pages/HomePage";
+import LandingPage from "./app/Pages/LandingPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import LearnPage from "./app/Pages/LearnPage";
 import DrillPage from "./app/Pages/DrillPage";
 import PuzzlePage from './app/Pages/Puzzle';
+import HomePage from "./app/Pages/HomePage";
 
 const dTheme = {
     ...MD3DarkTheme, // or MD3DarkTheme
@@ -144,7 +145,7 @@ export default function App() {
       <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
               <NavigationContainer theme={theme}>
-                  <Stack.Navigator initialRouteName="Home" screenOptions={{
+                  <Stack.Navigator initialRouteName="LandingPage" screenOptions={{
                       headerShown: false
                   }}>
                       <Stack.Screen name="Home" component={HomePage} />
@@ -153,6 +154,7 @@ export default function App() {
                       <Stack.Screen name="Puzzle" component={PuzzlePage}/>
                       <Stack.Screen name="Learn" component={LearnPage}/>
                       <Stack.Screen name="Drill" component={DrillPage}/>
+                      <Stack.Screen name="Landing" component={LandingPage} />
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>

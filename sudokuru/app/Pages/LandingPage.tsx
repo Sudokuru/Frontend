@@ -1,18 +1,12 @@
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
-import {StyleSheet, View, Image} from "react-native";
-import {Text} from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import SidebarMenu from "../Components/SidebarMenu";
-import LessonCard from "../Components/Learn/LessonCard";
-import BoardBox from '../Components/Learn/BoardBox';
+import {StyleSheet, View} from "react-native";
+import Boxes from '../Components/Landing/Boxes';
 
-const PuzzlePage = () => {
+const LandingPage = () => {
 
     return (
        <View style={styles.container}>
-        <BoardBox/>
+        <Boxes/>
        </View>
     );
 };
@@ -61,4 +55,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default PuzzlePage;
+export default LandingPage;

@@ -1,7 +1,7 @@
 import {StyleSheet, View, ViewComponent} from "react-native";
 import React from "react";
 import LessonCard from "../Components/Learn/LessonCard";
-import HomeMenu from "../Components/Home/HomeMenu";
+import SidebarMenu from "../Components/SidebarMenu";
 import {Text} from "react-native-paper";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import ProfileButton from "../Components/Profile/ProfileButton";
@@ -23,7 +23,7 @@ const LearnPage = () => {
             </View>
             <View style={homeScreenStyles.home}>
                 <View style={homeScreenStyles.homeMenu}>
-                    <HomeMenu></HomeMenu>
+                    <SidebarMenu></SidebarMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
                     <LessonCard title={"Naked Single"}></LessonCard>

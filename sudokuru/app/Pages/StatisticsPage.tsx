@@ -3,8 +3,8 @@ import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
-import HomeButton from "../Components/Home/HomeButton";
-import HomeMenu from "../Components/Home/HomeMenu";
+import HomeButton from "../Components/Landing/HomeButton";
+import SidebarMenu from "../Components/SidebarMenu";
 
 const ProfilePage = () => {
 
@@ -22,7 +22,7 @@ const ProfilePage = () => {
             </View>
             <View style={homeScreenStyles.home}>
                 <View style={homeScreenStyles.homeMenu}>
-                    <HomeMenu></HomeMenu>
+                    <SidebarMenu></SidebarMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
                 </View>
