@@ -1,9 +1,8 @@
 import 'react-native-gesture-handler';
 import * as React from 'react'
 import { PreferencesContext } from './app/Contexts/PreferencesContext';
-import {adaptNavigationTheme, Provider as PaperProvider} from 'react-native-paper';
+import {Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from "@react-navigation/stack";
-import merge from 'deepmerge';
 // pages
 import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
@@ -14,15 +13,10 @@ import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
 // theme imports
-import dTheme from './app/Styling/ThemeColors';
-import d2Theme from './app/Styling/ThemeColors';
-import lTheme from './app/Styling/ThemeColors';
-import l2Theme from './app/Styling/ThemeColors';
-
+import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
 
 export default function App() {
-    const CombinedDefaultTheme = merge(lTheme.l2Theme, l2Theme.lTheme);
-    const CombinedDarkTheme = merge(dTheme.d2Theme, d2Theme.dTheme);
+
     const [isThemeDark, setIsThemeDark] = React.useState(false);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;

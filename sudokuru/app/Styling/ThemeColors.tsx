@@ -55,7 +55,7 @@ const d2Theme = {
     onSurfaceVariant: '#F2F2F2',
 },};
 
-const l2Theme = {
+export const l2Theme = {
     ...NavigationDefaultTheme,
  colors: {
    ...NavigationDefaultTheme.colors,
@@ -78,7 +78,7 @@ const l2Theme = {
 },};
 
 
-const lTheme = {
+export const lTheme = {
     ...MD3LightTheme, // or MD3DarkTheme
   roundness: 2,
   colors: {
@@ -102,7 +102,5 @@ const lTheme = {
   },
 };
 
-const CombinedDefaultTheme = merge(lTheme, l2Theme)
-const CombinedDarkTheme = merge(dTheme, d2Theme)
-
-export default {dTheme, d2Theme, lTheme, l2Theme, CombinedDefaultTheme, CombinedDarkTheme};
+export const CombinedDefaultTheme = merge(lTheme, l2Theme);
+export const CombinedDarkTheme = merge(dTheme, d2Theme);
