@@ -12,15 +12,7 @@ import LearnPage from "./app/Pages/LearnPage";
 import DrillPage from "./app/Pages/DrillPage";
 import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
-import {
-    MD3DarkTheme,
-    MD3LightTheme,
-} from 'react-native-paper';
-import {
-    NavigationContainer,
-    DarkTheme as NavigationDarkTheme,
-    DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 // theme imports
 import dTheme from './app/Styling/ThemeColors';
 import d2Theme from './app/Styling/ThemeColors';
