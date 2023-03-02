@@ -148,13 +148,13 @@ export default function App() {
                   <Stack.Navigator initialRouteName="LandingPage" screenOptions={{
                       headerShown: false
                   }}>
+                      <Stack.Screen name="Landing" component={LandingPage}/>
                       <Stack.Screen name="Home" component={HomePage} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
                       <Stack.Screen name="Puzzle" component={PuzzlePage}/>
                       <Stack.Screen name="Learn" component={LearnPage}/>
                       <Stack.Screen name="Drill" component={DrillPage}/>
-                      <Stack.Screen name="Landing" component={LandingPage}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>
