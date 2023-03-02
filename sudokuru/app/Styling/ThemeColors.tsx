@@ -7,6 +7,7 @@ import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
+import merge from 'deepmerge';
 
 const dTheme = {
     ...MD3DarkTheme, // or MD3DarkTheme
@@ -101,4 +102,7 @@ const lTheme = {
   },
 };
 
-export default {dTheme, d2Theme, lTheme, l2Theme};
+const CombinedDefaultTheme = merge(lTheme, l2Theme)
+const CombinedDarkTheme = merge(dTheme, d2Theme)
+
+export default {dTheme, d2Theme, lTheme, l2Theme, CombinedDefaultTheme, CombinedDarkTheme};

@@ -21,9 +21,8 @@ import l2Theme from './app/Styling/ThemeColors';
 
 
 export default function App() {
-
-    const CombinedDefaultTheme = merge(lTheme.dTheme, l2Theme.l2Theme);
-    const CombinedDarkTheme = merge(dTheme.d2Theme, d2Theme.lTheme);
+    const CombinedDefaultTheme = merge(lTheme.l2Theme, l2Theme.lTheme);
+    const CombinedDarkTheme = merge(dTheme.d2Theme, d2Theme.dTheme);
     const [isThemeDark, setIsThemeDark] = React.useState(false);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
