@@ -4,7 +4,7 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import HomeMenu from "../Components/Home/HomeMenu";
+import SidebarMenu from "../Components/SidebarMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
 
@@ -34,7 +34,7 @@ const ProfilePage = () => {
             </View>
             <View style={homeScreenStyles.home}>
                 <View style={homeScreenStyles.homeMenu}>
-                    <HomeMenu></HomeMenu>
+                    <SidebarMenu></SidebarMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
                     <View style={styles.container}>

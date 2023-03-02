@@ -9,7 +9,7 @@ const ProfileButton = () => {
 
     return (
         <Button mode="contained" testID={"ViewProfilePageButton"} onPress={() => navigation.navigate('Profile')}>
-            <MaterialCommunityIcons name="face-man-profile" size={24} color="black" />
+            <MaterialCommunityIcons name="face-man-profile" size={24} color="#F2F2F2" />
         </Button>
     );
 };

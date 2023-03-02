@@ -11,7 +11,7 @@ const ThemeToggle = () => {
         <View>
             <Text>Theme</Text>
             <Switch
-                color={'red'}
+                color={'#025E73'}
                 value={isThemeDark}
                 onValueChange={toggleTheme}
                 testID={isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"}
