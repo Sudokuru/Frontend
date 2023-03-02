@@ -35,7 +35,7 @@ const Boxes = () => {
                             style={({ pressed }) => [
                             { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
                             ]}
-                           onPress={() => navigation.navigate('Learn')}>
+                           onPress={() => navigation.navigate('Home')}>
                             <View>
                             <Text style={{ fontSize: 40, color: '#f2f2f2' }}> Get Started </Text>
                             </View>
