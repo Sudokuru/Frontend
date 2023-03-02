@@ -3,11 +3,6 @@ import * as React from 'react'
 import { PreferencesContext } from './app/Contexts/PreferencesContext';
 import {adaptNavigationTheme, Provider as PaperProvider} from 'react-native-paper';
 import {createStackNavigator} from "@react-navigation/stack";
-import {
-    NavigationContainer,
-    DarkTheme as NavigationDarkTheme,
-    DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native';
 import merge from 'deepmerge';
 // pages
 import ProfilePage from "./app/Pages/ProfilePage";
@@ -17,6 +12,15 @@ import LearnPage from "./app/Pages/LearnPage";
 import DrillPage from "./app/Pages/DrillPage";
 import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
+import {
+    MD3DarkTheme,
+    MD3LightTheme,
+} from 'react-native-paper';
+import {
+    NavigationContainer,
+    DarkTheme as NavigationDarkTheme,
+    DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
 // theme imports
 import dTheme from './app/Styling/ThemeColors';
 import d2Theme from './app/Styling/ThemeColors';
@@ -25,8 +29,9 @@ import l2Theme from './app/Styling/ThemeColors';
 
 
 export default function App() {
-    const CombinedDefaultTheme = merge(lTheme, l2Theme)
-    const CombinedDarkTheme = merge(dTheme, d2Theme)
+
+    const CombinedDefaultTheme = merge(lTheme.dTheme, l2Theme.l2Theme);
+    const CombinedDarkTheme = merge(dTheme.d2Theme, d2Theme.lTheme);
     const [isThemeDark, setIsThemeDark] = React.useState(false);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
