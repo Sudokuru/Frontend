@@ -1,11 +1,5 @@
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View, Image} from "react-native";
-import {Text} from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import SidebarMenu from "../Components/SidebarMenu";
-import LessonCard from "../Components/Learn/LessonCard";
 import BoardBox from '../Components/Learn/BoardBox';
 
 const PuzzlePage = () => {

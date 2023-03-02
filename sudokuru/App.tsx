@@ -18,7 +18,7 @@ import LandingPage from "./app/Pages/LandingPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import LearnPage from "./app/Pages/LearnPage";
 import DrillPage from "./app/Pages/DrillPage";
-import PuzzlePage from './app/Pages/Puzzle';
+import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
 
 const dTheme = {
@@ -154,7 +154,7 @@ export default function App() {
                       <Stack.Screen name="Puzzle" component={PuzzlePage}/>
                       <Stack.Screen name="Learn" component={LearnPage}/>
                       <Stack.Screen name="Drill" component={DrillPage}/>
-                      <Stack.Screen name="Landing" component={LandingPage} />
+                      <Stack.Screen name="Landing" component={LandingPage}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>
