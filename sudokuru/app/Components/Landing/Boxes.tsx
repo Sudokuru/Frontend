@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     inner2: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         padding: 5,
