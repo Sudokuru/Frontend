@@ -1,14 +1,17 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
-import EraseIcon from '../../assets/erase.svg';
-import HintIcon from '../../assets/hint.svg';
-import NoteIcon from '../../assets/note.svg';
-import NoteOffIcon from '../../assets/noteoff.svg';
-import UndoIcon from '../../assets/undo.svg';
+import { EraseIcon } from '../../assets/EraseIcon.jsx';
+import { HintIcon } from '../../assets/HintIcon.jsx';
+import { NoteIcon } from '../../assets/NoteIcon.jsx';
+import { UndoIcon } from '../../assets/UndoIcon.jsx';
+// import HintIcon from '../../assets/hint.svg';
+// import NoteIcon from '../../assets/note.svg';
+// import NoteOffIcon from '../../assets/noteoff.svg';
+// import UndoIcon from '../../assets/undo.svg';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 
@@ -145,6 +148,10 @@ const styles = (cellSize) => StyleSheet.create({
         color: '#FF0000',
         backgroundColor: '#FF7C75',
     },
+    actionControlView: {
+        borderWidth: 1,
+        flexDirection: 'row',
+    }
 });
 
 // function getBackGroundColor({
@@ -195,6 +202,63 @@ NumberControl.propTypes = {
 NumberControl.defaultProps = {
     onClick: null,
 };
+
+// const ActionControl = (props) => {
+//     const {
+//         board, history, getSelectedCell, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution
+//     } = props;
+//     const cellSize = getCellSize();
+//     // const { board, history } = this.state;
+//     const selectedCell = getSelectedCell();
+//     const prefilled = selectedCell && selectedCell.get('prefilled');
+//     const inNoteMode = board.get('inNoteMode');
+//     return (
+//         <View style={{borderWidth: 1, flexDirection:'row', width: cellSize * 9}}>
+//             <TouchableOpacity onPress={history.size ? undo : null}>
+//                 <Text>Undo</Text>
+//                 <UndoIcon />
+//             </TouchableOpacity>
+//             <TouchableOpacity onPress={toggleNoteMode()}>
+//                 <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
+//                 <NoteIcon />
+//             </TouchableOpacity>
+//             <TouchableOpacity onPress={!prefilled ? eraseSelected() : null}>
+//                 <Text>Erase</Text>
+//                 <EraseIcon />
+//             </TouchableOpacity>
+//             <TouchableOpacity onPress={!prefilled ? fillSelectedWithSolution() : null}>
+//                 <Text>Hint</Text>
+//                 <HintIcon />
+//             </TouchableOpacity>
+//         </View>
+//     );
+// };
+
+// ActionControl.propTypes = {
+//     value: PropTypes.number,
+//     onClick: PropTypes.func.isRequired,
+//     onKeyPress: PropTypes.func.isRequired,
+//     isPeer: PropTypes.bool.isRequired,
+//     isSelected: PropTypes.bool.isRequired,
+//     sameValue: PropTypes.bool.isRequired,
+//     prefilled: PropTypes.bool.isRequired,
+//     notes: PropTypes.instanceOf(Set),
+//     conflict: PropTypes.bool.isRequired,
+
+//     board: PropTypes.object.isRequired,
+//     history: PropTypes..isRequired,
+//     getSelectedCell: PropTypes..isRequired,
+//     undo: PropTypes..isRequired,
+//     toggleNoteMode: PropTypes..isRequired,
+//     eraseSelected: PropTypes..isRequired,
+//     fillSelectedWithSolution: PropTypes..isRequired
+
+//     };
+
+// ActionControl.defaultProps = {
+//     notes: null,
+//     value: null,
+// };
 
 // const Cell = (props) => {
 //   const {
@@ -595,20 +659,22 @@ export default class SudokuBoard extends React.Component {
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
         return (
-            <View>
+            <View style={styles().actionControlView}>
                 <TouchableOpacity onPress={history.size ? this.undo : null}>
                     <Text>Undo</Text>
+                    <UndoIcon />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.toggleNoteMode}>
                     <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
+                    <NoteIcon />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
-                    {/* <Text>Erase</Text> */}
                     <Text>Erase</Text>
-                    {/* <SVGImg width={200} height={200} /> */}
+                    <EraseIcon />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
                     <Text>Hint</Text>
+                    <HintIcon />
                 </TouchableOpacity>
             </View>
         );
