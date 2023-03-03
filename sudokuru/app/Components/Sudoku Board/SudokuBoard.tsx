@@ -199,6 +199,27 @@ NumberControl.defaultProps = {
     onClick: null,
 };
 
+// const Cell = (props) => {
+//   const {
+//     value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict,
+//   } = props;
+//   const backgroundColor = getBackGroundColor({
+//     conflict, isPeer, sameValue, isSelected,
+//   });
+//   const fontColor = getFontColor({ conflict, prefilled, value });
+//   return (
+//     <View className="cell" onClick={onClick} onKeyDown={onKeyPress} tabIndex="0">
+//     {
+//       notes ? range(9).map(i => (
+//         <View key={i} className="note-number">
+//           {notes.has(i + 1) && <Text>{i + 1}</Text>}
+//         </View>
+//       )) : value && <Text>{value}</Text>
+//     }
+//     </View>
+//   );
+// };
+
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
