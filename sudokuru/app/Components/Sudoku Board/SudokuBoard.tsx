@@ -380,6 +380,8 @@ export default class SudokuBoard extends React.Component {
 
     generateGame = (finalCount = 20) => {
         const solution = makePuzzle();
+        let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
+        console.log(output);
         const { puzzle } = pluck(solution, finalCount);
         const board = makeBoard({ puzzle });
         this.setState({
@@ -388,7 +390,7 @@ export default class SudokuBoard extends React.Component {
     }
 
     addNumberAsNote = (number) => {
-        let { board } = this.state;
+        let { board, solution } = this.state;
         let selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
         const prefilled = selectedCell.get('prefilled');
@@ -396,15 +398,17 @@ export default class SudokuBoard extends React.Component {
         const { x, y } = board.get('selected');
         const currentValue = selectedCell.get('value');
         if (currentValue) {
-            board = updateBoardWithNumber({
-                x, y, number: currentValue, fill: false, board: this.state.board,
-            });
+          board = updateBoardWithNumber({
+            x, y, number: currentValue, fill: false, board: this.state.board,
+          });
         }
         let notes = selectedCell.get('notes') || Set();
+        let actualValue = solution[x][y];
         if (notes.has(number)) {
+          if (number !== actualValue)
             notes = notes.delete(number);
         } else {
-            notes = notes.add(number);
+          notes = notes.add(number);
         }
         selectedCell = selectedCell.set('notes', notes);
         selectedCell = selectedCell.delete('value');
@@ -634,6 +638,7 @@ export default class SudokuBoard extends React.Component {
         if (!board)
         {
             this.generateGame();
+            // console.log(this.solution);
         }
         return (
             <View>
