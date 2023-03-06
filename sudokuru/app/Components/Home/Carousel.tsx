@@ -125,7 +125,6 @@ const Ccarousel = () =>{
                             <Text style={{ textAlign: 'center', fontSize: 30 }}>
                                 {getLessonName(index)}
                             </Text>
-
                         </View>
                     )}
                 />

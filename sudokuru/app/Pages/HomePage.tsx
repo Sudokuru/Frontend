@@ -12,6 +12,7 @@ import {useNavigation} from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import Header from "../Components/Header";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -26,16 +27,7 @@ const HomePage = () => {
  if(Platform.OS === 'web'){
     return (
         <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Sudokuru</Text>
-                </View>
-                <View style={styles.profileButtons}>
-                    <StatisticsButton></StatisticsButton>
-                    <ProfileButton></ProfileButton>
-                    <LoginButton></LoginButton>
-                </View>
-            </View>
+            <Header/>
             <View>
                 <View style={styles.container1}>
                     <CCarousel/>
