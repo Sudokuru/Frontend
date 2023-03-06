@@ -5,7 +5,7 @@ import {Text, Button, Drawer} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import Slider from '@react-native-community/slider';
 import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
 import {useNavigation} from "@react-navigation/native";
@@ -43,6 +43,14 @@ const HomePage = () => {
                 <View style={homeScreenStyles.lessons}>
                     <View style={styles.container1}>
                         <CCarousel/>
+                        <Slider
+                            style={{width: 200, height: 40}}
+                            minimumValue={0}
+                            maximumValue={100}
+                            step={10}
+                            minimumTrackTintColor="#FFFFFF"
+                            maximumTrackTintColor="#000000"
+                        />
                         <StatusBar style="auto" />
                     </View>
                 </View>
