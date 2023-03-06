@@ -14,6 +14,18 @@ import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
 // theme imports
 import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
+import AdjustNotesLesson from "./app/Pages/Lessons/AdjustNotesLesson";
+import BoxLineReductionLesson from "./app/Pages/Lessons/BoxLineReductionLesson";
+import HiddenSetLesson from "./app/Pages/Lessons/HiddenSetLesson";
+import HiddenSingleLesson from "./app/Pages/Lessons/HiddenSingleLesson";
+import NakedSetLesson from "./app/Pages/Lessons/NakedSetLesson";
+import NakedSingleLesson from "./app/Pages/Lessons/NakedSingleLesson";
+import PointingPairLesson from "./app/Pages/Lessons/PointingPairLesson";
+import PointingTripletLesson from "./app/Pages/Lessons/PointingTripletLesson";
+import SimplifyNotesLesson from "./app/Pages/Lessons/SimplifyNotesLesson";
+import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
+import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
+import XWingLesson from "./app/Pages/Lessons/XWingLesson";
 
 export default function App() {
 
@@ -49,6 +61,19 @@ export default function App() {
                       <Stack.Screen name="Puzzle" component={PuzzlePage}/>
                       <Stack.Screen name="Learn" component={LearnPage}/>
                       <Stack.Screen name="Drill" component={DrillPage}/>
+
+                      <Stack.Screen name="AdjustNotesLesson" component={AdjustNotesLesson}/>
+                      <Stack.Screen name="BoxLineReductionLesson" component={BoxLineReductionLesson}/>
+                      <Stack.Screen name="HiddenSetLesson" component={HiddenSetLesson}/>
+                      <Stack.Screen name="HiddenSingleLesson" component={HiddenSingleLesson}/>
+                      <Stack.Screen name="NakedSetLesson" component={NakedSetLesson}/>
+                      <Stack.Screen name="NakedSingleLesson" component={NakedSingleLesson}/>
+                      <Stack.Screen name="PointingPairLesson" component={PointingPairLesson}/>
+                      <Stack.Screen name="PointingTripletLesson" component={PointingTripletLesson}/>
+                      <Stack.Screen name="SimplifyNotesLesson" component={SimplifyNotesLesson}/>
+                      <Stack.Screen name="SinglesChainingLesson" component={SinglesChainingLesson}/>
+                      <Stack.Screen name="SwordfishLesson" component={SwordfishLesson}/>
+                      <Stack.Screen name="XWingLesson" component={XWingLesson}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>

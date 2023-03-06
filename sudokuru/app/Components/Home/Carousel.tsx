@@ -16,24 +16,18 @@ const Ccarousel = () =>{
     const [index, setIndex] = useState(0);
 
     function navigate(index: number):any {
-        if (index == 0){
-            navigation.navigate('Landing');
-        }
-        if (index == 1){
-            navigation.navigate('Drill')
-        }
-        if (index == 2){
-            navigation.navigate('Learn')
-        }
-        if (index == 3){
-            navigation.navigate('Landing');
-        }
-        if (index == 4){
-            navigation.navigate('Landing');
-        }
-        if (index == 5){
-            navigation.navigate('Landing');
-        }
+        index == 0 ? navigation.navigate('AdjustNotesLesson') :
+            index == 1 ? navigation.navigate('SimplifyNotesLesson') :
+                index == 2 ? navigation.navigate('NakedSingleLesson') :
+                    index == 3 ? navigation.navigate('HiddenSingleLesson') :
+                        index == 4 ? navigation.navigate('NakedSetLesson') :
+                            index == 5 ? navigation.navigate('HiddenSetLesson') :
+                                index == 6 ? navigation.navigate('PointingPairLesson') :
+                                    index == 7 ? navigation.navigate('PointingTripletLesson') :
+                                        index == 8 ? navigation.navigate('BoxLineReductionLesson') :
+                                            index == 9 ? navigation.navigate('XWingLesson') :
+                                                index == 10 ? navigation.navigate('SwordfishLesson') :
+                                                    index == 11 ? navigation.navigate('SinglesChainingLesson') : navigation.navigate('Home');
     };
     if(Platform.OS === 'web'){
     return(
@@ -43,7 +37,7 @@ const Ccarousel = () =>{
                 width={width}
                 height={width / 4}
                 autoPlay={false}
-                data={[...new Array(6).keys()]}
+                data={[...new Array(12).keys()]}
                 mode='parallax'
                 modeConfig={{
                   parallaxScrollingScale: 0.5,
