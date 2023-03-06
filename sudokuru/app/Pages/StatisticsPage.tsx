@@ -21,11 +21,6 @@ const ProfilePage = () => {
                 </View>
             </View>
             <View style={homeScreenStyles.home}>
-                <View style={homeScreenStyles.homeMenu}>
-                    <SidebarMenu></SidebarMenu>
-                </View>
-                <View style={homeScreenStyles.lessons}>
-                </View>
             </View>
         </View>
     );
@@ -56,17 +51,6 @@ const homeScreenStyles = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         //backgroundColor: 'red',
-    },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'row',
-        flexWrap: "wrap",
     },
 });
 

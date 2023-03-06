@@ -42,17 +42,6 @@ const homeScreenStyles = StyleSheet.create({
         flexDirection: 'row',
         //backgroundColor: 'red',
     },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'row',
-        flexWrap: "wrap",
-    },
 });
 
 export default PuzzlePage;
