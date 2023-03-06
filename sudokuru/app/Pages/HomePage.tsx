@@ -1,17 +1,20 @@
 import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
-import {StyleSheet, View} from "react-native";
-import {Text} from 'react-native-paper';
+import {StyleSheet, View, Platform} from "react-native";
+import {Text, Button, Drawer} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
+import {useNavigation} from "@react-navigation/native";
+import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
 const HomePage = () => {
+    const navigation: any = useNavigation();
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -20,7 +23,7 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
-
+ if(Platform.OS === 'web'){
     return (
         <View>
             <View style={styles.toggleIcons}>
@@ -45,8 +48,43 @@ const HomePage = () => {
                 </View>
             </View>
         </View>
+    );}
+    else{
+        return(
+        <View style={styles.container}>
+
+            <Button style={styles.loginButton} mode="contained" onPress={() => navigation.openDrawer()}>
+                            Start
+            </Button>
+
+            <View>
+                  <Text style={{top:-20}}>
+                  <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>Discover </Text>
+                  <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
+                  </Text>
+            </View>
+
+            <View>
+            <CCarousel/>
+            </View>
+
+            <View>
+                  <Text style={{top:20}}>
+                  <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
+                  <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
+                  </Text>
+            </View>
+
+            <Button style={{top:95}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                Start
+            </Button>
+
+
+        </View>
     );
+    }
 };
+
 
 const styles = StyleSheet.create({
     toggleIcons: {
@@ -76,6 +114,11 @@ const styles = StyleSheet.create({
             alignItems: 'center',
             justifyContent: 'center',
         },
+    loginButton:{
+        position: 'absolute',
+        right: 10,
+        top: 45
+      },
 });
 
 const homeScreenStyles = StyleSheet.create({

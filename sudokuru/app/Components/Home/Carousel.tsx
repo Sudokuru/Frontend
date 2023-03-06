@@ -97,6 +97,7 @@ const Ccarousel = () =>{
         }
  else{
     return(
+    <View>
     <Carousel
                     loop
                     width={width}
@@ -120,12 +121,16 @@ const Ccarousel = () =>{
                             }}
                         >
                             <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                                {index}
+                                {getLessonName(index)}
                             </Text>
 
                         </View>
                     )}
-                />);
+                />
+            <Button onPress={() => navigate(index)}>
+                Start Lesson
+            </Button>
+        </View> );
 
  }
 };

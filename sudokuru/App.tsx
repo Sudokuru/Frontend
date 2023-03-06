@@ -12,6 +12,7 @@ import DrillPage from "./app/Pages/DrillPage";
 import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 // theme imports
 import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
 import AdjustNotesLesson from "./app/Pages/Lessons/AdjustNotesLesson";
@@ -26,6 +27,22 @@ import SimplifyNotesLesson from "./app/Pages/Lessons/SimplifyNotesLesson";
 import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
 import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
 import XWingLesson from "./app/Pages/Lessons/XWingLesson";
+
+function HomeDrawer(){
+    const Drawer = createDrawerNavigator();
+
+    return(
+     <Drawer.Navigator screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "right", }}>
+                              <Drawer.Screen name="Main Page" component={HomePage} />
+                              <Drawer.Screen name="Naked Set" component={SudokuPage} />
+                              <Drawer.Screen name="Hidden Set" component={SudokuPage} />
+                              <Drawer.Screen name="Pointing Pairs" component={SudokuPage} />
+                              <Drawer.Screen name="Box Line Reduction" component={SudokuPage} />
+                              <Drawer.Screen name="Swordfish" component={SudokuPage} />
+                              <Drawer.Screen name="X-Wing Strategy" component={SudokuPage} />
+                              <Drawer.Screen name="Singles Chaining" component={SudokuPage} />
+     </Drawer.Navigator>)
+}
 
 export default function App() {
 
@@ -55,7 +72,7 @@ export default function App() {
                       headerShown: false
                   }}>
                       <Stack.Screen name="Landing" component={LandingPage}/>
-                      <Stack.Screen name="Home" component={HomePage} />
+                      <Stack.Screen name="Home" component={HomeDrawer} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
                       <Stack.Screen name="Sudoku" component={SudokuPage}/>
