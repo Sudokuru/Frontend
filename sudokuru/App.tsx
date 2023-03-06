@@ -8,8 +8,6 @@ import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
-import DrillPage from "./app/Pages/DrillPage";
-import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
