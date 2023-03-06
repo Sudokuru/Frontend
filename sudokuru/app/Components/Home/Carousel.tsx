@@ -1,32 +1,22 @@
 import React, {useState} from 'react';
 import {
     View,
-    StyleSheet,
-    Dimensions,
-    Pressable,
     Text,
-    Image,
-    LogBox,
-    TouchableNativeFeedback,
     Platform,
-    TouchableOpacity,
     useWindowDimensions
 } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import { Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 
 const Ccarousel = () =>{
 
-        //const size = useWindowDimensions();
-        //const width = Math.min(size.width, size.height);
-        //console.log(width);
-    //const width = Dimensions.get('window').width;
     const size = useWindowDimensions();
     const width = Math.min(size.width, size.height);
 
     const navigation: any = useNavigation();
 
+    const ref = React.useRef<ICarouselInstance>(null);
     const [index, setIndex] = useState(0);
 
     function navigate(index: number):any {
@@ -68,6 +58,7 @@ const Ccarousel = () =>{
                 loop
                 width={width}
                 height={width / 4}
+                ref={ref}
                 autoPlay={false}
                 data={[...new Array(12).keys()]}
                 mode='parallax'
@@ -92,8 +83,14 @@ const Ccarousel = () =>{
                         </View>
                 )}
             />
+            <Button onPress={() => ref.current?.scrollTo({count: -1})}>
+                Back
+            </Button>
             <Button onPress={() => navigate(index)}>
                 Start Lesson
+            </Button>
+            <Button onPress={() => ref.current?.scrollTo({count: 1})}>
+                Forward
             </Button>
         </View>    );
         }
