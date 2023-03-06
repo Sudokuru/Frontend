@@ -12,6 +12,7 @@ import {useNavigation} from "@react-navigation/native";
 import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import Header from "../Components/Header";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -26,33 +27,22 @@ const HomePage = () => {
  if(Platform.OS === 'web'){
     return (
         <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Sudokuru</Text>
-                </View>
-                <View style={styles.profileButtons}>
-                    <StatisticsButton></StatisticsButton>
-                    <ProfileButton></ProfileButton>
-                    <LoginButton></LoginButton>
-                </View>
-            </View>
-            <View style={homeScreenStyles.home}>
-                <View>
-                    <View style={styles.container1}>
-                        <CCarousel/>
-                        <Slider
-                            style={{width: 200, height: 40}}
-                            minimumValue={0}
-                            maximumValue={100}
-                            step={10}
-                            minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
-                        />
-                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
-                            Start
-                        </Button>
-                        <StatusBar style="auto" />
-                    </View>
+            <Header/>
+            <View>
+                <View style={styles.container1}>
+                    <CCarousel/>
+                    <Slider
+                        style={{width: 200, height: 40}}
+                        minimumValue={0}
+                        maximumValue={100}
+                        step={10}
+                        minimumTrackTintColor="#FFFFFF"
+                        maximumTrackTintColor="#000000"
+                    />
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                        Start
+                    </Button>
+                    <StatusBar style="auto" />
                 </View>
             </View>
         </View>
@@ -137,14 +127,6 @@ const styles = StyleSheet.create({
         right: 10,
         top: 45
       },
-});
-
-const homeScreenStyles = StyleSheet.create({
-    home: {
-        display: "flex",
-        flexDirection: 'row',
-        //backgroundColor: 'red',
-    },
 });
 
 export default HomePage;
