@@ -7,7 +7,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
-import LearnPage from "./app/Pages/LearnPage";
+import SudokuPage from "./app/Pages/SudokuPage";
 import DrillPage from "./app/Pages/DrillPage";
 import PuzzlePage from './app/Pages/PuzzlePage';
 import HomePage from "./app/Pages/HomePage";
@@ -58,9 +58,7 @@ export default function App() {
                       <Stack.Screen name="Home" component={HomePage} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
-                      <Stack.Screen name="Puzzle" component={PuzzlePage}/>
-                      <Stack.Screen name="Learn" component={LearnPage}/>
-                      <Stack.Screen name="Drill" component={DrillPage}/>
+                      <Stack.Screen name="Sudoku" component={SudokuPage}/>
 
                       <Stack.Screen name="AdjustNotesLesson" component={AdjustNotesLesson}/>
                       <Stack.Screen name="BoxLineReductionLesson" component={BoxLineReductionLesson}/>

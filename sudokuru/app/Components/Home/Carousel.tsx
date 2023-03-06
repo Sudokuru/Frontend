@@ -1,5 +1,17 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Dimensions, Pressable, Text, Image, LogBox, TouchableNativeFeedback, Platform, TouchableOpacity } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Dimensions,
+    Pressable,
+    Text,
+    Image,
+    LogBox,
+    TouchableNativeFeedback,
+    Platform,
+    TouchableOpacity,
+    useWindowDimensions
+} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
@@ -9,7 +21,7 @@ const Ccarousel = () =>{
         //const size = useWindowDimensions();
         //const width = Math.min(size.width, size.height);
         //console.log(width);
-    const width = Dimensions.get('window').width;
+    const width = Dimensions.get('window').height;
 
     const navigation: any = useNavigation();
 
