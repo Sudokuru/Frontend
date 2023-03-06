@@ -36,23 +36,21 @@ const HomePage = () => {
                     <LoginButton></LoginButton>
                 </View>
             </View>
-            <View style={homeScreenStyles.home}>
-                <View>
-                    <View style={styles.container1}>
-                        <CCarousel/>
-                        <Slider
-                            style={{width: 200, height: 40}}
-                            minimumValue={0}
-                            maximumValue={100}
-                            step={10}
-                            minimumTrackTintColor="#FFFFFF"
-                            maximumTrackTintColor="#000000"
-                        />
-                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
-                            Start
-                        </Button>
-                        <StatusBar style="auto" />
-                    </View>
+            <View>
+                <View style={styles.container1}>
+                    <CCarousel/>
+                    <Slider
+                        style={{width: 200, height: 40}}
+                        minimumValue={0}
+                        maximumValue={100}
+                        step={10}
+                        minimumTrackTintColor="#FFFFFF"
+                        maximumTrackTintColor="#000000"
+                    />
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                        Start
+                    </Button>
+                    <StatusBar style="auto" />
                 </View>
             </View>
         </View>
@@ -137,14 +135,6 @@ const styles = StyleSheet.create({
         right: 10,
         top: 45
       },
-});
-
-const homeScreenStyles = StyleSheet.create({
-    home: {
-        display: "flex",
-        flexDirection: 'row',
-        //backgroundColor: 'red',
-    },
 });
 
 export default HomePage;
