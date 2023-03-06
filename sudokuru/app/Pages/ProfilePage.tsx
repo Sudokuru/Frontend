@@ -5,7 +5,7 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import HomeButton from "../Components/Landing/HomeButton";
+import HomeButton from "../Components/Home/HomeButton";
 import SidebarMenu from "../Components/SidebarMenu";
 
 const ProfilePage = () => {
@@ -20,7 +20,7 @@ const ProfilePage = () => {
                 </View>
             </View>
             <View style={homeScreenStyles.home}>
-                <View style={homeScreenStyles.lessons}>
+                <View>
                     <ThemeToggle></ThemeToggle>
                     <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
                 </View>
@@ -55,17 +55,6 @@ const homeScreenStyles = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         //backgroundColor: 'red',
-    },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'column',
-        flexWrap: "wrap",
     },
 });
 

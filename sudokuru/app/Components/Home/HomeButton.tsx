@@ -3,7 +3,7 @@ import {Button} from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import React from "react";
 
-const ProfileButton = () => {
+const HomeButton = () => {
 
     const navigation: any = useNavigation();
 
@@ -14,4 +14,4 @@ const ProfileButton = () => {
     );
 };
 
-export default ProfileButton;
+export default HomeButton;
