@@ -202,63 +202,6 @@ NumberControl.defaultProps = {
     onClick: null,
 };
 
-// const ActionControl = (props) => {
-//     const {
-//         board, history, getSelectedCell, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution
-//     } = props;
-//     const cellSize = getCellSize();
-//     // const { board, history } = this.state;
-//     const selectedCell = getSelectedCell();
-//     const prefilled = selectedCell && selectedCell.get('prefilled');
-//     const inNoteMode = board.get('inNoteMode');
-//     return (
-//         <View style={{borderWidth: 1, flexDirection:'row', width: cellSize * 9}}>
-//             <TouchableOpacity onPress={history.size ? undo : null}>
-//                 <Text>Undo</Text>
-//                 <UndoIcon />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={toggleNoteMode()}>
-//                 <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
-//                 <NoteIcon />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={!prefilled ? eraseSelected() : null}>
-//                 <Text>Erase</Text>
-//                 <EraseIcon />
-//             </TouchableOpacity>
-//             <TouchableOpacity onPress={!prefilled ? fillSelectedWithSolution() : null}>
-//                 <Text>Hint</Text>
-//                 <HintIcon />
-//             </TouchableOpacity>
-//         </View>
-//     );
-// };
-
-// ActionControl.propTypes = {
-//     value: PropTypes.number,
-//     onClick: PropTypes.func.isRequired,
-//     onKeyPress: PropTypes.func.isRequired,
-//     isPeer: PropTypes.bool.isRequired,
-//     isSelected: PropTypes.bool.isRequired,
-//     sameValue: PropTypes.bool.isRequired,
-//     prefilled: PropTypes.bool.isRequired,
-//     notes: PropTypes.instanceOf(Set),
-//     conflict: PropTypes.bool.isRequired,
-
-//     board: PropTypes.object.isRequired,
-//     history: PropTypes..isRequired,
-//     getSelectedCell: PropTypes..isRequired,
-//     undo: PropTypes..isRequired,
-//     toggleNoteMode: PropTypes..isRequired,
-//     eraseSelected: PropTypes..isRequired,
-//     fillSelectedWithSolution: PropTypes..isRequired
-
-//     };
-
-// ActionControl.defaultProps = {
-//     notes: null,
-//     value: null,
-// };
-
 // const Cell = (props) => {
 //   const {
 //     value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict,
