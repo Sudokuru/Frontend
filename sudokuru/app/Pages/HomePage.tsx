@@ -1,16 +1,20 @@
 import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
-import {StyleSheet, View} from "react-native";
-import {Text} from 'react-native-paper';
+import {StyleSheet, View, Platform} from "react-native";
+import {Text, Button, Drawer} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import Slider from '@react-native-community/slider';
 import {StatusBar} from "expo-status-bar";
+import CCarousel from "../Components/Home/Carousel";
+import {useNavigation} from "@react-navigation/native";
+import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
-const ProfilePage = () => {
+const HomePage = () => {
+    const navigation: any = useNavigation();
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -19,7 +23,7 @@ const ProfilePage = () => {
     if (!fontsLoaded) {
         return null;
     }
-
+ if(Platform.OS === 'web'){
     return (
         <View>
             <View style={styles.toggleIcons}>
@@ -33,19 +37,72 @@ const ProfilePage = () => {
                 </View>
             </View>
             <View style={homeScreenStyles.home}>
-                <View style={homeScreenStyles.homeMenu}>
-                    <SidebarMenu></SidebarMenu>
-                </View>
-                <View style={homeScreenStyles.lessons}>
-                    <View style={styles.container}>
-                        <SudokuBoard/>
+                <View>
+                    <View style={styles.container1}>
+                        <CCarousel/>
+                        <Slider
+                            style={{width: 200, height: 40}}
+                            minimumValue={0}
+                            maximumValue={100}
+                            step={10}
+                            minimumTrackTintColor="#FFFFFF"
+                            maximumTrackTintColor="#000000"
+                        />
+                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                            Start
+                        </Button>
                         <StatusBar style="auto" />
                     </View>
                 </View>
             </View>
         </View>
+    );}
+    else{
+        return(
+        <View style={styles.container}>
+
+            <Button style={styles.loginButton} mode="contained" onPress={() => navigation.openDrawer()}>
+                            Start
+            </Button>
+
+            <View>
+                  <Text style={{top:-20}}>
+                  <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>Discover </Text>
+                  <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
+                  </Text>
+            </View>
+
+            <View>
+            <CCarousel/>
+            </View>
+
+            <View>
+                  <Text style={{top:20}}>
+                  <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
+                  <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
+                  </Text>
+            </View>
+
+            <View>
+            <Slider
+            style={{width: 300, height: 40, top:30}}
+            minimumValue={0}
+            maximumValue={100}
+            step={10}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#000000"
+            />
+            </View>
+            <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                Start
+            </Button>
+
+
+        </View>
     );
+    }
 };
+
 
 const styles = StyleSheet.create({
     toggleIcons: {
@@ -67,10 +124,19 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    container1: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    loginButton:{
+        position: 'absolute',
+        right: 10,
+        top: 45
+      },
 });
 
 const homeScreenStyles = StyleSheet.create({
@@ -79,17 +145,6 @@ const homeScreenStyles = StyleSheet.create({
         flexDirection: 'row',
         //backgroundColor: 'red',
     },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'row',
-        flexWrap: "wrap",
-    },
 });
 
-export default ProfilePage;
+export default HomePage;
