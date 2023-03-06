@@ -51,6 +51,9 @@ const HomePage = () => {
                             minimumTrackTintColor="#FFFFFF"
                             maximumTrackTintColor="#000000"
                         />
+                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                            Start
+                        </Button>
                         <StatusBar style="auto" />
                     </View>
                 </View>
@@ -83,7 +86,17 @@ const HomePage = () => {
                   </Text>
             </View>
 
-            <Button style={{top:95}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+            <View>
+            <Slider
+            style={{width: 300, height: 40, top:30}}
+            minimumValue={0}
+            maximumValue={100}
+            step={10}
+            minimumTrackTintColor="#FFFFFF"
+            maximumTrackTintColor="#000000"
+            />
+            </View>
+            <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
                 Start
             </Button>
 
