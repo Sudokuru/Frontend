@@ -358,10 +358,6 @@ export default class SudokuBoard extends React.Component {
     getSelectedCell = () => {
         const { board } = this.state;
         const selected = board.get('selected');
-
-        // output the selected cell to console
-        console.log('selected cell', selected);
-
         return selected && board.get('puzzle').getIn([selected.x, selected.y]);
     }
 

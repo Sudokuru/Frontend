@@ -5,24 +5,27 @@ import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import HomeButton from "../Components/Home/HomeButton";
 import SidebarMenu from "../Components/SidebarMenu";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
 
     return (
-        <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Stats</Text>
+        <SafeAreaProvider>
+            <SafeAreaView>
+                <View style={styles.toggleIcons}>
+                    <View style={styles.profileHeader}>
+                        <Text style={styles.profileText}>Stats</Text>
+                    </View>
+                    <View style={styles.profileButtons}>
+                        <HomeButton></HomeButton>
+                        <ProfileButton></ProfileButton>
+                        <LoginButton></LoginButton>
+                    </View>
                 </View>
-                <View style={styles.profileButtons}>
-                    <HomeButton></HomeButton>
-                    <ProfileButton></ProfileButton>
-                    <LoginButton></LoginButton>
+                <View style={homeScreenStyles.home}>
                 </View>
-            </View>
-            <View style={homeScreenStyles.home}>
-            </View>
-        </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
