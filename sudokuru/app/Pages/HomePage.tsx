@@ -7,6 +7,7 @@ import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
+import CCarousel from "../Components/Home/Carousel";
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
@@ -38,7 +39,7 @@ const ProfilePage = () => {
                 </View>
                 <View style={homeScreenStyles.lessons}>
                     <View style={styles.container}>
-                        <SudokuBoard/>
+                        <CCarousel/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
