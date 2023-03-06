@@ -7,7 +7,7 @@ import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
-
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
 const SudokuPage = () => {
@@ -21,24 +21,26 @@ const SudokuPage = () => {
     }
 
     return (
-        <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Sudokuru</Text>
+        <SafeAreaProvider>
+            <SafeAreaView>
+                <View style={styles.toggleIcons}>
+                    <View style={styles.profileHeader}>
+                        <Text style={styles.profileText}>Sudokuru</Text>
+                    </View>
+                    <View style={styles.profileButtons}>
+                        <StatisticsButton></StatisticsButton>
+                        <ProfileButton></ProfileButton>
+                        <LoginButton></LoginButton>
+                    </View>
                 </View>
-                <View style={styles.profileButtons}>
-                    <StatisticsButton></StatisticsButton>
-                    <ProfileButton></ProfileButton>
-                    <LoginButton></LoginButton>
+                <View style={homeScreenStyles.home}>
+                    <View style={styles.container}>
+                        <SudokuBoard/>
+                        <StatusBar style="auto" />
+                    </View>
                 </View>
-            </View>
-            <View style={homeScreenStyles.home}>
-                <View style={styles.container}>
-                    <SudokuBoard/>
-                    <StatusBar style="auto" />
-                </View>
-            </View>
-        </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
