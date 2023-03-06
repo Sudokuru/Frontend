@@ -1,19 +1,30 @@
-import {StyleSheet, View, ViewComponent} from "react-native";
-import React from "react";
-import LessonCard from "../Components/Learn/LessonCard";
-import SidebarMenu from "../Components/SidebarMenu";
-import {Text} from "react-native-paper";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import ProfileButton from "../Components/Profile/ProfileButton";
+import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
+import {StyleSheet, View} from "react-native";
+import {Text} from 'react-native-paper';
+import ProfileButton from "../Components/Profile/ProfileButton";
+import StatisticsButton from "../Components/Statistics/StatisticsButton";
+import SidebarMenu from "../Components/SidebarMenu";
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import {StatusBar} from "expo-status-bar";
 
+import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
-const LearnPage = () => {
+const ProfilePage = () => {
+
+    let [fontsLoaded] = useFonts({
+        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
+
     return (
         <View>
             <View style={styles.toggleIcons}>
                 <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Learn Strategies</Text>
+                    <Text style={styles.profileText}>Sudokuru</Text>
                 </View>
                 <View style={styles.profileButtons}>
                     <StatisticsButton></StatisticsButton>
@@ -26,28 +37,10 @@ const LearnPage = () => {
                     <SidebarMenu></SidebarMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
-                    <LessonCard title={"Naked Single"}></LessonCard>
-                    <LessonCard title={"Hidden Single"}></LessonCard>
-                    <LessonCard title={"Naked Pair"}></LessonCard>
-                    <LessonCard title={"Naked Triplet"}></LessonCard>
-                    <LessonCard title={"Naked Quadruplet"}></LessonCard>
-                    <LessonCard title={"Naked Quintuplet"}></LessonCard>
-                    <LessonCard title={"Naked Sextuplet"}></LessonCard>
-                    <LessonCard title={"Naked Septuplet"}></LessonCard>
-                    <LessonCard title={"Naked Octuplet"}></LessonCard>
-                    <LessonCard title={"Hidden Pair"}></LessonCard>
-                    <LessonCard title={"Hidden Triplet"}></LessonCard>
-                    <LessonCard title={"Hidden Quadruplet"}></LessonCard>
-                    <LessonCard title={"Hidden Quintuplet"}></LessonCard>
-                    <LessonCard title={"Hidden Sextuplet"}></LessonCard>
-                    <LessonCard title={"Hidden Septuplet"}></LessonCard>
-                    <LessonCard title={"Hidden Octuplet"}></LessonCard>
-                    <LessonCard title={"Pointing Pair"}></LessonCard>
-                    <LessonCard title={"Pointing Triplet"}></LessonCard>
-                    <LessonCard title={"Box Line Reduction"}></LessonCard>
-                    <LessonCard title={"X_Wing"}></LessonCard>
-                    <LessonCard title={"Swordfish"}></LessonCard>
-                    <LessonCard title={"Singles Chaining"}></LessonCard>
+                    <View style={styles.container}>
+                        <SudokuBoard/>
+                        <StatusBar style="auto" />
+                    </View>
                 </View>
             </View>
         </View>
@@ -72,6 +65,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 const homeScreenStyles = StyleSheet.create({
@@ -93,4 +92,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default LearnPage;
+export default ProfilePage;

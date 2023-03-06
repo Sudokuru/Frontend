@@ -29,6 +29,24 @@ const Ccarousel = () =>{
                                                 index == 10 ? navigation.navigate('SwordfishLesson') :
                                                     index == 11 ? navigation.navigate('SinglesChainingLesson') : navigation.navigate('Home');
     };
+
+    function getLessonName(index: number):string {
+        let lessonName: string;
+        index == 0 ? lessonName = 'AdjustNotesLesson' :
+            index == 1 ? lessonName = 'SimplifyNotesLesson' :
+                index == 2 ? lessonName = 'NakedSingleLesson' :
+                    index == 3 ? lessonName = 'HiddenSingleLesson' :
+                        index == 4 ? lessonName = 'NakedSetLesson' :
+                            index == 5 ? lessonName = 'HiddenSetLesson' :
+                                index == 6 ? lessonName = 'PointingPairLesson' :
+                                    index == 7 ? lessonName = 'PointingTripletLesson' :
+                                        index == 8 ? lessonName = 'BoxLineReductionLesson' :
+                                            index == 9 ? lessonName = 'XWingLesson' :
+                                                index == 10 ? lessonName = 'SwordfishLesson' :
+                                                    index == 11 ? lessonName = 'SinglesChainingLesson' : lessonName = 'Null';
+        return lessonName;
+    }
+
     if(Platform.OS === 'web'){
     return(
         <View>
@@ -55,7 +73,7 @@ const Ccarousel = () =>{
                             }}
                         >
                             <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                                {index}
+                                {getLessonName(index)}
                             </Text>
                         </View>
                 )}
