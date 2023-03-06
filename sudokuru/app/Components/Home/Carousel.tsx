@@ -109,8 +109,8 @@ const Ccarousel = () =>{
                       parallaxScrollingScale: 0.8,
                       parallaxScrollingOffset: 120,
                     }}
-                    scrollAnimationDuration={1000}
-                    onSnapToItem={(index) => console.log('current index:', index)}
+                    scrollAnimationDuration={200}
+                    onSnapToItem={(index) => setIndex(index)}
                     renderItem={({ index }) => (
                         <View
                             style={{
