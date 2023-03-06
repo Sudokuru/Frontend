@@ -4,14 +4,10 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowD
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
-import { EraseIcon } from '../../assets/EraseIcon.jsx';
-import { HintIcon } from '../../assets/HintIcon.jsx';
-import { NoteIcon } from '../../assets/NoteIcon.jsx';
-import { UndoIcon } from '../../assets/UndoIcon.jsx';
-// import HintIcon from '../../assets/hint.svg';
-// import NoteIcon from '../../assets/note.svg';
-// import NoteOffIcon from '../../assets/noteoff.svg';
-// import UndoIcon from '../../assets/undo.svg';
+import EraseComponent from '../../assets/eraseComponent';
+import HintComponent from '../../assets/hintComponent.jsx';
+import NoteComponent from '../../assets/noteComponent.jsx';
+import UndoComponent from '../../assets/undoComponent.jsx';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 
@@ -151,6 +147,9 @@ const styles = (cellSize) => StyleSheet.create({
     actionControlView: {
         borderWidth: 1,
         flexDirection: 'row',
+    },
+    iconControlRow: {
+        borderWidth: 1
     }
 });
 
@@ -661,20 +660,17 @@ export default class SudokuBoard extends React.Component {
         return (
             <View style={styles().actionControlView}>
                 <TouchableOpacity onPress={history.size ? this.undo : null}>
-                    <Text>Undo</Text>
-                    <UndoIcon />
+                    <UndoComponent />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.toggleNoteMode}>
-                    <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
-                    <NoteIcon />
+                    {/* <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text> */}
+                    <NoteComponent />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
-                    <Text>Erase</Text>
-                    <EraseIcon />
+                    <EraseComponent />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
-                    <Text>Hint</Text>
-                    <HintIcon />
+                    <HintComponent />
                 </TouchableOpacity>
             </View>
         );
