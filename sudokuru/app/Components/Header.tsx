@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginButton from "./Auth0/LoginButton";
-import ProfileButton from "./Landing/HomeButton";
+import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
 import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';

@@ -11,7 +11,7 @@ import CCarousel from "../Components/Home/Carousel";
 
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
-const ProfilePage = () => {
+const HomePage = () => {
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -97,4 +97,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default ProfilePage;
+export default HomePage;

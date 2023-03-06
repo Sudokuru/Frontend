@@ -3,7 +3,7 @@ import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
-import HomeButton from "../Components/Landing/HomeButton";
+import HomeButton from "../Components/Home/HomeButton";
 import SidebarMenu from "../Components/SidebarMenu";
 
 const ProfilePage = () => {
