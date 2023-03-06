@@ -453,10 +453,31 @@ export default class SudokuBoard extends React.Component {
         this.setState({ board });
     }
 
+    /*
+     * Called when the user hits the 'erase' button
+     * If notes are present in selected cell, removes all notes
+     * If value is present in selected cell, removes value if value is incorrect
+     */
     eraseSelected = () => {
-        const selectedCell = this.getSelectedCell();
+        let { board, solution } = this.state;
+        let selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
-        this.fillNumber(false);
+
+        const { x, y } = board.get('selected');
+        const currentValue = selectedCell.get('value');
+        let actualValue = solution[x][y];
+        if (currentValue) {
+            if (currentValue !== actualValue){
+                this.fillNumber(false);
+            } else {
+                // User has attempted to remove a correct value
+                return;
+            }
+        } else {
+            selectedCell = selectedCell.set('notes', Set());
+            board = board.setIn(['puzzle', x, y], selectedCell);
+            this.updateBoard(board);
+        }
     }
 
     fillSelectedWithSolution = () => {
