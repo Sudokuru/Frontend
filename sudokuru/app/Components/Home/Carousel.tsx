@@ -1,19 +1,7 @@
-import React, {useState} from 'react';
-import {
-    View,
-    StyleSheet,
-    Dimensions,
-    Pressable,
-    Text,
-    Image,
-    LogBox,
-    TouchableNativeFeedback,
-    Platform,
-    TouchableOpacity,
-    useWindowDimensions
-} from 'react-native';
-import { Button } from 'react-native-paper';
+import React from 'react';
+import { View, StyleSheet, Dimensions, Pressable, Text, Image, LogBox, TouchableNativeFeedback, Platform, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
+import { Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 
 const Ccarousel = () =>{
@@ -47,7 +35,7 @@ const Ccarousel = () =>{
             navigation.navigate('Landing');
         }
     };
-
+    if(Platform.OS === 'web'){
     return(
         <View>
             <Carousel
@@ -82,6 +70,40 @@ const Ccarousel = () =>{
                 Start Lesson
             </Button>
         </View>    );
+        }
+ else{
+    return(
+    <Carousel
+                    loop
+                    width={width}
+                    height={width / 1.5}
+                    autoPlay={false}
+                    data={[...new Array(6).keys()]}
+                    mode='parallax'
+                    modeConfig={{
+                      parallaxScrollingScale: 0.8,
+                      parallaxScrollingOffset: 120,
+                    }}
+                    scrollAnimationDuration={1000}
+                    onSnapToItem={(index) => console.log('current index:', index)}
+                    renderItem={({ index }) => (
+                        <View
+                            style={{
+                                flex: 1,
+                                borderWidth: 1,
+                                justifyContent: 'center',width:360, right: -25,
+                                backgroundColor: '#F2F2F2'
+                            }}
+                        >
+                            <Text style={{ textAlign: 'center', fontSize: 30 }}>
+                                {index}
+                            </Text>
+
+                        </View>
+                    )}
+                />);
+
+ }
 };
 
 export default Ccarousel;

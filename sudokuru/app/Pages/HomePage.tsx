@@ -38,7 +38,7 @@ const ProfilePage = () => {
                     <SidebarMenu></SidebarMenu>
                 </View>
                 <View style={homeScreenStyles.lessons}>
-                    <View style={styles.container}>
+                    <View style={styles.container1}>
                         <CCarousel/>
                         <StatusBar style="auto" />
                     </View>
@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    container1: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
 });
 
 const homeScreenStyles = StyleSheet.create({
