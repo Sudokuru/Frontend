@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions} from 'react-native';
+import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
@@ -174,7 +174,7 @@ const styles = (cellSize) => StyleSheet.create({
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const cellSize = getCellSize();
     return (
-        <TouchableOpacity onPress={onClick}>
+        <Pressable onPress={onClick}>
             <View
                 key={number}
                 className="number"
@@ -182,7 +182,7 @@ const NumberControl = ({ number, onClick, completionPercentage }) => {
             >
                 <View><Text style={styles(cellSize).numberControlText}>{number}</Text></View>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 
@@ -221,7 +221,7 @@ const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
     return (
-        <TouchableOpacity onPress={() => onClick(x, y)}>
+        <Pressable onPress={() => onClick(x, y)}>
             <View style={[styles(cellSize).cellView,
                 (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
                 (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -261,7 +261,7 @@ const Cell = (props) => {
                     </Text>
                 }
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 
@@ -621,20 +621,20 @@ export default class SudokuBoard extends React.Component {
         const inNoteMode = board.get('inNoteMode');
         return (
             <View>
-                <TouchableOpacity onPress={history.size ? this.undo : null}>
+                <Pressable onPress={history.size ? this.undo : null}>
                     <Text>Undo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.toggleNoteMode}>
+                </Pressable>
+                <Pressable onPress={this.toggleNoteMode}>
                     <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
+                </Pressable>
+                <Pressable onPress={!prefilled ? this.eraseSelected : null}>
                     {/* <Text>Erase</Text> */}
                     <Text>Erase</Text>
                     {/* <SVGImg width={200} height={200} /> */}
-                </TouchableOpacity>
-                <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
+                </Pressable>
+                <Pressable onPress={!prefilled ? this.fillSelectedWithSolution : null}>
                     <Text>Hint</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
         );
     }
