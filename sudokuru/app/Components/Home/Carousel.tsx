@@ -21,7 +21,9 @@ const Ccarousel = () =>{
         //const size = useWindowDimensions();
         //const width = Math.min(size.width, size.height);
         //console.log(width);
-    const width = Dimensions.get('window').width;
+    //const width = Dimensions.get('window').width;
+    const size = useWindowDimensions();
+    const width = Math.min(size.width, size.height);
 
     const navigation: any = useNavigation();
 

@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "web": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider expo start --web --https",
     "build:webpack": "npx expo export:web",
-    "vercel:preview": "vercel --name sudokuru-dev --yes"
+    "vercel:preview": "vercel --name sudokuru-dev --yes",
+    "postinstall": "npx patch-package"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
@@ -47,6 +48,7 @@
     "@babel/core": "^7.12.9",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
+    "patch-package": "^6.5.1",
     "react-native-svg-transformer": "^1.0.0",
     "typescript": "^4.6.3"
   },
