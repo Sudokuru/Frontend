@@ -6,7 +6,8 @@ import PropTypes from 'prop-types';
 
 import EraseComponent from '../../assets/eraseComponent';
 import HintComponent from '../../assets/hintComponent.jsx';
-import NoteComponent from '../../assets/noteComponent.jsx';
+import NoteOnComponent from '../../assets/noteOnComponent.jsx';
+import NoteOffComponent from '../../assets/noteOffComponent.jsx';
 import UndoComponent from '../../assets/undoComponent.jsx';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
@@ -147,10 +148,17 @@ const styles = (cellSize) => StyleSheet.create({
     actionControlView: {
         borderWidth: 1,
         flexDirection: 'row',
+        width: '100%',
+        height: cellSize * (48 / 40),
+        justifyContent: 'space-evenly',
     },
     iconControlRow: {
         borderWidth: 1
-    }
+    },
+    actionSvgStyle: {
+        transform: 0.2,
+        // height: cellSize * (48 / 40),
+    },
 });
 
 // function getBackGroundColor({
@@ -603,17 +611,17 @@ export default class SudokuBoard extends React.Component {
         return (
             <View style={styles().actionControlView}>
                 <TouchableOpacity onPress={history.size ? this.undo : null}>
-                    <UndoComponent />
+                    <UndoComponent styles={styles().actionSvgStyle}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.toggleNoteMode}>
                     {/* <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text> */}
-                    <NoteComponent />
+                    <View>{inNoteMode ? <NoteOnComponent styles={styles().actionSvgStyle}/> : <NoteOffComponent styles={styles().actionSvgStyle}/>}</View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
-                    <EraseComponent />
+                    <EraseComponent styles={styles().actionSvgStyle}/>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
-                    <HintComponent />
+                    <HintComponent styles={styles().actionSvgStyle}/>
                 </TouchableOpacity>
             </View>
         );
