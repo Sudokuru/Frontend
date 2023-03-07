@@ -52,85 +52,99 @@ const Ccarousel = () =>{
     }
 
     if(Platform.OS === 'web'){
-    return(
-        <View>
-            <Carousel
-                loop
-                width={width}
-                height={width / 4}
-                ref={ref}
-                autoPlay={false}
-                data={[...new Array(12).keys()]}
-                mode='parallax'
-                modeConfig={{
-                  parallaxScrollingScale: 0.5,
-                  parallaxScrollingOffset: 1250,
-                }}
-                scrollAnimationDuration={100}
-                onSnapToItem={(index) => setIndex(index)}
-                renderItem={({ index }) => (
-                        <View
-                            style={{
-                                flex: 1,
-                                borderWidth: 1,
-                                justifyContent: 'center',
-                                backgroundColor: '#F2F2F2'
-                            }}
-                        >
-                            <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                                {getLessonName(index)}
-                            </Text>
-                        </View>
-                )}
-            />
-            <Button onPress={() => ref.current?.scrollTo({count: -1})}>
-                Back
-            </Button>
-            <Button onPress={() => navigate(index)}>
-                Start Lesson
-            </Button>
-            <Button onPress={() => ref.current?.scrollTo({count: 1})}>
-                Forward
-            </Button>
-        </View>    );
-        }
- else{
-    return(
-    <View>
-    <Carousel
+        return(
+            <View>
+                <Carousel
                     loop
                     width={width}
-                    height={width / 1.5}
+                    height={width / 4}
+                    ref={ref}
                     autoPlay={false}
-                    data={[...new Array(6).keys()]}
+                    data={[...new Array(12).keys()]}
                     mode='parallax'
                     modeConfig={{
-                      parallaxScrollingScale: 0.8,
-                      parallaxScrollingOffset: 120,
+                      parallaxScrollingScale: 0.5,
+                      parallaxScrollingOffset: 1250,
                     }}
-                    scrollAnimationDuration={200}
+                    scrollAnimationDuration={100}
                     onSnapToItem={(index) => setIndex(index)}
                     renderItem={({ index }) => (
-                        <View
-                            style={{
-                                flex: 1,
-                                borderWidth: 1,
-                                justifyContent: 'center',width:360, right: -25,
-                                backgroundColor: '#F2F2F2'
-                            }}
-                        >
-                            <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                                {getLessonName(index)}
-                            </Text>
-                        </View>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    borderWidth: 1,
+                                    justifyContent: 'center',
+                                    backgroundColor: '#F2F2F2'
+                                }}
+                            >
+                                <Text style={{ textAlign: 'center', fontSize: 30 }}>
+                                    {getLessonName(index)}
+                                </Text>
+                            </View>
                     )}
                 />
-            <Button onPress={() => navigate(index)}>
-                Start Lesson
-            </Button>
-        </View> );
-
- }
+                <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                    <Button onPress={() => ref.current?.scrollTo({count: -1})}>
+                        Back
+                    </Button>
+                    <Button onPress={() => navigate(index)}>
+                        Start Lesson
+                    </Button>
+                    <Button onPress={() => ref.current?.scrollTo({count: 1})}>
+                        Forward
+                    </Button>
+                </View>
+            </View>
+        );
+    }
+     else{
+        return(
+            <View>
+                <Carousel
+                        loop
+                        width={width}
+                        height={width / 1.5}
+                        ref={ref}
+                        autoPlay={false}
+                        data={[...new Array(6).keys()]}
+                        mode='parallax'
+                        modeConfig={{
+                          parallaxScrollingScale: 0.8,
+                          parallaxScrollingOffset: 120,
+                        }}
+                        scrollAnimationDuration={200}
+                        onSnapToItem={(index) => setIndex(index)}
+                        renderItem={({ index }) => (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    borderWidth: 1,
+                                    justifyContent: 'center',width:360, right: -25,
+                                    backgroundColor: '#F2F2F2'
+                                }}
+                            >
+                                <Text style={{ textAlign: 'center', fontSize: 30 }}>
+                                    {getLessonName(index)}
+                                </Text>
+                            </View>
+                        )}
+                    />
+                    <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                        <Button onPress={() => ref.current?.scrollTo({count: -1})}>
+                            Back
+                        </Button>
+                        <Button onPress={() => navigate(index)}>
+                            Start Lesson
+                        </Button>
+                        <Button onPress={() => ref.current?.scrollTo({count: 1})}>
+                            Forward
+                        </Button>
+                    </View>
+            </View>
+        );
+     }
 };
+
+
 
 export default Ccarousel;
