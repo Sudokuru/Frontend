@@ -77,6 +77,7 @@ const Ccarousel = () =>{
                                     backgroundColor: '#F2F2F2'
                                 }}
                             >
+                                {/*When user touches Lesson Icon text they will be navigated to the given lesson*/}
                                 <Button style={{alignItems: 'center'}} onPress={() => navigate(index)}>
                                     <Text style={{ fontSize: 30 }}>{getLessonName(index)}</Text>
                                 </Button>
@@ -123,8 +124,8 @@ const Ccarousel = () =>{
                                     backgroundColor: '#F2F2F2'
                                 }}
                             >
-                                {/*When user touches Icon they will be navigated to the given lesson*/}
-                                <Button style={{alignItems: 'center'}} contentStyle={{ paddingVertical: 80, paddingHorizontal: 70}} onPress={() => navigate(index)}>
+                                {/*When user touches Lesson Icon they will be navigated to the given lesson*/}
+                                <Button contentStyle={{height: '100%'}} onPress={() => navigate(index)}>
                                     {getLessonName(index)}
                                 </Button>
                             </View>
