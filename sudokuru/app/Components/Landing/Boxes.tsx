@@ -1,53 +1,55 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import {StyleSheet, Text, View, Image, Pressable, useWindowDimensions} from 'react-native';
 import LoginButton from '../Auth0/LoginButton';
 import {useNavigation} from "@react-navigation/native";
 
 const Boxes = () => {
 
     const navigation: any = useNavigation();
+    const size = useWindowDimensions();
+    const reSize = Math.min(size.width, size.height);
 
         return(
-            <View style={styles.container}>
-                <View style={styles.box1}>
+            <View style={styles(reSize).container}>
+                <View style={styles(reSize).box1}>
                    
                         <Image style={{
             resizeMode: 'cover',
-            height: 100,
-            width: 200,
+            height: reSize / 10,
+            width: reSize / 5,
           }} source={require('./goldLogoText.png')} />
                 </View>
             
-                <View style={styles.midbox}>
+                <View style={styles(reSize).midbox}>
                         <Text> </Text>
                 </View>
 
-                <View style={styles.menubox}>
-                    <View style={styles.inner2}>
+                <View style={styles(reSize).menubox}>
+                    <View style={styles(reSize).inner2}>
                         <LoginButton/>
                     </View>
                 </View>
-                <View style={styles.boxtext}>
-                    <View style={styles.inner3}>
-                        <Text style={{ fontSize: 45, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
-                        <Text style={{ fontSize: 45, color: '#D9A05B' }}> Sudoku Guru </Text>
+                <View style={styles(reSize).boxtext}>
+                    <View style={styles(reSize).inner3}>
+                        <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
+                        <Text style={{ fontSize: reSize / 20, color: '#D9A05B' }}> Sudoku Guru </Text>
                         <Pressable
                             style={({ pressed }) => [
                             { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
                             ]}
                            onPress={() => navigation.navigate('Home')}>
                             <View>
-                            <Text style={{ fontSize: 40, color: '#f2f2f2' }}> Get Started </Text>
+                            <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Get Started </Text>
                             </View>
                         </Pressable>
                     </View>
                 </View>
-                <View style={styles.box}>
-                    <View style={styles.inner}>
+                <View style={styles(reSize).box}>
+                    <View style={styles(reSize).inner}>
                     <Image style={{
                             resizeMode: 'cover',
-                            height: 400,
-                            width: 400,
+                            height: reSize / 2.5,
+                            width: reSize / 2.5,
                         }} source={require('./App.png')} />
                        
                     </View>
@@ -56,7 +58,7 @@ const Boxes = () => {
         );
 }
 
-const styles = StyleSheet.create({
+const styles = (size: any) => StyleSheet.create({
     container: {
         width: '100%',
         height: '85%',
