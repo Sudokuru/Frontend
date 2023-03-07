@@ -1,13 +1,16 @@
 import React from 'react';
 import {StyleSheet, View, Image} from "react-native";
 import BoardBox from '../Components/Learn/BoardBox';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const PuzzlePage = () => {
 
     return (
-       <View style={styles.container}>
-        <BoardBox/>
-       </View>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                <BoardBox/>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 

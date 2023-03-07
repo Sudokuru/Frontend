@@ -1,13 +1,16 @@
 import React from 'react';
 import {StyleSheet, View} from "react-native";
 import Boxes from '../Components/Landing/Boxes';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const LandingPage = () => {
 
     return (
-       <View style={styles.container}>
-        <Boxes/>
-       </View>
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container}>
+                <Boxes/>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 

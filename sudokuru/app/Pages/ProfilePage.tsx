@@ -7,25 +7,28 @@ import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferences
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeButton from "../Components/Home/HomeButton";
 import SidebarMenu from "../Components/SidebarMenu";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
 
     return (
-        <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileButtons}>
-                    <StatisticsButton></StatisticsButton>
-                    <HomeButton></HomeButton>
-                    <LoginButton></LoginButton>
+        <SafeAreaProvider>
+            <SafeAreaView>
+                <View style={styles.toggleIcons}>
+                    <View style={styles.profileButtons}>
+                        <StatisticsButton></StatisticsButton>
+                        <HomeButton></HomeButton>
+                        <LoginButton></LoginButton>
+                    </View>
                 </View>
-            </View>
-            <View style={homeScreenStyles.home}>
-                <View>
-                    <ThemeToggle></ThemeToggle>
-                    <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
+                <View style={homeScreenStyles.home}>
+                    <View>
+                        <ThemeToggle></ThemeToggle>
+                        <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
+                    </View>
                 </View>
-            </View>
-        </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
