@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
+import Svg, { Path } from "react-native-svg"
 
 import EraseComponent from '../../assets/eraseComponent';
 import HintComponent from '../../assets/hintComponent.jsx';
@@ -70,7 +71,7 @@ const styles = (cellSize) => StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap',
         padding: 0.5,
-        width: '100%'
+        width: cellSize * 9
     },
     boardContainer: {
         display: 'flex',
@@ -145,45 +146,23 @@ const styles = (cellSize) => StyleSheet.create({
         color: '#FF0000',
         backgroundColor: '#FF7C75',
     },
-    actionControlView: {
-        borderWidth: 1,
-        flexDirection: 'row',
-        width: '100%',
-        height: cellSize * (48 / 40),
+    actionControlRow: {
+        width: cellSize ? cellSize * 9 : 80,
+        height: cellSize ? cellSize * (50 / 60) : 80,
         justifyContent: 'space-evenly',
+        alignItems: 'center',
+        flexDirection: 'row',
     },
-    iconControlRow: {
-        borderWidth: 1
+    actionControlButton: {
+        height: cellSize ? cellSize * (0.5) : 1000,
+        width: cellSize ? cellSize * (0.5) : 1000,
+        aspectRatio: 1,
     },
-    actionSvgStyle: {
-        transform: 0.2,
-        // height: cellSize * (48 / 40),
-    },
+    actionControlSvg: {
+        width: '100%',
+        height: '100%'
+    }
 });
-
-// function getBackGroundColor({
-//   conflict, isPeer, sameValue, isSelected,
-// }) {
-//   if (conflict && isPeer && sameValue) {
-//     return DeepOrange200;
-//   } else if (sameValue) {
-//     return LightBlue300;
-//   } else if (isSelected) {
-//     return LightBlue200;
-//   } else if (isPeer) {
-//     return LightBlue100;
-//   }
-//   return false;
-// }
-
-// function getFontColor({ value, conflict, prefilled }) {
-//   if (conflict && !prefilled) {
-//     return DeepOrange600;
-//   } else if (!prefilled && value) {
-//     return ControlNumberColor;
-//   }
-//   return false;
-// }
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const cellSize = getCellSize();
@@ -209,27 +188,6 @@ NumberControl.propTypes = {
 NumberControl.defaultProps = {
     onClick: null,
 };
-
-// const Cell = (props) => {
-//   const {
-//     value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict,
-//   } = props;
-//   const backgroundColor = getBackGroundColor({
-//     conflict, isPeer, sameValue, isSelected,
-//   });
-//   const fontColor = getFontColor({ conflict, prefilled, value });
-//   return (
-//     <View className="cell" onClick={onClick} onKeyDown={onKeyPress} tabIndex="0">
-//     {
-//       notes ? range(9).map(i => (
-//         <View key={i} className="note-number">
-//           {notes.has(i + 1) && <Text>{i + 1}</Text>}
-//         </View>
-//       )) : value && <Text>{value}</Text>
-//     }
-//     </View>
-//   );
-// };
 
 const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
@@ -296,11 +254,62 @@ Cell.defaultProps = {
     value: null,
 };
 
+const ActionRow = (props) => {
+    const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
+    const cellSize = getCellSize();
+    return (
+        <View style={styles(cellSize).actionControlRow}>
+            {/* Undo */}
+            <TouchableOpacity style={styles(cellSize).actionControlButton} onPress={history.size ? undo : null}>
+                <Svg height="100%" width="100%" viewBox="0 0 50 50">
+                    <Path d="M14 38v-3h14.45q3.5 0 6.025-2.325Q37 30.35 37 26.9t-2.525-5.775Q31.95 18.8 28.45 18.8H13.7l5.7 5.7-2.1 2.1L8 17.3 17.3 8l2.1 2.1-5.7 5.7h14.7q4.75 0 8.175 3.2Q40 22.2 40 26.9t-3.425 7.9Q33.15 38 28.4 38Z"/>
+                </Svg> 
+            </TouchableOpacity>
+
+            {/* Note mode */}
+            <TouchableOpacity style={styles(cellSize).actionControlButton} onPress={toggleNoteMode}>
+                {inNoteMode 
+                    ? 
+                    <Svg height="100%" width="100%" viewBox="0 0 50 50">
+                        <Path d="M9 39h2.2l22.15-22.15-2.2-2.2L9 36.8Zm30.7-24.3-6.4-6.4 2.1-2.1q.85-.85 2.1-.85t2.1.85l2.2 2.2q.85.85.85 2.1t-.85 2.1Zm-2.1 2.1L12.4 42H6v-6.4l25.2-25.2Zm-5.35-1.05-1.1-1.1 2.2 2.2Z"/>
+                    </Svg>
+                    : 
+                    <Svg height="100%" width="100%" viewBox="0 0 50 50">
+                        <Path d="M39.8 44.2 25 29.4 12.4 42H6v-6.4L18.6 23 3.8 8.2l2.1-2.1 36 36Zm-18-18-1.1-1.1 1.1 1.1 1.1 1.1Zm7.4-1-2.1-2.1 6.25-6.25-2.2-2.2-6.25 6.25-2.1-2.1 8.4-8.4 6.4 6.4Zm10.5-10.5-6.4-6.4 2.1-2.1q.85-.85 2.125-.825 1.275.025 2.125.875L41.8 8.4q.85.85.875 2.075Q42.7 11.7 41.8 12.6ZM26 22ZM9 39h2.2l11.7-11.7-2.2-2.2L9 36.8Z" />
+                    </Svg>
+                }
+            </TouchableOpacity>
+            {/* Erase */}
+            <TouchableOpacity style={styles(cellSize).actionControlButton} onPress={!prefilled ? eraseSelected : null}>
+                <Svg height="100%" width="100%" viewBox="0 0 50 50">
+                    <Path d="m22.4 31.7 5.6-5.6 5.6 5.6 2.15-2.15L30.1 24l5.55-5.55-2.15-2.15-5.5 5.6-5.6-5.6-2.15 2.15L25.9 24l-5.65 5.55ZM6 24l8.45-11.95q.65-.9 1.55-1.475.9-.575 2-.575h21q1.25 0 2.125.875T42 13v22q0 1.25-.875 2.125T39 38H18q-1.1 0-2-.575-.9-.575-1.55-1.475Zm3.75 0 7.7 11H39V13H17.45ZM39 24V13v22Z" />
+                </Svg>
+            </TouchableOpacity>
+            {/* Hint */}
+            <TouchableOpacity style={styles(cellSize).actionControlButton} onPress={!prefilled ? fillSelectedWithSolution : null}>
+                <Svg height="100%" width="100%" viewBox="0 0 50 50">
+                    <Path d="M24.2 35.65q.8 0 1.35-.55t.55-1.35q0-.8-.55-1.35t-1.35-.55q-.8 0-1.35.55t-.55 1.35q0 .8.55 1.35t1.35.55Zm-1.75-7.3h2.95q0-1.3.325-2.375T27.75 23.5q1.55-1.3 2.2-2.55.65-1.25.65-2.75 0-2.65-1.725-4.25t-4.575-1.6q-2.45 0-4.325 1.225T17.25 16.95l2.65 1q.55-1.4 1.65-2.175 1.1-.775 2.6-.775 1.7 0 2.75.925t1.05 2.375q0 1.1-.65 2.075-.65.975-1.9 2.025-1.5 1.3-2.225 2.575-.725 1.275-.725 3.375ZM24 44q-4.1 0-7.75-1.575-3.65-1.575-6.375-4.3-2.725-2.725-4.3-6.375Q4 28.1 4 24q0-4.15 1.575-7.8 1.575-3.65 4.3-6.35 2.725-2.7 6.375-4.275Q19.9 4 24 4q4.15 0 7.8 1.575 3.65 1.575 6.35 4.275 2.7 2.7 4.275 6.35Q44 19.85 44 24q0 4.1-1.575 7.75-1.575 3.65-4.275 6.375t-6.35 4.3Q28.15 44 24 44Zm0-3q7.1 0 12.05-4.975Q41 31.05 41 24q0-7.1-4.95-12.05Q31.1 7 24 7q-7.05 0-12.025 4.95Q7 16.9 7 24q0 7.05 4.975 12.025Q16.95 41 24 41Zm0-17Z"/>
+                </Svg>
+            </TouchableOpacity>
+        </View>
+    );
+};
+
+ActionRow.propTypes = {
+    inNoteMode: PropTypes.bool.isRequired,
+    prefilled: PropTypes.bool.isRequired,
+    undo: PropTypes.func.isRequired,
+    toggleNoteMode: PropTypes.func.isRequired,
+    eraseSelected: PropTypes.func.isRequired,
+    fillSelectedWithSolution: PropTypes.func.isRequired,
+};
+
 /*
  * This function retrieves the user's device size and calculates the cell size
  */
 function getCellSize() {
     const size = useWindowDimensions();
+    console.log(Math.min(size.width, size.height) / 12);
     return Math.min(size.width, size.height) / 12;
 }
 
@@ -608,22 +617,20 @@ export default class SudokuBoard extends React.Component {
         const selectedCell = this.getSelectedCell();
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
+        const undo = this.undo;
+        const toggleNoteMode = this.toggleNoteMode;
+        const eraseSelected = this.eraseSelected;
+        const fillSelectedWithSolution = this.fillSelectedWithSolution;
         return (
-            <View style={styles().actionControlView}>
-                <TouchableOpacity onPress={history.size ? this.undo : null}>
-                    <UndoComponent styles={styles().actionSvgStyle}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.toggleNoteMode}>
-                    {/* <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text> */}
-                    <View>{inNoteMode ? <NoteOnComponent styles={styles().actionSvgStyle}/> : <NoteOffComponent styles={styles().actionSvgStyle}/>}</View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={!prefilled ? this.eraseSelected : null}>
-                    <EraseComponent styles={styles().actionSvgStyle}/>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={!prefilled ? this.fillSelectedWithSolution : null}>
-                    <HintComponent styles={styles().actionSvgStyle}/>
-                </TouchableOpacity>
-            </View>
+            <ActionRow
+                history={history}
+                prefilled={prefilled}
+                inNoteMode={inNoteMode}
+                undo={undo}
+                toggleNoteMode={toggleNoteMode}
+                eraseSelected={eraseSelected}
+                fillSelectedWithSolution={fillSelectedWithSolution}
+            />
         );
     }
 
@@ -649,7 +656,7 @@ export default class SudokuBoard extends React.Component {
             this.generateGame();
         }
         return (
-            <View>
+            <View style={styles().board}>
                 {board && this.renderPuzzle()}
                 {board && this.renderControls()}
             </View>
