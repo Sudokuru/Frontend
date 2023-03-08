@@ -235,7 +235,7 @@ const Cell = (props) => {
 Cell.propTypes = {
     value: PropTypes.number,
     onClick: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
+    onValueChange: PropTypes.func.isRequired,
     isPeer: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     sameValue: PropTypes.bool.isRequired,
@@ -259,24 +259,24 @@ const ActionRow = (props) => {
         <View style={styles(cellSize).actionControlRow}>
             {/* Undo */}
             <Button onPress={history.size ? undo : null}>
-                <MaterialCommunityIcons name="undo" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
+                <MaterialCommunityIcons name="undo" size={cellSize/(sizeConst)}/>
             </Button>
             {/* Note mode */}
             <Button onPress={toggleNoteMode}>
                 {inNoteMode
                         ? // note mode on
-                    <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
+                    <MaterialCommunityIcons name="pencil-outline" size={cellSize/(sizeConst)}/>
                         : // note mode off
-                    <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
+                    <MaterialCommunityIcons name="pencil-off-outline" size={cellSize/(sizeConst)}/>
                 }
             </Button>
             {/* Erase */}
             <Button onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
+                <MaterialCommunityIcons name="eraser" size={cellSize/(sizeConst)}/>
             </Button>
             {/* Hint */}
             <Button onPress={!prefilled ? fillSelectedWithSolution : null}>
-                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
+                <MaterialCommunityIcons name="help" size={cellSize/(sizeConst)}/>
             </Button>
         </View>
     );
