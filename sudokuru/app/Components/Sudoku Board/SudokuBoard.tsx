@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, useWindowDimensions } from 'react-native';
-import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions} from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import Svg, { Path } from "react-native-svg"
@@ -275,7 +274,6 @@ const ActionRow = (props) => {
                     <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlButton.height/1.5}/>
                         : // note mode off
                     <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlButton.height/1.5}/>
-
                 }
             </Button>
             {/* Erase */}
