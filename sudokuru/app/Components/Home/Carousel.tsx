@@ -8,6 +8,7 @@ import {
 import Carousel, {ICarouselInstance} from 'react-native-reanimated-carousel';
 import { Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
+import {AntDesign} from "@expo/vector-icons";
 
 const Ccarousel = () =>{
 
@@ -86,13 +87,13 @@ const Ccarousel = () =>{
                 />
                 <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
                     <Button onPress={() => ref.current?.scrollTo({count: -1})}>
-                        Back
+                        <AntDesign name="leftcircleo" size={18}/>
                     </Button>
                     <Button onPress={() => navigate(index)}>
                         Start Lesson
                     </Button>
                     <Button onPress={() => ref.current?.scrollTo({count: 1})}>
-                        Forward
+                        <AntDesign name="rightcircleo" size={18}/>
                     </Button>
                 </View>
             </View>
@@ -133,13 +134,13 @@ const Ccarousel = () =>{
                     />
                     <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
                         <Button onPress={() => ref.current?.scrollTo({count: -1})}>
-                            Back
+                            <AntDesign name="leftcircleo" size={18}/>
                         </Button>
                         <Button onPress={() => navigate(index)}>
                             Start Lesson
                         </Button>
                         <Button onPress={() => ref.current?.scrollTo({count: 1})}>
-                            Forward
+                            <AntDesign name="rightcircleo" size={18}/>
                         </Button>
                     </View>
             </View>
