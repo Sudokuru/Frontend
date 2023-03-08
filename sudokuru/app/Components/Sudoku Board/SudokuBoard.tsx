@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
-import Svg, { Path } from "react-native-svg"
 
 import EraseComponent from '../../assets/eraseComponent';
 import HintComponent from '../../assets/hintComponent.jsx';
@@ -74,7 +73,7 @@ const styles = (cellSize) => StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap',
         padding: 0.5,
-        width: cellSize * 9
+        width: cellSize ? cellSize * 9  : fallbackHeight * 9
     },
     boardContainer: {
         display: 'flex',
@@ -157,8 +156,8 @@ const styles = (cellSize) => StyleSheet.create({
         flexDirection: 'row',
     },
     actionControlButton: {
-        height: cellSize ? cellSize * (0.8) : 1000,
-        width: cellSize ? cellSize * (0.8) : 1000,
+        height: cellSize ? cellSize * (0.5) : 1000,
+        width: cellSize ? cellSize * (0.5) : 1000,
         aspectRatio: 1,
     },
     actionControlSvg: {
@@ -278,11 +277,11 @@ const ActionRow = (props) => {
             </Button>
             {/* Erase */}
             <Button onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlButton.height/2}/>
+                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlButton.height/1.5}/>
             </Button>
             {/* Hint */}
-            <Button style={{height: '100%'}} onPress={!prefilled ? fillSelectedWithSolution : null}>
-                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlButton.height/3}/>
+            <Button onPress={!prefilled ? fillSelectedWithSolution : null}>
+                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlButton.height/1.7}/>
             </Button>
         </View>
     );
