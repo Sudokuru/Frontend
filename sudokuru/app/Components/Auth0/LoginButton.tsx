@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import {Alert, Platform} from "react-native";
+import { Alert, Platform, StyleSheet, Text, View } from "react-native";
 import {Button} from "react-native-paper"
 import { DOMAIN, CLIENT_ID, AUDIENCE, SCOPE } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
@@ -144,5 +144,15 @@ const LoginButton = () => {
             )
     );
 }
+
+const styles = StyleSheet.create({
+    profileHeader: {
+        fontSize: 40,
+    },
+    loginButton: {
+        textAlign: "right",
+        backgroundColor: '#f2f2f2'
+    }
+});
 
 export default LoginButton;

@@ -3,26 +3,41 @@ import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
-import HomeButton from "../Components/Home/HomeButton";
+import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SidebarMenu from "../Components/SidebarMenu";
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import {StatusBar} from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 
-const ProfilePage = () => {
+const SudokuPage = () => {
+
+    let [fontsLoaded] = useFonts({
+        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <SafeAreaProvider>
             <SafeAreaView>
                 <View style={styles.toggleIcons}>
                     <View style={styles.profileHeader}>
-                        <Text style={styles.profileText}>Stats</Text>
+                        <Text style={styles.profileText}>Sudokuru</Text>
                     </View>
                     <View style={styles.profileButtons}>
-                        <HomeButton></HomeButton>
+                        <StatisticsButton></StatisticsButton>
                         <ProfileButton></ProfileButton>
                         <LoginButton></LoginButton>
                     </View>
                 </View>
                 <View style={homeScreenStyles.home}>
+                    <View style={styles.container}>
+                        <SudokuBoard/>
+                        <StatusBar style="auto" />
+                    </View>
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
@@ -47,6 +62,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
 const homeScreenStyles = StyleSheet.create({
@@ -57,4 +78,4 @@ const homeScreenStyles = StyleSheet.create({
     },
 });
 
-export default ProfilePage;
+export default SudokuPage;

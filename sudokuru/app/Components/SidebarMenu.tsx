@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {Drawer} from 'react-native-paper';
 import {StyleSheet} from "react-native";
-import {getTheme} from "react-native-paper/lib/typescript/core/theming";
 import {useNavigation} from "@react-navigation/native";
 
-const HomeMenu = () => {
+const SidebarMenu = () => {
     const [active, setActive] = React.useState('');
     const [collapsed, setCollapsed] = React.useState(false);
 
@@ -29,37 +28,13 @@ const HomeMenu = () => {
                         focusedIcon="book-open-page-variant"
                         unfocusedIcon="book-open-page-variant"
                         active={active === 'third'}
-                        onPress={() => navigation.navigate('Learn')}
-                    />
-                    <Drawer.CollapsedItem
-                        focusedIcon="traffic-cone"
-                        unfocusedIcon="traffic-cone"
-                        active={active === 'forth'}
-                        onPress={() => navigation.navigate('Drill')}
-                    />
-                    <Drawer.CollapsedItem
-                        focusedIcon="play-box"
-                        unfocusedIcon="play-box"
-                        active={active === 'fifth'}
-                        onPress={() => setActive('fifth')}
-                    />
-                    <Drawer.CollapsedItem
-                        focusedIcon="calendar-question"
-                        unfocusedIcon="calendar-question"
-                        active={active === 'sixth'}
-                        onPress={() => setActive('sixth')}
-                    />
-                    <Drawer.CollapsedItem
-                        focusedIcon="semantic-web"
-                        unfocusedIcon="semantic-web"
-                        active={active === 'seventh'}
-                        onPress={() => setActive('seventh')}
+                        onPress={() => navigation.navigate('Sudoku')}
                     />
                     <Drawer.CollapsedItem
                         focusedIcon="code-braces-box"
                         unfocusedIcon="code-braces-box"
-                        active={active === 'eighth'}
-                        onPress={() => setActive('eighth')}
+                        active={active === 'ninth'}
+                        onPress={() => navigation.navigate('Landing')}
                     />
                 </Drawer.Section>
             ) : (
@@ -81,37 +56,13 @@ const HomeMenu = () => {
 
                         icon="book-open-page-variant"
                         active={active === 'third'}
-                        onPress={() => navigation.navigate('Learn')}
+                        onPress={() => navigation.navigate('Sudoku')}
                     />
                     <Drawer.Item
-                        label="Drills"
-                        icon="traffic-cone"
-                        active={active === 'forth'}
-                        onPress={() => navigation.navigate('Drill')}
-                    />
-                    <Drawer.Item
-                        label="Play"
-                        icon="play-box"
-                        active={active === 'fifth'}
-                        onPress={() => setActive('fifth')}
-                    />
-                    <Drawer.Item
-                        label="Daily Puzzle"
-                        icon="calendar-question"
-                        active={active === 'sixth'}
-                        onPress={() => setActive('sixth')}
-                    />
-                    <Drawer.Item
-                        label="Resources"
-                        icon="semantic-web"
-                        active={active === 'seventh'}
-                        onPress={() => setActive('seventh')}
-                    />
-                    <Drawer.Item
-                        label="Open Source"
+                        label="Landing Page"
                         icon="code-braces-box"
-                        active={active === 'eighth'}
-                        onPress={() => setActive('eighth')}
+                        active={active === 'ninth'}
+                        onPress={() => navigation.navigate('Landing')}
                     />
                 </Drawer.Section>
             )
@@ -132,4 +83,4 @@ const menuStyle = StyleSheet.create({
     }
 });
 
-export default HomeMenu;
+export default SidebarMenu;

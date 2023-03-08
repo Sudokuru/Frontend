@@ -6,33 +6,29 @@ import {Text} from 'react-native-paper';
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeButton from "../Components/Home/HomeButton";
-import HomeMenu from "../Components/Home/HomeMenu";
-import LessonCard from "../Components/Learn/LessonCard";
+import SidebarMenu from "../Components/SidebarMenu";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
 
     return (
-        <View>
-            <View style={styles.toggleIcons}>
-                <View style={styles.profileHeader}>
-                    <Text style={styles.profileText}>Profile Page</Text>
+        <SafeAreaProvider>
+            <SafeAreaView>
+                <View style={styles.toggleIcons}>
+                    <View style={styles.profileButtons}>
+                        <StatisticsButton></StatisticsButton>
+                        <HomeButton></HomeButton>
+                        <LoginButton></LoginButton>
+                    </View>
                 </View>
-                <View style={styles.profileButtons}>
-                    <StatisticsButton></StatisticsButton>
-                    <HomeButton></HomeButton>
-                    <LoginButton></LoginButton>
+                <View style={homeScreenStyles.home}>
+                    <View>
+                        <ThemeToggle></ThemeToggle>
+                        <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
+                    </View>
                 </View>
-            </View>
-            <View style={homeScreenStyles.home}>
-                <View style={homeScreenStyles.homeMenu}>
-                    <HomeMenu></HomeMenu>
-                </View>
-                <View style={homeScreenStyles.lessons}>
-                    <ThemeToggle></ThemeToggle>
-                    <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
-                </View>
-            </View>
-        </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };
 
@@ -48,6 +44,7 @@ const styles = StyleSheet.create({
     },
     profileText: {
         fontSize: 20,
+        margin: 5,
     },
     profileButtons: {
         flex: 1,
@@ -61,17 +58,6 @@ const homeScreenStyles = StyleSheet.create({
         display: "flex",
         flexDirection: 'row',
         //backgroundColor: 'red',
-    },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'column',
-        flexWrap: "wrap",
     },
 });
 

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, useWindowDimensions } from 'react-native';
+import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import Svg, { Path } from "react-native-svg"
@@ -170,7 +171,7 @@ const styles = (cellSize) => StyleSheet.create({
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const cellSize = getCellSize();
     return (
-        <TouchableOpacity onPress={onClick}>
+        <Pressable onPress={onClick}>
             <View
                 key={number}
                 className="number"
@@ -178,7 +179,7 @@ const NumberControl = ({ number, onClick, completionPercentage }) => {
             >
                 <View><Text style={styles(cellSize).numberControlText}>{number}</Text></View>
             </View>
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 
@@ -196,7 +197,7 @@ const Cell = (props) => {
     const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
     return (
-        <TouchableOpacity onPress={() => onClick(x, y)}>
+        <Pressable onPress={() => onClick(x, y)}>
             <View style={[styles(cellSize).cellView,
                 (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
                 (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -236,7 +237,7 @@ const Cell = (props) => {
                     </Text>
                 }
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 };
 
@@ -375,10 +376,6 @@ export default class SudokuBoard extends React.Component {
     getSelectedCell = () => {
         const { board } = this.state;
         const selected = board.get('selected');
-
-        // output the selected cell to console
-        console.log('selected cell', selected);
-
         return selected && board.get('puzzle').getIn([selected.x, selected.y]);
     }
 
@@ -397,6 +394,8 @@ export default class SudokuBoard extends React.Component {
 
     generateGame = (finalCount = 20) => {
         const solution = makePuzzle();
+        let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
+        console.log(output);
         const { puzzle } = pluck(solution, finalCount);
         const board = makeBoard({ puzzle });
         this.setState({
@@ -405,7 +404,7 @@ export default class SudokuBoard extends React.Component {
     }
 
     addNumberAsNote = (number) => {
-        let { board } = this.state;
+        let { board, solution } = this.state;
         let selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
         const prefilled = selectedCell.get('prefilled');
@@ -413,15 +412,17 @@ export default class SudokuBoard extends React.Component {
         const { x, y } = board.get('selected');
         const currentValue = selectedCell.get('value');
         if (currentValue) {
-            board = updateBoardWithNumber({
-                x, y, number: currentValue, fill: false, board: this.state.board,
-            });
+          board = updateBoardWithNumber({
+            x, y, number: currentValue, fill: false, board: this.state.board,
+          });
         }
         let notes = selectedCell.get('notes') || Set();
+        let actualValue = solution[x][y];
         if (notes.has(number)) {
+          if (number !== actualValue)
             notes = notes.delete(number);
         } else {
-            notes = notes.add(number);
+          notes = notes.add(number);
         }
         selectedCell = selectedCell.set('notes', notes);
         selectedCell = selectedCell.delete('value');
@@ -466,10 +467,31 @@ export default class SudokuBoard extends React.Component {
         this.setState({ board });
     }
 
+    /*
+     * Called when the user hits the 'erase' button
+     * If notes are present in selected cell, removes all notes
+     * If value is present in selected cell, removes value if value is incorrect
+     */
     eraseSelected = () => {
-        const selectedCell = this.getSelectedCell();
+        let { board, solution } = this.state;
+        let selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
-        this.fillNumber(false);
+
+        const { x, y } = board.get('selected');
+        const currentValue = selectedCell.get('value');
+        let actualValue = solution[x][y];
+        if (currentValue) {
+            if (currentValue !== actualValue){
+                this.fillNumber(false);
+            } else {
+                // User has attempted to remove a correct value
+                return;
+            }
+        } else {
+            selectedCell = selectedCell.set('notes', Set());
+            board = board.setIn(['puzzle', x, y], selectedCell);
+            this.updateBoard(board);
+        }
     }
 
     fillSelectedWithSolution = () => {
@@ -648,6 +670,7 @@ export default class SudokuBoard extends React.Component {
         if (!board)
         {
             this.generateGame();
+            // console.log(this.solution);
         }
         return (
             <View style={styles().board}>
