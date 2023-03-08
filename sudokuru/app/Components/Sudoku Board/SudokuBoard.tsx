@@ -1,19 +1,12 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions } from 'react-native';
+import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions, Platform} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
-
-import EraseComponent from '../../assets/eraseComponent';
-import HintComponent from '../../assets/hintComponent.jsx';
-import NoteOnComponent from '../../assets/noteOnComponent.jsx';
-import NoteOffComponent from '../../assets/noteOffComponent.jsx';
-import UndoComponent from '../../assets/undoComponent.jsx';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import {Button} from "react-native-paper";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 // Add parameterized colors here
 
@@ -80,6 +73,7 @@ const styles = (cellSize) => StyleSheet.create({
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
+        backgroundColor: 'white'
     },
     cellContainer: {
         height: cellSize ? cellSize : fallbackHeight,
@@ -150,20 +144,11 @@ const styles = (cellSize) => StyleSheet.create({
     },
     actionControlRow: {
         width: cellSize ? cellSize * 9 : 80,
-        height: cellSize ? cellSize * 2 : 80,
-        justifyContent: 'space-evenly',
+        height: cellSize ? cellSize * 1.5 : 80,
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
     },
-    actionControlButton: {
-        height: cellSize ? cellSize  : 1000,
-        width: cellSize ? cellSize : 1000,
-        aspectRatio: 1,
-    },
-    actionControlSvg: {
-        width: '100%',
-        height: '100%'
-    }
 });
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
@@ -259,28 +244,31 @@ Cell.defaultProps = {
 const ActionRow = (props) => {
     const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
     const cellSize = getCellSize();
+
+    const sizeConst = (Platform.OS == 'web') ? 5 : 2;
+
     return (
         <View style={styles(cellSize).actionControlRow}>
             {/* Undo */}
             <Button onPress={history.size ? undo : null}>
-                <MaterialCommunityIcons name="undo" size={styles(cellSize).actionControlButton.height/1.5}/>
+                <MaterialCommunityIcons name="undo" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
             </Button>
             {/* Note mode */}
             <Button onPress={toggleNoteMode}>
                 {inNoteMode
                         ? // note mode on
-                    <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlButton.height/2}/>
+                    <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
                         : // note mode off
-                    <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlButton.height/2}/>
+                    <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
                 }
             </Button>
             {/* Erase */}
             <Button onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlButton.height/2.5}/>
+                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
             </Button>
             {/* Hint */}
             <Button onPress={!prefilled ? fillSelectedWithSolution : null}>
-                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlButton.height/2.5}/>
+                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlRow.height/(sizeConst)}/>
             </Button>
         </View>
     );
@@ -300,7 +288,6 @@ ActionRow.propTypes = {
  */
 function getCellSize() {
     const size = useWindowDimensions();
-    console.log(Math.min(size.width, size.height) / 12);
     return Math.min(size.width, size.height) / 12;
 }
 
