@@ -350,7 +350,7 @@ export default class SudokuBoard extends React.Component<any, any> {
     constructor(props) {
         super(props);
     };
-    state = {};
+    state = this.props;
 
     componentDidMount = () => {
         if ('serviceWorker' in navigator) {
@@ -651,7 +651,7 @@ export default class SudokuBoard extends React.Component<any, any> {
 
     componentDidMount() {
         if (!this.state.board) {
-            this.generateGame();
+            this.setState(this.props.generatedGame);
         }
     }
 
@@ -659,9 +659,7 @@ export default class SudokuBoard extends React.Component<any, any> {
         const { board } = this.state;
         if (!board)
         {
-            this.generateGame();
-            console.log(this.props.boolVal);
-            console.log(this.props.boolVal2);
+            this.setState(this.props.generatedGame);
         }
         return (
             <View>
@@ -676,8 +674,3 @@ export default class SudokuBoard extends React.Component<any, any> {
         );
     }
 }
-/*
-    if the user clicks off of a cell with notes,
-        if the user does not have the correct(solution) value as a note for that cell
-
-*/
