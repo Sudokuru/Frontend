@@ -1,16 +1,11 @@
 // @ts-nocheck
-import React, { Component, useState } from 'react';
-import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions} from 'react-native';
+import React from 'react';
+import {StyleSheet, Text, View, Pressable, useWindowDimensions, Platform} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
-import EraseIcon from '../../assets/erase.svg';
-import HintIcon from '../../assets/hint.svg';
-import NoteIcon from '../../assets/note.svg';
-import NoteOffIcon from '../../assets/noteoff.svg';
-import UndoIcon from '../../assets/undo.svg';
-
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 // Add parameterized colors here
 
@@ -70,13 +65,14 @@ const styles = (cellSize) => StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap',
         padding: 0.5,
-        width: '100%'
+        width: cellSize ? cellSize * 9  : fallbackHeight * 9
     },
     boardContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
+        backgroundColor: 'white'
     },
     cellContainer: {
         height: cellSize ? cellSize : fallbackHeight,
@@ -145,31 +141,14 @@ const styles = (cellSize) => StyleSheet.create({
         color: '#FF0000',
         backgroundColor: '#FF7C75',
     },
+    actionControlRow: {
+        width: cellSize ? cellSize * 9 : 80,
+        height: cellSize ? cellSize * 1.5 : 80,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
 });
-
-// function getBackGroundColor({
-//   conflict, isPeer, sameValue, isSelected,
-// }) {
-//   if (conflict && isPeer && sameValue) {
-//     return DeepOrange200;
-//   } else if (sameValue) {
-//     return LightBlue300;
-//   } else if (isSelected) {
-//     return LightBlue200;
-//   } else if (isPeer) {
-//     return LightBlue100;
-//   }
-//   return false;
-// }
-
-// function getFontColor({ value, conflict, prefilled }) {
-//   if (conflict && !prefilled) {
-//     return DeepOrange600;
-//   } else if (!prefilled && value) {
-//     return ControlNumberColor;
-//   }
-//   return false;
-// }
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
     const cellSize = getCellSize();
@@ -196,27 +175,6 @@ NumberControl.defaultProps = {
     onClick: null,
 };
 
-// const Cell = (props) => {
-//   const {
-//     value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict,
-//   } = props;
-//   const backgroundColor = getBackGroundColor({
-//     conflict, isPeer, sameValue, isSelected,
-//   });
-//   const fontColor = getFontColor({ conflict, prefilled, value });
-//   return (
-//     <View className="cell" onClick={onClick} onKeyDown={onKeyPress} tabIndex="0">
-//     {
-//       notes ? range(9).map(i => (
-//         <View key={i} className="note-number">
-//           {notes.has(i + 1) && <Text>{i + 1}</Text>}
-//         </View>
-//       )) : value && <Text>{value}</Text>
-//     }
-//     </View>
-//   );
-// };
-
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
@@ -227,7 +185,7 @@ const Cell = (props) => {
           onValueChange(x, y, parseInt(inputValue, 10));
         }
     };
-      
+
     return (
         <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
             <View style={[styles(cellSize).cellView,
@@ -276,7 +234,7 @@ const Cell = (props) => {
 Cell.propTypes = {
     value: PropTypes.number,
     onClick: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
+    onValueChange: PropTypes.func.isRequired,
     isPeer: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     sameValue: PropTypes.bool.isRequired,
@@ -288,6 +246,48 @@ Cell.propTypes = {
 Cell.defaultProps = {
     notes: null,
     value: null,
+};
+
+const ActionRow = (props) => {
+    const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
+    const cellSize = getCellSize();
+
+    const sizeConst = (Platform.OS == 'web') ? 1 : 1;
+
+    return (
+        <View style={styles(cellSize).actionControlRow}>
+            {/* Undo */}
+            <Pressable onPress={history.size ? undo : null}>
+                <MaterialCommunityIcons name="undo" size={cellSize/(sizeConst)}/>
+            </Pressable>
+            {/* Note mode */}
+            <Pressable onPress={toggleNoteMode}>
+                {inNoteMode
+                        ? // note mode on
+                    <MaterialCommunityIcons name="pencil-outline" size={cellSize/(sizeConst)}/>
+                        : // note mode off
+                    <MaterialCommunityIcons name="pencil-off-outline" size={cellSize/(sizeConst)}/>
+                }
+            </Pressable>
+            {/* Erase */}
+            <Pressable onPress={!prefilled ? eraseSelected : null}>
+                <MaterialCommunityIcons name="eraser" size={cellSize/(sizeConst)}/>
+            </Pressable>
+            {/* Hint */}
+            <Pressable onPress={!prefilled ? fillSelectedWithSolution : null}>
+                <MaterialCommunityIcons name="help" size={cellSize/(sizeConst)}/>
+            </Pressable>
+        </View>
+    );
+};
+
+ActionRow.propTypes = {
+    inNoteMode: PropTypes.bool.isRequired,
+    prefilled: PropTypes.bool.isRequired,
+    undo: PropTypes.func.isRequired,
+    toggleNoteMode: PropTypes.func.isRequired,
+    eraseSelected: PropTypes.func.isRequired,
+    fillSelectedWithSolution: PropTypes.func.isRequired,
 };
 
 /*
@@ -541,7 +541,7 @@ export default class SudokuBoard extends React.Component {
         const peer = areCoordinatePeers({ x, y }, board.get('selected'));
         const sameValue = !!(selected && selected.get('value') &&
             value === selected.get('value'));
-    
+
         const isSelected = cell === selected;
 
         const handleValueChange = (x, y, newValue) => {
@@ -551,7 +551,7 @@ export default class SudokuBoard extends React.Component {
             if (inNoteMode) this.addNumberAsNote(newValue);
             else this.fillNumber(newValue);
         };
-    
+
         return (
             <Cell
                 prefilled={prefilled}
@@ -620,23 +620,20 @@ export default class SudokuBoard extends React.Component {
         const selectedCell = this.getSelectedCell();
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
+        const undo = this.undo;
+        const toggleNoteMode = this.toggleNoteMode;
+        const eraseSelected = this.eraseSelected;
+        const fillSelectedWithSolution = this.fillSelectedWithSolution;
         return (
-            <View>
-                <Pressable onPress={history.size ? this.undo : null}>
-                    <Text>Undo</Text>
-                </Pressable>
-                <Pressable onPress={this.toggleNoteMode}>
-                    <Text>{inNoteMode ? "Note ON" : "Note OFF"}</Text>
-                </Pressable>
-                <Pressable onPress={!prefilled ? this.eraseSelected : null}>
-                    {/* <Text>Erase</Text> */}
-                    <Text>Erase</Text>
-                    {/* <SVGImg width={200} height={200} /> */}
-                </Pressable>
-                <Pressable onPress={!prefilled ? this.fillSelectedWithSolution : null}>
-                    <Text>Hint</Text>
-                </Pressable>
-            </View>
+            <ActionRow
+                history={history}
+                prefilled={prefilled}
+                inNoteMode={inNoteMode}
+                undo={undo}
+                toggleNoteMode={toggleNoteMode}
+                eraseSelected={eraseSelected}
+                fillSelectedWithSolution={fillSelectedWithSolution}
+            />
         );
     }
 
