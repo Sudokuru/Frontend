@@ -253,31 +253,31 @@ const ActionRow = (props) => {
     const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
     const cellSize = getCellSize();
 
-    const sizeConst = (Platform.OS == 'web') ? 5 : 2;
+    const sizeConst = (Platform.OS == 'web') ? 1 : 1;
 
     return (
         <View style={styles(cellSize).actionControlRow}>
             {/* Undo */}
-            <Button onPress={history.size ? undo : null}>
+            <Pressable onPress={history.size ? undo : null}>
                 <MaterialCommunityIcons name="undo" size={cellSize/(sizeConst)}/>
-            </Button>
+            </Pressable>
             {/* Note mode */}
-            <Button onPress={toggleNoteMode}>
+            <Pressable onPress={toggleNoteMode}>
                 {inNoteMode
                         ? // note mode on
                     <MaterialCommunityIcons name="pencil-outline" size={cellSize/(sizeConst)}/>
                         : // note mode off
                     <MaterialCommunityIcons name="pencil-off-outline" size={cellSize/(sizeConst)}/>
                 }
-            </Button>
+            </Pressable>
             {/* Erase */}
-            <Button onPress={!prefilled ? eraseSelected : null}>
+            <Pressable onPress={!prefilled ? eraseSelected : null}>
                 <MaterialCommunityIcons name="eraser" size={cellSize/(sizeConst)}/>
-            </Button>
+            </Pressable>
             {/* Hint */}
-            <Button onPress={!prefilled ? fillSelectedWithSolution : null}>
+            <Pressable onPress={!prefilled ? fillSelectedWithSolution : null}>
                 <MaterialCommunityIcons name="help" size={cellSize/(sizeConst)}/>
-            </Button>
+            </Pressable>
         </View>
     );
 };
