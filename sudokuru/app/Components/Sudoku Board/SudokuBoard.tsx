@@ -150,14 +150,14 @@ const styles = (cellSize) => StyleSheet.create({
     },
     actionControlRow: {
         width: cellSize ? cellSize * 9 : 80,
-        height: cellSize ? cellSize * (50 / 60) : 80,
+        height: cellSize ? cellSize * 2 : 80,
         justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'row',
     },
     actionControlButton: {
-        height: cellSize ? cellSize * (0.5) : 1000,
-        width: cellSize ? cellSize * (0.5) : 1000,
+        height: cellSize ? cellSize  : 1000,
+        width: cellSize ? cellSize : 1000,
         aspectRatio: 1,
     },
     actionControlSvg: {
@@ -265,23 +265,22 @@ const ActionRow = (props) => {
             <Button onPress={history.size ? undo : null}>
                 <MaterialCommunityIcons name="undo" size={styles(cellSize).actionControlButton.height/1.5}/>
             </Button>
-
             {/* Note mode */}
             <Button onPress={toggleNoteMode}>
                 {inNoteMode
                         ? // note mode on
-                    <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlButton.height/1.5}/>
+                    <MaterialCommunityIcons name="pencil-outline" size={styles(cellSize).actionControlButton.height/2}/>
                         : // note mode off
-                    <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlButton.height/1.5}/>
+                    <MaterialCommunityIcons name="pencil-off-outline" size={styles(cellSize).actionControlButton.height/2}/>
                 }
             </Button>
             {/* Erase */}
             <Button onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlButton.height/1.5}/>
+                <MaterialCommunityIcons name="eraser" size={styles(cellSize).actionControlButton.height/2.5}/>
             </Button>
             {/* Hint */}
             <Button onPress={!prefilled ? fillSelectedWithSolution : null}>
-                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlButton.height/1.7}/>
+                <MaterialCommunityIcons name="help" size={styles(cellSize).actionControlButton.height/2.5}/>
             </Button>
         </View>
     );
