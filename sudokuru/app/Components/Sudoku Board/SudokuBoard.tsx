@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {StyleSheet, Text, View, Pressable, Image, Dimensions, useWindowDimensions} from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
@@ -218,10 +218,18 @@ NumberControl.defaultProps = {
 // };
 
 const Cell = (props) => {
-    const { value, onClick, onKeyPress, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
+    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
+
+    const handleKeyDown = (event) => {
+        const inputValue = event.nativeEvent.key;
+        if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
+          onValueChange(x, y, parseInt(inputValue, 10));
+        }
+    };
+      
     return (
-        <Pressable onPress={() => onClick(x, y)}>
+        <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
             <View style={[styles(cellSize).cellView,
                 (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
                 (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -525,16 +533,6 @@ export default class SudokuBoard extends React.Component {
         return rowConflict || columnConflict || squareConflict;
     }
 
-    handleKeyDown = (event) => {
-        let { board } = this.state;
-        let inNoteMode = board.get('inNoteMode');
-        let numberInput = Number(event.key);
-
-        if (inNoteMode) this.addNumberAsNote(numberInput);
-        else this.fillNumber(numberInput);
-
-    };
-
     renderCell = (cell, x, y) => {
         const { board } = this.state;
         const selected = this.getSelectedCell();
@@ -543,9 +541,17 @@ export default class SudokuBoard extends React.Component {
         const peer = areCoordinatePeers({ x, y }, board.get('selected'));
         const sameValue = !!(selected && selected.get('value') &&
             value === selected.get('value'));
-
+    
         const isSelected = cell === selected;
 
+        const handleValueChange = (x, y, newValue) => {
+            let { board } = this.state;
+            let inNoteMode = board.get('inNoteMode');
+
+            if (inNoteMode) this.addNumberAsNote(newValue);
+            else this.fillNumber(newValue);
+        };
+    
         return (
             <Cell
                 prefilled={prefilled}
@@ -554,8 +560,8 @@ export default class SudokuBoard extends React.Component {
                 isSelected={isSelected}
                 isPeer={peer}
                 value={value}
-                onClick={(x, y) => { this.selectCell(x, y); }} // console.log(`Cell clicked at (${x}, ${y})`)
-                onKeyPress={(event) => this.handleKeyDown(event)}
+                onClick={(x, y) => { this.selectCell(x, y); }}
+                onValueChange={handleValueChange}
                 key={y}
                 x={x}
                 y={y}
@@ -563,7 +569,6 @@ export default class SudokuBoard extends React.Component {
             />
         );
     };
-
 
     renderPuzzle = () => {
         const { board } = this.state;
