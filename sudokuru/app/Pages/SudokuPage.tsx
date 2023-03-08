@@ -35,7 +35,7 @@ const SudokuPage = () => {
                 </View>
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
-                        <SudokuBoard/>
+                        <SudokuBoard boolVal={true} boolVal2={false}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>

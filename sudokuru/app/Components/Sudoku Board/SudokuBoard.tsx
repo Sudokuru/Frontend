@@ -346,7 +346,10 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
         accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component {
+export default class SudokuBoard extends React.Component<any, any> {
+    constructor(props) {
+        super(props);
+    };
     state = {};
 
     componentDidMount = () => {
@@ -657,12 +660,18 @@ export default class SudokuBoard extends React.Component {
         if (!board)
         {
             this.generateGame();
-            // console.log(this.solution);
+            console.log(this.props.boolVal);
+            console.log(this.props.boolVal2);
         }
         return (
             <View>
                 {board && this.renderPuzzle()}
-                {board && this.renderControls()}
+                {board && 
+                    <View style={styles().bottomActions}>
+                        {this.renderActions()}
+                        {this.renderNumberControl()}
+                    </View>
+                }
             </View>
         );
     }
