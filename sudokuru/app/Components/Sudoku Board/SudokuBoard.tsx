@@ -28,6 +28,8 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
+let demoHighlightInput = [[0,7],[1,2],[2,6]];
+
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
     numberContainer: {
@@ -178,6 +180,32 @@ NumberControl.defaultProps = {
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
+
+    for (let i = 0; i < demoHighlightInput.length; i++) {
+
+        // If first value of the sub-array is equal to 0, output to console that the row of the second value is highlighted
+        if (demoHighlightInput[i][0] === 0) {
+            if (demoHighlightInput[i][1] === x) {
+                console.log("Row " + demoHighlightInput[i][1] + " is highlighted");
+            }
+        }
+
+        // If the first value of the sub-array is equal to 1, output to console that the column of the second value is highlighted
+        if (demoHighlightInput[i][0] === 1) {
+            if (demoHighlightInput[i][1] === y) {
+                console.log("Column " + demoHighlightInput[i][1] + " is highlighted");
+            }
+        }
+
+        // If the first value of the sub-array is equal to 2, output to console that the box of the second value is highlighted
+        if (demoHighlightInput[i][0] === 2) {
+            if (demoHighlightInput[i][1] === x) {
+                if (demoHighlightInput[i][2] === y) {
+                    console.log("Box " + demoHighlightInput[i][1] + demoHighlightInput[i][2] + " is highlighted");
+                }
+            }
+        }
+    }
 
     const handleKeyDown = (event) => {
         const inputValue = event.nativeEvent.key;
@@ -385,7 +413,7 @@ export default class SudokuBoard extends React.Component {
     generateGame = (finalCount = 20) => {
         const solution = makePuzzle();
         let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        console.log(output);
+        // console.log(output);
         const { puzzle } = pluck(solution, finalCount);
         const board = makeBoard({ puzzle });
         this.setState({
@@ -455,6 +483,7 @@ export default class SudokuBoard extends React.Component {
         let currNoteMode = board.get('inNoteMode');
         board = board.set('inNoteMode', !currNoteMode);
         this.setState({ board });
+        // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
     }
 
     /*
@@ -572,6 +601,7 @@ export default class SudokuBoard extends React.Component {
 
     renderPuzzle = () => {
         const { board } = this.state;
+
         return (
             <View style={styles().boardContainer}>
                 {board.get('puzzle').map((row, i) => (
