@@ -177,32 +177,119 @@ NumberControl.defaultProps = {
     onClick: null,
 };
 
+// function that converts x,y cell coords to a number
+const getCellNumber = (x, y) => {
+    return y + x * 9;
+};
+
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
     const cellSize = getCellSize();
 
+    var topHighlight, bottomHighlight, leftHighlight, rightHighlight;
+
     for (let i = 0; i < demoHighlightInput.length; i++) {
+
+        // let demoHighlightInput = [[0,7],[1,2],[2,6]];
+
+        // console.log("x: " + x + " y: " + y) // Cell traversal is done inately
+
+        // console.log(getCellNumber(x, y));
+
+        // console.log(getCellNumber(x, y) + " " + (demoHighlightInput[i][1] * 9));
 
         // If first value of the sub-array is equal to 0, output to console that the row of the second value is highlighted
         if (demoHighlightInput[i][0] === 0) {
-            if (demoHighlightInput[i][1] === x) {
-                console.log("Row " + demoHighlightInput[i][1] + " is highlighted");
+            const cellNum = getCellNumber(x, y);
+
+            if (cellNum === demoHighlightInput[i][1]) {
+                topHighlight = leftHighlight = bottomHighlight = 1;
+            } 
+
+            else if (cellNum % 9 === demoHighlightInput[i][1] % 9) {
+                topHighlight = bottomHighlight = 1;
+                
+                if (cellNum === demoHighlightInput[i][1] + 72) rightHighlight = 1;
+                else if (cellNum === demoHighlightInput[i][1]) leftHighlight = 1;
+            } 
+            
+            else if (cellNum === demoHighlightInput[i][1] + 72) {
+                topHighlight = rightHighlight = bottomHighlight = 1;
             }
         }
 
         // If the first value of the sub-array is equal to 1, output to console that the column of the second value is highlighted
         if (demoHighlightInput[i][0] === 1) {
-            if (demoHighlightInput[i][1] === y) {
-                console.log("Column " + demoHighlightInput[i][1] + " is highlighted");
+            const cellNum = getCellNumber(x, y);
+
+            if (cellNum === demoHighlightInput[i][1] * 9) {
+                topHighlight = leftHighlight = rightHighlight = 1;
+            }
+
+            for (let j = 0; j < 9; j++) {
+                if (cellNum === demoHighlightInput[i][1] * 9 + j) {
+                    leftHighlight = rightHighlight = 1;
+                }
+            }
+
+            if (cellNum === demoHighlightInput[i][1] * 9 + 8) {
+                leftHighlight = rightHighlight = bottomHighlight = 1;
             }
         }
 
         // If the first value of the sub-array is equal to 2, output to console that the box of the second value is highlighted
         if (demoHighlightInput[i][0] === 2) {
-            if (demoHighlightInput[i][1] === x) {
-                if (demoHighlightInput[i][2] === y) {
-                    console.log("Box " + demoHighlightInput[i][1] + demoHighlightInput[i][2] + " is highlighted");
+            if (demoHighlightInput[i][1]) {
+                // console.log("Box " + demoHighlightInput[i][1] + " is highlighted. Location in grid: " + x + " " + y + " CELL# " + getCellNumber(x,y));+
+
+                const cellNum = getCellNumber(x, y);
+
+                // if (demoHighlightInput[i][1] === 0 && cellNum === 0) {
+                //     topHighlight = leftHighlight = 1;
+
+                //     if (cellNum === 1) leftHighlight = 1;
+                //     if (cellNum === 2) leftHighlight = bottomHighlight = 1;
+                //     if (cellNum === 9) topHighlight = 1;
+                //     // if ()
+
+                // } 
+
+                if (cellNum === demoHighlightInput[i][1]) {
+                    topHighlight = leftHighlight = 1;
                 }
+
+                if (cellNum === demoHighlightInput[i][1] + 1) {
+                    leftHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 2) {
+                    bottomHighlight = leftHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 9) {
+                    topHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 10) {
+                    // Do nothing
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 11) {
+                    bottomHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 18) {
+                    topHighlight = rightHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 19) {
+                    rightHighlight = 1;
+                }
+
+                if (cellNum === demoHighlightInput[i][1] + 20) {
+                    bottomHighlight = rightHighlight = 1;
+                }
+
             }
         }
     }
@@ -221,6 +308,12 @@ const Cell = (props) => {
                 (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
                 (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
                 (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
+
+                // Border Highlighting Zone
+                (topHighlight) && {borderTopColor: '#FFFF00'},
+                (leftHighlight) && {borderLeftColor: '#FFFF00'},
+                (bottomHighlight) && {borderBottomColor: '#FFFF00'},
+                (rightHighlight) && {borderRightColor: '#FFFF00'},
 
                 conflict && styles(cellSize).conflict,
                 isPeer && styles(cellSize).peer,
