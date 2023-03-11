@@ -30,42 +30,6 @@ let fallbackHeight = 30;
 
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
-    numberContainer: {
-        width: cellSize ? cellSize : fallbackHeight,
-        height: cellSize ? cellSize * 1.25 : fallbackHeight * 1.25,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    numberControlRow: {
-        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize * 1.25 : fallbackHeight * 9,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    numberControlText: {
-        fontFamily: 'Inter_400Regular',
-        fontSize: cellSize ? cellSize / 2 : fallbackHeight / 2,
-    },
-    controlStyle: {
-        padding: 0,
-        cursor: 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        transition: 'filter .5s ease-in-out',
-        width: '100%'
-    },
-    bottomActions: {
-        marginTop: 0.25,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        padding: 0.5,
-    },
     boardContainer: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -140,44 +104,90 @@ const styles = (cellSize) => StyleSheet.create({
         color: '#FF0000',
         backgroundColor: '#FF7C75',
     },
+    bottomActions: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+    },
     actionControlRow: {
-        width: cellSize ? cellSize * 11 : 80,
-        height: cellSize ? cellSize * (3 / 4): 80,
+        width: cellSize ? cellSize * 11 : fallbackHeight * 11,
+        height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
         justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'row',
-        // borderWidth: 1
+        marginBottom: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
     },
     actionControlButton: {
       height: cellSize ? cellSize * (0.5) : 1000,
       width: cellSize ? cellSize * (0.5) : 1000,
       aspectRatio: 1,
+    },
+    numberControlRow: {
+      width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+      height: cellSize ? cellSize: fallbackHeight,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
   },
+    numberContainer: {
+      width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
+      height: cellSize ? cellSize : fallbackHeight,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#7EC8D9',
+      borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
+    },
+    numberControlText: {
+        fontFamily: 'Inter_400Regular',
+        fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
+    },
+    controlStyle: {
+        padding: 0,
+        cursor: 'pointer',
+        display: 'inline-flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        transition: 'filter .5s ease-in-out',
+        width: '100%'
+    },
 });
 
-const NumberControl = ({ number, onClick, completionPercentage }) => {
-    const cellSize = getCellSize();
-    return (
-        <Pressable onPress={onClick}>
-            <View
-                key={number}
-                className="number"
-                style={styles(cellSize).numberContainer}
-            >
-                <View><Text style={styles(cellSize).numberControlText}>{number}</Text></View>
-            </View>
-        </Pressable>
-    )
+const NumberControl = (props) => {
+  const { prefilled, inNoteMode, getNumberValueCount, fillNumber, addNumberAsNote } = props;
+  const cellSize = getCellSize();
+  return (
+    <View style={ styles(cellSize).numberControlRow }>
+      {range(9).map((i) => {
+        const number = i + 1;
+        const onClick = !prefilled
+          ? () => {
+            inNoteMode
+              ? addNumberAsNote(number)
+              : fillNumber(number);
+          }
+          : undefined;
+        return (
+          <Pressable key={number} onPress={onClick} style={ styles(cellSize).numberContainer }>
+            <Text style={styles(cellSize).numberControlText}>{number}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
 }
 
 NumberControl.propTypes = {
-    number: PropTypes.number.isRequired,
-    onClick: PropTypes.func,
-    completionPercentage: PropTypes.number.isRequired,
+  prefilled: PropTypes.bool.isRequired,
+  inNoteMode: PropTypes.bool.isRequired,
+  getNumberValueCount: PropTypes.number.isRequired,
+  fillNumber: PropTypes.number.isRequired,
+  addNumberAsNote: PropTypes.number.isRequired,
 };
 
 NumberControl.defaultProps = {
-    onClick: null,
 };
 
 const Cell = (props) => {
@@ -300,7 +310,7 @@ ActionRow.propTypes = {
  */
 function getCellSize() {
     const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 12;
+    return Math.min(size.width, size.height) / 15;
 }
 
 function makeCountObject() {
@@ -593,30 +603,14 @@ export default class SudokuBoard extends React.Component {
         const selectedCell = this.getSelectedCell();
         const prefilled = selectedCell && selectedCell.get('prefilled');
         const inNoteMode = board.get('inNoteMode');
-
         return (
-            <View style={ styles().numberControlRow }>
-                {range(9).map((i) => {
-                    const number = i + 1;
-                    const onClick = !prefilled
-                        ? () => {
-                            inNoteMode
-                                ? this.addNumberAsNote(number)
-                                : this.fillNumber(number);
-                        }
-                        : undefined;
-
-                    return (
-                        <NumberControl
-                            style={styles().controlStyle}
-                            key={number}
-                            number={number}
-                            onClick={onClick}
-                            completionPercentage={this.getNumberValueCount(number) / 9}
-                        />
-                    );
-                })}
-            </View>
+          <NumberControl
+            prefilled={prefilled}
+            inNoteMode={inNoteMode}
+            getNumberValueCount={this.getNumberValueCount}
+            fillNumber={this.fillNumber}
+            addNumberAsNote={this.addNumberAsNote}
+          />
         );
     }
 
