@@ -176,7 +176,7 @@ NumberControl.defaultProps = {
 };
 
 const Cell = (props) => {
-    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y } = props;
+    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
 
     const handleKeyDown = (event) => {
@@ -184,6 +184,8 @@ const Cell = (props) => {
         if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
           onValueChange(x, y, parseInt(inputValue, 10));
         }
+        if (inputValue == "Delete" || inputValue == "Backspace")
+          eraseSelected();
     };
 
     return (
@@ -241,6 +243,7 @@ Cell.propTypes = {
     prefilled: PropTypes.bool.isRequired,
     notes: PropTypes.instanceOf(Set),
     conflict: PropTypes.bool.isRequired,
+    eraseSelected: PropTypes.func.isRequired,
 };
 
 Cell.defaultProps = {
@@ -566,6 +569,7 @@ export default class SudokuBoard extends React.Component {
                 x={x}
                 y={y}
                 conflict={conflict}
+                eraseSelected={this.eraseSelected}
             />
         );
     };
