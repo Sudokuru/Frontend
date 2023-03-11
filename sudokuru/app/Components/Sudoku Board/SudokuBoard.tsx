@@ -65,14 +65,13 @@ const styles = (cellSize) => StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap',
         padding: 0.5,
-        width: cellSize ? cellSize * 9  : fallbackHeight * 9
     },
     boardContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     cellContainer: {
         height: cellSize ? cellSize : fallbackHeight,
@@ -142,12 +141,18 @@ const styles = (cellSize) => StyleSheet.create({
         backgroundColor: '#FF7C75',
     },
     actionControlRow: {
-        width: cellSize ? cellSize * 9 : 80,
-        height: cellSize ? cellSize * 1.5 : 80,
-        justifyContent: 'space-between',
+        width: cellSize ? cellSize * 11 : 80,
+        height: cellSize ? cellSize * (3 / 4): 80,
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         flexDirection: 'row',
+        // borderWidth: 1
     },
+    actionControlButton: {
+      height: cellSize ? cellSize * (0.5) : 1000,
+      width: cellSize ? cellSize * (0.5) : 1000,
+      aspectRatio: 1,
+  },
 });
 
 const NumberControl = ({ number, onClick, completionPercentage }) => {
@@ -252,30 +257,30 @@ const ActionRow = (props) => {
     const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
     const cellSize = getCellSize();
 
-    const sizeConst = (Platform.OS == 'web') ? 1 : 1;
+    const sizeConst = (Platform.OS == 'web') ? 2 : 2;
 
     return (
         <View style={styles(cellSize).actionControlRow}>
             {/* Undo */}
             <Pressable onPress={history.size ? undo : null}>
-                <MaterialCommunityIcons name="undo" size={cellSize/(sizeConst)}/>
+                <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
             </Pressable>
             {/* Note mode */}
             <Pressable onPress={toggleNoteMode}>
                 {inNoteMode
                         ? // note mode on
-                    <MaterialCommunityIcons name="pencil-outline" size={cellSize/(sizeConst)}/>
+                    <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
                         : // note mode off
-                    <MaterialCommunityIcons name="pencil-off-outline" size={cellSize/(sizeConst)}/>
+                    <MaterialCommunityIcons color="white" name="pencil-off-outline" size={cellSize/(sizeConst)}/>
                 }
             </Pressable>
             {/* Erase */}
             <Pressable onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons name="eraser" size={cellSize/(sizeConst)}/>
+                <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
             </Pressable>
             {/* Hint */}
             <Pressable onPress={!prefilled ? fillSelectedWithSolution : null}>
-                <MaterialCommunityIcons name="help" size={cellSize/(sizeConst)}/>
+                <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
             </Pressable>
         </View>
     );
