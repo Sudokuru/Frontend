@@ -71,7 +71,6 @@ const styles = (cellSize) => StyleSheet.create({
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: 'white',
     },
     cellContainer: {
         height: cellSize ? cellSize : fallbackHeight,
@@ -102,6 +101,7 @@ const styles = (cellSize) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
+        backgroundColor: 'white',
     },
     cellText: {
         fontFamily: 'Inter_400Regular',
