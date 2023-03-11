@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from 'react';
-import {StyleSheet, Text, View, Pressable, useWindowDimensions, Platform} from 'react-native';
+import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Add parameterized colors here
 
