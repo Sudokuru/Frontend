@@ -20,7 +20,7 @@
     "@react-native-community/slider": "4.4.2",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
-    "@react-navigation/stack": "^6.3.11",
+    "@react-navigation/stack": "^6.3.16",
     "expo": "^48.0.0",
     "expo-auth-session": "~4.0.3",
     "expo-constants": "~14.2.1",
@@ -43,7 +43,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "13.4.0",
     "react-native-typewriter": "^0.7.0",
-    "react-native-web": "~0.18.11",
+    "react-native-web": "~0.18.12",
     "vercel": "^28.16.7"
   },
   "devDependencies": {
