@@ -2,11 +2,9 @@ import React from 'react';
 import ThemeToggle from "../Components/Profile/ThemeToggle";
 import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View} from "react-native";
-import {Text} from 'react-native-paper';
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeButton from "../Components/Home/HomeButton";
-import SidebarMenu from "../Components/SidebarMenu";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
