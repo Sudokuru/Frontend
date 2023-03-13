@@ -20,7 +20,7 @@ import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token"
 
 WebBrowser.maybeCompleteAuthSession();
 
-const auth0ClientId = CLIENT_ID
+const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 const audience = AUDIENCE;
