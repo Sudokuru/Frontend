@@ -28,6 +28,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
+let demoHighlightInput = [[0,7],[1,2],[2,7]];
+
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
     boardContainer: {
@@ -190,9 +192,85 @@ NumberControl.propTypes = {
 NumberControl.defaultProps = {
 };
 
+// function that converts x,y cell coords to a number
+const getCellNumber = (x, y) => {
+    return y + x * 9;
+};
+
+// function that returns the cell number of the top-left cell of a box based on the box number
+const findBox = (box) => {
+    // return (box % 3) * 3 + Math.floor(box / 3) * 27; // Wrong direction lol
+    if (box === 0) return 0;
+    if (box === 1) return 27;
+    if (box === 2) return 54;
+    if (box === 3) return 3;
+    if (box === 4) return 30;
+    if (box === 5) return 57;
+    if (box === 6) return 6;
+    if (box === 7) return 33;
+    if (box === 8) return 60;
+}
+
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
+
+    var topHighlight, bottomHighlight, leftHighlight, rightHighlight;
+
+    for (let i = 0; i < demoHighlightInput.length; i++) {
+
+        if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
+            const cellNum = getCellNumber(x, y);
+
+            if (cellNum === demoHighlightInput[i][1]) {
+                topHighlight = leftHighlight = bottomHighlight = 1;
+            } 
+
+            else if (cellNum % 9 === demoHighlightInput[i][1] % 9) {
+                topHighlight = bottomHighlight = 1;
+                
+                if (cellNum === demoHighlightInput[i][1] + 72) rightHighlight = 1;
+                else if (cellNum === demoHighlightInput[i][1]) leftHighlight = 1;
+            } 
+            
+            else if (cellNum === demoHighlightInput[i][1] + 72) {
+                topHighlight = rightHighlight = bottomHighlight = 1;
+            }
+        }
+
+        if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
+            const cellNum = getCellNumber(x, y);
+
+            if (cellNum === demoHighlightInput[i][1] * 9) {
+                topHighlight = leftHighlight = rightHighlight = 1;
+            }
+
+            for (let j = 0; j < 9; j++) {
+                if (cellNum === demoHighlightInput[i][1] * 9 + j) {
+                    leftHighlight = rightHighlight = 1;
+                }
+            }
+            
+            if (cellNum === demoHighlightInput[i][1] * 9 + 8) {
+                leftHighlight = rightHighlight = bottomHighlight = 1;
+            }
+        }
+        
+        if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
+            const cellNum = getCellNumber(x, y); // Number of the cell being checked
+            const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
+            
+            if (cellNum === boxNum) topHighlight = leftHighlight = 1;
+            if (cellNum === boxNum + 1) leftHighlight = 1;
+            if (cellNum === boxNum + 2) leftHighlight = bottomHighlight = 1;
+            if (cellNum === boxNum + 9) topHighlight = 1;
+            if (cellNum === boxNum + 10) 1;
+            if (cellNum === boxNum + 11) bottomHighlight = 1;
+            if (cellNum === boxNum + 18) topHighlight = rightHighlight = 1;
+            if (cellNum === boxNum + 19) rightHighlight = 1;
+            if (cellNum === boxNum + 20) rightHighlight = bottomHighlight = 1;
+        }
+    }
 
     const handleKeyDown = (event) => {
         const inputValue = event.nativeEvent.key;
@@ -210,6 +288,12 @@ const Cell = (props) => {
                 (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
                 (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
                 (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
+
+                // Border Highlighting Zone
+                (topHighlight) && {borderTopColor: '#FFFF00'},
+                (leftHighlight) && {borderLeftColor: '#FFFF00'},
+                (bottomHighlight) && {borderBottomColor: '#FFFF00'},
+                (rightHighlight) && {borderRightColor: '#FFFF00'},
 
                 conflict && styles(cellSize).conflict,
                 isPeer && styles(cellSize).peer,
@@ -403,7 +487,7 @@ export default class SudokuBoard extends React.Component {
     generateGame = (finalCount = 20) => {
         const solution = makePuzzle();
         let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        console.log(output);
+        // console.log(output);
         const { puzzle } = pluck(solution, finalCount);
         const board = makeBoard({ puzzle });
         this.setState({
@@ -473,6 +557,7 @@ export default class SudokuBoard extends React.Component {
         let currNoteMode = board.get('inNoteMode');
         board = board.set('inNoteMode', !currNoteMode);
         this.setState({ board });
+        // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
     }
 
     /*
@@ -591,6 +676,7 @@ export default class SudokuBoard extends React.Component {
 
     renderPuzzle = () => {
         const { board } = this.state;
+
         return (
             <View style={styles().boardContainer}>
                 {board.get('puzzle').map((row, i) => (
