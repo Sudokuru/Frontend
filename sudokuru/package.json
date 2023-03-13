@@ -7,8 +7,8 @@
     "start:tunnel": "expo start --tunnel",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "npx cross-env NODE_OPTIONS=--openssl-legacy-provider expo start --web --https",
-    "build:webpack": "npx expo export:web",
+    "web": "npx expo start --web --https",
+    "build:metro-web": "npx expo export --platform web",
     "vercel:preview": "vercel --name sudokuru-dev --yes",
     "postinstall": "npx patch-package"
   },
