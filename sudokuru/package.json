@@ -17,7 +17,6 @@
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo/metro-config": "^0.7.1",
     "@expo/metro-runtime": "^1.1.0",
-    "@expo/webpack-config": "0.17.2",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/slider": "4.4.2",
     "@react-navigation/drawer": "6.6.2",
