@@ -5,7 +5,6 @@ import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
 import {Button} from "react-native-paper"
-import { DOMAIN, CLIENT_ID, AUDIENCE, SCOPE } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
@@ -20,7 +19,12 @@ import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token"
 
 WebBrowser.maybeCompleteAuthSession();
 
-const auth0ClientId = CLIENT_ID;
+const CLIENT_ID = process.env.CLIENT_ID ? process.env.CLIENT_ID : "";
+const DOMAIN = process.env.DOMAIN ? process.env.DOMAIN : "";
+const AUDIENCE = process.env.AUDIENCE ? process.env.AUDIENCE : "";
+const SCOPE = process.env.SCOPE ? process.env.SCOPE : "";
+
+const auth0ClientId = CLIENT_ID
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 const audience = AUDIENCE;
