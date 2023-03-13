@@ -18,7 +18,6 @@ export default {
         "ios",
         "android"
     ],
-    jsEngine: "hermes",
     orientation: "portrait",
     updates: {
         fallbackToCacheTimeout: 0
