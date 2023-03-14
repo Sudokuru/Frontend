@@ -1,15 +1,10 @@
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
 import {StyleSheet, View, Platform} from "react-native";
-import {Text, Button, Drawer} from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import SidebarMenu from "../Components/SidebarMenu";
+import {Text, Button} from 'react-native-paper';
 import Slider from '@react-native-community/slider';
 import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
 import {useNavigation} from "@react-navigation/native";
-import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";

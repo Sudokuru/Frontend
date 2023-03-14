@@ -4,7 +4,6 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import SidebarMenu from "../Components/SidebarMenu";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {StatusBar} from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';

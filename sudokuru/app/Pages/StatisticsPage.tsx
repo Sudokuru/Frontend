@@ -4,7 +4,6 @@ import {StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import HomeButton from "../Components/Home/HomeButton";
-import SidebarMenu from "../Components/SidebarMenu";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfilePage = () => {
