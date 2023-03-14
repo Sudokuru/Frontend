@@ -3,11 +3,11 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet, Text, View } from "react-native";
+import { Alert, Platform, StyleSheet} from "react-native";
 import {Button} from "react-native-paper"
-import { DOMAIN, CLIENT_ID, AUDIENCE, SCOPE } from "../../../config"
 import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
+import {AUDIENCE, CLIENT_ID, DOMAIN, SCOPE} from '@env'
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.

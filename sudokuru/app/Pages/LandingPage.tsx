@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import Boxes from '../Components/Landing/Boxes';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 

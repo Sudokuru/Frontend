@@ -523,8 +523,11 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
         accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component {
-    state = {};
+export default class SudokuBoard extends React.Component<any, any> {
+    constructor(props) {
+        super(props);
+    };
+    state = this.props;
 
     componentDidMount = () => {
         if ('serviceWorker' in navigator) {
@@ -818,7 +821,7 @@ export default class SudokuBoard extends React.Component {
 
     componentDidMount() {
         if (!this.state.board) {
-            this.generateGame();
+            this.setState(this.props.generatedGame);
         }
     }
 
@@ -826,20 +829,19 @@ export default class SudokuBoard extends React.Component {
         const { board } = this.state;
         if (!board)
         {
-            this.generateGame();
-            // console.log(this.solution);
+            this.setState(this.props.generatedGame);
         }
         return (
             <View>
                 {board && this.renderTopBar()}
                 {board && this.renderPuzzle()}
-                {board && this.renderControls()}
+                {board && 
+                    <View style={styles().bottomActions}>
+                        {this.renderActions()}
+                        {this.renderNumberControl()}
+                    </View>
+                }
             </View>
         );
     }
 }
-/*
-    if the user clicks off of a cell with notes,
-        if the user does not have the correct(solution) value as a note for that cell
-
-*/
