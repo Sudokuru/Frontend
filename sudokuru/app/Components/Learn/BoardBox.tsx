@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Image} from 'react-native';
 import LoginButton from '../Auth0/LoginButton';
 import SudokuBoard from "../Sudoku Board/SudokuBoard";
 

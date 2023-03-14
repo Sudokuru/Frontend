@@ -1,14 +1,4 @@
-import 'dotenv/config';
 import {JwtPayload} from "jwt-decode";
-
-// this config file may override the app.json config file. Will have to experiment.
-
-export interface AppConfig {
-    DOMAIN: string,
-    CLIENT_ID: string,
-    AUDIENCE: string,
-    SCOPE: string
-}
 
 export interface Auth0JwtPayload extends JwtPayload {
     nickname: string,
@@ -35,6 +25,9 @@ export default {
     assetBundlePatterns: [
         "**/*"
     ],
+    web: {
+        bundler: "metro"
+    },
     ios: {
         bundleIdentifier: "sudokuru.vercel.app",
         supportsTablet: true
@@ -43,10 +36,6 @@ export default {
         package: "sudokuru.vercel.app"
     },
     extra: {
-        DOMAIN: process.env.DOMAIN,
-        CLIENT_ID: process.env.CLIENT_ID,
-        AUDIENCE: process.env.AUDIENCE,
-        SCOPE: process.env.SCOPE,
         eas: {
             projectId: "23c4c607-ead6-4786-9a9c-03f57a97dac7"
         }

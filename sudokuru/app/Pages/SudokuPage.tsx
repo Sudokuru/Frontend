@@ -1,16 +1,13 @@
-// @ts-nocheck
-
 import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
 import { StyleSheet, View } from "react-native";
 import { Text } from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
-import SidebarMenu from "../Components/SidebarMenu";
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { List } from 'immutable';
 
@@ -24,7 +21,7 @@ const SudokuPage = () => {
     if (!fontsLoaded) {
         return null;
     }
-    
+
     // TODO: This should eventually call greg's API for making the puzzle
     function generateGame (finalCount = 20) {
         const solution = makePuzzle();
@@ -91,7 +88,6 @@ const homeScreenStyles = StyleSheet.create({
     home: {
         display: "flex",
         flexDirection: 'row',
-        //backgroundColor: 'red',
     },
 });
 

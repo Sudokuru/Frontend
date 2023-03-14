@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image} from "react-native";
+import {StyleSheet} from "react-native";
 import BoardBox from '../Components/Learn/BoardBox';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
