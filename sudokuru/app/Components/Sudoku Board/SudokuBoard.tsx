@@ -157,6 +157,7 @@ const styles = (cellSize) => StyleSheet.create({
         width: '100%'
     },
     headerControlRow: {
+        alignSelf: "center",
         width: cellSize ? cellSize * 9 : fallbackHeight * 9,
         height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
         justifyContent: 'space-between',
@@ -168,12 +169,6 @@ const styles = (cellSize) => StyleSheet.create({
         fontFamily: 'Inter_400Regular',
         fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
         color: '#FFFFFF',
-    },
-    topActions: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
     },
 });
 
@@ -756,9 +751,7 @@ export default class SudokuBoard extends React.Component {
 
     renderTopBar = () => {
         return(
-            <View style={styles().topActions}>
-                <HeaderRow/>
-            </View>
+            <HeaderRow/>
         );
     }
 
