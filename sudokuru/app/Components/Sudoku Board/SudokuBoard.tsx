@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
 import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
@@ -28,7 +29,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
-let demoHighlightInput = [[0,7],[1,2],[2,7]];
+let demoHighlightInput = [[0,7],[1,2],[2,6]];
 
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
@@ -131,7 +132,7 @@ const styles = (cellSize) => StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-  },
+    },
     numberContainer: {
       width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
       height: cellSize ? cellSize : fallbackHeight,
@@ -155,10 +156,35 @@ const styles = (cellSize) => StyleSheet.create({
         transition: 'filter .5s ease-in-out',
         width: '100%'
     },
+    headerControlRow: {
+        alignSelf: "center",
+        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+        height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+    },
+    headerFont: {
+        fontFamily: 'Inter_400Regular',
+        fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
+        color: '#FFFFFF',
+    },
 });
 
+const formatTime = (seconds) => {
+    // Get minutes and remaining seconds
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    // Pad with zeros if needed
+    const paddedMinutes = minutes < 10 ? "0" + minutes : minutes;
+    const paddedSeconds = secs < 10 ? "0" + secs : secs;
+    // Return formatted string
+    return `${paddedMinutes}:${paddedSeconds}`;
+};    
+
 const NumberControl = (props) => {
-  const { prefilled, inNoteMode, getNumberValueCount, fillNumber, addNumberAsNote } = props;
+  const { prefilled, inNoteMode, fillNumber, addNumberAsNote } = props;
   const cellSize = getCellSize();
   return (
     <View style={ styles(cellSize).numberControlRow }>
@@ -184,9 +210,11 @@ const NumberControl = (props) => {
 NumberControl.propTypes = {
   prefilled: PropTypes.bool.isRequired,
   inNoteMode: PropTypes.bool.isRequired,
-  getNumberValueCount: PropTypes.number.isRequired,
-  fillNumber: PropTypes.number.isRequired,
-  addNumberAsNote: PropTypes.number.isRequired,
+//   getNumberValueCount: PropTypes.number.isRequired,
+//   fillNumber: PropTypes.number.isRequired,
+  fillNumber: PropTypes.func.isRequired,
+//   addNumberAsNote: PropTypes.number.isRequired,
+    addNumberAsNote: PropTypes.func.isRequired,
 };
 
 NumberControl.defaultProps = {
@@ -391,6 +419,53 @@ ActionRow.propTypes = {
     eraseSelected: PropTypes.func.isRequired,
     fillSelectedWithSolution: PropTypes.func.isRequired,
 };
+
+const PauseButton = ({ handlePause, isPaused }) => {
+    const cellSize = getCellSize();
+    return(
+        <Pressable onPress={handlePause}>
+            <Text style={styles(cellSize).headerFont}>{isPaused ? 'Resume' : 'Pause'}</Text>
+        </Pressable>
+    )
+}
+
+const HeaderRow = (props) => { //  Header w/ timer and pause button
+    const { paused } = props;
+    const [time, setTime] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+    const cellSize = getCellSize();
+
+    useEffect(() => { // Timer
+        let interval = null;
+        if (!isPaused && !paused) {
+            interval = setInterval(() => {
+                setTime(time => time + 1);
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [paused, isPaused]);
+
+    const handlePause = () => {
+        setIsPaused(prevState => !prevState);
+    };
+
+    return (
+        <View style={styles(cellSize).headerControlRow}>
+            <Text style={styles(cellSize).headerFont}>Time: {formatTime(time)}</Text>
+            <PauseButton handlePause={handlePause} isPaused={isPaused} />
+        </View>
+    );
+}
+
+HeaderRow.propTypes = {
+    paused: PropTypes.bool.isRequired,
+}
+
+HeaderRow.defaultProps = {
+    paused: false,
+}
 
 /*
  * This function retrieves the user's device size and calculates the cell size
@@ -677,6 +752,12 @@ export default class SudokuBoard extends React.Component<any, any> {
         );
     };
 
+    renderTopBar = () => {
+        return(
+            <HeaderRow/>
+        );
+    }
+
     renderPuzzle = () => {
         const { board } = this.state;
 
@@ -752,6 +833,7 @@ export default class SudokuBoard extends React.Component<any, any> {
         }
         return (
             <View>
+                {board && this.renderTopBar()}
                 {board && this.renderPuzzle()}
                 {board && 
                     <View style={styles().bottomActions}>
