@@ -143,6 +143,8 @@ const LoginButton = () => {
                         Login
                     </Button>
                     <Text>{redirectUri}</Text>
+                    <Text>{audience}</Text>
+                    <Text>{scope}</Text>
                 </View>
             )
     );
