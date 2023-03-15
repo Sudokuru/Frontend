@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from 'expo-web-browser';
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet} from "react-native";
+import {Alert, Platform, StyleSheet} from "react-native";
 import {Button} from "react-native-paper"
 import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
@@ -117,24 +117,22 @@ const LoginButton = () => {
 
     return (
         name ? (
-                <>
-                    <Button mode="contained" testID={"Logout Button"} onPress={
-                        () => {
-                            // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
-                            if (Platform.OS == "ios" || Platform.OS == "android"){
-                                WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
-                                    .then(r => removeValue("access_token"))
-                                    .then(r => removeValue("id_token"));
-                            } else {
-                                WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
-                                    .then(r => removeValue("access_token"))
-                                    .then(r => removeValue("id_token"));
-                            }
+                <Button mode="contained" testID={"Logout Button"} onPress={
+                    () => {
+                        // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
+                        if (Platform.OS == "ios" || Platform.OS == "android"){
+                            WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
+                                .then(r => removeValue("access_token"))
+                                .then(r => removeValue("id_token"));
+                        } else {
+                            WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
+                                .then(r => removeValue("access_token"))
+                                .then(r => removeValue("id_token"));
                         }
-                    }>
-                        Logout
-                    </Button>
-                </>
+                    }
+                }>
+                    Logout
+                </Button>
             ) : (
                 <Button mode="contained" testID={"Login Button"} onPress={() => {
                     promptAsync({useProxy: useProxy})
