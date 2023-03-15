@@ -117,35 +117,28 @@ const LoginButton = () => {
 
     return (
         name ? (
-                <>
-                    <Button mode="contained" testID={"Logout Button"} onPress={
-                        () => {
-                            // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
-                            if (Platform.OS == "ios" || Platform.OS == "android"){
-                                WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
-                                    .then(r => removeValue("access_token"))
-                                    .then(r => removeValue("id_token"));
-                            } else {
-                                WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
-                                    .then(r => removeValue("access_token"))
-                                    .then(r => removeValue("id_token"));
-                            }
+                <Button mode="contained" testID={"Logout Button"} onPress={
+                    () => {
+                        // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
+                        if (Platform.OS == "ios" || Platform.OS == "android"){
+                            WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
+                                .then(r => removeValue("access_token"))
+                                .then(r => removeValue("id_token"));
+                        } else {
+                            WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
+                                .then(r => removeValue("access_token"))
+                                .then(r => removeValue("id_token"));
                         }
-                    }>
-                        Logout
-                    </Button>
-                </>
+                    }
+                }>
+                    Logout
+                </Button>
             ) : (
-                <View>
-                    <Button mode="contained" testID={"Login Button"} onPress={() => {
-                        promptAsync({useProxy: useProxy})
-                    }}>
-                        Login
-                    </Button>
-                    <Text>{redirectUri}</Text>
-                    <Text>{audience}</Text>
-                    <Text>{scope}</Text>
-                </View>
+                <Button mode="contained" testID={"Login Button"} onPress={() => {
+                    promptAsync({useProxy: useProxy})
+                }}>
+                    Login
+                </Button>
             )
     );
 }
