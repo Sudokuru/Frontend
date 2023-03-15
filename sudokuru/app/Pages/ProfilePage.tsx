@@ -6,21 +6,18 @@ import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferences
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import HomeButton from "../Components/Home/HomeButton";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Header from "../Components/Header";
+import {Text} from "react-native-paper";
 
 const ProfilePage = () => {
 
     return (
         <SafeAreaProvider>
             <SafeAreaView>
-                <View style={styles.toggleIcons}>
-                    <View style={styles.profileButtons}>
-                        <StatisticsButton></StatisticsButton>
-                        <HomeButton></HomeButton>
-                        <LoginButton></LoginButton>
-                    </View>
-                </View>
+                <Header page={'Profile'}/>
                 <View style={homeScreenStyles.home}>
                     <View>
+                        <Text style={styles.profileText}>Profile</Text>
                         <ThemeToggle></ThemeToggle>
                         <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
                     </View>

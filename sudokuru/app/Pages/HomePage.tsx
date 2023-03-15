@@ -22,7 +22,7 @@ const HomePage = () => {
  if(Platform.OS === 'web'){
     return (
         <View>
-            <Header/>
+            <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
                     <CCarousel/>
@@ -46,7 +46,6 @@ const HomePage = () => {
         return(
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container}>
-
                     <Button style={styles.loginButton} mode="contained" onPress={() => navigation.openDrawer()}>
                                     Start
                     </Button>
