@@ -73,16 +73,16 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Add .env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
-          envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
-          envkey_AUDIENCE: ${{ secrets.DEV_AUDIENCE }}
-          envkey_SCOPE: ${{ secrets.DEV_SCOPE }}
-          directory: ./sudokuru
-          file_name: .env
-          fail_on_empty: true
+#      - name: Add .env file
+#        uses: SpicyPizza/create-envfile@v1.3
+#        with:
+#          envkey_DOMAIN: ${{ secrets.DEV_DOMAIN }}
+#          envkey_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
+#          envkey_AUDIENCE: ${{ secrets.DEV_AUDIENCE }}
+#          envkey_SCOPE: ${{ secrets.DEV_SCOPE }}
+#          directory: ./sudokuru
+#          file_name: .env
+#          fail_on_empty: true
 
       - name: 🏗 Setup Expo and EAS
         uses: expo/expo-github-action@v7
@@ -96,7 +96,7 @@ jobs:
         working-directory: ./sudokuru
 
       - name: 🚀 Build app
-        run: eas build --non-interactive --platform android --local
+        run: DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
