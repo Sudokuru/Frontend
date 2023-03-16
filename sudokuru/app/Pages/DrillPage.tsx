@@ -22,9 +22,10 @@ const Drills = sudokuru.Drills;
 function formatPuzzle(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {
-      arr.push(str.slice(i, i + 9).split('').map(Number));
+    arr.push(str.slice(i, i + 9).split('').map(Number));
   }
-  return { puzzle: arr };
+  output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+  return { puzzle: output };
 }
 
 updateBoard = (newBoard) => {
@@ -78,14 +79,7 @@ function parseApiAndAddNotes(board, puzzleCurrentNotesState)
       {
         stringIndex = 81 * i + 9 * j + currNoteIndex;
         if (puzzleCurrentNotesState.charAt(stringIndex) == 1)
-        {
-          board = addNumberAsNote(currNoteIndex + 1, board, i, j);
-          // console.log("1");
-        }
-        else
-        {
-          // console.log("0");
-        }
+          board = addNumberAsNote(currNoteIndex + 1, board, j, i);
       }
     }
   }
@@ -94,7 +88,6 @@ function parseApiAndAddNotes(board, puzzleCurrentNotesState)
 
 
 const DrillPage = () => {
-
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
@@ -104,8 +97,8 @@ const DrillPage = () => {
     }
 
     // TODO: This should eventually call greg's API for making the puzzle
-    async function generateGame (finalCount = 20) {
-      let board = await Drills.getGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token").then(game =>
+    async function generateGame (url, strategies, token) {
+      let board = await Drills.getGame(url, strategies, token).then(game =>
       {
         console.log(game);
         let board = makeBoard(formatPuzzle(game.puzzleCurrentState))
@@ -126,7 +119,7 @@ const DrillPage = () => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame()} isDrill={true}/>
+                        <SudokuBoard generatedGame={generateGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token")} isDrill={true}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
