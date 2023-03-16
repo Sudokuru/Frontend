@@ -10,7 +10,7 @@ const PointingTripletLesson = () => {
 
     return (
         <View>
-            <Header></Header>
+            <Header page={'Lesson'}/>
             <View style={homeScreenStyles.home}>
                 <View style={homeScreenStyles.homeMenu}>
                     <SidebarMenu></SidebarMenu>

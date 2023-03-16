@@ -2,19 +2,21 @@ import React from 'react';
 import LoginButton from "./Auth0/LoginButton";
 import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
-import {StyleSheet, View} from "react-native";
-import {Text} from 'react-native-paper';
+import {Image, StyleSheet, View} from "react-native";
+import HomeButton from "./Home/HomeButton";
 
-const Header = () => {
+const Header = (props: any) => {
 
     return (
         <View style={styles.toggleIcons}>
-            <View style={styles.profileHeader}>
-                <Text style={styles.profileText}>Sudokuru</Text>
-            </View>
+            <Image style={{
+                resizeMode: 'cover',
+                height: 45,
+                width: 100,
+            }} source={require('./goldLogoText.png')} />
             <View style={styles.profileButtons}>
-                <StatisticsButton></StatisticsButton>
-                <ProfileButton></ProfileButton>
+                {(props.page == 'Landing') ? <></> : (props.page == 'Statistics') ? <HomeButton/> : <StatisticsButton/>}
+                {(props.page == 'Landing') ? <></> : (props.page == 'Profile') ? <HomeButton/> : <ProfileButton/>}
                 <LoginButton></LoginButton>
             </View>
         </View>

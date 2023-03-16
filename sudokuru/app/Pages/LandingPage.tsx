@@ -1,61 +1,107 @@
 import React from 'react';
-import {StyleSheet} from "react-native";
-import Boxes from '../Components/Landing/Boxes';
+import {Image, Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {useNavigation} from "@react-navigation/native";
+import Header from "../Components/Header";
 
 const LandingPage = () => {
 
+    const navigation: any = useNavigation();
+    const size = useWindowDimensions();
+    const reSize = Math.min(size.width, size.height);
+
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={styles.container}>
-                <Boxes/>
+            <SafeAreaView>
+                <View>
+                    <Header page={'Landing'}/>
+                    <View style={styles(reSize).container}>
+                        <View style={styles(reSize).boxtext}>
+                            <View style={styles(reSize).inner3}>
+                                <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
+                                <Text style={{ fontSize: reSize / 20, color: '#D9A05B' }}> Sudoku Guru </Text>
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
+                                    ]}
+                                    onPress={() => navigation.navigate('Home')}>
+                                    <View>
+                                        <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Get Started </Text>
+                                    </View>
+                                </Pressable>
+                            </View>
+                        </View>
+                            <View style={styles(reSize).box}>
+                                <View style={styles(reSize).inner}>
+                                    <Image style={{
+                                        resizeMode: 'cover',
+                                        height: reSize / 2.5,
+                                        width: reSize / 2.5,
+                                    }} source={require('./App.png')} />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
             </SafeAreaView>
         </SafeAreaProvider>
     );
 };
 
-const styles = StyleSheet.create({
+const styles = (size: any) => StyleSheet.create({
     container: {
-        flex: 1
-    },
-    toggleIcons: {
         flexDirection: 'row',
-        margin: 5
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    profileHeader: {
+    box: {
+        flexDirection: 'row',
+        display: 'flex',
+        width: '50%',
+        height: '70%',
+    },
+    boxtext: {
+        flexDirection: 'row',
+        display: 'flex',
+        width: '50%',
+        height: '30%',
+    },
+    box4: {
+        width: '100%',
+        height: '20%',
+    },
+    menubox: {
+        width: '30%',
+        height: '13%',
+    },
+    midbox: {
+        width: '50%',
+        height: '20%',
+    },
+    box1: {
+        width: '20%',
+        height: '20%',
+        justifyContent: 'center'
+    },
+    inner: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    profileText: {
-        fontSize: 20,
+    inner3: {
+        flex: 1,
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
+    inner2: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
     },
     profileButtons: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        padding: 15,
-        marginRight: 10,
     },
-});
-
-const homeScreenStyles = StyleSheet.create({
-    home: {
-        display: "flex",
-        flexDirection: 'row',
-        //backgroundColor: 'red',
-    },
-    homeMenu: {
-        //backgroundColor: 'red',
-        width: "15%",
-    },
-    lessons: {
-        //backgroundColor: 'blue',
-        width: "85%",
-        alignContent: "flex-start",
-        flexDirection: 'row',
-        flexWrap: "wrap",
-    },
-});
+})
 
 export default LandingPage;
