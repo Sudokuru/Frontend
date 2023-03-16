@@ -3,4 +3,5 @@ declare module '@env' {
     export const DOMAIN: string;
     export const AUDIENCE: string;
     export const SCOPE: string;
+    export const USERACTIVEGAMESBFFURL: string;
 }
