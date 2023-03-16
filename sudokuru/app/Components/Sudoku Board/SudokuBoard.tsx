@@ -550,7 +550,7 @@ export default class SudokuBoard extends React.Component<any, any> {
           });
         }
         let notes = selectedCell.get('notes') || Set();
-        let actualValue = solution[x][y];
+        let actualValue = solution[x][y] || -1;
         if (notes.has(number)) {
           if (number !== actualValue)
             notes = notes.delete(number);
@@ -613,7 +613,8 @@ export default class SudokuBoard extends React.Component<any, any> {
 
         const { x, y } = board.get('selected');
         const currentValue = selectedCell.get('value');
-        let actualValue = solution[x][y];
+
+        let actualValue = solution[x][y] || -1;
         if (currentValue) {
             if (currentValue !== actualValue){
                 this.fillNumber(false);
@@ -632,6 +633,7 @@ export default class SudokuBoard extends React.Component<any, any> {
         const { board, solution } = this.state;
         const selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
+        if (!solution) return;
         const { x, y } = board.get('selected');
         this.fillNumber(solution[x][y]);
     }
@@ -783,29 +785,28 @@ export default class SudokuBoard extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        if (!this.state.board) {
-            this.setState(this.props.generatedGame);
-        }
+      if (!this.state.board) {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
     }
 
     render = () => {
-        const { board } = this.state;
-        console.log(this.props.isDrill);
-        if (!board)
-        {
-            this.setState(this.props.generatedGame);
-        }
-        return (
-            <View>
-                {board && !this.props.isDrill && this.renderTopBar()}
-                {board && this.renderPuzzle()}
-                {board && 
-                    <View style={styles().bottomActions}>
-                        {this.renderActions()}
-                        {this.renderNumberControl()}
-                    </View>
-                }
+      const { board } = this.state;
+      if (!board)
+      {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
+      return (
+        <View>
+          {board && !this.props.isDrill && this.renderTopBar()}
+          {board && this.renderPuzzle()}
+          {board && 
+            <View style={styles().bottomActions}>
+              {this.renderActions()}
+              {this.renderNumberControl()}
             </View>
-        );
+          }
+        </View>
+      );
     }
 }
