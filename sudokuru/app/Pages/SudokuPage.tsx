@@ -10,6 +10,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { List } from 'immutable';
+import {USERACTIVEGAMESBFFURL} from '@env'
 
 
 const SudokuPage = () => {
