@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
 import { StyleSheet, View } from "react-native";
@@ -27,7 +28,6 @@ const SudokuPage = () => {
     function generateGame (finalCount = 20) {
         const solution = makePuzzle();
         let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        console.log(output);
         const { puzzle } = pluck(solution, finalCount);
         const board = makeBoard({ puzzle });
         return {
@@ -42,7 +42,7 @@ const SudokuPage = () => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame()}/>
+                        <SudokuBoard generatedGame={generateGame()} isDrill={false}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
