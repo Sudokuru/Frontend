@@ -243,7 +243,7 @@ const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
 
-    var topHighlight, bottomHighlight, leftHighlight, rightHighlight;
+    var focused;
 
     for (let i = 0; i < demoHighlightInput.length; i++) {
 
@@ -251,18 +251,12 @@ const Cell = (props) => {
             const cellNum = getCellNumber(x, y);
 
             if (cellNum === demoHighlightInput[i][1]) {
-                topHighlight = leftHighlight = bottomHighlight = 1;
-            } 
-
-            else if (cellNum % 9 === demoHighlightInput[i][1] % 9) {
-                topHighlight = bottomHighlight = 1;
-                
-                if (cellNum === demoHighlightInput[i][1] + 72) rightHighlight = 1;
-                else if (cellNum === demoHighlightInput[i][1]) leftHighlight = 1;
-            } 
-            
-            else if (cellNum === demoHighlightInput[i][1] + 72) {
-                topHighlight = rightHighlight = bottomHighlight = 1;
+                focused = 1;
+            } else if (cellNum % 9 === demoHighlightInput[i][1] % 9) {
+                if (cellNum === demoHighlightInput[i][1] + 72) focused = 1;
+                else if (cellNum === demoHighlightInput[i][1]) focused = 1;
+            } else if (cellNum === demoHighlightInput[i][1] + 72) {
+                focused = 1;
             }
         }
 
@@ -270,33 +264,34 @@ const Cell = (props) => {
             const cellNum = getCellNumber(x, y);
 
             if (cellNum === demoHighlightInput[i][1] * 9) {
-                topHighlight = leftHighlight = rightHighlight = 1;
+                focused = 1;
             }
 
             for (let j = 0; j < 9; j++) {
                 if (cellNum === demoHighlightInput[i][1] * 9 + j) {
-                    leftHighlight = rightHighlight = 1;
+                    focused = 1;
                 }
             }
-            
+
             if (cellNum === demoHighlightInput[i][1] * 9 + 8) {
-                leftHighlight = rightHighlight = bottomHighlight = 1;
+                focused = 1;
             }
         }
-        
+
+
         if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
             const cellNum = getCellNumber(x, y); // Number of the cell being checked
             const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
-            
-            if (cellNum === boxNum) topHighlight = leftHighlight = 1;
-            if (cellNum === boxNum + 1) leftHighlight = 1;
-            if (cellNum === boxNum + 2) leftHighlight = bottomHighlight = 1;
-            if (cellNum === boxNum + 9) topHighlight = 1;
-            if (cellNum === boxNum + 10) 1;
-            if (cellNum === boxNum + 11) bottomHighlight = 1;
-            if (cellNum === boxNum + 18) topHighlight = rightHighlight = 1;
-            if (cellNum === boxNum + 19) rightHighlight = 1;
-            if (cellNum === boxNum + 20) rightHighlight = bottomHighlight = 1;
+
+            if (cellNum === boxNum) focused = 1;
+            if (cellNum === boxNum + 1) focused = 1;
+            if (cellNum === boxNum + 2) focused = 1;
+            if (cellNum === boxNum + 9) focused = 1;
+            if (cellNum === boxNum + 10) focused = 1;
+            if (cellNum === boxNum + 11) focused = 1;
+            if (cellNum === boxNum + 18) focused = 1;
+            if (cellNum === boxNum + 19) focused = 1;
+            if (cellNum === boxNum + 20) focused = 1;
         }
     }
 
@@ -318,10 +313,7 @@ const Cell = (props) => {
                 (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
                 // Border Highlighting Zone
-                (topHighlight) && {borderTopColor: '#FFFF00'},
-                (leftHighlight) && {borderLeftColor: '#FFFF00'},
-                (bottomHighlight) && {borderBottomColor: '#FFFF00'},
-                (rightHighlight) && {borderRightColor: '#FFFF00'},
+                (!focused) && {backgroundColor: '#808080'},
 
                 conflict && styles(cellSize).conflict,
                 isPeer && styles(cellSize).peer,
