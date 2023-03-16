@@ -2,7 +2,7 @@
   "name": "frontend-scripts",
   "version": "1.0.0",
   "scripts": {
-    "docker:start": "docker-compose up -d",
+    "docker:start": "npm run docker:pull && docker-compose up -d",
     "docker:pull": "docker pull ghcr.io/sudokuru/useractivegamesbff && docker pull ghcr.io/sudokuru/puzzle && docker pull ghcr.io/sudokuru/useractivegames",
     "docker:imageVersions": "docker images"
   },
