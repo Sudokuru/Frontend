@@ -10,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
-import { List } from 'immutable';
+import { Set, List } from 'immutable';
 import Header from "../Components/Header";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
@@ -19,7 +19,7 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- Wh
 const Puzzles = sudokuru.Puzzles;
 const Drills = sudokuru.Drills;
 
-function formatPuzzle(str) {
+function strPuzzleToArray(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {
     arr.push(str.slice(i, i + 9).split('').map(Number));
@@ -86,6 +86,52 @@ function parseApiAndAddNotes(board, puzzleCurrentNotesState)
   return board;
 }
 
+function componentBoardValsToArray(board)
+{
+  let boardArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      currVal = board.get('puzzle').getIn([i, j, 'value']);
+      temp.push(!currVal ? "0" : currVal.toString());
+    }
+    boardArray.push(temp);
+  }
+  console.log(boardArray);
+  return boardArray;
+}
+
+function componentBoardNotesToArray(board)
+{
+  let notesArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      temp = [];
+      let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
+      if (!notesSetFromComponent) 
+      {
+        notesArray.push(temp);
+        continue;
+      }
+      for (let k = 1; k <= 9; k++)
+      {
+        if (notesSetFromComponent.includes(k))
+        {
+          temp.push((k).toString());
+        }
+      }
+      notesArray.push(temp);
+    }
+  }
+  console.log(notesArray);
+  return notesArray;
+}
 
 const DrillPage = () => {
     let [fontsLoaded] = useFonts({
@@ -96,12 +142,11 @@ const DrillPage = () => {
         return null;
     }
 
-    // TODO: This should eventually call greg's API for making the puzzle
-    async function generateGame (url, strategies, token) {
+    async function generateGame(url, strategies, token) {
       let board = await Drills.getGame(url, strategies, token).then(game =>
       {
         console.log(game);
-        let board = makeBoard(formatPuzzle(game.puzzleCurrentState))
+        let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
         board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
         return board;
       });
@@ -112,6 +157,14 @@ const DrillPage = () => {
       };
     }
 
+    // strategies need to be passed into here, so there should be no need to have strategies as a parameter
+    function getHint(board) {//, strategies) {
+      let boardArray = componentBoardValsToArray(board);
+      let notesArray = componentBoardNotesToArray(board);
+      let hint = Puzzles.getHint(boardArray, notesArray, ["NAKED_SINGLE"])
+      console.log(hint);
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView>
@@ -119,7 +172,7 @@ const DrillPage = () => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token")} isDrill={true}/>
+                        <SudokuBoard generatedGame={generateGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token")} isDrill={true} getHint={getHint}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>

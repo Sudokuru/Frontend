@@ -463,7 +463,7 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
         accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component<any, any> {
+export default class SudokuBoard extends React.Component<any, any, any> {
     constructor(props) {
         super(props);
     };
@@ -569,10 +569,14 @@ export default class SudokuBoard extends React.Component<any, any> {
 
     toggleHintMode = () => {
       let { board } = this.state;
-      let currHintMode = board.get('inHintMode');
-      board = board.set('inHintMode', !currHintMode);
+      let newHintMode = !board.get('inHintMode');
+      board = board.set('inHintMode', newHintMode);
       this.setState({ board });
-      console.log("hint mode: " + !currHintMode ? "ON" : "OFF");
+      console.log("hint mode: " + newHintMode ? "ON" : "OFF");
+      if (newHintMode)
+      {
+        this.props.getHint(board);
+      }
     }
 
     /*
