@@ -238,112 +238,112 @@ const findBox = (box) => {
 }
 const darkBrown = "#A64732";
 const gold = "#F2CA7E";
-let demoHighlightInput = [[0,7, darkBrown], [1,5, gold], [2,0], [3, 4, 6, gold]];
+let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
 const Cell = (props) => {
-    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
-    const cellSize = getCellSize();
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
+  const cellSize = getCellSize();
 
-    let focused = '#808080';
+  let backColor = '#808080';
 
-    for (let i = 0; i < demoHighlightInput.length; i++) {
+  for (let i = 0; i < demoHighlightInput.length; i++) {
 
-      if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
-        const cellNum = getCellNumber(x, y);
-        if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
-        {
-          focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
-        }
-      }
-
-      if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
-        const cellNum = getCellNumber(x, y);
-        if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
-        {
-          focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
-        }
-      }
-
-
-      if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
-        const cellNum = getCellNumber(x, y); // Number of the cell being checked
-        const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
-        switch (cellNum - boxNum)
-        {
-          case 0:
-          case 1:
-          case 2:
-          case 9:
-          case 10:
-          case 11:
-          case 18:
-          case 19:
-          case 20:
-            focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
-            break;
-        }
-      }
-      if (demoHighlightInput[i][0] === 3) { // Individual Cell Highlighting
-        if (x === demoHighlightInput[i][1] && y === demoHighlightInput[i][2])
-          focused = demoHighlightInput[i][3] ? demoHighlightInput[i][3] : "white";
+    if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
+      const cellNum = getCellNumber(x, y);
+      if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
+      {
+        backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
       }
     }
 
-    const handleKeyDown = (event) => {
-        const inputValue = event.nativeEvent.key;
-        if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
-          onValueChange(x, y, parseInt(inputValue, 10));
-        }
-        if (inputValue == "Delete" || inputValue == "Backspace")
-          eraseSelected();
-    };
+    if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
+      const cellNum = getCellNumber(x, y);
+      if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
+      {
+        backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
+      }
+    }
 
-    return (
-        <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
-            <View style={[styles(cellSize).cellView,
-                (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
-                (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
-                (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
-                (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
-                // Border Highlighting
-                (inHintMode) && focused && {backgroundColor: focused},
+    if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
+      const cellNum = getCellNumber(x, y); // Number of the cell being checked
+      const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
+      switch (cellNum - boxNum)
+      {
+        case 0:
+        case 1:
+        case 2:
+        case 9:
+        case 10:
+        case 11:
+        case 18:
+        case 19:
+        case 20:
+          backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
+          break;
+      }
+    }
+    if (demoHighlightInput[i][0] === 3) { // Individual Cell Highlighting
+      if (x === demoHighlightInput[i][1] && y === demoHighlightInput[i][2])
+        backColor = demoHighlightInput[i][3] ? demoHighlightInput[i][3] : "white";
+    }
+  }
 
-                conflict && styles(cellSize).conflict,
-                isPeer && styles(cellSize).peer,
-                sameValue && styles(cellSize).sameValue,
-                (conflict && isSelected) && styles(cellSize).selectedConflict,
-                isSelected && styles(cellSize).selected]}>
-                {
-                    notes ? 
-                        <View style={styles(cellSize).noteViewParent}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
-                                </View>
-                                <View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
-                                </View>
-                                <View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
-                                    <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
-                                </View>
-                            </View>
-                        </View>
-                        : value && <Text style={[styles(cellSize).cellText,
-                        conflict && styles(cellSize).conflict,
-                        (conflict && isSelected) && styles(cellSize).selectedConflict,
-                        prefilled && styles(cellSize).prefilled]}>{value}
-                    </Text>
-                }
-            </View>
-        </Pressable>
-    );
+  const handleKeyDown = (event) => {
+      const inputValue = event.nativeEvent.key;
+      if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
+        onValueChange(x, y, parseInt(inputValue, 10));
+      }
+      if (inputValue == "Delete" || inputValue == "Backspace")
+        eraseSelected();
+  };
+
+  return (
+      <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
+          <View style={[styles(cellSize).cellView,
+              (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
+              (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
+              (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
+              (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
+
+              // Border Highlighting
+              (inHintMode) && backColor && {backgroundColor: backColor},
+
+              conflict && styles(cellSize).conflict,
+              isPeer && styles(cellSize).peer,
+              sameValue && styles(cellSize).sameValue,
+              (conflict && isSelected) && styles(cellSize).selectedConflict,
+              isSelected && styles(cellSize).selected]}>
+              {
+                  notes ? 
+                      <View style={styles(cellSize).noteViewParent}>
+                          <View style={{ flexDirection: 'row' }}>
+                              <View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
+                              </View>
+                              <View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
+                              </View>
+                              <View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
+                                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
+                              </View>
+                          </View>
+                      </View>
+                      : value && <Text style={[styles(cellSize).cellText,
+                      conflict && styles(cellSize).conflict,
+                      (conflict && isSelected) && styles(cellSize).selectedConflict,
+                      prefilled && styles(cellSize).prefilled]}>{value}
+                  </Text>
+              }
+          </View>
+      </Pressable>
+  );
 };
 
 Cell.propTypes = {
