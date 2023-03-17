@@ -144,7 +144,14 @@ const DrillPage = (props) => {
     return null;
   }
 
-  async function generateGame(url, strategies, token) {
+  async function generateGame(url, strategies) {
+    let token = null;
+    await getKeyString("access_token").then(
+        result => {
+          token = result;
+        });
+    console.log(token);
+
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
@@ -171,7 +178,7 @@ const DrillPage = (props) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["NAKED_SINGLE"], getKeyString("access_token"))} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["NAKED_SINGLE"])} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
