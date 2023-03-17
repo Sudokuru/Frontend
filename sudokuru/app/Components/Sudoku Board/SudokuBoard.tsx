@@ -237,13 +237,13 @@ const findBox = (box) => {
     if (box === 8) return 60;
 }
 
-let demoHighlightInput = [[0,7], [1,5], [2,0], [3, 5, 6, "red"]];
+let demoHighlightInput = [[0,7, "red"], [1,5], [2,0], [3, 4, 6]];
 
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
 
-    let focused;
+    let focused = '#808080';
 
     for (let i = 0; i < demoHighlightInput.length; i++) {
 
@@ -278,9 +278,13 @@ const Cell = (props) => {
           case 18:
           case 19:
           case 20:
-            focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "red";
+            focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
             break;
         }
+      }
+      if (demoHighlightInput[i][0] === 3) { // Individual Cell Highlighting
+        if (x === demoHighlightInput[i][1] && y === demoHighlightInput[i][2])
+          focused = demoHighlightInput[i][3] ? demoHighlightInput[i][3] : "white";
       }
     }
 
@@ -301,8 +305,7 @@ const Cell = (props) => {
                 (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
                 (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
-                // Border Highlighting Zone
-                (!focused) && {backgroundColor: '#808080'},
+                // Border Highlighting
                 focused && {backgroundColor: focused},
 
                 conflict && styles(cellSize).conflict,
