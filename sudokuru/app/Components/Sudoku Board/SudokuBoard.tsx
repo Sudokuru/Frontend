@@ -240,7 +240,7 @@ const findBox = (box) => {
 let demoHighlightInput = [[0,7, "red"], [1,5], [2,0], [3, 4, 6]];
 
 const Cell = (props) => {
-    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
+    const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
     const cellSize = getCellSize();
 
     let focused = '#808080';
@@ -306,7 +306,7 @@ const Cell = (props) => {
                 (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
                 // Border Highlighting
-                focused && {backgroundColor: focused},
+                (inHintMode) && focused && {backgroundColor: focused},
 
                 conflict && styles(cellSize).conflict,
                 isPeer && styles(cellSize).peer,
@@ -356,11 +356,13 @@ Cell.propTypes = {
     notes: PropTypes.instanceOf(Set),
     conflict: PropTypes.bool.isRequired,
     eraseSelected: PropTypes.func.isRequired,
+    inHintMode: PropTypes.bool,
 };
 
 Cell.defaultProps = {
     notes: null,
     value: null,
+    inHintMode: false,
 };
 
 const ActionRow = (props) => {
@@ -733,6 +735,7 @@ export default class SudokuBoard extends React.Component<any, any> {
                 y={y}
                 conflict={conflict}
                 eraseSelected={this.eraseSelected}
+                inHintMode={false}
             />
         );
     };
