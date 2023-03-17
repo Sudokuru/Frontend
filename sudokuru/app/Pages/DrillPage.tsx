@@ -12,6 +12,7 @@ import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Med
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { Set, List } from 'immutable';
 import Header from "../Components/Header";
+import {USERACTIVEGAMESBFFURL} from '@env'
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 
@@ -169,7 +170,7 @@ const DrillPage = (props) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token")} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["NAKED_SINGLE"], "token")} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
