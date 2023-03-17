@@ -29,8 +29,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
-let demoHighlightInput = [[0,7],[1,2],[2,6]];
-
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
     boardContainer: {
@@ -239,6 +237,8 @@ const findBox = (box) => {
     if (box === 8) return 60;
 }
 
+let demoHighlightInput = [[0,7],[1,5],[2,0]];
+
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
@@ -249,32 +249,17 @@ const Cell = (props) => {
 
         if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
             const cellNum = getCellNumber(x, y);
-
-            if (cellNum === demoHighlightInput[i][1]) {
-                focused = 1;
-            } else if (cellNum % 9 === demoHighlightInput[i][1] % 9) {
-                if (cellNum === demoHighlightInput[i][1] + 72) focused = 1;
-                else if (cellNum === demoHighlightInput[i][1]) focused = 1;
-            } else if (cellNum === demoHighlightInput[i][1] + 72) {
-                focused = 1;
+            if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
+            {
+              focused = 1
             }
         }
 
         if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
             const cellNum = getCellNumber(x, y);
-
-            if (cellNum === demoHighlightInput[i][1] * 9) {
-                focused = 1;
-            }
-
-            for (let j = 0; j < 9; j++) {
-                if (cellNum === demoHighlightInput[i][1] * 9 + j) {
-                    focused = 1;
-                }
-            }
-
-            if (cellNum === demoHighlightInput[i][1] * 9 + 8) {
-                focused = 1;
+            if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
+            {
+              focused = 1
             }
         }
 
