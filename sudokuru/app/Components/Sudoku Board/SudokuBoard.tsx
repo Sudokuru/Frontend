@@ -366,7 +366,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-    const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution } = props;
+    const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode } = props;
     const cellSize = getCellSize();
 
     const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -391,7 +391,7 @@ const ActionRow = (props) => {
                 <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
             </Pressable>
             {/* Hint */}
-            <Pressable onPress={!prefilled ? fillSelectedWithSolution : null}>
+            <Pressable onPress={!prefilled ? fillSelectedWithSolution && toggleHintMode : null}>
                 <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
             </Pressable>
         </View>
@@ -405,6 +405,7 @@ ActionRow.propTypes = {
     toggleNoteMode: PropTypes.func.isRequired,
     eraseSelected: PropTypes.func.isRequired,
     fillSelectedWithSolution: PropTypes.func.isRequired,
+    toggleHintMode: PropTypes.func.isRequired,
 };
 
 const PauseButton = ({ handlePause, isPaused }) => {
@@ -485,7 +486,7 @@ function makeBoard({ puzzle }) {
             };
         })
     ));
-    return fromJS({ puzzle: result, selected: false, inNoteMode: false, choices: { rows, columns, squares } });
+    return fromJS({ puzzle: result, selected: false, inNoteMode: false, inHintMode: false, choices: { rows, columns, squares } });
 }
 
 function updateBoardWithNumber({
@@ -618,11 +619,19 @@ export default class SudokuBoard extends React.Component<any, any> {
     };
 
     toggleNoteMode = () => {
-        let { board } = this.state;
-        let currNoteMode = board.get('inNoteMode');
-        board = board.set('inNoteMode', !currNoteMode);
-        this.setState({ board });
-        // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
+      let { board } = this.state;
+      let currNoteMode = board.get('inNoteMode');
+      board = board.set('inNoteMode', !currNoteMode);
+      this.setState({ board });
+      // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
+    }
+
+    toggleHintMode = () => {
+      let { board } = this.state;
+      let currHintMode = board.get('inHintMode');
+      board = board.set('inHintMode', !currHintMode);
+      this.setState({ board });
+      console.log("hint mode: " + !currHintMode ? "ON" : "OFF");
     }
 
     /*
@@ -720,6 +729,8 @@ export default class SudokuBoard extends React.Component<any, any> {
             else this.fillNumber(newValue);
         };
 
+        let inHintMode = board.get('inHintMode');
+
         return (
             <Cell
                 prefilled={prefilled}
@@ -735,7 +746,7 @@ export default class SudokuBoard extends React.Component<any, any> {
                 y={y}
                 conflict={conflict}
                 eraseSelected={this.eraseSelected}
-                inHintMode={false}
+                inHintMode={inHintMode}
             />
         );
     };
@@ -794,6 +805,7 @@ export default class SudokuBoard extends React.Component<any, any> {
                 toggleNoteMode={toggleNoteMode}
                 eraseSelected={eraseSelected}
                 fillSelectedWithSolution={fillSelectedWithSolution}
+                toggleHintMode={this.toggleHintMode}
             />
         );
     }
