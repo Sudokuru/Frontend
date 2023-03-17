@@ -158,8 +158,14 @@ const DrillPage = (props) => {
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
-    let hint = Puzzles.getHint(boardArray, notesArray, strategy)
-    console.log(hint);
+    let hint = {}
+    try {
+      hint = Puzzles.getHint(boardArray, notesArray, strategy)
+    } catch (error) {
+      console.log("ERROR: " + error.Error_Message);
+      hint = {}
+    }
+    return hint;
   }
 
   return (

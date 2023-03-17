@@ -11,155 +11,155 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 let fallbackHeight = 30;
 
 const styles = (cellSize) => StyleSheet.create({
-    hardLineThickness : {thickness: cellSize * (3 / 40)},
-    boardContainer: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    cellContainer: {
-        height: cellSize ? cellSize : fallbackHeight,
-        width: cellSize ? cellSize : fallbackHeight,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    noteViewParent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    noteViewElement: {
-        width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-        height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-        paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
-    },
-    noteText: {
-        fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
-        fontFamily: 'Inter_100Thin',
-    },
-    cellView: {
-        height: cellSize ? cellSize : fallbackHeight,
-        width: cellSize ? cellSize : fallbackHeight,
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-        backgroundColor: 'white',
-    },
-    cellText: {
-        fontFamily: 'Inter_400Regular',
-        fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-    },
-    borderThick: {
-        borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
-    },
-    conflict: {
-        // styles for cells with conflict prop
-        color: '#000000',
-        backgroundColor: '#FFC3BF',
-    },
-    peer: {
-        // styles for cells with isPeer prop
-        color: '#000000',
-        backgroundColor: '#C5DDF4',
-    },
-    sameValue: {
-        // styles for cells with sameValue prop
-        color: '#000000',
-        backgroundColor: '#c8dcc4',
-    },
-    selected: {
-        // styles for cells with isSelected prop
-        color: '#000000',
-        backgroundColor: '#9cc4ec',
-    },
-    prefilled: {
-        // styles for cells with prefilled prop
-        // FIXME why does this need border width 0 to not be thick
-        borderWidth: 0,
-    },
-    selectedConflict: {
-        // styles for cells with isSelected and conflict props
-        color: '#FF0000',
-        backgroundColor: '#FF7C75',
-    },
-    bottomActions: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-    },
-    actionControlRow: {
-        width: cellSize ? cellSize * 11 : fallbackHeight * 11,
-        height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginBottom: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
-    },
-    actionControlButton: {
-      height: cellSize ? cellSize * (0.5) : 1000,
-      width: cellSize ? cellSize * (0.5) : 1000,
-      aspectRatio: 1,
-    },
-    numberControlRow: {
-      width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-      height: cellSize ? cellSize: fallbackHeight,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    numberContainer: {
-      width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
-      height: cellSize ? cellSize : fallbackHeight,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#7EC8D9',
-      borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
-    },
-    numberControlText: {
-        fontFamily: 'Inter_400Regular',
-        fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-    },
-    controlStyle: {
-        padding: 0,
-        cursor: 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        transition: 'filter .5s ease-in-out',
-        width: '100%'
-    },
-    headerControlRow: {
-        alignSelf: "center",
-        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
-    },
-    headerFont: {
-        fontFamily: 'Inter_400Regular',
-        fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
-        color: '#FFFFFF',
-    },
+  hardLineThickness : {thickness: cellSize * (3 / 40)},
+  boardContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  cellContainer: {
+    height: cellSize ? cellSize : fallbackHeight,
+    width: cellSize ? cellSize : fallbackHeight,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  noteViewParent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noteViewElement: {
+    width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+    height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+    paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
+  },
+  noteText: {
+    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontFamily: 'Inter_100Thin',
+  },
+  cellView: {
+    height: cellSize ? cellSize : fallbackHeight,
+    width: cellSize ? cellSize : fallbackHeight,
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
+    backgroundColor: 'white',
+  },
+  cellText: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
+  },
+  borderThick: {
+    borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
+  },
+  conflict: {
+    // styles for cells with conflict prop
+    color: '#000000',
+    backgroundColor: '#FFC3BF',
+  },
+  peer: {
+    // styles for cells with isPeer prop
+    color: '#000000',
+    backgroundColor: '#C5DDF4',
+  },
+  sameValue: {
+    // styles for cells with sameValue prop
+    color: '#000000',
+    backgroundColor: '#c8dcc4',
+  },
+  selected: {
+    // styles for cells with isSelected prop
+    color: '#000000',
+    backgroundColor: '#9cc4ec',
+  },
+  prefilled: {
+    // styles for cells with prefilled prop
+    // FIXME why does this need border width 0 to not be thick
+    borderWidth: 0,
+  },
+  selectedConflict: {
+    // styles for cells with isSelected and conflict props
+    color: '#FF0000',
+    backgroundColor: '#FF7C75',
+  },
+  bottomActions: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  actionControlRow: {
+    width: cellSize ? cellSize * 11 : fallbackHeight * 11,
+    height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+  },
+  actionControlButton: {
+    height: cellSize ? cellSize * (0.5) : 1000,
+    width: cellSize ? cellSize * (0.5) : 1000,
+    aspectRatio: 1,
+  },
+  numberControlRow: {
+    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+    height: cellSize ? cellSize: fallbackHeight,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  numberContainer: {
+    width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
+    height: cellSize ? cellSize : fallbackHeight,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#7EC8D9',
+    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
+  },
+  numberControlText: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
+  },
+  controlStyle: {
+    padding: 0,
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    transition: 'filter .5s ease-in-out',
+    width: '100%'
+  },
+  headerControlRow: {
+    alignSelf: "center",
+    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+    height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+  },
+  headerFont: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
+    color: '#FFFFFF',
+  },
 });
 
 const formatTime = (seconds) => {
-    // Get minutes and remaining seconds
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    // Pad with zeros if needed
-    const paddedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    const paddedSeconds = secs < 10 ? "0" + secs : secs;
-    // Return formatted string
-    return `${paddedMinutes}:${paddedSeconds}`;
+  // Get minutes and remaining seconds
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  // Pad with zeros if needed
+  const paddedMinutes = minutes < 10 ? "0" + minutes : minutes;
+  const paddedSeconds = secs < 10 ? "0" + secs : secs;
+  // Return formatted string
+  return `${paddedMinutes}:${paddedSeconds}`;
 };    
 
 const NumberControl = (props) => {
@@ -190,7 +190,7 @@ NumberControl.propTypes = {
   prefilled: PropTypes.bool.isRequired,
   inNoteMode: PropTypes.bool.isRequired,
   fillNumber: PropTypes.func.isRequired,
-    addNumberAsNote: PropTypes.func.isRequired,
+  addNumberAsNote: PropTypes.func.isRequired,
 };
 
 NumberControl.defaultProps = {
@@ -198,71 +198,107 @@ NumberControl.defaultProps = {
 
 // function that converts x,y cell coords to a number
 const getCellNumber = (x, y) => {
-    return y + x * 9;
+  return y + x * 9;
 };
 
 // function that returns the cell number of the top-left cell of a box based on the box number
 const findBox = (box) => {
-    if (box === 0) return 0;
-    if (box === 1) return 27;
-    if (box === 2) return 54;
-    if (box === 3) return 3;
-    if (box === 4) return 30;
-    if (box === 5) return 57;
-    if (box === 6) return 6;
-    if (box === 7) return 33;
-    if (box === 8) return 60;
+  if (box === 0) return 0;
+  if (box === 1) return 27;
+  if (box === 2) return 54;
+  if (box === 3) return 3;
+  if (box === 4) return 30;
+  if (box === 5) return 57;
+  if (box === 6) return 6;
+  if (box === 7) return 33;
+  if (box === 8) return 60;
 }
+
+const getCausesFromHint = (hint) => {
+  let causes = []
+  let temp = []
+  for (let i = 0; i < hint.cause.length; i++)
+  {
+    temp = []
+    temp.push(3)
+    temp.push(hint.cause[i][0])
+    temp.push(hint.cause[i][1])
+    temp.push(darkBrown)
+    causes.push(temp)
+  }
+  return causes
+}
+
+const getGroupsFromHint = (hint) => {
+  let groups = []
+  let temp = []
+  for (let i = 0; i < hint.groups.length; i++)
+  {
+    temp = []
+    temp.push(hint.groups[i][0])
+    temp.push(hint.groups[i][1])
+    temp.push("#FFFFFF")
+    groups.push(temp)
+  }
+  return groups
+}
+
+// cause cells
 const darkBrown = "#A64732";
+
+// placement/removal cells
 const gold = "#F2CA7E";
-let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
+
+// let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hint } = props;
   const cellSize = getCellSize();
 
   let backColor = '#808080';
+  if (hint)
+  {
+    for (let i = 0; i < hint.length; i++) {
 
-  for (let i = 0; i < demoHighlightInput.length; i++) {
-
-    if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
-      const cellNum = getCellNumber(x, y);
-      if (cellNum % 9 === demoHighlightInput[i][1] % 9)
-      {
-        backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
+      if (hint[i][0] === 1) { // Row Border Highlighting
+        const cellNum = getCellNumber(x, y);
+        if (cellNum % 9 === hint[i][1] % 9)
+        {
+          backColor = hint[i][2] ? hint[i][2] : "white";
+        }
       }
-    }
 
-    if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
-      const cellNum = getCellNumber(x, y);
-      if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
-      {
-        backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
+      if (hint[i][0] === 0) { // Column Border Highlighting
+        const cellNum = getCellNumber(x, y);
+        if (Math.trunc(cellNum / 9) === hint[i][1])
+        {
+          backColor = hint[i][2] ? hint[i][2] : "white";
+        }
       }
-    }
 
 
-    if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
-      const cellNum = getCellNumber(x, y); // Number of the cell being checked
-      const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
-      switch (cellNum - boxNum)
-      {
-        case 0:
-        case 1:
-        case 2:
-        case 9:
-        case 10:
-        case 11:
-        case 18:
-        case 19:
-        case 20:
-          backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
-          break;
+      if (hint[i][0] === 2) { // Box Border Highlighting
+        const cellNum = getCellNumber(x, y); // Number of the cell being checked
+        const boxNum = findBox(hint[i][1]); // Number of the box being highlighted
+        switch (cellNum - boxNum)
+        {
+          case 0:
+          case 1:
+          case 2:
+          case 9:
+          case 10:
+          case 11:
+          case 18:
+          case 19:
+          case 20:
+            backColor = hint[i][2] ? hint[i][2] : "white";
+            break;
+        }
       }
-    }
-    if (demoHighlightInput[i][0] === 3) { // Individual Cell Highlighting
-      if (x === demoHighlightInput[i][1] && y === demoHighlightInput[i][2])
-        backColor = demoHighlightInput[i][3] ? demoHighlightInput[i][3] : "white";
+      if (hint[i][0] === 3) { // Individual Cell Highlighting
+        if (x === hint[i][1] && y === hint[i][2])
+          backColor = hint[i][3] ? hint[i][3] : "white";
+      }
     }
   }
 
@@ -276,50 +312,50 @@ const Cell = (props) => {
   };
 
   return (
-      <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
-          <View style={[styles(cellSize).cellView,
-              (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
-              (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
-              (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
-              (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
+    <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
+      <View style={[styles(cellSize).cellView,
+        (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
+        (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
+        (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
+        (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
-              // Border Highlighting
-              (inHintMode) && backColor && {backgroundColor: backColor},
+        // Border Highlighting
+        (inHintMode) && backColor && {backgroundColor: backColor},
 
-              conflict && styles(cellSize).conflict,
-              isPeer && styles(cellSize).peer,
-              sameValue && styles(cellSize).sameValue,
-              (conflict && isSelected) && styles(cellSize).selectedConflict,
-              isSelected && styles(cellSize).selected]}>
-              {
-                  notes ?
-                      <View style={styles(cellSize).noteViewParent}>
-                          <View style={{ flexDirection: 'row' }}>
-                              <View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
-                              </View>
-                              <View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
-                              </View>
-                              <View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
-                                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
-                              </View>
-                          </View>
-                      </View>
-                      : value && <Text style={[styles(cellSize).cellText,
-                      conflict && styles(cellSize).conflict,
-                      (conflict && isSelected) && styles(cellSize).selectedConflict,
-                      prefilled && styles(cellSize).prefilled]}>{value}
-                  </Text>
-              }
-          </View>
-      </Pressable>
+        conflict && styles(cellSize).conflict,
+        isPeer && styles(cellSize).peer,
+        sameValue && styles(cellSize).sameValue,
+        (conflict && isSelected) && styles(cellSize).selectedConflict,
+        isSelected && styles(cellSize).selected]}>
+        {
+          notes ?
+            <View style={styles(cellSize).noteViewParent}>
+              <View style={{ flexDirection: 'row' }}>
+                <View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
+                </View>
+                <View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
+                </View>
+                <View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
+                </View>
+              </View>
+            </View>
+            : value && <Text style={[styles(cellSize).cellText,
+            conflict && styles(cellSize).conflict,
+            (conflict && isSelected) && styles(cellSize).selectedConflict,
+            prefilled && styles(cellSize).prefilled]}>{value}
+          </Text>
+        }
+      </View>
+    </Pressable>
   );
 };
 
@@ -335,6 +371,7 @@ Cell.propTypes = {
     conflict: PropTypes.bool.isRequired,
     eraseSelected: PropTypes.func.isRequired,
     inHintMode: PropTypes.bool,
+    hint: PropTypes.any,
 };
 
 Cell.defaultProps = {
@@ -344,55 +381,55 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-    const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode } = props;
-    const cellSize = getCellSize();
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode } = props;
+  const cellSize = getCellSize();
 
-    const sizeConst = (Platform.OS == 'web') ? 2 : 2;
+  const sizeConst = (Platform.OS == 'web') ? 2 : 2;
 
-    return (
-        <View style={styles(cellSize).actionControlRow}>
-            {/* Undo */}
-            <Pressable onPress={history.size ? undo : null}>
-                <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
-            </Pressable>
-            {/* Note mode */}
-            <Pressable onPress={toggleNoteMode}>
-                {inNoteMode
-                        ? // note mode on
-                    <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
-                        : // note mode off
-                    <MaterialCommunityIcons color="white" name="pencil-off-outline" size={cellSize/(sizeConst)}/>
-                }
-            </Pressable>
-            {/* Erase */}
-            <Pressable onPress={!prefilled ? eraseSelected : null}>
-                <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
-            </Pressable>
-            {/* Hint */}
-            <Pressable onPress={!prefilled ? fillSelectedWithSolution && toggleHintMode : null}>
-                <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
-            </Pressable>
-        </View>
-    );
+  return (
+    <View style={styles(cellSize).actionControlRow}>
+      {/* Undo */}
+      <Pressable onPress={history.size ? undo : null}>
+        <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
+      </Pressable>
+      {/* Note mode */}
+      <Pressable onPress={toggleNoteMode}>
+        {inNoteMode
+            ? // note mode on
+          <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
+            : // note mode off
+          <MaterialCommunityIcons color="white" name="pencil-off-outline" size={cellSize/(sizeConst)}/>
+        }
+      </Pressable>
+      {/* Erase */}
+      <Pressable onPress={!prefilled ? eraseSelected : null}>
+        <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
+      </Pressable>
+      {/* Hint */}
+      <Pressable onPress={!prefilled ? fillSelectedWithSolution && toggleHintMode : null}>
+        <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
+      </Pressable>
+    </View>
+  );
 };
 
 ActionRow.propTypes = {
-    inNoteMode: PropTypes.bool.isRequired,
-    prefilled: PropTypes.bool.isRequired,
-    undo: PropTypes.func.isRequired,
-    toggleNoteMode: PropTypes.func.isRequired,
-    eraseSelected: PropTypes.func.isRequired,
-    fillSelectedWithSolution: PropTypes.func.isRequired,
-    toggleHintMode: PropTypes.func.isRequired,
+  inNoteMode: PropTypes.bool.isRequired,
+  prefilled: PropTypes.bool.isRequired,
+  undo: PropTypes.func.isRequired,
+  toggleNoteMode: PropTypes.func.isRequired,
+  eraseSelected: PropTypes.func.isRequired,
+  fillSelectedWithSolution: PropTypes.func.isRequired,
+  toggleHintMode: PropTypes.func.isRequired,
 };
 
 const PauseButton = ({ handlePause, isPaused }) => {
-    const cellSize = getCellSize();
-    return(
-        <Pressable onPress={handlePause}>
-            <Text style={styles(cellSize).headerFont}>{isPaused ? 'Resume' : 'Pause'}</Text>
-        </Pressable>
-    )
+  const cellSize = getCellSize();
+  return(
+    <Pressable onPress={handlePause}>
+      <Text style={styles(cellSize).headerFont}>{isPaused ? 'Resume' : 'Pause'}</Text>
+    </Pressable>
+  )
 }
 
 const HeaderRow = (props) => { //  Header w/ timer and pause button
@@ -567,15 +604,32 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
     }
 
+
+
     toggleHintMode = () => {
       let { board } = this.state;
       let newHintMode = !board.get('inHintMode');
       board = board.set('inHintMode', newHintMode);
+      let hint = undefined
+      if (newHintMode) hint = this.props.getHint(board)
+      let causes = []
+      let groups = []
+      // add the causes
+      if (hint && hint.cause) causes = getCausesFromHint(hint);
+      
+      // add the groups
+      if (hint && hint.groups) groups = getGroupsFromHint(hint);
+      let hintHighlightInput = groups.concat(causes);
+      console.log(hintHighlightInput)
+      console.log(hint)
+      // add the placements 
+        // TODO: text coloring
+        // TODO: ability to add notes
+      // add the removals
+        // TODO: text coloring
+        // TODO: ability to remove notes
+      board = board.set('hint', hintHighlightInput);
       this.setState({ board });
-      if (newHintMode)
-      {
-        this.props.getHint(board);
-      }
     }
 
     /*
@@ -664,8 +718,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         const peer = areCoordinatePeers({ x, y }, board.get('selected'));
         const sameValue = !!(selected && selected.get('value') &&
             value === selected.get('value'));
-
         const isSelected = cell === selected;
+        let inHintMode = board.get('inHintMode');
+        let hint = board.get('hint');
 
         const handleValueChange = (x, y, newValue) => {
             let { board } = this.state;
@@ -674,8 +729,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
             if (inNoteMode) this.addNumberAsNote(newValue);
             else this.fillNumber(newValue);
         };
-
-        let inHintMode = board.get('inHintMode');
 
         return (
             <Cell
@@ -693,6 +746,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 conflict={conflict}
                 eraseSelected={this.eraseSelected}
                 inHintMode={inHintMode}
+                hint={hint}
             />
         );
     };
