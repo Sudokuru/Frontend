@@ -33,13 +33,27 @@ function HomeDrawer(){
     return(
      <Drawer.Navigator screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "right", }}>
                               <Drawer.Screen name="Main Page" component={HomePage} />
-                              <Drawer.Screen name="Naked Set" component={DrillPage} />
-                              <Drawer.Screen name="Hidden Set" component={DrillPage} />
-                              <Drawer.Screen name="Pointing Pairs" component={DrillPage} />
-                              <Drawer.Screen name="Box Line Reduction" component={DrillPage} />
-                              <Drawer.Screen name="Swordfish" component={DrillPage} />
-                              <Drawer.Screen name="X-Wing Strategy" component={DrillPage} />
-                              <Drawer.Screen name="Singles Chaining" component={DrillPage} />
+                              <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Triplet" initialParams={{ params: ["NAKED_TRIPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Quadruplet" initialParams={{ params: ["NAKED_QUADRUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Quintuplet" initialParams={{ params: ["NAKED_QUINTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Sextuplet" initialParams={{ params: ["NAKED_SEXTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Septuplet" initialParams={{ params: ["NAKED_SEPTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Naked Octuplet" initialParams={{ params: ["NAKED_OCTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Single" initialParams={{ params: ["HIDDEN_SINGLE"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Pair" initialParams={{ params: ["HIDDEN_PAIR"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Triplet" initialParams={{ params: ["HIDDEN_TRIPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Quintuplet" initialParams={{ params: ["HIDDEN_QUINTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Sextuplet" initialParams={{ params: ["HIDDEN_SEXTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Septuplet" initialParams={{ params: ["HIDDEN_SEPTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Hidden Octuplet" initialParams={{ params: ["HIDDEN_OCTUPLET"] }} component={DrillPage} />
+                              <Drawer.Screen name="Pointing Pairs" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
+                              <Drawer.Screen name="Box Line Reduction" initialParams={{ params: ["BOX_LINE_REDUCTION"] }} component={DrillPage} />
+                              <Drawer.Screen name="Swordfish" initialParams={{ params: ["SWORDFISH"] }} component={DrillPage} />
+                              <Drawer.Screen name="X-Wing Strategy" initialParams={{ params: ["X_WING"] }} component={DrillPage} />
+                              <Drawer.Screen name="Singles Chaining" initialParams={{ params: ["SINGLES_CHAINING"] }} component={DrillPage} />
      </Drawer.Navigator>)
 }
 
