@@ -475,32 +475,6 @@ function getCellSize() {
     return Math.min(size.width, size.height) / 15;
 }
 
-function makeCountObject() {
-    const countObj = [];
-    for (let i = 0; i < 10; i += 1) countObj.push(0);
-    return countObj;
-}
-
-function makeBoard({ puzzle }) {
-    const rows = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const columns = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const squares = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const result = puzzle.map((row, i) => (
-        row.map((cell, j) => {
-            if (cell) {
-                rows[i][cell] += 1;
-                columns[j][cell] += 1;
-                squares[((Math.floor(i / 3)) * 3) + Math.floor(j / 3)][cell] += 1;
-            }
-            return {
-                value: puzzle[i][j] > 0 ? puzzle[i][j] : null,
-                prefilled: !!puzzle[i][j],
-            };
-        })
-    ));
-    return fromJS({ puzzle: result, selected: false, inNoteMode: false, choices: { rows, columns, squares } });
-}
-
 function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
@@ -527,7 +501,7 @@ export default class SudokuBoard extends React.Component<any, any> {
     constructor(props) {
         super(props);
     };
-    state = this.props;
+    state = this.props.generatedGame;
 
     componentDidMount = () => {
         if ('serviceWorker' in navigator) {
@@ -562,17 +536,6 @@ export default class SudokuBoard extends React.Component<any, any> {
         );
     }
 
-    generateGame = (finalCount = 20) => {
-        const solution = makePuzzle();
-        let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        // console.log(output);
-        const { puzzle } = pluck(solution, finalCount);
-        const board = makeBoard({ puzzle });
-        this.setState({
-            board, history: List.of(board), historyOffSet: 0, solution,
-        });
-    }
-
     addNumberAsNote = (number) => {
         let { board, solution } = this.state;
         let selectedCell = this.getSelectedCell();
@@ -587,7 +550,7 @@ export default class SudokuBoard extends React.Component<any, any> {
           });
         }
         let notes = selectedCell.get('notes') || Set();
-        let actualValue = solution[x][y];
+        let actualValue = solution[x][y] || -1;
         if (notes.has(number)) {
           if (number !== actualValue)
             notes = notes.delete(number);
@@ -650,7 +613,8 @@ export default class SudokuBoard extends React.Component<any, any> {
 
         const { x, y } = board.get('selected');
         const currentValue = selectedCell.get('value');
-        let actualValue = solution[x][y];
+
+        let actualValue = solution[x][y] || -1;
         if (currentValue) {
             if (currentValue !== actualValue){
                 this.fillNumber(false);
@@ -669,6 +633,7 @@ export default class SudokuBoard extends React.Component<any, any> {
         const { board, solution } = this.state;
         const selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
+        if (!solution) return;
         const { x, y } = board.get('selected');
         this.fillNumber(solution[x][y]);
     }
@@ -820,28 +785,28 @@ export default class SudokuBoard extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        if (!this.state.board) {
-            this.setState(this.props.generatedGame);
-        }
+      if (!this.state.board) {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
     }
 
     render = () => {
-        const { board } = this.state;
-        if (!board)
-        {
-            this.setState(this.props.generatedGame);
-        }
-        return (
-            <View>
-                {board && this.renderTopBar()}
-                {board && this.renderPuzzle()}
-                {board && 
-                    <View style={styles().bottomActions}>
-                        {this.renderActions()}
-                        {this.renderNumberControl()}
-                    </View>
-                }
+      const { board } = this.state;
+      if (!board)
+      {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
+      return (
+        <View>
+          {board && !this.props.isDrill && this.renderTopBar()}
+          {board && this.renderPuzzle()}
+          {board && 
+            <View style={styles().bottomActions}>
+              {this.renderActions()}
+              {this.renderNumberControl()}
             </View>
-        );
+          }
+        </View>
+      );
     }
 }
