@@ -12,6 +12,7 @@ import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Med
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { List } from 'immutable';
 import Header from "../Components/Header";
+import {USERACTIVEGAMESBFFURL} from '@env'
 
 
 const SudokuPage = () => {
