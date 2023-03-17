@@ -237,47 +237,51 @@ const findBox = (box) => {
     if (box === 8) return 60;
 }
 
-let demoHighlightInput = [[0,7],[1,5],[2,0]];
+let demoHighlightInput = [[0,7], [1,5], [2,0], [3, 5, 6, "red"]];
 
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected } = props;
     const cellSize = getCellSize();
 
-    var focused;
+    let focused;
 
     for (let i = 0; i < demoHighlightInput.length; i++) {
 
-        if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
-            const cellNum = getCellNumber(x, y);
-            if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
-            {
-              focused = 1
-            }
+      if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
+        const cellNum = getCellNumber(x, y);
+        if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
+        {
+          focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
         }
+      }
 
-        if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
-            const cellNum = getCellNumber(x, y);
-            if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
-            {
-              focused = 1
-            }
+      if (demoHighlightInput[i][0] === 1) { // Column Border Highlighting
+        const cellNum = getCellNumber(x, y);
+        if (Math.trunc(cellNum / 9) === demoHighlightInput[i][1])
+        {
+          focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
         }
+      }
 
 
-        if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
-            const cellNum = getCellNumber(x, y); // Number of the cell being checked
-            const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
-
-            if (cellNum === boxNum) focused = 1;
-            if (cellNum === boxNum + 1) focused = 1;
-            if (cellNum === boxNum + 2) focused = 1;
-            if (cellNum === boxNum + 9) focused = 1;
-            if (cellNum === boxNum + 10) focused = 1;
-            if (cellNum === boxNum + 11) focused = 1;
-            if (cellNum === boxNum + 18) focused = 1;
-            if (cellNum === boxNum + 19) focused = 1;
-            if (cellNum === boxNum + 20) focused = 1;
+      if (demoHighlightInput[i][0] === 2) { // Box Border Highlighting
+        const cellNum = getCellNumber(x, y); // Number of the cell being checked
+        const boxNum = findBox(demoHighlightInput[i][1]); // Number of the box being highlighted
+        switch (cellNum - boxNum)
+        {
+          case 0:
+          case 1:
+          case 2:
+          case 9:
+          case 10:
+          case 11:
+          case 18:
+          case 19:
+          case 20:
+            focused = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "red";
+            break;
         }
+      }
     }
 
     const handleKeyDown = (event) => {
@@ -299,6 +303,7 @@ const Cell = (props) => {
 
                 // Border Highlighting Zone
                 (!focused) && {backgroundColor: '#808080'},
+                focused && {backgroundColor: focused},
 
                 conflict && styles(cellSize).conflict,
                 isPeer && styles(cellSize).peer,
