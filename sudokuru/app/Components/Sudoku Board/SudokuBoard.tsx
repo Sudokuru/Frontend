@@ -8,25 +8,6 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-// Add parameterized colors here
-
-// we need to check for the height, as the total height of the app will be:
-//      cellHeight * 9 + Top(cellHeight) + Bottom(cellHeight),
-//      where Top(cellHeight) will be the height of the difficulty, time, and pause section
-//      and Bottom(cellHeight) will be the height of the hint, undo, and number input sections
-
-/* 
-    Top(cellHeight) = cellHeight * (32 / 40)
-*/ 
-/*
-    Bottom(cellHeight) = Actions(cellHeight) + numberControl(cellHeight),
-    where Actions(cellHeight) = cellHeight * (48 / 40)
-    // TODO: VERIFY THE BELOW
-    and numberControl(cellHeight) = cellHeight * 1.25,
-    and so
-    Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
-*/
-
 let fallbackHeight = 30;
 
 const styles = (cellSize) => StyleSheet.create({
@@ -208,10 +189,7 @@ const NumberControl = (props) => {
 NumberControl.propTypes = {
   prefilled: PropTypes.bool.isRequired,
   inNoteMode: PropTypes.bool.isRequired,
-//   getNumberValueCount: PropTypes.number.isRequired,
-//   fillNumber: PropTypes.number.isRequired,
   fillNumber: PropTypes.func.isRequired,
-//   addNumberAsNote: PropTypes.number.isRequired,
     addNumberAsNote: PropTypes.func.isRequired,
 };
 
@@ -225,7 +203,6 @@ const getCellNumber = (x, y) => {
 
 // function that returns the cell number of the top-left cell of a box based on the box number
 const findBox = (box) => {
-    // return (box % 3) * 3 + Math.floor(box / 3) * 27; // Wrong direction lol
     if (box === 0) return 0;
     if (box === 1) return 27;
     if (box === 2) return 54;
@@ -250,7 +227,7 @@ const Cell = (props) => {
 
     if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
       const cellNum = getCellNumber(x, y);
-      if (cellNum % 9 === demoHighlightInput[i][1] % 9) 
+      if (cellNum % 9 === demoHighlightInput[i][1] % 9)
       {
         backColor = demoHighlightInput[i][2] ? demoHighlightInput[i][2] : "white";
       }
@@ -315,7 +292,7 @@ const Cell = (props) => {
               (conflict && isSelected) && styles(cellSize).selectedConflict,
               isSelected && styles(cellSize).selected]}>
               {
-                  notes ? 
+                  notes ?
                       <View style={styles(cellSize).noteViewParent}>
                           <View style={{ flexDirection: 'row' }}>
                               <View>
@@ -464,32 +441,6 @@ function getCellSize() {
     return Math.min(size.width, size.height) / 15;
 }
 
-function makeCountObject() {
-    const countObj = [];
-    for (let i = 0; i < 10; i += 1) countObj.push(0);
-    return countObj;
-}
-
-function makeBoard({ puzzle }) {
-    const rows = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const columns = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const squares = Array.from(Array(9).keys()).map(() => makeCountObject());
-    const result = puzzle.map((row, i) => (
-        row.map((cell, j) => {
-            if (cell) {
-                rows[i][cell] += 1;
-                columns[j][cell] += 1;
-                squares[((Math.floor(i / 3)) * 3) + Math.floor(j / 3)][cell] += 1;
-            }
-            return {
-                value: puzzle[i][j] > 0 ? puzzle[i][j] : null,
-                prefilled: !!puzzle[i][j],
-            };
-        })
-    ));
-    return fromJS({ puzzle: result, selected: false, inNoteMode: false, inHintMode: false, choices: { rows, columns, squares } });
-}
-
 function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
@@ -516,7 +467,7 @@ export default class SudokuBoard extends React.Component<any, any> {
     constructor(props) {
         super(props);
     };
-    state = this.props;
+    state = this.props.generatedGame;
 
     componentDidMount = () => {
         if ('serviceWorker' in navigator) {
@@ -551,17 +502,6 @@ export default class SudokuBoard extends React.Component<any, any> {
         );
     }
 
-    generateGame = (finalCount = 20) => {
-        const solution = makePuzzle();
-        let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        // console.log(output);
-        const { puzzle } = pluck(solution, finalCount);
-        const board = makeBoard({ puzzle });
-        this.setState({
-            board, history: List.of(board), historyOffSet: 0, solution,
-        });
-    }
-
     addNumberAsNote = (number) => {
         let { board, solution } = this.state;
         let selectedCell = this.getSelectedCell();
@@ -576,7 +516,7 @@ export default class SudokuBoard extends React.Component<any, any> {
           });
         }
         let notes = selectedCell.get('notes') || Set();
-        let actualValue = solution[x][y];
+        let actualValue = solution[x][y] || -1;
         if (notes.has(number)) {
           if (number !== actualValue)
             notes = notes.delete(number);
@@ -647,7 +587,8 @@ export default class SudokuBoard extends React.Component<any, any> {
 
         const { x, y } = board.get('selected');
         const currentValue = selectedCell.get('value');
-        let actualValue = solution[x][y];
+
+        let actualValue = solution[x][y] || -1;
         if (currentValue) {
             if (currentValue !== actualValue){
                 this.fillNumber(false);
@@ -666,6 +607,7 @@ export default class SudokuBoard extends React.Component<any, any> {
         const { board, solution } = this.state;
         const selectedCell = this.getSelectedCell();
         if (!selectedCell) return;
+        if (!solution) return;
         const { x, y } = board.get('selected');
         this.fillNumber(solution[x][y]);
     }
@@ -821,28 +763,28 @@ export default class SudokuBoard extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        if (!this.state.board) {
-            this.setState(this.props.generatedGame);
-        }
+      if (!this.state.board) {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
     }
 
     render = () => {
-        const { board } = this.state;
-        if (!board)
-        {
-            this.setState(this.props.generatedGame);
-        }
-        return (
-            <View>
-                {board && this.renderTopBar()}
-                {board && this.renderPuzzle()}
-                {board && 
-                    <View style={styles().bottomActions}>
-                        {this.renderActions()}
-                        {this.renderNumberControl()}
-                    </View>
-                }
+      const { board } = this.state;
+      if (!board)
+      {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
+      return (
+        <View>
+          {board && !this.props.isDrill && this.renderTopBar()}
+          {board && this.renderPuzzle()}
+          {board &&
+            <View style={styles().bottomActions}>
+              {this.renderActions()}
+              {this.renderNumberControl()}
             </View>
-        );
+          }
+        </View>
+      );
     }
 }
