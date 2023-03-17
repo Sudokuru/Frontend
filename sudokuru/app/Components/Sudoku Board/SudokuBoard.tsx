@@ -8,25 +8,6 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-// Add parameterized colors here
-
-// we need to check for the height, as the total height of the app will be:
-//      cellHeight * 9 + Top(cellHeight) + Bottom(cellHeight),
-//      where Top(cellHeight) will be the height of the difficulty, time, and pause section
-//      and Bottom(cellHeight) will be the height of the hint, undo, and number input sections
-
-/* 
-    Top(cellHeight) = cellHeight * (32 / 40)
-*/ 
-/*
-    Bottom(cellHeight) = Actions(cellHeight) + numberControl(cellHeight),
-    where Actions(cellHeight) = cellHeight * (48 / 40)
-    // TODO: VERIFY THE BELOW
-    and numberControl(cellHeight) = cellHeight * 1.25,
-    and so
-    Bottom(cellHeight) = cellHeight * (48 / 40) + cellHeight * 1.25
-*/
-
 let fallbackHeight = 30;
 
 let demoHighlightInput = [[0,7],[1,2],[2,6]];
@@ -210,10 +191,7 @@ const NumberControl = (props) => {
 NumberControl.propTypes = {
   prefilled: PropTypes.bool.isRequired,
   inNoteMode: PropTypes.bool.isRequired,
-//   getNumberValueCount: PropTypes.number.isRequired,
-//   fillNumber: PropTypes.number.isRequired,
   fillNumber: PropTypes.func.isRequired,
-//   addNumberAsNote: PropTypes.number.isRequired,
     addNumberAsNote: PropTypes.func.isRequired,
 };
 
@@ -227,7 +205,6 @@ const getCellNumber = (x, y) => {
 
 // function that returns the cell number of the top-left cell of a box based on the box number
 const findBox = (box) => {
-    // return (box % 3) * 3 + Math.floor(box / 3) * 27; // Wrong direction lol
     if (box === 0) return 0;
     if (box === 1) return 27;
     if (box === 2) return 54;
