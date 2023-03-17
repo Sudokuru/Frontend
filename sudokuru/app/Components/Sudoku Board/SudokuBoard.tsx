@@ -236,8 +236,9 @@ const findBox = (box) => {
     if (box === 7) return 33;
     if (box === 8) return 60;
 }
-
-let demoHighlightInput = [[0,7, "red"], [1,5], [2,0], [3, 4, 6]];
+const darkBrown = "#A64732";
+const gold = "#F2CA7E";
+let demoHighlightInput = [[0,7, darkBrown], [1,5, gold], [2,0], [3, 4, 6, gold]];
 
 const Cell = (props) => {
     const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
