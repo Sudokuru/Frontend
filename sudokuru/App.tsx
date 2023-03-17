@@ -25,6 +25,7 @@ import SimplifyNotesLesson from "./app/Pages/Lessons/SimplifyNotesLesson";
 import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
 import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
 import XWingLesson from "./app/Pages/Lessons/XWingLesson";
+import DrillPage from './app/Pages/DrillPage';
 
 function HomeDrawer(){
     const Drawer = createDrawerNavigator();
@@ -32,13 +33,13 @@ function HomeDrawer(){
     return(
      <Drawer.Navigator screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "right", }}>
                               <Drawer.Screen name="Main Page" component={HomePage} />
-                              <Drawer.Screen name="Naked Set" component={SudokuPage} />
-                              <Drawer.Screen name="Hidden Set" component={SudokuPage} />
-                              <Drawer.Screen name="Pointing Pairs" component={SudokuPage} />
-                              <Drawer.Screen name="Box Line Reduction" component={SudokuPage} />
-                              <Drawer.Screen name="Swordfish" component={SudokuPage} />
-                              <Drawer.Screen name="X-Wing Strategy" component={SudokuPage} />
-                              <Drawer.Screen name="Singles Chaining" component={SudokuPage} />
+                              <Drawer.Screen name="Naked Set" component={DrillPage} />
+                              <Drawer.Screen name="Hidden Set" component={DrillPage} />
+                              <Drawer.Screen name="Pointing Pairs" component={DrillPage} />
+                              <Drawer.Screen name="Box Line Reduction" component={DrillPage} />
+                              <Drawer.Screen name="Swordfish" component={DrillPage} />
+                              <Drawer.Screen name="X-Wing Strategy" component={DrillPage} />
+                              <Drawer.Screen name="Singles Chaining" component={DrillPage} />
      </Drawer.Navigator>)
 }
 
