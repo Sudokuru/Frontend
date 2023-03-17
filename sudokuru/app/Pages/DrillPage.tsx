@@ -100,7 +100,6 @@ function componentBoardValsToArray(board)
     }
     boardArray.push(temp);
   }
-  console.log(boardArray);
   return boardArray;
 }
 
@@ -129,7 +128,6 @@ function componentBoardNotesToArray(board)
       notesArray.push(temp);
     }
   }
-  console.log(notesArray);
   return notesArray;
 }
 
@@ -145,12 +143,10 @@ const DrillPage = () => {
     async function generateGame(url, strategies, token) {
       let board = await Drills.getGame(url, strategies, token).then(game =>
       {
-        console.log(game);
         let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
         board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
         return board;
       });
-      console.log("Board: ", board);
 
       return {
         board, history: List.of(board), historyOffSet: 0,

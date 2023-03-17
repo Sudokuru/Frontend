@@ -572,7 +572,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       let newHintMode = !board.get('inHintMode');
       board = board.set('inHintMode', newHintMode);
       this.setState({ board });
-      console.log("hint mode: " + newHintMode ? "ON" : "OFF");
       if (newHintMode)
       {
         this.props.getHint(board);
