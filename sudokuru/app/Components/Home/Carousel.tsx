@@ -66,6 +66,7 @@ const Ccarousel = () =>{
                     modeConfig={{
                       parallaxScrollingScale: 0.5,
                       parallaxScrollingOffset: 1250,
+                      parallaxScrollingInverted: true
                     }}
                     scrollAnimationDuration={100}
                     onSnapToItem={(index) => setIndex(index)}
