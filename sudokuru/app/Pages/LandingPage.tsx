@@ -19,7 +19,6 @@ const LandingPage = () => {
     async function canProceed() {
         await getTokenName().then(
             result => {
-                console.log(result);
                 if (result != ""){
                     navigation.navigate('Home');
                 } else {
