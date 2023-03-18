@@ -1,8 +1,10 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from "@react-navigation/native";
 import Header from "../Components/Header";
+import {getTokenName} from "../Functions/Auth0/token";
+import Alert from "react-native-awesome-alerts";
 
 const LandingPage = () => {
 
@@ -10,27 +12,45 @@ const LandingPage = () => {
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
 
+    const [visible, setVisible] = React.useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+
+    async function canProceed() {
+        await getTokenName().then(
+            result => {
+                console.log(result);
+                if (result != ""){
+                    navigation.navigate('Home');
+                } else {
+                    showModal();
+                }
+            });
+    }
+
     return (
-        <SafeAreaProvider>
-            <SafeAreaView>
-                <View>
-                    <Header page={'Landing'}/>
-                    <View style={styles(reSize).container}>
-                        <View style={styles(reSize).boxtext}>
-                            <View style={styles(reSize).inner3}>
-                                <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
-                                <Text style={{ fontSize: reSize / 20, color: '#D9A05B' }}> Sudoku Guru </Text>
-                                <Pressable
-                                    style={({ pressed }) => [
-                                        { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
-                                    ]}
-                                    onPress={() => navigation.navigate('Home')}>
-                                    <View>
-                                        <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Get Started </Text>
-                                    </View>
-                                </Pressable>
+            <SafeAreaProvider>
+                <SafeAreaView>
+                    <View>
+                        <Header page={'Landing'}/>
+                        <View style={styles(reSize).container}>
+                            <View style={styles(reSize).boxtext}>
+                                <View style={styles(reSize).inner3}>
+                                    <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
+                                    <Text style={{ fontSize: reSize / 20, color: '#D9A05B' }}> Sudoku Guru </Text>
+                                    <Pressable
+                                        style={({ pressed }) => [
+                                            { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
+                                        ]}
+                                        onPress={async () => {
+                                            await canProceed();
+                                        }}>
+                                        <View>
+                                            <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Get Started </Text>
+                                        </View>
+                                    </Pressable>
+                                </View>
                             </View>
-                        </View>
                             <View style={styles(reSize).box}>
                                 <View style={styles(reSize).inner}>
                                     <Image style={{
@@ -42,8 +62,17 @@ const LandingPage = () => {
                             </View>
                         </View>
                     </View>
-            </SafeAreaView>
-        </SafeAreaProvider>
+                </SafeAreaView>
+                <Alert
+                    show={visible}
+                    message="Please Login!"
+                    closeOnTouchOutside={false}
+                    showConfirmButton={true}
+                    onConfirmPressed={() => {
+                        hideModal();
+                    }}
+                />
+            </SafeAreaProvider>
     );
 };
 
