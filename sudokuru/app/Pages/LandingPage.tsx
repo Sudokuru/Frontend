@@ -5,8 +5,11 @@ import {useNavigation} from "@react-navigation/native";
 import Header from "../Components/Header";
 import {getTokenName} from "../Functions/Auth0/token";
 import Alert from "react-native-awesome-alerts";
+import {useTheme} from "react-native-paper";
 
 const LandingPage = () => {
+
+    const theme = useTheme();
 
     const navigation: any = useNavigation();
     const size = useWindowDimensions();
@@ -67,6 +70,7 @@ const LandingPage = () => {
                     message="Please Login!"
                     closeOnTouchOutside={false}
                     showConfirmButton={true}
+                    confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hideModal();
                     }}
