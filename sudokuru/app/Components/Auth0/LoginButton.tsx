@@ -9,6 +9,7 @@ import { Auth0JwtPayload } from "../../../app.config"
 import Constants, {AppOwnership} from "expo-constants";
 import {AUDIENCE, CLIENT_ID, DOMAIN, SCOPE} from '@env'
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
+import {useNavigation} from "@react-navigation/native";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -42,6 +43,8 @@ const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT
 const LoginButton = () => {
 
     const [name, setName] = useState<string>();
+
+    const navigation: any = useNavigation();
 
     // initialize name with value found in token (if exists).
     useEffect(() => {
@@ -123,11 +126,13 @@ const LoginButton = () => {
                         if (Platform.OS == "ios" || Platform.OS == "android"){
                             WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
                                 .then(r => removeValue("access_token"))
-                                .then(r => removeValue("id_token"));
+                                .then(r => removeValue("id_token"))
+                                .then(r => navigation.navigate('Landing'));
                         } else {
                             WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
                                 .then(r => removeValue("access_token"))
-                                .then(r => removeValue("id_token"));
+                                .then(r => removeValue("id_token"))
+                                .then(r => navigation.navigate('Landing'));
                         }
                     }
                 }>
