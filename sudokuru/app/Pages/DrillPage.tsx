@@ -154,6 +154,7 @@ const DrillPage = (props) => {
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
+      console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
       return board;
@@ -178,7 +179,7 @@ const DrillPage = (props) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["NAKED_SINGLE"])} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
