@@ -12,6 +12,8 @@ import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Med
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { Set, List } from 'immutable';
 import Header from "../Components/Header";
+import {getKeyString} from "../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 
@@ -142,9 +144,17 @@ const DrillPage = (props) => {
     return null;
   }
 
-  async function generateGame(url, strategies, token) {
+  async function generateGame(url, strategies) {
+    let token = null;
+    await getKeyString("access_token").then(
+        result => {
+          token = result;
+        });
+    console.log(token);
+
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
+      console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
       return board;
@@ -169,7 +179,7 @@ const DrillPage = (props) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame("http://localhost:3001/",  ["NAKED_SINGLE"], "token")} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>

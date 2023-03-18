@@ -17,13 +17,13 @@ Go to Sudokuru and then go to Settings. In Application URI, in Application Login
 Contact Thomas to get added to the Expo organization so you can log in with your own email and password.<br><br>
 
 For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.<br><br>
-For Web, hit the w key to start up the website at ```localhost:19006```
+For Web, hit the w key to start up the website at ```localhost:19000```
 
 # Set up Local Backend Services
 
 1. Install Docker on your machine. Tutorial is linked below:<br>
    [![Docker Tutorial](https://img.youtube.com/vi/2ezNqqaSjq8/0.jpg)](https://www.youtube.com/watch?v=2ezNqqaSjq8)<br>
-2. Login to docker with the command ```docker login --username <GitHub_Username>```<br>
+2. Login to docker with the command ```docker login --username ghcr.io <GitHub_Username>```<br>
    You will be asked for your password, which is your GitHub Token. Make sure your GitHub Token has permissions to access GitHub's Container Registry!<br>
    The needed scope is ```read:packages```<br>
    This command should be run in the terminal in the root folder of this project (*NOT sudokuru*).<br>
