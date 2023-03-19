@@ -28,9 +28,11 @@ For Web, hit the w key to start up the website at ```localhost:19000```
    You will be asked for your password, which is your GitHub Token. Make sure your GitHub Token has permissions to access GitHub's Container Registry!<br>
    The needed scope is ```read:packages```<br>
    This command should be run in the terminal in the root folder of this project (*NOT sudokuru*).<br>
-4. Once docker is installed, the Mongo image can be run with this command in the root folder:<br>
+3. Once docker is installed, the Mongo image can be run with this command in the root folder:<br>
    Note use ```sudo``` on Linux/Mac<br>
    ```npm run docker:start```
+4. Postman calls and documentation is [available here](https://documenter.getpostman.com/view/23651156/2s93JzM1G3)
+   This will make it much easier to develop locally. 
 
 # Deployments
 
