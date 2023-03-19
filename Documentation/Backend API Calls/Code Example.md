@@ -41,7 +41,7 @@ from local storage. This method is compatible with both web and mobile devices.
 
 
 ```javascript
-async function generateGame(url) {
+async function generateGame(url, strategy) {
     let token = null;
     await getKeyString("access_token").then(
         result => {
@@ -49,7 +49,7 @@ async function generateGame(url) {
             
         });
     
-    let board = await Drills.getGame(url, token).then(game => {
+    let board = await Drills.getGame(url, strategy, token).then(game => {
         let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState));
         board = parseAPIAndAddNotes(board, game.puzzleCurrentNotesState);
         return board;
