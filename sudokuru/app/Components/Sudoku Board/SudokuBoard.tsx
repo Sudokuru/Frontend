@@ -662,6 +662,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         // TODO: ability to remove notes
       board = board.set('hint', hintHighlightInput);
       this.setState({ board });
+      console.log("hint mode: " + !currHintMode ? "ON" : "OFF");
     }
 
     /*
