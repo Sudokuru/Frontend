@@ -243,6 +243,20 @@ const getGroupsFromHint = (hint) => {
   return groups
 }
 
+const getPlacementsFromHint = (hint) => {
+  let placements = []
+  let temp = []
+  for (let i = 0; i < hint.placements.length; i++)
+  {
+    temp = []
+    temp.push(hint.placements[i][0])
+    temp.push(hint.placements[i][1])
+    temp.push(hint.placements[i][2])
+    placements.push(temp)
+  }
+  return placements
+}
+
 // cause cells
 const darkBrown = "#A64732";
 
@@ -482,6 +496,7 @@ function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
     let cell = board.get('puzzle').getIn([x, y]);
+    console.log(cell)
     cell = cell.delete('notes');
     cell = fill ? cell.set('value', number) : cell.delete('value');
     const increment = fill ? 1 : -1;
@@ -614,15 +629,32 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (newHintMode) hint = this.props.getHint(board)
       let causes = []
       let groups = []
+      let placements = []
       // add the causes
       if (hint && hint.cause) causes = getCausesFromHint(hint);
       
       // add the groups
       if (hint && hint.groups) groups = getGroupsFromHint(hint);
       let hintHighlightInput = groups.concat(causes);
-      console.log(hintHighlightInput)
-      console.log(hint)
-      // add the placements 
+      // add the placements
+      if (hint && hint.placements) 
+      {
+        placements = getPlacementsFromHint(hint);
+        let x = -1
+        let y = -1
+        let noteVal = -1
+        for (let i = 0; i < placements.length; i++)
+        {
+          x = placements[i][0]
+          y = placements[i][1]
+          noteVal = placements[i][2]
+          console.log(noteVal)
+          board = updateBoardWithNumber({
+            x, y, noteVal, fill: true, board,
+          });
+          this.updateBoard(board);
+        }
+      }
         // TODO: text coloring
         // TODO: ability to add notes
       // add the removals
@@ -670,26 +702,47 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     }
 
     fillNumber = (number) => {
-        let { board } = this.state;
-        const selectedCell = this.getSelectedCell();
-        if (!selectedCell) return;
-        const prefilled = selectedCell.get('prefilled');
-        if (prefilled) return;
-        const { x, y } = board.get('selected');
-        const currentValue = selectedCell.get('value');
-        if (currentValue) {
-            board = updateBoardWithNumber({
-                x, y, number: currentValue, fill: false, board: this.state.board,
-            });
-        }
-        const setNumber = currentValue !== number && number;
-        if (setNumber) {
-            board = updateBoardWithNumber({
-                x, y, number, fill: true, board,
-            });
-        }
-        this.updateBoard(board);
+      let { board } = this.state;
+      const selectedCell = this.getSelectedCell();
+      if (!selectedCell) return;
+      const prefilled = selectedCell.get('prefilled');
+      if (prefilled) return;
+      const { x, y } = board.get('selected');
+      const currentValue = selectedCell.get('value');
+      if (currentValue) {
+        board = updateBoardWithNumber({
+          x, y, number: currentValue, fill: false, board: this.state.board,
+        });
+      }
+      const setNumber = currentValue !== number && number;
+      if (setNumber) {
+        board = updateBoardWithNumber({
+          x, y, number, fill: true, board,
+        });
+      }
+      this.updateBoard(board);
     };
+
+    // fillNumberAtPosition = (number, x, y) => {
+    //   let { board } = this.state;
+    //   const selectedCell = board.get('puzzle').getIn([x, y]);;
+    //   if (!selectedCell) return;
+    //   const prefilled = selectedCell.get('prefilled');
+    //   if (prefilled) return;
+    //   const currentValue = selectedCell.get('value');
+    //   if (currentValue) {
+    //     board = updateBoardWithNumber({
+    //       x, y, number: currentValue, fill: false, board: this.state.board,
+    //     });
+    //   }
+    //   const setNumber = currentValue !== number && number;
+    //   if (setNumber) {
+    //     board = updateBoardWithNumber({
+    //       x, y, number, fill: true, board,
+    //     });
+    //   }
+    //   this.updateBoard(board);
+    // };
 
     selectCell = (x, y) => {
         let { board } = this.state;

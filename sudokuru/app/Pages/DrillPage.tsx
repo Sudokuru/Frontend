@@ -133,7 +133,6 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
