@@ -4,6 +4,7 @@ Run ```npm i```
 Run ```npm run start```
 
 You will need to add a ```.env``` file inside of the sudokuru folder.<br>
+Dummy values will be stored in `.env.template` file for reference.<br>
 The values needed for the ```.env``` file can be found in our shared password notebook kept in the secret location on campus in the MSB bathroom.<br>
 Copy those values and paste them in the ```.env``` folder. The reason why we are doing this is so we don't store sensitive information publicly in code.<br>
 
