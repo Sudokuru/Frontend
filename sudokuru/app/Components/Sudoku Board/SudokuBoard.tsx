@@ -632,8 +632,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         history = history.slice(0, historyOffSet + 1);
         history = history.push(newBoard);
         this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
-        console.log("in updateBoard")
-        // console.log(newBoard.get('puzzle').getIn([3, 4]).get("notes"))
     };
 
     canUndo = () => this.state.historyOffSet > 0
@@ -750,7 +748,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       
       // hintHighlightInput = hintHighlightInput.concat(actualRemovals);
       board = board.set('hint', hintHighlightInput);
-      console.log(hintHighlightInput)
       this.setState({ board });
     }
 

@@ -135,7 +135,6 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
@@ -150,11 +149,10 @@ const DrillPage = (props) => {
         result => {
           token = result;
         });
-    console.log(token);
+    // console.log(token);
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
-      console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
       return board;
@@ -175,7 +173,6 @@ const DrillPage = (props) => {
       console.log("ERROR: " + error.Error_Message);
       hint = {}
     }
-    console.log(hint)
     return hint;
   }
 
