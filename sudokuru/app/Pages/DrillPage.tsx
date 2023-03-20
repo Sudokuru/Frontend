@@ -175,6 +175,7 @@ const DrillPage = (props) => {
       console.log("ERROR: " + error.Error_Message);
       hint = {}
     }
+    console.log(hint)
     return hint;
   }
 
@@ -185,7 +186,7 @@ const DrillPage = (props) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>

@@ -257,6 +257,21 @@ const getPlacementsFromHint = (hint) => {
   return placements
 }
 
+const getRemovalsFromHint = (hint) => {
+  let removals = []
+  let temp = []
+  for (let i = 0; i < hint.removals.length; i++)
+  {
+    temp = []
+    for (let j = 0; j < hint.removals[i].length; j++)
+    {
+      temp.push(hint.removals[i][j])
+    }
+    removals.push(temp)
+  }
+  return removals
+}
+
 // cause cells
 const darkBrown = "#A64732";
 
@@ -587,6 +602,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         history = history.slice(0, historyOffSet + 1);
         history = history.push(newBoard);
         this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
+        console.log("in updateBoard")
+        // console.log(newBoard.get('puzzle').getIn([3, 4]).get("notes"))
     };
 
     canUndo = () => this.state.historyOffSet > 0
@@ -619,8 +636,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
     }
 
-
-
     toggleHintMode = () => {
       let { board } = this.state;
       let newHintMode = !board.get('inHintMode');
@@ -637,6 +652,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (hint && hint.groups) groups = getGroupsFromHint(hint);
       let hintHighlightInput = groups.concat(causes);
       // add the placements
+        // TODO: text coloring
+        // TODO: ability to add values
       if (hint && hint.placements) 
       {
         placements = getPlacementsFromHint(hint);
@@ -655,14 +672,40 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           this.updateBoard(board);
         }
       }
-        // TODO: text coloring
-        // TODO: ability to add notes
       // add the removals
-        // TODO: text coloring
-        // TODO: ability to remove notes
+      // TODO: text coloring
+
+      /*
+        This block of code literally kills the notes which need to be removed,
+        which we do not want ideally, we would make the notes highlighted in 
+        red, then the user can press a button(ex. arrow) to kill the notes
+      */
+      if (hint && hint.removals) 
+      {
+        removals = getRemovalsFromHint(hint);
+        let x = -1
+        let y = -1
+        for (let i = 0; i < removals.length; i++)
+        {
+          x = removals[i][0]
+          y = removals[i][1]
+          let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+          for (let j = 2; j < removals[i].length; j++)
+          {
+            currRemoval = removals[i][j]
+            if (notes.has(currRemoval))
+            {
+              console.log(notes)
+              notes = notes.delete(currRemoval);
+              console.log(notes)
+            }
+          }
+          board = board.setIn(['puzzle', x, y, 'notes'], notes)
+        }
+        this.updateBoard(board);
+      }
       board = board.set('hint', hintHighlightInput);
       this.setState({ board });
-      console.log("hint mode: " + !currHintMode ? "ON" : "OFF");
     }
 
     /*
