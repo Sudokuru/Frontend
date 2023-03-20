@@ -39,6 +39,11 @@ const styles = (cellSize) => StyleSheet.create({
     fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
     fontFamily: 'Inter_100Thin',
   },
+  removalNoteText: {
+    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontFamily: 'Inter_300Light',
+    color: "#FF0000"
+  },
   cellView: {
     height: cellSize ? cellSize : fallbackHeight,
     width: cellSize ? cellSize : fallbackHeight,
@@ -249,6 +254,7 @@ const getPlacementsFromHint = (hint) => {
   for (let i = 0; i < hint.placements.length; i++)
   {
     temp = []
+    temp.push(4)
     temp.push(hint.placements[i][0])
     temp.push(hint.placements[i][1])
     temp.push(hint.placements[i][2])
@@ -263,7 +269,9 @@ const getRemovalsFromHint = (hint) => {
   for (let i = 0; i < hint.removals.length; i++)
   {
     temp = []
-    for (let j = 0; j < hint.removals[i].length; j++)
+    temp.push(5)
+    temp.push([hint.removals[i][0], hint.removals[i][1]])
+    for (let j = 2; j < hint.removals[i].length; j++)
     {
       temp.push(hint.removals[i][j])
     }
@@ -285,6 +293,7 @@ const Cell = (props) => {
   const cellSize = getCellSize();
 
   let backColor = '#808080';
+  let isRemoval = [false, false, false, false, false, false, false, false, false]
   if (hint)
   {
     for (let i = 0; i < hint.length; i++) {
@@ -328,6 +337,18 @@ const Cell = (props) => {
         if (x === hint[i][1] && y === hint[i][2])
           backColor = hint[i][3] ? hint[i][3] : "white";
       }
+      if (hint[i][0] === 5) { // Note Removal Highlighting
+        if (x === hint[i][1][0] && y === hint[i][1][1])
+        {
+          // text color of every value  match from hint[i][2] to hint[i].length should be red
+          // boolean array for whether or not values should be red or not
+          // isRed[0] being true means that the "1" note in the current cell should be red
+          for (let j = 2; j < hint[i].length; j++)
+          {
+            isRemoval[hint[i][j] - 1] = true;
+          }
+        }
+      }
     }
   }
 
@@ -339,6 +360,7 @@ const Cell = (props) => {
       if (inputValue == "Delete" || inputValue == "Backspace")
         eraseSelected();
   };
+
 
   return (
     <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
@@ -361,19 +383,19 @@ const Cell = (props) => {
             <View style={styles(cellSize).noteViewParent}>
               <View style={{ flexDirection: 'row' }}>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={styles(cellSize).noteText}>{1}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={styles(cellSize).noteText}>{4}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={styles(cellSize).noteText}>{7}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={isRemoval[0] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{1}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={isRemoval[3] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{4}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={isRemoval[6] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{7}</Text>}</View>
                 </View>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={styles(cellSize).noteText}>{2}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={styles(cellSize).noteText}>{5}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={styles(cellSize).noteText}>{8}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={isRemoval[1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{2}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={isRemoval[4] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{5}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={isRemoval[7] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{8}</Text>}</View>
                 </View>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={styles(cellSize).noteText}>{3}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={styles(cellSize).noteText}>{6}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={styles(cellSize).noteText}>{9}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={isRemoval[2] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{3}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={isRemoval[5] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{6}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={isRemoval[8] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{9}</Text>}</View>
                 </View>
               </View>
             </View>
@@ -672,9 +694,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           this.updateBoard(board);
         }
       }
+
       // add the removals
       // TODO: text coloring
-
       /*
         This block of code literally kills the notes which need to be removed,
         which we do not want ideally, we would make the notes highlighted in 
@@ -682,25 +704,45 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       */
       if (hint && hint.removals) 
       {
+        // they aren't tuples but it makes more sense this way
+        // [[5, (x, y), 1, 4, 5], [5, (x', y'), 4, 7, 2], ...]
         removals = getRemovalsFromHint(hint);
         let x = -1
         let y = -1
+        let actualRemovals = []
         for (let i = 0; i < removals.length; i++)
         {
-          x = removals[i][0]
-          y = removals[i][1]
+          actualRemovals = []
+          x = removals[i][1][0]
+          y = removals[i][1][1]
+          
+          actualRemovals.push(5)
+          actualRemovals.push([x,y])
           let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
           for (let j = 2; j < removals[i].length; j++)
           {
             currRemoval = removals[i][j]
             if (notes.has(currRemoval))
-              notes = notes.delete(currRemoval);
+            {
+              actualRemovals.push(currRemoval);
+              // this is what kills the notes
+              // notes = notes.delete(currRemoval);
+            }
           }
-          board = board.setIn(['puzzle', x, y, 'notes'], notes)
+          board = board.setIn(['puzzle', x, y, 'notes'], notes);
+        }
+        // if there are actually values that need to be removed
+        if (actualRemovals[2])
+        {
+          actualRemovals.push("#FF0000")
+          hintHighlightInput.push(actualRemovals);
         }
         this.updateBoard(board);
       }
+      
+      // hintHighlightInput = hintHighlightInput.concat(actualRemovals);
       board = board.set('hint', hintHighlightInput);
+      console.log(hintHighlightInput)
       this.setState({ board });
     }
 
