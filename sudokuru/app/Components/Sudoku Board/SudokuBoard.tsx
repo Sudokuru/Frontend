@@ -541,7 +541,6 @@ function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
     let cell = board.get('puzzle').getIn([x, y]);
-    console.log(cell)
     cell = cell.delete('notes');
     cell = fill ? cell.set('value', number) : cell.delete('value');
     const increment = fill ? 1 : -1;
@@ -693,7 +692,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           x = placements[i][0]
           y = placements[i][1]
           noteVal = placements[i][2]
-          console.log(noteVal)
           board = updateBoardWithNumber({
             x, y, noteVal, fill: true, board,
           });
