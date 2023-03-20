@@ -699,12 +699,11 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         }
       }
 
-      // add the removals
-      // TODO: text coloring
+      // TODO: make function which deletes actualRemovals notes
       /*
-        This block of code literally kills the notes which need to be removed,
+        This block of code just colors the notes which need to be removed,
         which we do not want ideally, we would make the notes highlighted in 
-        red, then the user can press a button(ex. arrow) to kill the notes
+        red, then the user can press a button(ex. arrow) to remove the notes
       */
       if (hint && hint.removals) 
       {
