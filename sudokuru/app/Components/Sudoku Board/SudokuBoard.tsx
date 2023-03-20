@@ -165,7 +165,7 @@ const formatTime = (seconds) => {
   const paddedSeconds = secs < 10 ? "0" + secs : secs;
   // Return formatted string
   return `${paddedMinutes}:${paddedSeconds}`;
-};    
+};  
 
 const NumberControl = (props) => {
   const { prefilled, inNoteMode, fillNumber, addNumberAsNote } = props;
@@ -353,14 +353,22 @@ const Cell = (props) => {
   }
 
   const handleKeyDown = (event) => {
-      const inputValue = event.nativeEvent.key;
-      if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
-        onValueChange(x, y, parseInt(inputValue, 10));
-      }
-      if (inputValue == "Delete" || inputValue == "Backspace")
-        eraseSelected();
+    const inputValue = event.nativeEvent.key;
+    if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
+      onValueChange(x, y, parseInt(inputValue, 10));
+    }
+    if (inputValue == "Delete" || inputValue == "Backspace")
+      eraseSelected();
   };
 
+  const getNoteContents = (noteVal) =>
+  {
+    if (notes.has(noteVal))
+    {
+      let styleVal = isRemoval[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
+      return <Text style={styleVal}>{noteVal}</Text>
+    }
+  }  
 
   return (
     <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
@@ -383,19 +391,19 @@ const Cell = (props) => {
             <View style={styles(cellSize).noteViewParent}>
               <View style={{ flexDirection: 'row' }}>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(1) && <Text style={isRemoval[0] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{1}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(4) && <Text style={isRemoval[3] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{4}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(7) && <Text style={isRemoval[6] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{7}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(1)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(4)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(7)}</View>
                 </View>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(2) && <Text style={isRemoval[1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{2}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(5) && <Text style={isRemoval[4] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{5}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(8) && <Text style={isRemoval[7] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{8}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(2)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(5)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(8)}</View>
                 </View>
                 <View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(3) && <Text style={isRemoval[2] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{3}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(6) && <Text style={isRemoval[5] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{6}</Text>}</View>
-                  <View style={styles(cellSize).noteViewElement} >{notes.has(9) && <Text style={isRemoval[8] ? styles(cellSize).removalNoteText : styles(cellSize).noteText}>{9}</Text>}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(3)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(6)}</View>
+                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(9)}</View>
                 </View>
               </View>
             </View>
