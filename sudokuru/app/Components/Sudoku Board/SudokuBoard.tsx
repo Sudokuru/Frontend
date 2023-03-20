@@ -694,11 +694,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           {
             currRemoval = removals[i][j]
             if (notes.has(currRemoval))
-            {
-              console.log(notes)
               notes = notes.delete(currRemoval);
-              console.log(notes)
-            }
           }
           board = board.setIn(['puzzle', x, y, 'notes'], notes)
         }
