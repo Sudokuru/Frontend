@@ -2,7 +2,7 @@
 import React from 'react';
 import LoginButton from "../Components/Auth0/LoginButton";
 import { StyleSheet, View } from "react-native";
-import { Text } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import ProfileButton from "../Components/Profile/ProfileButton";
 import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
@@ -14,6 +14,7 @@ import { Set, List } from 'immutable';
 import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useNavigation} from "@react-navigation/native";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 
@@ -139,7 +140,7 @@ const DrillPage = (props) => {
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
-
+const navigation: any = useNavigation();
   if (!fontsLoaded) {
     return null;
   }
@@ -175,8 +176,12 @@ const DrillPage = (props) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
+
         <Header page={'Sudoku'}/>
         <View style={homeScreenStyles.home}>
+         <Button style={{top:0}} mode="contained" onPress={() => navigation.goBack()}>
+                            Back
+         </Button>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
             <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
