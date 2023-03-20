@@ -26,7 +26,7 @@ import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
 import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
 import XWingLesson from "./app/Pages/Lessons/XWingLesson";
 import DrillPage from './app/Pages/DrillPage';
-import CustomDrawerContent from './app/Pages/CustomDrawerContent';
+import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
 
 const drawerItemsMain = [
   {
