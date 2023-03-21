@@ -24,7 +24,7 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
-let difficulty = 0.1; // Get difficulty from slider
+let difficulty = 29; // Get difficulty from slider
 let strategies = ["NAKED_SINGLE"]; // Get strategies from previous page
 let token = "token"; // Get token from previous page
 
