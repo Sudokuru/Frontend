@@ -6,12 +6,17 @@ import { Set, List, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
 const styles = (cellSize) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
+  hintAndPuzzleContainer: {
+    justifyContent: "space-evenly", 
+    alignItems: "center",
+    flexDirection: "row", 
+  },
   boardContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -199,6 +204,38 @@ NumberControl.propTypes = {
 };
 
 NumberControl.defaultProps = {
+};
+
+const Puzzle = (props) => {
+  const { board, inHintMode, renderCell } = props;
+  const cellSize = getCellSize();
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+  return (
+    <View style={styles(cellSize).hintAndPuzzleContainer}>
+      <Pressable onPress={console.log("left")}>
+        <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
+      </Pressable>
+      <View style={styles().boardContainer}>
+        {board.get('puzzle').map((row, i) => (
+          <View key={i} style={styles().rowContainer}>
+            { row.map((cell, j) => renderCell(cell, i, j)).toArray() }
+          </View>
+        )).toArray()}
+      </View>
+      <Pressable onPress={console.log("right")}>
+        <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
+      </Pressable>
+    </View>
+  );
+}
+
+Puzzle.propTypes = {
+  board: PropTypes.any,
+  inHintMode: PropTypes.bool,
+  renderCell: PropTypes.func.isRequired,
+};
+
+Puzzle.defaultProps = {
 };
 
 // function that converts x,y cell coords to a number
@@ -896,20 +933,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
     renderPuzzle = () => {
       const { board } = this.state;
-
+      const inHintMode = board.get('inHintMode');
+      const renderCell = this.renderCell;
       return (
-        <View style={{justifyContent: "space-evenly", flexDirection: "row", borderWidth: 1}}>
-          <View style={{borderWidth: 1, borderColor: "red"}}></View>
-          <View style={styles().boardContainer}>
-            {board.get('puzzle').map((row, i) => (
-              <View key={i} style={styles().rowContainer}>
-                { row.map((cell, j) => this.renderCell(cell, i, j)).toArray() }
-              </View>
-            )).toArray()}
-          </View>
-          <View style={{borderWidth: 1, borderColor: "red"}}></View>
-        </View>
+        <Puzzle
+          inHintMode = { inHintMode }
+          renderCell = { renderCell }
+          board = { board }
+        />
       );
+
+
     };
 
     renderNumberControl = () => {
