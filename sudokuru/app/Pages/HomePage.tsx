@@ -25,6 +25,9 @@ const HomePage = () => {
             <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
+                <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
+                    Drills
+                </Button>
                     <CCarousel/>
                     <Slider
                         style={{width: 200, height: 40}}
@@ -47,7 +50,7 @@ const HomePage = () => {
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container}>
                     <Button style={styles.loginButton} mode="contained" onPress={() => navigation.openDrawer()}>
-                                    Start
+                                    Drills
                     </Button>
 
                     <View>

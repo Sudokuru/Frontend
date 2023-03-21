@@ -10,7 +10,7 @@ import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
 import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView,  DrawerContentComponentProps} from '@react-navigation/drawer';
 // theme imports
 import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
 import AdjustNotesLesson from "./app/Pages/Lessons/AdjustNotesLesson";
@@ -26,12 +26,66 @@ import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
 import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
 import XWingLesson from "./app/Pages/Lessons/XWingLesson";
 import DrillPage from './app/Pages/DrillPage';
+import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
+
+const drawerItemsMain = [
+  {
+    key: 'Naked Sets',
+    title: 'Naked Sets',
+    routes: [
+      {nav: 'Home', routeName: 'Naked Single', title: 'Naked Single'},
+      {nav: 'Home', routeName: 'Naked Pair', title: 'Naked Pair'},
+      {nav: 'Home', routeName: 'Naked Triplet', title: 'Naked Triplet'},
+      {nav: 'Home', routeName: 'Naked Quadruplet', title: 'Naked Quadruplet'},
+      {nav: 'Home', routeName: 'Naked Quintuplet', title: 'Naked Quintuplet'},
+      {nav: 'Home', routeName: 'Naked Sextuplet', title: 'Naked Sextuplet'},
+      {nav: 'Home', routeName: 'Naked Septuplet', title: 'Naked Septuplet'},
+      {nav: 'Home', routeName: 'Naked Octuplet', title: 'Naked Octuplet'},
+    ],
+  },
+  {
+      key: 'Hidden Sets',
+      title: 'Hidden Sets',
+      routes: [
+        {nav: 'Home', routeName: 'Hidden Single', title: 'Hidden Single'},
+        {nav: 'Home', routeName: 'Hidden Pair', title: 'Hidden Pair'},
+        {nav: 'Home', routeName: 'Hidden Triplet', title: 'Hidden Triplet'},
+        {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
+        {nav: 'Home', routeName: 'Hidden Quintuplet', title: 'Hidden Quintuplet'},
+        {nav: 'Home', routeName: 'Hidden Sextuplet', title: 'Hidden Sextuplet'},
+        {nav: 'Home', routeName: 'Hidden Septuplet', title: 'Hidden Septuplet'},
+        {nav: 'Home', routeName: 'Hidden Octuplet', title: 'Hidden Octuplet'},
+
+      ],
+  },
+  {
+      key: 'Box Line Reduction',
+      title: 'Box Line Reduction',
+      routes: [{nav: 'Home', routeName: 'Box Line Reduction', title: 'Box Line Reduction'}],
+  },
+  {
+      key: 'Swordfish',
+      title: 'Swordfish',
+      routes: [{nav: 'Home', routeName: 'Swordfish', title: 'Swordfish'}],
+  },
+  {
+      key: 'X-Wing Strategy',
+      title: 'X-Wing Strategy',
+      routes: [{nav: 'Home', routeName: 'X-Wing Strategy', title: 'X-Wing Strategy'}],
+  },
+  {
+      key: 'Singles Chaining',
+      title: 'Singles Chaining',
+      routes: [{nav: 'Home', routeName: 'Singles Chaining', title: 'Singles Chaining'}],
+  },
+];
 
 function HomeDrawer(){
     const Drawer = createDrawerNavigator();
 
     return(
-     <Drawer.Navigator screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "right", }}>
+     <Drawer.Navigator initialRouteName="Main Page" initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
+      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", }}>
                               <Drawer.Screen name="Main Page" component={HomePage} />
                               <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
                               <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
