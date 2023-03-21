@@ -111,11 +111,11 @@ const HomePage = () => {
                     maximumTrackTintColor="#000000"
                     />
                     </View>
+                    {grabCurrentGame(USERACTIVEGAMESBFFURL)!==null &&
+                    <DifficultySlider /> }
                     <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
                         Start
                     </Button>
-
-
                 </SafeAreaView>
             </SafeAreaProvider>
     );
