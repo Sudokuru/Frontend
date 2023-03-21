@@ -6,14 +6,14 @@ import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
 import {useNavigation} from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
 
     let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
 
     if (!fontsLoaded) {

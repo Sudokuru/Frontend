@@ -37,7 +37,7 @@ const styles = (cellSize) => StyleSheet.create({
   },
   noteText: {
     fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
-    fontFamily: 'Inter_100Thin',
+    fontFamily: 'Inter_200ExtraLight',
   },
   removalNoteText: {
     fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
@@ -228,7 +228,7 @@ const getCausesFromHint = (hint) => {
     temp.push(3)
     temp.push(hint.cause[i][0])
     temp.push(hint.cause[i][1])
-    temp.push(darkBrown)
+    temp.push(gold)
     causes.push(temp)
   }
   return causes
@@ -534,7 +534,7 @@ HeaderRow.defaultProps = {
  */
 function getCellSize() {
     const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 15;
+    return Math.min(size.width, size.height) / 14;
 }
 
 function updateBoardWithNumber({
