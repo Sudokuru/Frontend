@@ -210,11 +210,22 @@ const Puzzle = (props) => {
   const { board, inHintMode, renderCell } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+
+  const isRightArrowRendered = (inHintMode) =>
+  {
+    return inHintMode;
+  }
+
+  const isLeftArrowRendered = (inHintMode) =>
+  {
+    return inHintMode;
+  }  
+
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      <Pressable onPress={console.log("left")}>
+      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={console.log("left")}>
         <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
-      </Pressable>
+      </Pressable> : null}
       <View style={styles().boardContainer}>
         {board.get('puzzle').map((row, i) => (
           <View key={i} style={styles().rowContainer}>
@@ -222,9 +233,9 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      <Pressable onPress={console.log("right")}>
+      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={console.log("right")}>
         <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
-      </Pressable>
+      </Pressable> : null}
     </View>
   );
 }
