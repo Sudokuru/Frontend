@@ -895,17 +895,21 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     }
 
     renderPuzzle = () => {
-        const { board } = this.state;
+      const { board } = this.state;
 
-        return (
-            <View style={styles().boardContainer}>
-                {board.get('puzzle').map((row, i) => (
-                    <View key={i} style={styles().rowContainer}>
-                        { row.map((cell, j) => this.renderCell(cell, i, j)).toArray() }
-                    </View>
-                )).toArray()}
-            </View>
-        );
+      return (
+        <View style={{justifyContent: "space-evenly", flexDirection: "row", borderWidth: 1}}>
+          <View style={{borderWidth: 1, borderColor: "red"}}></View>
+          <View style={styles().boardContainer}>
+            {board.get('puzzle').map((row, i) => (
+              <View key={i} style={styles().rowContainer}>
+                { row.map((cell, j) => this.renderCell(cell, i, j)).toArray() }
+              </View>
+            )).toArray()}
+          </View>
+          <View style={{borderWidth: 1, borderColor: "red"}}></View>
+        </View>
+      );
     };
 
     renderNumberControl = () => {
