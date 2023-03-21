@@ -24,8 +24,8 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
-let difficulty = 29; // Get difficulty from slider
-let strategies = ["NAKED_SINGLE"]; // Get strategies from previous page
+let difficulty = 29; // TODO Get difficulty from slider
+let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
 let token = "token"; // Get token from previous page
 
 function strPuzzleToArray(str) {
@@ -50,24 +50,26 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
 
     async function generateGame(url) {
         let token = null;
-
-        await getKeyString("access_token").then(
-            result => {
-                token = result;
-            });
+      
+        await getKeyString("access_token").then(result => {
+          token = result;
+        });
         console.log("Token: ", token);
-
-        let board = await Puzzles.startGame(url, difficulty, strategies, token).then(game => 
-        {
-            console.log("url: ", url, "difficulty: ", difficulty, "strategies: ", strategies, "token: ", token);
-            console.log("Game: ", game);
-            let board = makeBoard(strPuzzleToArray(game.puzzle));
-            console.log("Board: ", board); 
-            return board;
-        })
-
-        return {board, history: List.of(board), historyOffSet: 0, solution };
-    }
+      
+        let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
+          game => {
+            let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+            return {
+              board,
+              history: List.of(board),
+              historyOffSet: 0,
+              solution: game[0].puzzleSolution,
+            };
+          }
+        );
+      
+        return board;
+      }
 
     return (
         <SafeAreaProvider>
