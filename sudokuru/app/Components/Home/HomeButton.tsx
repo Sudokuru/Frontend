@@ -8,7 +8,7 @@ const HomeButton = () => {
     const navigation: any = useNavigation();
 
     return (
-        <Button mode="contained" testID={"ViewHomePageButton"} onPress={() => navigation.navigate('Home')}>
+        <Button mode="contained" testID={"ViewHomePageButton"} onPress={() => navigation.navigate('Main Page')}>
             <AntDesign name="home" size={24} color="#F2F2F2" />
         </Button>
     );
