@@ -8,9 +8,23 @@ import {useNavigation} from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
+import DifficultySlider from '../Components/Home/DifficultySlider';
+import {getKeyString} from "../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
 
 const HomePage = () => {
     const navigation: any = useNavigation();
+
+    // Sudokuru Package Import
+    const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
+
+// Sudokuru Package Constants
+    const Puzzles = sudokuru.Puzzles;
+
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+    let url = USERACTIVEGAMESBFFURL;
+    let token = "token"; // Get token from previous page
+
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -19,6 +33,28 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
+
+    async function grabCurrentGame(url) {
+        let token = null;
+      
+        await getKeyString("access_token").then(result => {
+          token = result;
+        });
+        console.log("Token: ", token);
+      
+        let board = await Puzzles.getGame(url, token).then(
+          game => {
+            if (game !== null) {
+                console.log(game);
+            }
+            else {
+                console.log("User doesn't have an activeGame");
+            }
+        });
+      
+        return board;
+      }
+
  if(Platform.OS === 'web'){
     return (
         <View>
@@ -29,14 +65,8 @@ const HomePage = () => {
                     Drills
                 </Button>
                     <CCarousel/>
-                    <Slider
-                        style={{width: 200, height: 40}}
-                        minimumValue={0}
-                        maximumValue={100}
-                        step={10}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
-                    />
+                    {grabCurrentGame(USERACTIVEGAMESBFFURL)!==null &&
+                    <DifficultySlider /> }
                     <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
                         Start
                     </Button>
