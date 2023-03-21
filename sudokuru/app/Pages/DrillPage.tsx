@@ -136,6 +136,7 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
+  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
@@ -145,15 +146,17 @@ const navigation: any = useNavigation();
   }
 
   async function generateGame(url, strategies) {
+    console.log(url)
     let token = null;
     await getKeyString("access_token").then(
         result => {
           token = result;
         });
-    // console.log(token);
+    console.log(token);
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
+      console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
       return board;
@@ -167,13 +170,7 @@ const navigation: any = useNavigation();
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
-    let hint = {}
-    try {
-      hint = Puzzles.getHint(boardArray, notesArray, strategy)
-    } catch (error) {
-      console.log("ERROR: " + error.Error_Message);
-      hint = {}
-    }
+    let hint = Puzzles.getHint(boardArray, notesArray, strategy)
     return hint;
   }
 
@@ -188,7 +185,7 @@ const navigation: any = useNavigation();
          </Button>
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
