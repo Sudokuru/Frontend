@@ -268,6 +268,11 @@ const findBox = (box) => {
   if (box === 8) return 60;
 }
 
+const print = (str, contents) => {
+  console.log(str)
+  console.log(contents)
+}
+
 const getCausesFromHint = (hint) => {
   let causes = []
   let temp = []
@@ -729,28 +734,33 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
+
     let hint = undefined
     if (newHintMode) hint = this.props.getHint(board)
     console.log(hint)
-    let hintArray = []
     console.log(hint.strategy)
 
     let causes = []
     let groups = []
     let placements = []
     let removals = []
-
-    if (hint && hint.cause) causes = getCausesFromHint(hint);
-    
-    if (hint && hint.groups) groups = getGroupsFromHint(hint);
-
-    if (hint && hint.placements)  placements = getPlacementsFromHint(hint);
-
-    if (hint && hint.removals)  removals = getRemovalsFromHint(board, hint);
+    if (hint)
+    {
+      if (hint.cause) causes = getCausesFromHint(hint);
+      if (hint.groups) groups = getGroupsFromHint(hint);
+      if (hint.placements) placements = getPlacementsFromHint(hint);
+      if (hint.removals) removals = getRemovalsFromHint(board, hint);
+    }
+    print("Causes", causes)
+    print("Groups", groups)
+    print("Placements", placements)
+    print("Removals", removals)
     
     // board = board.set('hint', hintHighlightInput);
     // this.setState({ board });
 
+    let hintArray = []
+    let currentStep = {}
     switch (hint.strategy)
     {
       case "AMEND_NOTES":
@@ -784,7 +794,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         console.log("Naked Octuplet");
         break;
       case "HIDDEN_SINGLE":
-        console.log("Hidden Single")
+        console.log("Hidden Single");
         break;
       case "HIDDEN_PAIR":
         console.log("Hidden Pair");
