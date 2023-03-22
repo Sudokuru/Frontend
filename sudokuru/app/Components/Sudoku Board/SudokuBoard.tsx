@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import {getKeyString} from "../Functions/Auth0/token";
+import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 
 // Sudokuru Package Import
@@ -19,7 +19,6 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
-let token = "token"; // Get token from previous page
 
 let activeGameData = null;
 
@@ -232,6 +231,21 @@ const darkBrown = "#A64732";
 const gold = "#F2CA7E";
 let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
+async function saveGame(activeGame) {
+    let token = null;
+  
+    await getKeyString("access_token").then(result => {
+      token = result;
+    });
+    console.log("Token: ", token);
+  
+    Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
+        if (res) {
+            console.log("Game progress was saved successfully!");
+        }
+    });
+}
+
 let puzzleString = "";
 let notesString = "";
 
@@ -240,6 +254,8 @@ const Cell = (props) => {
   const cellSize = getCellSize();
 
   let backColor = '#808080';
+
+    // SaveGame
 
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0) {
@@ -258,16 +274,15 @@ const Cell = (props) => {
         }
     }
 
-    // Print the two arrays to the console
+    // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
     if (getCellNumber(x, y) === 80) {
-        console.log("puzzleString:", puzzleString);
-        console.log("notesString:", notesString);
-
-        // This is a good spot to save the game!
-            //   console.log(this.props.generatedGame.activeGame);
-            console.log(activeGameData);
-
+        activeGameData.moves.push({ puzzleCurrentState: puzzleString, notesCurrentState: notesString });
     }
+
+    console.log(activeGameData);
+
+    // Save the game
+    saveGame(activeGameData);
 
   for (let i = 0; i < demoHighlightInput.length; i++) {
 
