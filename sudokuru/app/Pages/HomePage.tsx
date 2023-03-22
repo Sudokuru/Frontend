@@ -70,11 +70,12 @@ const HomePage = () => {
                     <CCarousel/>
                     <DifficultySlider />
                    <View style={styles.playButtons}>
-
-                        (visible) ?
-                        <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                            Resume
-                        </Button> : <></>
+                       {
+                           (visible) ?
+                               <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                   Resume
+                               </Button> : <></>
+                       }
 
                         <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
                             Start
