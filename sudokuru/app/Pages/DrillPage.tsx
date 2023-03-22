@@ -61,7 +61,7 @@ function addNumberAsNote (number, board, i, j) {
   return board;
 };
 
-function parseApiAndAddNotes(board, puzzleCurrentNotesState)
+export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
 {
   if (!puzzleCurrentNotesState)
   {
