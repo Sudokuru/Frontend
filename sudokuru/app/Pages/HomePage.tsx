@@ -69,17 +69,16 @@ const HomePage = () => {
                 <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
                     Drills
                 </Button>
-                    <CCarousel/>
-                    {
+                    <CCarousel/> <DifficultySlider />
+                   <View style={styles.playButtons}> {
                         (visible) ?
-                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                        <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
                             Resume
-                        </Button> : <></>
-                    }
-                    <DifficultySlider />
-                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                        </Button> : <></> 
+                    } 
+                    <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
                         Start
-                    </Button>
+                    </Button> </View> 
                     <StatusBar style="auto" />
                 </View>
             </View>
@@ -158,6 +157,12 @@ const styles = StyleSheet.create({
     },
     container1: {
             flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    playButtons: {
+            flex: 1,
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
         },
