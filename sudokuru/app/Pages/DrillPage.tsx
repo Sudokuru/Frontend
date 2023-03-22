@@ -177,11 +177,13 @@ const navigation: any = useNavigation();
     <SafeAreaProvider>
       <SafeAreaView>
 
-        <Header page={'Sudoku'}/>
-        <View style={homeScreenStyles.home}>
-         <Button style={{top:0}} mode="contained" onPress={() => navigation.goBack()}>
+         <Button style={styles.backButton} mode="contained" onPress={() => navigation.goBack()}>
                             Back
          </Button>
+
+        <Header page={'Sudoku'}/>
+        <View style={homeScreenStyles.home}>
+
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
             <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
@@ -215,6 +217,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    backButton: {
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        top: 100,
+        position: 'absolute',
     },
 });
 

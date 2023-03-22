@@ -13,18 +13,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView,  DrawerContentComponentProps} from '@react-navigation/drawer';
 // theme imports
 import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
-import AdjustNotesLesson from "./app/Pages/Lessons/AdjustNotesLesson";
-import BoxLineReductionLesson from "./app/Pages/Lessons/BoxLineReductionLesson";
-import HiddenSetLesson from "./app/Pages/Lessons/HiddenSetLesson";
-import HiddenSingleLesson from "./app/Pages/Lessons/HiddenSingleLesson";
-import NakedSetLesson from "./app/Pages/Lessons/NakedSetLesson";
-import NakedSingleLesson from "./app/Pages/Lessons/NakedSingleLesson";
-import PointingPairLesson from "./app/Pages/Lessons/PointingPairLesson";
-import PointingTripletLesson from "./app/Pages/Lessons/PointingTripletLesson";
-import SimplifyNotesLesson from "./app/Pages/Lessons/SimplifyNotesLesson";
-import SinglesChainingLesson from "./app/Pages/Lessons/SinglesChainingLesson";
-import SwordfishLesson from "./app/Pages/Lessons/SwordfishLesson";
-import XWingLesson from "./app/Pages/Lessons/XWingLesson";
+import Lesson from "./app/Pages/Lesson";
 import DrillPage from './app/Pages/DrillPage';
 import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
 
@@ -85,7 +74,7 @@ function HomeDrawer(){
 
     return(
      <Drawer.Navigator initialRouteName="Main Page" initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
-      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", }}>
+      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true }}>
                               <Drawer.Screen name="Main Page" component={HomePage} />
                               <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
                               <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
@@ -143,19 +132,7 @@ export default function App() {
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
                       <Stack.Screen name="Sudoku" component={SudokuPage}/>
-
-                      <Stack.Screen name="AdjustNotesLesson" component={AdjustNotesLesson}/>
-                      <Stack.Screen name="BoxLineReductionLesson" component={BoxLineReductionLesson}/>
-                      <Stack.Screen name="HiddenSetLesson" component={HiddenSetLesson}/>
-                      <Stack.Screen name="HiddenSingleLesson" component={HiddenSingleLesson}/>
-                      <Stack.Screen name="NakedSetLesson" component={NakedSetLesson}/>
-                      <Stack.Screen name="NakedSingleLesson" component={NakedSingleLesson}/>
-                      <Stack.Screen name="PointingPairLesson" component={PointingPairLesson}/>
-                      <Stack.Screen name="PointingTripletLesson" component={PointingTripletLesson}/>
-                      <Stack.Screen name="SimplifyNotesLesson" component={SimplifyNotesLesson}/>
-                      <Stack.Screen name="SinglesChainingLesson" component={SinglesChainingLesson}/>
-                      <Stack.Screen name="SwordfishLesson" component={SwordfishLesson}/>
-                      <Stack.Screen name="XWingLesson" component={XWingLesson}/>
+                      <Stack.Screen name="Lesson" component={Lesson}/>
                   </Stack.Navigator>
               </NavigationContainer>
           </PaperProvider>
