@@ -19,8 +19,9 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
-
 let activeGameData = null;
+
+let drillMode = false;
 
 let fallbackHeight = 30;
 
@@ -255,42 +256,42 @@ const Cell = (props) => {
 
   let backColor = '#808080';
 
-    // SaveGame
-
-    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
-    if (getCellNumber(x, y) === 0) {
-        puzzleString = "";
-        notesString = "";
-    }
-
-    puzzleString += value ? value : 0;
-
-    // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
-    if (notes === null) {
-        notesString += "000000000";
-    } else {
-        for (let i = 1; i <= 9; i++) {
-            notesString += notes.has(i) ? 1 : 0;
+    if (!drillMode) {
+        // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
+        if (getCellNumber(x, y) === 0) {
+            puzzleString = "";
+            notesString = "";
         }
-    }
 
-    // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
-    if (getCellNumber(x, y) === 80) {
-        // If there's no moves in the moves array, add the current move to the moves array
-        if (activeGameData.moves.length === 0) {
-            activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
-            saveGame(activeGameData);
+        puzzleString += value ? value : 0;
+
+        // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
+        if (notes === null) {
+            notesString += "000000000";
         } else {
-            // If there's a difference between the last move and the current move, add the current move to the moves array
-            if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== puzzleString 
-             || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+            for (let i = 1; i <= 9; i++) {
+                notesString += notes.has(i) ? 1 : 0;
+            }
+        }
+
+        // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
+        if (getCellNumber(x, y) === 80) {
+            // If there's no moves in the moves array, add the current move to the moves array
+            if (activeGameData.moves.length === 0) {
                 activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
                 saveGame(activeGameData);
+            } else {
+                // If there's a difference between the last move and the current move, add the current move to the moves array
+                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== puzzleString 
+                || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+                    activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                    saveGame(activeGameData);
+                }
             }
         }
     }
 
-  for (let i = 0; i < demoHighlightInput.length; i++) {
+    for (let i = 0; i < demoHighlightInput.length; i++) {
 
     if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
       const cellNum = getCellNumber(x, y);
@@ -849,10 +850,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       }
 
       this.props.generatedGame.then(game => {
-        // console.log(game);
-        // console.log(game.activeGame[0]);
         activeGameData = game.activeGame[0];
       });
+
+      drillMode = this.props.isDrill;
 
       return (
         <View>
