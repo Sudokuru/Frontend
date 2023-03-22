@@ -82,7 +82,7 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
       {
         stringIndex = 81 * i + 9 * j + currNoteIndex;
         if (puzzleCurrentNotesState.charAt(stringIndex) == 1)
-          board = addNumberAsNote(currNoteIndex + 1, board, j, i);
+          board = addNumberAsNote(currNoteIndex + 1, board, i, j);
       }
     }
   }
