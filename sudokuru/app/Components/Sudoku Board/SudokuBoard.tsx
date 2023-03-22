@@ -207,7 +207,7 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell } = props;
+  const { board, inHintMode, renderCell, deleteNotesFromRemovals } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
 
@@ -233,7 +233,7 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={console.log("right")}>
+      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={() => deleteNotesFromRemovals([[5, [3,4], 3, 5, 6, 7, 8, 9]])}>
         <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
     </View>
@@ -244,6 +244,7 @@ Puzzle.propTypes = {
   board: PropTypes.any,
   inHintMode: PropTypes.bool,
   renderCell: PropTypes.func.isRequired,
+  deleteNotesFromRemovals: PropTypes.func.isRequired,
 };
 
 Puzzle.defaultProps = {
@@ -325,6 +326,8 @@ const getRemovalsFromHint = (hint) => {
     }
     removals.push(temp)
   }
+  console.log("removals")
+  console.log(removals)
   return removals
 }
 
@@ -714,6 +717,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     board = board.set('inHintMode', newHintMode);
     let hint = undefined
     if (newHintMode) hint = this.props.getHint(board)
+    console.log(hint)
     let causes = []
     let groups = []
     let placements = []
@@ -788,9 +792,39 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       this.updateBoard(board);
     }
     
-    // hintHighlightInput = hintHighlightInput.concat(actualRemovals);
     board = board.set('hint', hintHighlightInput);
     this.setState({ board });
+  }
+
+  deleteNotesFromRemovals = (removals) => {
+    let { board } = this.state;
+    let x = -1
+    let y = -1
+    console.log("deleteNotesFromRemovals")
+    console.log(removals)
+    for (let i = 0; i < removals.length; i++)
+    {
+      x = removals[i][1][0]
+      y = removals[i][1][1]
+      
+      let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+      console.log(notes)
+      for (let j = 2; j < removals[i].length; j++)
+      {
+        console.log("1")
+        currRemoval = removals[i][j]
+        console.log("2")
+        if (notes.has(currRemoval))
+        {
+          console.log("3")
+          notes = notes.delete(removals[i][j]);
+          console.log("4")
+        }
+        console.log("5")
+      }
+      board = board.setIn(['puzzle', x, y, 'notes'], notes);
+    }
+    this.setState({board});
   }
 
   /*
@@ -941,13 +975,12 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
   renderPuzzle = () => {
     const { board } = this.state;
-    const inHintMode = board.get('inHintMode');
-    const renderCell = this.renderCell;
     return (
       <Puzzle
-        inHintMode = { inHintMode }
-        renderCell = { renderCell }
+        inHintMode = { board.get('inHintMode') }
+        renderCell = { this.renderCell }
         board = { board }
+        deleteNotesFromRemovals = { this.deleteNotesFromRemovals }
       />
     );
   };
