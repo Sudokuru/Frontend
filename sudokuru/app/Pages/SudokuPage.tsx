@@ -23,8 +23,8 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let difficulty = 1; // TODO Get difficulty from slider
-let strategies = ["NAKED_OCTUPLET"]; // TODO Get strategies from previous page
+let difficulty = .1; // TODO Get difficulty from slider
+let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
 
 function strPuzzleToArray(str) {
     console.log("strPuzzleToArray: ", str)
