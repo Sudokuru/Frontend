@@ -33,7 +33,7 @@ function strPuzzleToArray(str) {
     for (let i = 0; i < str.length; i += 9) {
       arr.push(str.slice(i, i + 9).split('').map(Number));
     }
-    output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+    let output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
     return { puzzle: output };
   }
 
@@ -43,7 +43,7 @@ function strPuzzleToArray(str) {
     for (let i = 0; i < str.length; i += 9) {
       arr.push(str.slice(i, i + 9).split('').map(Number));
     }
-    output = arr[0].map((_, colIndex) => arr.map(row => colIndex[row]));
+    let output = arr[0].map((_, colIndex) => arr.map(row => colIndex[row]));
     return { puzzle: output };
   }
 

@@ -120,11 +120,16 @@ const HomePage = () => {
                     maximumTrackTintColor="#000000"
                     />
                     </View>
-                    {grabCurrentGame(USERACTIVEGAMESBFFURL)!==null &&
-                    <DifficultySlider /> }
-                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
-                        Start
-                    </Button>
+                    <DifficultySlider />
+                    <View style={styles.playButtons}> {
+                        (visible) ?
+                            <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                Resume
+                            </Button> : <></>
+                    }
+                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            Start
+                        </Button> </View>
                 </SafeAreaView>
             </SafeAreaProvider>
     );
