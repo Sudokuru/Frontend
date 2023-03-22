@@ -22,13 +22,21 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- Wh
 const Puzzles = sudokuru.Puzzles;
 const Drills = sudokuru.Drills;
 
-function strPuzzleToArray(str) {
+export function strPuzzleToArray(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {
     arr.push(str.slice(i, i + 9).split('').map(Number));
   }
   output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
   return { puzzle: output };
+}
+
+export function replaceChar(origString, replaceChar, index) {
+    let firstPart = origString.substr(0, index);
+    let lastPart = origString.substr(index + 1);
+
+    let newString = firstPart + replaceChar + lastPart;
+    return newString;
 }
 
 updateBoard = (newBoard) => {
@@ -61,7 +69,7 @@ function addNumberAsNote (number, board, i, j) {
   return board;
 };
 
-export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
+export function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
 {
   if (!puzzleCurrentNotesState)
   {
@@ -81,13 +89,13 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
       for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
       {
         stringIndex = 81 * i + 9 * j + currNoteIndex;
-        if (puzzleCurrentNotesState.charAt(stringIndex) == 1)
-          board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+            } else {
+                board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+            }
+        }
       }
     }
   }
-  return board;
-}
 
 function componentBoardValsToArray(board)
 {
@@ -157,7 +165,7 @@ const navigation: any = useNavigation();
     {
       console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
-      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
+      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
 

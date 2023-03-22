@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, View, Platform} from "react-native";
 import {Text, Button} from 'react-native-paper';
 import Slider from '@react-native-community/slider';
@@ -13,38 +13,28 @@ import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 
 
-
 const HomePage = () => {
     const navigation: any = useNavigation();
+
+    function Resume({ game }) {
+        if (game==null) {
+          return null;
+        }
+        return  <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('ContinuedGame')}>
+        Resume
+        </Button>;
+      }
 
     // Sudokuru Package Import
     const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
-    // Sudokuru Package Constants
+// Sudokuru Package Constants
     const Puzzles = sudokuru.Puzzles;
 
-    const [visible, setVisible] = React.useState(false);
-    const showResumeButton = () => setVisible(true);
-    const hideResumeButton = () => setVisible(false);
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+    let url = USERACTIVEGAMESBFFURL;
+    let token = "token"; // Get token from previous page
 
-    useEffect(() => {
-        async function grabCurrentGame(url:string) {
-            let token = null;
-
-            await getKeyString("access_token").then(result => {
-                token = result;
-            });
-
-
-            await Puzzles.getGame(url, token).then(
-                (game: JSON) => {
-                    if (game !== null) {
-                        console.log("User doesn't have an activeGame");
-                    }
-                });
-        }
-        grabCurrentGame(USERACTIVEGAMESBFFURL);
-    }, []);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -54,29 +44,51 @@ const HomePage = () => {
         return null;
     }
 
+    async function grabCurrentGame(url) {
+        let token = null;
+        let val = false;
+      
+        await getKeyString("access_token").then(result => {
+          token = result;
+        });
+        console.log("Token: ", token);
+      
+        let board = await Puzzles.getGame(url, token).then(
+          game => {
+            if (game !== null) {
+                console.log(game);
+                val = true;
+            }
+            else {
+                console.log("User doesn't have an activeGame");
+                val = false;
+            }
+        });
+        
+        let ret = [val, board]
+
+        console.log(ret[0])
+
+        return [val, board];
+      }
+
  if(Platform.OS === 'web'){
     return (
         <View>
             <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
-                    <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
-                        Drills
-                    </Button>
+                <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
+                    Drills
+                </Button>
                     <CCarousel/>
                     <DifficultySlider />
-                   <View style={styles.playButtons}>
-                       {
-                           (visible) ?
-                               <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                                   Resume
-                               </Button> : <></>
-                       }
-
-                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                            Start
-                        </Button>
-                   </View>
+                    { grabCurrentGame(USERACTIVEGAMESBFFURL)[0] &&  <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('ContinuedGame')}>
+        Resume
+        </Button> }
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                        Start
+                    </Button>
                     <StatusBar style="auto" />
                 </View>
             </View>
@@ -109,25 +121,14 @@ const HomePage = () => {
                     </View>
 
                     <View>
-                    <Slider
-                    style={{width: 300, height: 40, top:30}}
-                    minimumValue={0}
-                    maximumValue={100}
-                    step={10}
-                    minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#000000"
-                    />
+                    <DifficultySlider/>
                     </View>
-                    <DifficultySlider />
-                    <View style={styles.playButtons}> {
-                        (visible) ?
-                            <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                                Resume
-                            </Button> : <></>
-                    }
-                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                            Start
-                        </Button> </View>
+                    {grabCurrentGame(USERACTIVEGAMESBFFURL)!==null &&
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('ContinuedGame')}>
+                    Resume </Button> }
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                        Start
+                    </Button>
                 </SafeAreaView>
             </SafeAreaProvider>
     );
@@ -160,12 +161,6 @@ const styles = StyleSheet.create({
     },
     container1: {
             flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    playButtons: {
-            flex: 1,
-            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
         },
