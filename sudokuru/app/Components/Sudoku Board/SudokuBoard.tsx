@@ -8,9 +8,22 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import {getKeyString} from "../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
+
+// Sudokuru Package Import
+const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
+
+// Sudokuru Package Constants
+const Puzzles = sudokuru.Puzzles;
+
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+let url = USERACTIVEGAMESBFFURL;
+let token = "token"; // Get token from previous page
+
+let activeGameData = null;
+
 let fallbackHeight = 30;
-
-
 
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
@@ -212,18 +225,15 @@ const findBox = (box) => {
     if (box === 4) return 30;
     if (box === 5) return 57;
     if (box === 6) return 6;
-    if (box === 7) return 33;
+    if (box === 7) return 33;puzzleString
     if (box === 8) return 60;
 }
 const darkBrown = "#A64732";
 const gold = "#F2CA7E";
 let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
-let puzzleCurrentState = "";
-let puzzleCurrentNotesState = "";
-
-// console.log("Puzzle Current State: " + puzzleCurrentState);
-// console.log("Puzzle Current Notes State: " + puzzleCurrentNotesState);
+let puzzleString = "";
+let notesString = "";
 
 const Cell = (props) => {
   const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
@@ -231,27 +241,32 @@ const Cell = (props) => {
 
   let backColor = '#808080';
 
-    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleCurrentState and puzzleCurrentNotesState strings and then add the value of the cell to the puzzleCurrentState string, if null, add a 0
+    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0) {
-        puzzleCurrentState = "";
-        puzzleCurrentNotesState = "";
+        puzzleString = "";
+        notesString = "";
     }
 
-    puzzleCurrentState += value ? value : 0;
+    puzzleString += value ? value : 0;
 
     // Get the set of the notes for the cell, if null, add a 0, otherwise, add each number 1-9 to the string. if a number is not in the set, add a 0.
     if (notes === null) {
-        puzzleCurrentNotesState += "000000000";
+        notesString += "000000000";
     } else {
         for (let i = 1; i <= 9; i++) {
-            puzzleCurrentNotesState += notes.has(i) ? i : 0;
+            notesString += notes.has(i) ? i : 0;
         }
     }
 
     // Print the two arrays to the console
     if (getCellNumber(x, y) === 80) {
-        console.log("puzzleCurrentState:", puzzleCurrentState);
-        console.log("puzzleCurrentNotesState:", puzzleCurrentNotesState);
+        console.log("puzzleString:", puzzleString);
+        console.log("notesString:", notesString);
+
+        // This is a good spot to save the game!
+            //   console.log(this.props.generatedGame.activeGame);
+            console.log(activeGameData);
+
     }
 
   for (let i = 0; i < demoHighlightInput.length; i++) {
@@ -366,6 +381,7 @@ Cell.propTypes = {
     conflict: PropTypes.bool.isRequired,
     eraseSelected: PropTypes.func.isRequired,
     inHintMode: PropTypes.bool,
+    // activeGame: PropTypes.object.isRequired,
 };
 
 Cell.defaultProps = {
@@ -724,6 +740,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 conflict={conflict}
                 eraseSelected={this.eraseSelected}
                 inHintMode={inHintMode}
+                game = {this.props.generatedGame.game}
             />
         );
     };
@@ -802,12 +819,20 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       }
     }
 
+
     render = () => {
       const { board } = this.state;
       if (!board)
       {
         this.props.generatedGame.then(game => this.setState(game));
       }
+
+      this.props.generatedGame.then(game => {
+        // console.log(game);
+        // console.log(game.activeGame[0]);
+        activeGameData = game.activeGame[0];
+      });
+
       return (
         <View>
           {board && !this.props.isDrill && this.renderTopBar()}
