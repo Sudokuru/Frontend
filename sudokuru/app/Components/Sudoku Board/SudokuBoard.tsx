@@ -223,7 +223,7 @@ const Puzzle = (props) => {
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={console.log("left")}>
+      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={() => console.log("left")}>
         <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
       <View style={styles().boardContainer}>
