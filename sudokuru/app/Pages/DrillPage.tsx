@@ -22,6 +22,8 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- Wh
 const Puzzles = sudokuru.Puzzles;
 const Drills = sudokuru.Drills;
 
+console.log(Drills.strategies)
+
 function strPuzzleToArray(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {

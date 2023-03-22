@@ -274,10 +274,7 @@ const getCausesFromHint = (hint) => {
   for (let i = 0; i < hint.cause.length; i++)
   {
     temp = []
-    temp.push(3)
-    temp.push(hint.cause[i][0])
-    temp.push(hint.cause[i][1])
-    temp.push(gold)
+    temp.push(hint.cause[i])
     causes.push(temp)
   }
   return causes
@@ -285,13 +282,25 @@ const getCausesFromHint = (hint) => {
 
 const getGroupsFromHint = (hint) => {
   let groups = []
-  let temp = []
+  let temp = {}
   for (let i = 0; i < hint.groups.length; i++)
   {
-    temp = []
-    temp.push(hint.groups[i][0])
-    temp.push(hint.groups[i][1])
-    temp.push("#FFFFFF")
+    temp = {}
+    switch (hint.groups[i][0])
+    {
+      case 0: // column
+        temp.type = "col"
+        temp.index = hint.groups[i][1]
+        break;
+      case 1: // row
+        temp.type = "row"
+        temp.index = hint.groups[i][1]
+        break;
+      case 2: // box
+        temp.type = "box"
+        temp.index = hint.groups[i][1]
+        break;
+    }
     groups.push(temp)
   }
   return groups
@@ -299,35 +308,40 @@ const getGroupsFromHint = (hint) => {
 
 const getPlacementsFromHint = (hint) => {
   let placements = []
-  let temp = []
+  let temp = {}
   for (let i = 0; i < hint.placements.length; i++)
   {
-    temp = []
-    temp.push(4)
-    temp.push(hint.placements[i][0])
-    temp.push(hint.placements[i][1])
-    temp.push(hint.placements[i][2])
+    temp = {}
+    temp.position = []
+    temp.position.push(hint.placements[i][0])
+    temp.position.push(hint.placements[i][1])
+    temp.value = hint.placements[i][2]
     placements.push(temp)
   }
   return placements
 }
 
-const getRemovalsFromHint = (hint) => {
+const getRemovalsFromHint = (board, hint) => {
   let removals = []
-  let temp = []
+  let temp = {}
   for (let i = 0; i < hint.removals.length; i++)
   {
-    temp = []
-    temp.push(5)
-    temp.push([hint.removals[i][0], hint.removals[i][1]])
+    let x = hint.removals[i][0]
+    let y = hint.removals[i][1]
+    temp = {}
+    temp.position = []
+    temp.position.push(x)
+    temp.position.push(y)
+    temp.values = []
+    temp.values.push()
+    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     for (let j = 2; j < hint.removals[i].length; j++)
     {
-      temp.push(hint.removals[i][j])
+      if (notes.has(hint.removals[i][j]))
+        temp.values.push(hint.removals[i][j])
     }
     removals.push(temp)
   }
-  console.log("removals")
-  console.log(removals)
   return removals
 }
 
@@ -718,82 +732,107 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hint = undefined
     if (newHintMode) hint = this.props.getHint(board)
     console.log(hint)
+    let hintArray = []
+    console.log(hint.strategy)
+
     let causes = []
     let groups = []
     let placements = []
-    // add the causes
+    let removals = []
+
     if (hint && hint.cause) causes = getCausesFromHint(hint);
     
-    // add the groups
     if (hint && hint.groups) groups = getGroupsFromHint(hint);
-    let hintHighlightInput = groups.concat(causes);
-    // add the placements
-      // TODO: text coloring
-      // TODO: ability to add values
-    if (hint && hint.placements) 
-    {
-      placements = getPlacementsFromHint(hint);
-      let x = -1
-      let y = -1
-      let noteVal = -1
-      for (let i = 0; i < placements.length; i++)
-      {
-        x = placements[i][0]
-        y = placements[i][1]
-        noteVal = placements[i][2]
-        board = updateBoardWithNumber({
-          x, y, noteVal, fill: true, board,
-        });
-        this.updateBoard(board);
-      }
-    }
 
-    // TODO: make function which deletes actualRemovals notes
-    /*
-      This block of code just colors the notes which need to be removed,
-      which we do not want ideally, we would make the notes highlighted in 
-      red, then the user can press a button(ex. arrow) to remove the notes
-    */
-    if (hint && hint.removals) 
-    {
-      // they aren't tuples but it makes more sense this way
-      // [[5, (x, y), 1, 4, 5], [5, (x', y'), 4, 7, 2], ...]
-      removals = getRemovalsFromHint(hint);
-      let x = -1
-      let y = -1
-      let actualRemovals = []
-      for (let i = 0; i < removals.length; i++)
-      {
-        actualRemovals = []
-        x = removals[i][1][0]
-        y = removals[i][1][1]
-        
-        actualRemovals.push(5)
-        actualRemovals.push([x,y])
-        let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
-        for (let j = 2; j < removals[i].length; j++)
-        {
-          currRemoval = removals[i][j]
-          if (notes.has(currRemoval))
-          {
-            actualRemovals.push(currRemoval);
-            // this is what kills the notes
-            // notes = notes.delete(currRemoval);
-          }
-        }
-        board = board.setIn(['puzzle', x, y, 'notes'], notes);
-      }
-      // if there are actually values that need to be removed
-      if (actualRemovals[2])
-      {
-        actualRemovals.push("#FF0000")
-        hintHighlightInput.push(actualRemovals);
-      }
-      this.updateBoard(board);
-    }
+    if (hint && hint.placements)  placements = getPlacementsFromHint(hint);
+
+    if (hint && hint.removals)  removals = getRemovalsFromHint(board, hint);
     
-    board = board.set('hint', hintHighlightInput);
-    this.setState({ board });
+    // board = board.set('hint', hintHighlightInput);
+    // this.setState({ board });
+
+    switch (hint.strategy)
+    {
+      case "AMEND_NOTES":
+        console.log("Amend Notes");
+        break;
+      case "SIMPLIFY_NOTES":
+        console.log("Simplify Notes");
+        break;
+      case "NAKED_SINGLE":
+        console.log("Naked Single");
+        break;
+      case "NAKED_PAIR":
+        console.log("Naked Pair");
+        break;
+      case "NAKED_TRIPLET":
+        console.log("Naked Triplet");
+        break;
+      case "NAKED_QUADRUPLET":
+        console.log("Naked Quadruplet");
+        break;
+      case "NAKED_QUINTUPLET":
+        console.log("Naked Quintuplet");
+        break;
+      case "NAKED_SEXTUPLET":
+        console.log("Naked Sextuplet");
+        break;
+      case "NAKED_SEPTUPLET":
+        console.log("Naked Septuplet");
+        break;
+      case "NAKED_OCTUPLET":
+        console.log("Naked Octuplet");
+        break;
+      case "HIDDEN_SINGLE":
+        console.log("Hidden Single")
+        break;
+      case "HIDDEN_PAIR":
+        console.log("Hidden Pair");
+        break;
+      case "HIDDEN_TRIPLET":
+        console.log("Hidden Triplet");
+        break;
+      case "HIDDEN_QUADRUPLET":
+        console.log("Hidden Quadruplet");
+        break;
+      case "HIDDEN_QUINTUPLET":
+        console.log("Hidden Quintuplet");
+        break;
+      case "HIDDEN_SEXTUPLET":
+        console.log("Hidden Sextuplet");
+        break;
+      case "HIDDEN_SEPTUPLET":
+        console.log("Hidden Septuplet");
+        break;
+      case "HIDDEN_OCTUPLET":
+        console.log("Hidden Octuplet");
+        break;
+      case "POINTING_PAIR":
+        console.log("Pointing Pair");
+        break;
+      case "POINTING_TRIPLET":
+        console.log("Pointing Triplet");
+        break;
+      case "BOX_LINE_REDUCTION":
+        console.log("Box Line Reduction");
+        break;
+      case "X_WING":
+        console.log("X Wing");
+        break;
+      case "SWORDFISH":
+        console.log("Swordfish");
+        break;
+      case "SINGLES_CHAINING":
+        console.log("Singles Chaining");
+        break;
+      default:
+        console.log("the switch statement matched none of the strategies :(")
+        break;
+    }
+    // cause
+    // group
+    // placement
+    // removals
   }
 
   deleteNotesFromRemovals = (removals) => {
