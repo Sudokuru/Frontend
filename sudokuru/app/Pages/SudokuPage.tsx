@@ -15,6 +15,7 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useNavigation} from "@react-navigation/native";
+import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -26,17 +27,9 @@ const Puzzles = sudokuru.Puzzles;
 let difficulty = .1; // TODO Get difficulty from slider
 let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
 
-function strPuzzleToArray(str) {
-    console.log("strPuzzleToArray: ", str)
-    let arr = [];
-    for (let i = 0; i < str.length; i += 9) {
-      arr.push(str.slice(i, i + 9).split('').map(Number));
-    }
-    output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
-    return { puzzle: output };
-  }
+const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
-const SudokuPage = () => { // TODO: Take in props from previous page instead of static values
+    const { gameOrigin } = route.params;
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -52,21 +45,38 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
         await getKeyString("access_token").then(result => {
           token = result;
         });
-        console.log("Token: ", token);
-      
-        let gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
-            game => {
-              console.log("Game: ", game);
-              let board = makeBoard(strPuzzleToArray(game[0].puzzle));
-              return {
-                board,
-                history: List.of(board),
-                historyOffSet: 0,
-                solution: game[0].puzzleSolution,
-                activeGame: game,
-              };
-            }
-          );
+
+        let gameData = null;
+
+        if (gameOrigin == "start"){
+            gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
+                game => {
+                    let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+                    return {
+                        board,
+                        history: List.of(board),
+                        historyOffSet: 0,
+                        solution: game[0].puzzleSolution,
+                        activeGame: game,
+                    };
+                }
+            );
+        }
+        else if (gameOrigin == "resume"){
+            gameData = await Puzzles.getGame(url, token).then(
+                game => {
+                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
+                    return {
+                        board,
+                        history: List.of(board),
+                        historyOffSet: 0,
+                        solution: game[0].puzzleSolution,
+                        activeGame: game,
+                    };
+                }
+            );
+        }
 
           return gameData;
     }

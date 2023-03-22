@@ -10,7 +10,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {replaceChar} from "../../Pages/DrillPage";
 import {useNavigation} from "@react-navigation/native";
+
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -292,22 +294,35 @@ const Cell = (props) => {
 
         // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
         if (getCellNumber(x, y) === 80) {
+
+            let flippedPuzzleString = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+            // flip the puzzleString so it is correct orientation.
+            for (let i = 0; i < puzzleString.length/9; i++) {
+                for (let j = 0; j < puzzleString.length/9; j++){
+                    flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
+                }
+            }
+
             // If there's no moves in the moves array, add the current move to the moves array
             if (activeGameData.moves.length === 0) {
-                activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
                 saveGame(activeGameData);
-            } else {
+            }
+            // there is a bug where initial state of board is added to end of moves array
+            else if (activeGameData.puzzle != flippedPuzzleString){
                 // If there's a difference between the last move and the current move, add the current move to the moves array
-                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== puzzleString 
+                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
                 || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-                    activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
                     saveGame(activeGameData);
                 }
             }
 
             // If all cells are filled in with values, and they are the correct values, we want to end the game
-            if (!puzzleString.includes("0") && puzzleString.length > 0){
+            if (flippedPuzzleString == activeGameData.puzzleSolution){
                 console.log("FINISH GAME");
+                console.log(flippedPuzzleString, activeGameData.puzzleSolution);
                 finishGame(activeGameData);
                 navigation.navigate('Main Page');
             }
