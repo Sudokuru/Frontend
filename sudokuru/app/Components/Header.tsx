@@ -34,7 +34,7 @@ const Header = (props: any) => {
             <View style={styles.profileButtons}>
                 {(props.page == 'Landing') ? <></> : (props.page == 'Statistics') ? <HomeButton/> : <StatisticsButton/>}
                 {(props.page == 'Landing') ? <></> : (props.page == 'Profile') ? <HomeButton/> : <ProfileButton/>}
-                <LoginButton></LoginButton>
+                <LoginButton/>
             </View>
         </View>
     )
