@@ -319,11 +319,8 @@ const Cell = (props) => {
                 }
             }
 
-            console.log(activeGameData.puzzleSolution);
             // If all cells are filled in with the correct values, we want to finish the game
             if (flippedPuzzleString == activeGameData.puzzleSolution){
-                console.log("FINISH GAME");
-                console.log(flippedPuzzleString, activeGameData.puzzleSolution);
                 finishGame(activeGameData);
                 navigation.navigate('Main Page');
             }
