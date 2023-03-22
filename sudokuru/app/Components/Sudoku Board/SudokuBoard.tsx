@@ -353,74 +353,74 @@ const getRemovalsFromHint = (board, hint) => {
 // cause cells
 const darkBrown = "#A64732";
 
-// placement/removal cells
+// cause/removal cells
 const gold = "#F2CA7E";
 
 // let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hint } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps } = props;
   const cellSize = getCellSize();
 
-  let backColor = '#808080';
-  let isRemoval = [false, false, false, false, false, false, false, false, false]
-  if (hint)
-  {
-    for (let i = 0; i < hint.length; i++) {
+  let bgColor = '#808080';
+  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]
+  // if (hint)
+  // {
+  //   for (let i = 0; i < hint.length; i++) {
 
-      if (hint[i][0] === 1) { // Row Border Highlighting
-        const cellNum = getCellNumber(x, y);
-        if (cellNum % 9 === hint[i][1] % 9)
-        {
-          backColor = hint[i][2] ? hint[i][2] : "white";
-        }
-      }
+  //     if (hint[i][0] === 1) { // Row Border Highlighting
+  //       const cellNum = getCellNumber(x, y);
+  //       if (cellNum % 9 === hint[i][1] % 9)
+  //       {
+  //         backColor = hint[i][2] ? hint[i][2] : "white";
+  //       }
+  //     }
 
-      if (hint[i][0] === 0) { // Column Border Highlighting
-        const cellNum = getCellNumber(x, y);
-        if (Math.trunc(cellNum / 9) === hint[i][1])
-        {
-          backColor = hint[i][2] ? hint[i][2] : "white";
-        }
-      }
+  //     if (hint[i][0] === 0) { // Column Border Highlighting
+  //       const cellNum = getCellNumber(x, y);
+  //       if (Math.trunc(cellNum / 9) === hint[i][1])
+  //       {
+  //         backColor = hint[i][2] ? hint[i][2] : "white";
+  //       }
+  //     }
 
 
-      if (hint[i][0] === 2) { // Box Border Highlighting
-        const cellNum = getCellNumber(x, y); // Number of the cell being checked
-        const boxNum = findBox(hint[i][1]); // Number of the box being highlighted
-        switch (cellNum - boxNum)
-        {
-          case 0:
-          case 1:
-          case 2:
-          case 9:
-          case 10:
-          case 11:
-          case 18:
-          case 19:
-          case 20:
-            backColor = hint[i][2] ? hint[i][2] : "white";
-            break;
-        }
-      }
-      if (hint[i][0] === 3) { // Individual Cell Highlighting
-        if (x === hint[i][1] && y === hint[i][2])
-          backColor = hint[i][3] ? hint[i][3] : "white";
-      }
-      if (hint[i][0] === 5) { // Note Removal Highlighting
-        if (x === hint[i][1][0] && y === hint[i][1][1])
-        {
-          // text color of every value  match from hint[i][2] to hint[i].length should be red
-          // boolean array for whether or not values should be red or not
-          // isRed[0] being true means that the "1" note in the current cell should be red
-          for (let j = 2; j < hint[i].length; j++)
-          {
-            isRemoval[hint[i][j] - 1] = true;
-          }
-        }
-      }
-    }
-  }
+  //     if (hint[i][0] === 2) { // Box Border Highlighting
+  //       const cellNum = getCellNumber(x, y); // Number of the cell being checked
+  //       const boxNum = findBox(hint[i][1]); // Number of the box being highlighted
+  //       switch (cellNum - boxNum)
+  //       {
+  //         case 0:
+  //         case 1:
+  //         case 2:
+  //         case 9:
+  //         case 10:
+  //         case 11:
+  //         case 18:
+  //         case 19:
+  //         case 20:
+  //           backColor = hint[i][2] ? hint[i][2] : "white";
+  //           break;
+  //       }
+  //     }
+  //     if (hint[i][0] === 3) { // Individual Cell Highlighting
+  //       if (x === hint[i][1] && y === hint[i][2])
+  //         backColor = hint[i][3] ? hint[i][3] : "white";
+  //     }
+  //     if (hint[i][0] === 5) { // Note Removal Highlighting
+  //       if (x === hint[i][1][0] && y === hint[i][1][1])
+  //       {
+  //         // text color of every value  match from hint[i][2] to hint[i].length should be red
+  //         // boolean array for whether or not values should be red or not
+  //         // isRed[0] being true means that the "1" note in the current cell should be red
+  //         for (let j = 2; j < hint[i].length; j++)
+  //         {
+  //           isRemoval[hint[i][j] - 1] = true;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
@@ -435,7 +435,7 @@ const Cell = (props) => {
   {
     if (notes.has(noteVal))
     {
-      let styleVal = isRemoval[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
+      let styleVal = isRemovalHighlight[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
       return <Text style={styleVal}>{noteVal}</Text>
     }
   }  
@@ -449,7 +449,7 @@ const Cell = (props) => {
         (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
 
         // Border Highlighting
-        (inHintMode) && backColor && {backgroundColor: backColor},
+        (inHintMode) && bgColor && {backgroundColor: bgColor},
 
         conflict && styles(cellSize).conflict,
         isPeer && styles(cellSize).peer,
@@ -500,7 +500,7 @@ Cell.propTypes = {
     conflict: PropTypes.bool.isRequired,
     eraseSelected: PropTypes.func.isRequired,
     inHintMode: PropTypes.bool,
-    hint: PropTypes.any,
+    hintSteps: PropTypes.any,
 };
 
 Cell.defaultProps = {
@@ -751,7 +751,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (hint.removals) removals = getRemovalsFromHint(board, hint);
     }
 
-    let hintArray = []
+    let hintSteps = []
     switch (hint.strategy)
     {
       case "AMEND_NOTES":
@@ -787,22 +787,22 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       case "HIDDEN_SINGLE":
         console.log("Hidden Single");
         // two steps, two objects
-        hintArray.push({})
-        hintArray.push({})
+        hintSteps.push({})
+        hintSteps.push({})
 
         // highlight the groups, causes, and removals
-        hintArray[0].groups = groups;
-        hintArray[0].causes = causes;
-        hintArray[0].removals = [];
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
         for (let i = 0; i < removals.length; i++) 
-          hintArray[0].removals.push({ ...removals[i], mode: "highlight" });
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
 
         // highlight the groups, causes, and delete the removals
-        hintArray[1].groups = groups;
-        hintArray[1].causes = causes;
-        hintArray[1].removals = [];
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
         for (let i = 0; i < removals.length; i++) 
-          hintArray[1].removals.push({ ...removals[i], mode: "delete" });
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "HIDDEN_PAIR":
         console.log("Hidden Pair");
@@ -847,9 +847,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         console.log("the switch statement matched none of the strategies :(")
         break;
     }
-    print("hintArray", hintArray);
-    // board = board.set('hint', hintArray);
-    // this.setState({ board });
+    print("hintSteps", hintSteps);
+    board = board.set('hintSteps', hintSteps);
+    this.setState({ board });
   }
 
   deleteNotesFromRemovals = (removals) => {
@@ -984,7 +984,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       value === selected.get('value'));
     const isSelected = cell === selected;
     let inHintMode = board.get('inHintMode');
-    let hint = board.get('hint');
+    let hintSteps = board.get('hintSteps');
 
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
@@ -1010,7 +1010,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         conflict={conflict}
         eraseSelected={this.eraseSelected}
         inHintMode={inHintMode}
-        hint={hint}
+        hintSteps={hintSteps}
       />
     );
   };
