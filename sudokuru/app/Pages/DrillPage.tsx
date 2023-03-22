@@ -22,13 +22,21 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- Wh
 const Puzzles = sudokuru.Puzzles;
 const Drills = sudokuru.Drills;
 
-function strPuzzleToArray(str) {
+export function strPuzzleToArray(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {
     arr.push(str.slice(i, i + 9).split('').map(Number));
   }
   output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
   return { puzzle: output };
+}
+
+export function replaceChar(origString, replaceChar, index) {
+    let firstPart = origString.substr(0, index);
+    let lastPart = origString.substr(index + 1);
+
+    let newString = firstPart + replaceChar + lastPart;
+    return newString;
 }
 
 updateBoard = (newBoard) => {

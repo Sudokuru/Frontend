@@ -15,7 +15,7 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useNavigation} from "@react-navigation/native";
-import {parseApiAndAddNotes} from "./DrillPage";
+import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -26,26 +26,6 @@ const Puzzles = sudokuru.Puzzles;
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let difficulty = .1; // TODO Get difficulty from slider
 let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
-
-function strPuzzleToArray(str) {
-    console.log("strPuzzleToArray: ", str)
-    let arr = [];
-    for (let i = 0; i < str.length; i += 9) {
-      arr.push(str.slice(i, i + 9).split('').map(Number));
-    }
-    let output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
-    return { puzzle: output };
-  }
-
-  function strPuzzleToArray2(str) {
-    console.log("strPuzzleToArray: ", str)
-    let arr = [];
-    for (let i = 0; i < str.length; i += 9) {
-      arr.push(str.slice(i, i + 9).split('').map(Number));
-    }
-    let output = arr[0].map((_, colIndex) => arr.map(row => colIndex[row]));
-    return { puzzle: output };
-  }
 
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
@@ -77,6 +57,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 game => {
                     console.log("Start Game: ", game);
                     let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+                    console.log("START: ", strPuzzleToArray(game[0].puzzle));
                     return {
                         board,
                         history: List.of(board),
@@ -92,7 +73,8 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 game => {
                     console.log("Resume Game: ", game);
                     console.log("index: ", (game[0].moves));
-                    let board = makeBoard(strPuzzleToArray2(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    console.log("RESUME: ", strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
                     board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState);
                     return {
                         board,
