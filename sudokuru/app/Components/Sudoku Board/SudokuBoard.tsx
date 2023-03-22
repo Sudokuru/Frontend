@@ -276,7 +276,8 @@ const Cell = (props) => {
 
     // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
     if (getCellNumber(x, y) === 80) {
-        activeGameData.moves.push({ puzzleCurrentState: puzzleString, notesCurrentState: notesString });
+        activeGameData.moves.push({ puzzleCurrentState: puzzleString });
+        activeGameData.moves.push({ puzzleCurrentNotesState: notesString });
     }
 
     console.log(activeGameData);
