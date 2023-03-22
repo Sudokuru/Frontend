@@ -23,10 +23,8 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let url = USERACTIVEGAMESBFFURL;
-let difficulty = 29; // TODO Get difficulty from slider
-let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
-let token = "token"; // Get token from previous page
+let difficulty = 1; // TODO Get difficulty from slider
+let strategies = ["NAKED_OCTUPLET"]; // TODO Get strategies from previous page
 
 function strPuzzleToArray(str) {
     console.log("strPuzzleToArray: ", str)
@@ -55,6 +53,9 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
           token = result;
         });
         console.log("Token: ", token);
+
+        console.log("DIFFICULTY: " + difficulty);
+        console.log("STRATEGIES: " + strategies);
       
         let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
           game => {
