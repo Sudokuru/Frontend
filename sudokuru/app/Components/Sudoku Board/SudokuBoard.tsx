@@ -225,7 +225,7 @@ const findBox = (box) => {
     if (box === 4) return 30;
     if (box === 5) return 57;
     if (box === 6) return 6;
-    if (box === 7) return 33;puzzleString
+    if (box === 7) return 33;
     if (box === 8) return 60;
 }
 const darkBrown = "#A64732";
