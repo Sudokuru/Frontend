@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useNavigation} from "@react-navigation/native";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -238,9 +239,22 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    // console.log("Token: ", token);
   
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
+        if (res) {
+            console.log("Game progress was saved successfully!");
+        }
+    });
+}
+
+async function finishGame(activeGame) {
+    let token = null;
+
+    await getKeyString("access_token").then(result => {
+        token = result;
+    });
+
+    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
             console.log("Game progress was saved successfully!");
         }
@@ -253,6 +267,8 @@ let notesString = "";
 const Cell = (props) => {
   const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
   const cellSize = getCellSize();
+
+  const navigation: any = useNavigation();
 
   let backColor = '#808080';
 
@@ -287,6 +303,13 @@ const Cell = (props) => {
                     activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
                     saveGame(activeGameData);
                 }
+            }
+
+            // If all cells are filled in with values, and they are the correct values, we want to end the game
+            if (!puzzleString.includes("0") && puzzleString.length > 0){
+                console.log("FINISH GAME");
+                finishGame(activeGameData);
+                navigation.navigate('Main Page');
             }
         }
     }
