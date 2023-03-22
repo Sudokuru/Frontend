@@ -69,7 +69,7 @@ function addNumberAsNote (number, board, i, j) {
   return board;
 };
 
-export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
+export function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
 {
   if (!puzzleCurrentNotesState)
   {
@@ -89,8 +89,14 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState)
       for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
       {
         stringIndex = 81 * i + 9 * j + currNoteIndex;
-        if (puzzleCurrentNotesState.charAt(stringIndex) == 1)
-          board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+
+        if (puzzleCurrentNotesState.charAt(stringIndex) == 1){
+            if (isDrill){
+                board = addNumberAsNote(currNoteIndex + 1, board, j, i);
+            } else {
+                board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+            }
+        }
       }
     }
   }
@@ -165,7 +171,7 @@ const navigation: any = useNavigation();
     {
       console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
-      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
+      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
 

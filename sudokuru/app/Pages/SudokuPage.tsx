@@ -66,7 +66,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
             gameData = await Puzzles.getGame(url, token).then(
                 game => {
                     let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
-                    board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState);
+                    board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
                     return {
                         board,
                         history: List.of(board),
