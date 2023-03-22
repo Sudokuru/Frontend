@@ -738,7 +738,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hint = undefined
     if (newHintMode) hint = this.props.getHint(board)
     console.log(hint)
-    console.log(hint.strategy)
 
     let causes = []
     let groups = []
@@ -751,16 +750,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (hint.placements) placements = getPlacementsFromHint(hint);
       if (hint.removals) removals = getRemovalsFromHint(board, hint);
     }
-    print("Causes", causes)
-    print("Groups", groups)
-    print("Placements", placements)
-    print("Removals", removals)
-    
-    // board = board.set('hint', hintHighlightInput);
-    // this.setState({ board });
 
     let hintArray = []
-    let currentStep = {}
     switch (hint.strategy)
     {
       case "AMEND_NOTES":
@@ -795,6 +786,23 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "HIDDEN_SINGLE":
         console.log("Hidden Single");
+        // two steps, two objects
+        hintArray.push({})
+        hintArray.push({})
+
+        // highlight the groups, causes, and removals
+        hintArray[0].groups = groups;
+        hintArray[0].causes = causes;
+        hintArray[0].removals = [];
+        for (let i = 0; i < removals.length; i++) 
+          hintArray[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintArray[1].groups = groups;
+        hintArray[1].causes = causes;
+        hintArray[1].removals = [];
+        for (let i = 0; i < removals.length; i++) 
+          hintArray[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "HIDDEN_PAIR":
         console.log("Hidden Pair");
@@ -839,37 +847,28 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         console.log("the switch statement matched none of the strategies :(")
         break;
     }
-    // cause
-    // group
-    // placement
-    // removals
+    print("hintArray", hintArray);
+    // board = board.set('hint', hintArray);
+    // this.setState({ board });
   }
 
   deleteNotesFromRemovals = (removals) => {
     let { board } = this.state;
     let x = -1
     let y = -1
-    console.log("deleteNotesFromRemovals")
-    console.log(removals)
     for (let i = 0; i < removals.length; i++)
     {
       x = removals[i][1][0]
       y = removals[i][1][1]
       
       let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
-      console.log(notes)
       for (let j = 2; j < removals[i].length; j++)
       {
-        console.log("1")
         currRemoval = removals[i][j]
-        console.log("2")
         if (notes.has(currRemoval))
         {
-          console.log("3")
           notes = notes.delete(removals[i][j]);
-          console.log("4")
         }
-        console.log("5")
       }
       board = board.setIn(['puzzle', x, y, 'notes'], notes);
     }

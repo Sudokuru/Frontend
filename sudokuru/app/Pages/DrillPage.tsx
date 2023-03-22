@@ -22,8 +22,6 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- Wh
 const Puzzles = sudokuru.Puzzles;
 const Drills = sudokuru.Drills;
 
-console.log(Drills.strategies)
-
 function strPuzzleToArray(str) {
   let arr = [];
   for (let i = 0; i < str.length; i += 9) {
@@ -138,7 +136,6 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
@@ -148,7 +145,6 @@ const navigation: any = useNavigation();
   }
 
   async function generateGame(url, strategies) {
-    console.log(url)
     let token = null;
     await getKeyString("access_token").then(
         result => {
@@ -158,7 +154,6 @@ const navigation: any = useNavigation();
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
-      console.log(game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState);
       return board;
