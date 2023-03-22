@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Platform} from "react-native";
 import {Text, Button} from 'react-native-paper';
 import Slider from '@react-native-community/slider';
@@ -8,9 +8,47 @@ import {useNavigation} from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
+import DifficultySlider from '../Components/Home/DifficultySlider';
+import {getKeyString} from "../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
+
+
 
 const HomePage = () => {
     const navigation: any = useNavigation();
+
+    // Sudokuru Package Import
+    const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
+
+    // Sudokuru Package Constants
+    const Puzzles = sudokuru.Puzzles;
+
+    const [visible, setVisible] = React.useState(false);
+    const showResumeButton = () => setVisible(true);
+    const hideResumeButton = () => setVisible(false);
+
+    useEffect(() => {
+        async function grabCurrentGame(url:string) {
+            let token = null;
+
+            await getKeyString("access_token").then(result => {
+                token = result;
+            });
+
+
+            await Puzzles.getGame(url, token).then(
+                (game: JSON) => {
+                    if (game !== null) {
+                        showResumeButton();
+                    }
+                    else {
+                        hideResumeButton();
+                        console.log("User doesn't have an activeGame");
+                    }
+                });
+        }
+        grabCurrentGame(USERACTIVEGAMESBFFURL);
+    }, []);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -19,27 +57,30 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
+
  if(Platform.OS === 'web'){
     return (
         <View>
             <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
-                <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
-                    Drills
-                </Button>
-                    <CCarousel/>
-                    <Slider
-                        style={{width: 200, height: 40}}
-                        minimumValue={0}
-                        maximumValue={100}
-                        step={10}
-                        minimumTrackTintColor="#FFFFFF"
-                        maximumTrackTintColor="#000000"
-                    />
-                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
-                        Start
+                    <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
+                        Drills
                     </Button>
+                    <CCarousel/>
+                    <DifficultySlider />
+                   <View style={styles.playButtons}>
+                       {
+                           (visible) ?
+                               <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                   Resume
+                               </Button> : <></>
+                       }
+
+                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            Start
+                        </Button>
+                   </View>
                     <StatusBar style="auto" />
                 </View>
             </View>
@@ -81,11 +122,16 @@ const HomePage = () => {
                     maximumTrackTintColor="#000000"
                     />
                     </View>
-                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
-                        Start
-                    </Button>
-
-
+                    <DifficultySlider />
+                    <View style={styles.playButtons}> {
+                        (visible) ?
+                            <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                Resume
+                            </Button> : <></>
+                    }
+                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            Start
+                        </Button> </View>
                 </SafeAreaView>
             </SafeAreaProvider>
     );
@@ -118,6 +164,12 @@ const styles = StyleSheet.create({
     },
     container1: {
             flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+    playButtons: {
+            flex: 1,
+            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
         },
