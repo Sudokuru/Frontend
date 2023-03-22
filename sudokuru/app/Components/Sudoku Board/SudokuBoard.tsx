@@ -608,426 +608,421 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
 }
 
 export default class SudokuBoard extends React.Component<any, any, any> {
-    constructor(props) {
-        super(props);
-    };
-    state = this.props.generatedGame;
+  constructor(props) {
+    super(props);
+  };
+  state = this.props.generatedGame;
 
-    componentDidMount = () => {
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker
-                .register('/service-worker.js')
-                .then((reg) => {
-                    console.log('ServiceWorker scope: ', reg.scope);
-                    console.log('service worker registration successful');
-                })
-                .catch((err) => {
-                    console.warn('service worker registration failed', err.message);
-                });
-        }
+  componentDidMount = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then((reg) => {
+        console.log('ServiceWorker scope: ', reg.scope);
+        console.log('service worker registration successful');
+      }).catch((err) => {
+        console.warn('service worker registration failed', err.message);
+      });
     }
+  }
 
-    getSelectedCell = () => {
-        const { board } = this.state;
-        const selected = board.get('selected');
-        return selected && board.get('puzzle').getIn([selected.x, selected.y]);
+  getSelectedCell = () => {
+    const { board } = this.state;
+    const selected = board.get('selected');
+    return selected && board.get('puzzle').getIn([selected.x, selected.y]);
+  }
+
+  getNumberValueCount = (number) => {
+    const rows = this.state.board.getIn(['choices', 'rows']);
+    const columns = this.state.board.getIn(['choices', 'columns']);
+    const squares = this.state.board.getIn(['choices', 'squares']);
+    return Math.min(
+      getNumberOfGroupsAssignedForNumber(number, squares),
+      Math.min(
+        getNumberOfGroupsAssignedForNumber(number, rows),
+        getNumberOfGroupsAssignedForNumber(number, columns),
+      ),
+    );
+  }
+
+  addNumberAsNote = (number) => {
+    let { board, solution } = this.state;
+    let selectedCell = this.getSelectedCell();
+    if (!selectedCell) return;
+    const prefilled = selectedCell.get('prefilled');
+    if (prefilled) return;
+    const { x, y } = board.get('selected');
+    const currentValue = selectedCell.get('value');
+    if (currentValue) {
+      board = updateBoardWithNumber({
+        x, y, number: currentValue, fill: false, board: this.state.board,
+      });
     }
-
-    getNumberValueCount = (number) => {
-        const rows = this.state.board.getIn(['choices', 'rows']);
-        const columns = this.state.board.getIn(['choices', 'columns']);
-        const squares = this.state.board.getIn(['choices', 'squares']);
-        return Math.min(
-            getNumberOfGroupsAssignedForNumber(number, squares),
-            Math.min(
-                getNumberOfGroupsAssignedForNumber(number, rows),
-                getNumberOfGroupsAssignedForNumber(number, columns),
-            ),
-        );
+    let notes = selectedCell.get('notes') || Set();
+    let actualValue = solution[x][y] || -1;
+    if (notes.has(number)) {
+      if (number !== actualValue)
+        notes = notes.delete(number);
+    } else {
+      notes = notes.add(number);
     }
+    selectedCell = selectedCell.set('notes', notes);
+    selectedCell = selectedCell.delete('value');
+    board = board.setIn(['puzzle', x, y], selectedCell);
+    this.updateBoard(board);
+  };
 
-    addNumberAsNote = (number) => {
-        let { board, solution } = this.state;
-        let selectedCell = this.getSelectedCell();
-        if (!selectedCell) return;
-        const prefilled = selectedCell.get('prefilled');
-        if (prefilled) return;
-        const { x, y } = board.get('selected');
-        const currentValue = selectedCell.get('value');
-        if (currentValue) {
-          board = updateBoardWithNumber({
-            x, y, number: currentValue, fill: false, board: this.state.board,
-          });
-        }
-        let notes = selectedCell.get('notes') || Set();
-        let actualValue = solution[x][y] || -1;
-        if (notes.has(number)) {
-          if (number !== actualValue)
-            notes = notes.delete(number);
-        } else {
-          notes = notes.add(number);
-        }
-        selectedCell = selectedCell.set('notes', notes);
-        selectedCell = selectedCell.delete('value');
-        board = board.setIn(['puzzle', x, y], selectedCell);
-        this.updateBoard(board);
-    };
+  updateBoard = (newBoard) => {
+    let { history } = this.state;
+    const { historyOffSet } = this.state;
+    history = history.slice(0, historyOffSet + 1);
+    history = history.push(newBoard);
+    this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
+  };
 
-    updateBoard = (newBoard) => {
-        let { history } = this.state;
-        const { historyOffSet } = this.state;
-        history = history.slice(0, historyOffSet + 1);
-        history = history.push(newBoard);
-        this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
-    };
+  canUndo = () => this.state.historyOffSet > 0
 
-    canUndo = () => this.state.historyOffSet > 0
-
-    redo = () => {
-        const { history } = this.state;
-        let { historyOffSet } = this.state;
-        if (history.size) {
-            historyOffSet = Math.min(history.size - 1, historyOffSet + 1);
-            const board = history.get(historyOffSet);
-            this.setState({ board, historyOffSet });
-        }
-    };
-
-    undo = () => {
-        const { history } = this.state;
-        let { historyOffSet, board } = this.state;
-        if (history.size) {
-            historyOffSet = Math.max(0, historyOffSet - 1);
-            board = history.get(historyOffSet);
-            this.setState({ board, historyOffSet, history });
-        }
-    };
-
-    toggleNoteMode = () => {
-      let { board } = this.state;
-      let currNoteMode = board.get('inNoteMode');
-      board = board.set('inNoteMode', !currNoteMode);
-      this.setState({ board });
-      // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
+  redo = () => {
+    const { history } = this.state;
+    let { historyOffSet } = this.state;
+    if (history.size) {
+      historyOffSet = Math.min(history.size - 1, historyOffSet + 1);
+      const board = history.get(historyOffSet);
+      this.setState({ board, historyOffSet });
     }
+  };
 
-    toggleHintMode = () => {
-      let { board } = this.state;
-      let newHintMode = !board.get('inHintMode');
-      board = board.set('inHintMode', newHintMode);
-      let hint = undefined
-      if (newHintMode) hint = this.props.getHint(board)
-      let causes = []
-      let groups = []
-      let placements = []
-      // add the causes
-      if (hint && hint.cause) causes = getCausesFromHint(hint);
-      
-      // add the groups
-      if (hint && hint.groups) groups = getGroupsFromHint(hint);
-      let hintHighlightInput = groups.concat(causes);
-      // add the placements
-        // TODO: text coloring
-        // TODO: ability to add values
-      if (hint && hint.placements) 
+  undo = () => {
+    const { history } = this.state;
+    let { historyOffSet, board } = this.state;
+    if (history.size) {
+      historyOffSet = Math.max(0, historyOffSet - 1);
+      board = history.get(historyOffSet);
+      this.setState({ board, historyOffSet, history });
+    }
+  };
+
+  toggleNoteMode = () => {
+    let { board } = this.state;
+    let currNoteMode = board.get('inNoteMode');
+    board = board.set('inNoteMode', !currNoteMode);
+    this.setState({ board });
+    // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
+  }
+
+  toggleHintMode = () => {
+    let { board } = this.state;
+    let newHintMode = !board.get('inHintMode');
+    board = board.set('inHintMode', newHintMode);
+    let hint = undefined
+    if (newHintMode) hint = this.props.getHint(board)
+    let causes = []
+    let groups = []
+    let placements = []
+    // add the causes
+    if (hint && hint.cause) causes = getCausesFromHint(hint);
+    
+    // add the groups
+    if (hint && hint.groups) groups = getGroupsFromHint(hint);
+    let hintHighlightInput = groups.concat(causes);
+    // add the placements
+      // TODO: text coloring
+      // TODO: ability to add values
+    if (hint && hint.placements) 
+    {
+      placements = getPlacementsFromHint(hint);
+      let x = -1
+      let y = -1
+      let noteVal = -1
+      for (let i = 0; i < placements.length; i++)
       {
-        placements = getPlacementsFromHint(hint);
-        let x = -1
-        let y = -1
-        let noteVal = -1
-        for (let i = 0; i < placements.length; i++)
-        {
-          x = placements[i][0]
-          y = placements[i][1]
-          noteVal = placements[i][2]
-          board = updateBoardWithNumber({
-            x, y, noteVal, fill: true, board,
-          });
-          this.updateBoard(board);
-        }
-      }
-
-      // TODO: make function which deletes actualRemovals notes
-      /*
-        This block of code just colors the notes which need to be removed,
-        which we do not want ideally, we would make the notes highlighted in 
-        red, then the user can press a button(ex. arrow) to remove the notes
-      */
-      if (hint && hint.removals) 
-      {
-        // they aren't tuples but it makes more sense this way
-        // [[5, (x, y), 1, 4, 5], [5, (x', y'), 4, 7, 2], ...]
-        removals = getRemovalsFromHint(hint);
-        let x = -1
-        let y = -1
-        let actualRemovals = []
-        for (let i = 0; i < removals.length; i++)
-        {
-          actualRemovals = []
-          x = removals[i][1][0]
-          y = removals[i][1][1]
-          
-          actualRemovals.push(5)
-          actualRemovals.push([x,y])
-          let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
-          for (let j = 2; j < removals[i].length; j++)
-          {
-            currRemoval = removals[i][j]
-            if (notes.has(currRemoval))
-            {
-              actualRemovals.push(currRemoval);
-              // this is what kills the notes
-              // notes = notes.delete(currRemoval);
-            }
-          }
-          board = board.setIn(['puzzle', x, y, 'notes'], notes);
-        }
-        // if there are actually values that need to be removed
-        if (actualRemovals[2])
-        {
-          actualRemovals.push("#FF0000")
-          hintHighlightInput.push(actualRemovals);
-        }
+        x = placements[i][0]
+        y = placements[i][1]
+        noteVal = placements[i][2]
+        board = updateBoardWithNumber({
+          x, y, noteVal, fill: true, board,
+        });
         this.updateBoard(board);
       }
-      
-      // hintHighlightInput = hintHighlightInput.concat(actualRemovals);
-      board = board.set('hint', hintHighlightInput);
-      this.setState({ board });
     }
 
+    // TODO: make function which deletes actualRemovals notes
     /*
-     * Called when the user hits the 'erase' button
-     * If notes are present in selected cell, removes all notes
-     * If value is present in selected cell, removes value if value is incorrect
-     */
-    eraseSelected = () => {
-        let { board, solution } = this.state;
-        let selectedCell = this.getSelectedCell();
-        if (!selectedCell) return;
-
-        const { x, y } = board.get('selected');
-        const currentValue = selectedCell.get('value');
-
-        let actualValue = solution[x][y] || -1;
-        if (currentValue) {
-            if (currentValue !== actualValue){
-                this.fillNumber(false);
-            } else {
-                // User has attempted to remove a correct value
-                return;
-            }
-        } else {
-            selectedCell = selectedCell.set('notes', Set());
-            board = board.setIn(['puzzle', x, y], selectedCell);
-            this.updateBoard(board);
+      This block of code just colors the notes which need to be removed,
+      which we do not want ideally, we would make the notes highlighted in 
+      red, then the user can press a button(ex. arrow) to remove the notes
+    */
+    if (hint && hint.removals) 
+    {
+      // they aren't tuples but it makes more sense this way
+      // [[5, (x, y), 1, 4, 5], [5, (x', y'), 4, 7, 2], ...]
+      removals = getRemovalsFromHint(hint);
+      let x = -1
+      let y = -1
+      let actualRemovals = []
+      for (let i = 0; i < removals.length; i++)
+      {
+        actualRemovals = []
+        x = removals[i][1][0]
+        y = removals[i][1][1]
+        
+        actualRemovals.push(5)
+        actualRemovals.push([x,y])
+        let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+        for (let j = 2; j < removals[i].length; j++)
+        {
+          currRemoval = removals[i][j]
+          if (notes.has(currRemoval))
+          {
+            actualRemovals.push(currRemoval);
+            // this is what kills the notes
+            // notes = notes.delete(currRemoval);
+          }
         }
-    }
-
-    fillSelectedWithSolution = () => {
-        const { board, solution } = this.state;
-        const selectedCell = this.getSelectedCell();
-        if (!selectedCell) return;
-        if (!solution) return;
-        const { x, y } = board.get('selected');
-        this.fillNumber(solution[x][y]);
-    }
-
-    fillNumber = (number) => {
-      let { board } = this.state;
-      const selectedCell = this.getSelectedCell();
-      if (!selectedCell) return;
-      const prefilled = selectedCell.get('prefilled');
-      if (prefilled) return;
-      const { x, y } = board.get('selected');
-      const currentValue = selectedCell.get('value');
-      if (currentValue) {
-        board = updateBoardWithNumber({
-          x, y, number: currentValue, fill: false, board: this.state.board,
-        });
+        board = board.setIn(['puzzle', x, y, 'notes'], notes);
       }
-      const setNumber = currentValue !== number && number;
-      if (setNumber) {
-        board = updateBoardWithNumber({
-          x, y, number, fill: true, board,
-        });
+      // if there are actually values that need to be removed
+      if (actualRemovals[2])
+      {
+        actualRemovals.push("#FF0000")
+        hintHighlightInput.push(actualRemovals);
       }
       this.updateBoard(board);
-    };
-
-    // fillNumberAtPosition = (number, x, y) => {
-    //   let { board } = this.state;
-    //   const selectedCell = board.get('puzzle').getIn([x, y]);;
-    //   if (!selectedCell) return;
-    //   const prefilled = selectedCell.get('prefilled');
-    //   if (prefilled) return;
-    //   const currentValue = selectedCell.get('value');
-    //   if (currentValue) {
-    //     board = updateBoardWithNumber({
-    //       x, y, number: currentValue, fill: false, board: this.state.board,
-    //     });
-    //   }
-    //   const setNumber = currentValue !== number && number;
-    //   if (setNumber) {
-    //     board = updateBoardWithNumber({
-    //       x, y, number, fill: true, board,
-    //     });
-    //   }
-    //   this.updateBoard(board);
-    // };
-
-    selectCell = (x, y) => {
-        let { board } = this.state;
-        board = board.set('selected', { x, y });
-        this.setState({ board });
-    };
-
-    isConflict = (i, j) => {
-        const { value } = this.state.board.getIn(['puzzle', i, j]).toJSON();
-        if (!value) return false;
-        const rowConflict =
-            this.state.board.getIn(['choices', 'rows', i, value]) > 1;
-        const columnConflict =
-            this.state.board.getIn(['choices', 'columns', j, value]) > 1;
-        const squareConflict =
-            this.state.board.getIn(['choices', 'squares',
-                ((Math.floor(i / 3)) * 3) + Math.floor(j / 3), value]) > 1;
-        return rowConflict || columnConflict || squareConflict;
     }
+    
+    // hintHighlightInput = hintHighlightInput.concat(actualRemovals);
+    board = board.set('hint', hintHighlightInput);
+    this.setState({ board });
+  }
 
-    renderCell = (cell, x, y) => {
-        const { board } = this.state;
-        const selected = this.getSelectedCell();
-        const { value, prefilled, notes } = cell.toJSON();
-        const conflict = this.isConflict(x, y);
-        const peer = areCoordinatePeers({ x, y }, board.get('selected'));
-        const sameValue = !!(selected && selected.get('value') &&
-            value === selected.get('value'));
-        const isSelected = cell === selected;
-        let inHintMode = board.get('inHintMode');
-        let hint = board.get('hint');
+  /*
+    * Called when the user hits the 'erase' button
+    * If notes are present in selected cell, removes all notes
+    * If value is present in selected cell, removes value if value is incorrect
+    */
+  eraseSelected = () => {
+    let { board, solution } = this.state;
+    let selectedCell = this.getSelectedCell();
+    if (!selectedCell) return;
 
-        const handleValueChange = (x, y, newValue) => {
-            let { board } = this.state;
-            let inNoteMode = board.get('inNoteMode');
+    const { x, y } = board.get('selected');
+    const currentValue = selectedCell.get('value');
 
-            if (inNoteMode) this.addNumberAsNote(newValue);
-            else this.fillNumber(newValue);
-        };
+    let actualValue = solution[x][y] || -1;
+    if (currentValue) {
+      if (currentValue !== actualValue){
+        this.fillNumber(false);
+      } else {
+        // User has attempted to remove a correct value
+        return;
+      }
+    } else {
+      selectedCell = selectedCell.set('notes', Set());
+      board = board.setIn(['puzzle', x, y], selectedCell);
+      this.updateBoard(board);
+    }
+  }
 
-        return (
-            <Cell
-                prefilled={prefilled}
-                notes={notes}
-                sameValue={sameValue}
-                isSelected={isSelected}
-                isPeer={peer}
-                value={value}
-                onClick={(x, y) => { this.selectCell(x, y); }}
-                onValueChange={handleValueChange}
-                key={y}
-                x={x}
-                y={y}
-                conflict={conflict}
-                eraseSelected={this.eraseSelected}
-                inHintMode={inHintMode}
-                hint={hint}
-            />
-        );
+  fillSelectedWithSolution = () => {
+    const { board, solution } = this.state;
+    const selectedCell = this.getSelectedCell();
+    if (!selectedCell) return;
+    if (!solution) return;
+    const { x, y } = board.get('selected');
+    this.fillNumber(solution[x][y]);
+  }
+
+  fillNumber = (number) => {
+    let { board } = this.state;
+    const selectedCell = this.getSelectedCell();
+    if (!selectedCell) return;
+    const prefilled = selectedCell.get('prefilled');
+    if (prefilled) return;
+    const { x, y } = board.get('selected');
+    const currentValue = selectedCell.get('value');
+    if (currentValue) {
+      board = updateBoardWithNumber({
+        x, y, number: currentValue, fill: false, board: this.state.board,
+      });
+    }
+    const setNumber = currentValue !== number && number;
+    if (setNumber) {
+      board = updateBoardWithNumber({
+        x, y, number, fill: true, board,
+      });
+    }
+    this.updateBoard(board);
+  };
+
+  // fillNumberAtPosition = (number, x, y) => {
+  //   let { board } = this.state;
+  //   const selectedCell = board.get('puzzle').getIn([x, y]);;
+  //   if (!selectedCell) return;
+  //   const prefilled = selectedCell.get('prefilled');
+  //   if (prefilled) return;
+  //   const currentValue = selectedCell.get('value');
+  //   if (currentValue) {
+  //     board = updateBoardWithNumber({
+  //       x, y, number: currentValue, fill: false, board: this.state.board,
+  //     });
+  //   }
+  //   const setNumber = currentValue !== number && number;
+  //   if (setNumber) {
+  //     board = updateBoardWithNumber({
+  //       x, y, number, fill: true, board,
+  //     });
+  //   }
+  //   this.updateBoard(board);
+  // };
+
+  selectCell = (x, y) => {
+    let { board } = this.state;
+    board = board.set('selected', { x, y });
+    this.setState({ board });
+  };
+
+  isConflict = (i, j) => {
+    const { value } = this.state.board.getIn(['puzzle', i, j]).toJSON();
+    if (!value) return false;
+    const rowConflict =
+      this.state.board.getIn(['choices', 'rows', i, value]) > 1;
+    const columnConflict =
+      this.state.board.getIn(['choices', 'columns', j, value]) > 1;
+    const squareConflict =
+      this.state.board.getIn(['choices', 'squares',
+        ((Math.floor(i / 3)) * 3) + Math.floor(j / 3), value]) > 1;
+    return rowConflict || columnConflict || squareConflict;
+  }
+
+  renderCell = (cell, x, y) => {
+    const { board } = this.state;
+    const selected = this.getSelectedCell();
+    const { value, prefilled, notes } = cell.toJSON();
+    const conflict = this.isConflict(x, y);
+    const peer = areCoordinatePeers({ x, y }, board.get('selected'));
+    const sameValue = !!(selected && selected.get('value') &&
+      value === selected.get('value'));
+    const isSelected = cell === selected;
+    let inHintMode = board.get('inHintMode');
+    let hint = board.get('hint');
+
+    const handleValueChange = (x, y, newValue) => {
+      let { board } = this.state;
+      let inNoteMode = board.get('inNoteMode');
+
+      if (inNoteMode) this.addNumberAsNote(newValue);
+      else this.fillNumber(newValue);
     };
 
-    renderTopBar = () => {
-        return(
-            <HeaderRow/>
-        );
-    }
+    return (
+      <Cell
+        prefilled={prefilled}
+        notes={notes}
+        sameValue={sameValue}
+        isSelected={isSelected}
+        isPeer={peer}
+        value={value}
+        onClick={(x, y) => { this.selectCell(x, y); }}
+        onValueChange={handleValueChange}
+        key={y}
+        x={x}
+        y={y}
+        conflict={conflict}
+        eraseSelected={this.eraseSelected}
+        inHintMode={inHintMode}
+        hint={hint}
+      />
+    );
+  };
 
-    renderPuzzle = () => {
+  renderTopBar = () => {
+    return(
+      <HeaderRow/>
+    );
+  }
+
+  renderPuzzle = () => {
+    const { board } = this.state;
+    const inHintMode = board.get('inHintMode');
+    const renderCell = this.renderCell;
+    return (
+      <Puzzle
+        inHintMode = { inHintMode }
+        renderCell = { renderCell }
+        board = { board }
+      />
+    );
+  };
+
+  renderNumberControl = () => {
       const { board } = this.state;
-      const inHintMode = board.get('inHintMode');
-      const renderCell = this.renderCell;
+      const selectedCell = this.getSelectedCell();
+      const prefilled = selectedCell && selectedCell.get('prefilled');
+      const inNoteMode = board.get('inNoteMode');
       return (
-        <Puzzle
-          inHintMode = { inHintMode }
-          renderCell = { renderCell }
-          board = { board }
+        <NumberControl
+          prefilled={prefilled}
+          inNoteMode={inNoteMode}
+          getNumberValueCount={this.getNumberValueCount}
+          fillNumber={this.fillNumber}
+          addNumberAsNote={this.addNumberAsNote}
         />
       );
+  }
 
+  renderActions = () => {
+    const { board, history } = this.state;
+    const selectedCell = this.getSelectedCell();
+    const prefilled = selectedCell && selectedCell.get('prefilled');
+    const inNoteMode = board.get('inNoteMode');
+    const undo = this.undo;
+    const toggleNoteMode = this.toggleNoteMode;
+    const eraseSelected = this.eraseSelected;
+    const fillSelectedWithSolution = this.fillSelectedWithSolution;
+    return (
+      <ActionRow
+        history={history}
+        prefilled={prefilled}
+        inNoteMode={inNoteMode}
+        undo={undo}
+        toggleNoteMode={toggleNoteMode}
+        eraseSelected={eraseSelected}
+        fillSelectedWithSolution={fillSelectedWithSolution}
+        toggleHintMode={this.toggleHintMode}
+      />
+    );
+  }
 
-    };
+  renderControls = () => {
+    return (
+      <View style={styles().bottomActions}>
+        {this.renderActions()}
+        {this.renderNumberControl()}
+      </View>
+    );
+  }
 
-    renderNumberControl = () => {
-        const { board } = this.state;
-        const selectedCell = this.getSelectedCell();
-        const prefilled = selectedCell && selectedCell.get('prefilled');
-        const inNoteMode = board.get('inNoteMode');
-        return (
-          <NumberControl
-            prefilled={prefilled}
-            inNoteMode={inNoteMode}
-            getNumberValueCount={this.getNumberValueCount}
-            fillNumber={this.fillNumber}
-            addNumberAsNote={this.addNumberAsNote}
-          />
-        );
+  componentDidMount() {
+    if (!this.state.board) {
+      this.props.generatedGame.then(game => this.setState(game));
     }
+  }
 
-    renderActions = () => {
-        const { board, history } = this.state;
-        const selectedCell = this.getSelectedCell();
-        const prefilled = selectedCell && selectedCell.get('prefilled');
-        const inNoteMode = board.get('inNoteMode');
-        const undo = this.undo;
-        const toggleNoteMode = this.toggleNoteMode;
-        const eraseSelected = this.eraseSelected;
-        const fillSelectedWithSolution = this.fillSelectedWithSolution;
-        return (
-            <ActionRow
-                history={history}
-                prefilled={prefilled}
-                inNoteMode={inNoteMode}
-                undo={undo}
-                toggleNoteMode={toggleNoteMode}
-                eraseSelected={eraseSelected}
-                fillSelectedWithSolution={fillSelectedWithSolution}
-                toggleHintMode={this.toggleHintMode}
-            />
-        );
+  render = () => {
+    const { board } = this.state;
+    if (!board)
+    {
+      this.props.generatedGame.then(game => this.setState(game));
     }
-
-    renderControls = () => {
-        return (
-            <View style={styles().bottomActions}>
-                {this.renderActions()}
-                {this.renderNumberControl()}
-            </View>
-        );
-    }
-
-    componentDidMount() {
-      if (!this.state.board) {
-        this.props.generatedGame.then(game => this.setState(game));
-      }
-    }
-
-    render = () => {
-      const { board } = this.state;
-      if (!board)
-      {
-        this.props.generatedGame.then(game => this.setState(game));
-      }
-      return (
-        <View>
-          {board && !this.props.isDrill && this.renderTopBar()}
-          {board && this.renderPuzzle()}
-          {board &&
-            <View style={styles().bottomActions}>
-              {this.renderActions()}
-              {this.renderNumberControl()}
-            </View>
-          }
-        </View>
-      );
-    }
+    return (
+      <View>
+        {board && !this.props.isDrill && this.renderTopBar()}
+        {board && this.renderPuzzle()}
+        {board &&
+          <View style={styles().bottomActions}>
+            {this.renderActions()}
+            {this.renderNumberControl()}
+          </View>
+        }
+      </View>
+    );
+  }
 }
