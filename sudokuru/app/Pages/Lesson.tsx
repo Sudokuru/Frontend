@@ -21,6 +21,9 @@ const Lesson = (props) => {
 
       const [count, setCount]  = useState(0);
 
+      console.log(teach);
+
+      if(teach){
       return (
           <View>
               <Header page={'Lesson'}/>
@@ -49,7 +52,32 @@ const Lesson = (props) => {
                   </View>
               </View>
           </View>
+      );}
+
+       //NULL
+      else {
+      return(
+          <View>
+              <Header page={'Lesson'}/>
+              <View style={homeScreenStyles.home}>
+                  <View style={homeScreenStyles.lessons}>
+                       <View style={styles.container1}>
+
+                          <Text>
+                          <Text>{"CAT"}</Text>
+                          <Text>{" Lesson"}</Text>
+                          </Text>
+                          <Image
+                          style={{width: 400, height: 512}}
+                          source={{uri:"https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"}}
+                          />
+                          <Text>{name}</Text>
+                      </View>
+                  </View>
+              </View>
+          </View>
       );
+      }
 };
 
 const styles = StyleSheet.create({
