@@ -23,10 +23,8 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let url = USERACTIVEGAMESBFFURL;
-let difficulty = 29; // TODO Get difficulty from slider
+let difficulty = .1; // TODO Get difficulty from slider
 let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
-let token = "token"; // Get token from previous page
 
 function strPuzzleToArray(str) {
     console.log("strPuzzleToArray: ", str)
@@ -56,20 +54,22 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
         });
         console.log("Token: ", token);
       
-        let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
-          game => {
-            let board = makeBoard(strPuzzleToArray(game[0].puzzle));
-            return {
-              board,
-              history: List.of(board),
-              historyOffSet: 0,
-              solution: game[0].puzzleSolution,
-            };
-          }
-        );
-      
-        return board;
-      }
+        let gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
+            game => {
+              console.log("Game: ", game);
+              let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+              return {
+                board,
+                history: List.of(board),
+                historyOffSet: 0,
+                solution: game[0].puzzleSolution,
+                activeGame: game,
+              };
+            }
+          );
+
+          return gameData;
+    }
 
     return (
         <SafeAreaProvider>
