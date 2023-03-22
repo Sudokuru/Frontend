@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View, Platform} from "react-native";
 import {Text, Button} from 'react-native-paper';
 import Slider from '@react-native-community/slider';
@@ -12,19 +12,45 @@ import DifficultySlider from '../Components/Home/DifficultySlider';
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 
+
+
 const HomePage = () => {
     const navigation: any = useNavigation();
 
     // Sudokuru Package Import
     const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
-// Sudokuru Package Constants
+    // Sudokuru Package Constants
     const Puzzles = sudokuru.Puzzles;
 
-// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-    let url = USERACTIVEGAMESBFFURL;
-    let token = "token"; // Get token from previous page
+    const [visible, setVisible] = React.useState(false);
+    const showResumeButton = () => setVisible(true);
+    const hideResumeButton = () => setVisible(false);
 
+    useEffect(() => {
+        async function grabCurrentGame(url:string) {
+            let token = null;
+
+            await getKeyString("access_token").then(result => {
+                token = result;
+            });
+            console.log("Token: ", token);
+
+
+            await Puzzles.getGame(url, token).then(
+                (game: JSON) => {
+                    if (game !== null) {
+                        console.log("Hello!");
+                        showResumeButton();
+                    }
+                    else {
+                        hideResumeButton();
+                        console.log("User doesn't have an activeGame");
+                    }
+                });
+        }
+        grabCurrentGame(USERACTIVEGAMESBFFURL);
+    }, []);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -33,27 +59,6 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
-
-    async function grabCurrentGame(url) {
-        let token = null;
-      
-        await getKeyString("access_token").then(result => {
-          token = result;
-        });
-        console.log("Token: ", token);
-      
-        let board = await Puzzles.getGame(url, token).then(
-          game => {
-            if (game !== null) {
-                console.log(game);
-            }
-            else {
-                console.log("User doesn't have an activeGame");
-            }
-        });
-      
-        return board;
-      }
 
  if(Platform.OS === 'web'){
     return (
@@ -65,9 +70,14 @@ const HomePage = () => {
                     Drills
                 </Button>
                     <CCarousel/>
-                    {grabCurrentGame(USERACTIVEGAMESBFFURL)!==null &&
-                    <DifficultySlider /> }
-                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku')}>
+                    {
+                        (visible) ?
+                        <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                            Resume
+                        </Button> : <></>
+                    }
+                    <DifficultySlider />
+                    <Button style={{top:50}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
                         Start
                     </Button>
                     <StatusBar style="auto" />
