@@ -8,6 +8,21 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import {getKeyString} from "../../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
+
+// Sudokuru Package Import
+const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
+
+// Sudokuru Package Constants
+const Puzzles = sudokuru.Puzzles;
+
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+let url = USERACTIVEGAMESBFFURL;
+let activeGameData = null;
+
+let drillMode = false;
+
 let fallbackHeight = 30;
 
 const styles = (cellSize) => StyleSheet.create({
@@ -217,13 +232,66 @@ const darkBrown = "#A64732";
 const gold = "#F2CA7E";
 let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
+async function saveGame(activeGame) {
+    let token = null;
+  
+    await getKeyString("access_token").then(result => {
+      token = result;
+    });
+    // console.log("Token: ", token);
+  
+    Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
+        if (res) {
+            console.log("Game progress was saved successfully!");
+        }
+    });
+}
+
+let puzzleString = "";
+let notesString = "";
+
 const Cell = (props) => {
   const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
   const cellSize = getCellSize();
 
   let backColor = '#808080';
 
-  for (let i = 0; i < demoHighlightInput.length; i++) {
+    if (!drillMode) {
+        // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
+        if (getCellNumber(x, y) === 0) {
+            puzzleString = "";
+            notesString = "";
+        }
+
+        puzzleString += value ? value : 0;
+
+        // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
+        if (notes === null) {
+            notesString += "000000000";
+        } else {
+            for (let i = 1; i <= 9; i++) {
+                notesString += notes.has(i) ? 1 : 0;
+            }
+        }
+
+        // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
+        if (getCellNumber(x, y) === 80) {
+            // If there's no moves in the moves array, add the current move to the moves array
+            if (activeGameData.moves.length === 0) {
+                activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                saveGame(activeGameData);
+            } else {
+                // If there's a difference between the last move and the current move, add the current move to the moves array
+                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== puzzleString 
+                || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+                    activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                    saveGame(activeGameData);
+                }
+            }
+        }
+    }
+
+    for (let i = 0; i < demoHighlightInput.length; i++) {
 
     if (demoHighlightInput[i][0] === 0) { // Row Border Highlighting
       const cellNum = getCellNumber(x, y);
@@ -335,6 +403,7 @@ Cell.propTypes = {
     conflict: PropTypes.bool.isRequired,
     eraseSelected: PropTypes.func.isRequired,
     inHintMode: PropTypes.bool,
+    // activeGame: PropTypes.object.isRequired,
 };
 
 Cell.defaultProps = {
@@ -693,6 +762,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 conflict={conflict}
                 eraseSelected={this.eraseSelected}
                 inHintMode={inHintMode}
+                game = {this.props.generatedGame.game}
             />
         );
     };
@@ -771,12 +841,20 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       }
     }
 
+
     render = () => {
       const { board } = this.state;
       if (!board)
       {
         this.props.generatedGame.then(game => this.setState(game));
       }
+
+      this.props.generatedGame.then(game => {
+        activeGameData = game.activeGame[0];
+      });
+
+      drillMode = this.props.isDrill;
+
       return (
         <View>
           {board && !this.props.isDrill && this.renderTopBar()}

@@ -54,20 +54,22 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
         });
         console.log("Token: ", token);
       
-        let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
-          game => {
-            let board = makeBoard(strPuzzleToArray(game[0].puzzle));
-            return {
-              board,
-              history: List.of(board),
-              historyOffSet: 0,
-              solution: game[0].puzzleSolution,
-            };
-          }
-        );
-      
-        return board;
-      }
+        let gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
+            game => {
+              console.log("Game: ", game);
+              let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+              return {
+                board,
+                history: List.of(board),
+                historyOffSet: 0,
+                solution: game[0].puzzleSolution,
+                activeGame: game,
+              };
+            }
+          );
+
+          return gameData;
+    }
 
     return (
         <SafeAreaProvider>
