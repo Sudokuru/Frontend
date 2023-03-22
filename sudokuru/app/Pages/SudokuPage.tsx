@@ -58,6 +58,7 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
       
         let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
           game => {
+            console.log("Game: ", game);
             let board = makeBoard(strPuzzleToArray(game[0].puzzle));
             return {
               board,
@@ -69,7 +70,7 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
         );
       
         return board;
-      }
+    }
 
     return (
         <SafeAreaProvider>

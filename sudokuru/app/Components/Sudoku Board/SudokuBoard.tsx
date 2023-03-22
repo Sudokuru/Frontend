@@ -10,6 +10,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
+
+
 const styles = (cellSize) => StyleSheet.create({
     hardLineThickness : {thickness: cellSize * (3 / 40)},
     boardContainer: {
@@ -217,11 +219,40 @@ const darkBrown = "#A64732";
 const gold = "#F2CA7E";
 let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
+let puzzleCurrentState = "";
+let puzzleCurrentNotesState = "";
+
+// console.log("Puzzle Current State: " + puzzleCurrentState);
+// console.log("Puzzle Current Notes State: " + puzzleCurrentNotesState);
+
 const Cell = (props) => {
   const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode } = props;
   const cellSize = getCellSize();
 
   let backColor = '#808080';
+
+    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleCurrentState and puzzleCurrentNotesState strings and then add the value of the cell to the puzzleCurrentState string, if null, add a 0
+    if (getCellNumber(x, y) === 0) {
+        puzzleCurrentState = "";
+        puzzleCurrentNotesState = "";
+    }
+
+    puzzleCurrentState += value ? value : 0;
+
+    // Get the set of the notes for the cell, if null, add a 0, otherwise, add each number 1-9 to the string. if a number is not in the set, add a 0.
+    if (notes === null) {
+        puzzleCurrentNotesState += "000000000";
+    } else {
+        for (let i = 1; i <= 9; i++) {
+            puzzleCurrentNotesState += notes.has(i) ? i : 0;
+        }
+    }
+
+    // Print the two arrays to the console
+    if (getCellNumber(x, y) === 80) {
+        console.log("puzzleCurrentState:", puzzleCurrentState);
+        console.log("puzzleCurrentNotesState:", puzzleCurrentNotesState);
+    }
 
   for (let i = 0; i < demoHighlightInput.length; i++) {
 
