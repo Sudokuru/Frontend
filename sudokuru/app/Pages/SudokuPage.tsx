@@ -45,19 +45,13 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         await getKeyString("access_token").then(result => {
           token = result;
         });
-        console.log("Token: ", token);
 
         let gameData = null;
-
-        console.log("PROPS: " + gameOrigin);
-
 
         if (gameOrigin == "start"){
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
-                    console.log("Start Game: ", game);
                     let board = makeBoard(strPuzzleToArray(game[0].puzzle));
-                    console.log("START: ", strPuzzleToArray(game[0].puzzle));
                     return {
                         board,
                         history: List.of(board),
@@ -71,10 +65,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         else if (gameOrigin == "resume"){
             gameData = await Puzzles.getGame(url, token).then(
                 game => {
-                    console.log("Resume Game: ", game);
-                    console.log("index: ", (game[0].moves));
                     let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
-                    console.log("RESUME: ", strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
                     board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState);
                     return {
                         board,

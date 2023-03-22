@@ -34,13 +34,11 @@ const HomePage = () => {
             await getKeyString("access_token").then(result => {
                 token = result;
             });
-            console.log("Token: ", token);
 
 
             await Puzzles.getGame(url, token).then(
                 (game: JSON) => {
                     if (game !== null) {
-                        console.log("Hello!");
                         showResumeButton();
                     }
                     else {
@@ -66,19 +64,22 @@ const HomePage = () => {
             <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
-                <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
-                    Drills
-                </Button>
-                    <CCarousel/> <DifficultySlider />
-                   <View style={styles.playButtons}> {
+                    <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
+                        Drills
+                    </Button>
+                    <CCarousel/>
+                    <DifficultySlider />
+                   <View style={styles.playButtons}>
+
                         (visible) ?
                         <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
                             Resume
-                        </Button> : <></> 
-                    } 
-                    <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                        Start
-                    </Button> </View> 
+                        </Button> : <></>
+
+                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            Start
+                        </Button>
+                   </View>
                     <StatusBar style="auto" />
                 </View>
             </View>

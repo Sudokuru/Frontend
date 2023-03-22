@@ -286,7 +286,6 @@ const Cell = (props) => {
                     flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
                 }
             }
-            console.log("FLIPPED: " + flippedPuzzleString);
 
             // If there's no moves in the moves array, add the current move to the moves array
             if (activeGameData.moves.length === 0) {
