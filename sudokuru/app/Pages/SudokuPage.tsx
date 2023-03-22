@@ -53,9 +53,6 @@ const SudokuPage = () => { // TODO: Take in props from previous page instead of 
           token = result;
         });
         console.log("Token: ", token);
-
-        console.log("DIFFICULTY: " + difficulty);
-        console.log("STRATEGIES: " + strategies);
       
         let board = await Puzzles.startGame(url, difficulty, strategies, token).then(
           game => {
