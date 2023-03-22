@@ -237,7 +237,7 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    console.log("Token: ", token);
+    // console.log("Token: ", token);
   
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -265,25 +265,30 @@ const Cell = (props) => {
 
     puzzleString += value ? value : 0;
 
-    // Get the set of the notes for the cell, if null, add a 0, otherwise, add each number 1-9 to the string. if a number is not in the set, add a 0.
+    // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
     if (notes === null) {
         notesString += "000000000";
     } else {
         for (let i = 1; i <= 9; i++) {
-            notesString += notes.has(i) ? i : 0;
+            notesString += notes.has(i) ? 1 : 0;
         }
     }
 
     // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
     if (getCellNumber(x, y) === 80) {
-        activeGameData.moves.push({ puzzleCurrentState: puzzleString });
-        activeGameData.moves.push({ puzzleCurrentNotesState: notesString });
+        // If there's no moves in the moves array, add the current move to the moves array
+        if (activeGameData.moves.length === 0) {
+            activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+            saveGame(activeGameData);
+        } else {
+            // If there's a difference between the last move and the current move, add the current move to the moves array
+            if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== puzzleString 
+             || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+                activeGameData.moves.push({ puzzleCurrentState: puzzleString, puzzleCurrentNotesState: notesString });
+                saveGame(activeGameData);
+            }
+        }
     }
-
-    console.log(activeGameData);
-
-    // Save the game
-    saveGame(activeGameData);
 
   for (let i = 0; i < demoHighlightInput.length; i++) {
 
