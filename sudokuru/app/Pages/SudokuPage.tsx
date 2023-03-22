@@ -33,6 +33,16 @@ function strPuzzleToArray(str) {
     for (let i = 0; i < str.length; i += 9) {
       arr.push(str.slice(i, i + 9).split('').map(Number));
     }
+    output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+    return { puzzle: output };
+  }
+
+  function strPuzzleToArray2(str) {
+    console.log("strPuzzleToArray: ", str)
+    let arr = [];
+    for (let i = 0; i < str.length; i += 9) {
+      arr.push(str.slice(i, i + 9).split('').map(Number));
+    }
     output = arr[0].map((_, colIndex) => arr.map(row => colIndex[row]));
     return { puzzle: output };
   }
@@ -82,7 +92,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 game => {
                     console.log("Resume Game: ", game);
                     console.log("index: ", (game[0].moves));
-                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    let board = makeBoard(strPuzzleToArray2(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
                     board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState);
                     return {
                         board,
