@@ -211,7 +211,7 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, onFirstStep, onFinalStep } = props;
+  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
 
@@ -255,7 +255,7 @@ const Puzzle = (props) => {
         :
         (isCheckMarkRendered(inHintMode, onFinalStep))
           ?
-          <Pressable onPress={() => console.log("check!")}>
+          <Pressable onPress={checkMarkClicked}>
             <AntDesign color="white" name="checkcircleo" size={cellSize/(sizeConst)}/>
           </Pressable>
           :
@@ -271,6 +271,7 @@ Puzzle.propTypes = {
   renderCell: PropTypes.func.isRequired,
   rightArrowClicked: PropTypes.func.isRequired,
   leftArrowClicked: PropTypes.func.isRequired,
+  checkMarkClicked: PropTypes.func.isRequired,
   onFirstStep: PropTypes.bool,
   onFinalStep: PropTypes.bool,
 };
@@ -1076,6 +1077,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
   }
 
+  checkMarkClicked = () => {
+    console.log("check!")
+  }
+
   leftArrowClicked = () => {
     let { board } = this.state;
     let hintSteps = board.get('hintSteps');
@@ -1113,6 +1118,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         board = { board }
         rightArrowClicked = { this.rightArrowClicked }
         leftArrowClicked = { this.leftArrowClicked }
+        checkMarkClicked = { this.checkMarkClicked }
         onFirstStep = { onFirstStep }
         onFinalStep = { onFinalStep }
       />
