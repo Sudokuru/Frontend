@@ -69,6 +69,7 @@ const LandingPage = () => {
                     show={visible}
                     message="Please Login!"
                     closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
                     showConfirmButton={true}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
