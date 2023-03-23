@@ -64,23 +64,47 @@ const HomePage = () => {
             <Header page={'Home'}/>
             <View>
                 <View style={styles.container1}>
-                    <Button style={{top:0}} mode="contained" onPress={() => navigation.openDrawer()}>
-                        Drills
-                    </Button>
+
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>Learn </Text>
+                        <Text style={{color: '#F2F2F2', fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
+                    </View>
+
                     <CCarousel/>
-                    <DifficultySlider />
+
+                    <View style={{top:20, flexDirection: 'row', padding: 10}}>
+                        <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
+                        <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a strategy</Text>
+                    </View>
+
+                    <View style={{padding: 10}}>
+                        <Button style={{top:20}} mode="contained" onPress={() => navigation.openDrawer()}>
+                            Start Drill
+                        </Button>
+                    </View>
+
+                    <View style={{top:20, flexDirection: 'row', padding: 10}}>
+                        <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Play </Text>
+                        <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
+                    </View>
+
+                    <View style={{top:20, padding: 10}}>
+                        <DifficultySlider />
+                    </View>
+
                    <View style={styles.playButtons}>
                        {
                            (visible) ?
                                <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                                   Resume
+                                   Resume Puzzle
                                </Button> : <></>
                        }
 
                         <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                            Start
+                            Start Puzzle
                         </Button>
                    </View>
+
                     <StatusBar style="auto" />
                 </View>
             </View>
@@ -113,16 +137,10 @@ const HomePage = () => {
                     </View>
 
                     <View>
-                    <Slider
-                    style={{width: 300, height: 40, top:30}}
-                    minimumValue={0}
-                    maximumValue={100}
-                    step={10}
-                    minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#000000"
-                    />
+                        <DifficultySlider />
                     </View>
-                    <DifficultySlider />
+
+
                     <View style={styles.playButtons}>
                         {
                             (visible) ?
@@ -176,6 +194,7 @@ const styles = StyleSheet.create({
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 10
         },
     loginButton:{
         position: 'absolute',
