@@ -256,7 +256,7 @@ const Puzzle = (props) => {
         (isCheckMarkRendered(inHintMode, onFinalStep))
           ?
           <Pressable onPress={checkMarkClicked}>
-            <AntDesign color="white" name="checkcircleo" size={cellSize/(sizeConst)}/>
+            <AntDesign color="white" name="checkcircle" size={cellSize/(sizeConst)}/>
           </Pressable>
           :
           <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
@@ -752,19 +752,23 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
     
-    console.log("sanity");
     if (newHintMode == false)
     {
+      let hintStepsLength = board.get('hintSteps').length;
+      let currentStep = board.get('currentStep');
+
+      // if they prematurely exit hint mode, undo the hint
+      if (currentStep != hintStepsLength - 1) this.undo();
+
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
       this.setState({ board });
       return;
     }
-    console.log("lol time to reset the currentStep to 0");
     board = board.set('currentStep', 0);
     let hint = this.props.getHint(board)
 
-    console.log(hint)
+    console.log(hint);
 
     let causes = []
     let groups = []
