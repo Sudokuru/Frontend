@@ -255,17 +255,8 @@ const getCellNumber = (x, y) => {
   return y + x * 9;
 };
 
-// function that returns the cell number of the top-left cell of a box based on the box number
-const findBox = (box) => {
-  if (box === 0) return 0;
-  if (box === 1) return 27;
-  if (box === 2) return 54;
-  if (box === 3) return 3;
-  if (box === 4) return 30;
-  if (box === 5) return 57;
-  if (box === 6) return 6;
-  if (box === 7) return 33;
-  if (box === 8) return 60;
+const getBoxIndexFromCellNum = (cellNum) => {
+  return Math.floor((cellNum % 9) / 3) 
 }
 
 const print = (str, contents) => {
@@ -364,6 +355,36 @@ const Cell = (props) => {
 
   let bgColor = '#808080';
   let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]
+  // TODO: THE PLAN
+  // make output for hintSteps[0]
+  // make output generalized based on some variable
+  // make that variable increment when right arrow is pressed
+  // make that variable decrement when left arrow is pressed
+  // TODO: weird edge case
+  // if the step has removals in highlight mode and those notes aren't there
+    // add those notes back in
+  if (inHintMode)
+  {
+    let currentStep = hintSteps[0];
+    if (currentStep.groups) // group highlighting
+    {
+      for (let i = 0; i < currentStep.groups.length; i++)
+      {
+        const currentBox = getBoxIndexFromCellNum(getCellNumber(x, y))
+        // if the col matches hint, highlight the current col
+        if (currentStep.groups[i].type == "col" && x === currentStep.groups[i].index)
+          bgColor = "white";
+        // if the row matches hint, highlight the current row
+        if (currentStep.groups[i].type == "row" && y === currentStep.groups[i].index)
+          bgColor = "white";
+        // if the row matches hint, highlight the current row
+        if (currentStep.groups[i].type == "box" && currentBox === currentStep.groups[i].index)
+          bgColor = "white";
+      }
+    }
+  }
+
+
   // if (hint)
   // {
   //   for (let i = 0; i < hint.length; i++) {
