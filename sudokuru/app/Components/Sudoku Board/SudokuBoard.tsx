@@ -752,7 +752,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
     
-    if (!newHintMode)
+    console.log("sanity");
+    if (newHintMode == false)
     {
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
@@ -1078,7 +1079,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   }
 
   checkMarkClicked = () => {
-    console.log("check!")
+    this.toggleHintMode()
   }
 
   leftArrowClicked = () => {
