@@ -84,7 +84,7 @@ const HomePage = () => {
                         <Text style={{color: theme.colors.onPrimary, fontSize: 30,  fontWeight: 'bold'}}>Learn </Text>
                         <Text style={{color: theme.colors.primary, fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
                         <Pressable onPress={() => showLearnHelp()}>
-                            <MaterialCommunityIcons color="#D9A05B" name="help"/>
+                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
                         </Pressable>
                     </View>
 
@@ -108,7 +108,7 @@ const HomePage = () => {
                         <Text style={{color: theme.colors.onPrimary, fontSize: 28,  fontWeight: 'bold'}}>Play </Text>
                         <Text style={{color: theme.colors.primary, fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
                         <Pressable onPress={() => showPlayHelp()}>
-                            <MaterialCommunityIcons color="#D9A05B" name="help"/>
+                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
                         </Pressable>
                     </View>
 
