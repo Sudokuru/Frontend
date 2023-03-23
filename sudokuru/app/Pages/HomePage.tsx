@@ -81,8 +81,8 @@ const HomePage = () => {
                 <View style={styles.container1}>
 
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>Learn </Text>
-                        <Text style={{color: '#F2F2F2', fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
+                        <Text style={{color: theme.colors.onPrimary, fontSize: 30,  fontWeight: 'bold'}}>Learn </Text>
+                        <Text style={{color: theme.colors.primary, fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
                         <Pressable onPress={() => showLearnHelp()}>
                             <MaterialCommunityIcons color="#D9A05B" name="help"/>
                         </Pressable>
@@ -91,10 +91,10 @@ const HomePage = () => {
                     <CCarousel/>
 
                     <View style={{top:20, flexDirection: 'row', padding: 10}}>
-                        <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
-                        <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a strategy</Text>
+                        <Text style={{color: theme.colors.onPrimary, fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
+                        <Text style={{color: theme.colors.primary, fontSize: 28,  fontWeight: 'bold'}}>with a strategy</Text>
                         <Pressable onPress={() => showDrillHelp()}>
-                            <MaterialCommunityIcons color="#D9A05B" name="help"/>
+                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
                         </Pressable>
                     </View>
 
@@ -105,8 +105,8 @@ const HomePage = () => {
                     </View>
 
                     <View style={{top:20, flexDirection: 'row', padding: 10}}>
-                        <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Play </Text>
-                        <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
+                        <Text style={{color: theme.colors.onPrimary, fontSize: 28,  fontWeight: 'bold'}}>Play </Text>
+                        <Text style={{color: theme.colors.primary, fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
                         <Pressable onPress={() => showPlayHelp()}>
                             <MaterialCommunityIcons color="#D9A05B" name="help"/>
                         </Pressable>
