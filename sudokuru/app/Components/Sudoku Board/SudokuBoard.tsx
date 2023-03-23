@@ -10,8 +10,12 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 let fallbackHeight = 30;
 
-const styles = (cellSize) => StyleSheet.create({
+const styles = (cellSize, sizeConst) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
+  hintArrowPlaceholderView: {
+    width: cellSize/(sizeConst),
+    height: cellSize/(sizeConst)
+  },
   hintAndPuzzleContainer: {
     justifyContent: "space-evenly", 
     alignItems: "center",
@@ -228,9 +232,14 @@ const Puzzle = (props) => {
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {(isLeftArrowRendered(inHintMode, onFirstStep)) ? <Pressable onPress={leftArrowClicked}>
-        <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
-      </Pressable> : null}
+      {(isLeftArrowRendered(inHintMode, onFirstStep))
+        ? 
+        <Pressable onPress={leftArrowClicked}>
+          <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
+        </Pressable>
+        : 
+        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
+      }
       <View style={styles().boardContainer}>
         {board.get('puzzle').map((row, i) => (
           <View key={i} style={styles().rowContainer}>
@@ -238,9 +247,14 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {(isRightArrowRendered(inHintMode, onFinalStep)) ? <Pressable onPress={rightArrowClicked}>
-        <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
-      </Pressable> : null}
+      {(isRightArrowRendered(inHintMode, onFinalStep))
+        ?
+        <Pressable onPress={rightArrowClicked}>
+          <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
+        </Pressable>
+        :
+        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
+      }
     </View>
   );
 }
