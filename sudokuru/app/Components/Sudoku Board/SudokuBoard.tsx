@@ -207,9 +207,11 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, deleteNotesFromRemovals } = props;
+  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+
+  print("currentStep in puzzle", board.get('currentStep'));
 
   const isRightArrowRendered = (inHintMode) =>
   {
@@ -219,11 +221,11 @@ const Puzzle = (props) => {
   const isLeftArrowRendered = (inHintMode) =>
   {
     return inHintMode;
-  }  
+  }
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={() => console.log("left")}>
+      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={leftArrowClicked}>
         <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
       <View style={styles().boardContainer}>
@@ -233,7 +235,7 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={() => deleteNotesFromRemovals([[5, [3,4], 3, 5, 6, 7, 8, 9]])}>
+      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={rightArrowClicked}>
         <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
     </View>
@@ -244,7 +246,8 @@ Puzzle.propTypes = {
   board: PropTypes.any,
   inHintMode: PropTypes.bool,
   renderCell: PropTypes.func.isRequired,
-  deleteNotesFromRemovals: PropTypes.func.isRequired,
+  rightArrowClicked: PropTypes.func.isRequired,
+  leftArrowClicked: PropTypes.func.isRequired,
 };
 
 Puzzle.defaultProps = {
@@ -266,12 +269,9 @@ const print = (str, contents) => {
 
 const getCausesFromHint = (hint) => {
   let causes = []
-  let temp = []
   for (let i = 0; i < hint.cause.length; i++)
   {
-    temp = []
-    temp.push(hint.cause[i])
-    causes.push(temp)
+    causes.push(hint.cause[i])
   }
   return causes
 }
@@ -350,98 +350,72 @@ const gold = "#F2CA7E";
 // let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
   let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]
   // TODO: THE PLAN
-  // make output for hintSteps[0]
-  // make output generalized based on some variable
-  // make that variable increment when right arrow is pressed
+  // DONE make output for hintSteps[0]
+  // DONE make output generalized based on some variable
+  // DONE make that variable increment when right arrow is pressed
   // make that variable decrement when left arrow is pressed
   // TODO: weird edge case
   // if the step has removals in highlight mode and those notes aren't there
     // add those notes back in
-  if (inHintMode)
+  if (inHintMode && currentStep > -1)
   {
-    let currentStep = hintSteps[0];
-    if (currentStep.groups) // group highlighting
+    let currentHint = hintSteps[currentStep];
+    const currentBox = getBoxIndexFromCellNum(getCellNumber(x, y));
+    if (currentHint.groups) // group highlighting
     {
-      for (let i = 0; i < currentStep.groups.length; i++)
+      for (let i = 0; i < currentHint.groups.length; i++)
       {
-        const currentBox = getBoxIndexFromCellNum(getCellNumber(x, y))
         // if the col matches hint, highlight the current col
-        if (currentStep.groups[i].type == "col" && x === currentStep.groups[i].index)
+        if (currentHint.groups[i].type == "col" && x === currentHint.groups[i].index)
           bgColor = "white";
         // if the row matches hint, highlight the current row
-        if (currentStep.groups[i].type == "row" && y === currentStep.groups[i].index)
+        if (currentHint.groups[i].type == "row" && y === currentHint.groups[i].index)
           bgColor = "white";
         // if the row matches hint, highlight the current row
-        if (currentStep.groups[i].type == "box" && currentBox === currentStep.groups[i].index)
+        if (currentHint.groups[i].type == "box" && currentBox === currentHint.groups[i].index)
           bgColor = "white";
       }
     }
+    if (currentHint.causes) // cause highlighting
+    {
+      for (let i = 0; i < currentHint.causes.length; i++)
+      {
+        let currentCause_x = currentHint.causes[i][0];
+        let currentCause_y = currentHint.causes[i][1];
+        if (currentCause_x == x && currentCause_y == y)
+          bgColor = gold;
+      }
+    }
+    if (currentHint.removals) // removal highlighting
+    {
+      for (let i = 0; i < currentHint.removals.length; i++)
+      {
+        let currentRemoval = currentHint.removals[i];
+        let currentRemoval_x = currentRemoval.position[0];
+        let currentRemoval_y = currentRemoval.position[1];
+        if (currentRemoval_x == x && currentRemoval_y == y)
+        {
+          if (currentRemoval.mode == "highlight")
+          {
+            for (let j = 0; j < currentRemoval.values.length; j++)
+              isRemovalHighlight[currentRemoval.values[j] - 1] = true;
+          } 
+          // cannot update during state transition
+          // else if (currentRemoval.mode == "delete")
+          // {
+          //   for (let j = 0; j < currentRemoval.values.length; j++)
+          //     deleteNotesFromRemovals(x, y, currentRemoval.values)
+          // }
+        }
+      }
+    }
   }
-
-
-  // if (hint)
-  // {
-  //   for (let i = 0; i < hint.length; i++) {
-
-  //     if (hint[i][0] === 1) { // Row Border Highlighting
-  //       const cellNum = getCellNumber(x, y);
-  //       if (cellNum % 9 === hint[i][1] % 9)
-  //       {
-  //         backColor = hint[i][2] ? hint[i][2] : "white";
-  //       }
-  //     }
-
-  //     if (hint[i][0] === 0) { // Column Border Highlighting
-  //       const cellNum = getCellNumber(x, y);
-  //       if (Math.trunc(cellNum / 9) === hint[i][1])
-  //       {
-  //         backColor = hint[i][2] ? hint[i][2] : "white";
-  //       }
-  //     }
-
-
-  //     if (hint[i][0] === 2) { // Box Border Highlighting
-  //       const cellNum = getCellNumber(x, y); // Number of the cell being checked
-  //       const boxNum = findBox(hint[i][1]); // Number of the box being highlighted
-  //       switch (cellNum - boxNum)
-  //       {
-  //         case 0:
-  //         case 1:
-  //         case 2:
-  //         case 9:
-  //         case 10:
-  //         case 11:
-  //         case 18:
-  //         case 19:
-  //         case 20:
-  //           backColor = hint[i][2] ? hint[i][2] : "white";
-  //           break;
-  //       }
-  //     }
-  //     if (hint[i][0] === 3) { // Individual Cell Highlighting
-  //       if (x === hint[i][1] && y === hint[i][2])
-  //         backColor = hint[i][3] ? hint[i][3] : "white";
-  //     }
-  //     if (hint[i][0] === 5) { // Note Removal Highlighting
-  //       if (x === hint[i][1][0] && y === hint[i][1][1])
-  //       {
-  //         // text color of every value  match from hint[i][2] to hint[i].length should be red
-  //         // boolean array for whether or not values should be red or not
-  //         // isRed[0] being true means that the "1" note in the current cell should be red
-  //         for (let j = 2; j < hint[i].length; j++)
-  //         {
-  //           isRemoval[hint[i][j] - 1] = true;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
@@ -522,6 +496,7 @@ Cell.propTypes = {
     eraseSelected: PropTypes.func.isRequired,
     inHintMode: PropTypes.bool,
     hintSteps: PropTypes.any,
+    currentStep: PropTypes.number,
 };
 
 Cell.defaultProps = {
@@ -755,6 +730,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
+    board = board.set('currentStep', 0);
 
     let hint = undefined
     if (newHintMode) hint = this.props.getHint(board)
@@ -873,27 +849,35 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
   }
 
-  deleteNotesFromRemovals = (removals) => {
+  addNotesFromRemovals = (x, y, notesToAdd) => {
+    console.log("adding...")
     let { board } = this.state;
-    let x = -1
-    let y = -1
-    for (let i = 0; i < removals.length; i++)
+    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+    print("notes before", notes)
+    for (let i = 0; i < notesToAdd.length; i++)
     {
-      x = removals[i][1][0]
-      y = removals[i][1][1]
-      
-      let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
-      for (let j = 2; j < removals[i].length; j++)
+      if (notes.has(notesToAdd[i]))
       {
-        currRemoval = removals[i][j]
-        if (notes.has(currRemoval))
-        {
-          notes = notes.delete(removals[i][j]);
-        }
+        notes = notes.add(notesToAdd[i]);
       }
-      board = board.setIn(['puzzle', x, y, 'notes'], notes);
     }
-    this.setState({board});
+    print("notes after", notes)
+    board = board.setIn(['puzzle', x, y, 'notes'], notes);
+    return board;
+  }
+
+  deleteNotesFromRemovals = (x, y, notesToRemove) => {
+    let { board } = this.state;
+    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+    for (let i = 0; i < notesToRemove.length; i++)
+    {
+      if (notes.has(notesToRemove[i]))
+      {
+        notes = notes.delete(notesToRemove[i]);
+      }
+    }
+    board = board.setIn(['puzzle', x, y, 'notes'], notes);
+    return board;
   }
 
   /*
@@ -1006,6 +990,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const isSelected = cell === selected;
     let inHintMode = board.get('inHintMode');
     let hintSteps = board.get('hintSteps');
+    let currentStep = board.get('currentStep');
 
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
@@ -1032,6 +1017,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         eraseSelected={this.eraseSelected}
         inHintMode={inHintMode}
         hintSteps={hintSteps}
+        deleteNotesFromRemovals={this.deleteNotesFromRemovals}
+        currentStep={currentStep}
       />
     );
   };
@@ -1042,6 +1029,48 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     );
   }
 
+  rightArrowClicked = () => {
+    let { board } = this.state;
+    let hintSteps = board.get('hintSteps');
+    let currentStep = board.get('currentStep') + 1;
+    if (currentStep == undefined || currentStep == hintSteps.length) return;
+    board = board.set('currentStep', currentStep);
+    print("currentStep in right click", board.get('currentStep'));
+    this.setState({ board });
+    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    {
+      if (hintSteps[currentStep].removals[i].mode === "delete")
+      {
+        let x = hintSteps[currentStep].removals[i].position[0];
+        let y = hintSteps[currentStep].removals[i].position[1];
+        let notesToRemove = hintSteps[currentStep].removals[i].values;
+        board = this.deleteNotesFromRemovals(x, y, notesToRemove)
+      }
+    }
+    this.setState({ board });
+  }
+
+  leftArrowClicked = () => {
+    let { board } = this.state;
+    let hintSteps = board.get('hintSteps');
+    let currentStep = board.get('currentStep') - 1;
+    print("currentStep in left click", board.get('currentStep'));
+    if (currentStep == undefined || currentStep < 0) return;
+    board = board.set('currentStep', currentStep);
+    this.setState({ board });
+    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    {
+      if (hintSteps[currentStep].removals[i].mode === "delete")
+      {
+        let x = hintSteps[currentStep].removals[i].position[0];
+        let y = hintSteps[currentStep].removals[i].position[1];
+        let notesToRemove = hintSteps[currentStep].removals[i].values;
+        board = this.addNotesFromRemovals(x, y, notesToRemove)
+      }
+    }
+    this.setState({ board });
+  }
+
   renderPuzzle = () => {
     const { board } = this.state;
     return (
@@ -1049,7 +1078,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         inHintMode = { board.get('inHintMode') }
         renderCell = { this.renderCell }
         board = { board }
-        deleteNotesFromRemovals = { this.deleteNotesFromRemovals }
+        rightArrowClicked = { this.rightArrowClicked }
+        leftArrowClicked = { this.leftArrowClicked }
       />
     );
   };
