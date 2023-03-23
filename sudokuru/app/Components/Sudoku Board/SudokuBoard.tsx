@@ -233,7 +233,7 @@ const Puzzle = (props) => {
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
       {(isLeftArrowRendered(inHintMode, onFirstStep))
-        ? 
+        ? // checkcircleo
         <Pressable onPress={leftArrowClicked}>
           <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
         </Pressable>
@@ -253,7 +253,13 @@ const Puzzle = (props) => {
           <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
         </Pressable>
         :
-        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
+        (isCheckMarkRendered(inHintMode, onFinalStep))
+          ?
+          <Pressable onPress={() => console.log("check!")}>
+            <AntDesign color="white" name="checkcircleo" size={cellSize/(sizeConst)}/>
+          </Pressable>
+          :
+          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
       }
     </View>
   );
