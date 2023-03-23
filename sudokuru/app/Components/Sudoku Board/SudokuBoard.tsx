@@ -207,23 +207,28 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, currentStep } = props;
+  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, onFirstStep, onFinalStep } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
 
-  const isRightArrowRendered = (inHintMode) =>
+  const isRightArrowRendered = (inHintMode, onFinalStep) =>
   {
-    return inHintMode;
+    return inHintMode && !onFinalStep;
   }
 
-  const isLeftArrowRendered = (inHintMode) =>
+  const isLeftArrowRendered = (inHintMode, onFirstStep) =>
   {
-    return inHintMode;
+    return inHintMode && !onFirstStep;
+  }
+
+  const isCheckMarkRendered = (inHintMode, onFinalStep) =>
+  {
+    return inHintMode && onFinalStep;
   }
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {(isLeftArrowRendered(inHintMode)) ? <Pressable onPress={leftArrowClicked}>
+      {(isLeftArrowRendered(inHintMode, onFirstStep)) ? <Pressable onPress={leftArrowClicked}>
         <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
       <View style={styles().boardContainer}>
@@ -233,7 +238,7 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {(isRightArrowRendered(inHintMode)) ? <Pressable onPress={rightArrowClicked}>
+      {(isRightArrowRendered(inHintMode, onFinalStep)) ? <Pressable onPress={rightArrowClicked}>
         <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
       </Pressable> : null}
     </View>
@@ -246,7 +251,8 @@ Puzzle.propTypes = {
   renderCell: PropTypes.func.isRequired,
   rightArrowClicked: PropTypes.func.isRequired,
   leftArrowClicked: PropTypes.func.isRequired,
-  currentStep: PropTypes.any
+  onFirstStep: PropTypes.bool,
+  onFinalStep: PropTypes.bool,
 };
 
 Puzzle.defaultProps = {
@@ -365,7 +371,7 @@ const Cell = (props) => {
   if (inHintMode && currentStep > -1)
   {
     let currentHint = hintSteps[currentStep];
-    const currentBox = getBoxIndexFromCellNum(getCellNumber(x, y));
+
     if (currentHint.groups) // group highlighting
     {
       for (let i = 0; i < currentHint.groups.length; i++)
@@ -377,7 +383,7 @@ const Cell = (props) => {
         if (currentHint.groups[i].type == "row" && y === currentHint.groups[i].index)
           bgColor = "white";
         // if the row matches hint, highlight the current row
-        if (currentHint.groups[i].type == "box" && currentBox === currentHint.groups[i].index)
+        if (currentHint.groups[i].type == "box" && getBoxIndexFromCellNum(getCellNumber(x, y)) === currentHint.groups[i].index)
           bgColor = "white";
       }
     }
@@ -391,6 +397,7 @@ const Cell = (props) => {
           bgColor = gold;
       }
     }
+    // This handles just the styling, note deletion is not possible since the state would change during a render
     if (currentHint.removals) // removal highlighting
     {
       for (let i = 0; i < currentHint.removals.length; i++)
@@ -404,13 +411,7 @@ const Cell = (props) => {
           {
             for (let j = 0; j < currentRemoval.values.length; j++)
               isRemovalHighlight[currentRemoval.values[j] - 1] = true;
-          } 
-          // cannot update during state transition
-          // else if (currentRemoval.mode == "delete")
-          // {
-          //   for (let j = 0; j < currentRemoval.values.length; j++)
-          //     deleteNotesFromRemovals(x, y, currentRemoval.values)
-          // }
+          }
         }
       }
     }
@@ -1076,6 +1077,15 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
   renderPuzzle = () => {
     const { board } = this.state;
+    let onFirstStep = false;
+    let onFinalStep = false;
+    if (board.get('hintSteps') != undefined)
+    {
+      let currentStep = board.get('currentStep');
+      let numHintSteps = board.get('hintSteps').length;
+      if (currentStep + 1 == 1) onFirstStep = true;
+      if (currentStep + 1 == numHintSteps) onFinalStep = true;
+    }
     return (
       <Puzzle
         inHintMode = { board.get('inHintMode') }
@@ -1083,7 +1093,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         board = { board }
         rightArrowClicked = { this.rightArrowClicked }
         leftArrowClicked = { this.leftArrowClicked }
-        currentStep = { board.get('currentStep') }
+        onFirstStep = { onFirstStep }
+        onFinalStep = { onFinalStep }
       />
     );
   };
