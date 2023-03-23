@@ -207,11 +207,9 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked } = props;
+  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, currentStep } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
-
-  print("currentStep in puzzle", board.get('currentStep'));
 
   const isRightArrowRendered = (inHintMode) =>
   {
@@ -248,6 +246,7 @@ Puzzle.propTypes = {
   renderCell: PropTypes.func.isRequired,
   rightArrowClicked: PropTypes.func.isRequired,
   leftArrowClicked: PropTypes.func.isRequired,
+  currentStep: PropTypes.any
 };
 
 Puzzle.defaultProps = {
@@ -730,10 +729,18 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
+    
+    if (!newHintMode)
+    {
+      board = board.set('currentStep', -1);
+      board = board.set('hintSteps', []);
+      this.setState({ board });
+      return;
+    }
+    console.log("lol time to reset the currentStep to 0");
     board = board.set('currentStep', 0);
+    let hint = this.props.getHint(board)
 
-    let hint = undefined
-    if (newHintMode) hint = this.props.getHint(board)
     console.log(hint)
 
     let causes = []
@@ -849,25 +856,24 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
   }
 
-  addNotesFromRemovals = (x, y, notesToAdd) => {
-    console.log("adding...")
+  addNotesFromRemovals = (x, y, notesToAdd, currentStep) => {
     let { board } = this.state;
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
-    print("notes before", notes)
+    board = board.set('currentStep', currentStep);
     for (let i = 0; i < notesToAdd.length; i++)
     {
-      if (notes.has(notesToAdd[i]))
+      if (!notes.has(notesToAdd[i]))
       {
         notes = notes.add(notesToAdd[i]);
       }
     }
-    print("notes after", notes)
     board = board.setIn(['puzzle', x, y, 'notes'], notes);
     return board;
   }
 
-  deleteNotesFromRemovals = (x, y, notesToRemove) => {
+  deleteNotesFromRemovals = (x, y, notesToRemove, currentStep) => {
     let { board } = this.state;
+    board = board.set('currentStep', currentStep);
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     for (let i = 0; i < notesToRemove.length; i++)
     {
@@ -1035,7 +1041,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let currentStep = board.get('currentStep') + 1;
     if (currentStep == undefined || currentStep == hintSteps.length) return;
     board = board.set('currentStep', currentStep);
-    print("currentStep in right click", board.get('currentStep'));
     this.setState({ board });
     for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
     {
@@ -1044,7 +1049,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         let x = hintSteps[currentStep].removals[i].position[0];
         let y = hintSteps[currentStep].removals[i].position[1];
         let notesToRemove = hintSteps[currentStep].removals[i].values;
-        board = this.deleteNotesFromRemovals(x, y, notesToRemove)
+        board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
       }
     }
     this.setState({ board });
@@ -1054,18 +1059,16 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep') - 1;
-    print("currentStep in left click", board.get('currentStep'));
     if (currentStep == undefined || currentStep < 0) return;
     board = board.set('currentStep', currentStep);
-    this.setState({ board });
     for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
     {
-      if (hintSteps[currentStep].removals[i].mode === "delete")
+      if (hintSteps[currentStep + 1].removals[i].mode === "delete")
       {
-        let x = hintSteps[currentStep].removals[i].position[0];
-        let y = hintSteps[currentStep].removals[i].position[1];
-        let notesToRemove = hintSteps[currentStep].removals[i].values;
-        board = this.addNotesFromRemovals(x, y, notesToRemove)
+        let x = hintSteps[currentStep + 1].removals[i].position[0];
+        let y = hintSteps[currentStep + 1].removals[i].position[1];
+        let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
+        board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
       }
     }
     this.setState({ board });
@@ -1080,6 +1083,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         board = { board }
         rightArrowClicked = { this.rightArrowClicked }
         leftArrowClicked = { this.leftArrowClicked }
+        currentStep = { board.get('currentStep') }
       />
     );
   };
