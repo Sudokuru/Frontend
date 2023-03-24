@@ -21,34 +21,32 @@ const Ccarousel = () =>{
     const [index, setIndex] = useState(0);
 
     function navigate(index: number):any {
-        index == 0 ? navigation.navigate('AdjustNotesLesson') :
-            index == 1 ? navigation.navigate('SimplifyNotesLesson') :
-                index == 2 ? navigation.navigate('NakedSingleLesson') :
-                    index == 3 ? navigation.navigate('HiddenSingleLesson') :
-                        index == 4 ? navigation.navigate('NakedSetLesson') :
-                            index == 5 ? navigation.navigate('HiddenSetLesson') :
-                                index == 6 ? navigation.navigate('PointingPairLesson') :
-                                    index == 7 ? navigation.navigate('PointingTripletLesson') :
-                                        index == 8 ? navigation.navigate('BoxLineReductionLesson') :
-                                            index == 9 ? navigation.navigate('XWingLesson') :
-                                                index == 10 ? navigation.navigate('SwordfishLesson') :
-                                                    index == 11 ? navigation.navigate('SinglesChainingLesson') : navigation.navigate('Home');
+        index == 0 ? navigation.navigate('Lesson',{params:'AMEND_NOTES'}) :
+            index == 1 ? navigation.navigate('Lesson',{params:'SIMPLIFY_NOTES'}) :
+                index == 2 ? navigation.navigate('Lesson',{params:'NAKED_SINGLE'}) :
+                    index == 3 ? navigation.navigate('Lesson',{params:'NAKED_SET'}) :
+                        index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) :
+                            index == 5 ? navigation.navigate('Lesson',{params:'HIDDEN_SET'}) :
+                                index == 6 ? navigation.navigate('Lesson',{params:'POINTING_PAIR'}) :
+                                    index == 7 ? navigation.navigate('Lesson',{params:'BOX_LINE_REDUCTION'}) :
+                                        index == 8 ? navigation.navigate('Lesson',{params:'SWORDFISH'}) :
+                                            index == 9 ? navigation.navigate('Lesson',{params:'X_WING'}) :
+                                                index == 10 ? navigation.navigate('Lesson',{params:'SINGLES_CHAINING'}) : navigation.navigate('Home');
     };
 
     function getLessonName(index: number):string {
         let lessonName: string;
-        index == 0 ? lessonName = 'AdjustNotesLesson' :
-            index == 1 ? lessonName = 'SimplifyNotesLesson' :
-                index == 2 ? lessonName = 'NakedSingleLesson' :
-                    index == 3 ? lessonName = 'HiddenSingleLesson' :
-                        index == 4 ? lessonName = 'NakedSetLesson' :
-                            index == 5 ? lessonName = 'HiddenSetLesson' :
-                                index == 6 ? lessonName = 'PointingPairLesson' :
-                                    index == 7 ? lessonName = 'PointingTripletLesson' :
-                                        index == 8 ? lessonName = 'BoxLineReductionLesson' :
-                                            index == 9 ? lessonName = 'XWingLesson' :
-                                                index == 10 ? lessonName = 'SwordfishLesson' :
-                                                    index == 11 ? lessonName = 'SinglesChainingLesson' : lessonName = 'Null';
+        index == 0 ? lessonName = 'Amend Notes' :
+            index == 1 ? lessonName = 'Simplify Notes' :
+                index == 2 ? lessonName = 'Naked Single' :
+                    index == 3 ? lessonName = 'Naked Set' :
+                        index == 4 ? lessonName = 'Hidden Single' :
+                            index == 5 ? lessonName = 'Hidden Set' :
+                                index == 6 ? lessonName = 'Pointing Pair' :
+                                    index == 7 ? lessonName = 'Box Line Reduction' :
+                                        index == 8 ? lessonName = 'X Wing' :
+                                            index == 9 ? lessonName = 'Swordfish' :
+                                                index == 10 ? lessonName = 'Singles Chaining' : lessonName = 'Null';
         return lessonName;
     }
 
@@ -61,7 +59,7 @@ const Ccarousel = () =>{
                     height={width / 4}
                     ref={ref}
                     autoPlay={false}
-                    data={[...new Array(12).keys()]}
+                    data={[...new Array(11).keys()]}
                     mode='parallax'
                     modeConfig={{
                       parallaxScrollingScale: 0.5,
@@ -90,7 +88,7 @@ const Ccarousel = () =>{
                     <Button onPress={() => ref.current?.scrollTo({count: -1})}>
                         <AntDesign name="leftcircleo" size={18}/>
                     </Button>
-                    <Button onPress={() => navigate(index)}>
+                    <Button mode="contained" onPress={() => navigate(index)}>
                         Start Lesson
                     </Button>
                     <Button onPress={() => ref.current?.scrollTo({count: 1})}>
@@ -109,7 +107,7 @@ const Ccarousel = () =>{
                         height={width / 1.5}
                         ref={ref}
                         autoPlay={false}
-                        data={[...new Array(6).keys()]}
+                        data={[...new Array(11).keys()]}
                         mode='parallax'
                         modeConfig={{
                           parallaxScrollingScale: 0.8,

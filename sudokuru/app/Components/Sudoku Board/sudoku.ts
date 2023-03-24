@@ -15,10 +15,11 @@ export function makeCountObject() {
     return countObj;
 }
 
-export function makeBoard({ puzzle }) {
+export function makeBoard({ puzzle }, initialPuzzle) {
     const rows = Array.from(Array(9).keys()).map(() => makeCountObject());
     const columns = Array.from(Array(9).keys()).map(() => makeCountObject());
     const squares = Array.from(Array(9).keys()).map(() => makeCountObject());
+    const initialPuzzleArray = initialPuzzle.match(/.{1,9}/g).map(row => row.split('').map(Number));
     const result = puzzle.map((row, i) => (
         row.map((cell, j) => {
             if (cell) {
@@ -28,10 +29,11 @@ export function makeBoard({ puzzle }) {
             }
             return {
                 value: puzzle[i][j] > 0 ? puzzle[i][j] : null,
-                prefilled: !!puzzle[i][j],
+                prefilled: !!initialPuzzleArray[j][i],
             };
         })
     ));
+    console.log(initialPuzzle);
     return fromJS({ puzzle: result, selected: false, inNoteMode: false, choices: { rows, columns, squares } });
 }
 
