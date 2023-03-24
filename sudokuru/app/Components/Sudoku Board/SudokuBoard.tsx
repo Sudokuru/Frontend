@@ -1273,9 +1273,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       {
         this.props.generatedGame.then(game => this.setState(game));
       }
-
       this.props.generatedGame.then(game => {
-        activeGameData = game.activeGame[0];
+        if (!game.activeGame) activeGameData = game.activeGame[0];
       });
 
       drillMode = this.props.isDrill;
