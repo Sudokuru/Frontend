@@ -11,6 +11,8 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {replaceChar} from "../../Pages/DrillPage";
+import {useNavigation} from "@react-navigation/native";
+
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -399,7 +401,22 @@ async function saveGame(activeGame) {
     });
     // console.log("Token: ", token);
 
+
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
+        if (res) {
+            console.log("Game progress was saved successfully!");
+        }
+    });
+}
+
+async function finishGame(activeGame) {
+    let token = null;
+
+    await getKeyString("access_token").then(result => {
+        token = result;
+    });
+
+    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
             console.log("Game progress was saved successfully!");
         }
@@ -488,7 +505,7 @@ const Cell = (props) => {
     {
       notesString += "000000000";
     }
-    else 
+    else
     {
       for (let i = 1; i <= 9; i++)
       {
@@ -507,25 +524,28 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-      // If there's no moves in the moves array, add the current move to the moves array
-      if (activeGameData.moves.length === 0)
-      {
-        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-        saveGame(activeGameData);
-      }
-      // there is a bug where initial state of board is added to end of moves array
-      else if (activeGameData.puzzle != flippedPuzzleString)
-      {
-        // If there's a difference between the last move and the current move, add the current move to the moves array
-        if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-             || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) 
-        {
-          activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-          saveGame(activeGameData);
+            // If there's no moves in the moves array, add the current move to the moves array
+            if (activeGameData.moves.length === 0) {
+                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+                saveGame(activeGameData);
+            }
+            // there is a bug where initial state of board is added to end of moves array
+            else if (activeGameData.puzzle != flippedPuzzleString){
+                // If there's a difference between the last move and the current move, add the current move to the moves array
+                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+                || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+                    saveGame(activeGameData);
+                }
+            }
+
+            // If all cells are filled in with the correct values, we want to finish the game
+            if (flippedPuzzleString == activeGameData.puzzleSolution){
+                finishGame(activeGameData);
+                navigation.navigate('Main Page');
+            }
         }
-      }
     }
-  }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
