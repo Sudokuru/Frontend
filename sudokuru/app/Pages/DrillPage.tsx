@@ -150,7 +150,6 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
@@ -169,8 +168,7 @@ const navigation: any = useNavigation();
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
-      console.log(game);
-      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
@@ -184,7 +182,7 @@ const navigation: any = useNavigation();
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
     let hint = Puzzles.getHint(boardArray, notesArray, strategy)
-    console.log(hint);
+    return hint;
   }
 
   return (
@@ -200,7 +198,7 @@ const navigation: any = useNavigation();
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
