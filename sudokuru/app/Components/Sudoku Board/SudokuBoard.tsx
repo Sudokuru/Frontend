@@ -422,7 +422,7 @@ const Cell = (props) => {
   // make that variable decrement when left arrow is pressed
   // TODO: weird edge case
   // if the step has removals in highlight mode and those notes aren't there
-    // add those notes back in
+  // add those notes back in
   if (inHintMode && currentStep > -1)
   {
     let currentHint = hintSteps[currentStep];
@@ -472,52 +472,60 @@ const Cell = (props) => {
     }
   }
 
-    if (!drillMode) {
-        // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
-        if (getCellNumber(x, y) === 0) {
-            puzzleString = "";
-            notesString = "";
-        }
-
-        puzzleString += value ? value : 0;
-
-        // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
-        if (notes === null) {
-            notesString += "000000000";
-        } else {
-            for (let i = 1; i <= 9; i++) {
-                notesString += notes.has(i) ? 1 : 0;
-            }
-        }
-
-        // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
-        if (getCellNumber(x, y) === 80) {
-
-            let flippedPuzzleString = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-
-            // flip the puzzleString so it is correct orientation.
-            for (let i = 0; i < puzzleString.length/9; i++) {
-                for (let j = 0; j < puzzleString.length/9; j++){
-                    flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
-                }
-            }
-
-            // If there's no moves in the moves array, add the current move to the moves array
-            if (activeGameData.moves.length === 0) {
-                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                saveGame(activeGameData);
-            }
-            // there is a bug where initial state of board is added to end of moves array
-            else if (activeGameData.puzzle != flippedPuzzleString){
-                // If there's a difference between the last move and the current move, add the current move to the moves array
-                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-                    || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                    saveGame(activeGameData);
-                }
-            }
-        }
+  if (!drillMode)
+  {
+    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
+    if (getCellNumber(x, y) === 0)
+    {
+      puzzleString = "";
+      notesString = "";
     }
+
+    puzzleString += value ? value : 0;
+
+    // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
+    if (notes === null)
+    {
+      notesString += "000000000";
+    }
+    else 
+    {
+      for (let i = 1; i <= 9; i++)
+      {
+        notesString += notes.has(i) ? 1 : 0;
+      }
+    }
+
+    // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
+    if (getCellNumber(x, y) === 80)
+    {
+
+      let flippedPuzzleString = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+      // flip the puzzleString so it is correct orientation.
+      for (let i = 0; i < puzzleString.length/9; i++)
+        for (let j = 0; j < puzzleString.length/9; j++)
+          flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
+
+      // If there's no moves in the moves array, add the current move to the moves array
+      if (activeGameData.moves.length === 0)
+      {
+        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(activeGameData);
+      }
+      // there is a bug where initial state of board is added to end of moves array
+      else if (activeGameData.puzzle != flippedPuzzleString)
+      {
+        // If there's a difference between the last move and the current move, add the current move to the moves array
+        if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+             || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) 
+        {
+          activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+          saveGame(activeGameData);
+        }
+      }
+    }
+  }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
@@ -1267,29 +1275,29 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   }
 
 
-    render = () => {
-      const { board } = this.state;
-      if (!board)
-      {
-        this.props.generatedGame.then(game => this.setState(game));
-      }
-      this.props.generatedGame.then(game => {
-        if (!game.activeGame) activeGameData = game.activeGame[0];
-      });
-
-      drillMode = this.props.isDrill;
-
-      return (
-        <View>
-          {board && !this.props.isDrill && this.renderTopBar()}
-          {board && this.renderPuzzle()}
-          {board &&
-            <View style={styles().bottomActions}>
-              {this.renderActions()}
-              {this.renderNumberControl()}
-            </View>
-          }
-        </View>
-      );
+  render = () => {
+    const { board } = this.state;
+    if (!board)
+    {
+      this.props.generatedGame.then(game => this.setState(game));
     }
+    this.props.generatedGame.then(game => {
+      if (game.activeGame) activeGameData = game.activeGame[0];
+    });
+
+    drillMode = this.props.isDrill;
+
+    return (
+      <View>
+        {board && !this.props.isDrill && this.renderTopBar()}
+        {board && this.renderPuzzle()}
+        {board &&
+          <View style={styles().bottomActions}>
+            {this.renderActions()}
+            {this.renderNumberControl()}
+          </View>
+        }
+      </View>
+    );
+  }
 }
