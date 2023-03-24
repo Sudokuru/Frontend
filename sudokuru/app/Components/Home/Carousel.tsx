@@ -88,7 +88,7 @@ const Ccarousel = () =>{
                     <Button onPress={() => ref.current?.scrollTo({count: -1})}>
                         <AntDesign name="leftcircleo" size={18}/>
                     </Button>
-                    <Button onPress={() => navigate(index)}>
+                    <Button mode="contained" onPress={() => navigate(index)}>
                         Start Lesson
                     </Button>
                     <Button onPress={() => ref.current?.scrollTo({count: 1})}>
