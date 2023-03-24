@@ -8,6 +8,22 @@ import PropTypes from 'prop-types';
 import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
+import {getKeyString} from "../../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL} from '@env'
+import {replaceChar} from "../../Pages/DrillPage";
+
+// Sudokuru Package Import
+const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
+
+// Sudokuru Package Constants
+const Puzzles = sudokuru.Puzzles;
+
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+let url = USERACTIVEGAMESBFFURL;
+let activeGameData = null;
+
+let drillMode = false;
+
 let fallbackHeight = 30;
 
 const styles = (cellSize, sizeConst) => StyleSheet.create({
@@ -17,9 +33,9 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     height: cellSize/(sizeConst)
   },
   hintAndPuzzleContainer: {
-    justifyContent: "space-evenly", 
+    justifyContent: "space-evenly",
     alignItems: "center",
-    flexDirection: "row", 
+    flexDirection: "row",
   },
   boardContainer: {
     display: 'flex',
@@ -174,7 +190,7 @@ const formatTime = (seconds) => {
   const paddedSeconds = secs < 10 ? "0" + secs : secs;
   // Return formatted string
   return `${paddedMinutes}:${paddedSeconds}`;
-};  
+};
 
 const NumberControl = (props) => {
   const { prefilled, inNoteMode, fillNumber, addNumberAsNote } = props;
@@ -237,7 +253,7 @@ const Puzzle = (props) => {
         <Pressable onPress={leftArrowClicked}>
           <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
         </Pressable>
-        : 
+        :
         <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
       }
       <View style={styles().boardContainer}>
@@ -285,7 +301,7 @@ const getCellNumber = (x, y) => {
 };
 
 const getBoxIndexFromCellNum = (cellNum) => {
-  return Math.floor((cellNum % 9) / 3) 
+  return Math.floor((cellNum % 9) / 3)
 }
 
 const print = (str, contents) => {
@@ -375,6 +391,24 @@ const gold = "#F2CA7E";
 
 // let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
+async function saveGame(activeGame) {
+    let token = null;
+
+    await getKeyString("access_token").then(result => {
+      token = result;
+    });
+    // console.log("Token: ", token);
+
+    Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
+        if (res) {
+            console.log("Game progress was saved successfully!");
+        }
+    });
+}
+
+let puzzleString = "";
+let notesString = "";
+
 const Cell = (props) => {
   const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep } = props;
   const cellSize = getCellSize();
@@ -438,6 +472,53 @@ const Cell = (props) => {
     }
   }
 
+    if (!drillMode) {
+        // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
+        if (getCellNumber(x, y) === 0) {
+            puzzleString = "";
+            notesString = "";
+        }
+
+        puzzleString += value ? value : 0;
+
+        // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
+        if (notes === null) {
+            notesString += "000000000";
+        } else {
+            for (let i = 1; i <= 9; i++) {
+                notesString += notes.has(i) ? 1 : 0;
+            }
+        }
+
+        // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
+        if (getCellNumber(x, y) === 80) {
+
+            let flippedPuzzleString = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
+            // flip the puzzleString so it is correct orientation.
+            for (let i = 0; i < puzzleString.length/9; i++) {
+                for (let j = 0; j < puzzleString.length/9; j++){
+                    flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
+                }
+            }
+
+            // If there's no moves in the moves array, add the current move to the moves array
+            if (activeGameData.moves.length === 0) {
+                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+                saveGame(activeGameData);
+            }
+            // there is a bug where initial state of board is added to end of moves array
+            else if (activeGameData.puzzle != flippedPuzzleString){
+                // If there's a difference between the last move and the current move, add the current move to the moves array
+                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+                    || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+                    saveGame(activeGameData);
+                }
+            }
+        }
+    }
+
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
@@ -454,7 +535,7 @@ const Cell = (props) => {
       let styleVal = isRemovalHighlight[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
       return <Text style={styleVal}>{noteVal}</Text>
     }
-  }  
+  }
 
   return (
     <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
@@ -751,7 +832,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
-    
+
     if (newHintMode == false)
     {
       let hintStepsLength = board.get('hintSteps').length;
@@ -825,14 +906,14 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[0].groups = groups;
         hintSteps[0].causes = causes;
         hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++) 
+        for (let i = 0; i < removals.length; i++)
           hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
 
         // highlight the groups, causes, and delete the removals
         hintSteps[1].groups = groups;
         hintSteps[1].causes = causes;
         hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++) 
+        for (let i = 0; i < removals.length; i++)
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "HIDDEN_PAIR":
@@ -1033,28 +1114,29 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       else this.fillNumber(newValue);
     };
 
-    return (
-      <Cell
-        prefilled={prefilled}
-        notes={notes}
-        sameValue={sameValue}
-        isSelected={isSelected}
-        isPeer={peer}
-        value={value}
-        onClick={(x, y) => { this.selectCell(x, y); }}
-        onValueChange={handleValueChange}
-        key={y}
-        x={x}
-        y={y}
-        conflict={conflict}
-        eraseSelected={this.eraseSelected}
-        inHintMode={inHintMode}
-        hintSteps={hintSteps}
-        deleteNotesFromRemovals={this.deleteNotesFromRemovals}
-        currentStep={currentStep}
-      />
-    );
-  };
+        return (
+            <Cell
+                prefilled={prefilled}
+                notes={notes}
+                sameValue={sameValue}
+                isSelected={isSelected}
+                isPeer={peer}
+                value={value}
+                onClick={(x, y) => { this.selectCell(x, y); }}
+                onValueChange={handleValueChange}
+                key={y}
+                x={x}
+                y={y}
+                conflict={conflict}
+                eraseSelected={this.eraseSelected}
+                inHintMode={inHintMode}
+                hintSteps={hintSteps}
+                deleteNotesFromRemovals={this.deleteNotesFromRemovals}
+                currentStep={currentStep}
+                game = {this.props.generatedGame.game}
+            />
+        );
+    };
 
   renderTopBar = () => {
     return(
@@ -1184,23 +1266,31 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     }
   }
 
-  render = () => {
-    const { board } = this.state;
-    if (!board)
-    {
-      this.props.generatedGame.then(game => this.setState(game));
+
+    render = () => {
+      const { board } = this.state;
+      if (!board)
+      {
+        this.props.generatedGame.then(game => this.setState(game));
+      }
+
+      this.props.generatedGame.then(game => {
+        activeGameData = game.activeGame[0];
+      });
+
+      drillMode = this.props.isDrill;
+
+      return (
+        <View>
+          {board && !this.props.isDrill && this.renderTopBar()}
+          {board && this.renderPuzzle()}
+          {board &&
+            <View style={styles().bottomActions}>
+              {this.renderActions()}
+              {this.renderNumberControl()}
+            </View>
+          }
+        </View>
+      );
     }
-    return (
-      <View>
-        {board && !this.props.isDrill && this.renderTopBar()}
-        {board && this.renderPuzzle()}
-        {board &&
-          <View style={styles().bottomActions}>
-            {this.renderActions()}
-            {this.renderNumberControl()}
-          </View>
-        }
-      </View>
-    );
-  }
 }

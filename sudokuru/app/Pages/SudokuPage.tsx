@@ -12,10 +12,24 @@ import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Med
 import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
 import { List } from 'immutable';
 import Header from "../Components/Header";
+import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useNavigation} from "@react-navigation/native";
+import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 
+// Sudokuru Package Import
+const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
-const SudokuPage = () => {
+// Sudokuru Package Constants
+const Puzzles = sudokuru.Puzzles;
+
+// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
+let difficulty = .1; // TODO Get difficulty from slider
+let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
+
+const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
+
+    const { gameOrigin } = route.params;
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -25,15 +39,46 @@ const SudokuPage = () => {
         return null;
     }
 
-    // TODO: This should eventually call greg's API for making the puzzle
-    function generateGame (finalCount = 20) {
-        const solution = makePuzzle();
-        let output = solution[0].map((_, colIndex) => solution.map(row => row[colIndex]));
-        const { puzzle } = pluck(solution, finalCount);
-        const board = makeBoard({ puzzle });
-        return {
-            board, history: List.of(board), historyOffSet: 0, solution,
-        };
+    async function generateGame(url) {
+        let token = null;
+      
+        await getKeyString("access_token").then(result => {
+          token = result;
+        });
+
+        let gameData = null;
+
+        if (gameOrigin == "start"){
+            gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
+                game => {
+                    let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+                    return {
+                        board,
+                        history: List.of(board),
+                        historyOffSet: 0,
+                        solution: game[0].puzzleSolution,
+                        activeGame: game,
+                    };
+                }
+            );
+        }
+        else if (gameOrigin == "resume"){
+            gameData = await Puzzles.getGame(url, token).then(
+                game => {
+                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
+                    return {
+                        board,
+                        history: List.of(board),
+                        historyOffSet: 0,
+                        solution: game[0].puzzleSolution,
+                        activeGame: game,
+                    };
+                }
+            );
+        }
+
+          return gameData;
     }
 
     return (
@@ -43,7 +88,7 @@ const SudokuPage = () => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame()} isDrill={false}/>
+                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
