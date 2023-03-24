@@ -168,7 +168,7 @@ const navigation: any = useNavigation();
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
-      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
