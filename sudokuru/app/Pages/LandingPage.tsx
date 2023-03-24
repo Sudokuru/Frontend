@@ -38,17 +38,17 @@ const LandingPage = () => {
                         <View style={styles(reSize).container}>
                             <View style={styles(reSize).boxtext}>
                                 <View style={styles(reSize).inner3}>
-                                    <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Your Guide to Becoming a </Text>
-                                    <Text style={{ fontSize: reSize / 20, color: '#D9A05B' }}> Sudoku Guru </Text>
+                                    <Text style={{ fontSize: reSize / 20, color: theme.colors.onPrimary }}> Your Guide to Becoming a </Text>
+                                    <Text style={{ fontSize: reSize / 20, color: theme.colors.primary }}> Sudoku Guru </Text>
                                     <Pressable
                                         style={({ pressed }) => [
-                                            { opacity: pressed ? 0.5 : 1.0, backgroundColor: '#D9A05B' }
+                                            { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary }
                                         ]}
                                         onPress={async () => {
                                             await canProceed();
                                         }}>
                                         <View>
-                                            <Text style={{ fontSize: reSize / 20, color: '#f2f2f2' }}> Get Started </Text>
+                                            <Text style={{ fontSize: reSize / 20, color: theme.colors.onPrimary }}> Get Started </Text>
                                         </View>
                                     </Pressable>
                                 </View>
@@ -69,6 +69,7 @@ const LandingPage = () => {
                     show={visible}
                     message="Please Login!"
                     closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
                     showConfirmButton={true}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
