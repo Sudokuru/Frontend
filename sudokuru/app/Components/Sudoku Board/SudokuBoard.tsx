@@ -28,6 +28,11 @@ let drillMode = false;
 
 let fallbackHeight = 30;
 
+// const darkBrown = "#A64732";
+
+// cause/removal cells
+const gold = "#F2CA7E";
+
 const styles = (cellSize, sizeConst) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
   hintArrowPlaceholderView: {
@@ -70,6 +75,11 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
     color: "#FF0000"
+  },
+  placementNoteText: {
+    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontFamily: 'Inter_300Light',
+    color: gold
   },
   cellView: {
     height: cellSize ? cellSize : fallbackHeight,
@@ -385,12 +395,6 @@ const getRemovalsFromHint = (board, hint) => {
   return removals
 }
 
-// cause cells
-const darkBrown = "#A64732";
-
-// cause/removal cells
-const gold = "#F2CA7E";
-
 // let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
 async function saveGame(activeGame) {
@@ -431,15 +435,9 @@ const Cell = (props) => {
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
-  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]
-  // TODO: THE PLAN
-  // DONE make output for hintSteps[0]
-  // DONE make output generalized based on some variable
-  // DONE make that variable increment when right arrow is pressed
-  // make that variable decrement when left arrow is pressed
-  // TODO: weird edge case
-  // if the step has removals in highlight mode and those notes aren't there
-  // add those notes back in
+  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]; 
+  let isPlacementHighlight = [false, false, false, false, false, false, false, false, false];
+
   if (inHintMode && currentStep > -1)
   {
     let currentHint = hintSteps[currentStep];
@@ -466,7 +464,11 @@ const Cell = (props) => {
         let currentCause_x = currentHint.causes[i][0];
         let currentCause_y = currentHint.causes[i][1];
         if (currentCause_x == x && currentCause_y == y)
-          bgColor = gold;
+        {
+          // naked single hard code override
+          if (currentHint.placements) bgColor = "white";
+          else bgColor = gold;
+        }
       }
     }
     // This handles just the styling, note deletion is not possible since the state would change during a render
@@ -486,6 +488,20 @@ const Cell = (props) => {
           }
         }
       }
+    }
+
+    if (currentHint.placements) // placement highlighting
+    {
+        let currentPlacement = currentHint.placements;
+        let currentPlacement_x = currentPlacement.position[0];
+        let currentPlacement_y = currentPlacement.position[1];
+        if (currentPlacement_x == x && currentPlacement_y == y)
+        {
+          if (currentPlacement.mode == "highlight")
+          {
+            isPlacementHighlight[currentPlacement.value - 1] = true;
+          }
+        }
     }
   }
 
@@ -524,28 +540,32 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-            // If there's no moves in the moves array, add the current move to the moves array
-            if (activeGameData.moves.length === 0) {
-                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                saveGame(activeGameData);
-            }
-            // there is a bug where initial state of board is added to end of moves array
-            else if (activeGameData.puzzle != flippedPuzzleString){
-                // If there's a difference between the last move and the current move, add the current move to the moves array
-                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-                || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                    saveGame(activeGameData);
-                }
-            }
-
-            // If all cells are filled in with the correct values, we want to finish the game
-            if (flippedPuzzleString == activeGameData.puzzleSolution){
-                finishGame(activeGameData);
-                navigation.navigate('Main Page');
-            }
+      // If there's no moves in the moves array, add the current move to the moves array
+      if (activeGameData.moves.length === 0)
+      {
+        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(activeGameData);
+      }
+      // there is a bug where initial state of board is added to end of moves array
+      else if (activeGameData.puzzle != flippedPuzzleString)
+      {
+        // If there's a difference between the last move and the current move, add the current move to the moves array
+        if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+            || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) 
+        {
+          activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+          saveGame(activeGameData);
         }
+      }
+
+      // If all cells are filled in with the correct values, we want to finish the game
+      if (flippedPuzzleString == activeGameData.puzzleSolution)
+      {
+        finishGame(activeGameData);
+        navigation.navigate('Main Page');
+      }
     }
+  }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
@@ -560,7 +580,10 @@ const Cell = (props) => {
   {
     if (notes.has(noteVal))
     {
-      let styleVal = isRemovalHighlight[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
+      let styleVal = styles(cellSize).noteText;
+      if (isRemovalHighlight[noteVal - 1]) styleVal = styles(cellSize).removalNoteText;
+      else if (isPlacementHighlight[noteVal - 1]) styleVal = styles(cellSize).placementNoteText;
+
       return <Text style={styleVal}>{noteVal}</Text>
     }
   }
@@ -636,7 +659,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -661,7 +684,7 @@ const ActionRow = (props) => {
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={!prefilled ? fillSelectedWithSolution && toggleHintMode : null}>
+      <Pressable onPress={!prefilled ? updateBoardInPlace && toggleHintMode : null}>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -674,8 +697,8 @@ ActionRow.propTypes = {
   undo: PropTypes.func.isRequired,
   toggleNoteMode: PropTypes.func.isRequired,
   eraseSelected: PropTypes.func.isRequired,
-  fillSelectedWithSolution: PropTypes.func.isRequired,
   toggleHintMode: PropTypes.func.isRequired,
+  updateBoardInPlace: PropTypes.func.isRequired,
 };
 
 const PauseButton = ({ handlePause, isPaused }) => {
@@ -736,23 +759,23 @@ function getCellSize() {
 function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
-    let cell = board.get('puzzle').getIn([x, y]);
-    cell = cell.delete('notes');
-    cell = fill ? cell.set('value', number) : cell.delete('value');
-    const increment = fill ? 1 : -1;
-    const rowPath = ['choices', 'rows', x, number];
-    const columnPath = ['choices', 'columns', y, number];
-    const squarePath = ['choices', 'squares',
-        ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
-    return board.setIn(rowPath, board.getIn(rowPath) + increment)
-        .setIn(columnPath, board.getIn(columnPath) + increment)
-        .setIn(squarePath, board.getIn(squarePath) + increment)
-        .setIn(['puzzle', x, y], cell);
+  let cell = board.get('puzzle').getIn([x, y]);
+  cell = cell.delete('notes');
+  cell = fill ? cell.set('value', number) : cell.delete('value');
+  const increment = fill ? 1 : -1;
+  const rowPath = ['choices', 'rows', x, number];
+  const columnPath = ['choices', 'columns', y, number];
+  const squarePath = ['choices', 'squares',
+    ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  return board.setIn(rowPath, board.getIn(rowPath) + increment)
+    .setIn(columnPath, board.getIn(columnPath) + increment)
+    .setIn(squarePath, board.getIn(squarePath) + increment)
+    .setIn(['puzzle', x, y], cell);
 }
 
 function getNumberOfGroupsAssignedForNumber(number, groups) {
-    return groups.reduce((accumulator, row) =>
-        accumulator + (row.get(number) > 0 ? 1 : 0), 0);
+  return groups.reduce((accumulator, row) =>
+    accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
 export default class SudokuBoard extends React.Component<any, any, any> {
@@ -805,7 +828,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       });
     }
     let notes = selectedCell.get('notes') || Set();
-    let actualValue = solution[x][y] || -1;
+    let actualValue = solution ? solution[x][y] : -1;
     if (notes.has(number)) {
       if (number !== actualValue)
         notes = notes.delete(number);
@@ -825,6 +848,14 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     history = history.push(newBoard);
     this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
   };
+
+  updateBoardInPlace = () => {
+    let { board, history } = this.state;
+    const { historyOffSet } = this.state;
+    history = history.slice(0, historyOffSet + 1);
+    history = history.push(board);
+    this.setState({ board, history, historyOffSet: history.size - 1 });
+  }
 
   canUndo = () => this.state.historyOffSet > 0
 
@@ -871,7 +902,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
-      this.setState({ board });
+
+      // if they are on the final step, push the hint operation to the history stack
+      if (currentStep == hintStepsLength - 1) this.updateBoard(board);
+      else this.setState({ board });
       return;
     }
     board = board.set('currentStep', 0);
@@ -902,6 +936,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "NAKED_SINGLE":
         console.log("Naked Single");
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the cause and placement
+        hintSteps[0].causes = causes;
+        hintSteps[0].placements = { ...placements[0], mode: "highlight" };
+
+        // highlight the cause and insert the placement
+        hintSteps[1].causes = causes;
+        hintSteps[1].placements = { ...placements[0], mode: "place" };
         break;
       case "NAKED_PAIR":
         console.log("Naked Pair");
@@ -992,6 +1037,25 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
   }
 
+  addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
+    let { board } = this.state;
+    board = board.set('currentStep', currentStep);
+    board = updateBoardWithNumber({
+      x, y, number: valueToAdd, fill: true, board,
+    });
+    return board;
+  }
+
+  deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
+    let { board } = this.state;
+    board = board.set('currentStep', currentStep);
+    board = updateBoardWithNumber({
+      x, y, number: valueToRemove, fill: false, board,
+    });
+    board = board.setIn(['puzzle', x, y, 'notes'], Set.of(valueToRemove));
+    return board;
+  }
+
   addNotesFromRemovals = (x, y, notesToAdd, currentStep) => {
     let { board } = this.state;
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
@@ -1035,7 +1099,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const { x, y } = board.get('selected');
     const currentValue = selectedCell.get('value');
 
-    let actualValue = solution[x][y] || -1;
+    let actualValue = solution ? solution[x][y] : -1;
     if (currentValue) {
       if (currentValue !== actualValue){
         this.fillNumber(false);
@@ -1048,15 +1112,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       board = board.setIn(['puzzle', x, y], selectedCell);
       this.updateBoard(board);
     }
-  }
-
-  fillSelectedWithSolution = () => {
-    const { board, solution } = this.state;
-    const selectedCell = this.getSelectedCell();
-    if (!selectedCell) return;
-    if (!solution) return;
-    const { x, y } = board.get('selected');
-    this.fillNumber(solution[x][y]);
   }
 
   fillNumber = (number) => {
@@ -1080,27 +1135,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     }
     this.updateBoard(board);
   };
-
-  // fillNumberAtPosition = (number, x, y) => {
-  //   let { board } = this.state;
-  //   const selectedCell = board.get('puzzle').getIn([x, y]);;
-  //   if (!selectedCell) return;
-  //   const prefilled = selectedCell.get('prefilled');
-  //   if (prefilled) return;
-  //   const currentValue = selectedCell.get('value');
-  //   if (currentValue) {
-  //     board = updateBoardWithNumber({
-  //       x, y, number: currentValue, fill: false, board: this.state.board,
-  //     });
-  //   }
-  //   const setNumber = currentValue !== number && number;
-  //   if (setNumber) {
-  //     board = updateBoardWithNumber({
-  //       x, y, number, fill: true, board,
-  //     });
-  //   }
-  //   this.updateBoard(board);
-  // };
 
   selectCell = (x, y) => {
     let { board } = this.state;
@@ -1179,21 +1213,30 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     if (currentStep == undefined || currentStep == hintSteps.length) return;
     board = board.set('currentStep', currentStep);
     this.setState({ board });
-    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    if (hintSteps[currentStep].removals)
     {
-      if (hintSteps[currentStep].removals[i].mode === "delete")
+      for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
       {
-        let x = hintSteps[currentStep].removals[i].position[0];
-        let y = hintSteps[currentStep].removals[i].position[1];
-        let notesToRemove = hintSteps[currentStep].removals[i].values;
-        board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
+        if (hintSteps[currentStep].removals[i].mode === "delete")
+        {
+          let x = hintSteps[currentStep].removals[i].position[0];
+          let y = hintSteps[currentStep].removals[i].position[1];
+          let notesToRemove = hintSteps[currentStep].removals[i].values;
+          board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
+        }
+      }
+    }
+    if (hintSteps[currentStep].placements)
+    {
+      if (hintSteps[currentStep].placements.mode === "place")
+      {
+        let x = hintSteps[currentStep].placements.position[0];
+        let y = hintSteps[currentStep].placements.position[1];
+        let valueToAdd = hintSteps[currentStep].placements.value;
+        board = this.addValueFromPlacement(x, y, valueToAdd, currentStep);
       }
     }
     this.setState({ board });
-  }
-
-  checkMarkClicked = () => {
-    this.toggleHintMode()
   }
 
   leftArrowClicked = () => {
@@ -1202,17 +1245,34 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let currentStep = board.get('currentStep') - 1;
     if (currentStep == undefined || currentStep < 0) return;
     board = board.set('currentStep', currentStep);
-    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    if (hintSteps[currentStep].removals)
     {
-      if (hintSteps[currentStep + 1].removals[i].mode === "delete")
+      for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
       {
-        let x = hintSteps[currentStep + 1].removals[i].position[0];
-        let y = hintSteps[currentStep + 1].removals[i].position[1];
-        let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
-        board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
+        if (hintSteps[currentStep + 1].removals[i].mode === "delete")
+        {
+          let x = hintSteps[currentStep + 1].removals[i].position[0];
+          let y = hintSteps[currentStep + 1].removals[i].position[1];
+          let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
+          board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
+        }
+      }
+    }
+    if (hintSteps[currentStep].placements)
+    {
+      if (hintSteps[currentStep + 1].placements.mode === "place")
+      {
+        let x = hintSteps[currentStep + 1].placements.position[0];
+        let y = hintSteps[currentStep + 1].placements.position[1];
+        let valueToRemove = hintSteps[currentStep + 1].placements.value;
+        board = this.deleteValueFromPlacement(x, y, valueToRemove, currentStep)
       }
     }
     this.setState({ board });
+  }
+
+  checkMarkClicked = () => {
+    this.toggleHintMode()
   }
 
   renderPuzzle = () => {
@@ -1264,7 +1324,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
-    const fillSelectedWithSolution = this.fillSelectedWithSolution;
     return (
       <ActionRow
         history={history}
@@ -1273,8 +1332,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
-        fillSelectedWithSolution={fillSelectedWithSolution}
         toggleHintMode={this.toggleHintMode}
+        updateBoardInPlace={this.updateBoardInPlace}
       />
     );
   }
