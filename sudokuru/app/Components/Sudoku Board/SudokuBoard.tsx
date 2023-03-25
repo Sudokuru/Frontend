@@ -1061,8 +1061,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
     let { board } = this.state;
     board = board.set('currentStep', currentStep);
-    board = board.setIn(['puzzle', x, y, 'notes'], Set(valueToRemove));
-    board = board.setIn(['puzzle', x, y, 'value'], null);
+    board = updateBoardWithNumber({
+      x, y, number: valueToRemove, fill: false, board,
+    });
+    board = board.setIn(['puzzle', x, y, 'notes'], Set.of(valueToRemove));
     return board;
   }
 
