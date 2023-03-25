@@ -28,6 +28,11 @@ let drillMode = false;
 
 let fallbackHeight = 30;
 
+// const darkBrown = "#A64732";
+
+// cause/removal cells
+const gold = "#F2CA7E";
+
 const styles = (cellSize, sizeConst) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
   hintArrowPlaceholderView: {
@@ -70,6 +75,11 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
     color: "#FF0000"
+  },
+  placementNoteText: {
+    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontFamily: 'Inter_300Light',
+    color: gold
   },
   cellView: {
     height: cellSize ? cellSize : fallbackHeight,
@@ -345,7 +355,15 @@ const getGroupsFromHint = (hint) => {
   }
   return groups
 }
-
+/*
+  placements = [
+    {
+      position: [0, 2],
+      value: 4
+    },
+    ...
+  ]
+*/
 const getPlacementsFromHint = (hint) => {
   let placements = []
   let temp = {}
@@ -384,12 +402,6 @@ const getRemovalsFromHint = (board, hint) => {
   }
   return removals
 }
-
-// cause cells
-const darkBrown = "#A64732";
-
-// cause/removal cells
-const gold = "#F2CA7E";
 
 // let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
 
@@ -431,18 +443,13 @@ const Cell = (props) => {
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
-  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]
-  // TODO: THE PLAN
-  // DONE make output for hintSteps[0]
-  // DONE make output generalized based on some variable
-  // DONE make that variable increment when right arrow is pressed
-  // make that variable decrement when left arrow is pressed
-  // TODO: weird edge case
-  // if the step has removals in highlight mode and those notes aren't there
-  // add those notes back in
+  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]; 
+  let isPlacementHighlight = [false, false, false, false, false, false, false, false, false];
+
   if (inHintMode && currentStep > -1)
   {
     let currentHint = hintSteps[currentStep];
+    // print("currentHint", currentHint)
 
     if (currentHint.groups) // group highlighting
     {
@@ -466,7 +473,11 @@ const Cell = (props) => {
         let currentCause_x = currentHint.causes[i][0];
         let currentCause_y = currentHint.causes[i][1];
         if (currentCause_x == x && currentCause_y == y)
-          bgColor = gold;
+        {
+          // naked single hard code override
+          if (currentHint.placements) bgColor = "white";
+          else bgColor = gold;
+        }
       }
     }
     // This handles just the styling, note deletion is not possible since the state would change during a render
@@ -486,6 +497,34 @@ const Cell = (props) => {
           }
         }
       }
+    }
+    /*
+      placements = [
+        {
+          position: [0, 2],
+          value: 4
+        },
+        ...
+      ]
+    */
+    if (currentHint.placements) // placement highlighting
+    {
+      print("currentHint.placements", currentHint.placements);
+      // for (let i = 0; i < currentHint.placements.length; i++)
+      // {
+        let currentPlacement = currentHint.placements;
+        let currentPlacement_x = currentPlacement.position[0];
+        let currentPlacement_y = currentPlacement.position[1];
+        print("current placement", currentPlacement)
+        if (currentPlacement_x == x && currentPlacement_y == y)
+        {
+          if (currentPlacement.mode == "highlight")
+          {
+            isPlacementHighlight[currentPlacement.value - 1] = true;
+            console.log("set placement")
+          }
+        }
+      // }
     }
   }
 
@@ -524,28 +563,32 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-            // If there's no moves in the moves array, add the current move to the moves array
-            if (activeGameData.moves.length === 0) {
-                activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                saveGame(activeGameData);
-            }
-            // there is a bug where initial state of board is added to end of moves array
-            else if (activeGameData.puzzle != flippedPuzzleString){
-                // If there's a difference between the last move and the current move, add the current move to the moves array
-                if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-                || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-                    activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-                    saveGame(activeGameData);
-                }
-            }
-
-            // If all cells are filled in with the correct values, we want to finish the game
-            if (flippedPuzzleString == activeGameData.puzzleSolution){
-                finishGame(activeGameData);
-                navigation.navigate('Main Page');
-            }
+      // If there's no moves in the moves array, add the current move to the moves array
+      if (activeGameData.moves.length === 0)
+      {
+        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(activeGameData);
+      }
+      // there is a bug where initial state of board is added to end of moves array
+      else if (activeGameData.puzzle != flippedPuzzleString)
+      {
+        // If there's a difference between the last move and the current move, add the current move to the moves array
+        if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+            || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) 
+        {
+          activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+          saveGame(activeGameData);
         }
+      }
+
+      // If all cells are filled in with the correct values, we want to finish the game
+      if (flippedPuzzleString == activeGameData.puzzleSolution)
+      {
+        finishGame(activeGameData);
+        navigation.navigate('Main Page');
+      }
     }
+  }
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
@@ -560,7 +603,14 @@ const Cell = (props) => {
   {
     if (notes.has(noteVal))
     {
-      let styleVal = isRemovalHighlight[noteVal - 1] ? styles(cellSize).removalNoteText : styles(cellSize).noteText
+      let styleVal = styles(cellSize).noteText;
+      if (isRemovalHighlight[noteVal - 1]) styleVal = styles(cellSize).removalNoteText;
+      else if (isPlacementHighlight[noteVal - 1]) 
+      {
+        console.log("sanity")
+        styleVal = styles(cellSize).placementNoteText;
+      }
+
       return <Text style={styleVal}>{noteVal}</Text>
     }
   }
@@ -805,7 +855,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       });
     }
     let notes = selectedCell.get('notes') || Set();
-    let actualValue = solution[x][y] || -1;
+    let actualValue = solution ? solution[x][y] : -1;
     if (notes.has(number)) {
       if (number !== actualValue)
         notes = notes.delete(number);
@@ -902,6 +952,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "NAKED_SINGLE":
         console.log("Naked Single");
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the cause and placement
+        hintSteps[0].causes = causes;
+        hintSteps[0].placements = { ...placements[0], mode: "highlight" };
+
+        // highlight the cause and insert the placement
+        hintSteps[1].causes = causes;
+        hintSteps[1].placements = { ...placements[0], mode: "place" };
         break;
       case "NAKED_PAIR":
         console.log("Naked Pair");
@@ -1202,14 +1263,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let currentStep = board.get('currentStep') - 1;
     if (currentStep == undefined || currentStep < 0) return;
     board = board.set('currentStep', currentStep);
-    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    if (hintSteps[currentStep].removals)
     {
-      if (hintSteps[currentStep + 1].removals[i].mode === "delete")
+      for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
       {
-        let x = hintSteps[currentStep + 1].removals[i].position[0];
-        let y = hintSteps[currentStep + 1].removals[i].position[1];
-        let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
-        board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
+        if (hintSteps[currentStep + 1].removals[i].mode === "delete")
+        {
+          let x = hintSteps[currentStep + 1].removals[i].position[0];
+          let y = hintSteps[currentStep + 1].removals[i].position[1];
+          let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
+          board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
+        }
       }
     }
     this.setState({ board });
