@@ -682,7 +682,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode, updateBoardInPlace } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -707,7 +707,7 @@ const ActionRow = (props) => {
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={!prefilled ? fillSelectedWithSolution && toggleHintMode : null}>
+      <Pressable onPress={!prefilled ? fillSelectedWithSolution && updateBoardInPlace && toggleHintMode : null}>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -722,6 +722,7 @@ ActionRow.propTypes = {
   eraseSelected: PropTypes.func.isRequired,
   fillSelectedWithSolution: PropTypes.func.isRequired,
   toggleHintMode: PropTypes.func.isRequired,
+  updateBoardInPlace: PropTypes.func.isRequired,
 };
 
 const PauseButton = ({ handlePause, isPaused }) => {
@@ -872,6 +873,14 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
   };
 
+  updateBoardInPlace = () => {
+    let { board, history } = this.state;
+    const { historyOffSet } = this.state;
+    history = history.slice(0, historyOffSet + 1);
+    history = history.push(board);
+    this.setState({ board, history, historyOffSet: history.size - 1 });
+  }
+
   canUndo = () => this.state.historyOffSet > 0
 
   redo = () => {
@@ -917,7 +926,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
-      this.setState({ board });
+
+      // if they are on the final step, push the hint operation to the history stack
+      if (currentStep == hintStepsLength - 1) this.updateBoard(board);
+      else this.setState({ board });
       return;
     }
     board = board.set('currentStep', 0);
@@ -1358,6 +1370,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         eraseSelected={eraseSelected}
         fillSelectedWithSolution={fillSelectedWithSolution}
         toggleHintMode={this.toggleHintMode}
+        updateBoardInPlace={this.updateBoardInPlace}
       />
     );
   }
