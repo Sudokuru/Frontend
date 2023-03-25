@@ -119,10 +119,10 @@ const HomePage = () => {
                             <DifficultySlider />
                         </View>
 
-                        <View style={{top: reSize/2}}>
+                        <View style={{top: reSize/2, flexDirection: 'row'}}>
                             {
                                 (resumeVisible) ?
-                                    <Button style={{top:reSize/2, right: reSize}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                    <Button style={{right: reSize}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
                                         Resume Puzzle
                                     </Button> : <></>
                             }
