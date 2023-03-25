@@ -1320,7 +1320,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (currentStep + 1 == 1) onFirstStep = true;
       if (currentStep + 1 == numHintSteps) onFinalStep = true;
     }
-    print("board", board);
     return (
       <Puzzle
         inHintMode = { board.get('inHintMode') }
