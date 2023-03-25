@@ -601,11 +601,7 @@ const Cell = (props) => {
     {
       let styleVal = styles(cellSize).noteText;
       if (isRemovalHighlight[noteVal - 1]) styleVal = styles(cellSize).removalNoteText;
-      else if (isPlacementHighlight[noteVal - 1]) 
-      {
-        console.log("sanity")
-        styleVal = styles(cellSize).placementNoteText;
-      }
+      else if (isPlacementHighlight[noteVal - 1]) styleVal = styles(cellSize).placementNoteText;
 
       return <Text style={styleVal}>{noteVal}</Text>
     }
@@ -1122,7 +1118,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const { x, y } = board.get('selected');
     const currentValue = selectedCell.get('value');
 
-    let actualValue = solution[x][y] || -1;
+    let actualValue = solution ? solution[x][y] : -1;
     if (currentValue) {
       if (currentValue !== actualValue){
         this.fillNumber(false);
@@ -1257,7 +1253,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         let y = hintSteps[currentStep].placements.position[1];
         let valueToAdd = hintSteps[currentStep].placements.value;
         board = this.addValueFromPlacement(x, y, valueToAdd, currentStep);
-        console.log("finished adding val from placement")
       }
     }
     this.setState({ board });
