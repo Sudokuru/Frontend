@@ -355,15 +355,7 @@ const getGroupsFromHint = (hint) => {
   }
   return groups
 }
-/*
-  placements = [
-    {
-      position: [0, 2],
-      value: 4
-    },
-    ...
-  ]
-*/
+
 const getPlacementsFromHint = (hint) => {
   let placements = []
   let temp = {}
@@ -497,19 +489,9 @@ const Cell = (props) => {
         }
       }
     }
-    /*
-      placements = [
-        {
-          position: [0, 2],
-          value: 4
-        },
-        ...
-      ]
-    */
+
     if (currentHint.placements) // placement highlighting
     {
-      // for (let i = 0; i < currentHint.placements.length; i++)
-      // {
         let currentPlacement = currentHint.placements;
         let currentPlacement_x = currentPlacement.position[0];
         let currentPlacement_y = currentPlacement.position[1];
@@ -520,7 +502,6 @@ const Cell = (props) => {
             isPlacementHighlight[currentPlacement.value - 1] = true;
           }
         }
-      // }
     }
   }
 
