@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Platform, Pressable} from "react-native";
+import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
 import {Text, Button, useTheme} from 'react-native-paper';
 import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
@@ -25,6 +25,9 @@ const HomePage = () => {
     const Puzzles = sudokuru.Puzzles;
 
     const theme = useTheme();
+
+    const size = useWindowDimensions();
+    const reSize = Math.min(size.width, size.height) / 25;
 
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
@@ -73,178 +76,114 @@ const HomePage = () => {
         return null;
     }
 
- if(Platform.OS === 'web'){
     return (
-        <View style={{height: '100%', width: '100%'}}>
-            <Header page={'Home'}/>
-            <View>
-                <View style={styles.container1}>
+        <SafeAreaProvider>
+            <SafeAreaView style={{height: '100%', width: '100%'}}>
+                <Header page={'Home'}/>
+                <View style={styles.container}>
+                    <View style={styles.container1}>
 
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{color: theme.colors.onPrimary, fontSize: 30,  fontWeight: 'bold'}}>Learn </Text>
-                        <Text style={{color: theme.colors.primary, fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
-                        <Pressable onPress={() => showLearnHelp()}>
-                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
-                        </Pressable>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Learn </Text>
+                            <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>new strategies</Text>
+                            <Pressable onPress={() => showLearnHelp()}>
+                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                            </Pressable>
+                        </View>
+
+                        <CCarousel/>
+
+                        <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
+                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
+                            <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>with a strategy</Text>
+                            <Pressable onPress={() => showDrillHelp()}>
+                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                            </Pressable>
+                        </View>
+
+                        <View style={{padding: reSize/4}}>
+                            <Button style={{top:reSize/2}} mode="contained" onPress={() => navigation.openDrawer()}>
+                                Start Drill
+                            </Button>
+                        </View>
+
+                        <View style={{top:20, flexDirection: 'row', padding: reSize/4}}>
+                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Play </Text>
+                            <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>with a random puzzle</Text>
+                            <Pressable onPress={() => showPlayHelp()}>
+                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                            </Pressable>
+                        </View>
+
+                        <View style={{top:reSize/2, padding: reSize/4}}>
+                            <DifficultySlider />
+                        </View>
+
+                        <View style={{top: reSize/2}}>
+                            {
+                                (resumeVisible) ?
+                                    <Button style={{top:reSize/2, right: reSize}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                        Resume Puzzle
+                                    </Button> : <></>
+                            }
+
+                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                                Start Puzzle
+                            </Button>
+                        </View>
+
+                        <StatusBar style="auto" />
                     </View>
-
-                    <CCarousel/>
-
-                    <View style={{top:20, flexDirection: 'row', padding: 10}}>
-                        <Text style={{color: theme.colors.onPrimary, fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
-                        <Text style={{color: theme.colors.primary, fontSize: 28,  fontWeight: 'bold'}}>with a strategy</Text>
-                        <Pressable onPress={() => showDrillHelp()}>
-                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
-                        </Pressable>
-                    </View>
-
-                    <View style={{padding: 10}}>
-                        <Button style={{top:20}} mode="contained" onPress={() => navigation.openDrawer()}>
-                            Start Drill
-                        </Button>
-                    </View>
-
-                    <View style={{top:20, flexDirection: 'row', padding: 10}}>
-                        <Text style={{color: theme.colors.onPrimary, fontSize: 28,  fontWeight: 'bold'}}>Play </Text>
-                        <Text style={{color: theme.colors.primary, fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
-                        <Pressable onPress={() => showPlayHelp()}>
-                            <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
-                        </Pressable>
-                    </View>
-
-                    <View style={{top:20, padding: 10}}>
-                        <DifficultySlider />
-                    </View>
-
-                   <View style={styles.playButtons}>
-                       {
-                           (resumeVisible) ?
-                               <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                                   Resume Puzzle
-                               </Button> : <></>
-                       }
-
-                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                            Start Puzzle
-                        </Button>
-                   </View>
-
-                    <StatusBar style="auto" />
                 </View>
-            </View>
-            <Alert
-                show={learnHelpVisible}
-                title="Learning Help"
-                message={`Select a strategy to learn by navigating through the carousel.\n\nNavigate the carousel by clicking and dragging left/right or clicking the left/right arrows.\n\nTo proceed to the selected lesson, either click the lesson text or click the "Start Lesson" button.\n\nWe have picked the optimal learning order for you since more advanced strategies require knowledge of proceeding strategies.\n\nStrategies you have already learned will be greyed out, but you will still have access to them.`}
-                messageStyle={{maxWidth: 500}}
-                showConfirmButton={true}
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                confirmText={"OK"}
-                confirmButtonColor={theme.colors.background}
-                onConfirmPressed={() => {
-                    hideLearnHelp();
-                }}
-            />
-            <Alert
-                show={drillHelpVisible}
-                title="Drill Help"
-                message={`Drills are a place where you can practice a strategy.\n\nWhen you click the "Start Drill" button, a menu will appear on the left side of your screen with a list of all strategies you can practice.\n\nSelecting a strategy from the list will navigate you to the Drill page. This page has a puzzle where you must use the strategy to solve the next step in the puzzle.`}
-                messageStyle={{maxWidth: 500}}
-                showConfirmButton={true}
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                confirmText={"OK"}
-                confirmButtonColor={theme.colors.background}
-                onConfirmPressed={() => {
-                    hideDrillHelp();
-                }}
-            />
-            <Alert
-                show={playHelpVisible}
-                title="Play Help"
-                message={`To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\nYou will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.`}
-                messageStyle={{maxWidth: 500}}
-                showConfirmButton={true}
-                closeOnTouchOutside={false}
-                closeOnHardwareBackPress={false}
-                confirmText={"OK"}
-                confirmButtonColor={theme.colors.background}
-                onConfirmPressed={() => {
-                    hidePlayHelp();
-                }}
-            />
-        </View>
-    );}
-    else{
-        return(
-            <SafeAreaProvider>
-                <SafeAreaView style={styles.container}>
-                    <Button style={styles.loginButton} mode="contained" onPress={() => navigation.openDrawer()}>
-                                    Drills
-                    </Button>
-
-                    <View>
-                        <Text style={{top:-20}}>
-                        <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>Discover </Text>
-                        <Text style={{color: '#D9A05B', fontSize: 30,  fontWeight: 'bold'}}>new strategies</Text>
-                        </Text>
-                    </View>
-
-                    <View>
-                    <CCarousel/>
-                    </View>
-
-                    <View>
-                        <Text style={{top:20}}>
-                        <Text style={{color: '#D9A05B', fontSize: 28,  fontWeight: 'bold'}}>Train </Text>
-                        <Text style={{color: '#F2F2F2', fontSize: 28,  fontWeight: 'bold'}}>with a random puzzle</Text>
-                        </Text>
-                    </View>
-
-                    <View>
-                        <DifficultySlider />
-                    </View>
-
-
-                    <View style={styles.playButtons}>
-                        {
-                            (resumeVisible) ?
-                                <Button style={{top:20, right: 40}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
-                                    Resume
-                                </Button> : <></>
-                        }
-
-                        <Button style={{top:20}} mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
-                            Start
-                        </Button>
-                    </View>
-                    <StatusBar style="auto" />
-                </SafeAreaView>
-            </SafeAreaProvider>
+                <Alert
+                    show={learnHelpVisible}
+                    title="Learning Help"
+                    message={`Select a strategy to learn by navigating through the carousel.\n\nNavigate the carousel by clicking and dragging left/right or clicking the left/right arrows.\n\nTo proceed to the selected lesson, either click the lesson text or click the "Start Lesson" button.\n\nWe have picked the optimal learning order for you since more advanced strategies require knowledge of proceeding strategies.\n\nStrategies you have already learned will be greyed out, but you will still have access to them.`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideLearnHelp();
+                    }}
+                />
+                <Alert
+                    show={drillHelpVisible}
+                    title="Drill Help"
+                    message={`Drills are a place where you can practice a strategy.\n\nWhen you click the "Start Drill" button, a menu will appear on the left side of your screen with a list of all strategies you can practice.\n\nSelecting a strategy from the list will navigate you to the Drill page. This page has a puzzle where you must use the strategy to solve the next step in the puzzle.`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideDrillHelp();
+                    }}
+                />
+                <Alert
+                    show={playHelpVisible}
+                    title="Play Help"
+                    message={`To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\nYou will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hidePlayHelp();
+                    }}
+                />
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
-    }
 };
 
 
 const styles = StyleSheet.create({
-    toggleIcons: {
-        flexDirection: 'row',
-        margin: 5
-    },
-    profileHeader: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
-    profileText: {
-        fontSize: 20,
-    },
-    profileButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
     container: {
         flex: 1,
         alignItems: 'center',
@@ -254,19 +193,7 @@ const styles = StyleSheet.create({
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-        },
-    playButtons: {
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 10
-        },
-    loginButton:{
-        position: 'absolute',
-        right: 10,
-        top: 45
-      },
+    },
 });
 
 export default HomePage;
