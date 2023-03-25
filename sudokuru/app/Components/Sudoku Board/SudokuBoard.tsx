@@ -449,7 +449,6 @@ const Cell = (props) => {
   if (inHintMode && currentStep > -1)
   {
     let currentHint = hintSteps[currentStep];
-    // print("currentHint", currentHint)
 
     if (currentHint.groups) // group highlighting
     {
@@ -509,19 +508,16 @@ const Cell = (props) => {
     */
     if (currentHint.placements) // placement highlighting
     {
-      print("currentHint.placements", currentHint.placements);
       // for (let i = 0; i < currentHint.placements.length; i++)
       // {
         let currentPlacement = currentHint.placements;
         let currentPlacement_x = currentPlacement.position[0];
         let currentPlacement_y = currentPlacement.position[1];
-        print("current placement", currentPlacement)
         if (currentPlacement_x == x && currentPlacement_y == y)
         {
           if (currentPlacement.mode == "highlight")
           {
             isPlacementHighlight[currentPlacement.value - 1] = true;
-            console.log("set placement")
           }
         }
       // }
@@ -786,23 +782,23 @@ function getCellSize() {
 function updateBoardWithNumber({
                                    x, y, number, fill = true, board,
                                }) {
-    let cell = board.get('puzzle').getIn([x, y]);
-    cell = cell.delete('notes');
-    cell = fill ? cell.set('value', number) : cell.delete('value');
-    const increment = fill ? 1 : -1;
-    const rowPath = ['choices', 'rows', x, number];
-    const columnPath = ['choices', 'columns', y, number];
-    const squarePath = ['choices', 'squares',
-        ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
-    return board.setIn(rowPath, board.getIn(rowPath) + increment)
-        .setIn(columnPath, board.getIn(columnPath) + increment)
-        .setIn(squarePath, board.getIn(squarePath) + increment)
-        .setIn(['puzzle', x, y], cell);
+  let cell = board.get('puzzle').getIn([x, y]);
+  cell = cell.delete('notes');
+  cell = fill ? cell.set('value', number) : cell.delete('value');
+  const increment = fill ? 1 : -1;
+  const rowPath = ['choices', 'rows', x, number];
+  const columnPath = ['choices', 'columns', y, number];
+  const squarePath = ['choices', 'squares',
+    ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  return board.setIn(rowPath, board.getIn(rowPath) + increment)
+    .setIn(columnPath, board.getIn(columnPath) + increment)
+    .setIn(squarePath, board.getIn(squarePath) + increment)
+    .setIn(['puzzle', x, y], cell);
 }
 
 function getNumberOfGroupsAssignedForNumber(number, groups) {
-    return groups.reduce((accumulator, row) =>
-        accumulator + (row.get(number) > 0 ? 1 : 0), 0);
+  return groups.reduce((accumulator, row) =>
+    accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
 export default class SudokuBoard extends React.Component<any, any, any> {
@@ -1053,6 +1049,23 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
   }
 
+  addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
+    let { board } = this.state;
+    board = board.set('currentStep', currentStep);
+    board = updateBoardWithNumber({
+      x, y, number: valueToAdd, fill: true, board,
+    });
+    return board;
+  }
+
+  deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
+    let { board } = this.state;
+    board = board.set('currentStep', currentStep);
+    board = board.setIn(['puzzle', x, y, 'notes'], Set(valueToRemove));
+    board = board.setIn(['puzzle', x, y, 'value'], null);
+    return board;
+  }
+
   addNotesFromRemovals = (x, y, notesToAdd, currentStep) => {
     let { board } = this.state;
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
@@ -1142,27 +1155,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.updateBoard(board);
   };
 
-  // fillNumberAtPosition = (number, x, y) => {
-  //   let { board } = this.state;
-  //   const selectedCell = board.get('puzzle').getIn([x, y]);;
-  //   if (!selectedCell) return;
-  //   const prefilled = selectedCell.get('prefilled');
-  //   if (prefilled) return;
-  //   const currentValue = selectedCell.get('value');
-  //   if (currentValue) {
-  //     board = updateBoardWithNumber({
-  //       x, y, number: currentValue, fill: false, board: this.state.board,
-  //     });
-  //   }
-  //   const setNumber = currentValue !== number && number;
-  //   if (setNumber) {
-  //     board = updateBoardWithNumber({
-  //       x, y, number, fill: true, board,
-  //     });
-  //   }
-  //   this.updateBoard(board);
-  // };
-
   selectCell = (x, y) => {
     let { board } = this.state;
     board = board.set('selected', { x, y });
@@ -1240,21 +1232,31 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     if (currentStep == undefined || currentStep == hintSteps.length) return;
     board = board.set('currentStep', currentStep);
     this.setState({ board });
-    for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+    if (hintSteps[currentStep].removals)
     {
-      if (hintSteps[currentStep].removals[i].mode === "delete")
+      for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
       {
-        let x = hintSteps[currentStep].removals[i].position[0];
-        let y = hintSteps[currentStep].removals[i].position[1];
-        let notesToRemove = hintSteps[currentStep].removals[i].values;
-        board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
+        if (hintSteps[currentStep].removals[i].mode === "delete")
+        {
+          let x = hintSteps[currentStep].removals[i].position[0];
+          let y = hintSteps[currentStep].removals[i].position[1];
+          let notesToRemove = hintSteps[currentStep].removals[i].values;
+          board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
+        }
+      }
+    }
+    if (hintSteps[currentStep].placements)
+    {
+      if (hintSteps[currentStep].placements.mode === "place")
+      {
+        let x = hintSteps[currentStep].placements.position[0];
+        let y = hintSteps[currentStep].placements.position[1];
+        let valueToAdd = hintSteps[currentStep].placements.value;
+        board = this.addValueFromPlacement(x, y, valueToAdd, currentStep);
+        console.log("finished adding val from placement")
       }
     }
     this.setState({ board });
-  }
-
-  checkMarkClicked = () => {
-    this.toggleHintMode()
   }
 
   leftArrowClicked = () => {
@@ -1276,7 +1278,21 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         }
       }
     }
+    if (hintSteps[currentStep].placements)
+    {
+      if (hintSteps[currentStep + 1].placements.mode === "place")
+      {
+        let x = hintSteps[currentStep + 1].placements.position[0];
+        let y = hintSteps[currentStep + 1].placements.position[1];
+        let valueToRemove = hintSteps[currentStep + 1].placements.value;
+        board = this.deleteValueFromPlacement(x, y, valueToRemove, currentStep)
+      }
+    }
     this.setState({ board });
+  }
+
+  checkMarkClicked = () => {
+    this.toggleHintMode()
   }
 
   renderPuzzle = () => {
@@ -1290,6 +1306,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (currentStep + 1 == 1) onFirstStep = true;
       if (currentStep + 1 == numHintSteps) onFinalStep = true;
     }
+    print("board", board);
     return (
       <Puzzle
         inHintMode = { board.get('inHintMode') }
