@@ -51,6 +51,12 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         if (gameOrigin == "start"){
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
+                    // If game object is not returned, you get redirected to Main Page
+                    if (game[0].puzzle == null){
+                        console.log(game);
+                        navigation.navigate("Main Page");
+                        return;
+                    }
                     let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
                     return {
                         board,
