@@ -682,7 +682,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, fillSelectedWithSolution, toggleHintMode, updateBoardInPlace } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -707,7 +707,7 @@ const ActionRow = (props) => {
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={!prefilled ? fillSelectedWithSolution && updateBoardInPlace && toggleHintMode : null}>
+      <Pressable onPress={!prefilled ? updateBoardInPlace && toggleHintMode : null}>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -720,7 +720,6 @@ ActionRow.propTypes = {
   undo: PropTypes.func.isRequired,
   toggleNoteMode: PropTypes.func.isRequired,
   eraseSelected: PropTypes.func.isRequired,
-  fillSelectedWithSolution: PropTypes.func.isRequired,
   toggleHintMode: PropTypes.func.isRequired,
   updateBoardInPlace: PropTypes.func.isRequired,
 };
@@ -1138,15 +1137,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     }
   }
 
-  fillSelectedWithSolution = () => {
-    const { board, solution } = this.state;
-    const selectedCell = this.getSelectedCell();
-    if (!selectedCell) return;
-    if (!solution) return;
-    const { x, y } = board.get('selected');
-    this.fillNumber(solution[x][y]);
-  }
-
   fillNumber = (number) => {
     let { board } = this.state;
     const selectedCell = this.getSelectedCell();
@@ -1358,7 +1348,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
-    const fillSelectedWithSolution = this.fillSelectedWithSolution;
     return (
       <ActionRow
         history={history}
@@ -1367,7 +1356,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
-        fillSelectedWithSolution={fillSelectedWithSolution}
         toggleHintMode={this.toggleHintMode}
         updateBoardInPlace={this.updateBoardInPlace}
       />
