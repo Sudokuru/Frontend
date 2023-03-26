@@ -25,7 +25,7 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let difficulty = .1; // TODO: Get difficulty from slider
-let strategies = ["NAKED_PAIR"]; // TODO: Get strategies from previous page
+let strategies = ["AMEND_NOTES"]; // TODO: Get strategies from previous page
 
 updateBoard = (newBoard) => {
   let { history } = this.state;

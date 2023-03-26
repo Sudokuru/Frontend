@@ -842,6 +842,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
+    console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -1415,6 +1416,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     });
 
     drillMode = this.props.isDrill;
+    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>
