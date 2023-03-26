@@ -26,10 +26,6 @@ const drawerItemsMain = [
       {nav: 'Home', routeName: 'Naked Pair', title: 'Naked Pair'},
       {nav: 'Home', routeName: 'Naked Triplet', title: 'Naked Triplet'},
       {nav: 'Home', routeName: 'Naked Quadruplet', title: 'Naked Quadruplet'},
-      {nav: 'Home', routeName: 'Naked Quintuplet', title: 'Naked Quintuplet'},
-      {nav: 'Home', routeName: 'Naked Sextuplet', title: 'Naked Sextuplet'},
-      {nav: 'Home', routeName: 'Naked Septuplet', title: 'Naked Septuplet'},
-      {nav: 'Home', routeName: 'Naked Octuplet', title: 'Naked Octuplet'},
     ],
   },
   {
@@ -40,33 +36,13 @@ const drawerItemsMain = [
         {nav: 'Home', routeName: 'Hidden Pair', title: 'Hidden Pair'},
         {nav: 'Home', routeName: 'Hidden Triplet', title: 'Hidden Triplet'},
         {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
-        {nav: 'Home', routeName: 'Hidden Quintuplet', title: 'Hidden Quintuplet'},
-        {nav: 'Home', routeName: 'Hidden Sextuplet', title: 'Hidden Sextuplet'},
-        {nav: 'Home', routeName: 'Hidden Septuplet', title: 'Hidden Septuplet'},
-        {nav: 'Home', routeName: 'Hidden Octuplet', title: 'Hidden Octuplet'},
-
       ],
   },
-  {
-      key: 'Box Line Reduction',
-      title: 'Box Line Reduction',
-      routes: [{nav: 'Home', routeName: 'Box Line Reduction', title: 'Box Line Reduction'}],
-  },
-  {
-      key: 'Swordfish',
-      title: 'Swordfish',
-      routes: [{nav: 'Home', routeName: 'Swordfish', title: 'Swordfish'}],
-  },
-  {
-      key: 'X-Wing Strategy',
-      title: 'X-Wing Strategy',
-      routes: [{nav: 'Home', routeName: 'X-Wing Strategy', title: 'X-Wing Strategy'}],
-  },
-  {
-      key: 'Singles Chaining',
-      title: 'Singles Chaining',
-      routes: [{nav: 'Home', routeName: 'Singles Chaining', title: 'Singles Chaining'}],
-  },
+  // {
+  //     key: 'Pointing Pair',
+  //     title: 'Pointing Pair',
+  //     routes: [{nav: 'Home', routeName: 'Pointing Pair', title: 'Pointing Pair'}],
+  // },
 ];
 
 function HomeDrawer(){
@@ -75,28 +51,16 @@ function HomeDrawer(){
     return(
      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
       screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", }}>
-                              <Drawer.Screen name="Main Page" component={HomePage} />
-                              <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Triplet" initialParams={{ params: ["NAKED_TRIPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Quadruplet" initialParams={{ params: ["NAKED_QUADRUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Quintuplet" initialParams={{ params: ["NAKED_QUINTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Sextuplet" initialParams={{ params: ["NAKED_SEXTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Septuplet" initialParams={{ params: ["NAKED_SEPTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Naked Octuplet" initialParams={{ params: ["NAKED_OCTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Single" initialParams={{ params: ["HIDDEN_SINGLE"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Pair" initialParams={{ params: ["HIDDEN_PAIR"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Triplet" initialParams={{ params: ["HIDDEN_TRIPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Quintuplet" initialParams={{ params: ["HIDDEN_QUINTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Sextuplet" initialParams={{ params: ["HIDDEN_SEXTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Septuplet" initialParams={{ params: ["HIDDEN_SEPTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Hidden Octuplet" initialParams={{ params: ["HIDDEN_OCTUPLET"] }} component={DrillPage} />
-                              <Drawer.Screen name="Pointing Pairs" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
-                              <Drawer.Screen name="Box Line Reduction" initialParams={{ params: ["BOX_LINE_REDUCTION"] }} component={DrillPage} />
-                              <Drawer.Screen name="Swordfish" initialParams={{ params: ["SWORDFISH"] }} component={DrillPage} />
-                              <Drawer.Screen name="X-Wing Strategy" initialParams={{ params: ["X_WING"] }} component={DrillPage} />
-                              <Drawer.Screen name="Singles Chaining" initialParams={{ params: ["SINGLES_CHAINING"] }} component={DrillPage} />
+          <Drawer.Screen name="Main Page" component={HomePage} />
+          <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
+          <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
+          <Drawer.Screen name="Naked Triplet" initialParams={{ params: ["NAKED_TRIPLET"] }} component={DrillPage} />
+          <Drawer.Screen name="Naked Quadruplet" initialParams={{ params: ["NAKED_QUADRUPLET"] }} component={DrillPage} />
+          <Drawer.Screen name="Hidden Single" initialParams={{ params: ["HIDDEN_SINGLE"] }} component={DrillPage} />
+          <Drawer.Screen name="Hidden Pair" initialParams={{ params: ["HIDDEN_PAIR"] }} component={DrillPage} />
+          <Drawer.Screen name="Hidden Triplet" initialParams={{ params: ["HIDDEN_TRIPLET"] }} component={DrillPage} />
+          <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
+          {/*<Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />*/}
      </Drawer.Navigator>)
 }
 
