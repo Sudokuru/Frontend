@@ -565,7 +565,7 @@ const Cell = (props) => {
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
           finishGame(game);
-          navigation.navigate('Main Page');
+          navigation.navigate('Home');
       }
     }
   }
