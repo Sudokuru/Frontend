@@ -162,7 +162,7 @@ const navigation: any = useNavigation();
       // null check to verify that game is loaded in.
       if (game == null){
           console.log("Drill game did not load!");
-          navigation.navigate("Main Page");
+          navigation.navigate("Home");
           return;
       }
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
