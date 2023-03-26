@@ -178,7 +178,12 @@ const navigation: any = useNavigation();
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
-    let hint = Puzzles.getHint(boardArray, notesArray, strategy)
+    let hint;
+    try {
+      hint = Puzzles.getHint(boardArray, notesArray, strategy)
+    } catch (e) {
+      console.log("No hints found for " + strategy);
+    }
     return hint;
   }
 
