@@ -20,12 +20,20 @@ const Lesson = (props: any) => {
           return;
       }
 
+      let arr = Lessons.strategies;
+
+      if (arr == null){
+          console.log("Lessons.strategies is null");
+          navigation.navigate("Home");
+          return;
+      }
+
       //2d array that has text and image urls ---- 1st array - text, 2nd array - image url
       let teach = [[],[]]
       teach = Lessons.getSteps(name);
 
       if (teach == null){
-          console.log("Cannot connect to Lessons API!");
+          console.log("Lessons.getSteps ", name, " is null");
           navigation.navigate("Home");
           return;
       }
