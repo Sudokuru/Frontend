@@ -10,7 +10,6 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-import {replaceChar} from "../../Pages/DrillPage";
 import {useNavigation} from "@react-navigation/native";
 
 
@@ -427,15 +426,23 @@ async function finishGame(activeGame) {
     });
 }
 
+function replaceChar(origString, replaceChar, index) {
+  let firstPart = origString.substr(0, index);
+  let lastPart = origString.substr(index + 1);
+
+  let newString = firstPart + replaceChar + lastPart;
+  return newString;
+}
+
 let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
-  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false]; 
+  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false];
   let isPlacementHighlight = [false, false, false, false, false, false, false, false, false];
 
   if (inHintMode && currentStep > -1)
@@ -540,29 +547,25 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-      // If there's no moves in the moves array, add the current move to the moves array
-      if (activeGameData.moves.length === 0)
-      {
-        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-        saveGame(activeGameData);
+            // If there's no moves in the moves array, add the current move to the moves array
+      if (game.moves.length === 0) {
+        game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(game);
       }
       // there is a bug where initial state of board is added to end of moves array
-      else if (activeGameData.puzzle != flippedPuzzleString)
-      {
-        // If there's a difference between the last move and the current move, add the current move to the moves array
-        if (activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-            || activeGameData.moves[activeGameData.moves.length - 1].puzzleCurrentNotesState !== notesString) 
-        {
-          activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-          saveGame(activeGameData);
-        }
+      else if (game.puzzle != flippedPuzzleString){
+          // If there's a difference between the last move and the current move, add the current move to the moves array
+          if (game.moves[game.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
+          || game.moves[game.moves.length - 1].puzzleCurrentNotesState !== notesString) {
+            game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+              saveGame(game);
+          }
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == activeGameData.puzzleSolution)
-      {
-        finishGame(activeGameData);
-        navigation.navigate('Main Page');
+      if (flippedPuzzleString == game.puzzleSolution){
+          finishGame(game);
+          navigation.navigate('Main Page');
       }
     }
   }
@@ -1176,6 +1179,13 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       else this.fillNumber(newValue);
     };
 
+    // This gets the activeGameData for web and mobile
+    if (Platform.OS == 'web'){
+      gameObject = activeGameData;
+    } else {
+      gameObject = this.props.generatedGame._j.activeGame[0];
+    }
+
         return (
             <Cell
                 prefilled={prefilled}
@@ -1195,7 +1205,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 hintSteps={hintSteps}
                 deleteNotesFromRemovals={this.deleteNotesFromRemovals}
                 currentStep={currentStep}
-                game = {this.props.generatedGame.game}
+                game = {gameObject}
             />
         );
     };
