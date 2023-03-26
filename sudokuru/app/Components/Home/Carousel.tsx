@@ -20,6 +20,20 @@ const Ccarousel = () =>{
     const ref = React.useRef<ICarouselInstance>(null);
     const [index, setIndex] = useState(0);
 
+    const isWeb = (Platform.OS === 'web');
+
+    // set carousel settings depending on platform
+    const carouselWidth = width;
+    const carouselHeight = isWeb ? width / 4 : width / 1.5;
+    const arraySize = 7;
+    const scrollingScale = isWeb ? 0.5 : 0.8;
+    const scrollingOffset = isWeb ? 1250 : 120;
+    const scrollingInverted = isWeb;
+    const scrollAnimationDuration = isWeb ? 100 : 200;
+    const carouselButtonContentStyle: any = isWeb ? null : {height: '100%'};
+    const carouselButtonStyle: any = isWeb ? {alignItems: 'center'} : null;
+    const carouselTextSize: any = isWeb ? { fontSize: 30 } : { fontSize: 20 };
+
     function navigate(index: number):any {
         index == 0 ? navigation.navigate('Lesson',{params:'AMEND_NOTES'}) :
             index == 1 ? navigation.navigate('Lesson',{params:'SIMPLIFY_NOTES'}) :
@@ -27,12 +41,8 @@ const Ccarousel = () =>{
                     index == 3 ? navigation.navigate('Lesson',{params:'NAKED_SET'}) :
                         index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) :
                             index == 5 ? navigation.navigate('Lesson',{params:'HIDDEN_SET'}) :
-                                index == 6 ? navigation.navigate('Lesson',{params:'POINTING_PAIR'}) :
-                                    index == 7 ? navigation.navigate('Lesson',{params:'BOX_LINE_REDUCTION'}) :
-                                        index == 8 ? navigation.navigate('Lesson',{params:'SWORDFISH'}) :
-                                            index == 9 ? navigation.navigate('Lesson',{params:'X_WING'}) :
-                                                index == 10 ? navigation.navigate('Lesson',{params:'SINGLES_CHAINING'}) : navigation.navigate('Home');
-    };
+                                index == 6 ? navigation.navigate('Lesson',{params:'POINTING_PAIR'}) : navigation.navigate('Home');
+    }
 
     function getLessonName(index: number):string {
         let lessonName: string;
@@ -42,109 +52,56 @@ const Ccarousel = () =>{
                     index == 3 ? lessonName = 'Naked Set' :
                         index == 4 ? lessonName = 'Hidden Single' :
                             index == 5 ? lessonName = 'Hidden Set' :
-                                index == 6 ? lessonName = 'Pointing Pair' :
-                                    index == 7 ? lessonName = 'Box Line Reduction' :
-                                        index == 8 ? lessonName = 'X Wing' :
-                                            index == 9 ? lessonName = 'Swordfish' :
-                                                index == 10 ? lessonName = 'Singles Chaining' : lessonName = 'Null';
+                                index == 6 ? lessonName = 'Pointing Pair' : lessonName = 'Null';
         return lessonName;
     }
 
-    if(Platform.OS === 'web'){
-        return(
-            <View>
-                <Carousel
-                    loop
-                    width={width}
-                    height={width / 4}
-                    ref={ref}
-                    autoPlay={false}
-                    data={[...new Array(11).keys()]}
-                    mode='parallax'
-                    modeConfig={{
-                      parallaxScrollingScale: 0.5,
-                      parallaxScrollingOffset: 1250,
-                      parallaxScrollingInverted: true
-                    }}
-                    scrollAnimationDuration={100}
-                    onSnapToItem={(index) => setIndex(index)}
-                    renderItem={({ index }) => (
-                            <View
-                                style={{
-                                    flex: 1,
-                                    borderWidth: 1,
-                                    justifyContent: 'center',
-                                    backgroundColor: '#F2F2F2'
-                                }}
-                            >
-                                {/*When user touches Lesson Icon text they will be navigated to the given lesson*/}
-                                <Button style={{alignItems: 'center'}} onPress={() => navigate(index)}>
-                                    <Text style={{ fontSize: 30 }}>{getLessonName(index)}</Text>
-                                </Button>
-                            </View>
-                    )}
-                />
-                <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                    <Button onPress={() => ref.current?.scrollTo({count: -1})}>
-                        <AntDesign name="leftcircleo" size={18}/>
-                    </Button>
-                    <Button mode="contained" onPress={() => navigate(index)}>
-                        Start Lesson
-                    </Button>
-                    <Button onPress={() => ref.current?.scrollTo({count: 1})}>
-                        <AntDesign name="rightcircleo" size={18}/>
-                    </Button>
-                </View>
+    return(
+        <View>
+            <Carousel
+                loop
+                width={carouselWidth}
+                height={carouselHeight}
+                ref={ref}
+                autoPlay={false}
+                data={[...new Array(arraySize).keys()]}
+                mode='parallax'
+                modeConfig={{
+                  parallaxScrollingScale: scrollingScale,
+                  parallaxScrollingOffset: scrollingOffset,
+                  parallaxScrollingInverted: scrollingInverted
+                }}
+                scrollAnimationDuration={scrollAnimationDuration}
+                onSnapToItem={(index) => setIndex(index)}
+                renderItem={({ index }) => (
+                        <View
+                            style={{
+                                flex: 1,
+                                borderWidth: 1,
+                                justifyContent: 'center',
+                                backgroundColor: '#F2F2F2'
+                            }}
+                        >
+                            {/*When user touches Lesson Icon text they will be navigated to the given lesson*/}
+                            <Button contentStyle={carouselButtonContentStyle} style={carouselButtonStyle} onPress={() => navigate(index)}>
+                                <Text style={carouselTextSize}>{getLessonName(index)}</Text>
+                            </Button>
+                        </View>
+                )}
+            />
+            <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                <Button onPress={() => ref.current?.scrollTo({count: -1})}>
+                    <AntDesign name="leftcircleo" size={18}/>
+                </Button>
+                <Button mode="contained" onPress={() => navigate(index)}>
+                    Start Lesson
+                </Button>
+                <Button onPress={() => ref.current?.scrollTo({count: 1})}>
+                    <AntDesign name="rightcircleo" size={18}/>
+                </Button>
             </View>
-        );
-    }
-     else{
-        return(
-            <View>
-                <Carousel
-                        loop
-                        width={width}
-                        height={width / 1.5}
-                        ref={ref}
-                        autoPlay={false}
-                        data={[...new Array(11).keys()]}
-                        mode='parallax'
-                        modeConfig={{
-                          parallaxScrollingScale: 0.8,
-                          parallaxScrollingOffset: 120,
-                        }}
-                        scrollAnimationDuration={200}
-                        onSnapToItem={(index) => setIndex(index)}
-                        renderItem={({ index }) => (
-                            <View
-                                style={{
-                                    flex: 1,
-                                    borderWidth: 1,
-                                    justifyContent: 'center',
-                                    backgroundColor: '#F2F2F2'
-                                }}
-                            >
-                                {/*When user touches Lesson Icon they will be navigated to the given lesson*/}
-                                <Button contentStyle={{height: '100%'}} onPress={() => navigate(index)}>
-                                    {getLessonName(index)}
-                                </Button>
-                            </View>
-                        )}
-                    />
-                    <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                        <Button onPress={() => ref.current?.scrollTo({count: -1})}>
-                            <AntDesign name="leftcircleo" size={18}/>
-                        </Button>
-                        <Button onPress={() => navigate(index)}>
-                            Start Lesson
-                        </Button>
-                        <Button onPress={() => ref.current?.scrollTo({count: 1})}>
-                            <AntDesign name="rightcircleo" size={18}/>
-                        </Button>
-                    </View>
-            </View>
-        );
-     }
+        </View>
+    );
 };
 
 
