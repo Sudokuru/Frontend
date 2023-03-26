@@ -19,8 +19,6 @@ const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
 // Sudokuru Package Constants
 const Puzzles = sudokuru.Puzzles;
 
-const navigation: any = useNavigation();
-
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
 let activeGameData = null;
@@ -417,6 +415,8 @@ async function finishGame(activeGame) {
     await getKeyString("access_token").then(result => {
         token = result;
     });
+
+    const navigation: any = useNavigation();
 
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
