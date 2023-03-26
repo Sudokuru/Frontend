@@ -1179,11 +1179,14 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       else this.fillNumber(newValue);
     };
 
+    let gameObject = null;
     // This gets the activeGameData for web and mobile
-    if (Platform.OS == 'web'){
-      gameObject = activeGameData;
-    } else {
-      gameObject = this.props.generatedGame._j.activeGame[0];
+    if (!this.props.isDrill){
+      if (Platform.OS == 'web'){
+        gameObject = activeGameData;
+      } else {
+        gameObject = this.props.generatedGame._j.activeGame[0];
+      }
     }
 
         return (
