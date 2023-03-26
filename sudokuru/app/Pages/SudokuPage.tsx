@@ -24,8 +24,83 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let difficulty = .1; // TODO Get difficulty from slider
-let strategies = ["NAKED_SINGLE"]; // TODO Get strategies from previous page
+let difficulty = .1; // TODO: Get difficulty from slider
+let strategies = ["NAKED_SINGLE"]; // TODO: Get strategies from previous page
+
+updateBoard = (newBoard) => {
+  let { history } = this.state;
+  const { historyOffSet } = this.state;
+  history = history.slice(0, historyOffSet + 1);
+  history = history.push(newBoard);
+  this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
+};
+
+// USAGE
+// board = addNumberAsNote(...)
+function addNumberAsNote (number, board, i, j) {
+  let selectedCell = board.get('puzzle').getIn([i, j]);
+  if (!selectedCell) 
+  {
+    console.log("ERROR when accessing board puzzle. Index: [" + i + "][" + j + "]");
+    return;
+  }
+  const prefilled = selectedCell.get('prefilled');
+  if (prefilled)
+  {
+    console.log("ERROR current cell is prefilled. Index: [" + i + "][" + j + "]");
+    return;
+  }
+  let notes = selectedCell.get('notes') || new Set();
+  notes = notes.add(number);
+  selectedCell = selectedCell.set('notes', notes);
+  board = board.setIn(['puzzle', i, j], selectedCell);
+  return board;
+};
+
+function componentBoardValsToArray(board)
+{
+  let boardArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      currVal = board.get('puzzle').getIn([i, j, 'value']);
+      temp.push(!currVal ? "0" : currVal.toString());
+    }
+    boardArray.push(temp);
+  }
+  return boardArray;
+}
+
+function componentBoardNotesToArray(board)
+{
+  let notesArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      temp = [];
+      let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
+      if (!notesSetFromComponent) 
+      {
+        notesArray.push(temp);
+        continue;
+      }
+      for (let k = 1; k <= 9; k++)
+      {
+        if (notesSetFromComponent.includes(k))
+        {
+          temp.push((k).toString());
+        }
+      }
+      notesArray.push(temp);
+    }
+  }
+  return notesArray;
+}
 
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
@@ -92,6 +167,20 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
 
           return gameData;
     }
+    
+    function getHint(board) 
+    {
+      let boardArray = componentBoardValsToArray(board);
+      let notesArray = componentBoardNotesToArray(board);
+      let hint;
+      // TODO: Strategies need to be sorted in increasing order
+      try {
+        hint = Puzzles.getHint(boardArray, notesArray, strategies);
+      } catch (e) {
+        console.log("No hints found for " + strategies);
+      }
+      return hint;
+    }
 
     return (
         <SafeAreaProvider>
@@ -100,7 +189,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false}/>
+                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>

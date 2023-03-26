@@ -914,7 +914,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     board = board.set('currentStep', 0);
     let hint = this.props.getHint(board)
 
-    console.log(hint);
+    console.log(hint || "no hint recieved from request");
+    if (!hint) return;
 
     let causes = []
     let groups = []
