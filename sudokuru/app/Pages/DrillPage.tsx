@@ -181,10 +181,6 @@ const navigation: any = useNavigation();
     <SafeAreaProvider>
       <SafeAreaView>
 
-         <Button style={styles.backButton} mode="contained" onPress={() => navigation.goBack()}>
-                            Back
-         </Button>
-
         <Header page={'Sudoku'}/>
         <View style={homeScreenStyles.home}>
 
