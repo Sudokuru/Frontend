@@ -156,10 +156,15 @@ const navigation: any = useNavigation();
         result => {
           token = result;
         });
-    console.log(token);
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
+      // null check to verify that game is loaded in.
+      if (game == null){
+          console.log("Drill game did not load!");
+          navigation.navigate("Main Page");
+          return;
+      }
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
