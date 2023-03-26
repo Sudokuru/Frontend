@@ -383,12 +383,9 @@ const getRemovalsFromHint = (board, hint) => {
     temp.position.push(y)
     temp.values = []
     temp.values.push()
-    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     for (let j = 2; j < hint.removals[i].length; j++)
-    {
-      if (notes.has(hint.removals[i][j]))
-        temp.values.push(hint.removals[i][j])
-    }
+      temp.values.push(hint.removals[i][j])
+
     removals.push(temp)
   }
   return removals
@@ -402,7 +399,7 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    // console.log("Token: ", token);
+    console.log("Token: ", token);
 
 
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
@@ -412,17 +409,19 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame) {
+async function finishGame(activeGame, navigation) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
         token = result;
     });
 
+
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-            console.log("Game progress was saved successfully!");
+            console.log("Game was finished successfully!");
         }
+      navigation.navigate('Home');
     });
 }
 
@@ -438,7 +437,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -564,8 +563,7 @@ const Cell = (props) => {
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game);
-          navigation.navigate('Main Page');
+          finishGame(game, navigation);
       }
     }
   }
@@ -845,6 +843,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
+    console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -887,7 +886,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let currNoteMode = board.get('inNoteMode');
     board = board.set('inNoteMode', !currNoteMode);
     this.setState({ board });
-    // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
   }
 
   toggleHintMode = () => {
@@ -901,7 +899,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       let currentStep = board.get('currentStep');
 
       // if they prematurely exit hint mode, undo the hint
-      if (currentStep != hintStepsLength - 1) this.undo();
+      if (currentStep < hintStepsLength - 1) 
+      {
+        this.undo();
+      }
 
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
@@ -914,7 +915,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     board = board.set('currentStep', 0);
     let hint = this.props.getHint(board)
 
-    console.log(hint);
+    print("hint from request:", hint || "no hint recieved from request");
+    if (!hint) return;
 
     let causes = []
     let groups = []
@@ -931,13 +933,50 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hintSteps = []
     switch (hint.strategy)
     {
-      case "AMEND_NOTES":
+      case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         console.log("Amend Notes");
+        for (let i = 0; i < removals.length; i++)
+          board = this.addEveryNote(removals[i].position[0], removals[i].position[1], board);
+        
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the groups, causes, and removals
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
-      case "SIMPLIFY_NOTES":
+      case "SIMPLIFY_NOTES": // DONE
         console.log("Simplify Notes");
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the groups, causes, and removals
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
-      case "NAKED_SINGLE":
+      case "NAKED_SINGLE": // DONE
         console.log("Naked Single");
         // two steps, two objects
         hintSteps.push({})
@@ -952,27 +991,28 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[1].placements = { ...placements[0], mode: "place" };
         break;
       case "NAKED_PAIR":
-        console.log("Naked Pair");
-        break;
       case "NAKED_TRIPLET":
-        console.log("Naked Triplet");
-        break;
       case "NAKED_QUADRUPLET":
-        console.log("Naked Quadruplet");
+        console.log("Naked Set (but not single)");
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the groups, causes, and removals
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
-      case "NAKED_QUINTUPLET":
-        console.log("Naked Quintuplet");
-        break;
-      case "NAKED_SEXTUPLET":
-        console.log("Naked Sextuplet");
-        break;
-      case "NAKED_SEPTUPLET":
-        console.log("Naked Septuplet");
-        break;
-      case "NAKED_OCTUPLET":
-        console.log("Naked Octuplet");
-        break;
-      case "HIDDEN_SINGLE":
+      case "HIDDEN_SINGLE": // DONE
         console.log("Hidden Single");
         // two steps, two objects
         hintSteps.push({})
@@ -1000,18 +1040,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "HIDDEN_QUADRUPLET":
         console.log("Hidden Quadruplet");
-        break;
-      case "HIDDEN_QUINTUPLET":
-        console.log("Hidden Quintuplet");
-        break;
-      case "HIDDEN_SEXTUPLET":
-        console.log("Hidden Sextuplet");
-        break;
-      case "HIDDEN_SEPTUPLET":
-        console.log("Hidden Septuplet");
-        break;
-      case "HIDDEN_OCTUPLET":
-        console.log("Hidden Octuplet");
         break;
       case "POINTING_PAIR":
         console.log("Pointing Pair");
@@ -1059,8 +1087,21 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     return board;
   }
 
-  addNotesFromRemovals = (x, y, notesToAdd, currentStep) => {
-    let { board } = this.state;
+  addEveryNote = (x, y, board) => {
+    // let { board } = this.state;
+    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+    for (let i = 1; i <= 9; i++)
+    {
+      if (!notes.has(i))
+      {
+        notes = notes.add(i);
+      }
+    }
+    board = board.setIn(['puzzle', x, y, 'notes'], notes);
+    return board;
+  }
+
+  addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     board = board.set('currentStep', currentStep);
     for (let i = 0; i < notesToAdd.length; i++)
@@ -1074,8 +1115,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     return board;
   }
 
-  deleteNotesFromRemovals = (x, y, notesToRemove, currentStep) => {
-    let { board } = this.state;
+  deleteNotesFromRemovals = (x, y, notesToRemove, currentStep, board) => {
     board = board.set('currentStep', currentStep);
     let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     for (let i = 0; i < notesToRemove.length; i++)
@@ -1179,12 +1219,16 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       else this.fillNumber(newValue);
     };
 
+    let gameObject = null;
     // This gets the activeGameData for web and mobile
-    if (Platform.OS == 'web'){
-      gameObject = activeGameData;
-    } else {
-      gameObject = this.props.generatedGame._j.activeGame[0];
+    if (!this.props.isDrill){
+      if (Platform.OS == 'web'){
+        gameObject = activeGameData;
+      } else {
+        gameObject = this.props.generatedGame._j.activeGame[0];
+      }
     }
+    const { navigation } = this.props
 
         return (
             <Cell
@@ -1203,9 +1247,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 eraseSelected={this.eraseSelected}
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
-                deleteNotesFromRemovals={this.deleteNotesFromRemovals}
                 currentStep={currentStep}
                 game = {gameObject}
+                navigation={navigation}
             />
         );
     };
@@ -1225,14 +1269,14 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     this.setState({ board });
     if (hintSteps[currentStep].removals)
     {
-      for (let i = 0; i < hintSteps[currentStep].removals.length; i++)
+      for (let i = hintSteps[currentStep].removals.length - 1; i >= 0; i--)
       {
         if (hintSteps[currentStep].removals[i].mode === "delete")
         {
           let x = hintSteps[currentStep].removals[i].position[0];
           let y = hintSteps[currentStep].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep].removals[i].values;
-          board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep);
+          board = this.deleteNotesFromRemovals(x, y, notesToRemove, currentStep, board);
         }
       }
     }
@@ -1264,7 +1308,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           let x = hintSteps[currentStep + 1].removals[i].position[0];
           let y = hintSteps[currentStep + 1].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
-          board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep)
+          board = this.addNotesFromRemovals(x, y, notesToRemove, currentStep, board)
         }
       }
     }
@@ -1375,6 +1419,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     });
 
     drillMode = this.props.isDrill;
+    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>

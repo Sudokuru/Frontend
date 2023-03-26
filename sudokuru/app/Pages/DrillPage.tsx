@@ -150,10 +150,15 @@ const navigation: any = useNavigation();
         result => {
           token = result;
         });
-    console.log(token);
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
+      // null check to verify that game is loaded in.
+      if (game == null){
+          console.log("Drill game did not load!");
+          navigation.navigate("Home");
+          return;
+      }
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
@@ -167,7 +172,12 @@ const navigation: any = useNavigation();
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
-    let hint = Puzzles.getHint(boardArray, notesArray, strategy)
+    let hint;
+    try {
+      hint = Puzzles.getHint(boardArray, notesArray, strategy)
+    } catch (e) {
+      console.log("No hints found for " + strategy);
+    }
     return hint;
   }
 
@@ -175,16 +185,12 @@ const navigation: any = useNavigation();
     <SafeAreaProvider>
       <SafeAreaView>
 
-         <Button style={styles.backButton} mode="contained" onPress={() => navigation.goBack()}>
-                            Back
-         </Button>
-
         <Header page={'Sudoku'}/>
         <View style={homeScreenStyles.home}>
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint} navigation={navigation}/>
             <StatusBar style="auto" />
           </View>
         </View>
