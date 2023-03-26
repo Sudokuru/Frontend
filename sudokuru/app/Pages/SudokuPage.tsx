@@ -25,7 +25,7 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let difficulty = .1; // TODO: Get difficulty from slider
-let strategies = ["SIMPLIFY_NOTES"]; // TODO: Get strategies from previous page
+let strategies = ["NAKED_SINGLE"]; // TODO: Get strategies from previous page
 
 updateBoard = (newBoard) => {
   let { history } = this.state;
@@ -39,7 +39,7 @@ updateBoard = (newBoard) => {
 // board = addNumberAsNote(...)
 function addNumberAsNote (number, board, i, j) {
   let selectedCell = board.get('puzzle').getIn([i, j]);
-  if (!selectedCell) 
+  if (!selectedCell)
   {
     console.log("ERROR when accessing board puzzle. Index: [" + i + "][" + j + "]");
     return;
@@ -84,7 +84,7 @@ function componentBoardNotesToArray(board)
     {
       temp = [];
       let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
-      if (!notesSetFromComponent) 
+      if (!notesSetFromComponent)
       {
         notesArray.push(temp);
         continue;
@@ -167,8 +167,8 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
 
           return gameData;
     }
-    
-    function getHint(board) 
+
+    function getHint(board)
     {
       let boardArray = componentBoardValsToArray(board);
       let notesArray = componentBoardNotesToArray(board);
