@@ -409,14 +409,13 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame) {
+async function finishGame(activeGame, navigation) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
         token = result;
     });
 
-    const navigation: any = useNavigation();
 
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -438,7 +437,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -564,7 +563,7 @@ const Cell = (props) => {
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game);
+          finishGame(game, navigation);
       }
     }
   }
@@ -1229,6 +1228,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         gameObject = this.props.generatedGame._j.activeGame[0];
       }
     }
+    const { navigation } = this.props
 
         return (
             <Cell
@@ -1249,6 +1249,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 hintSteps={hintSteps}
                 currentStep={currentStep}
                 game = {gameObject}
+                navigation={navigation}
             />
         );
     };
