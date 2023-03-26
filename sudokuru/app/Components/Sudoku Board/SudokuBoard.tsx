@@ -989,7 +989,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[1].placements = { ...placements[0], mode: "place" };
         break;
       case "NAKED_PAIR":
-        console.log("Naked Pair");
+      case "NAKED_TRIPLET":
+      case "NAKED_QUADRUPLET":
+        console.log("Naked Set (but not single)");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1007,24 +1009,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[1].removals = [];
         for (let i = 0; i < removals.length; i++)
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "NAKED_TRIPLET":
-        console.log("Naked Triplet");
-        break;
-      case "NAKED_QUADRUPLET":
-        console.log("Naked Quadruplet");
-        break;
-      case "NAKED_QUINTUPLET":
-        console.log("Naked Quintuplet");
-        break;
-      case "NAKED_SEXTUPLET":
-        console.log("Naked Sextuplet");
-        break;
-      case "NAKED_SEPTUPLET":
-        console.log("Naked Septuplet");
-        break;
-      case "NAKED_OCTUPLET":
-        console.log("Naked Octuplet");
         break;
       case "HIDDEN_SINGLE": // DONE
         console.log("Hidden Single");
@@ -1054,18 +1038,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "HIDDEN_QUADRUPLET":
         console.log("Hidden Quadruplet");
-        break;
-      case "HIDDEN_QUINTUPLET":
-        console.log("Hidden Quintuplet");
-        break;
-      case "HIDDEN_SEXTUPLET":
-        console.log("Hidden Sextuplet");
-        break;
-      case "HIDDEN_SEPTUPLET":
-        console.log("Hidden Septuplet");
-        break;
-      case "HIDDEN_OCTUPLET":
-        console.log("Hidden Octuplet");
         break;
       case "POINTING_PAIR":
         console.log("Pointing Pair");
