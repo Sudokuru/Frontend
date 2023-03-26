@@ -383,12 +383,9 @@ const getRemovalsFromHint = (board, hint) => {
     temp.position.push(y)
     temp.values = []
     temp.values.push()
-    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
     for (let j = 2; j < hint.removals[i].length; j++)
-    {
-      if (notes.has(hint.removals[i][j]))
-        temp.values.push(hint.removals[i][j])
-    }
+      temp.values.push(hint.removals[i][j])
+
     removals.push(temp)
   }
   return removals
@@ -845,6 +842,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
+    console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -887,7 +885,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let currNoteMode = board.get('inNoteMode');
     board = board.set('inNoteMode', !currNoteMode);
     this.setState({ board });
-    // demoHighlightInput = [[0, 0], [1, 0], [2, 0]] // proof that the highlighting will work when changing values
   }
 
   toggleHintMode = () => {
@@ -901,7 +898,11 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       let currentStep = board.get('currentStep');
 
       // if they prematurely exit hint mode, undo the hint
-      if (currentStep != hintStepsLength - 1) this.undo();
+      if (currentStep < hintStepsLength - 1) 
+      {
+        this.undo();
+        console.log("undidilyfied");
+      }
 
       board = board.set('currentStep', -1);
       board = board.set('hintSteps', []);
@@ -914,7 +915,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     board = board.set('currentStep', 0);
     let hint = this.props.getHint(board)
 
-    console.log(hint || "no hint recieved from request");
+    print("hint from request:", hint || "no hint recieved from request");
     if (!hint) return;
 
     let causes = []
@@ -934,11 +935,32 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     {
       case "AMEND_NOTES":
         console.log("Amend Notes");
+        print("removals", removals);
+        for (let i = 0; i < removals.length; i++)
+          board = this.addEveryNote(removals[i].position[0], removals[i].position[1], board);
+        
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the groups, causes, and removals
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "SIMPLIFY_NOTES":
         console.log("Simplify Notes");
         break;
-      case "NAKED_SINGLE":
+      case "NAKED_SINGLE": // DONE
         console.log("Naked Single");
         // two steps, two objects
         hintSteps.push({})
@@ -973,7 +995,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       case "NAKED_OCTUPLET":
         console.log("Naked Octuplet");
         break;
-      case "HIDDEN_SINGLE":
+      case "HIDDEN_SINGLE": // DONE
         console.log("Hidden Single");
         // two steps, two objects
         hintSteps.push({})
@@ -1057,6 +1079,20 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       x, y, number: valueToRemove, fill: false, board,
     });
     board = board.setIn(['puzzle', x, y, 'notes'], Set.of(valueToRemove));
+    return board;
+  }
+
+  addEveryNote = (x, y, board) => {
+    // let { board } = this.state;
+    let notes = board.get('puzzle').getIn([x, y]).get('notes') || Set();
+    for (let i = 1; i <= 9; i++)
+    {
+      if (!notes.has(i))
+      {
+        notes = notes.add(i);
+      }
+    }
+    board = board.setIn(['puzzle', x, y, 'notes'], notes);
     return board;
   }
 
@@ -1379,6 +1415,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     });
 
     drillMode = this.props.isDrill;
+    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>
