@@ -418,8 +418,9 @@ async function finishGame(activeGame) {
 
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-            console.log("Game progress was saved successfully!");
+            console.log("Game was finished successfully!");
         }
+      navigation.navigate('Home');
     });
 }
 
@@ -562,7 +563,6 @@ const Cell = (props) => {
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
           finishGame(game);
-          navigation.navigate('Home');
       }
     }
   }
