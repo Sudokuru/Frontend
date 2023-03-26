@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
 import {StyleSheet, View, Image, FlatList} from "react-native";
-import {StatusBar} from "expo-status-bar";
 
 import Header from "../Components/Header";
 import { Text, Button } from 'react-native-paper';
+import {useNavigation} from "@react-navigation/native";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
 
-const Lesson = (props) => {
+const Lesson = (props: any) => {
       //Brings in name of strategy from carousel
       let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
+      const navigation: any = useNavigation();
       console.log(name);
 
-      let arr = Lessons.strategies;
+      if (Lessons == null){
+          console.log("Cannot connect to Lessons API!");
+          navigation.navigate("Home");
+          return;
+      }
 
       //2d array that has text and image urls ---- 1st array - text, 2nd array - image url
       let teach = [[],[]]
       teach = Lessons.getSteps(name);
+
+      if (teach == null){
+          console.log("Cannot connect to Lessons API!");
+          navigation.navigate("Home");
+          return;
+      }
 
       const [count, setCount]  = useState(0);
 
