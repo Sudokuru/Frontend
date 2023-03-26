@@ -933,7 +933,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hintSteps = []
     switch (hint.strategy)
     {
-      case "AMEND_NOTES":
+      case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         console.log("Amend Notes");
         print("removals", removals);
         for (let i = 0; i < removals.length; i++)
@@ -959,6 +959,23 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         break;
       case "SIMPLIFY_NOTES":
         console.log("Simplify Notes");
+        // two steps, two objects
+        hintSteps.push({})
+        hintSteps.push({})
+
+        // highlight the groups, causes, and removals
+        hintSteps[0].groups = groups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
+
+        // highlight the groups, causes, and delete the removals
+        hintSteps[1].groups = groups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "NAKED_SINGLE": // DONE
         console.log("Naked Single");
