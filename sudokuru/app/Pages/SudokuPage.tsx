@@ -51,7 +51,13 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         if (gameOrigin == "start"){
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
-                    let board = makeBoard(strPuzzleToArray(game[0].puzzle));
+                    // If game object is not returned, you get redirected to Main Page
+                    if (game[0].puzzle == null){
+                        console.log(game);
+                        navigation.navigate("Main Page");
+                        return;
+                    }
+                    let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
                     return {
                         board,
                         history: List.of(board),
@@ -65,7 +71,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         else if (gameOrigin == "resume"){
             gameData = await Puzzles.getGame(url, token).then(
                 game => {
-                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState));
+                    let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState), game[0].puzzle);
                     board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
                     return {
                         board,

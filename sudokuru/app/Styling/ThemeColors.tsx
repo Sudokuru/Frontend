@@ -13,9 +13,9 @@ const dTheme = {
   roundness: 2,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: '#F2F2F2',
+    primary: '#D9A05B',
     onPrimary: '#F2F2F2',
-    primaryContainer: '#F2F2F2',
+    primaryContainer: 'rgb(217, 160, 91)',
     onPrimaryContainer: '#F2F2F2',
     background: '#025E73',
     onBackground: '#F2F2F2',
@@ -36,7 +36,7 @@ const d2Theme = {
     ...NavigationDarkTheme,
  colors: {
    ...NavigationDarkTheme.colors,
-   primary: '#D9A05B',
+    primary: '#D9A05B',
     onPrimary: '#F2F2F2',
     primaryContainer: 'rgb(217, 160, 91)',
     onPrimaryContainer: '#F2F2F2',

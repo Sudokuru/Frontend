@@ -31,14 +31,6 @@ export function strPuzzleToArray(str) {
   return { puzzle: output };
 }
 
-export function replaceChar(origString, replaceChar, index) {
-    let firstPart = origString.substr(0, index);
-    let lastPart = origString.substr(index + 1);
-
-    let newString = firstPart + replaceChar + lastPart;
-    return newString;
-}
-
 updateBoard = (newBoard) => {
   let { history } = this.state;
   const { historyOffSet } = this.state;
@@ -144,7 +136,6 @@ function componentBoardNotesToArray(board)
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  console.log(strategy);
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
@@ -163,8 +154,7 @@ const navigation: any = useNavigation();
 
     let board = await Drills.getGame(url, strategies, token).then(game =>
     {
-      console.log(game);
-      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState))
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
@@ -178,21 +168,23 @@ const navigation: any = useNavigation();
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
     let hint = Puzzles.getHint(boardArray, notesArray, strategy)
-    console.log(hint);
+    return hint;
   }
 
   return (
     <SafeAreaProvider>
       <SafeAreaView>
 
-        <Header page={'Sudoku'}/>
-        <View style={homeScreenStyles.home}>
-         <Button style={{top:0}} mode="contained" onPress={() => navigation.goBack()}>
+         <Button style={styles.backButton} mode="contained" onPress={() => navigation.goBack()}>
                             Back
          </Button>
+
+        <Header page={'Sudoku'}/>
+        <View style={homeScreenStyles.home}>
+
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  ["HIDDEN_SINGLE"])} isDrill={true} getHint={getHint}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint}/>
             <StatusBar style="auto" />
           </View>
         </View>
@@ -223,6 +215,12 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    backButton: {
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        top: 100,
+        position: 'absolute',
     },
 });
 
