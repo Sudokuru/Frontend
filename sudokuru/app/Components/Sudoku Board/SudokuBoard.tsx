@@ -957,7 +957,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         for (let i = 0; i < removals.length; i++)
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
-      case "SIMPLIFY_NOTES":
+      case "SIMPLIFY_NOTES": // DONE
         console.log("Simplify Notes");
         // two steps, two objects
         hintSteps.push({})
