@@ -1,18 +1,32 @@
 import React, { useState } from 'react';
-import {StyleSheet, View, Image, FlatList} from "react-native";
+import {StyleSheet, View, Image, Platform} from "react-native";
 
 import Header from "../Components/Header";
 import { Text, Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
+import {AntDesign} from "@expo/vector-icons";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
 
-const Lesson = (props: any) => {
+const Lesson = (props) => {
       //Brings in name of strategy from carousel
       let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
       const navigation: any = useNavigation();
-      console.log(name);
+
+      function getTitle(name):string {
+            let lessonName: string;
+            name == "AMEND_NOTES" ? lessonName = 'Amend Notes' :
+                name == "SIMPLIFY_NOTES" ? lessonName = 'Simplify Notes' :
+                    name == "NAKED_SINGLE" ? lessonName = 'Naked Single' :
+                        name == "NAKED_SET" ? lessonName = 'Naked Set' :
+                            name == "HIDDEN_SINGLE" ? lessonName = 'Hidden Single' :
+                                name == "HIDDEN_SET" ? lessonName = 'Hidden Set' :
+                                    name == "POINTING_PAIR" ? lessonName = 'Pointing Pair' : lessonName = 'Null';
+            return lessonName;
+      }
+
+      let title = getTitle(name);
 
       if (Lessons == null){
           console.log("Cannot connect to Lessons API!");
@@ -28,9 +42,8 @@ const Lesson = (props: any) => {
           return;
       }
 
-      //2d array that has text and image urls ---- 1st array - text, 2nd array - image url
-      let teach = [[],[]]
-      teach = Lessons.getSteps(name);
+      //2d array - [[],[]]. 1st array indicates which step, 2nd array indicates text or image.
+      let teach = Lessons.getSteps(name);
 
       if (teach == null){
           console.log("Lessons.getSteps ", name, " is null");
@@ -40,68 +53,108 @@ const Lesson = (props: any) => {
 
       const [count, setCount]  = useState(0);
 
-      console.log(teach);
+      if(count + 1 == teach.length){
+         console.log("FINISHED LESSON")
+      }
 
-      if(teach){
+      if(Platform.OS === 'web'){
       return (
           <View>
               <Header page={'Lesson'}/>
-              <View style={homeScreenStyles.home}>
-                  <View style={homeScreenStyles.lessons}>
-                       <View style={styles.container1}>
+              <View>
+                   <View style={styles.container1}>
 
-                          {/*Shifts teach array*/}
-                          <Button style={{right:150, top:40}} mode="contained" onPress={() => setCount(count - 1)}>
-                            left
-                          </Button>
-                          <Button style={{left:150}} mode="contained" onPress={() =>setCount(count + 1)}>
-                            right
-                          </Button>
-
-                          <Text>
-                          <Text>{name}</Text>
+                      <Text>
+                          <Text>{title}</Text>
                           <Text>{" Lesson"}</Text>
-                          </Text>
-                          <Image
-                          style={{width: 400, height: 512}}
-                          source={{uri:teach[count][1]}}
-                          />
-                          <Text>{teach[count][0]}</Text>
+                      </Text>
+
+                      <Text>{" "}</Text>
+                      <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+
+                          <Button style={{right:25, height: 40, top:200}} mode="contained" disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
+                            <AntDesign name="leftcircleo" size={18}/>
+                          </Button>
+
+                          {
+                              (teach[count][1] != null) ?
+                              <Image
+                              style={{width: 400, height: 512}}
+                              source={{uri:teach[count][1]}}
+                              /> : <></>
+                          }
+
+                          <Button style={{left:25, height: 40, top:200}} mode="contained" disabled={count + 1 == teach.length} onPress={() =>setCount(count + 1)}>
+                            <AntDesign name="rightcircleo" size={18}/>
+                          </Button>
+
                       </View>
+                      <Text>{" "}</Text>
+                       {
+                           (teach[count][0] != null) ?
+                           <Text>{teach[count][0]}</Text>
+                           : <></>
+                       }
+                  </View>
+              </View>
+          </View>
+      );}
+      else{
+      return (
+          <View>
+              <Header page={'Lesson'}/>
+              <View>
+                   <View style={styles.container2}>
+
+
+                      <Text>{" "}</Text>
+                      <Text>
+                          <Text>{title}</Text>
+                          <Text>{" Lesson"}</Text>
+                      </Text>
+
+                      <Text>{" "}</Text>
+
+                       {
+                           (teach[count][1] != null) ?
+                           <Image
+                               style={{width: 350, height: 448}}
+                               source={{uri:teach[count][1]}}
+                           /> : <></>
+                       }
+                      <Text>{" "}</Text>
+
+                       {
+                           (teach[count][0] != null) ?
+                           <Text>{teach[count][0]}</Text>
+                           : <></>
+                       }
+
+                      <View style={{ justifyContent: 'center', flexDirection: 'row', top:50}}>
+
+                          <Button style={{right:80}} mode="contained" disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
+                            <AntDesign name="leftcircleo" size={20}/>
+                          </Button>
+                          <Button style={{left:80}} mode="contained" disabled={count + 1 == teach.length} onPress={() =>setCount(count + 1)}>
+                            <AntDesign name="rightcircleo" size={20}/>
+                          </Button>
+
+                      </View>
+
                   </View>
               </View>
           </View>
       );}
 
-       //NULL
-      else {
-      return(
-          <View>
-              <Header page={'Lesson'}/>
-              <View style={homeScreenStyles.home}>
-                  <View style={homeScreenStyles.lessons}>
-                       <View style={styles.container1}>
-
-                          <Text>
-                          <Text>{"CAT"}</Text>
-                          <Text>{" Lesson"}</Text>
-                          </Text>
-                          <Image
-                          style={{width: 400, height: 512}}
-                          source={{uri:"https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg"}}
-                          />
-                          <Text>{name}</Text>
-                      </View>
-                  </View>
-              </View>
-          </View>
-      );
-      }
 };
 
 const styles = StyleSheet.create({
       container1: {
           flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center'
+      },
+      container2: {
           alignItems: 'center',
           justifyContent: 'center',
       },

@@ -312,7 +312,11 @@ const getCellNumber = (x, y) => {
 };
 
 const getBoxIndexFromCellNum = (cellNum) => {
-  return Math.floor((cellNum % 9) / 3)
+  return Math.floor((cellNum % 9) / 3);
+}
+
+const getBoxIndexFromXY = (x,y) => {
+  return Math.floor(x / 3) * 3 + Math.floor(y / 3);
 }
 
 const print = (str, contents) => {
@@ -459,8 +463,11 @@ const Cell = (props) => {
         if (currentHint.groups[i].type == "row" && y === currentHint.groups[i].index)
           bgColor = "white";
         // if the row matches hint, highlight the current row
-        if (currentHint.groups[i].type == "box" && getBoxIndexFromCellNum(getCellNumber(x, y)) === currentHint.groups[i].index)
+        if (currentHint.groups[i].type == "box" && getBoxIndexFromXY(x, y) === currentHint.groups[i].index)
+        {
+          console.log("(" + x + ", " + y + "), boxIndex: " + getBoxIndexFromXY(x, y));
           bgColor = "white";
+        }
       }
     }
     if (currentHint.causes) // cause highlighting
@@ -546,19 +553,18 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-            // If there's no moves in the moves array, add the current move to the moves array
+      // If there's no moves in the moves array, add the current move to the moves array
       if (game.moves.length === 0) {
         game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
         saveGame(game);
       }
-      // there is a bug where initial state of board is added to end of moves array
-      else if (game.puzzle != flippedPuzzleString){
-          // If there's a difference between the last move and the current move, add the current move to the moves array
-          if (game.moves[game.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-          || game.moves[game.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-            game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-              saveGame(game);
-          }
+
+      // If there's a difference between the last move and the current move, replace previous move with current move
+      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
+      || game.moves[0].puzzleCurrentNotesState !== notesString) {
+        game.moves[0].puzzleCurrentState = flippedPuzzleString;
+        game.moves[0].puzzleCurrentNotesState = notesString;
+        saveGame(game);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
@@ -990,9 +996,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[1].causes = causes;
         hintSteps[1].placements = { ...placements[0], mode: "place" };
         break;
-      case "NAKED_PAIR":
-      case "NAKED_TRIPLET":
-      case "NAKED_QUADRUPLET":
+      case "NAKED_PAIR": // DONE
+      case "NAKED_TRIPLET": // DONE
+      case "NAKED_QUADRUPLET": // DONE
         console.log("Naked Set (but not single)");
         // two steps, two objects
         hintSteps.push({})
@@ -1013,7 +1019,10 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "HIDDEN_SINGLE": // DONE
-        console.log("Hidden Single");
+      case "HIDDEN_PAIR": // DONE
+      case "HIDDEN_TRIPLET": // DONE
+      case "HIDDEN_QUADRUPLET": // DONE
+        console.log("Hidden Set");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1031,15 +1040,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         hintSteps[1].removals = [];
         for (let i = 0; i < removals.length; i++)
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "HIDDEN_PAIR":
-        console.log("Hidden Pair");
-        break;
-      case "HIDDEN_TRIPLET":
-        console.log("Hidden Triplet");
-        break;
-      case "HIDDEN_QUADRUPLET":
-        console.log("Hidden Quadruplet");
         break;
       case "POINTING_PAIR":
         console.log("Pointing Pair");
