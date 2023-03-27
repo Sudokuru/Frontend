@@ -27,6 +27,9 @@ let drillMode = false;
 
 let fallbackHeight = 30;
 
+// make a global variable for time
+let globalTime = 0;
+
 // const darkBrown = "#A64732";
 
 // cause/removal cells
@@ -405,6 +408,11 @@ async function saveGame(activeGame) {
     });
     console.log("Token: ", token);
 
+    // console.log(globalTime);
+
+    activeGame.currentTime = globalTime;
+
+    console.log("Active game: ", activeGame);
 
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -419,7 +427,6 @@ async function finishGame(activeGame, navigation) {
     await getKeyString("access_token").then(result => {
         token = result;
     });
-
 
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -728,12 +735,17 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
         if (!isPaused && !paused) {
             interval = setInterval(() => {
                 setTime(time => time + 1);
+                // set globaltime to the value within time
+                globalTime = globalTime + 1;
             }, 1000);
         } else {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
     }, [paused, isPaused]);
+
+    // console.log(globalTime);
+    // console.log(time);
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
@@ -1406,7 +1418,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       this.props.generatedGame.then(game => this.setState(game));
     }
   }
-
 
   render = () => {
     const { board } = this.state;
