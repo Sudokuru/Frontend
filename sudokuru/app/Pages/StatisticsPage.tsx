@@ -44,7 +44,7 @@ const StatisticsPage = () => {
             strokeWidth: 2 // optional
           }
         ],
-        legend: ["Sudoku Puzzles Completed"] // optional
+        legend: [""] // optional
       };
 
     return (
@@ -58,7 +58,7 @@ const StatisticsPage = () => {
                 <LineChart
     data={data}
     width={reSize} // from react-native
-    height={220}
+    height={250}
     yAxisLabel={''}
     chartConfig={{
       backgroundColor: theme.colors.primary,
@@ -166,7 +166,8 @@ const styles = StyleSheet.create({
         flex: 2,
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        flexWrap: "wrap"
 },
 });
 
