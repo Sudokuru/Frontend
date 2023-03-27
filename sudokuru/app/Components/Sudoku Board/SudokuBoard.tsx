@@ -546,18 +546,19 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-            // If there's no moves in the moves array, add the current move to the moves array
+      // If there's no moves in the moves array, add the current move to the moves array
       if (game.moves.length === 0) {
         game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
         saveGame(game);
       }
       // there is a bug where initial state of board is added to end of moves array
       else if (game.puzzle != flippedPuzzleString){
-          // If there's a difference between the last move and the current move, add the current move to the moves array
-          if (game.moves[game.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-          || game.moves[game.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-            game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-              saveGame(game);
+          // If there's a difference between the last move and the current move, replace previous move with current move
+          if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
+          || game.moves[0].puzzleCurrentNotesState !== notesString) {
+            game.moves[0].puzzleCurrentState = flippedPuzzleString;
+            game.moves[0].puzzleCurrentNotesState = notesString;
+            saveGame(game);
           }
       }
 
