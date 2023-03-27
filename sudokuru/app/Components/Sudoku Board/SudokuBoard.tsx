@@ -312,7 +312,11 @@ const getCellNumber = (x, y) => {
 };
 
 const getBoxIndexFromCellNum = (cellNum) => {
-  return Math.floor((cellNum % 9) / 3)
+  return Math.floor((cellNum % 9) / 3);
+}
+
+const getBoxIndexFromXY = (x,y) => {
+  return Math.floor(x / 3) * 3 + Math.floor(y / 3);
 }
 
 const print = (str, contents) => {
@@ -459,8 +463,11 @@ const Cell = (props) => {
         if (currentHint.groups[i].type == "row" && y === currentHint.groups[i].index)
           bgColor = "white";
         // if the row matches hint, highlight the current row
-        if (currentHint.groups[i].type == "box" && getBoxIndexFromCellNum(getCellNumber(x, y)) === currentHint.groups[i].index)
+        if (currentHint.groups[i].type == "box" && getBoxIndexFromXY(x, y) === currentHint.groups[i].index)
+        {
+          console.log("(" + x + ", " + y + "), boxIndex: " + getBoxIndexFromXY(x, y));
           bgColor = "white";
+        }
       }
     }
     if (currentHint.causes) // cause highlighting
