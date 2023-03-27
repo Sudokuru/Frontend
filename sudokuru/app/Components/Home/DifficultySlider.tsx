@@ -1,36 +1,38 @@
-import Slider from '@react-native-community/slider';
+//import Slider from '@react-native-community/slider';
 import React, { Component } from 'react';
-import { View } from "react-native";
+import { View, Text } from "react-native";
+import {Slider} from '@miblanchard/react-native-slider';
 
 class DifficultySlider extends Component {
-    
-  constructor(props){
-    super(props)
-    this.state = {
-      percentage: 50,
-      minPercentage: 0,
-      maxPercentage: 100,
+    constructor(props){
+        super(props);
     }
-    this.onChange = this.onChange.bind(this)
-  }
+    //handleDifficulty = this.props.handleDifficulty;
+    
+    state = {
+        value: 50,
+    };
 
-  onChange (val) {
-    this.setState({ percentage: val })
-    props.onValueChange(val)
-  } 
+    getValue() {
+        return this.state.value;
+    }
+
+
 
     render() {
         return(
         <View>
             <Slider
-            style={{width: 200, height: 40}}
+            style={{width: 400, height: 40}}
             minimumValue={0}
             maximumValue={100}
-            step={10}
-            minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
-            value={this.state.percentage}
-            onValueChange={val => this.props.onValueChange({ percentage: val })} />
+            step={1}
+            minimumTrackTintColor="#D9A05B"
+            maximumTrackTintColor="#F2F2F2"
+            value={this.state.value}
+            onValueChange={value => this.setState({value}) && this.props.sendData(value)}
+            />
+            <Text style={{color: '#D9A05B' }}>Your selected difficulty: {this.state.value}</Text>
         </View>);
     }
 }

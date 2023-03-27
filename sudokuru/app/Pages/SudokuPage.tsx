@@ -25,6 +25,7 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let difficulty = .1; // TODO: Get difficulty from slider
+
 let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE"]; // TODO: Get strategies from previous page
 
 updateBoard = (newBoard) => {
@@ -84,7 +85,7 @@ function componentBoardNotesToArray(board)
     {
       temp = [];
       let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
-      if (!notesSetFromComponent)
+      if (!notesSetFromComponent) 
       {
         notesArray.push(temp);
         continue;
@@ -166,6 +167,20 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         }
 
           return gameData;
+    }
+    
+    function getHint(board) 
+    {
+      let boardArray = componentBoardValsToArray(board);
+      let notesArray = componentBoardNotesToArray(board);
+      let hint;
+      // TODO: Strategies need to be sorted in increasing order
+      try {
+        hint = Puzzles.getHint(boardArray, notesArray, strategies);
+      } catch (e) {
+        console.log("No hints found for " + strategies);
+      }
+      return hint;
     }
 
     function getHint(board)
