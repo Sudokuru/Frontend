@@ -551,15 +551,13 @@ const Cell = (props) => {
         game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
         saveGame(game);
       }
-      // there is a bug where initial state of board is added to end of moves array
-      else if (game.puzzle != flippedPuzzleString){
-          // If there's a difference between the last move and the current move, replace previous move with current move
-          if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
-          || game.moves[0].puzzleCurrentNotesState !== notesString) {
-            game.moves[0].puzzleCurrentState = flippedPuzzleString;
-            game.moves[0].puzzleCurrentNotesState = notesString;
-            saveGame(game);
-          }
+
+      // If there's a difference between the last move and the current move, replace previous move with current move
+      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
+      || game.moves[0].puzzleCurrentNotesState !== notesString) {
+        game.moves[0].puzzleCurrentState = flippedPuzzleString;
+        game.moves[0].puzzleCurrentNotesState = notesString;
+        saveGame(game);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
