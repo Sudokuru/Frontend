@@ -28,9 +28,8 @@ const Lesson = (props) => {
           return;
       }
 
-      //2d array that has text and image urls ---- 1st array - text, 2nd array - image url
-      let teach = [[],[]]
-      teach = Lessons.getSteps(name);
+      //2d array - [[],[]]. 1st array indicates which step, 2nd array indicates text or image.
+      let teach = Lessons.getSteps(name);
 
       if (teach == null){
           console.log("Lessons.getSteps ", name, " is null");
@@ -39,8 +38,6 @@ const Lesson = (props) => {
       }
 
       const [count, setCount]  = useState(0);
-
-      console.log(teach);
 
       if(teach){
       return (
@@ -51,10 +48,10 @@ const Lesson = (props) => {
                        <View style={styles.container1}>
 
                           {/*Shifts teach array*/}
-                          <Button style={{right:150, top:40}} mode="contained" onPress={() => setCount(count - 1)}>
+                          <Button style={{right:150, top:40}} mode="contained" disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
                             left
                           </Button>
-                          <Button style={{left:150}} mode="contained" onPress={() =>setCount(count + 1)}>
+                          <Button style={{left:150}} mode="contained" disabled={count + 1 == teach.length} onPress={() =>setCount(count + 1)}>
                             right
                           </Button>
 
