@@ -54,6 +54,10 @@ const HomePage = () => {
             await Puzzles.getGame(url, token).then(
                 (game: JSON) => {
                     if (game !== null) {
+                        showResumeButton();
+                    }
+                    else {
+                        hideResumeButton();
                         console.log("User doesn't have an activeGame");
                     }
                 });
