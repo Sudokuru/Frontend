@@ -409,17 +409,19 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame) {
+async function finishGame(activeGame, navigation) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
         token = result;
     });
 
+
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-            console.log("Game progress was saved successfully!");
+            console.log("Game was finished successfully!");
         }
+      navigation.navigate('Home');
     });
 }
 
@@ -435,7 +437,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -544,25 +546,23 @@ const Cell = (props) => {
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
-            // If there's no moves in the moves array, add the current move to the moves array
+      // If there's no moves in the moves array, add the current move to the moves array
       if (game.moves.length === 0) {
         game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
         saveGame(game);
       }
-      // there is a bug where initial state of board is added to end of moves array
-      else if (game.puzzle != flippedPuzzleString){
-          // If there's a difference between the last move and the current move, add the current move to the moves array
-          if (game.moves[game.moves.length - 1].puzzleCurrentState !== flippedPuzzleString
-          || game.moves[game.moves.length - 1].puzzleCurrentNotesState !== notesString) {
-            game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-              saveGame(game);
-          }
+
+      // If there's a difference between the last move and the current move, replace previous move with current move
+      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
+      || game.moves[0].puzzleCurrentNotesState !== notesString) {
+        game.moves[0].puzzleCurrentState = flippedPuzzleString;
+        game.moves[0].puzzleCurrentNotesState = notesString;
+        saveGame(game);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game);
-          navigation.navigate('Home');
+          finishGame(game, navigation);
       }
     }
   }
@@ -842,6 +842,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
+    console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -1011,9 +1012,9 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "HIDDEN_SINGLE": // DONE
-      case "HIDDEN_PAIR":
-      case "HIDDEN_TRIPLET":
-      case "HIDDEN_QUADRUPLET":
+      case "HIDDEN_PAIR": // DONE
+      case "HIDDEN_TRIPLET": // DONE
+      case "HIDDEN_QUADRUPLET": // DONE
         console.log("Hidden Set");
         // two steps, two objects
         hintSteps.push({})
@@ -1220,6 +1221,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         gameObject = this.props.generatedGame._j.activeGame[0];
       }
     }
+    const { navigation } = this.props
 
         return (
             <Cell
@@ -1240,6 +1242,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 hintSteps={hintSteps}
                 currentStep={currentStep}
                 game = {gameObject}
+                navigation={navigation}
             />
         );
     };
@@ -1409,6 +1412,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     });
 
     drillMode = this.props.isDrill;
+    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>

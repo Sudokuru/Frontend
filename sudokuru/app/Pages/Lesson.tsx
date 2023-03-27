@@ -8,7 +8,7 @@ import {useNavigation} from "@react-navigation/native";
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
 
-const Lesson = (props: any) => {
+const Lesson = (props) => {
       //Brings in name of strategy from carousel
       let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
       const navigation: any = useNavigation();

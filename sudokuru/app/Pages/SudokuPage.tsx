@@ -25,7 +25,8 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let difficulty = .1; // TODO: Get difficulty from slider
-let strategies = ["NAKED_PAIR"]; // TODO: Get strategies from previous page
+
+let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE"]; // TODO: Get strategies from previous page
 
 updateBoard = (newBoard) => {
   let { history } = this.state;
@@ -39,7 +40,7 @@ updateBoard = (newBoard) => {
 // board = addNumberAsNote(...)
 function addNumberAsNote (number, board, i, j) {
   let selectedCell = board.get('puzzle').getIn([i, j]);
-  if (!selectedCell) 
+  if (!selectedCell)
   {
     console.log("ERROR when accessing board puzzle. Index: [" + i + "][" + j + "]");
     return;
@@ -182,6 +183,20 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
       return hint;
     }
 
+    function getHint(board)
+    {
+      let boardArray = componentBoardValsToArray(board);
+      let notesArray = componentBoardNotesToArray(board);
+      let hint;
+      // TODO: Strategies need to be sorted in increasing order
+      try {
+        hint = Puzzles.getHint(boardArray, notesArray, strategies);
+      } catch (e) {
+        console.log("No hints found for " + strategies);
+      }
+      return hint;
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView>
@@ -189,7 +204,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint}/>
+                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint} navigation={navigation}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
