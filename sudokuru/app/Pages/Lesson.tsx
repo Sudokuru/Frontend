@@ -62,33 +62,39 @@ const Lesson = (props) => {
           <View>
               <Header page={'Lesson'}/>
               <View>
-                       <View style={styles.container1}>
+                   <View style={styles.container1}>
 
-                          <Text>
+                      <Text>
                           <Text>{title}</Text>
                           <Text>{" Lesson"}</Text>
-                          </Text>
+                      </Text>
 
-                          <Text>{" "}</Text>
-                          <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                      <Text>{" "}</Text>
+                      <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
 
                           <Button style={{right:25, height: 40, top:200}} mode="contained" disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
                             <AntDesign name="leftcircleo" size={18}/>
                           </Button>
 
-                          <Image
-                          style={{width: 400, height: 512}}
-                          source={{uri:teach[count][1]}}
-                          />
+                          {
+                              (teach[count][1] != null) ?
+                              <Image
+                              style={{width: 400, height: 512}}
+                              source={{uri:teach[count][1]}}
+                              /> : <></>
+                          }
 
                           <Button style={{left:25, height: 40, top:200}} mode="contained" disabled={count + 1 == teach.length} onPress={() =>setCount(count + 1)}>
                             <AntDesign name="rightcircleo" size={18}/>
                           </Button>
 
-                          </View>
-                          <Text>{" "}</Text>
-
-                          <Text>{teach[count][0]}</Text>
+                      </View>
+                      <Text>{" "}</Text>
+                       {
+                           (teach[count][0] != null) ?
+                           <Text>{teach[count][0]}</Text>
+                           : <></>
+                       }
                   </View>
               </View>
           </View>
@@ -98,24 +104,33 @@ const Lesson = (props) => {
           <View>
               <Header page={'Lesson'}/>
               <View>
-                       <View style={styles.container2}>
+                   <View style={styles.container2}>
 
 
-                          <Text>{" "}</Text>
-                          <Text>
+                      <Text>{" "}</Text>
+                      <Text>
                           <Text>{title}</Text>
                           <Text>{" Lesson"}</Text>
-                          </Text>
+                      </Text>
 
-                          <Text>{" "}</Text>
-                          <Image
-                          style={{width: 350, height: 448}}
-                          source={{uri:teach[count][1]}}
-                          />
-                          <Text>{" "}</Text>
-                          <Text>{teach[count][0]}</Text>
+                      <Text>{" "}</Text>
 
-                          <View style={{ justifyContent: 'center', flexDirection: 'row', top:50}}>
+                       {
+                           (teach[count][1] != null) ?
+                           <Image
+                               style={{width: 350, height: 448}}
+                               source={{uri:teach[count][1]}}
+                           /> : <></>
+                       }
+                      <Text>{" "}</Text>
+
+                       {
+                           (teach[count][0] != null) ?
+                           <Text>{teach[count][0]}</Text>
+                           : <></>
+                       }
+
+                      <View style={{ justifyContent: 'center', flexDirection: 'row', top:50}}>
 
                           <Button style={{right:80}} mode="contained" disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
                             <AntDesign name="leftcircleo" size={20}/>
@@ -124,7 +139,7 @@ const Lesson = (props) => {
                             <AntDesign name="rightcircleo" size={20}/>
                           </Button>
 
-                          </View>
+                      </View>
 
                   </View>
               </View>
