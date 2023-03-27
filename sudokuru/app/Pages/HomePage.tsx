@@ -13,8 +13,6 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 
-
-
 const HomePage = () => {
     const navigation: any = useNavigation();
 
@@ -46,7 +44,6 @@ const HomePage = () => {
     const hidePlayHelp = () => setPlayHelpVisible(false);
 
 
-
     useEffect(() => {
         async function grabCurrentGame(url:string) {
             let token = null;
@@ -71,6 +68,16 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
+
+
+    let difficulty = 50;
+
+    const getData = (val) => {
+        // do not forget to bind getData in constructor
+        console.log(val);
+        difficulty = val;
+    }
+
 
     return (
         <SafeAreaProvider>
@@ -112,7 +119,7 @@ const HomePage = () => {
                         </View>
 
                         <View style={{top:reSize/2, padding: reSize/4}}>
-                            <DifficultySlider />
+                            <DifficultySlider sendData={getData}/>
                         </View>
 
                         <View style={{top: reSize/2, flexDirection: 'row'}}>

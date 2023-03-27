@@ -81,6 +81,10 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
       for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
       {
         stringIndex = 81 * i + 9 * j + currNoteIndex;
+
+        if (puzzleCurrentNotesState.charAt(stringIndex) == 1){
+            if (isDrill){
+                board = addNumberAsNote(currNoteIndex + 1, board, j, i);
             } else {
                 board = addNumberAsNote(currNoteIndex + 1, board, i, j);
             }
@@ -88,6 +92,8 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
       }
     }
   }
+  return board;
+}
 
 function componentBoardValsToArray(board)
 {
