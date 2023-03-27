@@ -27,8 +27,10 @@ let drillMode = false;
 
 let fallbackHeight = 30;
 
-// make a global variable for time
+// Global variables for activeGame elements
 let globalTime = 0;
+let globalHintsUsed = 0;
+let globalWrongCellsPlayed = 0;
 
 // const darkBrown = "#A64732";
 
@@ -407,10 +409,9 @@ async function saveGame(activeGame) {
       token = result;
     });
     console.log("Token: ", token);
-
-    // console.log(globalTime);
-
+    
     activeGame.currentTime = globalTime;
+    activeGame.numHintsUsed = globalHintsUsed;
 
     console.log("Active game: ", activeGame);
 
@@ -910,6 +911,12 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
+
+    // Increment global hint value by one
+    if (newHintMode) {
+      globalHintsUsed++;
+    }
+    // console.log("global hints used:", globalHintsUsed);
 
     if (newHintMode == false)
     {
