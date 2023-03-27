@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Text, useTheme} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
-import { Dimensions } from "react-native";
+import { Dimensions, useWindowDimensions } from "react-native";
 import {
     LineChart,
     BarChart,
@@ -18,20 +18,25 @@ const StatisticsPage = () => {
 
     const screenWidth = Dimensions.get("window").width;
 
+    const size = useWindowDimensions();
+    const reSize = Math.min(size.width, size.height);
+
+    const months = ["Jan.", "Feb.", "March", "Apr.", "May", "June", 'July','Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+
     const data = {
-        labels: ["January", "February", "March", "April", "May", "June", 'July','August', 'September', 'October', 'November', 'December'],
+        labels: months,
         datasets: [
           {
             data: [20, 45, 28, 80, 99, 43, 55, 23, 12, 56, 78, 12],
-            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            color: (opacity = 1) => `rgba(2, 94, 115, ${opacity})`, // optional
             strokeWidth: 2 // optional
           }
         ],
-        legend: ["Sudoku Puzzles Completed"] // optional
+        legend: ["Sudoku Puzzles You Completed"] // optional
       };
 
     const data2 = {
-        labels: ["January", "February", "March", "April", "May", "June", 'July','August', 'September', 'October', 'November', 'December'],
+        labels: months,
         datasets: [
           {
             data: [20, 45, 28, 80, 99, 43, 55, 23, 12, 56, 78, 12],
@@ -52,13 +57,14 @@ const StatisticsPage = () => {
                 <View style={styles.inner_container}> 
                 <LineChart
     data={data}
-    width={Dimensions.get('window').width} // from react-native
+    width={reSize} // from react-native
     height={220}
     yAxisLabel={''}
     chartConfig={{
       backgroundColor: theme.colors.primary,
       backgroundGradientFrom: theme.colors.primary,
       backgroundGradientTo: theme.colors.primary,
+      decimalPlaces: 0,
       color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
       style: {
         borderRadius: 16
@@ -72,7 +78,7 @@ const StatisticsPage = () => {
   
   <ProgressChart
         data={[0.4, 0.6, 0.8]}
-        width={Dimensions.get('window').width - 16}
+        width={reSize}
         height={220}
         chartConfig={{
           backgroundColor: theme.colors.primary,
@@ -92,23 +98,23 @@ const StatisticsPage = () => {
 
 <BarChart
         data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: months,
           datasets: [
             {
-              data: [20, 45, 28, 80, 99, 43],
-              color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+              data: [20, 45, 28, 80, 99, 43, 54, 13, 24, 54, 12, 32],
+              color: (opacity = 1) => `rgba(2, 94, 115, ${opacity})`,
               strokeWidth: 2, 
             },
           ],
         }}
-        width={Dimensions.get('window').width - 16}
+        width={reSize}
         height={220}
-        yAxisLabel={'Rs'}
+        yAxisLabel={''}
         chartConfig={{
           backgroundColor: theme.colors.primary,
           backgroundGradientFrom: '#eff3ff',
           backgroundGradientTo: '#efefef',
-          decimalPlaces: 2,
+          decimalPlaces: 0,
           color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           style: {
             borderRadius: 16,
@@ -160,6 +166,7 @@ const styles = StyleSheet.create({
         flex: 2,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column'
 },
 });
 
