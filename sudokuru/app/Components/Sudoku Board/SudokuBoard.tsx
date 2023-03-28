@@ -705,6 +705,21 @@ ActionRow.propTypes = {
   updateBoardInPlace: PropTypes.func.isRequired,
 };
 
+const SubmitButton = (props) => {
+  const { isDrillSolutionCorrect } = props;
+  const cellSize = getCellSize();
+
+  return (
+    <Pressable onPress={isDrillSolutionCorrect}>
+      <Text>clickity clickity</Text>
+    </Pressable>
+  );
+};
+
+SubmitButton.propTypes = {
+  isDrillSolutionCorrect: PropTypes.func.isRequired,
+};
+
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
   return(
@@ -757,7 +772,7 @@ HeaderRow.defaultProps = {
  */
 function getCellSize() {
     const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 14;
+    return Math.min(size.width, size.height) / 15;
 }
 
 function updateBoardWithNumber({
@@ -1194,30 +1209,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
     return rowConflict || columnConflict || squareConflict;
   }
 
-  isDrillSolutionCorrect = () => {
-    const { board, drillSolutionCells } = this.state;
-    for (let i = 0; i < drillSolutionCells.length; i++)
-    {
-      let x = drillSolutionCells[i].x;
-      let y = drillSolutionCells[i].y;
-      let solutionNotes = drillSolutionCells[i].notes;
-      let solutionPlacement = drillSolutionCells[i].placement;
-      if (solutionNotes)
-      {
-        let boardNotes = board.getIn(['puzzle', x, y, 'notes']);
-        if (!boardNotes.equals(solutionNotes))
-          return false;
-      }
-      else if (solutionPlacement)
-      {
-        let boardValue = board.getIn(['puzzle', x, y, 'value']);
-        if (boardValue != solutionPlacement)
-          return false;
-      }
-    }
-    return true;
-  }
-
   renderCell = (cell, x, y) => {
     const { board } = this.state;
     const selected = this.getSelectedCell();
@@ -1417,14 +1408,54 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
     );
   }
 
-  renderControls = () => {
+  renderSubmitButton = () => {
+    const isDrillSolutionCorrect = () => {
+      console.log("isDrillSolutionCorrect?")
+      const { board, drillSolutionCells } = this.state;
+      for (let i = 0; i < drillSolutionCells.length; i++)
+      {
+        let x = drillSolutionCells[i].x;
+        let y = drillSolutionCells[i].y;
+        let solutionNotes = drillSolutionCells[i].notes;
+        let solutionPlacement = drillSolutionCells[i].placement;
+        if (solutionNotes)
+        {
+          let boardNotes = board.getIn(['puzzle', x, y, 'notes']);
+          if (!boardNotes.equals(solutionNotes))
+          {
+            console.log("NOPE");
+            return false;
+          }
+        }
+        else if (solutionPlacement)
+        {
+          let boardValue = board.getIn(['puzzle', x, y, 'value']);
+          if (boardValue != solutionPlacement)
+          {
+            console.log("NOPE");
+            return false;
+          }
+        }
+      }
+      console.log("yep it is");
+      return true;
+    }
+
     return (
-      <View style={styles().bottomActions}>
-        {this.renderActions()}
-        {this.renderNumberControl()}
-      </View>
+      <SubmitButton
+        isDrillSolutionCorrect={isDrillSolutionCorrect}
+      />
     );
   }
+
+  // renderControls = () => {
+  //   return (
+  //     <View style={styles().bottomActions}>
+  //       {this.renderActions()}
+  //       {this.renderNumberControl()}
+  //     </View>
+  //   );
+  // }
 
   componentDidMount() {
     if (!this.state.board) {
@@ -1454,6 +1485,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
           <View style={styles().bottomActions}>
             {this.renderActions()}
             {this.renderNumberControl()}
+            {this.props.isDrill && this.renderSubmitButton()}
           </View>
         }
       </View>
