@@ -1,3 +1,4 @@
+// @ts-nocheck
 //import Slider from '@react-native-community/slider';
 import React, { Component } from 'react';
 import { View, Text } from "react-native";
@@ -16,8 +17,6 @@ class DifficultySlider extends Component {
     getValue() {
         return this.state.value;
     }
-
-
 
     render() {
         return(

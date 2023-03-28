@@ -24,7 +24,7 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let difficulty = .1; // TODO: Get difficulty from slider
+// let difficulty = .1; // TODO: Get difficulty from slider
 
 let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE"]; // TODO: Get strategies from previous page
 
@@ -106,6 +106,9 @@ function componentBoardNotesToArray(board)
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
     const { gameOrigin } = route.params;
+    const { difficulty } = route.params;
+
+    console.log("Difficulty: " + difficulty);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -127,6 +130,10 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
         if (gameOrigin == "start"){
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
+
+                    console.log("Game Origin: ", gameOrigin)
+                    console.log("game[0].puzzle: ", game[0].puzzle);
+
                     // If game object is not returned, you get redirected to Main Page
                     if (game[0].puzzle == null){
                         console.log(game);

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {useEffect} from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
 import {Text, Button, useTheme} from 'react-native-paper';
@@ -73,7 +74,6 @@ const HomePage = () => {
         return null;
     }
 
-
     let difficulty = 50;
 
     const getData = (val) => {
@@ -81,7 +81,6 @@ const HomePage = () => {
         console.log(val);
         difficulty = val;
     }
-
 
     return (
         <SafeAreaProvider>
@@ -134,7 +133,7 @@ const HomePage = () => {
                                     </Button> : <></>
                             }
 
-                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
                                 Start Puzzle
                             </Button>
                         </View>
