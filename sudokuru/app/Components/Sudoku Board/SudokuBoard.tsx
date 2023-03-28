@@ -408,7 +408,6 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    // console.log("Token: ", token);
 
     activeGame.currentTime = globalTime;
     activeGame.numHintsUsed = globalHintsUsed;
@@ -461,7 +460,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -574,22 +573,22 @@ const Cell = (props) => {
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
       // If there's no moves in the moves array, add the current move to the moves array
-      if (game.moves.length === 0) {
-        game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-        saveGame(game);
+      if (activeGameData.moves.length === 0) {
+        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(activeGameData);
       }
 
       // If there's a difference between the last move and the current move, replace previous move with current move
-      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
-      || game.moves[0].puzzleCurrentNotesState !== notesString) {
-        game.moves[0].puzzleCurrentState = flippedPuzzleString;
-        game.moves[0].puzzleCurrentNotesState = notesString;
-        saveGame(game);
+      else if (activeGameData.moves[0].puzzleCurrentState !== flippedPuzzleString
+      || activeGameData.moves[0].puzzleCurrentNotesState !== notesString) {
+        activeGameData.moves[0].puzzleCurrentState = flippedPuzzleString;
+        activeGameData.moves[0].puzzleCurrentNotesState = notesString;
+        saveGame(activeGameData);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game, navigation);
+      if (flippedPuzzleString == activeGameData.puzzleSolution){
+          finishGame(activeGameData, navigation);
       }
     }
   }
@@ -743,12 +742,18 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
 
+
+    // If we are resuming game, set starting time to currentTime
+    if (time == 0 && activeGameData.currentTime != 0)
+    {
+      setTime(activeGameData.currentTime);
+    }
+
     useEffect(() => { // Timer
         let interval = null;
         if (!isPaused && !paused) {
             interval = setInterval(() => {
                 setTime(time => time + 1);
-                // set globaltime to the value within time
                 globalTime = globalTime + 1;
             }, 1000);
         } else {
@@ -756,9 +761,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
         }
         return () => clearInterval(interval);
     }, [paused, isPaused]);
-
-    // console.log(globalTime);
-    // console.log(time);
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
@@ -874,7 +876,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
-    // console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -928,7 +929,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     if (newHintMode) {
       globalHintsUsed++;
     }
-    // console.log("global hints used:", globalHintsUsed);
 
     if (newHintMode == false)
     {
@@ -1242,21 +1242,11 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
 
-    let gameObject = null;
-    // This gets the activeGameData for web and mobile
-    if (!this.props.isDrill){
-      if (Platform.OS == 'web'){
-        gameObject = activeGameData;
-      } else {
-        gameObject = this.props.generatedGame._j.activeGame[0];
-      }
-    }
-
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
       let inNoteMode = board.get('inNoteMode');
 
-      if (!this.props.isDrill && !checkSolution(gameObject.puzzleSolution, x, y, newValue)){
+      if (!this.props.isDrill && !checkSolution(activeGameData.puzzleSolution, x, y, newValue)){
         globalWrongCellsPlayed++;
       }
 
@@ -1284,7 +1274,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
-                game = {gameObject}
                 navigation={navigation}
             />
         );
@@ -1450,7 +1439,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       this.props.generatedGame.then(game => this.setState(game));
     }
     this.props.generatedGame.then(game => {
-      if (game.activeGame) activeGameData = game.activeGame[0];
+      if (game.activeGame)
+      {
+        if ((Platform.OS == 'web'))
+        {
+          activeGameData = game.activeGame[0];
+        }
+        else
+        {
+          activeGameData = game._j.activeGame[0];
+        }
+      }
     });
 
     drillMode = this.props.isDrill;
