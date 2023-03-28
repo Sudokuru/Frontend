@@ -21,7 +21,6 @@ const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
-let activeGameData = null;
 
 let drillMode = false;
 
@@ -460,7 +459,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, navigation } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, activeGameData, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -737,21 +736,21 @@ const PauseButton = ({ handlePause, isPaused }) => {
 }
 
 const HeaderRow = (props) => { //  Header w/ timer and pause button
-    const { paused } = props;
+    const { currentTime } = props;
     const [time, setTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
 
 
     // If we are resuming game, set starting time to currentTime
-    if (time == 0 && activeGameData.currentTime != 0)
+    if (time == 0 && currentTime != 0)
     {
-      setTime(activeGameData.currentTime);
+      setTime(currentTime);
     }
 
     useEffect(() => { // Timer
         let interval = null;
-        if (!isPaused && !paused) {
+        if (!isPaused) {
             interval = setInterval(() => {
                 setTime(time => time + 1);
                 globalTime = globalTime + 1;
@@ -760,7 +759,7 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [paused, isPaused]);
+    }, [isPaused]);
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
@@ -1241,12 +1240,17 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let inHintMode = board.get('inHintMode');
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
+    let activeGame = null
+    if (!this.props.isDrill)
+    {
+      activeGame = this.state.activeGame[0];
+    }
 
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
       let inNoteMode = board.get('inNoteMode');
 
-      if (!this.props.isDrill && !checkSolution(activeGameData.puzzleSolution, x, y, newValue)){
+      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, newValue)){
         globalWrongCellsPlayed++;
       }
 
@@ -1254,7 +1258,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       else this.fillNumber(newValue);
     };
 
-    const { navigation } = this.props
+    const { navigation } = this.props;
+
 
         return (
             <Cell
@@ -1274,6 +1279,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
+                activeGameData={activeGame}
                 navigation={navigation}
             />
         );
@@ -1281,7 +1287,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
 
   renderTopBar = () => {
     return(
-      <HeaderRow/>
+      <HeaderRow currentTime = {this.state.activeGame[0].currentTime}/>
     );
   }
 
@@ -1438,19 +1444,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     {
       this.props.generatedGame.then(game => this.setState(game));
     }
-    this.props.generatedGame.then(game => {
-      if (game.activeGame)
-      {
-        if ((Platform.OS == 'web'))
-        {
-          activeGameData = game.activeGame[0];
-        }
-        else
-        {
-          activeGameData = game._j.activeGame[0];
-        }
-      }
-    });
 
     drillMode = this.props.isDrill;
     print("this.state", this.state ? this.state : "no this.state yet");
