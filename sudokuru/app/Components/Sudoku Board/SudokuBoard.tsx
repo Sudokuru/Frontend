@@ -1429,7 +1429,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
   renderSubmitButton = () => {
     const isDrillSolutionCorrect = () => {
       console.log("isDrillSolutionCorrect?")
-      const { board, drillSolutionCells } = this.state;
+      const { board, drillSolutionCells, originalBoard } = this.state;
       for (let i = 0; i < drillSolutionCells.length; i++)
       {
         let x = drillSolutionCells[i].x;
@@ -1438,7 +1438,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
         let solutionPlacement = drillSolutionCells[i].placement;
         if (solutionNotes)
         {
-          let boardNotes = board.getIn(['puzzle', x, y, 'notes']);
+          let boardNotes = board.getIn(['puzzle', x, y, 'notes']) || Set();
           if (!boardNotes.equals(solutionNotes))
           {
             console.log("NOPE");
@@ -1447,7 +1447,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
         }
         else if (solutionPlacement)
         {
-          let boardValue = board.getIn(['puzzle', x, y, 'value']);
+          let boardValue = board.getIn(['puzzle', x, y, 'value']) || -1;
           if (boardValue != solutionPlacement)
           {
             console.log("NOPE");
@@ -1471,7 +1471,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
       this.props.generatedGame.then(game => this.setState(game));
     }
   }
-
 
   render = () => {
     const { board } = this.state;
