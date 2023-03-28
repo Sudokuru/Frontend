@@ -230,12 +230,6 @@ const DrillPage = (props) => {
     return drillSolutionCells;
   };
 
-  console.log("Hi Thomas, the place where the redirection function should be written is right here");
-  function goHome()
-  {
-    navigation.navigate("Home");
-  }
-
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -245,7 +239,7 @@ const DrillPage = (props) => {
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint} navigation={navigation} goHome={goHome} />
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint} navigation={navigation}/>
             <StatusBar style="auto" />
           </View>
         </View>

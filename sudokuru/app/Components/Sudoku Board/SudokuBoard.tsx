@@ -10,7 +10,6 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-import {useNavigation} from "@react-navigation/native";
 
 
 // Sudokuru Package Import
@@ -738,11 +737,16 @@ ActionRow.propTypes = {
 };
 
 const SubmitButton = (props) => {
-  const { isDrillSolutionCorrect } = props;
+  const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
 
+  console.log("IS THIS WORKING?", isDrillSolutionCorrect);
+
+  navigation.navigate('Home');
+  console.log('Hello!');
+
   return (
-    <Pressable onPress={isDrillSolutionCorrect}>
+    <Pressable onPress={() => {isDrillSolutionCorrect ? navigation.navigate('Home') : console.log("Input is Incorrect")}}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit
@@ -1459,6 +1463,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   renderSubmitButton = () => {
+    const { navigation } = this.props;
     const isDrillSolutionCorrect = () => {
       console.log("isDrillSolutionCorrect?")
       const { drillSolutionCells, originalBoard } = this.state;
@@ -1496,15 +1501,13 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           }
         }
       }
-      console.log("this.props.goHome(): " + this.props.goHome());
-      console.log("Hi Thomas, the place where the redirection function is called should be right here");
-      this.props.goHome();
       return true;
     }
 
     return (
       <SubmitButton
         isDrillSolutionCorrect={isDrillSolutionCorrect}
+        navigation={navigation}
       />
     );
   }
