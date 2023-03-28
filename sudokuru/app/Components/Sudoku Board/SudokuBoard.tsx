@@ -128,7 +128,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   selectedConflict: {
     // styles for cells with isSelected and conflict props
-    color: '#FF0000',
+    color: '#000000',
     backgroundColor: '#FF7C75',
   },
   bottomActions: {
@@ -625,10 +625,10 @@ const Cell = (props) => {
         (inHintMode) && bgColor && {backgroundColor: bgColor},
 
         conflict && styles(cellSize).conflict,
-        isPeer && styles(cellSize).peer,
+        (!conflict && isPeer) && styles(cellSize).peer,
         sameValue && styles(cellSize).sameValue,
         (conflict && isSelected) && styles(cellSize).selectedConflict,
-        isSelected && styles(cellSize).selected]}>
+        (!conflict && isSelected) && styles(cellSize).selected]}>
         {
           notes ?
             <View style={styles(cellSize).noteViewParent}>
@@ -1218,14 +1218,15 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   isConflict = (i, j) => {
     const { value } = this.state.board.getIn(['puzzle', i, j]).toJSON();
     if (!value) return false;
-    const rowConflict =
-      this.state.board.getIn(['choices', 'rows', i, value]) > 1;
-    const columnConflict =
-      this.state.board.getIn(['choices', 'columns', j, value]) > 1;
-    const squareConflict =
-      this.state.board.getIn(['choices', 'squares',
-        ((Math.floor(i / 3)) * 3) + Math.floor(j / 3), value]) > 1;
-    return rowConflict || columnConflict || squareConflict;
+
+    let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
+    let solutionValue = this.state.solution.charAt(cellNum);
+
+    if (solutionValue == value || value == null)
+      return false;
+    else {
+      return true;
+    }
   }
 
   renderCell = (cell, x, y) => {
