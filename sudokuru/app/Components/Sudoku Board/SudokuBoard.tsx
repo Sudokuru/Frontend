@@ -27,6 +27,11 @@ let drillMode = false;
 
 let fallbackHeight = 30;
 
+// Global variables for activeGame elements
+let globalTime = 0;
+let globalHintsUsed = 0;
+let globalWrongCellsPlayed = 0;
+
 // const darkBrown = "#A64732";
 
 // cause/removal cells
@@ -320,8 +325,8 @@ const getBoxIndexFromXY = (x,y) => {
 }
 
 const print = (str, contents) => {
-  console.log(str)
-  console.log(contents)
+  // console.log(str)
+  // console.log(contents)
 }
 
 const getCausesFromHint = (hint) => {
@@ -403,8 +408,13 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    console.log("Token: ", token);
+    // console.log("Token: ", token);
 
+    activeGame.currentTime = globalTime;
+    activeGame.numHintsUsed = globalHintsUsed;
+    activeGame.numWrongCellsPlayed = globalWrongCellsPlayed;
+
+    console.log("Active game: ", activeGame);
 
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -420,7 +430,6 @@ async function finishGame(activeGame, navigation) {
         token = result;
     });
 
-
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
             console.log("Game was finished successfully!");
@@ -435,6 +444,17 @@ function replaceChar(origString, replaceChar, index) {
 
   let newString = firstPart + replaceChar + lastPart;
   return newString;
+}
+
+const checkSolution = (solution, x, y, value) => {
+  let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
+  let solutionValue = solution.charAt(cellNum);
+  
+  if (solutionValue == value || value == null)
+    return true;
+  else {
+    return false;
+  }
 }
 
 let puzzleString = "";
@@ -728,12 +748,17 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
         if (!isPaused && !paused) {
             interval = setInterval(() => {
                 setTime(time => time + 1);
+                // set globaltime to the value within time
+                globalTime = globalTime + 1;
             }, 1000);
         } else {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
     }, [paused, isPaused]);
+
+    // console.log(globalTime);
+    // console.log(time);
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
@@ -763,17 +788,17 @@ function getCellSize() {
     return Math.min(size.width, size.height) / 14;
 }
 
-function updateBoardWithNumber({
-                                   x, y, number, fill = true, board,
-                               }) {
+function updateBoardWithNumber({ x, y, number, fill = true, board }) {
+
   let cell = board.get('puzzle').getIn([x, y]);
   cell = cell.delete('notes');
   cell = fill ? cell.set('value', number) : cell.delete('value');
+
   const increment = fill ? 1 : -1;
   const rowPath = ['choices', 'rows', x, number];
   const columnPath = ['choices', 'columns', y, number];
-  const squarePath = ['choices', 'squares',
-    ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  const squarePath = ['choices', 'squares', ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  
   return board.setIn(rowPath, board.getIn(rowPath) + increment)
     .setIn(columnPath, board.getIn(columnPath) + increment)
     .setIn(squarePath, board.getIn(squarePath) + increment)
@@ -849,7 +874,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
-    console.log("board updated");
+    // console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -898,6 +923,12 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
+
+    // Increment global hint value by one
+    if (newHintMode) {
+      globalHintsUsed++;
+    }
+    // console.log("global hints used:", globalHintsUsed);
 
     if (newHintMode == false)
     {
@@ -1211,14 +1242,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
 
-    const handleValueChange = (x, y, newValue) => {
-      let { board } = this.state;
-      let inNoteMode = board.get('inNoteMode');
-
-      if (inNoteMode) this.addNumberAsNote(newValue);
-      else this.fillNumber(newValue);
-    };
-
     let gameObject = null;
     // This gets the activeGameData for web and mobile
     if (!this.props.isDrill){
@@ -1228,6 +1251,19 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         gameObject = this.props.generatedGame._j.activeGame[0];
       }
     }
+
+    const handleValueChange = (x, y, newValue) => {
+      let { board } = this.state;
+      let inNoteMode = board.get('inNoteMode');
+
+      if (!this.props.isDrill && !checkSolution(gameObject.puzzleSolution, x, y, newValue)){
+        globalWrongCellsPlayed++;
+      }
+
+      if (inNoteMode) this.addNumberAsNote(newValue);
+      else this.fillNumber(newValue);
+    };
+
     const { navigation } = this.props
 
         return (
@@ -1406,7 +1442,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       this.props.generatedGame.then(game => this.setState(game));
     }
   }
-
 
   render = () => {
     const { board } = this.state;
