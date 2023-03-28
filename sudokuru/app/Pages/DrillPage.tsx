@@ -146,6 +146,8 @@ const DrillPage = (props) => {
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
 
+  const navigation: any = useNavigation();
+
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
     let notesArray = componentBoardNotesToArray(board);
@@ -158,7 +160,6 @@ const DrillPage = (props) => {
     return hint;
   }
 
-  const navigation: any = useNavigation();
   if (!fontsLoaded) {
     return null;
   }
@@ -170,6 +171,7 @@ const DrillPage = (props) => {
         token = result;
         console.log(token)
       });
+
 
     let { board, originalBoard } = await Drills.getGame(url, strategies, token).then(game => {
       // null check to verify that game is loaded in.

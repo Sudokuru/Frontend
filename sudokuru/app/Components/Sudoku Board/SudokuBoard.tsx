@@ -740,12 +740,8 @@ const SubmitButton = (props) => {
   const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
 
-  console.log("IS THIS WORKING?", isDrillSolutionCorrect);
-
-  console.log('Hello!');
-
   return (
-    <Pressable onPress={() => {isDrillSolutionCorrect ? console.log("WORKING?") && navigation.navigate('Landing') : console.log("Input is Incorrect")}}>
+    <Pressable onPress={() => {isDrillSolutionCorrect ? navigation.navigate('Main Page') : console.log("Input is Incorrect")}}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit
