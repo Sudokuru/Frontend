@@ -63,7 +63,7 @@ const HomePage = () => {
                 });
         }
         grabCurrentGame(USERACTIVEGAMESBFFURL);
-    }, []);
+    });
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
