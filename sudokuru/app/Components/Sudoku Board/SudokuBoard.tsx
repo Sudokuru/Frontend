@@ -464,10 +464,7 @@ const Cell = (props) => {
           bgColor = "white";
         // if the row matches hint, highlight the current row
         if (currentHint.groups[i].type == "box" && getBoxIndexFromXY(x, y) === currentHint.groups[i].index)
-        {
-          console.log("(" + x + ", " + y + "), boxIndex: " + getBoxIndexFromXY(x, y));
           bgColor = "white";
-        }
       }
     }
     if (currentHint.causes) // cause highlighting
@@ -1418,7 +1415,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     });
 
     drillMode = this.props.isDrill;
-    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>
