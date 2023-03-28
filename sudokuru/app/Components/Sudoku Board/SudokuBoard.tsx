@@ -742,11 +742,10 @@ const SubmitButton = (props) => {
 
   console.log("IS THIS WORKING?", isDrillSolutionCorrect);
 
-  navigation.navigate('Home');
   console.log('Hello!');
 
   return (
-    <Pressable onPress={() => {isDrillSolutionCorrect ? navigation.navigate('Home') : console.log("Input is Incorrect")}}>
+    <Pressable onPress={() => {isDrillSolutionCorrect ? console.log("WORKING?") && navigation.navigate('Landing') : console.log("Input is Incorrect")}}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit
@@ -1267,7 +1266,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     const selected = this.getSelectedCell();
     const { value, prefilled, notes } = cell.toJSON();
-    const conflict = this.isConflict(x, y);
+    const conflict = (this.props.isDrill) ? false : this.isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get('selected'));
     const sameValue = !!(selected && selected.get('value') &&
       value === selected.get('value'));
