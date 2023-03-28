@@ -182,21 +182,31 @@ const DrillPage = (props) => {
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       return board;
     });
-    
-    // for each cell that is a part of the hint, store the coordinates and the resulting state
-    // if there is a notes field for the cell, the notes must match
-    // if there is a value field for the cell, the value must match
+
+    let drillSolutionCells = getDrillSolutionCells(board);
+    console.log(drillSolutionCells)
+
+    return {
+      board, history: List.of(board), historyOffSet: 0, drillSolutionCells
+    };
+  }
+
+  // for each cell that is a part of the hint, store the coordinates and the resulting state
+  // if there is a notes field for the cell, the notes must match
+  // if there is a value field for the cell, the value must match
+  function getDrillSolutionCells(board)
+  {
     let drillSolutionCells = [];
-    let hint = getHint(board)
+    let hint = getHint(board);
     if (hint)
     {
       for (let i = 0; i < hint.removals.length; i++)
       {
-        let temp = {}
+        let temp = {};
         let currRemoval = hint.removals[i];
         temp.x = currRemoval[0];
         temp.y = currRemoval[1];
-        temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes')
+        temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes');
         for (let j = 2; j < currRemoval.length; j++)
         {
           temp.notes = temp.notes.delete(currRemoval[j]);
@@ -212,14 +222,11 @@ const DrillPage = (props) => {
         temp.value = hint.placements[0][2];
         drillSolutionCells.push(temp);
       }
-      console.log("drillSolutionCells")
-      console.log(drillSolutionCells)
+      console.log("drillSolutionCells");
+      console.log(drillSolutionCells);
     }
-
-    return {
-      board, history: List.of(board), historyOffSet: 0,
-    };
-  }
+    return drillSolutionCells;
+  };
 
   return (
     <SafeAreaProvider>
@@ -230,7 +237,7 @@ const DrillPage = (props) => {
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint} navigation={navigation}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint} navigation={navigation} />
             <StatusBar style="auto" />
           </View>
         </View>

@@ -782,7 +782,7 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
     accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component<any, any, any> {
+export default class SudokuBoard extends React.Component<any, any, any, any> {
   constructor(props) {
     super(props);
   };
@@ -1374,6 +1374,13 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
+    print("isDrill", this.props.isDrill);
+    print("drillSolutionCells", this.state.drillSolutionCells);
+    if (this.props.isDrill && this.state.drillSolutionCells)
+    {
+      print("in board:", this.state.drillSolutionCells)
+    }
+
     return (
       <ActionRow
         history={history}
@@ -1414,6 +1421,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       if (game.activeGame) activeGameData = game.activeGame[0];
     });
 
+    
     drillMode = this.props.isDrill;
 
     return (
