@@ -196,7 +196,8 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: gold,
-    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
+    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60),
+    marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
   },
   submitButtonText: {
     fontFamily: 'Inter_400Regular',
@@ -1464,15 +1465,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
       />
     );
   }
-
-  // renderControls = () => {
-  //   return (
-  //     <View style={styles().bottomActions}>
-  //       {this.renderActions()}
-  //       {this.renderNumberControl()}
-  //     </View>
-  //   );
-  // }
 
   componentDidMount() {
     if (!this.state.board) {
