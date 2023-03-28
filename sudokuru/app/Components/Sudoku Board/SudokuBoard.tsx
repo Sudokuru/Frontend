@@ -1429,7 +1429,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
   renderSubmitButton = () => {
     const isDrillSolutionCorrect = () => {
       console.log("isDrillSolutionCorrect?")
-      const { board, drillSolutionCells, originalBoard } = this.state;
+      const { drillSolutionCells, originalBoard } = this.state;
+      let { board } = this.state;
       for (let i = 0; i < drillSolutionCells.length; i++)
       {
         let x = drillSolutionCells[i].x;
@@ -1442,6 +1443,10 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
           if (!boardNotes.equals(solutionNotes))
           {
             console.log("NOPE");
+            board = originalBoard;
+            this.setState({ board }, () => {
+              this.toggleHintMode();
+            });
             return false;
           }
         }
@@ -1450,12 +1455,15 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
           let boardValue = board.getIn(['puzzle', x, y, 'value']) || -1;
           if (boardValue != solutionPlacement)
           {
-            console.log("NOPE");
+            console.log("NOPE"); 
+            board = originalBoard;
+            this.setState({ board }, () => {
+              this.toggleHintMode();
+            });
             return false;
           }
         }
       }
-      console.log("yep it is");
       return true;
     }
 
