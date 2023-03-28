@@ -815,7 +815,7 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
     accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component<any, any, any, any> {
+export default class SudokuBoard extends React.Component<any, any, any, any, any> {
   constructor(props) {
     super(props);
   };
@@ -1464,6 +1464,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
           }
         }
       }
+      console.log("this.props.goHome(): " + this.props.goHome());
+      console.log("Hi Thomas, the place where the redirection function is called should be right here");
+      this.props.goHome();
       return true;
     }
 
