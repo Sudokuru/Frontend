@@ -1218,14 +1218,16 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   isConflict = (i, j) => {
     const { value } = this.state.board.getIn(['puzzle', i, j]).toJSON();
     if (!value) return false;
-    const rowConflict =
-      this.state.board.getIn(['choices', 'rows', i, value]) > 1;
-    const columnConflict =
-      this.state.board.getIn(['choices', 'columns', j, value]) > 1;
-    const squareConflict =
-      this.state.board.getIn(['choices', 'squares',
-        ((Math.floor(i / 3)) * 3) + Math.floor(j / 3), value]) > 1;
-    return rowConflict || columnConflict || squareConflict;
+
+    let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
+    let solutionValue = this.state.solution.charAt(cellNum);
+    console.log(cellNum, this.state.solution.charAt(cellNum), "WHAT IS THIS")
+
+    if (solutionValue == value || value == null)
+      return false;
+    else {
+      return true;
+    }
   }
 
   renderCell = (cell, x, y) => {
