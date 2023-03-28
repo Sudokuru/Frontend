@@ -409,9 +409,10 @@ async function saveGame(activeGame) {
       token = result;
     });
     console.log("Token: ", token);
-    
+
     activeGame.currentTime = globalTime;
     activeGame.numHintsUsed = globalHintsUsed;
+    activeGame.numWrongCellsPlayed = globalErrorsMade;
 
     console.log("Active game: ", activeGame);
 
@@ -443,6 +444,18 @@ function replaceChar(origString, replaceChar, index) {
 
   let newString = firstPart + replaceChar + lastPart;
   return newString;
+}
+
+const checkSolution = (solution, x, y, value) => {
+  let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
+  let solutionValue = solution.charAt(cellNum);
+  
+  if (solutionValue == value || value == null)
+    return true;
+  else {
+    // console.log("Incorrect value at cell " + cellNum + " (" + x + ", " + y + "): " + value + " should be " + solutionValue);
+    return false;
+  }
 }
 
 let puzzleString = "";
@@ -526,8 +539,24 @@ const Cell = (props) => {
     }
   }
 
+  var prevWrongCounter = 0;
+
   if (!drillMode)
   {
+    // Getting Numbers of Wrong Cells Played
+    // console.log("x: " + x + ", y: " + y + ", value: " + value);
+    // console.log(checkSolution(game.puzzleSolution, x, y, value));
+
+    if (!checkSolution(game.puzzleSolution, x, y, value)) // Returns true if value is correct
+    {
+      globalWrongCellsPlayed++;
+    }
+
+    globalWrongCellsPlayed -= prevWrongCounter;
+    prevWrongCounter = globalWrongCellsPlayed;
+
+    console.log("globalWrongCellsPlayed: " + globalWrongCellsPlayed);
+
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0)
     {
@@ -776,17 +805,17 @@ function getCellSize() {
     return Math.min(size.width, size.height) / 14;
 }
 
-function updateBoardWithNumber({
-                                   x, y, number, fill = true, board,
-                               }) {
+function updateBoardWithNumber({ x, y, number, fill = true, board }) {
+
   let cell = board.get('puzzle').getIn([x, y]);
   cell = cell.delete('notes');
   cell = fill ? cell.set('value', number) : cell.delete('value');
+
   const increment = fill ? 1 : -1;
   const rowPath = ['choices', 'rows', x, number];
   const columnPath = ['choices', 'columns', y, number];
-  const squarePath = ['choices', 'squares',
-    ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  const squarePath = ['choices', 'squares', ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
+  
   return board.setIn(rowPath, board.getIn(rowPath) + increment)
     .setIn(columnPath, board.getIn(columnPath) + increment)
     .setIn(squarePath, board.getIn(squarePath) + increment)
