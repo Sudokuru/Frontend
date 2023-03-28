@@ -200,7 +200,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
   },
   submitButtonText: {
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Inter_700Bold',
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
   }
