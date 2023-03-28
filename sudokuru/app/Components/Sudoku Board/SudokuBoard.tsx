@@ -325,8 +325,8 @@ const getBoxIndexFromXY = (x,y) => {
 }
 
 const print = (str, contents) => {
-  console.log(str)
-  console.log(contents)
+  // console.log(str)
+  // console.log(contents)
 }
 
 const getCausesFromHint = (hint) => {
@@ -408,11 +408,11 @@ async function saveGame(activeGame) {
     await getKeyString("access_token").then(result => {
       token = result;
     });
-    console.log("Token: ", token);
+    // console.log("Token: ", token);
 
     activeGame.currentTime = globalTime;
     activeGame.numHintsUsed = globalHintsUsed;
-    activeGame.numWrongCellsPlayed = globalErrorsMade;
+    activeGame.numWrongCellsPlayed = globalWrongCellsPlayed;
 
     console.log("Active game: ", activeGame);
 
@@ -453,7 +453,6 @@ const checkSolution = (solution, x, y, value) => {
   if (solutionValue == value || value == null)
     return true;
   else {
-    // console.log("Incorrect value at cell " + cellNum + " (" + x + ", " + y + "): " + value + " should be " + solutionValue);
     return false;
   }
 }
@@ -539,24 +538,8 @@ const Cell = (props) => {
     }
   }
 
-  var prevWrongCounter = 0;
-
   if (!drillMode)
   {
-    // Getting Numbers of Wrong Cells Played
-    // console.log("x: " + x + ", y: " + y + ", value: " + value);
-    // console.log(checkSolution(game.puzzleSolution, x, y, value));
-
-    if (!checkSolution(game.puzzleSolution, x, y, value)) // Returns true if value is correct
-    {
-      globalWrongCellsPlayed++;
-    }
-
-    globalWrongCellsPlayed -= prevWrongCounter;
-    prevWrongCounter = globalWrongCellsPlayed;
-
-    console.log("globalWrongCellsPlayed: " + globalWrongCellsPlayed);
-
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0)
     {
@@ -891,7 +874,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
   };
 
   updateBoard = (newBoard) => {
-    console.log("board updated");
+    // console.log("board updated");
     let { history } = this.state;
     const { historyOffSet } = this.state;
     history = history.slice(0, historyOffSet + 1);
@@ -1259,14 +1242,6 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
 
-    const handleValueChange = (x, y, newValue) => {
-      let { board } = this.state;
-      let inNoteMode = board.get('inNoteMode');
-
-      if (inNoteMode) this.addNumberAsNote(newValue);
-      else this.fillNumber(newValue);
-    };
-
     let gameObject = null;
     // This gets the activeGameData for web and mobile
     if (!this.props.isDrill){
@@ -1276,6 +1251,19 @@ export default class SudokuBoard extends React.Component<any, any, any> {
         gameObject = this.props.generatedGame._j.activeGame[0];
       }
     }
+
+    const handleValueChange = (x, y, newValue) => {
+      let { board } = this.state;
+      let inNoteMode = board.get('inNoteMode');
+
+      if (!this.props.isDrill && !checkSolution(gameObject.puzzleSolution, x, y, newValue)){
+        globalWrongCellsPlayed++;
+      }
+
+      if (inNoteMode) this.addNumberAsNote(newValue);
+      else this.fillNumber(newValue);
+    };
+
     const { navigation } = this.props
 
         return (
