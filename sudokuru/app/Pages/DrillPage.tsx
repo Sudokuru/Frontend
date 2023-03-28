@@ -183,11 +183,10 @@ const DrillPage = (props) => {
       return board;
     });
     
-    // make the drillSolutionCells object
-    // only store coordinates, and what those coordinates should be
-    let drillSolutionCells = {};
-    drillSolutionCells.removals = [];
-    drillSolutionCells.placement = {};
+    // for each cell that is a part of the hint, store the coordinates and the resulting state
+    // if there is a notes field for the cell, the notes must match
+    // if there is a value field for the cell, the value must match
+    let drillSolutionCells = [];
     let hint = getHint(board)
     if (hint)
     {
@@ -202,14 +201,16 @@ const DrillPage = (props) => {
         {
           temp.notes = temp.notes.delete(currRemoval[j]);
         }
-        drillSolutionCells.removals.push(temp);
+        drillSolutionCells.push(temp);
       }
 
       if (hint.placements[0])
       {
-        drillSolutionCells.placement.x = hint.placements[0][0];
-        drillSolutionCells.placement.y = hint.placements[0][1];
-        drillSolutionCells.placement.value = hint.placements[0][2];
+        let temp = {}
+        temp.x = hint.placements[0][0];
+        temp.y = hint.placements[0][1];
+        temp.value = hint.placements[0][2];
+        drillSolutionCells.push(temp);
       }
       console.log("drillSolutionCells")
       console.log(drillSolutionCells)
