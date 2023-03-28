@@ -190,6 +190,19 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
   },
+  submitButtonView: {
+    width: cellSize ? cellSize * (50 / 30) : fallbackHeight * (50 / 30),
+    height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: gold,
+    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
+  },
+  submitButtonText: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
+    color: '#FFFFFF',
+  }
 });
 
 const formatTime = (seconds) => {
@@ -711,7 +724,11 @@ const SubmitButton = (props) => {
 
   return (
     <Pressable onPress={isDrillSolutionCorrect}>
-      <Text>clickity clickity</Text>
+      <View style={styles(cellSize).submitButtonView}>
+        <Text style={styles(cellSize).submitButtonText}>
+          Submit
+        </Text>
+      </View>
     </Pressable>
   );
 };
