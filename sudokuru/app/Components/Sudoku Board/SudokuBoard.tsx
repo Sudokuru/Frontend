@@ -1194,6 +1194,30 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
     return rowConflict || columnConflict || squareConflict;
   }
 
+  isDrillSolutionCorrect = () => {
+    const { board, drillSolutionCells } = this.state;
+    for (let i = 0; i < drillSolutionCells.length; i++)
+    {
+      let x = drillSolutionCells[i].x;
+      let y = drillSolutionCells[i].y;
+      let solutionNotes = drillSolutionCells[i].notes;
+      let solutionPlacement = drillSolutionCells[i].placement;
+      if (solutionNotes)
+      {
+        let boardNotes = board.getIn(['puzzle', x, y, 'notes']);
+        if (!boardNotes.equals(solutionNotes))
+          return false;
+      }
+      else if (solutionPlacement)
+      {
+        let boardValue = board.getIn(['puzzle', x, y, 'value']);
+        if (boardValue != solutionPlacement)
+          return false;
+      }
+    }
+    return true;
+  }
+
   renderCell = (cell, x, y) => {
     const { board } = this.state;
     const selected = this.getSelectedCell();
@@ -1374,8 +1398,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any> {
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
-    print("isDrill", this.props.isDrill);
-    print("drillSolutionCells", this.state.drillSolutionCells);
     if (this.props.isDrill && this.state.drillSolutionCells)
     {
       print("in board:", this.state.drillSolutionCells)
