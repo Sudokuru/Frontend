@@ -128,7 +128,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   selectedConflict: {
     // styles for cells with isSelected and conflict props
-    color: '#FF0000',
+    color: '#000000',
     backgroundColor: '#FF7C75',
   },
   bottomActions: {
@@ -625,10 +625,10 @@ const Cell = (props) => {
         (inHintMode) && bgColor && {backgroundColor: bgColor},
 
         conflict && styles(cellSize).conflict,
-        isPeer && styles(cellSize).peer,
+        (!conflict && isPeer) && styles(cellSize).peer,
         sameValue && styles(cellSize).sameValue,
         (conflict && isSelected) && styles(cellSize).selectedConflict,
-        isSelected && styles(cellSize).selected]}>
+        (!conflict && isSelected) && styles(cellSize).selected]}>
         {
           notes ?
             <View style={styles(cellSize).noteViewParent}>
