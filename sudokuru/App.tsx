@@ -50,7 +50,7 @@ function HomeDrawer(){
 
     return(
      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
-      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", }}>
+      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true}}>
           <Drawer.Screen name="Main Page" component={HomePage} />
           <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
           <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />

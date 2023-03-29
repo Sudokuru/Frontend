@@ -637,7 +637,7 @@ const Cell = (props) => {
 
         (!inHintMode && conflict) && styles(cellSize).conflict,
         (!inHintMode && !conflict && isPeer) && styles(cellSize).peer,
-        (!inHintMode && sameValue) && styles(cellSize).sameValue,
+        (!inHintMode && !conflict && sameValue) && styles(cellSize).sameValue,
         (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
         (!inHintMode && !conflict && isSelected) && styles(cellSize).selected]}>
         {
