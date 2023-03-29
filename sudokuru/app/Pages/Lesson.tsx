@@ -66,8 +66,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
          console.log("FINISHED LESSON")
       }
 
-      console.log(reSize / 25, "THIS IS SIZE", theme.colors.primary, title);
-
       return (
           <SafeAreaProvider>
               <SafeAreaView style={{height: '100%', width: '100%'}}>
