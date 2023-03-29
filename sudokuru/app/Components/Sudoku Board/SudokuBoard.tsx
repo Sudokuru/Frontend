@@ -11,6 +11,7 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
+import {showDrillResults} from "../../Pages/DrillPage";
 
 
 // Sudokuru Package Import
@@ -738,7 +739,7 @@ const SubmitButton = (props) => {
   const cellSize = getCellSize();
 
   return (
-    <Pressable onPress={() => { if (isDrillSolutionCorrect()) navigation.navigate('Main Page') }}>
+    <Pressable onPress={() => { if (isDrillSolutionCorrect()) showDrillResults() }}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit

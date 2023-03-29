@@ -15,6 +15,7 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useNavigation} from "@react-navigation/native";
+import Alert from "react-native-awesome-alerts";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 
@@ -146,6 +147,10 @@ const DrillPage = (props) => {
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
 
+  const [drillResults, setDrillResultsVisible] = React.useState(false);
+  export const hideDrillResults = () => setDrillResultsVisible(true);
+  export const showDrillResults = () => setDrillResultsVisible(false);
+
   const navigation: any = useNavigation();
 
   function getHint(board) {
@@ -245,6 +250,21 @@ const DrillPage = (props) => {
             <StatusBar style="auto" />
           </View>
         </View>
+      <Alert
+          show={drillResults}
+          title="Congratulations!"
+          message={`You have successfully completed this drill!`}
+          messageStyle={{maxWidth: 500}}
+          showConfirmButton={true}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          confirmText={"OK"}
+          confirmButtonColor={theme.colors.background}
+          onConfirmPressed={() => {
+              hideDrillResults();
+              navigation.navigate('Main Page');
+          }}
+      />
       </SafeAreaView>
     </SafeAreaProvider>
   );
