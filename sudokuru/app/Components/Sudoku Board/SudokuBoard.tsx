@@ -1280,6 +1280,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       let { board } = this.state;
       let inNoteMode = board.get('inNoteMode');
 
+      console.log("WHAT IS GOING ON HERE?");
+
       console.log(this.state.activeGame[0].puzzleSolution, "SOLUTION");
 
       if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, newValue)){
