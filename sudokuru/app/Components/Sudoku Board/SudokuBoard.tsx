@@ -693,7 +693,7 @@ const ActionRow = (props) => {
   const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode } = props;
   const cellSize = getCellSize();
 
-  const sizeConst = (Platform.OS == 'web') ? 2 : 2;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
 
   return (
     <View style={styles(cellSize).actionControlRow}>
@@ -754,9 +754,14 @@ SubmitButton.propTypes = {
 
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
   return(
     <Pressable onPress={handlePause}>
-      <Text style={styles(cellSize).headerFont}>{isPaused ? 'Resume' : 'Pause'}</Text>
+      {
+        (isPaused) ?
+            <MaterialCommunityIcons color="white" name="play" size={cellSize/(sizeConst)}/> :
+            <MaterialCommunityIcons color="white" name="pause" size={cellSize/(sizeConst)}/>
+      }
     </Pressable>
   )
 }

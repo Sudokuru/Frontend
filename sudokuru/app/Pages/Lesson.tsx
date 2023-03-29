@@ -70,7 +70,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
           <SafeAreaProvider>
               <SafeAreaView style={{height: '100%', width: '100%'}}>
                   <Header page={'Lesson'}/>
-                  <View>
+                  <View style={{alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
                       <View style={styles.container1}>
 
                           <View style={{flexDirection: 'row'}}>
@@ -83,7 +83,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                           <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
 
                               <Pressable style={{top: reSize/4.5, height: reSize/10, right: reSize/25}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
-                                  <AntDesign color={theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
+                                  <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
                               </Pressable>
 
                               {
@@ -95,7 +95,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                               }
 
                               <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
-                                  <AntDesign color={theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
+                                  <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
                               </Pressable>
 
                           </View>
@@ -103,7 +103,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                           <View style={{width: reSize/1.5}}>
                               {
                                   (teach[count][0] != null) ?
-                                      <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: reSize/50}}>{teach[count][0]}</Text>
+                                      <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
                                       : <></>
                               }
                           </View>
