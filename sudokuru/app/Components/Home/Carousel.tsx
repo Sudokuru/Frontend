@@ -100,6 +100,4 @@ const Ccarousel = () =>{
     );
 };
 
-
-
 export default Ccarousel;

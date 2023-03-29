@@ -2,7 +2,7 @@ import React from 'react';
 import LoginButton from "./Auth0/LoginButton";
 import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
-import {Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {Image, Pressable, StyleSheet, View} from "react-native";
 import HomeButton from "./Home/HomeButton";
 import {useNavigation} from "@react-navigation/native";
 

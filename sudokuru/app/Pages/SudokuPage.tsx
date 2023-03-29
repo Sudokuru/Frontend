@@ -1,10 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
 import { StyleSheet, View } from "react-native";
-import { Text } from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -40,13 +36,11 @@ function addNumberAsNote (number, board, i, j) {
   let selectedCell = board.get('puzzle').getIn([i, j]);
   if (!selectedCell)
   {
-    console.log("ERROR when accessing board puzzle. Index: [" + i + "][" + j + "]");
     return;
   }
   const prefilled = selectedCell.get('prefilled');
   if (prefilled)
   {
-    console.log("ERROR current cell is prefilled. Index: [" + i + "][" + j + "]");
     return;
   }
   let notes = selectedCell.get('notes') || new Set();
@@ -128,7 +122,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 game => {
                     // If game object is not returned, you get redirected to Main Page
                     if (game[0].puzzle == null){
-                        console.log(game);
                         navigation.navigate("Home");
                         return;
                     }
@@ -148,7 +141,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 game => {
                     // If game object is not returned, you get redirected to Main Page
                     if (game[0].puzzle == null){
-                        console.log(game);
                         navigation.navigate("Home");
                         return;
                     }
@@ -177,7 +169,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
       try {
         hint = Puzzles.getHint(boardArray, notesArray, strategies);
       } catch (e) {
-        console.log("No hints found for " + strategies);
       }
       return hint;
     }
@@ -191,7 +182,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
       try {
         hint = Puzzles.getHint(boardArray, notesArray, strategies);
       } catch (e) {
-        console.log("No hints found for " + strategies);
       }
       return hint;
     }

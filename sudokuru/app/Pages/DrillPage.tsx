@@ -1,10 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import LoginButton from "../Components/Auth0/LoginButton";
 import { StyleSheet, View } from "react-native";
-import { Text, Button } from 'react-native-paper';
-import ProfileButton from "../Components/Profile/ProfileButton";
-import StatisticsButton from "../Components/Statistics/StatisticsButton";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -45,13 +41,11 @@ function addNumberAsNote (number, board, i, j) {
   let selectedCell = board.get('puzzle').getIn([i, j]);
   if (!selectedCell) 
   {
-    console.log("ERROR when accessing board puzzle. Index: [" + i + "][" + j + "]");
     return;
   }
   const prefilled = selectedCell.get('prefilled');
   if (prefilled)
   {
-    console.log("ERROR current cell is prefilled. Index: [" + i + "][" + j + "]");
     return;
   }
   let notes = selectedCell.get('notes') || new Set();
@@ -65,12 +59,10 @@ export function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
 {
   if (!puzzleCurrentNotesState)
   {
-    console.log("ERROR in parseApiAndAddNotes: puzzleCurrentNotesState == " + puzzleCurrentNotesState);
     return;
   }
   if (puzzleCurrentNotesState.length != 729)
   {
-    console.log("ERROR in parseApiAndAddNotes: puzzleCurrentNotesState should be length 729, but is length: " + puzzleCurrentNotesState.length);
     return;
   }
   let stringIndex = 0;
@@ -169,14 +161,12 @@ const DrillPage = (props) => {
     await getKeyString("access_token").then(
       result => {
         token = result;
-        console.log(token)
       });
 
 
     let { board, originalBoard } = await Drills.getGame(url, strategies, token).then(game => {
       // null check to verify that game is loaded in.
       if (game == null){
-          console.log("Drill game did not load!");
           navigation.navigate("Home");
           return;
       }
@@ -188,7 +178,6 @@ const DrillPage = (props) => {
     });
 
     let drillSolutionCells = getDrillSolutionCells(board);
-    console.log(drillSolutionCells);
 
     return {
       board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard
@@ -226,8 +215,6 @@ const DrillPage = (props) => {
         temp.value = hint.placements[0][2];
         drillSolutionCells.push(temp);
       }
-      console.log("drillSolutionCells");
-      console.log(drillSolutionCells);
     }
     return drillSolutionCells;
   };

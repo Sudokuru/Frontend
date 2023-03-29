@@ -8,7 +8,6 @@ class DifficultySlider extends Component {
     constructor(props){
         super(props);
     }
-    //handleDifficulty = this.props.handleDifficulty;
     
     state = {
         value: 50,

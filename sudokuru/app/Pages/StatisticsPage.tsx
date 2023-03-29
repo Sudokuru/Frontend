@@ -175,7 +175,6 @@ const homeScreenStyles = StyleSheet.create({
     home: {
         display: "flex",
         flexDirection: 'row',
-        //backgroundColor: 'red',
     },
 });
 

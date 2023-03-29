@@ -2,10 +2,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
-import { Set, List, fromJS } from 'immutable';
+import { Set } from 'immutable';
 import PropTypes from 'prop-types';
 
-import { makePuzzle, pluck, isPeer as areCoordinatePeers, range } from './sudoku';
+import { isPeer as areCoordinatePeers, range } from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
@@ -423,8 +423,6 @@ async function saveGame(activeGame) {
     activeGame.currentTime = globalTime;
     activeGame.numHintsUsed = globalHintsUsed;
     activeGame.numWrongCellsPlayed = globalWrongCellsPlayed;
-
-    console.log("Active game: ", activeGame);
 
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -949,7 +947,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   toggleHintMode = () => {
-    console.log("hint mode toggled")
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
@@ -959,7 +956,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       globalHintsUsed++;
     }
 
-    if (newHintMode == false)
+    if (!newHintMode)
     {
       let hintStepsLength = board.get('hintSteps').length;
       let currentStep = board.get('currentStep');
@@ -1000,7 +997,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     switch (hint.strategy)
     {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
-        console.log("Amend Notes");
         for (let i = 0; i < removals.length; i++)
           board = this.addEveryNote(removals[i].position[0], removals[i].position[1], board);
         
@@ -1023,7 +1019,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "SIMPLIFY_NOTES": // DONE
-        console.log("Simplify Notes");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1043,7 +1038,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "NAKED_SINGLE": // DONE
-        console.log("Naked Single");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1059,7 +1053,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       case "NAKED_PAIR": // DONE
       case "NAKED_TRIPLET": // DONE
       case "NAKED_QUADRUPLET": // DONE
-        console.log("Naked Set (but not single)");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1082,7 +1075,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       case "HIDDEN_PAIR": // DONE
       case "HIDDEN_TRIPLET": // DONE
       case "HIDDEN_QUADRUPLET": // DONE
-        console.log("Hidden Set");
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1123,7 +1115,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         console.log("the switch statement matched none of the strategies :(")
         break;
     }
-    print("hintSteps", hintSteps);
     board = board.set('hintSteps', hintSteps);
     this.setState({ board });
   }
