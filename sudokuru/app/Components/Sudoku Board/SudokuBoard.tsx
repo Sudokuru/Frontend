@@ -779,18 +779,22 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
       globalTime = 0;
     }
 
-    useFocusEffect(() => { // Timer
+    // Test Me Pls ///////////////////////////////////
+    useFocusEffect(
+      React.useCallback(() => {
         let interval = null;
         if (!isPaused) {
             interval = setInterval(() => {
                 setTime(time => time + 1);
                 globalTime = globalTime + 1;
+                console.log(globalTime);
             }, 1000);
         } else {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [isPaused]);
+      }, [isPaused])
+    );
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
