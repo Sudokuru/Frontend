@@ -227,15 +227,13 @@ const NumberControl = (props) => {
     <View style={ styles(cellSize).numberControlRow }>
       {range(9).map((i) => {
         const number = i + 1;
-        const onClick = !prefilled && !inHintMode
-          ? () => {
+        const onClick = () => {
             inNoteMode
               ? addNumberAsNote(number)
               : fillNumber(number);
           }
-          : undefined;
         return (
-          <Pressable key={number} onPress={onClick} style={ styles(cellSize).numberContainer }>
+          <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
             <Text style={styles(cellSize).numberControlText}>{number}</Text>
           </Pressable>
         );
@@ -703,11 +701,11 @@ const ActionRow = (props) => {
   return (
     <View style={styles(cellSize).actionControlRow}>
       {/* Undo */}
-      <Pressable onPress={history.size && !inHintMode ? undo : null}>
+      <Pressable onPress={undo} disabled={!history.size || inHintMode}>
         <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Note mode */}
-      <Pressable onPress={!inHintMode ? toggleNoteMode : null}>
+      <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
         {inNoteMode
             ? // note mode on
           <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
@@ -716,7 +714,7 @@ const ActionRow = (props) => {
         }
       </Pressable>
       {/* Erase */}
-      <Pressable onPress={!prefilled && !inHintMode ? eraseSelected : null}>
+      <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
