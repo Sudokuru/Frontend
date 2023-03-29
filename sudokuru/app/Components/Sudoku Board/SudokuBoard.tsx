@@ -10,6 +10,7 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useFocusEffect} from "@react-navigation/core";
 
 
 // Sudokuru Package Import
@@ -778,7 +779,7 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
       globalTime = 0;
     }
 
-    useEffect(() => { // Timer
+    useFocusEffect(() => { // Timer
         let interval = null;
         if (!isPaused) {
             interval = setInterval(() => {
