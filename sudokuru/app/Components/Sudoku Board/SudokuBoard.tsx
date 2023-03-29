@@ -965,7 +965,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (newHintMode) {
+    if (!this.props.isDrill && newHintMode) {
       this.state.activeGame[0].numHintsUsed++;
     }
 
@@ -1296,6 +1296,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
     const { navigation } = this.props;
 
+    let game = null;
+    if (!this.props.isDrill) game = this.state.activeGame[0];
+
 
         return (
             <Cell
@@ -1315,7 +1318,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
-                game={this.state.activeGame[0]}
+                game={game}
                 navigation={navigation}
             />
         );
