@@ -337,8 +337,8 @@ const getBoxIndexFromXY = (x,y) => {
 }
 
 const print = (str, contents) => {
-  // console.log(str)
-  // console.log(contents)
+  console.log(str)
+  console.log(contents)
 }
 
 const getCausesFromHint = (hint) => {
@@ -741,7 +741,7 @@ const SubmitButton = (props) => {
   const cellSize = getCellSize();
 
   return (
-    <Pressable onPress={() => {isDrillSolutionCorrect ? navigation.navigate('Main Page') : console.log("Input is Incorrect")}}>
+    <Pressable onPress={() => { if (isDrillSolutionCorrect()) navigation.navigate('Main Page') }}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit
@@ -1439,10 +1439,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
-    if (this.props.isDrill && this.state.drillSolutionCells)
-    {
-      print("in board:", this.state.drillSolutionCells)
-    }
 
     return (
       <ActionRow
@@ -1461,7 +1457,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   renderSubmitButton = () => {
     const { navigation } = this.props;
     const isDrillSolutionCorrect = () => {
-      console.log("isDrillSolutionCorrect?")
       const { drillSolutionCells, originalBoard } = this.state;
       let { board } = this.state;
       for (let i = 0; i < drillSolutionCells.length; i++)
@@ -1469,13 +1464,12 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         let x = drillSolutionCells[i].x;
         let y = drillSolutionCells[i].y;
         let solutionNotes = drillSolutionCells[i].notes;
-        let solutionPlacement = drillSolutionCells[i].placement;
+        let solutionPlacement = drillSolutionCells[i].value;
         if (solutionNotes)
         {
           let boardNotes = board.getIn(['puzzle', x, y, 'notes']) || Set();
           if (!boardNotes.equals(solutionNotes))
           {
-            console.log("NOPE");
             board = originalBoard;
             this.setState({ board }, () => {
               this.toggleHintMode();
@@ -1488,7 +1482,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           let boardValue = board.getIn(['puzzle', x, y, 'value']) || -1;
           if (boardValue != solutionPlacement)
           {
-            console.log("NOPE"); 
             board = originalBoard;
             this.setState({ board }, () => {
               this.toggleHintMode();
