@@ -10,7 +10,6 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-import {useNavigation} from "@react-navigation/native";
 
 
 // Sudokuru Package Import
@@ -194,6 +193,20 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
   },
+  submitButtonView: {
+    width: cellSize ? cellSize * (50 / 30) : fallbackHeight * (50 / 30),
+    height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: gold,
+    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60),
+    marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+  },
+  submitButtonText: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
+    color: '#FFFFFF',
+  }
 });
 
 const formatTime = (seconds) => {
@@ -324,8 +337,8 @@ const getBoxIndexFromXY = (x,y) => {
 }
 
 const print = (str, contents) => {
-  // console.log(str)
-  // console.log(contents)
+  console.log(str)
+  console.log(contents)
 }
 
 const getCausesFromHint = (hint) => {
@@ -482,10 +495,7 @@ const Cell = (props) => {
           bgColor = "white";
         // if the row matches hint, highlight the current row
         if (currentHint.groups[i].type == "box" && getBoxIndexFromXY(x, y) === currentHint.groups[i].index)
-        {
-          console.log("(" + x + ", " + y + "), boxIndex: " + getBoxIndexFromXY(x, y));
           bgColor = "white";
-        }
       }
     }
     if (currentHint.causes) // cause highlighting
@@ -726,6 +736,25 @@ ActionRow.propTypes = {
   updateBoardInPlace: PropTypes.func.isRequired,
 };
 
+const SubmitButton = (props) => {
+  const { isDrillSolutionCorrect, navigation } = props;
+  const cellSize = getCellSize();
+
+  return (
+    <Pressable onPress={() => { if (isDrillSolutionCorrect()) navigation.navigate('Main Page') }}>
+      <View style={styles(cellSize).submitButtonView}>
+        <Text style={styles(cellSize).submitButtonText}>
+          Submit
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+
+SubmitButton.propTypes = {
+  isDrillSolutionCorrect: PropTypes.func.isRequired,
+};
+
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
   return(
@@ -786,7 +815,7 @@ HeaderRow.defaultProps = {
  */
 function getCellSize() {
     const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 14;
+    return Math.min(size.width, size.height) / 15;
 }
 
 function updateBoardWithNumber({ x, y, number, fill = true, board }) {
@@ -811,7 +840,7 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
     accumulator + (row.get(number) > 0 ? 1 : 0), 0);
 }
 
-export default class SudokuBoard extends React.Component<any, any, any> {
+export default class SudokuBoard extends React.Component<any, any, any, any, any> {
   constructor(props) {
     super(props);
   };
@@ -1233,7 +1262,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const { board } = this.state;
     const selected = this.getSelectedCell();
     const { value, prefilled, notes } = cell.toJSON();
-    const conflict = this.isConflict(x, y);
+    const conflict = (this.props.isDrill) ? false : this.isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get('selected'));
     const sameValue = !!(selected && selected.get('value') &&
       value === selected.get('value'));
@@ -1410,6 +1439,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
+
     return (
       <ActionRow
         history={history}
@@ -1424,12 +1454,50 @@ export default class SudokuBoard extends React.Component<any, any, any> {
     );
   }
 
-  renderControls = () => {
+  renderSubmitButton = () => {
+    const { navigation } = this.props;
+    const isDrillSolutionCorrect = () => {
+      const { drillSolutionCells, originalBoard } = this.state;
+      let { board } = this.state;
+      for (let i = 0; i < drillSolutionCells.length; i++)
+      {
+        let x = drillSolutionCells[i].x;
+        let y = drillSolutionCells[i].y;
+        let solutionNotes = drillSolutionCells[i].notes;
+        let solutionPlacement = drillSolutionCells[i].value;
+        if (solutionNotes)
+        {
+          let boardNotes = board.getIn(['puzzle', x, y, 'notes']) || Set();
+          if (!boardNotes.equals(solutionNotes))
+          {
+            board = originalBoard;
+            this.setState({ board }, () => {
+              this.toggleHintMode();
+            });
+            return false;
+          }
+        }
+        else if (solutionPlacement)
+        {
+          let boardValue = board.getIn(['puzzle', x, y, 'value']) || -1;
+          if (boardValue != solutionPlacement)
+          {
+            board = originalBoard;
+            this.setState({ board }, () => {
+              this.toggleHintMode();
+            });
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
     return (
-      <View style={styles().bottomActions}>
-        {this.renderActions()}
-        {this.renderNumberControl()}
-      </View>
+      <SubmitButton
+        isDrillSolutionCorrect={isDrillSolutionCorrect}
+        navigation={navigation}
+      />
     );
   }
 
@@ -1446,8 +1514,8 @@ export default class SudokuBoard extends React.Component<any, any, any> {
       this.props.generatedGame.then(game => this.setState(game));
     }
 
+    
     drillMode = this.props.isDrill;
-    print("this.state", this.state ? this.state : "no this.state yet");
 
     return (
       <View>
@@ -1457,6 +1525,7 @@ export default class SudokuBoard extends React.Component<any, any, any> {
           <View style={styles().bottomActions}>
             {this.renderActions()}
             {this.renderNumberControl()}
+            {this.props.isDrill && this.renderSubmitButton()}
           </View>
         }
       </View>
