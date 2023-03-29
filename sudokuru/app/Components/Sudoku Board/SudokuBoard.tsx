@@ -1239,6 +1239,10 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       board = updateBoardWithNumber({
         x, y, number, fill: true, board,
       });
+
+      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
+        this.state.activeGame[0].numWrongCellsPlayed++;
+      }
     }
     this.updateBoard(board);
   };
@@ -1279,16 +1283,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
       let inNoteMode = board.get('inNoteMode');
-
-      console.log("WHAT IS GOING ON HERE?");
-
-      console.log(this.state.activeGame[0].puzzleSolution, "SOLUTION");
-
-      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, newValue)){
-        console.log(this.state.activeGame[0].numWrongCellsPlayed, "NUM WRONG CELLS PLAYED");
-        this.state.activeGame[0].numWrongCellsPlayed++;
-        console.log(this.state.activeGame[0].numWrongCellsPlayed, "NUM WRONG CELLS PLAYED 2");
-      }
 
       if (inNoteMode) this.addNumberAsNote(newValue);
       else this.fillNumber(newValue);
