@@ -11,7 +11,6 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
-import {showDrillResults} from "../../Pages/DrillPage";
 
 
 // Sudokuru Package Import
@@ -739,7 +738,7 @@ const SubmitButton = (props) => {
   const cellSize = getCellSize();
 
   return (
-    <Pressable onPress={() => { if (isDrillSolutionCorrect()) showDrillResults() }}>
+    <Pressable onPress={() => { if (isDrillSolutionCorrect()) navigation.navigate('Main Page') }}>
       <View style={styles(cellSize).submitButtonView}>
         <Text style={styles(cellSize).submitButtonText}>
           Submit
@@ -965,7 +964,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (!this.props.isDrill && newHintMode) {
+    if (newHintMode) {
       this.state.activeGame[0].numHintsUsed++;
     }
 
@@ -975,7 +974,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       let currentStep = board.get('currentStep');
 
       // if they prematurely exit hint mode, undo the hint
-      if (currentStep < hintStepsLength - 1) 
+      if (currentStep < hintStepsLength - 1)
       {
         this.undo();
       }
@@ -1013,7 +1012,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         console.log("Amend Notes");
         for (let i = 0; i < removals.length; i++)
           board = this.addEveryNote(removals[i].position[0], removals[i].position[1], board);
-        
+
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
@@ -1296,9 +1295,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
     const { navigation } = this.props;
 
-    let game = null;
-    if (!this.props.isDrill) game = this.state.activeGame[0];
-
 
         return (
             <Cell
@@ -1318,7 +1314,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
-                game={game}
+                game={this.state.activeGame[0]}
                 navigation={navigation}
             />
         );

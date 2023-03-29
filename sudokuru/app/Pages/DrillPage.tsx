@@ -147,10 +147,6 @@ const DrillPage = (props) => {
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
 
-  const [drillResults, setDrillResultsVisible] = React.useState(false);
-  export const hideDrillResults = () => setDrillResultsVisible(true);
-  export const showDrillResults = () => setDrillResultsVisible(false);
-
   const navigation: any = useNavigation();
 
   function getHint(board) {
@@ -250,21 +246,6 @@ const DrillPage = (props) => {
             <StatusBar style="auto" />
           </View>
         </View>
-      <Alert
-          show={drillResults}
-          title="Congratulations!"
-          message={`You have successfully completed this drill!`}
-          messageStyle={{maxWidth: 500}}
-          showConfirmButton={true}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          confirmText={"OK"}
-          confirmButtonColor={theme.colors.background}
-          onConfirmPressed={() => {
-              hideDrillResults();
-              navigation.navigate('Main Page');
-          }}
-      />
       </SafeAreaView>
     </SafeAreaProvider>
   );
