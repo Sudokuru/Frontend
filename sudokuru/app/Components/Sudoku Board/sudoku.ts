@@ -34,7 +34,7 @@ export function makeBoard({ puzzle }, initialPuzzle) {
         })
     ));
     // console.log(initialPuzzle);
-    return fromJS({ puzzle: result, selected: false, inNoteMode: false, choices: { rows, columns, squares } });
+    return fromJS({ puzzle: result, selected: false, inNoteMode: false, inHintMode: false, choices: { rows, columns, squares } });
 }
 
 // TODO use immutable when this is all working
