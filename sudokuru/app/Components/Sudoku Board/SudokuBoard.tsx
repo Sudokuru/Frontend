@@ -703,11 +703,11 @@ const ActionRow = (props) => {
   return (
     <View style={styles(cellSize).actionControlRow}>
       {/* Undo */}
-      <Pressable onPress={history.size ? undo : null}>
+      <Pressable onPress={history.size && !inHintMode ? undo : null}>
         <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Note mode */}
-      <Pressable onPress={toggleNoteMode}>
+      <Pressable onPress={!inHintMode ? toggleNoteMode : null}>
         {inNoteMode
             ? // note mode on
           <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
