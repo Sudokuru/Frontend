@@ -14,7 +14,6 @@ import { List } from 'immutable';
 import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-import {useNavigation} from "@react-navigation/native";
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 
 // Sudokuru Package Import
@@ -24,7 +23,6 @@ const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 const Puzzles = sudokuru.Puzzles;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let difficulty = .1; // TODO: Get difficulty from slider
 
 let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE"]; // TODO: Get strategies from previous page
 
@@ -106,6 +104,7 @@ function componentBoardNotesToArray(board)
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
     const { gameOrigin } = route.params;
+    const { difficulty } = route.params;
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
