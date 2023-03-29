@@ -9,20 +9,18 @@ import {AntDesign} from "@expo/vector-icons";
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
 
-const Lesson = (props) => {
+const Lesson = (props: { route: { params: { params: any; }; }; }) => {
       //Brings in name of strategy from carousel
       let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
       const navigation: any = useNavigation();
 
-      function getTitle(name):string {
+      function getTitle(name: string):string {
             let lessonName: string;
             name == "AMEND_NOTES" ? lessonName = 'Amend Notes' :
-                name == "SIMPLIFY_NOTES" ? lessonName = 'Simplify Notes' :
-                    name == "NAKED_SINGLE" ? lessonName = 'Naked Single' :
-                        name == "NAKED_SET" ? lessonName = 'Naked Set' :
-                            name == "HIDDEN_SINGLE" ? lessonName = 'Hidden Single' :
-                                name == "HIDDEN_SET" ? lessonName = 'Hidden Set' :
-                                    name == "POINTING_PAIR" ? lessonName = 'Pointing Pair' : lessonName = 'Null';
+                name == "NAKED_SINGLE" ? lessonName = 'Naked Single' :
+                    name == "NAKED_SET" ? lessonName = 'Naked Set' :
+                        name == "HIDDEN_SINGLE" ? lessonName = 'Hidden Single' :
+                            name == "HIDDEN_SET" ? lessonName = 'Hidden Set' : lessonName = 'Null';
             return lessonName;
       }
 

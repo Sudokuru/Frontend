@@ -25,7 +25,7 @@ const Ccarousel = () =>{
     // set carousel settings depending on platform
     const carouselWidth = width;
     const carouselHeight = isWeb ? width / 4 : width / 1.5;
-    const arraySize = 7;
+    const arraySize = 5;
     const scrollingScale = isWeb ? 0.5 : 0.8;
     const scrollingOffset = isWeb ? 1250 : 120;
     const scrollingInverted = isWeb;
@@ -36,23 +36,19 @@ const Ccarousel = () =>{
 
     function navigate(index: number):any {
         index == 0 ? navigation.navigate('Lesson',{params:'AMEND_NOTES'}) :
-            index == 1 ? navigation.navigate('Lesson',{params:'SIMPLIFY_NOTES'}) :
-                index == 2 ? navigation.navigate('Lesson',{params:'NAKED_SINGLE'}) :
-                    index == 3 ? navigation.navigate('Lesson',{params:'NAKED_SET'}) :
-                        index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) :
-                            index == 5 ? navigation.navigate('Lesson',{params:'HIDDEN_SET'}) :
-                                index == 6 ? navigation.navigate('Lesson',{params:'POINTING_PAIR'}) : navigation.navigate('Home');
+            index == 1 ? navigation.navigate('Lesson',{params:'NAKED_SINGLE'}) :
+                    index == 2 ? navigation.navigate('Lesson',{params:'NAKED_SET'}) :
+                        index == 3 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) :
+                            index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SET'}) : navigation.navigate('Home');
     }
 
     function getLessonName(index: number):string {
         let lessonName: string;
         index == 0 ? lessonName = 'Amend Notes' :
-            index == 1 ? lessonName = 'Simplify Notes' :
-                index == 2 ? lessonName = 'Naked Single' :
-                    index == 3 ? lessonName = 'Naked Set' :
-                        index == 4 ? lessonName = 'Hidden Single' :
-                            index == 5 ? lessonName = 'Hidden Set' :
-                                index == 6 ? lessonName = 'Pointing Pair' : lessonName = 'Null';
+            index == 1 ? lessonName = 'Naked Single' :
+                index == 2 ? lessonName = 'Naked Set' :
+                    index == 3 ? lessonName = 'Hidden Single' :
+                        index == 4 ? lessonName = 'Hidden Set' : lessonName = 'Null';
         return lessonName;
     }
 
