@@ -85,7 +85,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                           <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
 
                               <Pressable style={{top: reSize/4.5, height: reSize/10, right: reSize/25}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
-                                  <AntDesign color="white" name="leftcircleo" size={reSize/15}/>
+                                  <AntDesign color={theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
                               </Pressable>
 
                               {
@@ -97,7 +97,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                               }
 
                               <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
-                                  <AntDesign color="white" name="rightcircleo" size={reSize/15}/>
+                                  <AntDesign color={theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
                               </Pressable>
 
                           </View>
