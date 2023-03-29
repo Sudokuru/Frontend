@@ -626,7 +626,7 @@ const Cell = (props) => {
 
         conflict && styles(cellSize).conflict,
         (!conflict && isPeer) && styles(cellSize).peer,
-        sameValue && styles(cellSize).sameValue,
+        (!conflict && sameValue) && styles(cellSize).sameValue,
         (conflict && isSelected) && styles(cellSize).selectedConflict,
         (!conflict && isSelected) && styles(cellSize).selected]}>
         {
