@@ -959,7 +959,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (newHintMode) {
+    if (!this.props.isDrill && newHintMode) {
       this.state.activeGame[0].numHintsUsed++;
     }
 
