@@ -14,7 +14,6 @@ import { List } from 'immutable';
 import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-import {useNavigation} from "@react-navigation/native";
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 
 // Sudokuru Package Import

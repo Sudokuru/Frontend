@@ -145,35 +145,8 @@ const DrillPage = (props) => {
   let [fontsLoaded] = useFonts({
       Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
   });
-const navigation: any = useNavigation();
-  if (!fontsLoaded) {
-    return null;
-  }
 
-  async function generateGame(url, strategies) {
-    let token = null;
-    await getKeyString("access_token").then(
-        result => {
-          token = result;
-        });
-
-    let board = await Drills.getGame(url, strategies, token).then(game =>
-    {
-      // null check to verify that game is loaded in.
-      if (game == null){
-          console.log("Drill game did not load!");
-          navigation.navigate("Home");
-          return;
-      }
-      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState)
-      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
-      return board;
-    });
-
-    return {
-      board, history: List.of(board), historyOffSet: 0,
-    };
-  }
+  const navigation: any = useNavigation();
 
   function getHint(board) {
     let boardArray = componentBoardValsToArray(board);
@@ -187,6 +160,78 @@ const navigation: any = useNavigation();
     return hint;
   }
 
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  async function generateGame(url, strategies) {
+    let token = null;
+    await getKeyString("access_token").then(
+      result => {
+        token = result;
+        console.log(token)
+      });
+
+
+    let { board, originalBoard } = await Drills.getGame(url, strategies, token).then(game => {
+      // null check to verify that game is loaded in.
+      if (game == null){
+          console.log("Drill game did not load!");
+          navigation.navigate("Home");
+          return;
+      }
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
+      let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
+      return { board, originalBoard };
+    });
+
+    let drillSolutionCells = getDrillSolutionCells(board);
+    console.log(drillSolutionCells);
+
+    return {
+      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard
+    };
+  }
+
+  // for each cell that is a part of the hint, store the coordinates and the resulting state
+  // if there is a notes field for the cell, the notes must match
+  // if there is a value field for the cell, the value must match
+  function getDrillSolutionCells(board)
+  {
+    let drillSolutionCells = [];
+    let hint = getHint(board);
+    if (hint)
+    {
+      for (let i = 0; i < hint.removals.length; i++)
+      {
+        let temp = {};
+        let currRemoval = hint.removals[i];
+        temp.x = currRemoval[0];
+        temp.y = currRemoval[1];
+        temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes');
+        for (let j = 2; j < currRemoval.length; j++)
+        {
+          temp.notes = temp.notes.delete(currRemoval[j]);
+        }
+        drillSolutionCells.push(temp);
+      }
+
+      if (hint.placements[0])
+      {
+        let temp = {}
+        temp.x = hint.placements[0][0];
+        temp.y = hint.placements[0][1];
+        temp.value = hint.placements[0][2];
+        drillSolutionCells.push(temp);
+      }
+      console.log("drillSolutionCells");
+      console.log(drillSolutionCells);
+    }
+    return drillSolutionCells;
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -196,7 +241,7 @@ const navigation: any = useNavigation();
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL,  strategy)} isDrill={true} getHint={getHint} navigation={navigation}/>
+            <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL, strategy)} isDrill={true} getHint={getHint} navigation={navigation}/>
             <StatusBar style="auto" />
           </View>
         </View>
