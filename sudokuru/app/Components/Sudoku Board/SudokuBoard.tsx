@@ -221,13 +221,13 @@ const formatTime = (seconds) => {
 };
 
 const NumberControl = (props) => {
-  const { prefilled, inNoteMode, fillNumber, addNumberAsNote } = props;
+  const { prefilled, inNoteMode, fillNumber, addNumberAsNote, inHintMode } = props;
   const cellSize = getCellSize();
   return (
     <View style={ styles(cellSize).numberControlRow }>
       {range(9).map((i) => {
         const number = i + 1;
-        const onClick = !prefilled
+        const onClick = !prefilled && !inHintMode
           ? () => {
             inNoteMode
               ? addNumberAsNote(number)
@@ -249,6 +249,7 @@ NumberControl.propTypes = {
   inNoteMode: PropTypes.bool.isRequired,
   fillNumber: PropTypes.func.isRequired,
   addNumberAsNote: PropTypes.func.isRequired,
+  inHintMode: PropTypes.bool.isRequired,
 };
 
 NumberControl.defaultProps = {
@@ -604,10 +605,10 @@ const Cell = (props) => {
 
   const handleKeyDown = (event) => {
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue)) { // check if input is a digit from 1 to 9
+    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
       onValueChange(x, y, parseInt(inputValue, 10));
     }
-    if (inputValue == "Delete" || inputValue == "Backspace")
+    if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
       eraseSelected();
   };
 
@@ -634,11 +635,11 @@ const Cell = (props) => {
         // Border Highlighting
         (inHintMode) && bgColor && {backgroundColor: bgColor},
 
-        conflict && styles(cellSize).conflict,
-        (!conflict && isPeer) && styles(cellSize).peer,
-        sameValue && styles(cellSize).sameValue,
-        (conflict && isSelected) && styles(cellSize).selectedConflict,
-        (!conflict && isSelected) && styles(cellSize).selected]}>
+        (!inHintMode && conflict) && styles(cellSize).conflict,
+        (!inHintMode && !conflict && isPeer) && styles(cellSize).peer,
+        (!inHintMode && sameValue) && styles(cellSize).sameValue,
+        (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
+        (!inHintMode && !conflict && isSelected) && styles(cellSize).selected]}>
         {
           notes ?
             <View style={styles(cellSize).noteViewParent}>
@@ -661,9 +662,9 @@ const Cell = (props) => {
               </View>
             </View>
             : value && <Text style={[styles(cellSize).cellText,
-            conflict && styles(cellSize).conflict,
-            (conflict && isSelected) && styles(cellSize).selectedConflict,
-            prefilled && styles(cellSize).prefilled]}>{value}
+            (!inHintMode && conflict && styles(cellSize).conflict,
+            (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
+            (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
           </Text>
         }
       </View>
@@ -694,7 +695,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -715,11 +716,11 @@ const ActionRow = (props) => {
         }
       </Pressable>
       {/* Erase */}
-      <Pressable onPress={!prefilled ? eraseSelected : null}>
+      <Pressable onPress={!prefilled && !inHintMode ? eraseSelected : null}>
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={!prefilled ? updateBoardInPlace && toggleHintMode : null}>
+      <Pressable onPress={updateBoardInPlace && toggleHintMode}>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -734,6 +735,7 @@ ActionRow.propTypes = {
   eraseSelected: PropTypes.func.isRequired,
   toggleHintMode: PropTypes.func.isRequired,
   updateBoardInPlace: PropTypes.func.isRequired,
+  inHintMode: PropTypes.bool.isRequired,
 };
 
 const SubmitButton = (props) => {
@@ -949,6 +951,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   toggleHintMode = () => {
+    console.log("hint mode toggled")
     let { board } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
@@ -1420,6 +1423,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       const selectedCell = this.getSelectedCell();
       const prefilled = selectedCell && selectedCell.get('prefilled');
       const inNoteMode = board.get('inNoteMode');
+      const inHintMode = board.get('inHintMode');
       return (
         <NumberControl
           prefilled={prefilled}
@@ -1427,6 +1431,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           getNumberValueCount={this.getNumberValueCount}
           fillNumber={this.fillNumber}
           addNumberAsNote={this.addNumberAsNote}
+          inHintMode={inHintMode}
         />
       );
   }
@@ -1436,6 +1441,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const selectedCell = this.getSelectedCell();
     const prefilled = selectedCell && selectedCell.get('prefilled');
     const inNoteMode = board.get('inNoteMode');
+    const inHintMode = board.get('inHintMode');
     const undo = this.undo;
     const toggleNoteMode = this.toggleNoteMode;
     const eraseSelected = this.eraseSelected;
@@ -1450,6 +1456,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         eraseSelected={eraseSelected}
         toggleHintMode={this.toggleHintMode}
         updateBoardInPlace={this.updateBoardInPlace}
+        inHintMode={inHintMode}
       />
     );
   }
