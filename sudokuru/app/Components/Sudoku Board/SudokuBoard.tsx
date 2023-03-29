@@ -418,7 +418,6 @@ async function saveGame(activeGame) {
       token = result;
     });
 
-    console.log(activeGame.currentTime, activeGame.numHintsUsed, activeGame.numWrongCellsPlayed);
     activeGame.currentTime = globalTime;
 
     console.log("Active game: ", activeGame);
@@ -576,8 +575,6 @@ const Cell = (props) => {
       for (let i = 0; i < puzzleString.length/9; i++)
         for (let j = 0; j < puzzleString.length/9; j++)
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
-
-      console.log("TIME ATTACK", game.currentTime);
 
       // If there's no moves in the moves array, add the current move to the moves array
       if (game.moves.length === 0) {
@@ -1316,10 +1313,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     };
 
   renderTopBar = () => {
-    console.log(this.state.activeGame[0].currentTime);
-    console.log(this.props.generatedGame.then((result) => {
-      console.log(result.activeGame[0].currentTime)
-    }));
     return(
       <HeaderRow currentTime = {this.state.activeGame[0].currentTime}/>
     );
@@ -1513,10 +1506,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     if (!this.state.board) {
       this.props.generatedGame.then(game => this.setState(game));
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log(this.props.generatedGame, "LOGGING!", this.props.prevProps);
   }
 
   render = () => {
