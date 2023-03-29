@@ -137,7 +137,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   actionControlRow: {
     width: cellSize ? cellSize * 11 : fallbackHeight * 11,
-    height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
+    height: cellSize ? cellSize * 1.5: fallbackHeight * (3 / 4),
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
@@ -255,7 +255,7 @@ NumberControl.defaultProps = {
 const Puzzle = (props) => {
   const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
   const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
 
   const isRightArrowRendered = (inHintMode, onFinalStep) =>
   {
@@ -693,7 +693,7 @@ const ActionRow = (props) => {
   const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode } = props;
   const cellSize = getCellSize();
 
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
 
   return (
     <View style={styles(cellSize).actionControlRow}>
@@ -754,7 +754,7 @@ SubmitButton.propTypes = {
 
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
   return(
     <Pressable onPress={handlePause}>
       {
