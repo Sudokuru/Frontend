@@ -29,7 +29,10 @@ class DifficultySlider extends Component {
             minimumTrackTintColor="#D9A05B"
             maximumTrackTintColor="#F2F2F2"
             value={this.state.value}
-            onValueChange={value => this.setState({value}) && this.props.sendData(value)}
+            onValueChange={value => {
+                this.setState({value});
+                this.props.sendData(value);
+            }}
             />
             <Text style={{color: '#D9A05B' }}>Your selected difficulty: {this.state.value}</Text>
         </View>);

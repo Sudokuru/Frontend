@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React, {useEffect} from 'react';
+import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
 import {Text, Button, useTheme} from 'react-native-paper';
 import {StatusBar} from "expo-status-bar";
@@ -44,6 +45,12 @@ const HomePage = () => {
     const showPlayHelp = () => setPlayHelpVisible(true);
     const hidePlayHelp = () => setPlayHelpVisible(false);
 
+    const [difficulty, setDifficulty] = useState(50);
+
+    const getData = (val) => {
+        // console.log('getData called with value:', val);
+        setDifficulty(val);
+    }
 
     useEffect(() => {
         async function grabCurrentGame(url:string) {
@@ -72,14 +79,6 @@ const HomePage = () => {
 
     if (!fontsLoaded) {
         return null;
-    }
-
-    let difficulty = 50;
-
-    const getData = (val) => {
-        // do not forget to bind getData in constructor
-        console.log(val);
-        difficulty = val;
     }
 
     return (
