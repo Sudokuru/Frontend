@@ -10,6 +10,7 @@ import Constants, {AppOwnership} from "expo-constants";
 import {AUDIENCE, CLIENT_ID, DOMAIN, SCOPE} from '@env'
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
 import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect} from "@react-navigation/core";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -48,7 +49,8 @@ const LoginButton = () => {
     const navigation: any = useNavigation();
 
     // initialize name with value found in token (if exists).
-    useEffect(() => {
+
+    useFocusEffect(() => {
         getTokenName().then(data => setName(data));
     });
 
