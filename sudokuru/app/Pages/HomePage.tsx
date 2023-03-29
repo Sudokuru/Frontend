@@ -1,9 +1,12 @@
+// @ts-nocheck
 import React, {useEffect} from 'react';
+import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
 import {Text, Button, useTheme} from 'react-native-paper';
 import {StatusBar} from "expo-status-bar";
 import CCarousel from "../Components/Home/Carousel";
 import {useNavigation} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
@@ -43,8 +46,14 @@ const HomePage = () => {
     const showPlayHelp = () => setPlayHelpVisible(true);
     const hidePlayHelp = () => setPlayHelpVisible(false);
 
+    const [difficulty, setDifficulty] = useState(50);
 
-    useEffect(() => {
+    const getData = (val) => {
+        // console.log('getData called with value:', val);
+        setDifficulty(val);
+    }
+
+    useFocusEffect(() => {
         async function grabCurrentGame(url:string) {
             let token = null;
             await getKeyString("access_token").then(result => {
@@ -63,7 +72,7 @@ const HomePage = () => {
                 });
         }
         grabCurrentGame(USERACTIVEGAMESBFFURL);
-    }, []);
+    });
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -72,16 +81,6 @@ const HomePage = () => {
     if (!fontsLoaded) {
         return null;
     }
-
-
-    let difficulty = 50;
-
-    const getData = (val) => {
-        // do not forget to bind getData in constructor
-        console.log(val);
-        difficulty = val;
-    }
-
 
     return (
         <SafeAreaProvider>
@@ -134,7 +133,7 @@ const HomePage = () => {
                                     </Button> : <></>
                             }
 
-                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start"})}>
+                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
                                 Start Puzzle
                             </Button>
                         </View>

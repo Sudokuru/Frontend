@@ -33,7 +33,7 @@ export function makeBoard({ puzzle }, initialPuzzle) {
             };
         })
     ));
-    console.log(initialPuzzle);
+    // console.log(initialPuzzle);
     return fromJS({ puzzle: result, selected: false, inNoteMode: false, choices: { rows, columns, squares } });
 }
 
