@@ -77,7 +77,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                           {
                               (teach[count][1] != null) ?
                               <Image
-                              style={{width: 400, height: 512}}
+                              style={{width: 500, height: 512}}
                               source={{uri:teach[count][1]}}
                               /> : <></>
                           }
