@@ -1295,6 +1295,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
     const { navigation } = this.props;
 
+    let game = null;
+    if (!this.props.isDrill) game = this.state.activeGame[0];
+
 
         return (
             <Cell
@@ -1314,7 +1317,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
-                game={this.state.activeGame[0]}
+                game={game}
                 navigation={navigation}
             />
         );
