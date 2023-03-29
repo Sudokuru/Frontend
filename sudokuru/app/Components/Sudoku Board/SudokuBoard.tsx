@@ -779,7 +779,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
       globalTime = 0;
     }
 
-    // Test Me Pls ///////////////////////////////////
     useFocusEffect(
       React.useCallback(() => {
         let interval = null;
@@ -787,7 +786,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
             interval = setInterval(() => {
                 setTime(time => time + 1);
                 globalTime = globalTime + 1;
-                console.log(globalTime);
             }, 1000);
         } else {
             clearInterval(interval);
