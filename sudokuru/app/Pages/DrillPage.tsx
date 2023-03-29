@@ -15,7 +15,6 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useNavigation} from "@react-navigation/native";
-import Alert from "react-native-awesome-alerts";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 
