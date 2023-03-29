@@ -7,6 +7,7 @@ import Header from "../Components/Header";
 import { Dimensions, useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useFocusEffect} from "@react-navigation/core";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -52,14 +53,14 @@ const StatisticsPage = () => {
     setActiveGame(gameData);
   }
 
-  useEffect(() => {
+  useFocusEffect(() => {
     grabCurrentGame(USERACTIVEGAMESBFFURL);
-  }, []);
+  });
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{height: '100%', width: '100%'}}>
-        <Header title="Statistics" />
+        <Header page="Statistics" />
         <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
           <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Game Statistics</Text>
           {activeGame ? (
