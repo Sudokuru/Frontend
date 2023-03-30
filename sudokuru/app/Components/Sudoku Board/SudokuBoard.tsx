@@ -10,6 +10,7 @@ import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
+import {useFocusEffect} from "@react-navigation/core";
 
 
 // Sudokuru Package Import
@@ -27,8 +28,6 @@ let fallbackHeight = 30;
 
 // Global variables for activeGame elements
 let globalTime = 0;
-let globalHintsUsed = 0;
-let globalWrongCellsPlayed = 0;
 
 // const darkBrown = "#A64732";
 
@@ -421,8 +420,6 @@ async function saveGame(activeGame) {
     });
 
     activeGame.currentTime = globalTime;
-    activeGame.numHintsUsed = globalHintsUsed;
-    activeGame.numWrongCellsPlayed = globalWrongCellsPlayed;
 
     Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then(res => {
         if (res) {
@@ -469,7 +466,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, activeGameData, navigation } = props;
+  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -579,22 +576,22 @@ const Cell = (props) => {
           flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
 
       // If there's no moves in the moves array, add the current move to the moves array
-      if (activeGameData.moves.length === 0) {
-        activeGameData.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-        saveGame(activeGameData);
+      if (game.moves.length === 0) {
+        game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
+        saveGame(game);
       }
 
       // If there's a difference between the last move and the current move, replace previous move with current move
-      else if (activeGameData.moves[0].puzzleCurrentState !== flippedPuzzleString
-      || activeGameData.moves[0].puzzleCurrentNotesState !== notesString) {
-        activeGameData.moves[0].puzzleCurrentState = flippedPuzzleString;
-        activeGameData.moves[0].puzzleCurrentNotesState = notesString;
-        saveGame(activeGameData);
+      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
+      || game.moves[0].puzzleCurrentNotesState !== notesString) {
+        game.moves[0].puzzleCurrentState = flippedPuzzleString;
+        game.moves[0].puzzleCurrentNotesState = notesString;
+        saveGame(game);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == activeGameData.puzzleSolution){
-          finishGame(activeGameData, navigation);
+      if (flippedPuzzleString == game.puzzleSolution){
+          finishGame(game, navigation);
       }
     }
   }
@@ -691,7 +688,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -716,7 +713,7 @@ const ActionRow = (props) => {
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={updateBoardInPlace && toggleHintMode}>
+      <Pressable onPress={ !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null }>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -732,6 +729,7 @@ ActionRow.propTypes = {
   toggleHintMode: PropTypes.func.isRequired,
   updateBoardInPlace: PropTypes.func.isRequired,
   inHintMode: PropTypes.bool.isRequired,
+  boardHasConflict: PropTypes.func.isRequired,
 };
 
 const SubmitButton = (props) => {
@@ -774,8 +772,14 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     {
       setTime(currentTime);
     }
+    // if we are starting a new game, reset globalTime
+    else if (time == 0 && globalTime != 0)
+    {
+      globalTime = 0;
+    }
 
-    useEffect(() => { // Timer
+    useFocusEffect(
+      React.useCallback(() => {
         let interval = null;
         if (!isPaused) {
             interval = setInterval(() => {
@@ -786,7 +790,8 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [isPaused]);
+      }, [isPaused])
+    );
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
@@ -947,13 +952,13 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   toggleHintMode = () => {
-    let { board } = this.state;
+    let { board, solution } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (newHintMode) {
-      globalHintsUsed++;
+    if (!this.props.isDrill && newHintMode) {
+      this.state.activeGame[0].numHintsUsed++;
     }
 
     if (!newHintMode)
@@ -976,7 +981,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       return;
     }
     board = board.set('currentStep', 0);
-    let hint = this.props.getHint(board)
+    let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     if (!hint) return;
 
@@ -1225,6 +1230,10 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       board = updateBoardWithNumber({
         x, y, number, fill: true, board,
       });
+
+      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
+        this.state.activeGame[0].numWrongCellsPlayed++;
+      }
     }
     this.updateBoard(board);
   };
@@ -1249,6 +1258,15 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     }
   }
 
+  boardHasConflict = () => {
+    for (let i = 0; i < 9; i++)
+      for (let j = 0; j < 9; j++)
+        if (this.isConflict(i,j))
+          return true;
+
+    return false;
+  }
+
   renderCell = (cell, x, y) => {
     const { board } = this.state;
     const selected = this.getSelectedCell();
@@ -1261,25 +1279,19 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let inHintMode = board.get('inHintMode');
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
-    let activeGame = null
-    if (!this.props.isDrill)
-    {
-      activeGame = this.state.activeGame[0];
-    }
 
     const handleValueChange = (x, y, newValue) => {
       let { board } = this.state;
       let inNoteMode = board.get('inNoteMode');
-
-      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, newValue)){
-        globalWrongCellsPlayed++;
-      }
 
       if (inNoteMode) this.addNumberAsNote(newValue);
       else this.fillNumber(newValue);
     };
 
     const { navigation } = this.props;
+
+    let game = null;
+    if (!this.props.isDrill) game = this.state.activeGame[0];
 
 
         return (
@@ -1300,7 +1312,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 inHintMode={inHintMode}
                 hintSteps={hintSteps}
                 currentStep={currentStep}
-                activeGameData={activeGame}
+                game={game}
                 navigation={navigation}
             />
         );
@@ -1445,6 +1457,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         toggleHintMode={this.toggleHintMode}
         updateBoardInPlace={this.updateBoardInPlace}
         inHintMode={inHintMode}
+        boardHasConflict={this.boardHasConflict}
       />
     );
   }

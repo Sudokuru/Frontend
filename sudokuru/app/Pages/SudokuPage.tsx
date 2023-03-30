@@ -95,6 +95,22 @@ function componentBoardNotesToArray(board)
   return notesArray;
 }
 
+function componentSolutionValsToArray(solution)
+{
+  let solArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      temp.push(solution[9 * j + i].toString());
+    }
+    solArray.push(temp);
+  }
+  return solArray;
+}
+
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
     const { gameOrigin } = route.params;
@@ -160,28 +176,16 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
           return gameData;
     }
     
-    function getHint(board) 
+    function getHint(board, solution)
     {
       let boardArray = componentBoardValsToArray(board);
       let notesArray = componentBoardNotesToArray(board);
+      let solutionArray = componentSolutionValsToArray(solution);
       let hint;
-      // TODO: Strategies need to be sorted in increasing order
       try {
-        hint = Puzzles.getHint(boardArray, notesArray, strategies);
+        hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
       } catch (e) {
-      }
-      return hint;
-    }
-
-    function getHint(board)
-    {
-      let boardArray = componentBoardValsToArray(board);
-      let notesArray = componentBoardNotesToArray(board);
-      let hint;
-      // TODO: Strategies need to be sorted in increasing order
-      try {
-        hint = Puzzles.getHint(boardArray, notesArray, strategies);
-      } catch (e) {
+        console.log(e);
       }
       return hint;
     }
