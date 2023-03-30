@@ -955,7 +955,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
   toggleHintMode = () => {
     console.log("hint mode toggled")
-    let { board } = this.state;
+    let { board, solution } = this.state;
     let newHintMode = !board.get('inHintMode');
     board = board.set('inHintMode', newHintMode);
 
@@ -984,7 +984,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       return;
     }
     board = board.set('currentStep', 0);
-    let hint = this.props.getHint(board)
+    print("This is the solution", solution)
+    let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     print("hint from request:", hint || "no hint recieved from request");
     if (!hint) return;
