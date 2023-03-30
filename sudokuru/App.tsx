@@ -10,7 +10,7 @@ import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
 import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView,  DrawerContentComponentProps} from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 // theme imports
 import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors';
 import Lesson from "./app/Pages/Lesson";

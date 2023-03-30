@@ -38,7 +38,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
       let title = getTitle(name);
 
       if (Lessons == null){
-          console.log("Cannot connect to Lessons API!");
           navigation.navigate("Home");
           return;
       }
@@ -46,7 +45,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
       let arr = Lessons.strategies;
 
       if (arr == null){
-          console.log("Lessons.strategies is null");
           navigation.navigate("Home");
           return;
       }
@@ -55,15 +53,15 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
       let teach = Lessons.getSteps(name);
 
       if (teach == null){
-          console.log("Lessons.getSteps ", name, " is null");
           navigation.navigate("Home");
           return;
       }
 
       const [count, setCount]  = useState(0);
 
+      // Detects the last page of the lesson for sending "complete" status to backend
       if(count + 1 == teach.length){
-         console.log("FINISHED LESSON")
+
       }
 
       return (
