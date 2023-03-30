@@ -690,7 +690,7 @@ Cell.defaultProps = {
 };
 
 const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode } = props;
+  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
   const cellSize = getCellSize();
 
   const sizeConst = (Platform.OS == 'web') ? 2 : 2;
@@ -715,7 +715,7 @@ const ActionRow = (props) => {
         <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
-      <Pressable onPress={updateBoardInPlace && toggleHintMode}>
+      <Pressable onPress={ !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null }>
         <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
@@ -731,6 +731,7 @@ ActionRow.propTypes = {
   toggleHintMode: PropTypes.func.isRequired,
   updateBoardInPlace: PropTypes.func.isRequired,
   inHintMode: PropTypes.bool.isRequired,
+  boardHasConflict: PropTypes.func.isRequired,
 };
 
 const SubmitButton = (props) => {
@@ -1268,6 +1269,15 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     }
   }
 
+  boardHasConflict = () => {
+    for (let i = 0; i < 9; i++)
+      for (let j = 0; j < 9; j++)
+        if (this.isConflict(i,j))
+          return true;
+
+    return false;
+  }
+
   renderCell = (cell, x, y) => {
     const { board } = this.state;
     const selected = this.getSelectedCell();
@@ -1458,6 +1468,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         toggleHintMode={this.toggleHintMode}
         updateBoardInPlace={this.updateBoardInPlace}
         inHintMode={inHintMode}
+        boardHasConflict={this.boardHasConflict}
       />
     );
   }
