@@ -1,4 +1,5 @@
-import 'react-native-gesture-handler';
+import 'react-native-gesture-handler'; // This needs to be at top to work
+import '@expo/metro-runtime'; // web fast refresh for development
 import * as React from 'react'
 import { PreferencesContext } from './app/Contexts/PreferencesContext';
 import {Provider as PaperProvider} from 'react-native-paper';
