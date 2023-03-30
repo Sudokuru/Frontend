@@ -191,11 +191,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
       let solutionArray = componentSolutionValsToArray(solution);
       let hint;
       try {
-        console.log("parameters of Puzzles.getHint:");
-        console.log(boardArray);
-        console.log(notesArray);
-        console.log(strategies);
-        console.log(solutionArray);
         hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
       } catch (e) {
         console.log("No hints found for " + strategies);
