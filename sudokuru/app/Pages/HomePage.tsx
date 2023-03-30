@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, {useEffect} from 'react';
+import React from 'react';
 import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
 import {Text, Button, useTheme} from 'react-native-paper';
@@ -49,7 +49,6 @@ const HomePage = () => {
     const [difficulty, setDifficulty] = useState(50);
 
     const getData = (val) => {
-        // console.log('getData called with value:', val);
         setDifficulty(val);
     }
 
@@ -67,7 +66,6 @@ const HomePage = () => {
                     }
                     else {
                         hideResumeButton();
-                        console.log("User doesn't have an activeGame");
                     }
                 });
         }

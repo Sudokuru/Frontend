@@ -27,7 +27,6 @@ const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
 const revokeEndpoint = "https://" + DOMAIN + "/logout";
 const audience = AUDIENCE;
 const scope = SCOPE;
-//console.log(scope)
 
 // we do not want to use the proxy in production
 export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
@@ -150,15 +149,5 @@ const LoginButton = () => {
             )
     );
 }
-
-const styles = StyleSheet.create({
-    profileHeader: {
-        fontSize: 40,
-    },
-    loginButton: {
-        textAlign: "right",
-        backgroundColor: '#f2f2f2'
-    }
-});
 
 export default LoginButton;
