@@ -137,7 +137,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   actionControlRow: {
     width: cellSize ? cellSize * 11 : fallbackHeight * 11,
-    height: cellSize ? cellSize * (3 / 4): fallbackHeight * (3 / 4),
+    height: cellSize ? cellSize * 1.5: fallbackHeight * (3 / 4),
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
@@ -255,7 +255,7 @@ NumberControl.defaultProps = {
 const Puzzle = (props) => {
   const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
   const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1.5;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
 
   const isRightArrowRendered = (inHintMode, onFinalStep) =>
   {
@@ -691,7 +691,7 @@ const ActionRow = (props) => {
   const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
   const cellSize = getCellSize();
 
-  const sizeConst = (Platform.OS == 'web') ? 2 : 2;
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
 
   return (
     <View style={styles(cellSize).actionControlRow}>
@@ -753,9 +753,14 @@ SubmitButton.propTypes = {
 
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
   return(
     <Pressable onPress={handlePause}>
-      <Text style={styles(cellSize).headerFont}>{isPaused ? 'Resume' : 'Pause'}</Text>
+      {
+        (isPaused) ?
+            <MaterialCommunityIcons color="white" name="play" size={cellSize/(sizeConst)}/> :
+            <MaterialCommunityIcons color="white" name="pause" size={cellSize/(sizeConst)}/>
+      }
     </Pressable>
   )
 }
@@ -967,7 +972,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       let currentStep = board.get('currentStep');
 
       // if they prematurely exit hint mode, undo the hint
-      if (currentStep < hintStepsLength - 1) 
+      if (currentStep < hintStepsLength - 1)
       {
         this.undo();
       }
@@ -1003,7 +1008,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         for (let i = 0; i < removals.length; i++)
           board = this.addEveryNote(removals[i].position[0], removals[i].position[1], board);
-        
+
         // two steps, two objects
         hintSteps.push({})
         hintSteps.push({})
