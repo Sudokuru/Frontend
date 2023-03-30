@@ -70,7 +70,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
           <SafeAreaProvider>
               <SafeAreaView style={{height: '100%', width: '100%'}}>
                   <Header page={'Lesson'}/>
-                  <View style={{alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
+                  <View>
                       <View style={styles.container1}>
 
                           <View style={{flexDirection: 'row'}}>
