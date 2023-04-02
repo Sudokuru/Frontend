@@ -1,41 +1,32 @@
 // @ts-nocheck
 //import Slider from '@react-native-community/slider';
-import React, { Component } from 'react';
+import React, {useState} from 'react';
 import { View, Text } from "react-native";
 import {Slider} from '@miblanchard/react-native-slider';
+import {useTheme} from "react-native-paper";
 
-class DifficultySlider extends Component {
-    constructor(props){
-        super(props);
-    }
-    
-    state = {
-        value: 50,
-    };
+const DifficultySlider = (props) => {
 
-    getValue() {
-        return this.state.value;
-    }
+    const [value, setValue] = useState(50);
+    const theme = useTheme();
 
-    render() {
-        return(
-        <View>
-            <Slider
-            style={{width: 400, height: 40}}
-            minimumValue={0}
-            maximumValue={100}
-            step={1}
-            minimumTrackTintColor="#D9A05B"
-            maximumTrackTintColor="#F2F2F2"
-            value={this.state.value}
-            onValueChange={value => {
-                this.setState({value});
-                this.props.sendData(value);
-            }}
-            />
-            <Text style={{color: '#D9A05B' }}>Your selected difficulty: {this.state.value}</Text>
-        </View>);
-    }
+    return(
+    <View>
+        <Slider
+        style={{width: 400, height: 40}}
+        minimumValue={0}
+        maximumValue={100}
+        step={1}
+        minimumTrackTintColor={theme.colors.primaryContainer}
+        maximumTrackTintColor={theme.colors.onPrimary}
+        value={value}
+        onValueChange={returnValue => {
+            setValue(returnValue);
+            props.sendData(value);
+        }}
+        />
+        <Text style={{color: theme.colors.onPrimary }}>Your selected difficulty: {value}</Text>
+    </View>);
 }
 
 export default DifficultySlider;

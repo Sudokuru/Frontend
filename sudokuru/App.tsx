@@ -67,7 +67,7 @@ function HomeDrawer(){
 
 export default function App() {
 
-    const [isThemeDark, setIsThemeDark] = React.useState(false);
+    const [isThemeDark, setIsThemeDark] = React.useState(true);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
