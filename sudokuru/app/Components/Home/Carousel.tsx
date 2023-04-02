@@ -10,7 +10,7 @@ import { Button } from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 import {AntDesign} from "@expo/vector-icons";
 
-const Ccarousel = () =>{
+const Ccarousel = () => {
 
     const size = useWindowDimensions();
     const width = Math.min(size.width, size.height);

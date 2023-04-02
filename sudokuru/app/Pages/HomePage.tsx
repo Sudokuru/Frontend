@@ -52,25 +52,25 @@ const HomePage = () => {
         setDifficulty(val);
     }
 
-    useFocusEffect(() => {
-        async function grabCurrentGame(url:string) {
-            let token = null;
-            await getKeyString("access_token").then(result => {
-                token = result;
-            });
-
-            await Puzzles.getGame(url, token).then(
-                (game: JSON) => {
-                    if (game !== null) {
-                        showResumeButton();
-                    }
-                    else {
-                        hideResumeButton();
-                    }
+    useFocusEffect(
+        React.useCallback(() => {
+            async function grabCurrentGame(url: string) {
+                let token = null;
+                await getKeyString("access_token").then(result => {
+                    token = result;
                 });
-        }
-        grabCurrentGame(USERACTIVEGAMESBFFURL);
-    });
+
+                await Puzzles.getGame(url, token).then(
+                    (game: JSON) => {
+                        if (game !== null) {
+                            showResumeButton();
+                        } else {
+                            hideResumeButton();
+                        }
+                    });
+            }
+            grabCurrentGame(USERACTIVEGAMESBFFURL);
+    }, []));
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
