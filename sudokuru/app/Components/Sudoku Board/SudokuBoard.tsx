@@ -1254,13 +1254,12 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     if (!value) return false;
 
     let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
-    let solutionValue = this.state.solution.charAt(cellNum);
+    let solutionValue = this.state.solution ? this.state.solution.charAt(cellNum) : -1;
 
     if (solutionValue == value || value == null)
       return false;
-    else {
+    else 
       return true;
-    }
   }
 
   boardHasConflict = () => {
