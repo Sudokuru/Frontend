@@ -84,8 +84,8 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                               /> : <></>
                       }
 
-                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
-                          <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
+                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == teach.length) ? navigation.navigate("Home") :setCount(count + 1)} >
+                          <AntDesign color={theme.colors.onPrimary} name={(count + 1 == teach.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
                       </Pressable>
                   </View>
                   <Text>{" "}</Text>
@@ -128,8 +128,8 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                                 }
                             </View>
 
-                          <Pressable style={{top: reSize/1.8, height: reSize/8, right: reSize/10}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
-                              <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/10}/>
+                          <Pressable style={{top: reSize/1.8, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == teach.length) ? navigation.navigate("Home") :setCount(count + 1)} >
+                              <AntDesign color={theme.colors.onPrimary} name={(count + 1 == teach.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
                           </Pressable>
                       </View>
 
