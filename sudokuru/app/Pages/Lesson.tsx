@@ -64,6 +64,81 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
 
       }
 
+      //Separate view for mobile and web
+      const Page = () => {
+          //web view
+          if(Platform.OS === 'web'){
+            return(
+            <View style={styles.container1}>
+                  <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+
+                      <Pressable style={{top: reSize/4.5, height: reSize/10, right: reSize/25}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
+                          <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
+                      </Pressable>
+
+                      {
+                          (teach[count][1] != null) ?
+                              <Image
+                                  style={{width: reSize/2, height: reSize/2}}
+                                  source={{uri:teach[count][1]}}
+                              /> : <></>
+                      }
+
+                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
+                          <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
+                      </Pressable>
+                  </View>
+                  <Text>{" "}</Text>
+                  <View style={{width: reSize/1.5}}>
+                      {
+                          (teach[count][0] != null) ?
+                              <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
+                              : <></>
+                      }
+                  </View>
+            </View>
+            )
+          }
+
+          //mobile view
+          else{
+              return(
+                <View style={styles.container1}>
+                      {
+                          (teach[count][1] != null) ?
+                              <Image
+                                  style={{width: reSize/1.3, height: reSize/1.3}}
+                                  source={{uri:teach[count][1]}}
+                              /> : <></>
+                      }
+
+                      <Text>{" "}</Text>
+
+                      <View style={{ justifyContent:'center', flexDirection: 'row'}}>
+
+                          <Pressable style={{top: reSize/1.8, height: reSize/8, left: reSize/10}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
+                              <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/10}/>
+                          </Pressable>
+
+                            <View style={{width: reSize/1.2}}>
+                                {
+                                    (teach[count][0] != null) ?
+                                        <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
+                                        : <></>
+                                }
+                            </View>
+
+                          <Pressable style={{top: reSize/1.8, height: reSize/8, right: reSize/10}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
+                              <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/10}/>
+                          </Pressable>
+                      </View>
+
+                </View>
+              )
+          }
+      }
+
+
       return (
           <SafeAreaProvider>
               <SafeAreaView style={{height: '100%', width: '100%'}}>
@@ -78,33 +153,8 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                               </Pressable>
                           </View>
 
-                          <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
+                          <Page/>
 
-                              <Pressable style={{top: reSize/4.5, height: reSize/10, right: reSize/25}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
-                                  <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
-                              </Pressable>
-
-                              {
-                                  (teach[count][1] != null) ?
-                                      <Image
-                                          style={{width: reSize/2, height: reSize/2}}
-                                          source={{uri:teach[count][1]}}
-                                      /> : <></>
-                              }
-
-                              <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => setCount(count + 1)} disabled={count + 1 == teach.length}>
-                                  <AntDesign color={(count + 1 == teach.length) ? theme.colors.background : theme.colors.onPrimary} name="rightcircleo" size={reSize/15}/>
-                              </Pressable>
-
-                          </View>
-                          <Text>{" "}</Text>
-                          <View style={{width: reSize/1.5}}>
-                              {
-                                  (teach[count][0] != null) ?
-                                      <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
-                                      : <></>
-                              }
-                          </View>
                       </View>
                   </View>
                   <Alert
