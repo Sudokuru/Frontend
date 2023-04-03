@@ -18,7 +18,7 @@ const Ccarousel = () => {
     const navigation: any = useNavigation();
 
     const ref = React.useRef<ICarouselInstance>(null);
-    const [index, setIndex] = useState(0);
+    let [index, setIndex] = useState(0);
 
     const isWeb = (Platform.OS === 'web');
 
@@ -50,6 +50,24 @@ const Ccarousel = () => {
                     index == 3 ? lessonName = 'Hidden Single' :
                         index == 4 ? lessonName = 'Hidden Set' : lessonName = 'Null';
         return lessonName;
+    }
+
+    function decIndex(index: number) {
+        ref.current?.scrollTo({count: -1});
+
+        if(index == 0)
+            setIndex(4);
+        else setIndex((index-1)%5);
+
+        console.log((index%5))
+    }
+
+    function addIndex(index: number) {
+        ref.current?.scrollTo({count: 1});
+
+        setIndex((index+1)%5);
+
+        console.log((index%5));
     }
 
     return(
@@ -86,13 +104,13 @@ const Ccarousel = () => {
                 )}
             />
             <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
-                <Button onPress={() => ref.current?.scrollTo({count: -1})}>
+                <Button onPress={() => decIndex(index) }>
                     <AntDesign name="leftcircleo" size={18}/>
                 </Button>
                 <Button mode="contained" onPress={() => navigate(index)}>
                     Start Lesson
                 </Button>
-                <Button onPress={() => ref.current?.scrollTo({count: 1})}>
+                <Button onPress={ () => addIndex(index) }>
                     <AntDesign name="rightcircleo" size={18}/>
                 </Button>
             </View>
