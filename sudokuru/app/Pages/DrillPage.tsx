@@ -170,7 +170,6 @@ const DrillPage = (props) => {
           navigation.navigate("Home");
           return;
       }
-      console.log("Game", game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
