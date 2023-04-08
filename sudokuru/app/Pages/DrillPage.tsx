@@ -164,23 +164,27 @@ const DrillPage = (props) => {
       });
 
 
-    let { board, originalBoard } = await Drills.getGame(url, strategies, token).then(game => {
+    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, strategies, token).then(game => {
       // null check to verify that game is loaded in.
       if (game == null){
           navigation.navigate("Home");
           return;
       }
+      console.log("Game", game);
       let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
       originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
-      return { board, originalBoard };
+      let puzzleSolution = game.puzzleSolution;
+      return { board, originalBoard, puzzleSolution };
     });
 
     let drillSolutionCells = getDrillSolutionCells(board);
 
+    console.log()
+
     return {
-      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard
+      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
     };
   }
 
