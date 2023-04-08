@@ -1244,7 +1244,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     if (!value) return false;
 
     let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
-    let solutionValue = this.state.solution ? this.state.solution.charAt(cellNum) : -1;
+    let solutionValue = this.state.solution.charAt(cellNum);
 
     if (solutionValue == value || value == null)
       return false;
@@ -1265,7 +1265,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     const selected = this.getSelectedCell();
     const { value, prefilled, notes } = cell.toJSON();
-    const conflict = (this.props.isDrill) ? false : this.isConflict(x, y);
+    const conflict = this.isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get('selected'));
     const sameValue = !!(selected && selected.get('value') &&
       value === selected.get('value'));
