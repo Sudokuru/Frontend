@@ -126,18 +126,21 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
     const [gameResultTime, setGameResultTime] = React.useState(0);
     const [gameResultNumHintsUsed, setGameResultNumHintsUsed] = React.useState(0);
     const [gameResultNumWrongCellsPlayed, setGameResultNumWrongCellsPlayed] = React.useState(0);
+    const [gameResultPuzzleDifficulty, setGameResultPuzzleDifficulty] = React.useState(0);
 
-    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number) => {
+    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, puzzleDifficulty: number) => {
         setGameResultScore(score);
         setGameResultTime(time);
         setGameResultNumHintsUsed(numHintsUsed);
         setGameResultNumWrongCellsPlayed(numWrongCellsPlayed);
+        setGameResultPuzzleDifficulty(puzzleDifficulty);
     }
     const hideGameResults = () => {
         setGameResultScore(0);
         setGameResultTime(0);
         setGameResultNumHintsUsed(0);
         setGameResultNumWrongCellsPlayed(0);
+        setGameResultPuzzleDifficulty(0);
         setGameResultsVisible(false);
     }
 
@@ -171,7 +174,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
                     // If game object is not returned, you get redirected to Main Page
-                    if (game[0].puzzle == null){
+                    if (game == null){
                         navigation.navigate("Home");
                         return;
                     }
@@ -190,7 +193,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
             gameData = await Puzzles.getGame(url, token).then(
                 game => {
                     // If game object is not returned, you get redirected to Main Page
-                    if (game[0].puzzle == null){
+                    if (game == null){
                         navigation.navigate("Home");
                         return;
                     }
@@ -239,7 +242,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                     show={gameResultsVisible}
                     title="Game Results"
                     message={'Score: ' + gameResultScore + '\nTime: ' + gameResultTime + '\nNumber of Hints Used: ' + gameResultNumHintsUsed +
-                        '\nIncorrect Cells: ' + gameResultNumWrongCellsPlayed}
+                        '\nIncorrect Cells: ' + gameResultNumWrongCellsPlayed + '\nPuzzle Difficulty: ' + gameResultPuzzleDifficulty}
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}

@@ -11,6 +11,7 @@ services:
     links:
       - puzzle_app
       - user_active_games_app
+      - user_game_statistics_app
   puzzle_app:
     container_name: puzzle_app
     image: ghcr.io/sudokuru/puzzle:latest
@@ -27,6 +28,15 @@ services:
     command: npm run start
     ports:
       - "3001:3001"
+    links:
+      - mongo
+  user_game_statistics_app:
+    container_name: user_game_statistics_app
+    image: ghcr.io/sudokuru/usergamestatistics:latest
+    restart: unless-stopped
+    command: npm run start
+    ports:
+      - "3002:3002"
     links:
       - mongo
   mongo:

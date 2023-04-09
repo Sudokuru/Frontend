@@ -431,7 +431,7 @@ async function finishGame(activeGame, showResults) {
 
   Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-          showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, 5);
+          showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, res.difficulty);
         }
     });
 }
