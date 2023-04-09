@@ -983,9 +983,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    stratName = words.join(" ");
-    print("stratName:", stratName);
-    board = board.set('hintStratName', stratName);
+    hintStratName = words.join(" ");
+    print("hintStratName:", hintStratName);
+    board = board.set('hintStratName', hintStratName);
 
     let causes = []
     let groups = []
@@ -1528,6 +1528,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     
     drillMode = this.props.isDrill;
     inHintMode = board ? board.get('inHintMode') : false;
+    hintStratName = board ? board.get('hintStratName') : "Hint";
+    console.log("woo in render, hintStratName: " + hintStratName);
 
     return (
       <View onKeyDown={this.handleKeyDown}>
