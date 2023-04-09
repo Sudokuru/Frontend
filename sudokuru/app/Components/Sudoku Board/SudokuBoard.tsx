@@ -980,6 +980,12 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
     if (!hint) return;
     print("hint:", hint)
+    const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
+    for (let i = 0; i < words.length; i++)
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    stratName = words.join(" ");
+    print("stratName:", stratName);
+    board = board.set('hintStratName', stratName);
 
     let causes = []
     let groups = []
@@ -1530,7 +1536,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         {board &&
           <View style={styles().bottomActions}>
             {this.renderActions()}
-            {this.renderNumberControl()}
+            {!inHintMode && this.renderNumberControl()}
             {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
           </View>
         }
