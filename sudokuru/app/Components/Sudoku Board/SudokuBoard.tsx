@@ -38,7 +38,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
   hintArrowPlaceholderView: {
     width: cellSize/(sizeConst),
-    height: cellSize/(sizeConst)
+    height: cellSize/(sizeConst),
   },
   hintAndPuzzleContainer: {
     justifyContent: "space-evenly",
@@ -136,12 +136,12 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     flexWrap: 'wrap',
   },
   actionControlRow: {
-    width: cellSize ? cellSize * 11 : fallbackHeight * 11,
-    height: cellSize ? cellSize * 1.5: fallbackHeight * (3 / 4),
-    justifyContent: 'space-evenly',
+    width: cellSize ? cellSize * 8 : fallbackHeight * 8,
+    height: cellSize ? cellSize: fallbackHeight,
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+    marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
   },
   actionControlButton: {
     height: cellSize ? cellSize * (0.5) : 1000,
@@ -205,6 +205,38 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     fontFamily: 'Inter_700Bold',
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
+  },
+  hintSectionContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
+  },
+  hintTextContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: cellSize ? cellSize * 5 : fallbackHeight * 5,
+  },
+  hintStratNameView: {
+
+  },
+  hintStratNameText: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2) ,
+    color: gold,
+  },
+  hintActionInfoView: {
+
+  },
+  hintActionInfoText: {
+    fontSize: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
+    color: "white",
+    textAlign: 'center',
   }
 });
 
@@ -230,7 +262,7 @@ const NumberControl = (props) => {
             inNoteMode
               ? addNumberAsNote(number)
               : fillNumber(number);
-          }
+        }
         return (
           <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
             <Text style={styles(cellSize).numberControlText}>{number}</Text>
@@ -253,35 +285,11 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
+  const { board, renderCell } = props;
   const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-
-  const isRightArrowRendered = (inHintMode, onFinalStep) =>
-  {
-    return inHintMode && !onFinalStep;
-  }
-
-  const isLeftArrowRendered = (inHintMode, onFirstStep) =>
-  {
-    return inHintMode && !onFirstStep;
-  }
-
-  const isCheckMarkRendered = (inHintMode, onFinalStep) =>
-  {
-    return inHintMode && onFinalStep;
-  }
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {(isLeftArrowRendered(inHintMode, onFirstStep))
-        ? // checkcircleo
-        <Pressable onPress={leftArrowClicked}>
-          <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
       <View style={styles().boardContainer}>
         {board.get('puzzle').map((row, i) => (
           <View key={i} style={styles().rowContainer}>
@@ -289,20 +297,6 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {(isRightArrowRendered(inHintMode, onFinalStep))
-        ?
-        <Pressable onPress={rightArrowClicked}>
-          <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        (isCheckMarkRendered(inHintMode, onFinalStep))
-          ?
-          <Pressable onPress={checkMarkClicked}>
-            <AntDesign color="white" name="checkcircle" size={cellSize/(sizeConst)}/>
-          </Pressable>
-          :
-          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
     </View>
   );
 }
@@ -466,7 +460,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, onValueChange, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, eraseSelected, inHintMode, hintSteps, currentStep, game, navigation } = props;
+  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, navigation } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -596,15 +590,6 @@ const Cell = (props) => {
     }
   }
 
-  const handleKeyDown = (event) => {
-    const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
-      onValueChange(x, y, parseInt(inputValue, 10));
-    }
-    if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
-      eraseSelected();
-  };
-
   const getNoteContents = (noteVal) =>
   {
     if (notes.has(noteVal))
@@ -618,7 +603,7 @@ const Cell = (props) => {
   }
 
   return (
-    <Pressable onPress={() => onClick(x, y)} onKeyDown={handleKeyDown}>
+    <Pressable onPress={() => onClick(x, y)}>
       <View style={[styles(cellSize).cellView,
         (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
         (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -668,7 +653,6 @@ const Cell = (props) => {
 Cell.propTypes = {
     value: PropTypes.number,
     onClick: PropTypes.func.isRequired,
-    onValueChange: PropTypes.func.isRequired,
     isPeer: PropTypes.bool.isRequired,
     isSelected: PropTypes.bool.isRequired,
     sameValue: PropTypes.bool.isRequired,
@@ -818,12 +802,71 @@ HeaderRow.defaultProps = {
     paused: false,
 }
 
+const HintSection = (props) => {
+  const { hintStratName, hintInfo, hintAction, currentStep, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
+  const cellSize = getCellSize();
+  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
+  
+  const isRightArrowRendered = (onFinalStep) =>
+  {
+    return !onFinalStep;
+  }
+
+  const isLeftArrowRendered = (onFirstStep) =>
+  {
+    return !onFirstStep;
+  }
+
+  const isCheckMarkRendered = (onFinalStep) =>
+  {
+    return onFinalStep;
+  }
+
+  return (
+    <View style={styles(cellSize).hintSectionContainer}>
+      {(isLeftArrowRendered(onFirstStep))
+        ? // checkcircleo
+        <Pressable onPress={leftArrowClicked}>
+          <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
+        </Pressable>
+        :
+        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
+      }
+      <View style={styles(cellSize).hintTextContainer}>
+        <View style={styles(cellSize).hintStratNameView}>
+          <Text style={styles(cellSize).hintStratNameText}>{hintStratName}</Text>
+        </View>
+        <View style={styles(cellSize).hintActionInfoView}>
+          <Text style={styles(cellSize).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
+        </View>
+      </View>
+      {(isRightArrowRendered(onFinalStep))
+        ?
+        <Pressable onPress={rightArrowClicked}>
+          <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
+        </Pressable>
+        :
+        (isCheckMarkRendered(onFinalStep))
+          ?
+          <Pressable onPress={checkMarkClicked}>
+            <AntDesign color="white" name="checkcircle" size={cellSize/(sizeConst)}/>
+          </Pressable>
+          :
+          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
+      }
+    </View>
+  );
+}
+
 /*
  * This function retrieves the user's device size and calculates the cell size
+ * board has width and height dimensions of 1 x 1.44444
  */
-function getCellSize() {
-    const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 15;
+function getCellSize()
+{
+  const size = useWindowDimensions();
+  
+  return Math.min(size.width * 1.44444, size.height) / 15;
 }
 
 function updateBoardWithNumber({ x, y, number, fill = true, board }) {
@@ -989,6 +1032,16 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     if (!hint) return;
+    print("hint:", hint)
+    const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
+    for (let i = 0; i < words.length; i++)
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    hintStratName = words.join(" ");
+    board = board.set('hintStratName', hintStratName);
+    const hintInfo = hint.info;
+    board = board.set('hintInfo', hintInfo);
+    const hintAction = hint.action;
+    board = board.set('hintAction', hintAction);
 
     let causes = []
     let groups = []
@@ -1258,9 +1311,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
     if (solutionValue == value || value == null)
       return false;
-    else {
+    else 
       return true;
-    }
   }
 
   boardHasConflict = () => {
@@ -1276,7 +1328,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     const selected = this.getSelectedCell();
     const { value, prefilled, notes } = cell.toJSON();
-    const conflict = (this.props.isDrill) ? false : this.isConflict(x, y);
+    const conflict = this.isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get('selected'));
     const sameValue = !!(selected && selected.get('value') &&
       value === selected.get('value'));
@@ -1285,19 +1337,10 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
 
-    const handleValueChange = (x, y, newValue) => {
-      let { board } = this.state;
-      let inNoteMode = board.get('inNoteMode');
-
-      if (inNoteMode) this.addNumberAsNote(newValue);
-      else this.fillNumber(newValue);
-    };
-
     const { navigation } = this.props;
 
     let game = null;
     if (!this.props.isDrill) game = this.state.activeGame[0];
-
 
         return (
             <Cell
@@ -1308,7 +1351,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 isPeer={peer}
                 value={value}
                 onClick={(x, y) => { this.selectCell(x, y); }}
-                onValueChange={handleValueChange}
                 key={y}
                 x={x}
                 y={y}
@@ -1397,6 +1439,19 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   checkMarkClicked = () => {
     this.toggleHintMode()
   }
+
+  handleKeyDown = (event) => {
+    const { board } = this.state;
+    let inHintMode = board.get('inHintMode');
+    let inNoteMode = board.get('inNoteMode');
+    const inputValue = event.nativeEvent.key;
+    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
+      if (inNoteMode) this.addNumberAsNote(parseInt(inputValue, 10));
+      else this.fillNumber(parseInt(inputValue, 10));
+    }
+    if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
+      this.eraseSelected();
+  };
 
   renderPuzzle = () => {
     const { board } = this.state;
@@ -1514,6 +1569,37 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     );
   }
 
+  renderHintSection = () => {
+    const { board } = this.state;
+    let onFirstStep = false;
+    let onFinalStep = false;
+    if (board.get('hintSteps') != undefined)
+    {
+      let currentStep = board.get('currentStep');
+      let numHintSteps = board.get('hintSteps').length;
+      if (currentStep + 1 == 1) onFirstStep = true;
+      if (currentStep + 1 == numHintSteps) onFinalStep = true;
+    }
+    hintStratName = board ? board.get('hintStratName') : "Hint";
+    currentStep = board ? board.get('currentStep') : -1;
+    hintInfo = board ? board.get('hintInfo') : "Info";
+    hintAction = board ? board.get('hintAction') : "Action";
+    console.log(currentStep >= 0 && "hintStratName: " + hintStratName + (currentStep == 0 ? " hintInfo: " + hintInfo : " hintAction: " + hintAction));
+    return(
+      <HintSection
+        hintStratName={ hintStratName }
+        hintInfo={ hintInfo }
+        hintAction={ hintAction }
+        currentStep={ currentStep }
+        rightArrowClicked = { this.rightArrowClicked }
+        leftArrowClicked = { this.leftArrowClicked }
+        checkMarkClicked = { this.checkMarkClicked }
+        onFirstStep = { onFirstStep }
+        onFinalStep = { onFinalStep }
+      />
+    );
+  }
+
   componentDidMount() {
     if (!this.state.board) {
       this.props.generatedGame.then(game => this.setState(game));
@@ -1526,19 +1612,20 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     {
       this.props.generatedGame.then(game => this.setState(game));
     }
-
     
     drillMode = this.props.isDrill;
+    inHintMode = board ? board.get('inHintMode') : false;
 
     return (
-      <View>
+      <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
         {board && !this.props.isDrill && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
           <View style={styles().bottomActions}>
             {this.renderActions()}
-            {this.renderNumberControl()}
-            {this.props.isDrill && this.renderSubmitButton()}
+            {!inHintMode && this.renderNumberControl()}
+            {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
+            {inHintMode && this.renderHintSection()}
           </View>
         }
       </View>

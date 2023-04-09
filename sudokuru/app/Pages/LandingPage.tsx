@@ -18,12 +18,18 @@ const LandingPage = () => {
     const [visible, setVisible] = React.useState(false);
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
+    const newUser = 1;
 
     async function canProceed() {
         await getTokenName().then(
             result => {
                 if (result != ""){
+                    if(newUser == 1){
                     navigation.navigate('Home');
+                    }
+                    else{
+                    navigation.navigate('Lesson',{params:'AMEND_NOTES'});
+                    }
                 } else {
                     showModal();
                 }
