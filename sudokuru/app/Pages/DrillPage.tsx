@@ -175,7 +175,6 @@ const DrillPage = (props) => {
       let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
       originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
       let puzzleSolution = game.puzzleSolution;
-      console.log(puzzleSolution)
       return { board, originalBoard, puzzleSolution };
     });
 
