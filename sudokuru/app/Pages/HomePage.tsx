@@ -62,7 +62,7 @@ const HomePage = () => {
 
                 await Puzzles.getGame(url, token).then(
                     (game: JSON) => {
-                        if (game !== null) {
+                        if (game !== null && game[0].moves.length > 0) {
                             showResumeButton();
                         } else {
                             hideResumeButton();

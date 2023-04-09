@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
@@ -11,6 +11,8 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
+import Alert from "react-native-awesome-alerts";
+import {useTheme} from "react-native-paper";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -116,6 +118,41 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
     const { gameOrigin } = route.params;
     const { difficulty } = route.params;
 
+    const theme = useTheme();
+
+    const [gameResultsVisible, setGameResultsVisible] = React.useState(false);
+
+    const [gameResultScore, setGameResultScore] = React.useState(0);
+    const [gameResultTime, setGameResultTime] = React.useState(0);
+    const [gameResultNumHintsUsed, setGameResultNumHintsUsed] = React.useState(0);
+    const [gameResultNumWrongCellsPlayed, setGameResultNumWrongCellsPlayed] = React.useState(0);
+    const [gameResultPuzzleDifficulty, setGameResultPuzzleDifficulty] = React.useState(0);
+
+    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, puzzleDifficulty: number) => {
+        setGameResultScore(score);
+        setGameResultTime(time);
+        setGameResultNumHintsUsed(numHintsUsed);
+        setGameResultNumWrongCellsPlayed(numWrongCellsPlayed);
+        setGameResultPuzzleDifficulty(puzzleDifficulty);
+    }
+    const hideGameResults = () => {
+        setGameResultScore(0);
+        setGameResultTime(0);
+        setGameResultNumHintsUsed(0);
+        setGameResultNumWrongCellsPlayed(0);
+        setGameResultPuzzleDifficulty(0);
+        setGameResultsVisible(false);
+    }
+
+    // we show the game results if time does not equal zero and on score change
+    useEffect(() => {
+        if (gameResultTime != 0){
+            setGameResultsVisible(true);
+        }
+    }, [gameResultTime]);
+
+
+
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
@@ -137,7 +174,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
             gameData = await Puzzles.startGame(url, difficulty, strategies, token).then(
                 game => {
                     // If game object is not returned, you get redirected to Main Page
-                    if (game[0].puzzle == null){
+                    if (game == null){
                         navigation.navigate("Home");
                         return;
                     }
@@ -156,7 +193,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
             gameData = await Puzzles.getGame(url, token).then(
                 game => {
                     // If game object is not returned, you get redirected to Main Page
-                    if (game[0].puzzle == null){
+                    if (game == null){
                         navigation.navigate("Home");
                         return;
                     }
@@ -197,10 +234,26 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint} navigation={navigation}/>
+                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
+                <Alert
+                    show={gameResultsVisible}
+                    title="Game Results"
+                    message={'Score: ' + gameResultScore + '\nTime: ' + gameResultTime + '\nNumber of Hints Used: ' + gameResultNumHintsUsed +
+                        '\nIncorrect Cells: ' + gameResultNumWrongCellsPlayed + '\nPuzzle Difficulty: ' + gameResultPuzzleDifficulty}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"Go Home"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideGameResults();
+                        navigation.navigate("Home");
+                    }}
+                />
             </SafeAreaView>
         </SafeAreaProvider>
     );
