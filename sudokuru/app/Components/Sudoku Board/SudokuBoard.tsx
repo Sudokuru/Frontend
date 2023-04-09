@@ -437,9 +437,10 @@ async function finishGame(activeGame, navigation) {
 
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-            console.log("Game was finished successfully!");
+            console.log("Game was finished successfully!", res);
+            console.log(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed);
         }
-      navigation.navigate('Home');
+      //navigation.navigate('Home');
     });
 }
 
