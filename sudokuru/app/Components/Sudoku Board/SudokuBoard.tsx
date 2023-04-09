@@ -137,11 +137,11 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   actionControlRow: {
     width: cellSize ? cellSize * 11 : fallbackHeight * 11,
-    height: cellSize ? cellSize * 1.5: fallbackHeight * (3 / 4),
+    height: cellSize ? cellSize: fallbackHeight,
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
+    marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
   },
   actionControlButton: {
     height: cellSize ? cellSize * (0.5) : 1000,
@@ -979,6 +979,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     if (!hint) return;
+    print("hint:", hint)
 
     let causes = []
     let groups = []
