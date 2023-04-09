@@ -428,19 +428,22 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame, navigation) {
+async function finishGame(activeGame) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
         token = result;
     });
 
+    console.log(activeGame);
+
+
     Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
             console.log("Game was finished successfully!", res);
             console.log(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed);
         }
-      //navigation.navigate('Home');
+      this.props.showGameResults();
     });
 }
 
@@ -467,7 +470,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, navigation } = props;
+  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game} = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -592,7 +595,7 @@ const Cell = (props) => {
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game, navigation);
+          finishGame(game);
       }
     }
   }
@@ -1275,8 +1278,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hintSteps = board.get('hintSteps');
     let currentStep = board.get('currentStep');
 
-    const { navigation } = this.props;
-
     let game = null;
     if (!this.props.isDrill) game = this.state.activeGame[0];
 
@@ -1298,7 +1299,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 hintSteps={hintSteps}
                 currentStep={currentStep}
                 game={game}
-                navigation={navigation}
             />
         );
     };

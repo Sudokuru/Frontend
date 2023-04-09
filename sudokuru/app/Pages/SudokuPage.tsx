@@ -11,6 +11,8 @@ import Header from "../Components/Header";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
+import Alert from "react-native-awesome-alerts";
+import {useTheme} from "react-native-paper";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -116,6 +118,12 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
     const { gameOrigin } = route.params;
     const { difficulty } = route.params;
 
+    const theme = useTheme();
+
+    const [gameResultsVisible, toggleGameResults] = React.useState(false);
+    const showGameResults = () => toggleGameResults(true);
+    const hideGameResults = () => toggleGameResults(false);
+
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
@@ -197,10 +205,24 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint} navigation={navigation}/>
+                        <SudokuBoard generatedGame={generateGame(USERACTIVEGAMESBFFURL)} isDrill={false} getHint={getHint} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
+                <Alert
+                    show={gameResultsVisible}
+                    title="Game Results"
+                    message={`To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\nYou will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideGameResults();
+                    }}
+                />
             </SafeAreaView>
         </SafeAreaProvider>
     );
