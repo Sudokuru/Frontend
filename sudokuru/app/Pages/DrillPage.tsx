@@ -180,8 +180,6 @@ const DrillPage = (props) => {
 
     let drillSolutionCells = getDrillSolutionCells(board);
 
-    console.log()
-
     return {
       board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
     };
