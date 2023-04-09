@@ -128,13 +128,13 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
     const [gameResultNumWrongCellsPlayed, setGameResultNumWrongCellsPlayed] = React.useState(0);
     const [banana, setBanana] = React.useState(0);
 
-    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, banana: number) => {
-        console.log(score, time, numHintsUsed, numWrongCellsPlayed, banana);
+    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, bananaOne: number) => {
+        console.log(score, time, numHintsUsed, numWrongCellsPlayed, banana, bananaOne);
         setGameResultScore(score);
         setGameResultTime(time);
         setGameResultNumHintsUsed(numHintsUsed);
         setGameResultNumWrongCellsPlayed(numWrongCellsPlayed);
-        setBanana(banana);
+        setBanana(bananaOne);
     }
     const hideGameResults = () => toggleGameResults(false);
 
