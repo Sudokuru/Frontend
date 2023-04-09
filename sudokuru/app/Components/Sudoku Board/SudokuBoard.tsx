@@ -220,7 +220,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: cellSize ? cellSize * 7 : fallbackHeight * 7,
+    width: cellSize ? cellSize * 5 : fallbackHeight * 5,
   },
   hintStratNameView: {
 
