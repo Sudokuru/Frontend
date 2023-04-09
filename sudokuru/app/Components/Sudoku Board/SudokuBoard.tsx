@@ -285,35 +285,11 @@ NumberControl.defaultProps = {
 };
 
 const Puzzle = (props) => {
-  const { board, inHintMode, renderCell, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
+  const { board, renderCell } = props;
   const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-
-  const isRightArrowRendered = (inHintMode, onFinalStep) =>
-  {
-    return false //inHintMode && !onFinalStep;
-  }
-
-  const isLeftArrowRendered = (inHintMode, onFirstStep) =>
-  {
-    return false //inHintMode && !onFirstStep;
-  }
-
-  const isCheckMarkRendered = (inHintMode, onFinalStep) =>
-  {
-    return false //inHintMode && onFinalStep;
-  }
 
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
-      {/* {(isLeftArrowRendered(inHintMode, onFirstStep))
-        ? // checkcircleo
-        <Pressable onPress={leftArrowClicked}>
-          <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      } */}
       <View style={styles().boardContainer}>
         {board.get('puzzle').map((row, i) => (
           <View key={i} style={styles().rowContainer}>
@@ -321,20 +297,6 @@ const Puzzle = (props) => {
           </View>
         )).toArray()}
       </View>
-      {/* {(isRightArrowRendered(inHintMode, onFinalStep))
-        ?
-        <Pressable onPress={rightArrowClicked}>
-          <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        (isCheckMarkRendered(inHintMode, onFinalStep))
-          ?
-          <Pressable onPress={checkMarkClicked}>
-            <AntDesign color="white" name="checkcircle" size={cellSize/(sizeConst)}/>
-          </Pressable>
-          :
-          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      } */}
     </View>
   );
 }
