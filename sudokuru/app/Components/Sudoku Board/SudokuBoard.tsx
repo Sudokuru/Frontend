@@ -429,14 +429,8 @@ async function finishGame(activeGame, showResults) {
         token = result;
     });
 
-    console.log(activeGame);
-
-
   Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-          console.log("Game was finished successfully!", res);
-          console.log(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed);
-
           showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, 5);
         }
     });
@@ -1363,7 +1357,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 hintSteps={hintSteps}
                 currentStep={currentStep}
                 game={game}
-                showResults={() => this.props.showGameResults()}
+                showResults={this.props.showGameResults}
             />
         );
     };

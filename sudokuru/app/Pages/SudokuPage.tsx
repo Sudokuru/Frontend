@@ -120,32 +120,33 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
 
     const theme = useTheme();
 
-    const [gameResultsVisible, toggleGameResults] = React.useState(false);
+    const [gameResultsVisible, setGameResultsVisible] = React.useState(false);
 
     const [gameResultScore, setGameResultScore] = React.useState(0);
     const [gameResultTime, setGameResultTime] = React.useState(0);
     const [gameResultNumHintsUsed, setGameResultNumHintsUsed] = React.useState(0);
     const [gameResultNumWrongCellsPlayed, setGameResultNumWrongCellsPlayed] = React.useState(0);
-    const [banana, setBanana] = React.useState(0);
 
-    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, bananaOne: number) => {
-        console.log(score, time, numHintsUsed, numWrongCellsPlayed, banana, bananaOne);
+    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number) => {
         setGameResultScore(score);
         setGameResultTime(time);
         setGameResultNumHintsUsed(numHintsUsed);
         setGameResultNumWrongCellsPlayed(numWrongCellsPlayed);
-        setBanana(bananaOne);
     }
-    const hideGameResults = () => toggleGameResults(false);
+    const hideGameResults = () => {
+        setGameResultScore(0);
+        setGameResultTime(0);
+        setGameResultNumHintsUsed(0);
+        setGameResultNumWrongCellsPlayed(0);
+        setGameResultsVisible(false);
+    }
 
     // we show the game results if time does not equal zero and on score change
     useEffect(() => {
-        console.log("HELLO!");
         if (gameResultTime != 0){
-            console.log("GREETINGS!");
-            toggleGameResults(true);
+            setGameResultsVisible(true);
         }
-    }, [banana]);
+    }, [gameResultTime]);
 
 
 
@@ -237,8 +238,8 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <Alert
                     show={gameResultsVisible}
                     title="Game Results"
-                    message={'Score: ' + gameResultScore + 'Time: ' + gameResultTime + 'Number of Hints Used: ' + gameResultNumHintsUsed +
-                        'Incorrect Cells: ' + gameResultNumWrongCellsPlayed + 'Banana: ' + banana}
+                    message={'Score: ' + gameResultScore + '\nTime: ' + gameResultTime + '\nNumber of Hints Used: ' + gameResultNumHintsUsed +
+                        '\nIncorrect Cells: ' + gameResultNumWrongCellsPlayed}
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
