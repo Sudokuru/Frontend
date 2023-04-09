@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
 import { Set } from 'immutable';
 import PropTypes from 'prop-types';
@@ -428,7 +428,7 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame) {
+async function finishGame(activeGame, showResults) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
@@ -438,12 +438,13 @@ async function finishGame(activeGame) {
     console.log(activeGame);
 
 
-    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
+  Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
-            console.log("Game was finished successfully!", res);
-            console.log(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed);
+          console.log("Game was finished successfully!", res);
+          console.log(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed);
+
+          showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, 5);
         }
-      this.props.showGameResults();
     });
 }
 
@@ -470,7 +471,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game} = props;
+  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -595,7 +596,7 @@ const Cell = (props) => {
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution){
-          finishGame(game);
+          finishGame(game, showResults);
       }
     }
   }
@@ -1299,6 +1300,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 hintSteps={hintSteps}
                 currentStep={currentStep}
                 game={game}
+                showResults={() => this.props.showGameResults()}
             />
         );
     };

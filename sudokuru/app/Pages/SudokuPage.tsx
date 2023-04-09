@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
@@ -121,8 +121,33 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
     const theme = useTheme();
 
     const [gameResultsVisible, toggleGameResults] = React.useState(false);
-    const showGameResults = () => toggleGameResults(true);
+
+    const [gameResultScore, setGameResultScore] = React.useState(0);
+    const [gameResultTime, setGameResultTime] = React.useState(0);
+    const [gameResultNumHintsUsed, setGameResultNumHintsUsed] = React.useState(0);
+    const [gameResultNumWrongCellsPlayed, setGameResultNumWrongCellsPlayed] = React.useState(0);
+    const [banana, setBanana] = React.useState(0);
+
+    const showGameResults = (score: number, time: number, numHintsUsed: number, numWrongCellsPlayed: number, banana: number) => {
+        console.log(score, time, numHintsUsed, numWrongCellsPlayed, banana);
+        setGameResultScore(score);
+        setGameResultTime(time);
+        setGameResultNumHintsUsed(numHintsUsed);
+        setGameResultNumWrongCellsPlayed(numWrongCellsPlayed);
+        setBanana(banana);
+    }
     const hideGameResults = () => toggleGameResults(false);
+
+    // we show the game results if time does not equal zero and on score change
+    useEffect(() => {
+        console.log("HELLO!");
+        if (gameResultTime != 0){
+            console.log("GREETINGS!");
+            toggleGameResults(true);
+        }
+    }, [banana]);
+
+
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -212,15 +237,17 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <Alert
                     show={gameResultsVisible}
                     title="Game Results"
-                    message={`To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\nYou will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.`}
+                    message={'Score: ' + gameResultScore + 'Time: ' + gameResultTime + 'Number of Hints Used: ' + gameResultNumHintsUsed +
+                        'Incorrect Cells: ' + gameResultNumWrongCellsPlayed + 'Banana: ' + banana}
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
-                    confirmText={"OK"}
+                    confirmText={"Go Home"}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hideGameResults();
+                        navigation.navigate("Home");
                     }}
                 />
             </SafeAreaView>
