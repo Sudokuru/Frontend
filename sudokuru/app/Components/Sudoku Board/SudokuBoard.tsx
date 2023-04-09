@@ -1521,6 +1521,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     }
     
     drillMode = this.props.isDrill;
+    inHintMode = board ? board.get('inHintMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown}>
@@ -1530,7 +1531,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
           <View style={styles().bottomActions}>
             {this.renderActions()}
             {this.renderNumberControl()}
-            {this.props.isDrill && this.renderSubmitButton()}
+            {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
           </View>
         }
       </View>
