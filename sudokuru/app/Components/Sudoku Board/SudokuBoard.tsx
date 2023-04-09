@@ -136,9 +136,9 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     flexWrap: 'wrap',
   },
   actionControlRow: {
-    width: cellSize ? cellSize * 11 : fallbackHeight * 11,
+    width: cellSize ? cellSize * 8 : fallbackHeight * 8,
     height: cellSize ? cellSize: fallbackHeight,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
@@ -860,10 +860,13 @@ const HintSection = (props) => {
 
 /*
  * This function retrieves the user's device size and calculates the cell size
+ * board has width and height dimensions of 1 x 1.44444
  */
-function getCellSize() {
-    const size = useWindowDimensions();
-    return Math.min(size.width, size.height) / 15;
+function getCellSize()
+{
+  const size = useWindowDimensions();
+  
+  return Math.min(size.width * 1.44444, size.height) / 15;
 }
 
 function updateBoardWithNumber({ x, y, number, fill = true, board }) {
@@ -1614,7 +1617,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     inHintMode = board ? board.get('inHintMode') : false;
 
     return (
-      <View onKeyDown={this.handleKeyDown}>
+      <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
         {board && !this.props.isDrill && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
