@@ -17,6 +17,7 @@ import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from './app/Pages/DrillPage';
 import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
+import {useEffect} from "react";
 
 const drawerItemsMain = [
   {
@@ -68,19 +69,28 @@ function HomeDrawer(){
 export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
+    const [learnedLessons, setLearnedLessons] = React.useState([]);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
     const toggleTheme = React.useCallback(() => {
+        console.log(isThemeDark)
         return setIsThemeDark(!isThemeDark);
     }, [isThemeDark]);
+
+    const updateLearnedLessons = React.useCallback((props: any) => {
+        console.log(learnedLessons)
+        return setLearnedLessons(props);
+    }, [learnedLessons]);
 
     const preferences = React.useMemo(
         () => ({
             toggleTheme,
             isThemeDark,
+            updateLearnedLessons,
+            learnedLessons,
         }),
-        [toggleTheme, isThemeDark]
+        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons]
     );
 
     const Stack = createStackNavigator();

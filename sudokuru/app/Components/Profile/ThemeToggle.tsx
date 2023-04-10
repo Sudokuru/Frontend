@@ -7,6 +7,8 @@ const ThemeToggle = () => {
     const theme = useTheme();
     const { toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
 
+    console.log(isThemeDark, "HAHA");
+
     return (
         <View>
             <Text>Theme</Text>

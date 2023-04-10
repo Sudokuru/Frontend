@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
@@ -12,9 +11,10 @@ import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400
 import Header from "../Components/Header";
 import DifficultySlider from '../Components/Home/DifficultySlider';
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERACTIVEGAMESBFFURL} from '@env'
+import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -24,11 +24,14 @@ const HomePage = () => {
 
     // Sudokuru Package Constants
     const Puzzles = sudokuru.Puzzles;
+    const Statistics = sudokuru.Statistics;
 
     const theme = useTheme();
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height) / 25;
+
+    const { updateLearnedLessons, learnedLessons, toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
 
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
@@ -48,12 +51,13 @@ const HomePage = () => {
 
     const [difficulty, setDifficulty] = useState(50);
 
-    const getData = (val) => {
+    const getData = (val: any) => {
         setDifficulty(val);
     }
 
     useFocusEffect(
         React.useCallback(() => {
+            // This determines if user has active game and displays resume button conditionally.
             async function grabCurrentGame(url: string) {
                 let token = null;
                 await getKeyString("access_token").then(result => {
@@ -61,7 +65,7 @@ const HomePage = () => {
                 });
 
                 await Puzzles.getGame(url, token).then(
-                    (game: JSON) => {
+                    (game: any) => {
                         if (game !== null && game[0].moves.length > 0) {
                             showResumeButton();
                         } else {
@@ -69,8 +73,31 @@ const HomePage = () => {
                         }
                     });
             }
+
+            // This determines what lessons the user has learned and conditionally displays everything.
+            async function getUserLearnedLessons(url: string) {
+                let token = null;
+                await getKeyString("access_token").then(result => {
+                    token = result;
+                });
+
+                await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
+                    if (lessons !== null) {
+                        console.log(lessons);
+                        console.log(learnedLessons);
+                        updateLearnedLessons(lessons);
+                        console.log(learnedLessons, "Learned Lessons");
+                    }
+                    else {
+                        console.log("User has not completed any lessons");
+                    }
+                });
+            }
             grabCurrentGame(USERACTIVEGAMESBFFURL);
+            getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
     }, []));
+
+    console.log("GLOBAL", learnedLessons);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -126,12 +153,14 @@ const HomePage = () => {
                         <View style={{top: reSize/2, flexDirection: 'row'}}>
                             {
                                 (resumeVisible) ?
-                                    <Button style={{right: reSize}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                    <Button style={{right: reSize}} mode="outlined"
+                                            onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
                                         Resume Puzzle
                                     </Button> : <></>
                             }
 
-                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
+                            <Button mode="contained"
+                                    onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
                                 Start Puzzle
                             </Button>
                         </View>
