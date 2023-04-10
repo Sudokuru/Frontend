@@ -33,6 +33,10 @@ const HomePage = () => {
 
     const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
+    const [doMoreLessonsVisible, setDoMoreLessonsVisible] = React.useState(false);
+    const showDoMoreLessons = () => setDoMoreLessonsVisible(true);
+    const hideDoMoreLessons = () => setDoMoreLessonsVisible(false);
+
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
     const hideResumeButton = () => setResumeVisible(false);
@@ -96,6 +100,12 @@ const HomePage = () => {
             getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
     }, []));
 
+    // returns if user can play game or do drills
+    function canPlay():boolean {
+        return (learnedLessons.includes("SUDOKU_101") && learnedLessons.includes("AMEND_NOTES") &&
+            learnedLessons.includes("NAKED_SINGLE") && learnedLessons.includes("SIMPLIFY_NOTES"));
+    }
+
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
@@ -130,9 +140,11 @@ const HomePage = () => {
                         </View>
 
                         <View style={{padding: reSize/4}}>
-                            <Button style={{top:reSize/2}} mode="contained" onPress={() => navigation.openDrawer()}>
+                            <Button style={{top:reSize/2}} mode="contained" onPress={() => {
+                                canPlay() ? navigation.openDrawer() : showDoMoreLessons()
+                            }}>
                                 Start Drill
-                            </Button>
+                            </Button>r
                         </View>
 
                         <View style={{top:20, flexDirection: 'row', padding: reSize/4}}>
@@ -157,7 +169,11 @@ const HomePage = () => {
                             }
 
                             <Button mode="contained"
-                                    onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
+                                    onPress={() => {
+                                        canPlay() ?
+                                        navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)}) :
+                                        showDoMoreLessons();
+                                    }}>
                                 Start Puzzle
                             </Button>
                         </View>
@@ -205,6 +221,20 @@ const HomePage = () => {
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hidePlayHelp();
+                    }}
+                />
+                <Alert
+                    show={doMoreLessonsVisible}
+                    title="Please Complete more lessons!"
+                    message={`To access this feature, please complete more lessons!`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideDoMoreLessons();r
                     }}
                 />
             </SafeAreaView>

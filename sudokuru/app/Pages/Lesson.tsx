@@ -10,7 +10,7 @@ import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from "@env";
+import {USERGAMESTATISTICSBFFURL} from "@env";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
@@ -19,6 +19,8 @@ const Statistics = sudokuru.Statistics;
 const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     //Brings in name of strategy from carousel
     let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
+
+    console.log(name);
     const navigation: any = useNavigation();
 
     const size = useWindowDimensions();
@@ -44,7 +46,9 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
             name == "NAKED_SINGLE" ? lessonName = 'Naked Single' :
                 name == "NAKED_SET" ? lessonName = 'Naked Set' :
                     name == "HIDDEN_SINGLE" ? lessonName = 'Hidden Single' :
-                        name == "HIDDEN_SET" ? lessonName = 'Hidden Set' : lessonName = 'Null';
+                        name == "HIDDEN_SET" ? lessonName = 'Hidden Set' :
+                            name == "SUDOKU_101" ? lessonName = 'Sudoku 101' :
+                                name == "SIMPLIFY_NOTES" ? lessonName = 'Simplify Notes' : lessonName = 'Null';
         return lessonName;
     }
 
