@@ -20,7 +20,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     //Brings in name of strategy from carousel
     let name = props.route.params ? props.route.params.params : "no props.route.params in LessonPage"
 
-    console.log(name);
     const navigation: any = useNavigation();
 
     const size = useWindowDimensions();
