@@ -78,9 +78,7 @@ const HomePage = () => {
             async function getUserLearnedLessons(url: string) {
 
                 // If we have value cached we don't need to get it again
-                if (!learnedLessons.includes("Banana")){
-                    return;
-                }
+                console.log("THIS IS IT: ", learnedLessons);
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;

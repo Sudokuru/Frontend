@@ -14,6 +14,7 @@ import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from "@env";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
+const Statistics = sudokuru.Statistics;
 
 const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     //Brings in name of strategy from carousel
@@ -73,6 +74,28 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
             }
         }, []);
 
+    async function saveUserLearnedLessons(url: string) {
+
+        // If we have value cached we don't need to get it again
+        let token = null;
+        await getKeyString("access_token").then(result => {
+            token = result;
+        });
+
+        let jsonBody = {
+            "strategiesLearned": learnedLessons
+        }
+
+        await Statistics.saveLearnedLessons(url, jsonBody, token).then((res: any) => {
+            if (res) {
+                console.log("Lessons save successfully!")
+            }
+            else {
+                console.log("Lesson not saved");
+            }
+        });
+    }
+
       const [count, setCount]  = useState(0);
 
       // Detects the last page of the lesson for sending "complete" status to backend
@@ -129,6 +152,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                                   learnedLessons.push(name);
                                   updateLearnedLessons(learnedLessons);
                                   setLessonButtonVisible(false);
+                                  saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
                               }}>
                                   Complete Lesson
                               </Button>
