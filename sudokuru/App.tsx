@@ -40,18 +40,14 @@ const drawerItemsMain = [
         {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
       ],
   },
-  // {
-  //     key: 'Pointing Pair',
-  //     title: 'Pointing Pair',
-  //     routes: [{nav: 'Home', routeName: 'Pointing Pair', title: 'Pointing Pair'}],
-  // },
 ];
 
 function HomeDrawer(){
     const Drawer = createDrawerNavigator();
 
     return(
-     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
+     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent
+         drawerItems={drawerItemsMain} {...props} />)}
       screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true}}>
           <Drawer.Screen name="Main Page" component={HomePage} />
           <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
