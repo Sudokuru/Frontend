@@ -31,7 +31,7 @@ const HomePage = () => {
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height) / 25;
 
-    const { updateLearnedLessons, learnedLessons, toggleTheme, isThemeDark } = React.useContext(PreferencesContext);
+    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
@@ -76,6 +76,11 @@ const HomePage = () => {
 
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
+
+                // If we have value cached we don't need to get it again
+                if (!learnedLessons.includes("Banana")){
+                    return;
+                }
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;
@@ -85,7 +90,7 @@ const HomePage = () => {
                     if (lessons !== null) {
                         console.log(lessons);
                         console.log(learnedLessons);
-                        updateLearnedLessons(lessons);
+                        updateLearnedLessons(lessons.strategiesLearned);
                         console.log(learnedLessons, "Learned Lessons");
                     }
                     else {

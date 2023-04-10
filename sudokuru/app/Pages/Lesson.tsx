@@ -8,6 +8,9 @@ import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useFocusEffect} from "@react-navigation/core";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
+import {getKeyString} from "../Functions/Auth0/token";
+import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from "@env";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
@@ -20,12 +23,16 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
 
+    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
     const [learnHelpVisible, setLearnHelpVisible] = React.useState(false);
     const showLearnHelp = () => setLearnHelpVisible(true);
     const hideLearnHelp = () => setLearnHelpVisible(false);
 
     const [steps, setSteps] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
+
+    const [lessonButtonVisible, setLessonButtonVisible] = React.useState(false);
 
 
     const theme = useTheme();
@@ -56,12 +63,24 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
             });
         }, []))
 
+    useEffect(() => {
+            // This determines if the "Complete Lesson" button should render
+            // This function should only be called once on page load for initial render
+            if (!learnedLessons.includes(name)) {
+                setLessonButtonVisible(true);
+            } else {
+                setLessonButtonVisible(false);
+            }
+        }, []);
+
       const [count, setCount]  = useState(0);
 
       // Detects the last page of the lesson for sending "complete" status to backend
       if(count + 1 == steps.length){
 
       }
+
+      console.log(learnedLessons);
 
       //Separate view for mobile and web
       const Page = () => {
@@ -100,6 +119,19 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       {
                           (steps[count][0] != null) ?
                               <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
+                              : <></>
+                      }
+
+                      {
+                          // Button only appears on last page and if lesson has not already been learned
+                          ((count + 1 == steps.length) && lessonButtonVisible ) ?
+                              <Button mode="contained" onPress={() => {
+                                  learnedLessons.push(name);
+                                  updateLearnedLessons(learnedLessons);
+                                  setLessonButtonVisible(false);
+                              }}>
+                                  Complete Lesson
+                              </Button>
                               : <></>
                       }
                   </View>

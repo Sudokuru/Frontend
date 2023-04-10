@@ -69,7 +69,7 @@ function HomeDrawer(){
 export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
-    const [learnedLessons, setLearnedLessons] = React.useState([]);
+    const [learnedLessons, setLearnedLessons] = React.useState<string[]>(["Banana"]);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
