@@ -8,23 +8,24 @@ import {useNavigation} from "@react-navigation/native";
 
 const LessonButton = (props: any) => {
 
-    const size = useWindowDimensions();
-    const reSize = Math.min(size.width, size.height);
+  const size = useWindowDimensions();
+  const reSize = Math.min(size.width, size.height);
 
-    const navigation: any = useNavigation();
+  const navigation: any = useNavigation();
 
-    return(
-            <View>
-                <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
-                        style={{margin: reSize/50, backgroundColor: props.backgroundColor}}
-                >
-                    <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>{props.firstName}</Text>
-                        <Text>{props.lastName}</Text>
-                    </View>
-                </Button>
-            </View>
-    );
+  return(
+    <View>
+      <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
+        style={{margin: reSize/50, backgroundColor: props.backgroundColor}}
+        disabled={props.disabled}
+      >
+        <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <Text>{props.firstName}</Text>
+          <Text>{props.lastName}</Text>
+        </View>
+      </Button>
+    </View>
+  );
 };
 
 export default LessonButton;
