@@ -47,7 +47,6 @@ const StatisticsPage = () => {
 
     const gameData = await Puzzles.getGame(url, token).then(game => {
       if (game == null) {
-        console.log(game);
         return null;
       }
       return game[0];
