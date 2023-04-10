@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Image, Platform, useWindowDimensions, Pressable} from "react-native";
 
 import Header from "../Components/Header";
@@ -7,6 +7,7 @@ import {useNavigation} from "@react-navigation/native";
 import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
+import {useFocusEffect} from "@react-navigation/core";
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;
@@ -23,6 +24,10 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     const showLearnHelp = () => setLearnHelpVisible(true);
     const hideLearnHelp = () => setLearnHelpVisible(false);
 
+    const [steps, setSteps] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+
     const theme = useTheme();
 
     function getTitle(name: string):string {
@@ -38,36 +43,38 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
       let title = getTitle(name);
 
       if (Lessons == null){
-          navigation.navigate("Home");
-          return;
-      }
-
-      let arr = Lessons.strategies;
-
-      if (arr == null){
-          navigation.navigate("Home");
           return;
       }
 
       //2d array - [[],[]]. 1st array indicates which step, 2nd array indicates text or image.
-      let teach = Lessons.getSteps(name);
-
-      if (teach == null){
-          navigation.navigate("Home");
-          return;
-      }
+    // This useFocusEffect stores the steps in state when page is loaded in.
+    useFocusEffect(
+        React.useCallback(() => {
+            Lessons.getSteps(name).then((result: any) => {
+                setSteps(result);
+                setIsLoading(false);
+            });
+        }, []))
 
       const [count, setCount]  = useState(0);
 
       // Detects the last page of the lesson for sending "complete" status to backend
-      if(count + 1 == teach.length){
+      if(count + 1 == steps.length){
 
       }
 
       //Separate view for mobile and web
       const Page = () => {
+          // Wait for page to load the stuff
+          if (isLoading){
+              return (
+                  <View>
+                      <Text>Loading</Text>
+                  </View>
+              )
+          }
           //web view
-          if(Platform.OS === 'web'){
+          else if(Platform.OS === 'web'){
             return(
             <View style={styles.container1}>
                   <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
@@ -77,22 +84,22 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       </Pressable>
 
                       {
-                          (teach[count][1] != null) ?
+                          (steps[count][1] != null) ?
                               <Image
                                   style={{width: reSize/2, height: reSize/2}}
-                                  source={{uri:teach[count][1]}}
+                                  source={{uri:steps[count][1]}}
                               /> : <></>
                       }
 
-                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == teach.length) ? navigation.navigate("Home") :setCount(count + 1)} >
-                          <AntDesign color={theme.colors.onPrimary} name={(count + 1 == teach.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
+                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == steps.length) ? navigation.navigate("Home") : setCount(count + 1)} >
+                          <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
                       </Pressable>
                   </View>
                   <Text>{" "}</Text>
                   <View style={{width: reSize/1.5}}>
                       {
-                          (teach[count][0] != null) ?
-                              <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
+                          (steps[count][0] != null) ?
+                              <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
                               : <></>
                       }
                   </View>
@@ -105,10 +112,10 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
               return(
                 <View style={styles.container1}>
                       {
-                          (teach[count][1] != null) ?
+                          (steps[count][1] != null) ?
                               <Image
                                   style={{width: reSize/1.3, height: reSize/1.3}}
-                                  source={{uri:teach[count][1]}}
+                                  source={{uri:steps[count][1]}}
                               /> : <></>
                       }
 
@@ -122,14 +129,14 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
 
                             <View style={{width: reSize/1.2}}>
                                 {
-                                    (teach[count][0] != null) ?
-                                        <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{teach[count][0]}</Text>
+                                    (steps[count][0] != null) ?
+                                        <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
                                         : <></>
                                 }
                             </View>
 
-                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == teach.length) ? navigation.navigate("Home") :setCount(count + 1)} >
-                              <AntDesign color={theme.colors.onPrimary} name={(count + 1 == teach.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
+                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? navigation.navigate("Home") :setCount(count + 1)} >
+                              <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
                           </Pressable>
                       </View>
 
