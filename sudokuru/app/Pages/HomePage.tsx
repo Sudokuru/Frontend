@@ -234,7 +234,7 @@ const HomePage = () => {
                     confirmText={"OK"}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
-                        hideDoMoreLessons();r
+                        hideDoMoreLessons();
                     }}
                 />
             </SafeAreaView>
