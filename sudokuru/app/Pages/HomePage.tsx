@@ -77,8 +77,7 @@ const HomePage = () => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                // If we have value cached we don't need to get it again
-                console.log("THIS IS IT: ", learnedLessons);
+                // If we have value cached we don't need to get it again (TODO later)
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;
@@ -86,21 +85,16 @@ const HomePage = () => {
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
                     if (lessons !== null) {
-                        console.log(lessons);
-                        console.log(learnedLessons);
                         updateLearnedLessons(lessons.strategiesLearned);
-                        console.log(learnedLessons, "Learned Lessons");
                     }
                     else {
-                        console.log("User has not completed any lessons");
+                        console.log("Error retrieving lessons of user");
                     }
                 });
             }
             grabCurrentGame(USERACTIVEGAMESBFFURL);
             getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
     }, []));
-
-    console.log("GLOBAL", learnedLessons);
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold

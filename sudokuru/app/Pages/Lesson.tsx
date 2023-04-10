@@ -102,8 +102,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
 
       }
 
-      console.log(learnedLessons);
-
       //Separate view for mobile and web
       const Page = () => {
           // Wait for page to load the stuff

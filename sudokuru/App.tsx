@@ -70,12 +70,10 @@ export default function App() {
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
     const toggleTheme = React.useCallback(() => {
-        console.log(isThemeDark)
         return setIsThemeDark(!isThemeDark);
     }, [isThemeDark]);
 
     const updateLearnedLessons = React.useCallback((props: any) => {
-        console.log(learnedLessons)
         return setLearnedLessons(props);
     }, [learnedLessons]);
 
