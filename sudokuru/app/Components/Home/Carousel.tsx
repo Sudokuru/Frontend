@@ -59,7 +59,7 @@ const Ccarousel = () => {
             setIndex(4);
         else setIndex((index-1)%5);
 
-        console.log((index%5))
+       // console.log((index%5))
     }
 
     function addIndex(index: number) {
@@ -67,7 +67,7 @@ const Ccarousel = () => {
 
         setIndex((index+1)%5);
 
-        console.log((index%5));
+      //  console.log((index%5));
     }
 
     return(
