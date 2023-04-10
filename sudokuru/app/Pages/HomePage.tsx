@@ -15,6 +15,7 @@ import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
+import LessonPanel from "../Components/Home/LessonPanel";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -129,7 +130,7 @@ const HomePage = () => {
                             </Pressable>
                         </View>
 
-                        <CCarousel/>
+                        <LessonPanel/>
 
                         <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
                             <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
