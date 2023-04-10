@@ -73,9 +73,10 @@ const StatisticsPage = () => {
     });
   }
 
-  useFocusEffect(() => {
+  useFocusEffect(
+      React.useCallback(() => {
     grabCurrentGame(USERACTIVEGAMESBFFURL);
-  }, []);
+  }, []));
 
   const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
