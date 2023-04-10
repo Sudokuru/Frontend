@@ -70,6 +70,7 @@ const StatisticsPage = () => {
       else {
         console.log("Statistics not deleted");
       }
+      updateLearnedLessons([]);
       navigation.navigate("Home");
     });
   }
