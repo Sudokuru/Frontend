@@ -1,23 +1,26 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import {StyleSheet, View} from "react-native";
-import {Text, useTheme} from 'react-native-paper';
+import {Button, Text, useTheme} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
 import { Dimensions, useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERACTIVEGAMESBFFURL} from '@env'
+import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
+import {useNavigation} from "@react-navigation/native";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
 const Puzzles = sudokuru.Puzzles;
+const Statistics = sudokuru.Statistics;
 
 const StatisticsPage = () => {
   const theme = useTheme();
+  const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
@@ -50,6 +53,24 @@ const StatisticsPage = () => {
       return game[0];
     });
     setActiveGame(gameData);
+  }
+
+  async function deleteUserStatistics(url: string) {
+
+    let token = null;
+    await getKeyString("access_token").then(result => {
+      token = result;
+    });
+
+    await Statistics.deleteStatistics(url, token).then((res: any) => {
+      if (res) {
+        console.log("Statistics deleted successfully!")
+      }
+      else {
+        console.log("Statistics not deleted");
+      }
+      navigation.navigate("Home");
+    });
   }
 
   useFocusEffect(() => {
@@ -94,6 +115,11 @@ const StatisticsPage = () => {
             <Text style={{ color: '#fff' }}>No active game found.</Text>
           )}
         </View>
+        <Button mode="contained" onPress={() => {
+          deleteUserStatistics(USERGAMESTATISTICSBFFURL);
+        }}>
+          Delete Statistics
+        </Button>
       </SafeAreaView>
     </SafeAreaProvider>
   );
