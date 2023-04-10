@@ -80,6 +80,24 @@ const StatisticsPage = () => {
     grabCurrentGame(USERACTIVEGAMESBFFURL);
   }, []));
 
+  const formatLessonNameArray = (learnedLessons) => {
+    if (!learnedLessons) return "Loading...";
+    let formattedLessonArray = [];
+    for (let i = 0; i < learnedLessons.length; i++)
+    {
+      formattedLessonArray.push(formatOneLessonName(learnedLessons[i]));
+    }
+    return formattedLessonArray.join('\r\n');
+  }
+
+  const formatOneLessonName = (lessonName) => {
+    const words = lessonName.toLowerCase().replaceAll('_', ' ').split(" ");
+    for (let i = 0; i < words.length; i++)
+      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+    hintStratName = words.join(" ");
+    return hintStratName;
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{height: '100%', width: '100%'}}>
@@ -89,7 +107,7 @@ const StatisticsPage = () => {
           <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
             <View style={{ marginBottom: 10 }}>
               <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
-              <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{learnedLessons.join('\r\n')}</Text>
+              <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{/*learnedLessons.join('\r\n')*/formatLessonNameArray(learnedLessons)}</Text>
             </View>
           </View>
           <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Game Statistics</Text>
