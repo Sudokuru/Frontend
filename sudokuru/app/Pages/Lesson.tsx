@@ -190,6 +190,21 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                                         <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
                                         : <></>
                                 }
+
+                                {
+                                    // Button only appears on last page and if lesson has not already been learned
+                                    ((count + 1 == steps.length) && lessonButtonVisible ) ?
+                                        <Button mode="contained" onPress={() => {
+                                            learnedLessons.push(name);
+                                            updateLearnedLessons(learnedLessons);
+                                            setLessonButtonVisible(false);
+                                            saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+                                        }}>
+                                            Complete Lesson
+                                        </Button>
+                                        : <></>
+                                }
+
                             </View>
 
                           <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? navigation.navigate("Home") :setCount(count + 1)} >
