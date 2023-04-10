@@ -76,7 +76,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
 
     async function saveUserLearnedLessons(url: string) {
 
-        // If we have value cached we don't need to get it again
         let token = null;
         await getKeyString("access_token").then(result => {
             token = result;
