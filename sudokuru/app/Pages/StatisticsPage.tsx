@@ -8,6 +8,7 @@ import { Dimensions, useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -17,8 +18,6 @@ const Puzzles = sudokuru.Puzzles;
 
 const StatisticsPage = () => {
   const theme = useTheme();
-
-  const screenWidth = Dimensions.get("window").width;
 
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
@@ -57,11 +56,20 @@ const StatisticsPage = () => {
     grabCurrentGame(USERACTIVEGAMESBFFURL);
   });
 
+  const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{height: '100%', width: '100%'}}>
         <Header page="Statistics" />
         <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
+          <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Statistics</Text>
+          <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
+            <View style={{ marginBottom: 10 }}>
+              <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
+              <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{learnedLessons.join('\r\n')}</Text>
+            </View>
+          </View>
           <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Game Statistics</Text>
           {activeGame ? (
             <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
