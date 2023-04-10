@@ -145,7 +145,7 @@ const HomePage = () => {
                                 canPlay() ? navigation.openDrawer() : showDoMoreLessons()
                             }}>
                                 Start Drill
-                            </Button>r
+                            </Button>
                         </View>
 
                         <View style={{top:20, flexDirection: 'row', padding: reSize/4}}>
