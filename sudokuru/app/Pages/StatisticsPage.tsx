@@ -27,6 +27,8 @@ const StatisticsPage = () => {
 
   const [activeGame, setActiveGame] = useState(null);
 
+  const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
   const formatTime = (seconds) => {
     // Get minutes and remaining seconds
     const minutes = Math.floor(seconds / 60);
@@ -76,8 +78,6 @@ const StatisticsPage = () => {
       React.useCallback(() => {
     grabCurrentGame(USERACTIVEGAMESBFFURL);
   }, []));
-
-  const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
   return (
     <SafeAreaProvider>
