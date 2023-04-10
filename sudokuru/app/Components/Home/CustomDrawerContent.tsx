@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Image,
 } from "react-native";
+import {PreferencesContext} from "../../Contexts/PreferencesContext";
 
 function CustomDrawerContent(props) {
   const [mainDrawer, setMainDrawer] = useState(true);
@@ -35,6 +36,9 @@ function CustomDrawerContent(props) {
   };
 
   function renderMainDrawer() {
+
+    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
     return (
       <View>
         {props.drawerItems.map((parent) => (
@@ -45,9 +49,13 @@ function CustomDrawerContent(props) {
               onPress={() => {
                 onItemParentPress(parent.key);
               }}>
-              <View style={styles.parentItem}>
-                <Text style={[styles.icon, styles.title]}>{parent.title}</Text>
-              </View>
+              {
+                // Conditionally render Drill navigation depending on lessons the user has completed.
+                ((learnedLessons.includes("NAKED_SINGLE") && parent.title == "Naked Sets") || (learnedLessons.includes("HIDDEN_SINGLE") && parent.title == "Hidden Sets"))
+                  ? <View style={styles.parentItem}>
+                      <Text style={[styles.icon, styles.title]}>{parent.title}</Text>
+                    </View> : <></>
+              }
             </TouchableOpacity>
           </View>
         ))}
@@ -56,6 +64,9 @@ function CustomDrawerContent(props) {
   }
 
   function renderFilteredItemsDrawer() {
+
+    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
     return (
       <View>
         <TouchableOpacity
@@ -74,7 +85,15 @@ function CustomDrawerContent(props) {
                 })
               }
               style={styles.item}>
-              <Text style={styles.title}>{route.title}</Text>
+
+              {
+                // Conditionally render Drill navigation depending on lessons the user has completed.
+                ((learnedLessons.includes("NAKED_SINGLE") && route.title == "Naked Single") ||
+                    (learnedLessons.includes("HIDDEN_SINGLE") && route.title == "Hidden Single") ||
+                    (learnedLessons.includes("HIDDEN_SET") && (route.title == "Hidden Pair" || route.title == "Hidden Triplet" || route.title == "Hidden Quadruplet")) ||
+                        (learnedLessons.includes("NAKED_SET") && (route.title == "Naked Pair" || route.title == "Naked Triplet" || route.title == "Naked Quadruplet")))
+                            ? <Text style={styles.title}>{route.title}</Text> : <></>
+              }
             </TouchableOpacity>
           );
         })}
