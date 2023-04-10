@@ -23,7 +23,7 @@ const Header = (props: any) => {
                         height: 45,
                         width: 100,
                     }} source={require('./goldLogoText.png')} />
-                     : <Pressable  onPress={() => navigation.navigate('Main Page')} >
+                     : <Pressable  onPress={() => navigation.navigate('Home')} >
                     <Image style={{
                         resizeMode: 'cover',
                         height: 45,
