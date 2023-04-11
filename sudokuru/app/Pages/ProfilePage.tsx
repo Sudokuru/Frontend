@@ -24,7 +24,7 @@ const ProfilePage = () => {
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
 
-    const { learnedLessons, toggleTheme, isThemeDark, toggleHighlightPeers, isHighlightPeers,
+    const { learnedLessons, toggleTheme, isThemeDark, toggleHighlightSet, isHighlightSet,
         isHighlightBox, toggleHighlightBox, toggleHighlightColumn, isHighlightColumn, toggleHighlightRow, isHighlightRow
     } = React.useContext(PreferencesContext);
 
@@ -46,7 +46,7 @@ const ProfilePage = () => {
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
-                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatLessonNameArray(learnedLessons)}</Text>
+                                <Text style={{ fontSize: reSize/40, fontWeight: 'bold', color: '#D9A05B' }}>{formatLessonNameArray(learnedLessons)}</Text>
                             </View>
                             <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Theme: </Text>
@@ -65,9 +65,9 @@ const ProfilePage = () => {
                                 <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
                                     <Switch
                                         color={'#025E73'}
-                                        value={isHighlightPeers}
-                                        onValueChange={toggleHighlightPeers}
-                                        testID={isHighlightPeers ? "HighlightPeersEnabled" : "HighlightPeersDisabled"}
+                                        value={isHighlightSet}
+                                        onValueChange={toggleHighlightSet}
+                                        testID={isHighlightSet ? "HighlightPeersEnabled" : "HighlightPeersDisabled"}
                                         style={{alignSelf: 'center', flexDirection: 'column'}}
                                     />
                                 </View>

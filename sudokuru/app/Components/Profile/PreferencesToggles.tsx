@@ -4,7 +4,7 @@ import { Switch, Text } from 'react-native-paper';
 import { PreferencesContext } from '../../Contexts/PreferencesContext';
 
 const PreferencesToggles = () => {
-    const { toggleTheme, isThemeDark, toggleHighlightPeers, isHighlightPeers,
+    const { toggleTheme, isThemeDark, toggleHighlightSet, isHighlightSet,
         isHighlightBox, toggleHighlightBox, toggleHighlightColumn, isHighlightColumn, toggleHighlightRow, isHighlightRow
     } = React.useContext(PreferencesContext);
 
@@ -20,9 +20,9 @@ const PreferencesToggles = () => {
             <Text>Highlight Peers</Text>
             <Switch
                 color={'#025E73'}
-                value={isHighlightPeers}
-                onValueChange={toggleHighlightPeers}
-                testID={isHighlightPeers ? "HighlightPeersEnabled" : "HighlightPeersDisabled"}
+                value={isHighlightSet}
+                onValueChange={toggleHighlightSet}
+                testID={isHighlightSet ? "HighlightPeersEnabled" : "HighlightPeersDisabled"}
             />
             <Text>Highlight Box</Text>
             <Switch

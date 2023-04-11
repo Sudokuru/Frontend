@@ -66,7 +66,7 @@ export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
     const [learnedLessons, setLearnedLessons] = React.useState<string[]>([]);
-    const [isHighlightPeers, setHighlightPeers] = React.useState(true);
+    const [isHighlightSet, setHighlightSet] = React.useState(true);
     const [isHighlightBox, setHighlightBox] = React.useState(true);
     const [isHighlightRow, setHighlightRow] = React.useState(true);
     const [isHighlightColumn, setHighlightColumn] = React.useState(true);
@@ -81,9 +81,9 @@ export default function App() {
         return setLearnedLessons(props);
     }, [learnedLessons]);
 
-    const toggleHighlightPeers = React.useCallback(() => {
-        return setHighlightPeers(!isHighlightPeers);
-    }, [isHighlightPeers]);
+    const toggleHighlightSet = React.useCallback(() => {
+        return setHighlightSet(!isHighlightSet);
+    }, [isHighlightSet]);
 
     const toggleHighlightBox = React.useCallback(() => {
         return setHighlightBox(!isHighlightBox);
@@ -104,8 +104,8 @@ export default function App() {
             isThemeDark,
             updateLearnedLessons,
             learnedLessons,
-            toggleHighlightPeers,
-            isHighlightPeers,
+            toggleHighlightSet,
+            isHighlightSet,
             toggleHighlightBox,
             isHighlightBox,
             toggleHighlightRow,
@@ -113,7 +113,7 @@ export default function App() {
             toggleHighlightColumn,
             isHighlightColumn,
         }),
-        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons, toggleHighlightPeers, isHighlightPeers,
+        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons, toggleHighlightSet, isHighlightSet,
             toggleHighlightBox, isHighlightBox, toggleHighlightRow, isHighlightRow, toggleHighlightColumn, isHighlightColumn]
     );
 

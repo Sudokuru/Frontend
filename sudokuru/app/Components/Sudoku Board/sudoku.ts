@@ -113,6 +113,22 @@ export function isPeer(a, b) {
     return a.x === b.x || a.y === b.y || squareA === squareB;
 }
 
+export function highlightBox(a, b) {
+    const squareA = ((Math.floor(a.x / 3)) * 3) + Math.floor(a.y / 3);
+    const squareB = ((Math.floor(b.x / 3)) * 3) + Math.floor(b.y / 3);
+    return squareA === squareB;
+}
+
+export function highlightRow(a, b) {
+    return a.y === b.y;
+}
+
+export function highlightColumn(a, b) {
+    return a.x === b.x;
+}
+
+
+
 export function pluck(allCells, n = 0) {
     const puzzle = JSON.parse(JSON.stringify(allCells));
     /**
