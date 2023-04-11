@@ -1,10 +1,10 @@
 import React from 'react';
-import ThemeToggle from "../Components/Profile/ThemeToggle";
+import PreferencesToggles from "../Components/Profile/PreferencesToggles";
 import {StyleSheet, useWindowDimensions, View, TouchableOpacity, Image, ScrollView} from "react-native";
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header";
-import {Text, useTheme} from "react-native-paper";
+import {Switch, Text, useTheme} from "react-native-paper";
 import {getKeyString} from "../Functions/Auth0/token";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
@@ -24,31 +24,89 @@ const ProfilePage = () => {
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
 
-    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+    const { learnedLessons, toggleTheme, isThemeDark, toggleHighlightPeers, isHighlightPeers,
+        isHighlightBox, toggleHighlightBox, toggleHighlightColumn, isHighlightColumn, toggleHighlightRow, isHighlightRow
+    } = React.useContext(PreferencesContext);
 
     return (
         <SafeAreaProvider>
             <SafeAreaView>
                 <Header page={'Profile'}/>
                 <ScrollView>
-                    <View style={styles.container}>
-                        <View style={styles.header}></View>
-                        <View style={styles.body}>
-                            <View style={styles.bodyContent}>
-                                <Text style={styles.name}>{decoded.nickname}</Text>
-                                <Text style={styles.info}>Sudoku Player</Text>
-                                <Text style={styles.email}>{decoded.name}</Text>
-                                <ThemeToggle/>
-                                <SaveGamePreferencesToggle/>
-                            </View>
-                        </View>
-                    </View>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
-                        <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Statistics</Text>
+                        <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Profile</Text>
                         <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Name: </Text>
+                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{decoded.nickname}</Text>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Email: </Text>
+                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{decoded.name}</Text>
+                            </View>
                             <View style={{ marginBottom: 10 }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
                                 <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatLessonNameArray(learnedLessons)}</Text>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Theme: </Text>
+                                <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
+                                    <Switch
+                                        color={'#025E73'}
+                                        value={isThemeDark}
+                                        onValueChange={toggleTheme}
+                                        testID={isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"}
+                                        style={{alignSelf: 'center', flexDirection: 'column'}}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Highlight Peers: </Text>
+                                <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
+                                    <Switch
+                                        color={'#025E73'}
+                                        value={isHighlightPeers}
+                                        onValueChange={toggleHighlightPeers}
+                                        testID={isHighlightPeers ? "HighlightPeersEnabled" : "HighlightPeersDisabled"}
+                                        style={{alignSelf: 'center', flexDirection: 'column'}}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Highlight Box: </Text>
+                                <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
+                                    <Switch
+                                        color={'#025E73'}
+                                        value={isHighlightBox}
+                                        onValueChange={toggleHighlightBox}
+                                        testID={isHighlightBox ? "HighlightBoxEnabled" : "HighlightBoxDisabled"}
+                                        style={{alignSelf: 'center', flexDirection: 'column'}}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Highlight Row: </Text>
+                                <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
+                                    <Switch
+                                        color={'#025E73'}
+                                        value={isHighlightRow}
+                                        onValueChange={toggleHighlightRow}
+                                        testID={isHighlightRow ? "HighlightRowEnabled" : "HighlightRowDisabled"}
+                                        style={{alignSelf: 'center', flexDirection: 'column'}}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                                <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Highlight Column: </Text>
+                                <View style={{justifyContent: "flex-end", flexDirection: "row", flex: 1}}>
+                                    <Switch
+                                        color={'#025E73'}
+                                        value={isHighlightColumn}
+                                        onValueChange={toggleHighlightColumn}
+                                        testID={isHighlightColumn ? "HighlightColumnEnabled" : "HighlightColumnDisabled"}
+                                        style={{alignSelf: 'center', flexDirection: 'column'}}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
