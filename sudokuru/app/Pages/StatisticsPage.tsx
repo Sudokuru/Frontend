@@ -1,15 +1,13 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
-import {StyleSheet, View} from "react-native";
-import {Button, Text, useTheme} from 'react-native-paper';
+import React from 'react'
+import {Button, useTheme} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
-import { Dimensions, useWindowDimensions } from "react-native";
+import {useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
-import {useFocusEffect} from "@react-navigation/core";
-import {PreferencesContext} from "../Contexts/PreferencesContext";
+import {USERGAMESTATISTICSBFFURL} from '@env'
 import {useNavigation} from "@react-navigation/native";
+import {VictoryChart, VictoryLine, VictoryTheme} from "victory-native";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -54,13 +52,23 @@ const StatisticsPage = () => {
         }}>
           Delete Statistics
         </Button>
-        <LineChart width={500} height={300} data={data}>
-          <XAxis dataKey="name"/>
-          <YAxis/>
-          <CartesianGrid stroke="#eee" strokeDasharray="5 5"/>
-          <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-          <Line type="monotone" dataKey="pv" stroke="#82ca9d" />
-        </LineChart>
+        <VictoryChart
+            theme={VictoryTheme.material}
+        >
+          <VictoryLine
+              style={{
+                data: { stroke: "#c43a31" },
+                parent: { border: "1px solid #ccc"}
+              }}
+              data={[
+                { x: 1, y: 2 },
+                { x: 2, y: 3 },
+                { x: 3, y: 5 },
+                { x: 4, y: 4 },
+                { x: 5, y: 7 }
+              ]}
+          />
+        </VictoryChart>
       </SafeAreaView>
     </SafeAreaProvider>
   );
