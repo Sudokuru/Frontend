@@ -4,20 +4,6 @@ import {View} from "react-native";
 
 const SaveGamePreferencesToggle = () => {
 
-    const [isSaveGameHistoryEnabled, setIsSaveGameHistoryEnabled] = useState(getSaveGameHistoryState);
-    const toggleSaveGameHistorySwitch = () => setIsSaveGameHistoryEnabled(previousState => !previousState);
-    // mock function
-    function getSaveGameHistoryState(): boolean {
-        return false;
-    }
-
-    const [isNotifyOnWrongCellEnabled, setIsNotifyOnWrongCellEnabled] = useState(getNotifyOnWrongCellState);
-    const toggleNotifyOnWrongCellSwitch = () => setIsNotifyOnWrongCellEnabled(previousState => !previousState);
-    // mock function
-    function getNotifyOnWrongCellState(): boolean {
-        return true;
-    }
-
     const [isHighlightAllSelectedNumberEnabled, setIsHighlightAllSelectedNumberEnabled] = useState(getHighlightAllSelectedNumber);
     const toggleHighlightAllSelectedNumberSwitch = () => setIsHighlightAllSelectedNumberEnabled(previousState => !previousState);
     // mock function
@@ -39,36 +25,8 @@ const SaveGamePreferencesToggle = () => {
         return true;
     }
 
-    const [isPlayMusicEnabled, setIsPlayMusicEnabled] = useState(getPlayMusic);
-    const togglePlayMusicSwitch = () => setIsPlayMusicEnabled(previousState => !previousState);
-    // mock function
-    function getPlayMusic(): boolean {
-        return false;
-    }
-
-    const [isMusicIntensifyEnabled, setIsMusicIntensifyEnabled] = useState(getMusicIntensifyEnabled);
-    const toggleMusicIntensifySwitch = () => setIsMusicIntensifyEnabled(previousState => !previousState);
-    // mock function
-    function getMusicIntensifyEnabled(): boolean {
-        return false;
-    }
-
     return (
         <View>
-            <Text>SaveGameHistory</Text>
-            <Switch
-                color={'#025E73'}
-                value={isSaveGameHistoryEnabled}
-                onValueChange={toggleSaveGameHistorySwitch}
-                testID={isSaveGameHistoryEnabled ? "SaveGameHistoryEnabled" : "SaveGameHistoryDisabled"}
-            />
-            <Text>NotifyOnWrongCell</Text>
-            <Switch
-                color={'#025E73'}
-                value={isNotifyOnWrongCellEnabled}
-                onValueChange={toggleNotifyOnWrongCellSwitch}
-                testID={isNotifyOnWrongCellEnabled ? "NotifyOnWrongCellEnabled" : "NotifyOnWrongCellDisabled"}
-            />
             <Text>HighlightAllSelectedNumber</Text>
             <Switch
                 color={'#025E73'}
@@ -89,20 +47,6 @@ const SaveGamePreferencesToggle = () => {
                 value={isHighlightSelectedRowEnabled}
                 onValueChange={toggleHighlightSelectedRowSwitch}
                 testID={isHighlightSelectedRowEnabled ? "HighlightSelectedRowEnabled" : "HighlightSelectedRowDisabled"}
-            />
-            <Text>PlayMusic</Text>
-            <Switch
-                color={'#025E73'}
-                value={isPlayMusicEnabled}
-                onValueChange={togglePlayMusicSwitch}
-                testID={isPlayMusicEnabled ? "PlayMusicEnabled" : "PlayMusicDisabled"}
-            />
-            <Text>MusicIntensify</Text>
-            <Switch
-                color={'#025E73'}
-                value={isMusicIntensifyEnabled}
-                onValueChange={toggleMusicIntensifySwitch}
-                testID={isMusicIntensifyEnabled ? "MusicIntensifyEnabled" : "MusicIntensifyDisabled"}
             />
         </View>
     );
