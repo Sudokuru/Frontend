@@ -9,7 +9,6 @@ import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
-import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
 let iHateEnv = USERGAMESTATISTICSBFFURL
