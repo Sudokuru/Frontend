@@ -90,6 +90,9 @@ const HomePage = () => {
                 // If we have value cached we don't need to get it again
                 // If lessons are loaded we have already sent this request and don't want to loop
                 if (learnedLessons.includes("SUDOKU_101") || areLessonsLoaded){
+                    if (!areLessonsLoaded){
+                        setLessonsLoaded(true);
+                    }
                     return;
                 }
 
