@@ -39,6 +39,7 @@
     "react-native-dotenv": "^3.4.6",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-paper": "^5.5.2",
+    "react-native-paper-form-builder": "^2.1.2",
     "react-native-reanimated": "~2.14.4",
     "react-native-reanimated-carousel": "^3.3.0",
     "react-native-safe-area-context": "4.5.0",
