@@ -20,8 +20,6 @@ const ProfilePage = () => {
   const theme = useTheme();
 
   const decoded = jwtDecode(token) as string;
-  console.log(token)
-  console.log(decoded)
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
