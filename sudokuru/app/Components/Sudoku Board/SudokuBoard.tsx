@@ -12,7 +12,6 @@ import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 
-
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
 
@@ -23,6 +22,8 @@ const Puzzles = sudokuru.Puzzles;
 let url = USERACTIVEGAMESBFFURL;
 
 let drillMode = false;
+
+let landingMode = false;
 
 let fallbackHeight = 30;
 
@@ -533,7 +534,7 @@ const Cell = (props) => {
     }
   }
 
-  if (!drillMode)
+  if (!drillMode && !landingMode)
   {
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0)
@@ -1442,7 +1443,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let inHintMode = board.get('inHintMode');
     let inNoteMode = board.get('inNoteMode');
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
+    if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) { // check if input is a digit from 1 to 9
       if (inNoteMode) this.addNumberAsNote(parseInt(inputValue, 10));
       else this.fillNumber(parseInt(inputValue, 10));
     }
@@ -1611,16 +1612,17 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     }
     
     drillMode = this.props.isDrill;
+    landingMode = this.props.isLanding;
     inHintMode = board ? board.get('inHintMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
-        {board && !this.props.isDrill && this.renderTopBar()}
+        {board && !landingMode && !this.props.isDrill && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
           <View style={styles().bottomActions}>
-            {this.renderActions()}
-            {!inHintMode && this.renderNumberControl()}
+            {!landingMode && this.renderActions()}
+            {!landingMode && !inHintMode && this.renderNumberControl()}
             {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
             {inHintMode && this.renderHintSection()}
           </View>

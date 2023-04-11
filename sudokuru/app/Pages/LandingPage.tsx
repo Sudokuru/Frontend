@@ -35,8 +35,10 @@ const LandingPage = () => {
     const hideModal = () => setVisible(false);
     const newUser = 1;
 
+    let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE"];
+
     let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
     });
 
     if (!fontsLoaded) {
@@ -71,6 +73,67 @@ const LandingPage = () => {
         };
     }
 
+    function componentBoardValsToArray(board)
+    {
+    let boardArray = [];
+    let temp = [];
+    for (let i = 0; i < 9; i++)
+    {
+        temp = [];
+        for (let j = 0; j < 9; j++)
+        {
+        currVal = board.get('puzzle').getIn([i, j, 'value']);
+        temp.push(!currVal ? "0" : currVal.toString());
+        }
+        boardArray.push(temp);
+    }
+    return boardArray;
+    }
+
+    function componentBoardNotesToArray(board)
+    {
+    let notesArray = [];
+    let temp = [];
+    for (let i = 0; i < 9; i++)
+    {
+        for (let j = 0; j < 9; j++)
+        {
+        temp = [];
+        let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
+        if (!notesSetFromComponent) 
+        {
+            notesArray.push(temp);
+            continue;
+        }
+        for (let k = 1; k <= 9; k++)
+        {
+            if (notesSetFromComponent.includes(k))
+            {
+            temp.push((k).toString());
+            }
+        }
+        notesArray.push(temp);
+        }
+    }
+    return notesArray;
+    }
+
+    function componentSolutionValsToArray(solution)
+    {
+    let solArray = [];
+    let temp = [];
+    for (let i = 0; i < 9; i++)
+    {
+        temp = [];
+        for (let j = 0; j < 9; j++)
+        {
+        temp.push(solution[9 * j + i].toString());
+        }
+        solArray.push(temp);
+    }
+    return solArray;
+    }
+
     function getHint(board, solution)
     {
       let boardArray = componentBoardValsToArray(board);
@@ -84,7 +147,7 @@ const LandingPage = () => {
       }
       return hint;
     }
-    
+
     return (
             <SafeAreaProvider>
                 <SafeAreaView>
@@ -108,7 +171,7 @@ const LandingPage = () => {
                                     </Pressable>
                                 </View>
                             </View>
-                            <SudokuBoard generatedGame={getLandingGame()} isDrill={true} getHint={getHint}/>
+                            <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint}/>
                         </View>
                     </View>
                 </SafeAreaView>
