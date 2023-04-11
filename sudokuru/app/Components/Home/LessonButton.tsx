@@ -19,17 +19,12 @@ const LessonButton = (props: any) => {
   return(
     <View>
       <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
-        style={(props.disabled) ? {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 90, paddingTop: 5} :
-            {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 90 }}
+        style={(props.disabled) ? {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 150, paddingTop: 5} :
+            {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 150 }}
         disabled={props.disabled}
+        mode="contained"
       >
-        {
-          (!props.disabled) ?
-            <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-              <Text>{props.firstName}</Text>
-              <Text>{props.lastName}</Text>
-            </View> : <AntDesign color="white" name="lock" size={20}/>
-        }
+          {(!props.disabled) ? <Text>{props.firstName} {props.lastName}</Text> : <AntDesign color="white" name="lock" size={20}/>}
       </Button>
     </View>
   );
