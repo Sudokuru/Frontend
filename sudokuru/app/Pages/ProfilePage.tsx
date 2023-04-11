@@ -35,13 +35,6 @@ const ProfilePage = () => {
         <SafeAreaProvider>
             <SafeAreaView>
                 <Header page={'Profile'}/>
-                <View style={homeScreenStyles.home}>
-                    <View>
-                        <Text style={styles.profileText}>Profile</Text>
-                        <ThemeToggle></ThemeToggle>
-                        <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
-                    </View>
-                </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
                     <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Statistics</Text>
                     <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
@@ -49,6 +42,13 @@ const ProfilePage = () => {
                             <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
                             <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatLessonNameArray(learnedLessons)}</Text>
                         </View>
+                    </View>
+                </View>
+                <View style={homeScreenStyles.home}>
+                    <View>
+                        <Text style={styles.profileText}>Profile</Text>
+                        <ThemeToggle></ThemeToggle>
+                        <SaveGamePreferencesToggle></SaveGamePreferencesToggle>
                     </View>
                 </View>
             </SafeAreaView>
