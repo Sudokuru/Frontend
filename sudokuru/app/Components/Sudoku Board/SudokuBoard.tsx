@@ -264,7 +264,7 @@ const NumberControl = (props) => {
               ? addNumberAsNote(number)
               : fillNumber(number);
         }
-        return (
+        return ( // Number Keys
           <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
             <Text style={styles(cellSize).numberControlText}>{number}</Text>
           </Pressable>
@@ -602,8 +602,8 @@ const Cell = (props) => {
     }
   }
 
-  return (
-    <Pressable onPress={() => onClick(x, y)}>
+  return ( // Sudoku Cells
+    <Pressable onPress={() => landingMode ? null : onClick(x, y)}>
       <View style={[styles(cellSize).cellView,
         (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
         (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -754,7 +754,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     const [time, setTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
-
 
     // If we are resuming game, set starting time to currentTime
     if (time == 0 && currentTime != 0)
@@ -1032,7 +1031,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     if (!hint) return;
-    print("hint:", hint)
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
@@ -1598,17 +1596,53 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     );
   }
 
-  componentDidMount() {
-    if (!this.state.board) {
-      this.props.generatedGame.then(game => this.setState(game));
+  autoHint = () => {
+    const { board } = this.state;
+    console.log("landing page step")
+    if (!board.get('inHintMode'))
+    {
+      for (let i = 0; i < 9; i++)
+      {
+        for (let j = 0; j < 9; j++)
+        {
+          if (checkSolution(this.state.activeGame[0].puzzleSolution, i, j, board.get('puzzle').getIn([i, j]).get('value')))
+          {
+            this.toggleHintMode();
+            return;
+          }
+        }
+      }
     }
+    else 
+    {
+      // if you're on the final index of the hint
+      if (board.get('currentStep') + 1 === board.get('hintSteps').length)
+      {
+        this.checkMarkClicked();
+      }
+      // if you're not on the final step
+      else
+      {
+        this.rightArrowClicked();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render = () => {
     const { board } = this.state;
     if (!board)
     {
-      this.props.generatedGame.then(game => this.setState(game));
+      this.props.generatedGame.then((game) => {
+        this.setState(game);
+        if (landingMode)
+        {
+          this.interval = setInterval(this.autoHint, 10);
+        }
+      });
     }
     
     drillMode = this.props.isDrill;
@@ -1624,7 +1658,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
             {!landingMode && this.renderActions()}
             {!landingMode && !inHintMode && this.renderNumberControl()}
             {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
-            {inHintMode && this.renderHintSection()}
+            {!landingMode && inHintMode && this.renderHintSection()}
           </View>
         }
       </View>
