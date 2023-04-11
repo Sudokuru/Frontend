@@ -87,15 +87,6 @@ const HomePage = () => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                // If we have value cached we don't need to get it again
-                // If lessons are loaded we have already sent this request and don't want to loop
-                if (learnedLessons.includes("SUDOKU_101") || areLessonsLoaded){
-                    if (!areLessonsLoaded){
-                        setLessonsLoaded(true);
-                    }
-                    return;
-                }
-
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;
@@ -103,7 +94,11 @@ const HomePage = () => {
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
                     if (lessons !== null) {
-                        updateLearnedLessons(lessons.strategiesLearned);
+                        // prevent the infinite loop
+                        if (learnedLessons != lessons.strategiesLearned && !areLessonsLoaded) {
+                            updateLearnedLessons(lessons.strategiesLearned);
+                        }
+
                         setLessonsLoaded(true);
                     }
                     else {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, useTheme, Text, ActivityIndicator} from 'react-native-paper';
+import {Button, useTheme, ActivityIndicator} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
 import { useWindowDimensions } from "react-native";
@@ -59,7 +59,6 @@ const StatisticsPage = () => {
 
     await Statistics.getStatistics(url, token).then((res: any) => {
       if (res) {
-        console.log(res);
         setTotalStatistics(retrieveTotalStatistics(res));
         setLoading(false);
       }
