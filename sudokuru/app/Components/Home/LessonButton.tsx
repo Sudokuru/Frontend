@@ -17,7 +17,8 @@ const LessonButton = (props: any) => {
   return(
     <View>
       <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
-        style={{margin: reSize/50, backgroundColor: props.backgroundColor }}
+        style={(props.disabled) ? {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 70, paddingTop: 5} :
+            {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 70 }}
         disabled={props.disabled}
       >
         {
