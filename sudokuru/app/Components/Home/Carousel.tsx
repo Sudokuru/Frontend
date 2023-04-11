@@ -35,20 +35,20 @@ const Ccarousel = () => {
     const carouselTextSize: any = isWeb ? { fontSize: 30 } : { fontSize: 20 };
 
     function navigate(index: number):any {
-        index == 0 ? navigation.navigate('Lesson',{params:'AMEND_NOTES'}) :
-            index == 1 ? navigation.navigate('Lesson',{params:'NAKED_SINGLE'}) :
-                    index == 2 ? navigation.navigate('Lesson',{params:'NAKED_SET'}) :
-                        index == 3 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) :
-                            index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SET'}) : navigation.navigate('Home');
+        index == 0 ? navigation.navigate('Lesson',{params:'SUDOKU_101'}) :
+            index == 1 ? navigation.navigate('Lesson',{params:'AMEND_NOTES'}) :
+                    index == 2 ? navigation.navigate('Lesson',{params:'NAKED_SINGLE'}) :
+                        index == 3 ? navigation.navigate('Lesson',{params:'SIMPLIFY_NOTES'}) :
+                            index == 4 ? navigation.navigate('Lesson',{params:'HIDDEN_SINGLE'}) : navigation.navigate('Home');
     }
 
     function getLessonName(index: number):string {
         let lessonName: string;
-        index == 0 ? lessonName = 'Amend Notes' :
-            index == 1 ? lessonName = 'Naked Single' :
-                index == 2 ? lessonName = 'Naked Set' :
-                    index == 3 ? lessonName = 'Hidden Single' :
-                        index == 4 ? lessonName = 'Hidden Set' : lessonName = 'Null';
+        index == 0 ? lessonName = 'Sudoku 101' :
+            index == 1 ? lessonName = 'Amend Notes' :
+                index == 2 ? lessonName = 'Naked Single' :
+                    index == 3 ? lessonName = 'Simplify Notes' :
+                        index == 4 ? lessonName = 'Hidden Single' : lessonName = 'Null';
         return lessonName;
     }
 

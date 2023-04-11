@@ -17,6 +17,7 @@ import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from './app/Pages/DrillPage';
 import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
+import {useEffect} from "react";
 
 const drawerItemsMain = [
   {
@@ -39,18 +40,14 @@ const drawerItemsMain = [
         {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
       ],
   },
-  // {
-  //     key: 'Pointing Pair',
-  //     title: 'Pointing Pair',
-  //     routes: [{nav: 'Home', routeName: 'Pointing Pair', title: 'Pointing Pair'}],
-  // },
 ];
 
 function HomeDrawer(){
     const Drawer = createDrawerNavigator();
 
     return(
-     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent drawerItems={drawerItemsMain} {...props} />)}
+     <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent
+         drawerItems={drawerItemsMain} {...props} />)}
       screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true}}>
           <Drawer.Screen name="Main Page" component={HomePage} />
           <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
@@ -68,6 +65,7 @@ function HomeDrawer(){
 export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
+    const [learnedLessons, setLearnedLessons] = React.useState<string[]>([]);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
@@ -75,12 +73,18 @@ export default function App() {
         return setIsThemeDark(!isThemeDark);
     }, [isThemeDark]);
 
+    const updateLearnedLessons = React.useCallback((props: any) => {
+        return setLearnedLessons(props);
+    }, [learnedLessons]);
+
     const preferences = React.useMemo(
         () => ({
             toggleTheme,
             isThemeDark,
+            updateLearnedLessons,
+            learnedLessons,
         }),
-        [toggleTheme, isThemeDark]
+        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons]
     );
 
     const Stack = createStackNavigator();

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
@@ -12,9 +11,11 @@ import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400
 import Header from "../Components/Header";
 import DifficultySlider from '../Components/Home/DifficultySlider';
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERACTIVEGAMESBFFURL} from '@env'
+import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
+import LessonPanel from "../Components/Home/LessonPanel";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -24,11 +25,18 @@ const HomePage = () => {
 
     // Sudokuru Package Constants
     const Puzzles = sudokuru.Puzzles;
+    const Statistics = sudokuru.Statistics;
 
     const theme = useTheme();
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height) / 25;
+
+    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
+    const [doMoreLessonsVisible, setDoMoreLessonsVisible] = React.useState(false);
+    const showDoMoreLessons = () => setDoMoreLessonsVisible(true);
+    const hideDoMoreLessons = () => setDoMoreLessonsVisible(false);
 
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
@@ -48,12 +56,13 @@ const HomePage = () => {
 
     const [difficulty, setDifficulty] = useState(50);
 
-    const getData = (val) => {
+    const getData = (val: any) => {
         setDifficulty(val);
     }
 
     useFocusEffect(
         React.useCallback(() => {
+            // This determines if user has active game and displays resume button conditionally.
             async function grabCurrentGame(url: string) {
                 let token = null;
                 await getKeyString("access_token").then(result => {
@@ -61,7 +70,7 @@ const HomePage = () => {
                 });
 
                 await Puzzles.getGame(url, token).then(
-                    (game: JSON) => {
+                    (game: any) => {
                         if (game !== null && game[0].moves.length > 0) {
                             showResumeButton();
                         } else {
@@ -69,8 +78,34 @@ const HomePage = () => {
                         }
                     });
             }
+
+            // This determines what lessons the user has learned and conditionally displays everything.
+            async function getUserLearnedLessons(url: string) {
+
+                // If we have value cached we don't need to get it again (TODO later)
+                let token = null;
+                await getKeyString("access_token").then(result => {
+                    token = result;
+                });
+
+                await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
+                    if (lessons !== null) {
+                        updateLearnedLessons(lessons.strategiesLearned);
+                    }
+                    else {
+                        console.log("Error retrieving lessons of user");
+                    }
+                });
+            }
             grabCurrentGame(USERACTIVEGAMESBFFURL);
+            getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
     }, []));
+
+    // returns if user can play game or do drills
+    function canPlay():boolean {
+        return (learnedLessons.includes("SUDOKU_101") && learnedLessons.includes("AMEND_NOTES") &&
+            learnedLessons.includes("NAKED_SINGLE") && learnedLessons.includes("SIMPLIFY_NOTES"));
+    }
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -95,7 +130,7 @@ const HomePage = () => {
                             </Pressable>
                         </View>
 
-                        <CCarousel/>
+                        <LessonPanel/>
 
                         <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
                             <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
@@ -106,7 +141,9 @@ const HomePage = () => {
                         </View>
 
                         <View style={{padding: reSize/4}}>
-                            <Button style={{top:reSize/2}} mode="contained" onPress={() => navigation.openDrawer()}>
+                            <Button style={{top:reSize/2}} mode="contained" onPress={() => {
+                                canPlay() ? navigation.openDrawer() : showDoMoreLessons()
+                            }}>
                                 Start Drill
                             </Button>
                         </View>
@@ -126,12 +163,18 @@ const HomePage = () => {
                         <View style={{top: reSize/2, flexDirection: 'row'}}>
                             {
                                 (resumeVisible) ?
-                                    <Button style={{right: reSize}} mode="outlined" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                    <Button style={{right: reSize}} mode="outlined"
+                                            onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
                                         Resume Puzzle
                                     </Button> : <></>
                             }
 
-                            <Button mode="contained" onPress={() => navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})}>
+                            <Button mode="contained"
+                                    onPress={() => {
+                                        canPlay() ?
+                                        navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)}) :
+                                        showDoMoreLessons();
+                                    }}>
                                 Start Puzzle
                             </Button>
                         </View>
@@ -179,6 +222,20 @@ const HomePage = () => {
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hidePlayHelp();
+                    }}
+                />
+                <Alert
+                    show={doMoreLessonsVisible}
+                    title="Please Complete more lessons!"
+                    message={`To access this feature, please complete more lessons!`}
+                    messageStyle={{maxWidth: 500}}
+                    showConfirmButton={true}
+                    closeOnTouchOutside={false}
+                    closeOnHardwareBackPress={false}
+                    confirmText={"OK"}
+                    confirmButtonColor={theme.colors.background}
+                    onConfirmPressed={() => {
+                        hideDoMoreLessons();
                     }}
                 />
             </SafeAreaView>
