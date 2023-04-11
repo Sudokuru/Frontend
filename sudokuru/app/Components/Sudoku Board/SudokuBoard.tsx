@@ -1200,6 +1200,38 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         break;
       case "BOX_LINE_REDUCTION":
         console.log("Box Line Reduction");
+        // three steps, three objects
+        hintSteps.push({}) // box and causes
+        hintSteps.push({}) // row/col and rem highlight
+        hintSteps.push({}) // row/col and rem delete
+
+        // seperate the groups which are boxes and which are not boxes
+        let boxGroups = []
+        let nonBoxGroups = []
+        for (let i = 0; i < groups.length; i++)
+          if (groups[i][0] === 2)
+            boxGroups.push(groups[i])
+          else
+            nonBoxGroups.push(groups[i])
+        
+        // highlight the nonBoxGroups and causes
+        hintSteps[0].groups = nonBoxGroups;
+        hintSteps[0].causes = causes;
+        hintSteps[0].removals = [];
+        
+        // highlight the boxGroups, causes, and removals
+        hintSteps[1].groups = boxGroups;
+        hintSteps[1].causes = causes;
+        hintSteps[1].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[1].removals.push({ ...removals[i], mode: "highlight" });
+        
+        // highlight the nonBoxGroups, causes, and removals
+        hintSteps[2].groups = nonBoxGroups;
+        hintSteps[2].causes = causes;
+        hintSteps[2].removals = [];
+        for (let i = 0; i < removals.length; i++)
+          hintSteps[2].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "X_WING":
         console.log("X Wing");
