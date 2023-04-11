@@ -104,9 +104,15 @@ const HomePage = () => {
     }, []));
 
     // returns if user can play game or do drills
-    function canPlay():boolean {
-        return (learnedLessons.includes("SUDOKU_101") && learnedLessons.includes("AMEND_NOTES") &&
-            learnedLessons.includes("NAKED_SINGLE") && learnedLessons.includes("SIMPLIFY_NOTES"));
+    function canPlay(drill: boolean):boolean {
+        if (!(learnedLessons.includes("SUDOKU_101")) || !(learnedLessons.includes("AMEND_NOTES")) ||
+             !(learnedLessons.includes("NAKED_SINGLE"))) {
+            return false;
+        }
+        if (!drill && !(learnedLessons.includes("SIMPLIFY_NOTES"))) {
+            return false;
+        }
+        return true;
     }
 
     let [fontsLoaded] = useFonts({
@@ -146,7 +152,7 @@ const HomePage = () => {
 
                         <View style={{padding: reSize/4}}>
                             <Button style={{top:reSize/2}} mode="contained" onPress={() => {
-                                canPlay() ? navigation.openDrawer() : showDoMoreLessons()
+                                canPlay(true) ? navigation.openDrawer() : showDoMoreLessons()
                             }}>
                                 Start Drill
                             </Button>
@@ -175,7 +181,7 @@ const HomePage = () => {
 
                             <Button mode="contained"
                                     onPress={() => {
-                                        canPlay() ?
+                                        canPlay(false) ?
                                         navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)}) :
                                         showDoMoreLessons();
                                     }}>
