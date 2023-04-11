@@ -26,32 +26,32 @@ const TotalStatistics = (props: any) => {
         <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
             <Text style={{ fontSize: reSize/20, color: theme.colors.onPrimary, fontWeight: 'bold', marginBottom: 10 }}>Total Game Statistics</Text>
             <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Total Score:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Total Score: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{props.totalScore}</Text>
                 </View>
-                <View>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Games Played:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Games Played: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{props.numGamesPlayed}</Text>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Fastest Solve Time:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Fastest Solve Time: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatTime(props.fastestSolveTime)}</Text>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Average Solve Time:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Average Solve Time: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatTime(props.averageSolveTime)}</Text>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Solve Time:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Solve Time: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{formatTime(props.totalSolveTime)}</Text>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Hints Used:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Hints Used: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{props.numHintsUsed}</Text>
                 </View>
-                <View style={{ marginBottom: 10 }}>
-                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Wrong Cells Played:</Text>
+                <View style={{ marginBottom: 10, flexDirection: 'row' }}>
+                    <Text style={{ fontSize: reSize/22, color: '#025E73' }}>Total Wrong Cells Played: </Text>
                     <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{props.numWrongCellsPlayed}</Text>
                 </View>
             </View>
