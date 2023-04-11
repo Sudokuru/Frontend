@@ -241,14 +241,8 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 </View>
                 <Alert
                     show={gameResultsVisible}
-                    title="Game Results"
-                    message={'Score: ' + gameResultScore + '\nTime: ' + gameResultTime + '\nNumber of Hints Used: ' + gameResultNumHintsUsed +
-                        '\nIncorrect Cells: ' + gameResultNumWrongCellsPlayed + '\nPuzzle Difficulty: ' + gameResultPuzzleDifficulty}
-                    messageStyle={{maxWidth: 500}}
-                    showConfirmButton={true}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
-                    confirmText={"Go Home"}
                     customView={<EndGameModal
                                 score={gameResultScore}
                                 time={gameResultTime}
@@ -256,11 +250,6 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                                 numWrongCellsPlayed={gameResultNumWrongCellsPlayed}
                                 difficulty={gameResultPuzzleDifficulty}
                                 ></EndGameModal>}
-                    confirmButtonColor={theme.colors.background}
-                    onConfirmPressed={() => {
-                        hideGameResults();
-                        navigation.navigate("Home");
-                    }}
                 />
             </SafeAreaView>
         </SafeAreaProvider>
