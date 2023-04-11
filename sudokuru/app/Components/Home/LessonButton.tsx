@@ -19,8 +19,7 @@ const LessonButton = (props: any) => {
   return(
     <View>
       <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
-        style={(props.disabled) ? {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 150, paddingTop: 5} :
-            {margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 150 }}
+        style={{margin: reSize/50, backgroundColor: props.backgroundColor, height: 50, width: 150, justifyContent: "center"}}
         disabled={props.disabled}
         mode="contained"
       >
