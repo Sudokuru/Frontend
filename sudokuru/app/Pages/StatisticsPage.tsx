@@ -8,6 +8,7 @@ import {getKeyString} from "../Functions/Auth0/token";
 import {USERGAMESTATISTICSBFFURL} from '@env';
 import {useNavigation} from "@react-navigation/native";
 import {VictoryChart, VictoryLine, VictoryTheme} from "victory-native";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -22,6 +23,7 @@ const StatisticsPage = () => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
+  const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
   async function deleteUserStatistics(url: string) {
 
