@@ -469,7 +469,7 @@ const Cell = (props) => {
 
   const { isHighlightSet, isHighlightBox, isHighlightRow, isHighlightColumn } = React.useContext(PreferencesContext);
 
-  const highlightPeers = (isHighlightSet && isHighlightBox && isHighlightRow);
+  const highlightPeers = (isHighlightBox && isHighlightRow && isHighlightColumn);
 
   if (inHintMode && currentStep > -1)
   {
