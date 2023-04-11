@@ -79,11 +79,20 @@ const HomePage = () => {
                         }
                     });
             }
+            grabCurrentGame(USERACTIVEGAMESBFFURL);
+    }, []));
 
+    useFocusEffect(
+        React.useCallback(() => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                // If we have value cached we don't need to get it again (TODO later)
+                // If we have value cached we don't need to get it again
+                // If lessons are loaded we have already sent this request and don't want to loop
+                if (learnedLessons.includes("SUDOKU_101") || areLessonsLoaded){
+                    return;
+                }
+
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;
@@ -99,9 +108,8 @@ const HomePage = () => {
                     }
                 });
             }
-            grabCurrentGame(USERACTIVEGAMESBFFURL);
             getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
-    }, []));
+        }, [learnedLessons]));
 
     // returns if user can play game or do drills
     function canPlay():boolean {
