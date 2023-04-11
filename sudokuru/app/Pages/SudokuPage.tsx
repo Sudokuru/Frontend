@@ -13,6 +13,7 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
+import EndGameModal from "../Components/Sudoku Board/EndGameModal";
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -248,6 +249,13 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
                     confirmText={"Go Home"}
+                    customView={<EndGameModal
+                                score={gameResultScore}
+                                time={gameResultTime}
+                                numHintsUsed={gameResultNumHintsUsed}
+                                numWrongCellsPlayed={gameResultNumWrongCellsPlayed}
+                                difficulty={gameResultPuzzleDifficulty}
+                                ></EndGameModal>}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hideGameResults();
