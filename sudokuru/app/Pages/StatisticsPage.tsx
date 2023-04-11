@@ -53,7 +53,7 @@ const StatisticsPage = () => {
           Delete Statistics
         </Button>
         <VictoryChart
-            theme={VictoryTheme.material}
+            theme={VictoryTheme.grayscale}
         >
           <VictoryLine
               style={{
