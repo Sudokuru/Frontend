@@ -11,6 +11,7 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
+let iHateEnv = USERGAMESTATISTICSBFFURL;
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
