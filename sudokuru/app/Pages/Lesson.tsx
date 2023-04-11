@@ -34,8 +34,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     const [steps, setSteps] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(true);
 
-    const [lessonButtonVisible, setLessonButtonVisible] = React.useState(false);
-
 
     const theme = useTheme();
 
@@ -67,16 +65,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
             });
         }, []))
 
-    useEffect(() => {
-            // This determines if the "Complete Lesson" button should render
-            // This function should only be called once on page load for initial render
-            if (!learnedLessons.includes(name)) {
-                setLessonButtonVisible(true);
-            } else {
-                setLessonButtonVisible(false);
-            }
-        }, []);
-
     async function saveUserLearnedLessons(url: string) {
 
         let token = null;
@@ -98,12 +86,14 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
         });
     }
 
+    const clickCheckMark = () => {
+        learnedLessons.push(name);
+        updateLearnedLessons(learnedLessons);
+        saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+        navigation.navigate("Home")
+    }
+
       const [count, setCount]  = useState(0);
-
-      // Detects the last page of the lesson for sending "complete" status to backend
-      if(count + 1 == steps.length){
-
-      }
 
       //Separate view for mobile and web
       const Page = () => {
@@ -131,7 +121,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                               /> : <></>
                       }
 
-                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == steps.length) ? navigation.navigate("Home") : setCount(count + 1)} >
+                      <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() : setCount(count + 1)} >
                           <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
                       </Pressable>
                   </View>
@@ -140,20 +130,6 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       {
                           (steps[count][0] != null) ?
                               <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
-                              : <></>
-                      }
-
-                      {
-                          // Button only appears on last page and if lesson has not already been learned
-                          ((count + 1 == steps.length) && lessonButtonVisible ) ?
-                              <Button mode="contained" onPress={() => {
-                                  learnedLessons.push(name);
-                                  updateLearnedLessons(learnedLessons);
-                                  setLessonButtonVisible(false);
-                                  saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
-                              }}>
-                                  Complete Lesson
-                              </Button>
                               : <></>
                       }
                   </View>
@@ -188,23 +164,9 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                                         : <></>
                                 }
 
-                                {
-                                    // Button only appears on last page and if lesson has not already been learned
-                                    ((count + 1 == steps.length) && lessonButtonVisible ) ?
-                                        <Button mode="contained" onPress={() => {
-                                            learnedLessons.push(name);
-                                            updateLearnedLessons(learnedLessons);
-                                            setLessonButtonVisible(false);
-                                            saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
-                                        }}>
-                                            Complete Lesson
-                                        </Button>
-                                        : <></>
-                                }
-
                             </View>
 
-                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? navigation.navigate("Home") :setCount(count + 1)} >
+                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() :setCount(count + 1)} >
                               <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
                           </Pressable>
                       </View>
