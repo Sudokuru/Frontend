@@ -11,6 +11,7 @@ import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERGAMESTATISTICSBFFURL} from "@env";
+let iHateEnv = USERGAMESTATISTICSBFFURL;
 
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
 const Lessons = sudokuru.Lessons;

@@ -15,6 +15,8 @@ import {USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL} from '@env'
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
+// import LessonPanel from "../Components/Home/LessonPanel";
+let iHateEnv = USERGAMESTATISTICSBFFURL;
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -89,6 +91,7 @@ const HomePage = () => {
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
                     if (lessons !== null) {
+                        console.log(lessons)
                         updateLearnedLessons(lessons.strategiesLearned);
                     }
                     else {
