@@ -8,6 +8,7 @@ import {Text, useTheme} from "react-native-paper";
 import {getKeyString} from "../Functions/Auth0/token";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
+import {formatLessonNameArray} from "../Functions/ContextParsing/learnedLessons";
 
 
 
@@ -26,23 +27,6 @@ const ProfilePage = () => {
     const reSize = Math.min(size.width, size.height);
 
     const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
-
-    const formatLessonNameArray = (learnedLessons: string[]) => {
-        if (!learnedLessons) return "Loading...";
-        let formattedLessonArray = [];
-        for (let i = 0; i < learnedLessons.length; i++)
-        {
-            formattedLessonArray.push(formatOneLessonName(learnedLessons[i]));
-        }
-        return formattedLessonArray.join('\r\n');
-    }
-
-    const formatOneLessonName = (lessonName: string) => {
-        const words = lessonName.toLowerCase().replaceAll('_', ' ').split(" ");
-        for (let i = 0; i < words.length; i++)
-            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-        return words.join(" ");
-    }
 
     return (
         <SafeAreaProvider>
