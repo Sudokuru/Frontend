@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
+import {AntDesign} from "@expo/vector-icons";
 
 const LessonButton = (props: any) => {
 
@@ -16,13 +17,16 @@ const LessonButton = (props: any) => {
   return(
     <View>
       <Button onPress={() => navigation.navigate('Lesson',{params:props.navigation})}
-        style={{margin: reSize/50, backgroundColor: props.backgroundColor}}
+        style={{margin: reSize/50, backgroundColor: props.backgroundColor }}
         disabled={props.disabled}
       >
-        <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <Text>{props.firstName}</Text>
-          <Text>{props.lastName}</Text>
-        </View>
+        {
+          (!props.disabled) ?
+            <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              <Text>{props.firstName}</Text>
+              <Text>{props.lastName}</Text>
+            </View> : <AntDesign color="white" name="lock" size={25}/>
+        }
       </Button>
     </View>
   );
