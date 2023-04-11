@@ -76,6 +76,10 @@ export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
     const [learnedLessons, setLearnedLessons] = React.useState<string[]>([]);
+    const [isHighlightSet, setHighlightSet] = React.useState(true);
+    const [isHighlightBox, setHighlightBox] = React.useState(true);
+    const [isHighlightRow, setHighlightRow] = React.useState(true);
+    const [isHighlightColumn, setHighlightColumn] = React.useState(true);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
@@ -87,14 +91,40 @@ export default function App() {
         return setLearnedLessons(props);
     }, [learnedLessons]);
 
+    const toggleHighlightSet = React.useCallback(() => {
+        return setHighlightSet(!isHighlightSet);
+    }, [isHighlightSet]);
+
+    const toggleHighlightBox = React.useCallback(() => {
+        return setHighlightBox(!isHighlightBox);
+    }, [isHighlightBox]);
+
+    const toggleHighlightRow = React.useCallback(() => {
+        return setHighlightRow(!isHighlightRow);
+    }, [isHighlightRow]);
+
+    const toggleHighlightColumn = React.useCallback(() => {
+        return setHighlightColumn(!isHighlightColumn);
+    }, [isHighlightColumn]);
+
+
     const preferences = React.useMemo(
         () => ({
             toggleTheme,
             isThemeDark,
             updateLearnedLessons,
             learnedLessons,
+            toggleHighlightSet,
+            isHighlightSet,
+            toggleHighlightBox,
+            isHighlightBox,
+            toggleHighlightRow,
+            isHighlightRow,
+            toggleHighlightColumn,
+            isHighlightColumn,
         }),
-        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons]
+        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons, toggleHighlightSet, isHighlightSet,
+            toggleHighlightBox, isHighlightBox, toggleHighlightRow, isHighlightRow, toggleHighlightColumn, isHighlightColumn]
     );
 
     const Stack = createStackNavigator();
