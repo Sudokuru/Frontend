@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, useTheme, Text, ActivityIndicator} from 'react-native-paper';
+import {Button, useTheme, ActivityIndicator} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
 import { useWindowDimensions } from "react-native";
@@ -11,6 +11,7 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
+let iHateEnv = USERGAMESTATISTICSBFFURL;
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -58,7 +59,6 @@ const StatisticsPage = () => {
 
     await Statistics.getStatistics(url, token).then((res: any) => {
       if (res) {
-        console.log(res);
         setTotalStatistics(retrieveTotalStatistics(res));
         setLoading(false);
       }
