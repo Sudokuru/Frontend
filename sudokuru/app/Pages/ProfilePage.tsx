@@ -1,6 +1,6 @@
 import React from 'react';
 import ThemeToggle from "../Components/Profile/ThemeToggle";
-import {StyleSheet, useWindowDimensions, View, TouchableOpacity, Image} from "react-native";
+import {StyleSheet, useWindowDimensions, View, TouchableOpacity, Image, ScrollView} from "react-native";
 import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header";
@@ -30,18 +30,19 @@ const ProfilePage = () => {
         <SafeAreaProvider>
             <SafeAreaView>
                 <Header page={'Profile'}/>
-                  <View style={styles.container}>
-                    <View style={styles.header}></View>
-                    <View style={styles.body}>
-                      <View style={styles.bodyContent}>
-                        <Text style={styles.name}>{decoded.nickname}</Text>
-                        <Text style={styles.info}>Sudoku Player</Text>
-                        <Text style={styles.email}>{decoded.name}</Text>
-                          <ThemeToggle/>
-                          <SaveGamePreferencesToggle/>
-                      </View>
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={styles.header}></View>
+                        <View style={styles.body}>
+                            <View style={styles.bodyContent}>
+                                <Text style={styles.name}>{decoded.nickname}</Text>
+                                <Text style={styles.info}>Sudoku Player</Text>
+                                <Text style={styles.email}>{decoded.name}</Text>
+                                <ThemeToggle/>
+                                <SaveGamePreferencesToggle/>
+                            </View>
+                        </View>
                     </View>
-                  </View>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
                         <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Statistics</Text>
                         <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
@@ -51,6 +52,7 @@ const ProfilePage = () => {
                             </View>
                         </View>
                     </View>
+                </ScrollView>
             </SafeAreaView>
         </SafeAreaProvider>
     );

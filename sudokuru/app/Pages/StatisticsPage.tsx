@@ -7,7 +7,6 @@ import { useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERGAMESTATISTICSBFFURL} from '@env';
 import {useNavigation} from "@react-navigation/native";
-import {VictoryChart, VictoryLine, VictoryTheme} from "victory-native";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
