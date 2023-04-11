@@ -1,9 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import {StyleSheet, View, Pressable, useWindowDimensions} from "react-native";
-import {Text, Button, useTheme} from 'react-native-paper';
+import {Text, Button, useTheme, ActivityIndicator} from 'react-native-paper';
 import {StatusBar} from "expo-status-bar";
-import CCarousel from "../Components/Home/Carousel";
 import {useNavigation} from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -33,6 +32,8 @@ const HomePage = () => {
     const reSize = Math.min(size.width, size.height) / 25;
 
     const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+
+    const [areLessonsLoaded, setLessonsLoaded] = React.useState(false);
 
     const [doMoreLessonsVisible, setDoMoreLessonsVisible] = React.useState(false);
     const showDoMoreLessons = () => setDoMoreLessonsVisible(true);
@@ -91,6 +92,7 @@ const HomePage = () => {
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
                     if (lessons !== null) {
                         updateLearnedLessons(lessons.strategiesLearned);
+                        setLessonsLoaded(true);
                     }
                     else {
                         console.log("Error retrieving lessons of user");
@@ -130,7 +132,9 @@ const HomePage = () => {
                             </Pressable>
                         </View>
 
-                        <LessonPanel/>
+                        {
+                            (areLessonsLoaded) ? <LessonPanel/> : <ActivityIndicator animating={true} color={theme.colors.primary} />
+                        }
 
                         <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
                             <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
