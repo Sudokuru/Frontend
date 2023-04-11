@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Image, Platform, useWindowDimensions, Pressable} from "react-native";
 
 import Header from "../Components/Header";
-import {Text, Button, useTheme} from 'react-native-paper';
+import {Text, Button, useTheme, ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -110,9 +110,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
           // Wait for page to load the stuff
           if (isLoading){
               return (
-                  <View>
-                      <Text>Loading</Text>
-                  </View>
+                  <ActivityIndicator animating={true} color={theme.colors.primary} />
               )
           }
           //web view
