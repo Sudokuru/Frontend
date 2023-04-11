@@ -34,6 +34,15 @@ For Web, hit the w key to start up the website at ```localhost:19000```
 4. Postman calls and documentation is [available here](https://documenter.getpostman.com/view/23651156/2s93JzM1G3)
    This will make it much easier to develop locally. 
 
+
+# Cache Issues
+
+If you are experiencing cache issues with environment variables in the .env file
+run the following command: 
+
+`npx expo start --clear`
+https://docs.expo.dev/guides/environment-variables/
+
 # Deployments
 
 ### Preview Branch

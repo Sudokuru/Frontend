@@ -1,11 +1,11 @@
-// @ts-nocheck
-import React from 'react'
+import React from 'react';
+import {View} from "react-native";
 import {Button, useTheme} from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header"; 
-import {useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import {getKeyString} from "../Functions/Auth0/token";
-import {USERGAMESTATISTICSBFFURL} from '@env'
+import {USERGAMESTATISTICSBFFURL} from '@env';
 import {useNavigation} from "@react-navigation/native";
 import {VictoryChart, VictoryLine, VictoryTheme} from "victory-native";
 
@@ -13,7 +13,6 @@ import {VictoryChart, VictoryLine, VictoryTheme} from "victory-native";
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
 const Statistics = sudokuru.Statistics;
 
 const StatisticsPage = () => {
