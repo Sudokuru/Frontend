@@ -3,7 +3,7 @@ import {
     View,
     useWindowDimensions,
 } from 'react-native';
-import {Button, Text} from 'react-native-paper';
+import {Button, Text, useTheme} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 import {AntDesign} from "@expo/vector-icons";
 
@@ -13,6 +13,8 @@ const LessonButton = (props: any) => {
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
+
+  const theme = useTheme();
 
   return(
     <View>
@@ -26,7 +28,7 @@ const LessonButton = (props: any) => {
             <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
               <Text>{props.firstName}</Text>
               <Text>{props.lastName}</Text>
-            </View> : <AntDesign color="white" name="lock" size={24}/>
+            </View> : <AntDesign color="white" name="lock" size={20}/>
         }
       </Button>
     </View>
