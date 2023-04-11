@@ -1,4 +1,5 @@
-import React from 'react';
+// @ts-nocheck
+import React, {useEffect} from 'react';
 import {Image, Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from "@react-navigation/native";
@@ -6,6 +7,20 @@ import Header from "../Components/Header";
 import {getTokenName} from "../Functions/Auth0/token";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
+import {USERACTIVEGAMESBFFURL} from '@env'
+import { StatusBar } from "expo-status-bar";
+import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import { List } from 'immutable';
+import {getKeyString} from "../Functions/Auth0/token";
+import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
+
+// Sudokuru Package Import
+const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
+
+// Sudokuru Package Constants
+const Puzzles = sudokuru.Puzzles;
 
 const LandingPage = () => {
 
@@ -19,6 +34,14 @@ const LandingPage = () => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
     const newUser = 1;
+
+    let [fontsLoaded] = useFonts({
+        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     async function canProceed() {
         await getTokenName().then(
@@ -36,6 +59,32 @@ const LandingPage = () => {
             });
     }
 
+    async function getLandingGame() {
+        game = Puzzles.getRandomGame()
+        let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+        return {
+            board,
+            history: List.of(board),
+            historyOffSet: 0,
+            solution: game[0].puzzleSolution,
+            activeGame: game,
+        };
+    }
+
+    function getHint(board, solution)
+    {
+      let boardArray = componentBoardValsToArray(board);
+      let notesArray = componentBoardNotesToArray(board);
+      let solutionArray = componentSolutionValsToArray(solution);
+      let hint;
+      try {
+        hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
+      } catch (e) {
+        console.log(e);
+      }
+      return hint;
+    }
+    
     return (
             <SafeAreaProvider>
                 <SafeAreaView>
@@ -59,15 +108,7 @@ const LandingPage = () => {
                                     </Pressable>
                                 </View>
                             </View>
-                            <View style={styles(reSize).box}>
-                                <View style={styles(reSize).inner}>
-                                    <Image style={{
-                                        resizeMode: 'cover',
-                                        height: reSize / 2.5,
-                                        width: reSize / 2.5,
-                                    }} source={require('./App.png')} />
-                                </View>
-                            </View>
+                            <SudokuBoard generatedGame={getLandingGame()} isDrill={true} getHint={getHint}/>
                         </View>
                     </View>
                 </SafeAreaView>
