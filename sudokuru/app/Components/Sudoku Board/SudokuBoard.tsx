@@ -33,12 +33,10 @@ let globalTime = 0;
 
 // const darkBrown = "#A64732";
 
-const isWeb = (Platform.OS === 'web');
-
 // cause/removal cells
 const gold = "#F2CA7E";
 
-const styles = (cellSize, sizeConst, isWeb) => StyleSheet.create({
+const styles = (cellSize, sizeConst) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
   hintArrowPlaceholderView: {
     width: cellSize/(sizeConst),
@@ -651,7 +649,7 @@ const Cell = (props) => {
                 </View>
               </View>
             </View>
-            : value && <Text style={[styles(cellSize, null, isWeb).cellText,
+            : value && <Text style={[styles(cellSize, null).cellText,
             (!inHintMode && conflict && styles(cellSize).conflict,
             (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
             (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
