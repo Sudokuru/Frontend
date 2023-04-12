@@ -212,7 +212,7 @@ const HomePage = () => {
                             {
                                 (resumeVisible) ?
                                     <Button style={{right: reSize}} mode="outlined"
-                                            onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}
+                                            onPress={() => navigation.navigate('Sudoku', {gameType: "ResumeGame"})}
                                     >
                                         Resume Puzzle
                                     </Button> : <></>
@@ -222,7 +222,7 @@ const HomePage = () => {
                                 (gameVisible) ?
                                     <Button mode="contained"
                                             onPress={() => {
-                                                    navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)})
+                                                    navigation.navigate('Sudoku', {gameType: "StartGame", difficulty: (difficulty / 100)})
                                             }}
                                     >
                                         Start Puzzle
