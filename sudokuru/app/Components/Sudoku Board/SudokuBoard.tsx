@@ -1649,7 +1649,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   initAutoHintTimer = () => {
     if (this.props.isLanding)
     {
-      this.interval = setInterval(this.autoHint, 500);
+      this.interval = setInterval(this.autoHint, 1500);
     }
   }
 
