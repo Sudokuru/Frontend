@@ -116,18 +116,21 @@ const StatisticsPage = () => {
             title="Delete Warning"
             message=
                 {
-                `\n\nThis action will entirely delete ALL of your current statistics. Are you sure?\n\n`
+                `\n\nThis action will entirely delete ALL of your current progress. Are you sure?\n\n`
                 }
-            messageStyle={{maxWidth: 500}}
+            messageStyle={{ maxWidth: 500 }}
             showConfirmButton={true}
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            confirmText={"Yes, I'm sure"}
+            showCancelButton={true}
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={true}
+            confirmText={"Yes, I'm sure!"}
+            cancelText={"Never mind."}
             confirmButtonColor={theme.colors.background}
             onConfirmPressed={() => {
                 deleteUserStatistics(USERGAMESTATISTICSBFFURL);
                 hideWarningButton();
             }}
+            onCancelPressed={() => {hideWarningButton() }}
         />
           </ScrollView>
         </SafeAreaView>
