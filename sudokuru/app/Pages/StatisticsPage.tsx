@@ -12,13 +12,15 @@ import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
 let iHateEnv = USERGAMESTATISTICSBFFURL;
+import Alert from "react-native-awesome-alerts";
+import { useState } from 'react';
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
 const Statistics = sudokuru.Statistics;
-
+ 
 const StatisticsPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
@@ -30,6 +32,10 @@ const StatisticsPage = () => {
 
   const [isLoading, setLoading] = React.useState(true);
   const [totalStatistics, setTotalStatistics] = React.useState<any>();
+
+  const [warningVisible, setWarningVisible] = React.useState(false);
+  const showWarningButton = () => setWarningVisible(true);
+  const hideWarningButton = () => setWarningVisible(false);
 
   async function deleteUserStatistics(url: string) {
 
@@ -100,28 +106,29 @@ const StatisticsPage = () => {
                   numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
               />
               <Button mode="contained" onPress={() => {
-                deleteUserStatistics(USERGAMESTATISTICSBFFURL);
+                showWarningButton();
               }}>
                 Delete Statistics
               </Button>
             </View>
-
-            {/*<VictoryChart*/}
-            {/*    theme={VictoryTheme.grayscale}*/}
-            {/*>*/}
-            {/*  <VictoryLine*/}
-            {/*      style={{*/}
-            {/*        data: { stroke: "#c43a31" },*/}
-            {/*        parent: { border: "1px solid #ccc"}*/}
-            {/*      }}*/}
-            {/*      data={[*/}
-            {/*        { x: 1, y: 2 },*/}
-            {/*        { x: 2, y: 3 },*/}
-            {/*        { x: 3, y: 5 },*/}
-            {/*        { x: 4, y: 4 },*/}
-            {/*      ]}*/}
-            {/*  />*/}
-            {/*</VictoryChart>*/}
+            <Alert
+            show={warningVisible}
+            title="Delete Warning"
+            message=
+                {
+                `\n\nThis action will entirely delete ALL of your current statistics. Are you sure?\n\n`
+                }
+            messageStyle={{maxWidth: 500}}
+            showConfirmButton={true}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            confirmText={"Yes, I'm sure"}
+            confirmButtonColor={theme.colors.background}
+            onConfirmPressed={() => {
+                deleteUserStatistics(USERGAMESTATISTICSBFFURL);
+                hideWarningButton();
+            }}
+        />
           </ScrollView>
         </SafeAreaView>
       </SafeAreaProvider>
