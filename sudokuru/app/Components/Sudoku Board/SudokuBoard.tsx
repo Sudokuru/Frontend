@@ -2,10 +2,10 @@
 import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
-import { Set } from 'immutable';
+import {List, Set} from 'immutable';
 import PropTypes from 'prop-types';
 
-import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, range} from './sudoku';
+import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard, range} from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
@@ -241,6 +241,275 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     textAlign: 'center',
   }
 });
+
+// USAGE
+// board = addNumberAsNote(...)
+function addNumberAsNote (number, board, i, j) {
+  let selectedCell = board.get('puzzle').getIn([i, j]);
+  if (!selectedCell)
+  {
+    return;
+  }
+  const prefilled = selectedCell.get('prefilled');
+  if (prefilled)
+  {
+    return;
+  }
+  let notes = selectedCell.get('notes') || new Set();
+  notes = notes.add(number);
+  selectedCell = selectedCell.set('notes', notes);
+  board = board.setIn(['puzzle', i, j], selectedCell);
+  return board;
+};
+
+function componentBoardValsToArray(board)
+{
+  let boardArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      currVal = board.get('puzzle').getIn([i, j, 'value']);
+      temp.push(!currVal ? "0" : currVal.toString());
+    }
+    boardArray.push(temp);
+  }
+  return boardArray;
+}
+
+function componentBoardNotesToArray(board)
+{
+  let notesArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      temp = [];
+      let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
+      if (!notesSetFromComponent)
+      {
+        notesArray.push(temp);
+        continue;
+      }
+      for (let k = 1; k <= 9; k++)
+      {
+        if (notesSetFromComponent.includes(k))
+        {
+          temp.push((k).toString());
+        }
+      }
+      notesArray.push(temp);
+    }
+  }
+  return notesArray;
+}
+
+function componentSolutionValsToArray(solution)
+{
+  let solArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      temp.push(solution[9 * j + i].toString());
+    }
+    solArray.push(temp);
+  }
+  return solArray;
+}
+
+function getHint(board, solution)
+{
+  let boardArray = componentBoardValsToArray(board);
+  let notesArray = componentBoardNotesToArray(board);
+  let solutionArray = componentSolutionValsToArray(solution);
+  let hint;
+  try {
+    hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
+  } catch (e) {
+    console.log(e);
+  }
+  return hint;
+}
+
+function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
+{
+  if (!puzzleCurrentNotesState)
+  {
+    return;
+  }
+  if (puzzleCurrentNotesState.length != 729)
+  {
+    return;
+  }
+  let stringIndex = 0;
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
+      {
+        stringIndex = 81 * i + 9 * j + currNoteIndex;
+
+        if (puzzleCurrentNotesState.charAt(stringIndex) == 1){
+          if (isDrill){
+            board = addNumberAsNote(currNoteIndex + 1, board, j, i);
+          } else {
+            board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+          }
+        }
+      }
+    }
+  }
+  return board;
+}
+
+function strPuzzleToArray(str) {
+  let arr = [];
+  for (let i = 0; i < str.length; i += 9) {
+    arr.push(str.slice(i, i + 9).split('').map(Number));
+  }
+  output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+  return { puzzle: output };
+}
+
+let updateBoard = (newBoard) => {
+  let { history } = this.state;
+  const { historyOffSet } = this.state;
+  history = history.slice(0, historyOffSet + 1);
+  history = history.push(newBoard);
+  this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
+};
+
+async function generateGame(url) {
+  let token = null;
+
+  await getKeyString("access_token").then(result => {
+    token = result;
+  });
+
+  let gameData = null;
+
+  if (gameOrigin == "start"){
+    gameData = await Puzzles.startGame(url, this.props.difficulty, this.props.strategies, token).then(
+        game => {
+          // If game object is not returned, you get redirected to Main Page
+          if (game == null){
+            //navigation.navigate("Home");
+            return;
+          }
+          let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+          return {
+            board,
+            history: List.of(board),
+            historyOffSet: 0,
+            solution: game[0].puzzleSolution,
+            activeGame: game,
+          };
+        }
+    );
+  }
+  else if (gameOrigin == "resume"){
+    gameData = await Puzzles.getGame(url, token).then(
+        game => {
+          // If game object is not returned, you get redirected to Main Page
+          if (game == null){
+            //navigation.navigate("Home");
+            return;
+          }
+          let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState), game[0].puzzle);
+          board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
+          return {
+            board,
+            history: List.of(board),
+            historyOffSet: 0,
+            solution: game[0].puzzleSolution,
+            activeGame: game,
+          };
+        }
+    );
+  }
+  else if (this.props.isDrill){
+    let token = null;
+    await getKeyString("access_token").then(
+        result => {
+          token = result;
+        });
+
+    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, this.props.strategies, token).then(game => {
+      // null check to verify that game is loaded in.
+      if (game == null){
+        //navigation.navigate("Home");
+        return;
+      }
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
+      let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
+      let puzzleSolution = game.puzzleSolution;
+      return { board, originalBoard, puzzleSolution };
+    });
+
+    let drillSolutionCells = getDrillSolutionCells(board);
+
+    return {
+      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
+    };
+  }
+  else if (this.props.isLanding){
+    game = Puzzles.getRandomGame()
+    let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+    return {
+      board,
+      history: List.of(board),
+      historyOffSet: 0,
+      solution: game[0].puzzleSolution,
+      activeGame: game,
+    };
+  }
+
+  return gameData;
+}
+
+// for each cell that is a part of the hint, store the coordinates and the resulting state
+// if there is a notes field for the cell, the notes must match
+// if there is a value field for the cell, the value must match
+function getDrillSolutionCells(board)
+{
+  let drillSolutionCells = [];
+  let hint = getHint(board);
+  if (hint)
+  {
+    for (let i = 0; i < hint.removals.length; i++)
+    {
+      let temp = {};
+      let currRemoval = hint.removals[i];
+      temp.x = currRemoval[0];
+      temp.y = currRemoval[1];
+      temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes');
+      for (let j = 2; j < currRemoval.length; j++)
+      {
+        temp.notes = temp.notes.delete(currRemoval[j]);
+      }
+      drillSolutionCells.push(temp);
+    }
+
+    if (hint.placements[0])
+    {
+      let temp = {}
+      temp.x = hint.placements[0][0];
+      temp.y = hint.placements[0][1];
+      temp.value = hint.placements[0][2];
+      drillSolutionCells.push(temp);
+    }
+  }
+  return drillSolutionCells;
+};
 
 const formatTime = (seconds) => {
   // Get minutes and remaining seconds
@@ -1035,7 +1304,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       return;
     }
     board = board.set('currentStep', 0);
-    let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
+    let hint = solution ? getHint(board, solution) : getHint(board);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
@@ -1657,9 +1926,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     if (!board)
     {
-      this.props.generatedGame.then((game) => {
+      generateGame(USERACTIVEGAMESBFFURL, this.props.gameOrigin).then(game => {
         this.setState(game, this.initAutoHintTimer)
-      });
+      })
     }
     
     drillMode = this.props.isDrill;
