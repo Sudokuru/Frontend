@@ -16,6 +16,7 @@ import Alert from "react-native-awesome-alerts";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
+import { rgba } from 'polished';
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -257,6 +258,8 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hideLearnHelp();
                     }}
+                     alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                     overlayStyle={{ backgroundColor: 'transparent' }}
                 />
                 <Alert
                     show={drillHelpVisible}
@@ -277,6 +280,8 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hideDrillHelp();
                     }}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
                 <Alert
                     show={playHelpVisible}
@@ -296,6 +301,8 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hidePlayHelp();
                     }}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
             </SafeAreaView>
         </SafeAreaProvider>

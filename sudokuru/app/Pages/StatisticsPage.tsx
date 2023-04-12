@@ -11,6 +11,8 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
+import { rgba } from 'polished';
+import Alert from "react-native-awesome-alerts";
 let iHateEnv = USERGAMESTATISTICSBFFURL;
 
 // Sudokuru Package Import
@@ -30,6 +32,10 @@ const StatisticsPage = () => {
 
   const [isLoading, setLoading] = React.useState(true);
   const [totalStatistics, setTotalStatistics] = React.useState<any>();
+
+  const [warningVisible, setWarningVisible] = React.useState(false);
+  const showWarningButton = () => setWarningVisible(true);
+  const hideWarningButton = () => setWarningVisible(false);
 
   async function deleteUserStatistics(url: string) {
 
@@ -100,7 +106,7 @@ const StatisticsPage = () => {
                   numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
               />
               <Button mode="contained" onPress={() => {
-                deleteUserStatistics(USERGAMESTATISTICSBFFURL);
+                showWarningButton();
               }}>
                 Delete Statistics
               </Button>
@@ -123,6 +129,29 @@ const StatisticsPage = () => {
             {/*  />*/}
             {/*</VictoryChart>*/}
           </ScrollView>
+          <Alert
+        show={warningVisible}
+        title="Delete Warning"
+        message=
+            {
+            `\n\nThis action will entirely delete ALL of your current progress. Are you sure?\n\n`
+            }
+        messageStyle={{ maxWidth: 500 }}
+        alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+        showConfirmButton={true}
+        showCancelButton={true}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        confirmText={"Yes, I'm sure!"}
+        cancelText={"Never mind."}
+        confirmButtonColor={theme.colors.background}
+        onConfirmPressed={() => {
+            deleteUserStatistics(USERGAMESTATISTICSBFFURL);
+            hideWarningButton();
+        }}
+        onCancelPressed={() => {hideWarningButton() }}
+        overlayStyle={{ backgroundColor: 'transparent' }}
+    />
         </SafeAreaView>
       </SafeAreaProvider>
     );
