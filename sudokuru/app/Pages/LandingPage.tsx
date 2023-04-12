@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, {useEffect} from 'react';
-import {Image, Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import React from 'react';
+import {Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from "@react-navigation/native";
 import Header from "../Components/Header";
@@ -8,20 +8,8 @@ import {getTokenName} from "../Functions/Auth0/token";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { makePuzzle, pluck, makeBoard } from '../Components/Sudoku Board/sudoku';
-import {USERACTIVEGAMESBFFURL} from '@env'
-import { StatusBar } from "expo-status-bar";
 import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
-import { List } from 'immutable';
-import {getKeyString} from "../Functions/Auth0/token";
-import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
-import { TextSize } from 'victory-native';
 
-// Sudokuru Package Import
-const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
 
 const LandingPage = () => {
 
@@ -65,92 +53,6 @@ const LandingPage = () => {
             });
     }
 
-    async function getLandingGame() {
-        game = Puzzles.getRandomGame()
-        let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-        return {
-            board,
-            history: List.of(board),
-            historyOffSet: 0,
-            solution: game[0].puzzleSolution,
-            activeGame: game,
-        };
-    }
-
-    function componentBoardValsToArray(board)
-    {
-    let boardArray = [];
-    let temp = [];
-    for (let i = 0; i < 9; i++)
-    {
-        temp = [];
-        for (let j = 0; j < 9; j++)
-        {
-        currVal = board.get('puzzle').getIn([i, j, 'value']);
-        temp.push(!currVal ? "0" : currVal.toString());
-        }
-        boardArray.push(temp);
-    }
-    return boardArray;
-    }
-
-    function componentBoardNotesToArray(board)
-    {
-    let notesArray = [];
-    let temp = [];
-    for (let i = 0; i < 9; i++)
-    {
-        for (let j = 0; j < 9; j++)
-        {
-        temp = [];
-        let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
-        if (!notesSetFromComponent) 
-        {
-            notesArray.push(temp);
-            continue;
-        }
-        for (let k = 1; k <= 9; k++)
-        {
-            if (notesSetFromComponent.includes(k))
-            {
-            temp.push((k).toString());
-            }
-        }
-        notesArray.push(temp);
-        }
-    }
-    return notesArray;
-    }
-
-    function componentSolutionValsToArray(solution)
-    {
-    let solArray = [];
-    let temp = [];
-    for (let i = 0; i < 9; i++)
-    {
-        temp = [];
-        for (let j = 0; j < 9; j++)
-        {
-        temp.push(solution[9 * j + i].toString());
-        }
-        solArray.push(temp);
-    }
-    return solArray;
-    }
-
-    function getHint(board, solution)
-    {
-      let boardArray = componentBoardValsToArray(board);
-      let notesArray = componentBoardNotesToArray(board);
-      let solutionArray = componentSolutionValsToArray(solution);
-      let hint;
-      try {
-        hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
-      } catch (e) {
-        console.log(e);
-      }
-      return hint;
-    }
 
     if (isWeb && size.width > size.height / .63) {
         return (
@@ -180,7 +82,7 @@ const LandingPage = () => {
                             </View>
                         </View>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: reSize / 6 }}>
-                            <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                            <SudokuBoard gameType={'Demo'} strategies={strategies} />
                         </View>
                     </View>
                 </View>
@@ -215,7 +117,7 @@ const LandingPage = () => {
                         </Text>
                         </View>
                         <View style={{ alignItems: 'center' }}>
-                        <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                            <SudokuBoard gameType={'Demo'} strategies={strategies} />
                         <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
                             <Pressable
                                 style={({ pressed }) => [
