@@ -310,7 +310,6 @@ function componentBoardNotesToArray(board)
 
 function componentSolutionValsToArray(solution)
 {
-  console.log(solution)
   let solArray = [];
   let temp = [];
   for (let i = 0; i < 9; i++)
@@ -327,7 +326,6 @@ function componentSolutionValsToArray(solution)
 
 function getHint(board, solution, strategies)
 {
-  console.log(solution)
   let boardArray = componentBoardValsToArray(board);
   let notesArray = componentBoardNotesToArray(board);
   let solutionArray = componentSolutionValsToArray(solution);
@@ -382,8 +380,6 @@ function strPuzzleToArray(str) {
 }
 
 async function generateGame(url, props) {
-
-  console.log(props);
 
   let token = null;
 
@@ -1861,7 +1857,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     currentStep = board ? board.get('currentStep') : -1;
     hintInfo = board ? board.get('hintInfo') : "Info";
     hintAction = board ? board.get('hintAction') : "Action";
-    console.log(currentStep >= 0 && "hintStratName: " + hintStratName + (currentStep == 0 ? " hintInfo: " + hintInfo : " hintAction: " + hintAction));
     return(
       <HintSection
         hintStratName={ hintStratName }
@@ -1925,7 +1920,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     if (!board)
     {
-      console.log(this.props);
       generateGame(USERACTIVEGAMESBFFURL, this.props).then(game => {
         this.setState(game, this.initAutoHintTimer)
       })
