@@ -180,7 +180,7 @@ const HomePage = () => {
                             {
                                 (resumeVisible) ?
                                     <Button style={{right: reSize}} mode="outlined"
-                                            onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                            onPress={() => canPlay(false) ? navigation.navigate('Sudoku', {gameOrigin: "resume"}) : showDoMoreLessons()}>
                                         Resume Puzzle
                                     </Button> : <></>
                             }
