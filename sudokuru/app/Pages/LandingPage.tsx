@@ -152,28 +152,30 @@ const LandingPage = () => {
       return hint;
     }
 
-    if (isWeb && size.width > size.height / .60) {
+    if (isWeb && size.width > size.height / .63) {
         return (
             <SafeAreaProvider>
             <SafeAreaView>
-                <View style={{ flex: 1 }}>
+                <View>
                 <Header page={'Landing'} />
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 50 }}>
                     <View style={{ flexDirection: 'row', width: '100%' }}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginLeft: reSize / 6 }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: reSize / 6 }}>
                             <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18 }}>Your path to becoming a</Text>
                             <Text style={{ color: theme.colors.primary, fontSize: reSize/12 }}> Sudoku Guru </Text>
                             <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
                                 <Pressable
                                     style={({ pressed }) => [
-                                    { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: 15 },
+                                        { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 120 },
                                     ]}
                                     onPress={async () => {
-                                    await canProceed();
+                                        await canProceed();
                                     }}>
-                                        <View>
-                                            <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}> Get Started </Text>
-                                        </View>
+                                    <View>
+                                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                        Get Started
+                                        </Text>
+                                    </View>
                                 </Pressable>
                             </View>
                         </View>
@@ -200,32 +202,36 @@ const LandingPage = () => {
     } else {
         return (
             <SafeAreaProvider>
-                <SafeAreaView style={styles.safeArea}>
-                        <Header page={'Landing'} style={styles.header} />
-                    <View style={styles.container}>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.subtitle}>Your path to becoming a</Text>
-                        <Text style={styles.title}>Sudoku Guru</Text>
-                    </View>
-                    <View style={styles.boardContainer}>
-                        <SudokuBoard
-                        generatedGame={getLandingGame()}
-                        isLanding={true}
-                        getHint={getHint}
-                        />
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <Pressable
-                        style={({ pressed }) => [
-                            styles.button,
-                            { opacity: pressed ? 0.5 : 1.0 },
-                        ]}
-                        onPress={async () => {
-                            await canProceed();
-                        }}
-                        >
-                        <Text style={styles.buttonText}>Get Started</Text>
-                        </Pressable>
+                <SafeAreaView style={{height: '100%', width: '100%'}}>
+                    <View>
+                    <Header page={'Landing'} />
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+                        <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18, marginBottom: 20 }}>
+                            Your path to becoming a
+                        </Text>
+                        <Text style={{ color: theme.colors.primary, fontSize: reSize/12, marginBottom: 20 }}>
+                            Sudoku Guru
+                        </Text>
+                        </View>
+                        <View style={{ alignItems: 'center' }}>
+                        <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                        <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
+                            <Pressable
+                                style={({ pressed }) => [
+                                    { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 50 },
+                                ]}
+                                onPress={async () => {
+                                    await canProceed();
+                                }}>
+                                <View>
+                                    <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                    Get Started
+                                    </Text>
+                                </View>
+                            </Pressable>
+                        </View>
+                        </View>
                     </View>
                     </View>
                 </SafeAreaView>
@@ -240,60 +246,9 @@ const LandingPage = () => {
                     hideModal();
                     }}
                 />
-                </SafeAreaProvider>
+            </SafeAreaProvider>
         );
     }
 };
-
-const styles = (reSize) => StyleSheet.create({
-    safeArea: {
-      flex: 1,
-    },
-    container: {
-      flex: 1,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    header: {
-      position: 'absolute',
-      top: 0,
-    },
-    content: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    textContainer: {
-      alignItems: 'center',
-      marginBottom: 50,
-    },
-    subtitle: {
-      color: theme.colors.onPrimary,
-      fontSize: reSize / 18,
-    },
-    title: {
-      color: theme.colors.primary,
-      fontSize: reSize / 12,
-    },
-    boardContainer: {
-      alignItems: 'center',
-      marginHorizontal: 20,
-      flex: 1,
-    },
-    buttonContainer: {
-      marginBottom: 50,
-    },
-    button: {
-      backgroundColor: theme.colors.primary,
-      borderRadius: 15,
-      paddingHorizontal: 30,
-      paddingVertical: 10,
-    },
-    buttonText: {
-      color: theme.colors.onPrimary,
-      fontSize: reSize / 19,
-    },
-  });
-  
 
 export default LandingPage;
