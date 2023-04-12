@@ -13,7 +13,6 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 
-
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
 
@@ -24,6 +23,8 @@ const Puzzles = sudokuru.Puzzles;
 let url = USERACTIVEGAMESBFFURL;
 
 let drillMode = false;
+
+let landingMode = false;
 
 let fallbackHeight = 30;
 
@@ -264,7 +265,7 @@ const NumberControl = (props) => {
               ? addNumberAsNote(number)
               : fillNumber(number);
         }
-        return (
+        return ( // Number Keys
           <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
             <Text style={styles(cellSize).numberControlText}>{number}</Text>
           </Pressable>
@@ -430,7 +431,7 @@ async function finishGame(activeGame, showResults) {
         token = result;
     });
 
-  Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
+    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
           showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, res.difficulty);
         }
@@ -449,11 +450,10 @@ const checkSolution = (solution, x, y, value) => {
   let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
   let solutionValue = solution.charAt(cellNum);
   
-  if (solutionValue == value || value == null)
+  if (solutionValue == value)
     return true;
-  else {
+  else
     return false;
-  }
 }
 
 let puzzleString = "";
@@ -538,7 +538,7 @@ const Cell = (props) => {
     }
   }
 
-  if (!drillMode)
+  if (!drillMode && !landingMode)
   {
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0)
@@ -588,7 +588,7 @@ const Cell = (props) => {
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution){
+      if (flippedPuzzleString == game.puzzleSolution && !this.props.isLanding){
           finishGame(game, showResults);
       }
     }
@@ -606,8 +606,8 @@ const Cell = (props) => {
     }
   }
 
-  return (
-    <Pressable onPress={() => onClick(x, y)}>
+  return ( // Sudoku Cells
+    <Pressable onPress={() => onClick(x, y)} disabled={landingMode}>
       <View style={[styles(cellSize).cellView,
         (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
         (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -761,7 +761,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     const [time, setTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
-
 
     // If we are resuming game, set starting time to currentTime
     if (time == 0 && currentTime != 0)
@@ -1039,7 +1038,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
 
     if (!hint) return;
-    print("hint:", hint)
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
@@ -1456,7 +1454,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let inHintMode = board.get('inHintMode');
     let inNoteMode = board.get('inNoteMode');
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
+    if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) { // check if input is a digit from 1 to 9
       if (inNoteMode) this.addNumberAsNote(parseInt(inputValue, 10));
       else this.fillNumber(parseInt(inputValue, 10));
     }
@@ -1611,9 +1609,47 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     );
   }
 
-  componentDidMount() {
-    if (!this.state.board) {
-      this.props.generatedGame.then(game => this.setState(game));
+  autoHint = () => {
+    const { board } = this.state;
+    if (!board.get('inHintMode'))
+    {
+      for (let i = 0; i < 9; i++)
+      {
+        for (let j = 0; j < 9; j++)
+        {
+          if (!checkSolution(this.state.activeGame[0].puzzleSolution, i, j, board.get('puzzle').getIn([i, j]).get('value')))
+          {
+            this.toggleHintMode();
+            return;
+          }
+        }
+      }
+      // no value did not match the solution, so stop trying to get new steps
+      clearInterval(this.interval)
+    }
+    else 
+    {
+      // if you're on the final index of the hint
+      if (board.get('currentStep') + 1 === board.get('hintSteps').length)
+      {
+        this.checkMarkClicked();
+      }
+      // if you're not on the final step
+      else
+      {
+        this.rightArrowClicked();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  initAutoHintTimer = () => {
+    if (this.props.isLanding)
+    {
+      this.interval = setInterval(this.autoHint, 500);
     }
   }
 
@@ -1621,22 +1657,25 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     if (!board)
     {
-      this.props.generatedGame.then(game => this.setState(game));
+      this.props.generatedGame.then((game) => {
+        this.setState(game, this.initAutoHintTimer)
+      });
     }
     
     drillMode = this.props.isDrill;
+    landingMode = this.props.isLanding;
     inHintMode = board ? board.get('inHintMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
-        {board && !this.props.isDrill && this.renderTopBar()}
+        {board && !landingMode && !this.props.isDrill && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
           <View style={styles().bottomActions}>
-            {this.renderActions()}
-            {!inHintMode && this.renderNumberControl()}
+            {!landingMode && this.renderActions()}
+            {!landingMode && !inHintMode && this.renderNumberControl()}
             {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
-            {inHintMode && this.renderHintSection()}
+            {!landingMode && inHintMode && this.renderHintSection()}
           </View>
         }
       </View>
