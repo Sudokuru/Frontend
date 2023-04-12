@@ -18,8 +18,10 @@ let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGL
 
 const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
 
-    const { gameOrigin } = route.params;
+    const { gameType } = route.params;
     const { difficulty } = route.params;
+
+
 
     const theme = useTheme();
 
@@ -62,7 +64,7 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard isDrill={false} gameOrigin={gameOrigin} difficulty={difficulty} strategies={strategies} navigation={navigation} showGameResults={showGameResults}/>
+                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={strategies} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>

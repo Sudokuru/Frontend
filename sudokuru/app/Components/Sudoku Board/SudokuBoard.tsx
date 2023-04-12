@@ -393,7 +393,7 @@ async function generateGame(url, props) {
 
   let gameData = null;
 
-  if (props.gameOrigin == "start"){
+  if (props.gameType == "StartGame"){
     gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
         game => {
           // If game object is not returned, you get redirected to Main Page
@@ -412,7 +412,7 @@ async function generateGame(url, props) {
         }
     );
   }
-  else if (props.gameOrigin == "resume"){
+  else if (props.gameType == "ResumeGame"){
     gameData = await Puzzles.getGame(url, token).then(
         game => {
           // If game object is not returned, you get redirected to Main Page
@@ -432,7 +432,7 @@ async function generateGame(url, props) {
         }
     );
   }
-  else if (props.isDrill){
+  else if (props.gameType == 'StartDrill'){
     let token = null;
     await getKeyString("access_token").then(
         result => {
@@ -459,7 +459,7 @@ async function generateGame(url, props) {
       board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
     };
   }
-  else if (props.isLanding){
+  else if (props.gameType == 'Demo'){
     game = Puzzles.getRandomGame()
     let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
     return {
@@ -855,7 +855,7 @@ const Cell = (props) => {
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution && !this.props.isLanding){
+      if (flippedPuzzleString == game.puzzleSolution && (this.props.gameType != 'Demo')){
           finishGame(game, showResults);
       }
     }
@@ -1278,7 +1278,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (!this.props.isDrill && newHintMode) {
+    if ((this.props.gameType != 'StartDrill') && newHintMode) {
       this.state.activeGame[0].numHintsUsed++;
     }
 
@@ -1561,7 +1561,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         x, y, number, fill: true, board,
       });
 
-      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
+      if ((this.props.gameType != 'StartDrill') && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
         this.state.activeGame[0].numWrongCellsPlayed++;
       }
     }
@@ -1613,7 +1613,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let currentStep = board.get('currentStep');
 
     let game = null;
-    if (!this.props.isDrill) game = this.state.activeGame[0];
+    if (this.props.gameType != 'StartDrill') game = this.state.activeGame[0];
 
         return (
             <Cell
@@ -1914,7 +1914,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   initAutoHintTimer = () => {
-    if (this.props.isLanding)
+    if (this.props.gameType == 'Demo')
     {
       this.interval = setInterval(this.autoHint, 1500);
     }
@@ -1930,19 +1930,19 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       })
     }
     
-    drillMode = this.props.isDrill;
-    landingMode = this.props.isLanding;
+    drillMode = this.props.gameType == 'StartDrill';
+    landingMode = this.props.gameType == 'Demo';
     inHintMode = board ? board.get('inHintMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
-        {board && !landingMode && !this.props.isDrill && this.renderTopBar()}
+        {board && !landingMode && !drillMode && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
           <View style={styles().bottomActions}>
             {!landingMode && this.renderActions()}
             {!landingMode && !inHintMode && this.renderNumberControl()}
-            {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
+            {drillMode && !inHintMode && this.renderSubmitButton()}
             {!landingMode && inHintMode && this.renderHintSection()}
           </View>
         }

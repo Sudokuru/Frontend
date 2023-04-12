@@ -29,7 +29,7 @@ const DrillPage = (props) => {
 
           <View style={styles.container}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard strategies={strategy} isDrill={true} navigation={navigation}/>
+            <SudokuBoard gameType={'StartDrill'} strategies={strategy} navigation={navigation}/>
             <StatusBar style="auto" />
           </View>
         </View>
