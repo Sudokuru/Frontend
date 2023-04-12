@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
+import {StyleSheet, Text, View, Pressable, useWindowDimensions, Platform, Image} from 'react-native';
 import {List, Set} from 'immutable';
 import PropTypes from 'prop-types';
 
@@ -552,6 +552,20 @@ NumberControl.propTypes = {
 NumberControl.defaultProps = {
 };
 
+const PausedImage = () => {
+
+  const cellSize = getCellSize();
+  const size = cellSize * 9;
+
+  return (
+      <Image style={{
+        resizeMode: 'cover',
+        height: size,
+        width: size,
+      }} source={require('../cat.jpg')} />
+  );
+}
+
 const Puzzle = (props) => {
   const { board, renderCell } = props;
   const cellSize = getCellSize();
@@ -1056,6 +1070,7 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
 
     const handlePause = () => {
         setIsPaused(prevState => !prevState);
+        props.isPausedMode();
     };
 
     return (
@@ -1268,6 +1283,13 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let { board } = this.state;
     let currNoteMode = board.get('inNoteMode');
     board = board.set('inNoteMode', !currNoteMode);
+    this.setState({ board });
+  }
+
+  toggleBoardPaused = () => {
+    let { board } = this.state;
+    let newPausedMode = !board.get('inPausedMode');
+    board = board.set('inPausedMode', newPausedMode);
     this.setState({ board });
   }
 
@@ -1643,7 +1665,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
   renderTopBar = () => {
     return(
-      <HeaderRow currentTime = {this.state.activeGame[0].currentTime}/>
+      <HeaderRow currentTime = {this.state.activeGame[0].currentTime} isPausedMode={this.toggleBoardPaused}/>
     );
   }
 
@@ -1753,6 +1775,12 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       />
     );
   };
+
+  renderPausedImage = () => {
+    return (
+        <PausedImage></PausedImage>
+    )
+  }
 
   renderNumberControl = () => {
       const { board } = this.state;
@@ -1931,12 +1959,14 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     drillMode = this.props.gameType == 'StartDrill';
     landingMode = this.props.gameType == 'Demo';
     inHintMode = board ? board.get('inHintMode') : false;
+    inPausedMode = board ? board.get('inPausedMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
         {board && !landingMode && !drillMode && this.renderTopBar()}
-        {board && this.renderPuzzle()}
-        {board &&
+        {board && !inPausedMode && this.renderPuzzle()}
+        {board && inPausedMode && this.renderPausedImage()}
+        {board && !inPausedMode &&
           <View style={styles().bottomActions}>
             {!landingMode && this.renderActions()}
             {!landingMode && !inHintMode && this.renderNumberControl()}
