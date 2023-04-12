@@ -430,7 +430,7 @@ async function finishGame(activeGame, showResults) {
         token = result;
     });
 
-  Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
+    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
           showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, res.difficulty);
         }
@@ -449,11 +449,10 @@ const checkSolution = (solution, x, y, value) => {
   let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
   let solutionValue = solution.charAt(cellNum);
   
-  if (solutionValue == value || value == null)
+  if (solutionValue == value)
     return true;
-  else {
+  else
     return false;
-  }
 }
 
 let puzzleString = "";
@@ -584,7 +583,7 @@ const Cell = (props) => {
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution){
+      if (flippedPuzzleString == game.puzzleSolution && !this.props.isLanding){
           finishGame(game, showResults);
       }
     }
@@ -1598,20 +1597,21 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
   autoHint = () => {
     const { board } = this.state;
-    console.log("landing page step")
     if (!board.get('inHintMode'))
     {
       for (let i = 0; i < 9; i++)
       {
         for (let j = 0; j < 9; j++)
         {
-          if (checkSolution(this.state.activeGame[0].puzzleSolution, i, j, board.get('puzzle').getIn([i, j]).get('value')))
+          if (!checkSolution(this.state.activeGame[0].puzzleSolution, i, j, board.get('puzzle').getIn([i, j]).get('value')))
           {
             this.toggleHintMode();
             return;
           }
         }
       }
+      // no value did not match the solution, so stop trying to get new steps
+      clearInterval(this.interval)
     }
     else 
     {
@@ -1632,16 +1632,19 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     clearInterval(this.interval);
   }
 
+  initAutoHintTimer = () => {
+    if (this.props.isLanding)
+    {
+      this.interval = setInterval(this.autoHint, 500);
+    }
+  }
+
   render = () => {
     const { board } = this.state;
     if (!board)
     {
       this.props.generatedGame.then((game) => {
-        this.setState(game);
-        if (landingMode)
-        {
-          this.interval = setInterval(this.autoHint, 10);
-        }
+        this.setState(game, this.initAutoHintTimer)
       });
     }
     

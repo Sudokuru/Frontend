@@ -34,8 +34,8 @@ const LandingPage = () => {
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
     const newUser = 1;
-    
-    let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_SET", "HIDDEN_SET", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
+
+    let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_SINGLE", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
 
     let [fontsLoaded] = useFonts({
         Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
@@ -51,6 +51,7 @@ const LandingPage = () => {
                 if (result != ""){
                     if(newUser == 1){
                         navigation.replace('Home');
+                        return null;
                     }
                     else{
                         navigation.replace('Lesson',{params:'AMEND_NOTES'});
