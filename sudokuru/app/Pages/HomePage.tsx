@@ -79,11 +79,14 @@ const HomePage = () => {
                         }
                     });
             }
+            grabCurrentGame(USERACTIVEGAMESBFFURL);
+    }, []));
 
+    useFocusEffect(
+        React.useCallback(() => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                // If we have value cached we don't need to get it again (TODO later)
                 let token = null;
                 await getKeyString("access_token").then(result => {
                     token = result;
@@ -91,7 +94,11 @@ const HomePage = () => {
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
                     if (lessons !== null) {
-                        updateLearnedLessons(lessons.strategiesLearned);
+                        // prevent the infinite loop
+                        if (learnedLessons != lessons.strategiesLearned && !areLessonsLoaded) {
+                            updateLearnedLessons(lessons.strategiesLearned);
+                        }
+
                         setLessonsLoaded(true);
                     }
                     else {
@@ -99,14 +106,19 @@ const HomePage = () => {
                     }
                 });
             }
-            grabCurrentGame(USERACTIVEGAMESBFFURL);
             getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
-    }, []));
+        }, [learnedLessons]));
 
     // returns if user can play game or do drills
-    function canPlay():boolean {
-        return (learnedLessons.includes("SUDOKU_101") && learnedLessons.includes("AMEND_NOTES") &&
-            learnedLessons.includes("NAKED_SINGLE") && learnedLessons.includes("SIMPLIFY_NOTES"));
+    function canPlay(drill: boolean):boolean {
+        if (!(learnedLessons.includes("SUDOKU_101")) || !(learnedLessons.includes("AMEND_NOTES")) ||
+             !(learnedLessons.includes("NAKED_SINGLE"))) {
+            return false;
+        }
+        if (!drill && !(learnedLessons.includes("SIMPLIFY_NOTES"))) {
+            return false;
+        }
+        return true;
     }
 
     let [fontsLoaded] = useFonts({
@@ -146,7 +158,7 @@ const HomePage = () => {
 
                         <View style={{padding: reSize/4}}>
                             <Button style={{top:reSize/2}} mode="contained" onPress={() => {
-                                canPlay() ? navigation.openDrawer() : showDoMoreLessons()
+                                canPlay(true) ? navigation.openDrawer() : showDoMoreLessons()
                             }}>
                                 Start Drill
                             </Button>
@@ -175,7 +187,7 @@ const HomePage = () => {
 
                             <Button mode="contained"
                                     onPress={() => {
-                                        canPlay() ?
+                                        canPlay(false) ?
                                         navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)}) :
                                         showDoMoreLessons();
                                     }}>

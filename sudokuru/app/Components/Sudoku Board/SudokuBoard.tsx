@@ -5,12 +5,13 @@ import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from
 import { Set } from 'immutable';
 import PropTypes from 'prop-types';
 
-import { isPeer as areCoordinatePeers, range } from './sudoku';
+import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, range} from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
+import {PreferencesContext} from "../../Contexts/PreferencesContext";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -459,12 +460,16 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, isPeer, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults } = props;
+  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
   let isRemovalHighlight = [false, false, false, false, false, false, false, false, false];
   let isPlacementHighlight = [false, false, false, false, false, false, false, false, false];
+
+  const { isHighlightSet, isHighlightBox, isHighlightRow, isHighlightColumn } = React.useContext(PreferencesContext);
+
+  const highlightPeers = (isHighlightBox && isHighlightRow && isHighlightColumn);
 
   if (inHintMode && currentStep > -1)
   {
@@ -613,8 +618,11 @@ const Cell = (props) => {
         (inHintMode) && bgColor && {backgroundColor: bgColor},
 
         (!inHintMode && conflict) && styles(cellSize).conflict,
-        (!inHintMode && !conflict && isPeer) && styles(cellSize).peer,
-        (!inHintMode && !conflict && sameValue) && styles(cellSize).sameValue,
+        (!inHintMode && !conflict && highlightPeers && isPeer) && styles(cellSize).peer,
+        (!inHintMode && !conflict && !highlightPeers && isHighlightBox && isBox && isPeer) && styles(cellSize).peer,
+        (!inHintMode && !conflict && !highlightPeers && isHighlightRow && isRow && isPeer) && styles(cellSize).peer,
+        (!inHintMode && !conflict && !highlightPeers && isHighlightColumn && isColumn && isPeer) && styles(cellSize).peer,
+        (!inHintMode && !conflict && sameValue && isHighlightSet) && styles(cellSize).sameValue,
         (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
         (!inHintMode && !conflict && isSelected) && styles(cellSize).selected]}>
         {
@@ -1327,6 +1335,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { value, prefilled, notes } = cell.toJSON();
     const conflict = this.isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get('selected'));
+    const box = highlightBox({ x, y }, board.get('selected'));
+    const row = highlightRow({ x, y }, board.get('selected'))
+    const column = highlightColumn({ x, y }, board.get('selected'));
     const sameValue = !!(selected && selected.get('value') &&
       value === selected.get('value'));
     const isSelected = cell === selected;
@@ -1344,6 +1355,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 sameValue={sameValue}
                 isSelected={isSelected}
                 isPeer={peer}
+                isBox={box}
+                isRow={row}
+                isColumn={column}
                 value={value}
                 onClick={(x, y) => { this.selectCell(x, y); }}
                 key={y}
