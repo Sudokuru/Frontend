@@ -1478,6 +1478,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         break;
     }
     board = board.set('hintSteps', hintSteps);
+    console.log(hintSteps);
     this.setState({ board });
   }
 
