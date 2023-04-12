@@ -607,7 +607,7 @@ const Cell = (props) => {
   }
 
   return ( // Sudoku Cells
-    <Pressable onPress={() => landingMode ? null : onClick(x, y)}>
+    <Pressable onPress={() => onClick(x, y)} disabled={landingMode}>
       <View style={[styles(cellSize).cellView,
         (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
         (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
