@@ -1058,9 +1058,11 @@ const HeaderRow = ( props ) => { //  Header w/ timer and pause button
 
     const handlePause = () => {
         // setIsPaused(prevState => !prevState);
-        saveGame(activeGame).then(() => {
-          navigation.replace('Home');
-        });
+        // saveGame(activeGame).then(() => {
+        //   navigation.replace('Home');
+        // });
+        saveGame(activeGame);
+        navigation.replace('Home');
     };
 
     return (
