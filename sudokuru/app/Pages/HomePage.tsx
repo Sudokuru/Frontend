@@ -15,6 +15,7 @@ import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
+import LessonButton from "../Components/Home/LessonButton";
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -35,13 +36,17 @@ const HomePage = () => {
 
     const [areLessonsLoaded, setLessonsLoaded] = React.useState(false);
 
-    const [doMoreLessonsVisible, setDoMoreLessonsVisible] = React.useState(false);
-    const showDoMoreLessons = () => setDoMoreLessonsVisible(true);
-    const hideDoMoreLessons = () => setDoMoreLessonsVisible(false);
-
     const [resumeVisible, setResumeVisible] = React.useState(false);
     const showResumeButton = () => setResumeVisible(true);
     const hideResumeButton = () => setResumeVisible(false);
+
+    const [drillsVisible, setDrillsVisible] = React.useState(true);
+    const showDrillsButton = () => setDrillsVisible(true);
+    const hideDrillsButton = () => setDrillsVisible(false);
+
+    const [gameVisible, setGameVisible] = React.useState(true);
+    const showGameButton = () => setGameVisible(true);
+    const hideGameButton = () => setGameVisible(false);
 
     const [learnHelpVisible, setLearnHelpVisible] = React.useState(false);
     const showLearnHelp = () => setLearnHelpVisible(true);
@@ -63,6 +68,21 @@ const HomePage = () => {
 
     useFocusEffect(
         React.useCallback(() => {
+
+            // Show and display home content depending on canPlay function
+            if (!canPlay(true)){
+                hideDrillsButton();
+            } else {
+                showDrillsButton();
+            }
+            if (!canPlay(false)){
+                hideResumeButton();
+                hideGameButton();
+                return;
+            } else {
+                showGameButton();
+            }
+
             // This determines if user has active game and displays resume button conditionally.
             async function grabCurrentGame(url: string) {
                 let token = null;
@@ -80,7 +100,7 @@ const HomePage = () => {
                     });
             }
             grabCurrentGame(USERACTIVEGAMESBFFURL);
-    }, []));
+    }, [learnedLessons]));
 
     useFocusEffect(
         React.useCallback(() => {
@@ -110,9 +130,15 @@ const HomePage = () => {
         }, [learnedLessons]));
 
     // returns if user can play game or do drills
-    function canPlay():boolean {
-        return (learnedLessons.includes("SUDOKU_101") && learnedLessons.includes("AMEND_NOTES") &&
-            learnedLessons.includes("NAKED_SINGLE") && learnedLessons.includes("SIMPLIFY_NOTES"));
+    function canPlay(drill: boolean):boolean {
+        if (!(learnedLessons.includes("SUDOKU_101")) || !(learnedLessons.includes("AMEND_NOTES")) ||
+             !(learnedLessons.includes("NAKED_SINGLE"))) {
+            return false;
+        }
+        if (!drill && !(learnedLessons.includes("SIMPLIFY_NOTES"))) {
+            return false;
+        }
+        return true;
     }
 
     let [fontsLoaded] = useFonts({
@@ -142,6 +168,7 @@ const HomePage = () => {
                             (areLessonsLoaded) ? <LessonPanel/> : <ActivityIndicator animating={true} color={theme.colors.primary} />
                         }
 
+
                         <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
                             <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
                             <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>with a strategy</Text>
@@ -150,13 +177,21 @@ const HomePage = () => {
                             </Pressable>
                         </View>
 
-                        <View style={{padding: reSize/4}}>
-                            <Button style={{top:reSize/2}} mode="contained" onPress={() => {
-                                canPlay() ? navigation.openDrawer() : showDoMoreLessons()
-                            }}>
-                                Start Drill
-                            </Button>
-                        </View>
+                        {
+                            (drillsVisible) ?
+                                <View style={{padding: reSize/4}}>
+                                    <Button style={{top:reSize/2}}
+                                            mode="contained"
+                                            onPress={() => {navigation.openDrawer()}}
+                                    >
+                                        Start Drill
+                                    </Button>
+                                </View> :
+                                <LessonButton
+                                    backgroundColor={"grey"}
+                                    disabled={true}
+                                ></LessonButton>
+                        }
 
                         <View style={{top:20, flexDirection: 'row', padding: reSize/4}}>
                             <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Play </Text>
@@ -166,27 +201,37 @@ const HomePage = () => {
                             </Pressable>
                         </View>
 
-                        <View style={{top:reSize/2, padding: reSize/4}}>
-                            <DifficultySlider sendData={getData}/>
-                        </View>
+                        {
+                            (gameVisible) ?
+                                <View style={{top:reSize/2, padding: reSize/4}}>
+                                    <DifficultySlider sendData={getData}/>
+                                </View> : <></>
+                        }
 
                         <View style={{top: reSize/2, flexDirection: 'row'}}>
                             {
                                 (resumeVisible) ?
                                     <Button style={{right: reSize}} mode="outlined"
-                                            onPress={() => navigation.navigate('Sudoku', {gameOrigin: "resume"})}>
+                                            onPress={() => navigation.navigate('Sudoku', {gameType: "ResumeGame"})}
+                                    >
                                         Resume Puzzle
                                     </Button> : <></>
                             }
 
-                            <Button mode="contained"
-                                    onPress={() => {
-                                        canPlay() ?
-                                        navigation.navigate('Sudoku', {gameOrigin: "start", difficulty: (difficulty / 100)}) :
-                                        showDoMoreLessons();
-                                    }}>
-                                Start Puzzle
-                            </Button>
+                            {
+                                (gameVisible) ?
+                                    <Button mode="contained"
+                                            onPress={() => {
+                                                    navigation.navigate('Sudoku', {gameType: "StartGame", difficulty: (difficulty / 100)})
+                                            }}
+                                    >
+                                        Start Puzzle
+                                    </Button> :
+                                    <LessonButton
+                                        backgroundColor={"grey"}
+                                        disabled={true}
+                                    ></LessonButton>
+                            }
                         </View>
 
                         <StatusBar style="auto" />
@@ -195,7 +240,14 @@ const HomePage = () => {
                 <Alert
                     show={learnHelpVisible}
                     title="Learning Help"
-                    message={`Select a strategy to learn by navigating through the carousel.\n\nNavigate the carousel by clicking and dragging left/right or clicking the left/right arrows.\n\nTo proceed to the selected lesson, either click the lesson text or click the "Start Lesson" button.\n\nWe have picked the optimal learning order for you since more advanced strategies require knowledge of proceeding strategies.\n\nStrategies you have already learned will be greyed out, but you will still have access to them.`}
+                    message=
+                        {
+                        `Select a strategy to learn by clicking on the lesson button that is not greyed out.\n\n` +
+                        `Lessons ensure that you will not encounter Sudoku puzzles with strategies you are unfamiliar with.\n\n` +
+                        `As you learn, more features of the app will be unlocked!\n\n` +
+                        `Lessons can only be completed in a set order, from left to right, top to bottom. \n\n` +
+                        `Strategies you have already learned will be greyed out, but you will still have access to them.`
+                        }
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
@@ -209,7 +261,13 @@ const HomePage = () => {
                 <Alert
                     show={drillHelpVisible}
                     title="Drill Help"
-                    message={`Drills are a place where you can practice a strategy.\n\nWhen you click the "Start Drill" button, a menu will appear on the left side of your screen with a list of all strategies you can practice.\n\nSelecting a strategy from the list will navigate you to the Drill page. This page has a puzzle where you must use the strategy to solve the next step in the puzzle.`}
+                    message=
+                        {
+                        `Drills are a place where you can practice a strategy.\n\n` +
+                        `When you click the "Start Drill" button, a menu will appear on the left side of your screen with a list of all strategies you can practice.\n\n` +
+                        `Selecting a strategy from the list will navigate you to the Drill page. This page has a puzzle where you must use the strategy to solve the next step in the puzzle.\n\n` +
+                        `Each drill is unlocked after completing the corresponding lesson!`
+                        }
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
@@ -223,7 +281,12 @@ const HomePage = () => {
                 <Alert
                     show={playHelpVisible}
                     title="Play Help"
-                    message={`To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\nYou will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.`}
+                    message=
+                        {
+                        `To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\n` +
+                        `You will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.` +
+                        `If you have a game currently in progress, you can resume the game by clicking the "Resume Puzzle" button`
+                        }
                     messageStyle={{maxWidth: 500}}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
@@ -232,20 +295,6 @@ const HomePage = () => {
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
                         hidePlayHelp();
-                    }}
-                />
-                <Alert
-                    show={doMoreLessonsVisible}
-                    title="Please Complete more lessons!"
-                    message={`To access this feature, please complete more lessons!`}
-                    messageStyle={{maxWidth: 500}}
-                    showConfirmButton={true}
-                    closeOnTouchOutside={false}
-                    closeOnHardwareBackPress={false}
-                    confirmText={"OK"}
-                    confirmButtonColor={theme.colors.background}
-                    onConfirmPressed={() => {
-                        hideDoMoreLessons();
                     }}
                 />
             </SafeAreaView>

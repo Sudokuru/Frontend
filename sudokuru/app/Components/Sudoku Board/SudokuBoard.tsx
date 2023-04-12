@@ -2,10 +2,10 @@
 import React from 'react';
 import { useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
-import { Set } from 'immutable';
+import {List, Set} from 'immutable';
 import PropTypes from 'prop-types';
 
-import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, range} from './sudoku';
+import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard, range} from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
@@ -13,17 +13,19 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 
-
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
 const Puzzles = sudokuru.Puzzles;
+const Drills = sudokuru.Drills;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
 
 let drillMode = false;
+
+let landingMode = false;
 
 let fallbackHeight = 30;
 
@@ -70,33 +72,36 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
   },
   noteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_200ExtraLight',
   },
   removalNoteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
-    color: "#FF0000"
+    color: "#FF0000",
   },
   placementNoteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
-    color: gold
+    color: gold,
   },
   cellView: {
     height: cellSize ? cellSize : fallbackHeight,
     width: cellSize ? cellSize : fallbackHeight,
     display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'stretch',
     borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
     backgroundColor: 'white',
   },
   cellText: {
     fontFamily: 'Inter_400Regular',
     fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-  },
+    textAlign: 'center',
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+    lineHeight: cellSize ? cellSize : fallbackHeight,
+  },  
   borderThick: {
     borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
   },
@@ -122,8 +127,6 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   prefilled: {
     // styles for cells with prefilled prop
-    // FIXME why does this need border width 0 to not be thick
-    borderWidth: 0,
   },
   selectedConflict: {
     // styles for cells with isSelected and conflict props
@@ -162,6 +165,8 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
     backgroundColor: '#7EC8D9',
     borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
   },
@@ -241,6 +246,268 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   }
 });
 
+// USAGE
+// board = addNumberAsNote(...)
+function addNumberAsNote (number, board, i, j) {
+  let selectedCell = board.get('puzzle').getIn([i, j]);
+  if (!selectedCell)
+  {
+    return;
+  }
+  const prefilled = selectedCell.get('prefilled');
+  if (prefilled)
+  {
+    return;
+  }
+  let notes = selectedCell.get('notes') || new Set();
+  notes = notes.add(number);
+  selectedCell = selectedCell.set('notes', notes);
+  board = board.setIn(['puzzle', i, j], selectedCell);
+  return board;
+};
+
+function componentBoardValsToArray(board)
+{
+  let boardArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      currVal = board.get('puzzle').getIn([i, j, 'value']);
+      temp.push(!currVal ? "0" : currVal.toString());
+    }
+    boardArray.push(temp);
+  }
+  return boardArray;
+}
+
+function componentBoardNotesToArray(board)
+{
+  let notesArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      temp = [];
+      let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
+      if (!notesSetFromComponent)
+      {
+        notesArray.push(temp);
+        continue;
+      }
+      for (let k = 1; k <= 9; k++)
+      {
+        if (notesSetFromComponent.includes(k))
+        {
+          temp.push((k).toString());
+        }
+      }
+      notesArray.push(temp);
+    }
+  }
+  return notesArray;
+}
+
+function componentSolutionValsToArray(solution)
+{
+  let solArray = [];
+  let temp = [];
+  for (let i = 0; i < 9; i++)
+  {
+    temp = [];
+    for (let j = 0; j < 9; j++)
+    {
+      temp.push(solution[9 * j + i].toString());
+    }
+    solArray.push(temp);
+  }
+  return solArray;
+}
+
+function getHint(board, solution, strategies)
+{
+  let boardArray = componentBoardValsToArray(board);
+  let notesArray = componentBoardNotesToArray(board);
+  let solutionArray = componentSolutionValsToArray(solution);
+  let hint;
+  try {
+    hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
+  } catch (e) {
+    console.log(e);
+  }
+  return hint;
+}
+
+function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
+{
+  if (!puzzleCurrentNotesState)
+  {
+    return;
+  }
+  if (puzzleCurrentNotesState.length != 729)
+  {
+    return;
+  }
+  let stringIndex = 0;
+  for (let i = 0; i < 9; i++)
+  {
+    for (let j = 0; j < 9; j++)
+    {
+      for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
+      {
+        stringIndex = 81 * i + 9 * j + currNoteIndex;
+
+        if (puzzleCurrentNotesState.charAt(stringIndex) == 1){
+          if (isDrill){
+            board = addNumberAsNote(currNoteIndex + 1, board, j, i);
+          } else {
+            board = addNumberAsNote(currNoteIndex + 1, board, i, j);
+          }
+        }
+      }
+    }
+  }
+  return board;
+}
+
+function strPuzzleToArray(str) {
+  let arr = [];
+  for (let i = 0; i < str.length; i += 9) {
+    arr.push(str.slice(i, i + 9).split('').map(Number));
+  }
+  let output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+  return { puzzle: output };
+}
+
+async function generateGame(url, props) {
+
+  let token = null;
+
+  await getKeyString("access_token").then(result => {
+    token = result;
+  });
+
+  let gameData = null;
+
+  if (props.gameType == "StartGame"){
+    gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
+        game => {
+          // If game object is not returned, you get redirected to Main Page
+          if (game == null){
+            //navigation.navigate("Home");
+            return;
+          }
+          let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+          return {
+            board,
+            history: List.of(board),
+            historyOffSet: 0,
+            solution: game[0].puzzleSolution,
+            activeGame: game,
+          };
+        }
+    );
+  }
+  else if (props.gameType == "ResumeGame"){
+    gameData = await Puzzles.getGame(url, token).then(
+        game => {
+          // If game object is not returned, you get redirected to Main Page
+          if (game == null){
+            //navigation.navigate("Home");
+            return;
+          }
+          let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState), game[0].puzzle);
+          board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
+          return {
+            board,
+            history: List.of(board),
+            historyOffSet: 0,
+            solution: game[0].puzzleSolution,
+            activeGame: game,
+          };
+        }
+    );
+  }
+  else if (props.gameType == 'StartDrill'){
+    let token = null;
+    await getKeyString("access_token").then(
+        result => {
+          token = result;
+        });
+
+    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, props.strategies, token).then(game => {
+      // null check to verify that game is loaded in.
+      if (game == null){
+        //navigation.navigate("Home");
+        return;
+      }
+      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
+      let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
+      originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
+      let puzzleSolution = game.puzzleSolution;
+      return { board, originalBoard, puzzleSolution };
+    });
+
+    let drillSolutionCells = getDrillSolutionCells(board, puzzleSolution, props.strategies);
+
+    return {
+      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
+    };
+  }
+  else if (props.gameType == 'Demo'){
+    game = Puzzles.getRandomGame()
+    let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+    return {
+      board,
+      history: List.of(board),
+      historyOffSet: 0,
+      solution: game[0].puzzleSolution,
+      activeGame: game,
+    };
+  }
+
+  return gameData;
+}
+
+// for each cell that is a part of the hint, store the coordinates and the resulting state
+// if there is a notes field for the cell, the notes must match
+// if there is a value field for the cell, the value must match
+function getDrillSolutionCells(board, solution, strategies)
+{
+  let drillSolutionCells = [];
+  let hint = getHint(board, solution, strategies);
+  if (hint)
+  {
+    for (let i = 0; i < hint.removals.length; i++)
+    {
+      let temp = {};
+      let currRemoval = hint.removals[i];
+      temp.x = currRemoval[0];
+      temp.y = currRemoval[1];
+      temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes');
+      for (let j = 2; j < currRemoval.length; j++)
+      {
+        temp.notes = temp.notes.delete(currRemoval[j]);
+      }
+      drillSolutionCells.push(temp);
+    }
+
+    if (hint.placements[0])
+    {
+      let temp = {}
+      temp.x = hint.placements[0][0];
+      temp.y = hint.placements[0][1];
+      temp.value = hint.placements[0][2];
+      drillSolutionCells.push(temp);
+    }
+  }
+  return drillSolutionCells;
+};
+
 const formatTime = (seconds) => {
   // Get minutes and remaining seconds
   const minutes = Math.floor(seconds / 60);
@@ -264,7 +531,7 @@ const NumberControl = (props) => {
               ? addNumberAsNote(number)
               : fillNumber(number);
         }
-        return (
+        return ( // Number Keys
           <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
             <Text style={styles(cellSize).numberControlText}>{number}</Text>
           </Pressable>
@@ -430,7 +697,7 @@ async function finishGame(activeGame, showResults) {
         token = result;
     });
 
-  Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
+    Puzzles.finishGame(url, activeGame.puzzle, token).then(res => {
         if (res) {
           showResults(res.score, res.solveTime, res.numHintsUsed, res.numWrongCellsPlayed, res.difficulty);
         }
@@ -449,18 +716,17 @@ const checkSolution = (solution, x, y, value) => {
   let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
   let solutionValue = solution.charAt(cellNum);
   
-  if (solutionValue == value || value == null)
+  if (solutionValue == value)
     return true;
-  else {
+  else
     return false;
-  }
 }
 
 let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults } = props;
+  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults, gameType } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -538,7 +804,7 @@ const Cell = (props) => {
     }
   }
 
-  if (!drillMode)
+  if (!drillMode && !landingMode)
   {
     // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
     if (getCellNumber(x, y) === 0)
@@ -588,7 +854,7 @@ const Cell = (props) => {
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution){
+      if (flippedPuzzleString == game.puzzleSolution && (gameType != 'Demo')){
           finishGame(game, showResults);
       }
     }
@@ -606,8 +872,8 @@ const Cell = (props) => {
     }
   }
 
-  return (
-    <Pressable onPress={() => onClick(x, y)}>
+  return ( // Sudoku Cells
+    <Pressable onPress={() => onClick(x, y)} disabled={landingMode}>
       <View style={[styles(cellSize).cellView,
         (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
         (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
@@ -646,7 +912,7 @@ const Cell = (props) => {
                 </View>
               </View>
             </View>
-            : value && <Text style={[styles(cellSize).cellText,
+            : value && <Text style={[styles(cellSize, null).cellText,
             (!inHintMode && conflict && styles(cellSize).conflict,
             (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
             (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
@@ -761,7 +1027,6 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     const [time, setTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
-
 
     // If we are resuming game, set starting time to currentTime
     if (time == 0 && currentTime != 0)
@@ -902,7 +1167,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   constructor(props) {
     super(props);
   };
-  state = this.props.generatedGame;
+  state = generateGame(USERACTIVEGAMESBFFURL, this.props);
 
   componentDidMount = () => {
     if ('serviceWorker' in navigator) {
@@ -1012,7 +1277,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     board = board.set('inHintMode', newHintMode);
 
     // Increment global hint value by one
-    if (!this.props.isDrill && newHintMode) {
+    if ((this.props.gameType != 'StartDrill') && newHintMode) {
       this.state.activeGame[0].numHintsUsed++;
     }
 
@@ -1036,10 +1301,9 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       return;
     }
     board = board.set('currentStep', 0);
-    let hint = solution ? this.props.getHint(board, solution) : this.props.getHint(board);
+    let hint = solution ? getHint(board, solution, this.props.strategies) : getHint(board, null, this.props.strategies);
 
     if (!hint) return;
-    print("hint:", hint)
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
@@ -1356,7 +1620,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         x, y, number, fill: true, board,
       });
 
-      if (!this.props.isDrill && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
+      if ((this.props.gameType != 'StartDrill') && !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)){
         this.state.activeGame[0].numWrongCellsPlayed++;
       }
     }
@@ -1408,7 +1672,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let currentStep = board.get('currentStep');
 
     let game = null;
-    if (!this.props.isDrill) game = this.state.activeGame[0];
+    if (this.props.gameType != 'StartDrill') game = this.state.activeGame[0];
 
         return (
             <Cell
@@ -1432,6 +1696,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 currentStep={currentStep}
                 game={game}
                 showResults={this.props.showGameResults}
+                gameType={this.props.gameType}
             />
         );
     };
@@ -1516,7 +1781,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     let inHintMode = board.get('inHintMode');
     let inNoteMode = board.get('inNoteMode');
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode) { // check if input is a digit from 1 to 9
+    if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) { // check if input is a digit from 1 to 9
       if (inNoteMode) this.addNumberAsNote(parseInt(inputValue, 10));
       else this.fillNumber(parseInt(inputValue, 10));
     }
@@ -1655,7 +1920,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     currentStep = board ? board.get('currentStep') : -1;
     hintInfo = board ? board.get('hintInfo') : "Info";
     hintAction = board ? board.get('hintAction') : "Action";
-    console.log(currentStep >= 0 && "hintStratName: " + hintStratName + (currentStep == 0 ? " hintInfo: " + hintInfo : " hintAction: " + hintAction));
     return(
       <HintSection
         hintStratName={ hintStratName }
@@ -1671,9 +1935,47 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     );
   }
 
-  componentDidMount() {
-    if (!this.state.board) {
-      this.props.generatedGame.then(game => this.setState(game));
+  autoHint = () => {
+    const { board } = this.state;
+    if (!board.get('inHintMode'))
+    {
+      for (let i = 0; i < 9; i++)
+      {
+        for (let j = 0; j < 9; j++)
+        {
+          if (!checkSolution(this.state.activeGame[0].puzzleSolution, i, j, board.get('puzzle').getIn([i, j]).get('value')))
+          {
+            this.toggleHintMode();
+            return;
+          }
+        }
+      }
+      // no value did not match the solution, so stop trying to get new steps
+      clearInterval(this.interval)
+    }
+    else 
+    {
+      // if you're on the final index of the hint
+      if (board.get('currentStep') + 1 === board.get('hintSteps').length)
+      {
+        this.checkMarkClicked();
+      }
+      // if you're not on the final step
+      else
+      {
+        this.rightArrowClicked();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  initAutoHintTimer = () => {
+    if (this.props.gameType == 'Demo')
+    {
+      this.interval = setInterval(this.autoHint, 1500);
     }
   }
 
@@ -1681,22 +1983,25 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     if (!board)
     {
-      this.props.generatedGame.then(game => this.setState(game));
+      generateGame(USERACTIVEGAMESBFFURL, this.props).then(game => {
+        this.setState(game, this.initAutoHintTimer)
+      })
     }
     
-    drillMode = this.props.isDrill;
+    drillMode = this.props.gameType == 'StartDrill';
+    landingMode = this.props.gameType == 'Demo';
     inHintMode = board ? board.get('inHintMode') : false;
 
     return (
       <View onKeyDown={this.handleKeyDown} styles={{borderWidth: 1}}>
-        {board && !this.props.isDrill && this.renderTopBar()}
+        {board && !landingMode && !drillMode && this.renderTopBar()}
         {board && this.renderPuzzle()}
         {board &&
           <View style={styles().bottomActions}>
-            {this.renderActions()}
-            {!inHintMode && this.renderNumberControl()}
-            {this.props.isDrill && !inHintMode && this.renderSubmitButton()}
-            {inHintMode && this.renderHintSection()}
+            {!landingMode && this.renderActions()}
+            {!landingMode && !inHintMode && this.renderNumberControl()}
+            {drillMode && !inHintMode && this.renderSubmitButton()}
+            {!landingMode && inHintMode && this.renderHintSection()}
           </View>
         }
       </View>

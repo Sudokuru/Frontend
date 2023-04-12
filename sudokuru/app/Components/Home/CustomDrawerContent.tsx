@@ -51,7 +51,8 @@ function CustomDrawerContent(props) {
               }}>
               {
                 // Conditionally render Drill navigation depending on lessons the user has completed.
-                ((learnedLessons.includes("NAKED_SINGLE") && parent.title == "Naked Sets") || (learnedLessons.includes("HIDDEN_SINGLE") && parent.title == "Hidden Sets"))
+                ((learnedLessons.includes("NAKED_SINGLE") && parent.title == "Naked Sets") || (learnedLessons.includes("HIDDEN_SINGLE") && parent.title == "Hidden Sets")
+                 || (learnedLessons.includes("POINTING_SET") && parent.title == "Pointing Sets"))
                   ? <View style={styles.parentItem}>
                       <Text style={[styles.icon, styles.title]}>{parent.title}</Text>
                     </View> : <></>
@@ -91,7 +92,8 @@ function CustomDrawerContent(props) {
                 ((learnedLessons.includes("NAKED_SINGLE") && route.title == "Naked Single") ||
                     (learnedLessons.includes("HIDDEN_SINGLE") && route.title == "Hidden Single") ||
                     (learnedLessons.includes("HIDDEN_SET") && (route.title == "Hidden Pair" || route.title == "Hidden Triplet" || route.title == "Hidden Quadruplet")) ||
-                        (learnedLessons.includes("NAKED_SET") && (route.title == "Naked Pair" || route.title == "Naked Triplet" || route.title == "Naked Quadruplet")))
+                        (learnedLessons.includes("NAKED_SET") && (route.title == "Naked Pair" || route.title == "Naked Triplet" || route.title == "Naked Quadruplet")) ||
+                            (learnedLessons.includes("POINTING_SET") && (route.title == "Pointing Pair" || route.title == "Pointing Triplet")))
                             ? <Text style={styles.title}>{route.title}</Text> : <></>
               }
             </TouchableOpacity>

@@ -40,6 +40,14 @@ const drawerItemsMain = [
         {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
       ],
   },
+  {
+        key: 'Pointing Sets',
+        title: 'Pointing Sets',
+        routes: [
+            {nav: 'Home', routeName: 'Pointing Pair', title: 'Pointing Pair'},
+            {nav: 'Home', routeName: 'Pointing Triplet', title: 'Pointing Triplet'},
+        ],
+  },
 ];
 
 function HomeDrawer(){
@@ -58,6 +66,8 @@ function HomeDrawer(){
           <Drawer.Screen name="Hidden Pair" initialParams={{ params: ["HIDDEN_PAIR"] }} component={DrillPage} />
           <Drawer.Screen name="Hidden Triplet" initialParams={{ params: ["HIDDEN_TRIPLET"] }} component={DrillPage} />
           <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
+          <Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
+          <Drawer.Screen name="Pointing Triplet" initialParams={{ params: ["POINTING_TRIPLET"] }} component={DrillPage} />
           {/*<Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />*/}
      </Drawer.Navigator>)
 }
