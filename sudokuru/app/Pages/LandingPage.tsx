@@ -15,6 +15,7 @@ import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400
 import { List } from 'immutable';
 import {getKeyString} from "../Functions/Auth0/token";
 import {parseApiAndAddNotes, strPuzzleToArray} from "./DrillPage";
+import { TextSize } from 'victory-native';
 
 // Sudokuru Package Import
 const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
@@ -25,6 +26,8 @@ const Puzzles = sudokuru.Puzzles;
 const LandingPage = () => {
 
     const theme = useTheme();
+
+    const isWeb = (Platform.OS === 'web');
 
     const navigation: any = useNavigation();
     const size = useWindowDimensions();
@@ -149,31 +152,87 @@ const LandingPage = () => {
       return hint;
     }
 
-    return (
+    if (isWeb && size.width > size.height / .63) {
+        return (
             <SafeAreaProvider>
-                <SafeAreaView>
-                    <View>
-                        <Header page={'Landing'}/>
-                        <View style={styles(reSize).container}>
-                            <View style={styles(reSize).boxtext}>
-                                <View style={styles(reSize).inner3}>
-                                    <Text style={{ fontSize: reSize / 20, color: theme.colors.onPrimary }}> Your Guide to Becoming a </Text>
-                                    <Text style={{ fontSize: reSize / 20, color: theme.colors.primary }}> Sudoku Guru </Text>
-                                    <Pressable
-                                        style={({ pressed }) => [
-                                            { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary }
-                                        ]}
-                                        onPress={async () => {
-                                            await canProceed();
-                                        }}>
-                                        <View>
-                                            <Text style={{ fontSize: reSize / 20, color: theme.colors.onPrimary }}> Get Started </Text>
-                                        </View>
-                                    </Pressable>
-                                </View>
+            <SafeAreaView>
+                <View>
+                <Header page={'Landing'} />
+                <View style={{ flex: 1, alignItems: 'center', marginTop: 50 }}>
+                    <View style={{ flexDirection: 'row', width: '100%' }}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: reSize / 6 }}>
+                            <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18 }}>Your path to becoming a</Text>
+                            <Text style={{ color: theme.colors.primary, fontSize: reSize/12 }}> Sudoku Guru </Text>
+                            <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 120 },
+                                    ]}
+                                    onPress={async () => {
+                                        await canProceed();
+                                    }}>
+                                    <View>
+                                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                        Get Started
+                                        </Text>
+                                    </View>
+                                </Pressable>
                             </View>
-                            <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint}/>
                         </View>
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: reSize / 6 }}>
+                            <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                        </View>
+                    </View>
+                </View>
+            </View>
+            </SafeAreaView>
+            <Alert
+                show={visible}
+                message="Please Login!"
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+                showConfirmButton={true}
+                confirmButtonColor={theme.colors.background}
+                onConfirmPressed={() => {
+                hideModal();
+                }}
+            />
+            </SafeAreaProvider>
+        );
+    } else {
+        return (
+            <SafeAreaProvider>
+                <SafeAreaView style={{height: '100%', width: '100%'}}>
+                    <View>
+                    <Header page={'Landing'} />
+                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+                        <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18, marginBottom: 20 }}>
+                            Your path to becoming a
+                        </Text>
+                        <Text style={{ color: theme.colors.primary, fontSize: reSize/12, marginBottom: 20 }}>
+                            Sudoku Guru
+                        </Text>
+                        </View>
+                        <View style={{ alignItems: 'center' }}>
+                        <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                        <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
+                            <Pressable
+                                style={({ pressed }) => [
+                                    { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 50 },
+                                ]}
+                                onPress={async () => {
+                                    await canProceed();
+                                }}>
+                                <View>
+                                    <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                    Get Started
+                                    </Text>
+                                </View>
+                            </Pressable>
+                        </View>
+                        </View>
+                    </View>
                     </View>
                 </SafeAreaView>
                 <Alert
@@ -184,68 +243,12 @@ const LandingPage = () => {
                     showConfirmButton={true}
                     confirmButtonColor={theme.colors.background}
                     onConfirmPressed={() => {
-                        hideModal();
+                    hideModal();
                     }}
                 />
             </SafeAreaProvider>
-    );
+        );
+    }
 };
-
-const styles = (size: any) => StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    box: {
-        flexDirection: 'row',
-        display: 'flex',
-        width: '50%',
-        height: '70%',
-    },
-    boxtext: {
-        flexDirection: 'row',
-        display: 'flex',
-        width: '50%',
-        height: '30%',
-    },
-    box4: {
-        width: '100%',
-        height: '20%',
-    },
-    menubox: {
-        width: '30%',
-        height: '13%',
-    },
-    midbox: {
-        width: '50%',
-        height: '20%',
-    },
-    box1: {
-        width: '20%',
-        height: '20%',
-        justifyContent: 'center'
-    },
-    inner: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    inner3: {
-        flex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
-    },
-    inner2: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    profileButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-})
 
 export default LandingPage;
