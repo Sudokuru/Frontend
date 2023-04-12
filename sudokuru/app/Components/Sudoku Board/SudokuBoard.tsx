@@ -71,33 +71,36 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
   },
   noteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_200ExtraLight',
   },
   removalNoteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
-    color: "#FF0000"
+    color: "#FF0000",
   },
   placementNoteText: {
-    fontSize: cellSize ? cellSize / 4 : fallbackHeight / 4,
+    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
     fontFamily: 'Inter_300Light',
-    color: gold
+    color: gold,
   },
   cellView: {
     height: cellSize ? cellSize : fallbackHeight,
     width: cellSize ? cellSize : fallbackHeight,
     display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'stretch',
     borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
     backgroundColor: 'white',
   },
   cellText: {
     fontFamily: 'Inter_400Regular',
     fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-  },
+    textAlign: 'center',
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+    lineHeight: cellSize ? cellSize : fallbackHeight,
+  },  
   borderThick: {
     borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
   },
@@ -123,8 +126,6 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   prefilled: {
     // styles for cells with prefilled prop
-    // FIXME why does this need border width 0 to not be thick
-    borderWidth: 0,
   },
   selectedConflict: {
     // styles for cells with isSelected and conflict props
@@ -163,6 +164,8 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
     backgroundColor: '#7EC8D9',
     borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
   },
@@ -646,7 +649,7 @@ const Cell = (props) => {
                 </View>
               </View>
             </View>
-            : value && <Text style={[styles(cellSize).cellText,
+            : value && <Text style={[styles(cellSize, null).cellText,
             (!inHintMode && conflict && styles(cellSize).conflict,
             (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
             (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
@@ -1649,7 +1652,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   initAutoHintTimer = () => {
     if (this.props.isLanding)
     {
-      this.interval = setInterval(this.autoHint, 500);
+      this.interval = setInterval(this.autoHint, 1500);
     }
   }
 
