@@ -18,6 +18,7 @@ const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
 const Puzzles = sudokuru.Puzzles;
+const Drills = sudokuru.Drills;
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -309,6 +310,7 @@ function componentBoardNotesToArray(board)
 
 function componentSolutionValsToArray(solution)
 {
+  console.log(solution)
   let solArray = [];
   let temp = [];
   for (let i = 0; i < 9; i++)
@@ -323,8 +325,9 @@ function componentSolutionValsToArray(solution)
   return solArray;
 }
 
-function getHint(board, solution)
+function getHint(board, solution, strategies)
 {
+  console.log(solution)
   let boardArray = componentBoardValsToArray(board);
   let notesArray = componentBoardNotesToArray(board);
   let solutionArray = componentSolutionValsToArray(solution);
@@ -374,19 +377,14 @@ function strPuzzleToArray(str) {
   for (let i = 0; i < str.length; i += 9) {
     arr.push(str.slice(i, i + 9).split('').map(Number));
   }
-  output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
+  let output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
   return { puzzle: output };
 }
 
-let updateBoard = (newBoard) => {
-  let { history } = this.state;
-  const { historyOffSet } = this.state;
-  history = history.slice(0, historyOffSet + 1);
-  history = history.push(newBoard);
-  this.setState({ board: newBoard, history, historyOffSet: history.size - 1 });
-};
+async function generateGame(url, props) {
 
-async function generateGame(url) {
+  console.log(props);
+
   let token = null;
 
   await getKeyString("access_token").then(result => {
@@ -395,8 +393,8 @@ async function generateGame(url) {
 
   let gameData = null;
 
-  if (gameOrigin == "start"){
-    gameData = await Puzzles.startGame(url, this.props.difficulty, this.props.strategies, token).then(
+  if (props.gameOrigin == "start"){
+    gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
         game => {
           // If game object is not returned, you get redirected to Main Page
           if (game == null){
@@ -414,7 +412,7 @@ async function generateGame(url) {
         }
     );
   }
-  else if (gameOrigin == "resume"){
+  else if (props.gameOrigin == "resume"){
     gameData = await Puzzles.getGame(url, token).then(
         game => {
           // If game object is not returned, you get redirected to Main Page
@@ -434,14 +432,14 @@ async function generateGame(url) {
         }
     );
   }
-  else if (this.props.isDrill){
+  else if (props.isDrill){
     let token = null;
     await getKeyString("access_token").then(
         result => {
           token = result;
         });
 
-    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, this.props.strategies, token).then(game => {
+    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, props.strategies, token).then(game => {
       // null check to verify that game is loaded in.
       if (game == null){
         //navigation.navigate("Home");
@@ -455,13 +453,13 @@ async function generateGame(url) {
       return { board, originalBoard, puzzleSolution };
     });
 
-    let drillSolutionCells = getDrillSolutionCells(board);
+    let drillSolutionCells = getDrillSolutionCells(board, puzzleSolution, props.strategies);
 
     return {
       board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
     };
   }
-  else if (this.props.isLanding){
+  else if (props.isLanding){
     game = Puzzles.getRandomGame()
     let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
     return {
@@ -479,10 +477,10 @@ async function generateGame(url) {
 // for each cell that is a part of the hint, store the coordinates and the resulting state
 // if there is a notes field for the cell, the notes must match
 // if there is a value field for the cell, the value must match
-function getDrillSolutionCells(board)
+function getDrillSolutionCells(board, solution, strategies)
 {
   let drillSolutionCells = [];
-  let hint = getHint(board);
+  let hint = getHint(board, solution, strategies);
   if (hint)
   {
     for (let i = 0; i < hint.removals.length; i++)
@@ -1170,7 +1168,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   constructor(props) {
     super(props);
   };
-  state = this.props.generatedGame;
+  state = generateGame(USERACTIVEGAMESBFFURL, this.props);
 
   componentDidMount = () => {
     if ('serviceWorker' in navigator) {
@@ -1304,7 +1302,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
       return;
     }
     board = board.set('currentStep', 0);
-    let hint = solution ? getHint(board, solution) : getHint(board);
+    let hint = solution ? getHint(board, solution, this.props.strategies) : getHint(board, null, this.props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll('_', ' ').split(" ");
@@ -1926,7 +1924,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
     const { board } = this.state;
     if (!board)
     {
-      generateGame(USERACTIVEGAMESBFFURL, this.props.gameOrigin).then(game => {
+      console.log(this.props);
+      generateGame(USERACTIVEGAMESBFFURL, this.props).then(game => {
         this.setState(game, this.initAutoHintTimer)
       })
     }

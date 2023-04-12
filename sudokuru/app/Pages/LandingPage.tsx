@@ -82,7 +82,7 @@ const LandingPage = () => {
                             </View>
                         </View>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: reSize / 6 }}>
-                            <SudokuBoard isLanding={true} strategies={strategies} />
+                            <SudokuBoard isLanding={true} gameOrigin={'demo'} strategies={strategies} />
                         </View>
                     </View>
                 </View>
@@ -117,7 +117,7 @@ const LandingPage = () => {
                         </Text>
                         </View>
                         <View style={{ alignItems: 'center' }}>
-                        <SudokuBoard generatedGame={getLandingGame()} isLanding={true} getHint={getHint} />
+                            <SudokuBoard isLanding={true} gameOrigin={'demo'} strategies={strategies} />
                         <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
                             <Pressable
                                 style={({ pressed }) => [
