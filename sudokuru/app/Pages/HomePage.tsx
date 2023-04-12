@@ -29,8 +29,8 @@ const HomePage = () => {
 
     const theme = useTheme();
 
-    const size = useWindowDimensions();
-    const reSize = Math.min(size.width, size.height) / 25;
+   // const size = useWindowDimensions();
+    const reSize = 30 //Math.min(size.width, size.height) / 25;
 
     const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
@@ -68,6 +68,10 @@ const HomePage = () => {
 
     useFocusEffect(
         React.useCallback(() => {
+            if(areLessonsLoaded && !(learnedLessons.includes("SUDOKU_101"))){
+                console.log("SUDOKU_101 not learned" , learnedLessons);
+                navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
+            }
 
             // Show and display home content depending on canPlay function
             if (!canPlay(true)){
@@ -141,13 +145,7 @@ const HomePage = () => {
         return true;
     }
 
-    let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
-    });
 
-    if (!fontsLoaded) {
-        return null;
-    }
 
     return (
         <SafeAreaProvider>
@@ -231,7 +229,7 @@ const HomePage = () => {
                                         backgroundColor={"grey"}
                                         disabled={true}
                                     ></LessonButton>
-                            }
+                            } 
                         </View>
 
                         <StatusBar style="auto" />
