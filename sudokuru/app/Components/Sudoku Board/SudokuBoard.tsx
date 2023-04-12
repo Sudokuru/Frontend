@@ -727,7 +727,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
-  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults } = props;
+  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults, gameType } = props;
   const cellSize = getCellSize();
 
   let bgColor = '#808080';
@@ -855,7 +855,7 @@ const Cell = (props) => {
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution && (this.props.gameType != 'Demo')){
+      if (flippedPuzzleString == game.puzzleSolution && (gameType != 'Demo')){
           finishGame(game, showResults);
       }
     }
@@ -1637,6 +1637,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
                 currentStep={currentStep}
                 game={game}
                 showResults={this.props.showGameResults}
+                gameType={this.props.gameType}
             />
         );
     };
