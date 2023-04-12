@@ -68,9 +68,19 @@ const HomePage = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if(areLessonsLoaded && !(learnedLessons.includes("SUDOKU_101"))){
-                console.log("SUDOKU_101 not learned" , learnedLessons);
-                navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
+            if(areLessonsLoaded){
+                if (!(learnedLessons.includes("SUDOKU_101"))) {
+                    navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
+                }
+                else if (!(learnedLessons.includes("AMEND_NOTES"))) {
+                    navigation.navigate("Lesson" ,{params:'AMEND_NOTES'});
+                }
+                else if (!(learnedLessons.includes("NAKED_SINGLE"))) {
+                    navigation.navigate("Lesson" ,{params:'NAKED_SINGLE'});
+                }
+                else if (!(learnedLessons.includes("SIMPLIFY_NOTES"))) {
+                    navigation.navigate("Lesson" ,{params:'SIMPLIFY_NOTES'});
+                }
             }
 
             // Show and display home content depending on canPlay function
