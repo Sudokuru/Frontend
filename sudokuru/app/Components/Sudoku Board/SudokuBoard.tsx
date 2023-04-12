@@ -1426,9 +1426,8 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         for (let i = 0; i < removals.length; i++)
           hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
-      case "POINTING_PAIR":
-      case "POINTING_TRIPLET":
-        console.log("Pointing Set");
+      case "POINTING_PAIR": // DONE
+      case "POINTING_TRIPLET": // DONE
         // three steps, three objects
         hintSteps.push({}) // box and causes
         hintSteps.push({}) // row/col and rem highlight
@@ -1438,7 +1437,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         let boxGroups = []
         let nonBoxGroups = []
         for (let i = 0; i < groups.length; i++)
-          if (groups[i][0] === 2)
+          if (groups[i].type == "box")
             boxGroups.push(groups[i])
           else
             nonBoxGroups.push(groups[i])
@@ -1479,7 +1478,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         break;
     }
     board = board.set('hintSteps', hintSteps);
-    console.log(hintSteps);
     this.setState({ board });
   }
 
