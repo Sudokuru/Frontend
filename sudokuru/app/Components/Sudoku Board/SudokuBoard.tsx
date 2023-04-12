@@ -562,7 +562,7 @@ const PausedImage = () => {
         resizeMode: 'cover',
         height: size,
         width: size,
-      }} source={require('../cat.jpg')} />
+      }} source={require('../EMPTY_BOARD.png')} />
   );
 }
 
