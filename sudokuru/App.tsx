@@ -40,6 +40,14 @@ const drawerItemsMain = [
         {nav: 'Home', routeName: 'Hidden Quadruplet', title: 'Hidden Quadruplet'},
       ],
   },
+  {
+        key: 'Pointing Sets',
+        title: 'Pointing Sets',
+        routes: [
+            {nav: 'Home', routeName: 'Pointing Pair', title: 'Pointing Pair'},
+            {nav: 'Home', routeName: 'Pointing Triplet', title: 'Pointing Triplet'},
+        ],
+  },
 ];
 
 function HomeDrawer(){
@@ -58,6 +66,8 @@ function HomeDrawer(){
           <Drawer.Screen name="Hidden Pair" initialParams={{ params: ["HIDDEN_PAIR"] }} component={DrillPage} />
           <Drawer.Screen name="Hidden Triplet" initialParams={{ params: ["HIDDEN_TRIPLET"] }} component={DrillPage} />
           <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
+          <Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
+          <Drawer.Screen name="Pointing Triplet" initialParams={{ params: ["POINTING_TRIPLET"] }} component={DrillPage} />
           {/*<Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />*/}
      </Drawer.Navigator>)
 }
@@ -66,6 +76,10 @@ export default function App() {
 
     const [isThemeDark, setIsThemeDark] = React.useState(true);
     const [learnedLessons, setLearnedLessons] = React.useState<string[]>([]);
+    const [isHighlightSet, setHighlightSet] = React.useState(true);
+    const [isHighlightBox, setHighlightBox] = React.useState(true);
+    const [isHighlightRow, setHighlightRow] = React.useState(true);
+    const [isHighlightColumn, setHighlightColumn] = React.useState(true);
 
     let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
@@ -77,14 +91,40 @@ export default function App() {
         return setLearnedLessons(props);
     }, [learnedLessons]);
 
+    const toggleHighlightSet = React.useCallback(() => {
+        return setHighlightSet(!isHighlightSet);
+    }, [isHighlightSet]);
+
+    const toggleHighlightBox = React.useCallback(() => {
+        return setHighlightBox(!isHighlightBox);
+    }, [isHighlightBox]);
+
+    const toggleHighlightRow = React.useCallback(() => {
+        return setHighlightRow(!isHighlightRow);
+    }, [isHighlightRow]);
+
+    const toggleHighlightColumn = React.useCallback(() => {
+        return setHighlightColumn(!isHighlightColumn);
+    }, [isHighlightColumn]);
+
+
     const preferences = React.useMemo(
         () => ({
             toggleTheme,
             isThemeDark,
             updateLearnedLessons,
             learnedLessons,
+            toggleHighlightSet,
+            isHighlightSet,
+            toggleHighlightBox,
+            isHighlightBox,
+            toggleHighlightRow,
+            isHighlightRow,
+            toggleHighlightColumn,
+            isHighlightColumn,
         }),
-        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons]
+        [toggleTheme, isThemeDark, updateLearnedLessons, learnedLessons, toggleHighlightSet, isHighlightSet,
+            toggleHighlightBox, isHighlightBox, toggleHighlightRow, isHighlightRow, toggleHighlightColumn, isHighlightColumn]
     );
 
     const Stack = createStackNavigator();
