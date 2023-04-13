@@ -137,7 +137,6 @@ const HomePage = () => {
                         setLessonsLoaded(true);
 
                         if(areLessonsLoaded){
-                            console.log("Hello!", learnedLessons)
                             if (!(learnedLessons.includes("SUDOKU_101"))) {
                                 navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
                             }
