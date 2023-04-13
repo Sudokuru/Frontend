@@ -130,7 +130,7 @@ const StatisticsPage = () => {
         closeOnHardwareBackPress={true}
         confirmText={"Yes, I'm sure!"}
         cancelText={"Never mind."}
-        confirmButtonColor={theme.colors.background}
+        confirmButtonColor="red"
         onConfirmPressed={() => {
             deleteUserStatistics(USERGAMESTATISTICSBFFURL);
             hideWarningButton();
