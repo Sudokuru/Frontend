@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
 import {List, Set} from 'immutable';
 import PropTypes from 'prop-types';
+import {useNavigation} from "@react-navigation/native";
 
 import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard, range} from './sudoku';
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
@@ -1022,11 +1023,12 @@ const PauseButton = ({ handlePause, isPaused }) => {
   )
 }
 
-const HeaderRow = (props) => { //  Header w/ timer and pause button
-    const { currentTime } = props;
+const HeaderRow = ( props ) => { //  Header w/ timer and pause button
+    const { currentTime, activeGame } = props;
     const [time, setTime] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
+    const navigation = useNavigation();
 
     // If we are resuming game, set starting time to currentTime
     if (time == 0 && currentTime != 0)
@@ -1055,7 +1057,12 @@ const HeaderRow = (props) => { //  Header w/ timer and pause button
     );
 
     const handlePause = () => {
-        setIsPaused(prevState => !prevState);
+        // setIsPaused(prevState => !prevState);
+        // saveGame(activeGame).then(() => {
+        //   navigation.replace('Home');
+        // });
+        saveGame(activeGame);
+        navigation.replace('Home');
     };
 
     return (
@@ -1542,7 +1549,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
   }
 
   fillNumber = (number) => {
-    let { board } = this.state;
+    let { board, game } = this.state;
     const selectedCell = this.getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get('prefilled');
@@ -1643,7 +1650,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
   renderTopBar = () => {
     return(
-      <HeaderRow currentTime = {this.state.activeGame[0].currentTime}/>
+      <HeaderRow currentTime = {this.state.activeGame[0].currentTime} activeGame = {this.state.activeGame[0]}/>
     );
   }
 
