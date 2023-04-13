@@ -2,11 +2,12 @@ import React from 'react';
 import {
     View,
 } from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
+import {ActivityIndicator, Text, useTheme} from 'react-native-paper';
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import LessonButton from "./LessonButton";
 import {useFocusEffect} from "@react-navigation/core";
 import {
+    formatOneLessonName,
     getLockedLessons,
     getOneLessonPartialName
 } from "../../Functions/ContextParsing/learnedLessons";
@@ -33,9 +34,7 @@ const LessonPanel = () => {
 
     if (isLoading){
       return (
-        <View>
-          <Text>Loading</Text>
-        </View>
+          <ActivityIndicator animating={true} color={theme.colors.primary} />
       )
     } else {
 
@@ -52,8 +51,7 @@ const LessonPanel = () => {
             backgroundColor={
               (learnedLessons.includes(availableLessons[i]) ||
                 (lockedLessons.includes(availableLessons[i]))) ? "grey" : theme.colors.primary}
-            firstName={getOneLessonPartialName(availableLessons[i], 0)}
-            lastName={getOneLessonPartialName(availableLessons[i], 1)}
+            name={formatOneLessonName(availableLessons[i])}
             navigation={availableLessons[i]}
             disabled={lockedLessons.includes(availableLessons[i])}
           ></LessonButton>
