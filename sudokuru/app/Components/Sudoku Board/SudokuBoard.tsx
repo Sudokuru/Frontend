@@ -335,7 +335,9 @@ function getHint(board, solution, strategies)
   let solutionArray = componentSolutionValsToArray(solution);
   let hint;
   try {
+    console.log(JSON.stringify(boardArray) + "\n\n" + JSON.stringify(notesArray) + "\n\n" + JSON.stringify(strategies) + "\n\n" + JSON.stringify(solutionArray))
     hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
+    if (hint.strategy == "POINTING_PAIR") console.log(JSON.stringify(hint))
   } catch (e) {
     console.log(e);
   }
@@ -1452,7 +1454,7 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
 
         // seperate the groups which are boxes and which are not boxes
         for (let i = 0; i < groups.length; i++)
-          if (groups[i][0] === 2)
+          if (groups[i][0] == "box")
             boxGroups.push(groups[i])
           else
             nonBoxGroups.push(groups[i])
