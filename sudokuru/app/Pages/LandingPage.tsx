@@ -85,7 +85,6 @@ const LandingPage = () => {
                         </View>
                 </View>
             </View>
-            </SafeAreaView>
             <Alert
                 show={visible}
                 message="Please Login!"
@@ -97,6 +96,7 @@ const LandingPage = () => {
                 hideModal();
                 }}
             />
+            </SafeAreaView>
             </SafeAreaProvider>
         );
     } else {
@@ -132,7 +132,6 @@ const LandingPage = () => {
                             </View>
                         </View>
                     </View>
-                </SafeAreaView>
                 <Alert
                     show={visible}
                     message="Please Login!"
@@ -144,6 +143,7 @@ const LandingPage = () => {
                     hideModal();
                     }}
                 />
+                </SafeAreaView>
             </SafeAreaProvider>
         );
     }
