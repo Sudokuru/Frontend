@@ -117,10 +117,10 @@ const StatisticsPage = () => {
         </SafeAreaView>
         <Alert
         show={warningVisible}
-        title="Delete Warning"
+        title="Delete Statistics Warning"
         message=
             {
-            `\n\nThis action will entirely delete ALL of your current progress. Are you sure?\n\n`
+            `\n\nThis action will delete ALL of your current progress.\nThis includes lesson completions. Do you wish to proceed?\n\n`
             }
         messageStyle={{ maxWidth: 500 }}
         alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
@@ -128,9 +128,10 @@ const StatisticsPage = () => {
         showCancelButton={true}
         closeOnTouchOutside={true}
         closeOnHardwareBackPress={true}
-        confirmText={"Yes, I'm sure!"}
-        cancelText={"Never mind."}
+        confirmText={"Delete"}
+        cancelText={"Cancel"}
         confirmButtonColor="red"
+        cancelButtonColor={theme.colors.background}
         onConfirmPressed={() => {
             deleteUserStatistics(USERGAMESTATISTICSBFFURL);
             hideWarningButton();
