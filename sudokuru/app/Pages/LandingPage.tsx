@@ -58,7 +58,6 @@ const LandingPage = () => {
         return (
             <SafeAreaProvider>
             <SafeAreaView>
-                <View>
                 <Header page={'Landing'} />
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 50 }}>
                     <View style={{ flexDirection: 'row', width: '100%' }}>
@@ -84,7 +83,6 @@ const LandingPage = () => {
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginRight: reSize / 6 }}>
                             <SudokuBoard gameType={'Demo'} strategies={strategies} />
                         </View>
-                    </View>
                 </View>
             </View>
             </SafeAreaView>
@@ -105,36 +103,34 @@ const LandingPage = () => {
         return (
             <SafeAreaProvider>
                 <SafeAreaView style={{height: '100%', width: '100%'}}>
-                    <View>
-                    <Header page={'Landing'} />
-                    <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
-                        <View style={{ alignItems: 'center' }}>
-                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18, marginBottom: 20 }}>
-                            Your path to becoming a
-                        </Text>
-                        <Text style={{ color: theme.colors.primary, fontSize: reSize/12, marginBottom: 20 }}>
-                            Sudoku Guru
-                        </Text>
+                        <Header page={'Landing'} />
+                        <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+                            <View style={{ alignItems: 'center' }}>
+                            <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18, marginBottom: 20 }}>
+                                Your path to becoming a
+                            </Text>
+                            <Text style={{ color: theme.colors.primary, fontSize: reSize/12, marginBottom: 20 }}>
+                                Sudoku Guru
+                            </Text>
+                            </View>
+                            <View style={{ alignItems: 'center' }}>
+                                <SudokuBoard gameType={'Demo'} strategies={strategies} />
+                            <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
+                                <Pressable
+                                    style={({ pressed }) => [
+                                        { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 50 },
+                                    ]}
+                                    onPress={async () => {
+                                        await canProceed();
+                                    }}>
+                                    <View>
+                                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                        Get Started
+                                        </Text>
+                                    </View>
+                                </Pressable>
+                            </View>
                         </View>
-                        <View style={{ alignItems: 'center' }}>
-                            <SudokuBoard gameType={'Demo'} strategies={strategies} />
-                        <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
-                            <Pressable
-                                style={({ pressed }) => [
-                                    { opacity: pressed ? 0.5 : 1.0, backgroundColor: theme.colors.primary, borderRadius: reSize / 120, padding: reSize / 50 },
-                                ]}
-                                onPress={async () => {
-                                    await canProceed();
-                                }}>
-                                <View>
-                                    <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
-                                    Get Started
-                                    </Text>
-                                </View>
-                            </Pressable>
-                        </View>
-                        </View>
-                    </View>
                     </View>
                 </SafeAreaView>
                 <Alert
