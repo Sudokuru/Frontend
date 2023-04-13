@@ -9,7 +9,7 @@ import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
-
+import { rgba } from 'polished';
 
 const LandingPage = () => {
 
@@ -95,6 +95,8 @@ const LandingPage = () => {
                 onConfirmPressed={() => {
                 hideModal();
                 }}
+                alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                overlayStyle={{ backgroundColor: 'transparent' }}
             />
             </SafeAreaView>
             </SafeAreaProvider>
@@ -142,6 +144,8 @@ const LandingPage = () => {
                     onConfirmPressed={() => {
                     hideModal();
                     }}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
                 </SafeAreaView>
             </SafeAreaProvider>
