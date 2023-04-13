@@ -121,6 +121,22 @@ const HomePage = () => {
                         }
 
                         setLessonsLoaded(true);
+
+                        if(areLessonsLoaded){
+                            console.log("Hello!", learnedLessons)
+                            if (!(learnedLessons.includes("SUDOKU_101"))) {
+                                navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
+                            }
+                            else if (!(learnedLessons.includes("AMEND_NOTES"))) {
+                                navigation.navigate("Lesson" ,{params:'AMEND_NOTES'});
+                            }
+                            else if (!(learnedLessons.includes("NAKED_SINGLE"))) {
+                                navigation.navigate("Lesson" ,{params:'NAKED_SINGLE'});
+                            }
+                            else if (!(learnedLessons.includes("SIMPLIFY_NOTES"))) {
+                                navigation.navigate("Lesson" ,{params:'SIMPLIFY_NOTES'});
+                            }
+                        }
                     }
                     else {
                         console.log("Error retrieving lessons of user");
@@ -142,13 +158,7 @@ const HomePage = () => {
         return true;
     }
 
-    let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
-    });
 
-    if (!fontsLoaded) {
-        return null;
-    }
 
     return (
         <SafeAreaProvider>
@@ -232,7 +242,7 @@ const HomePage = () => {
                                         backgroundColor={"grey"}
                                         disabled={true}
                                     ></LessonButton>
-                            }
+                            } 
                         </View>
 
                         <StatusBar style="auto" />
