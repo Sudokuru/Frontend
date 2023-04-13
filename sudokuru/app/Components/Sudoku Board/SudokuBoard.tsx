@@ -13,6 +13,7 @@ import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
+import {useTheme} from "react-native-paper";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -38,7 +39,7 @@ let globalTime = 0;
 // cause/removal cells
 const gold = "#F2CA7E";
 
-const styles = (cellSize, sizeConst) => StyleSheet.create({
+const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
   hardLineThickness : {thickness: cellSize * (3 / 40)},
   hintArrowPlaceholderView: {
     width: cellSize/(sizeConst),
@@ -168,12 +169,13 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     textAlign: 'center',
-    backgroundColor: '#7EC8D9',
+    backgroundColor: theme,
     borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
   },
   numberControlText: {
     fontFamily: 'Inter_400Regular',
     fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
+    color: theme,
   },
   controlStyle: {
     padding: 0,
@@ -197,7 +199,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   headerFont: {
     fontFamily: 'Inter_400Regular',
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
-    color: '#FFFFFF',
+    color: theme,
   },
   submitButtonView: {
     width: cellSize ? cellSize * (50 / 30) : fallbackHeight * (50 / 30),
@@ -242,7 +244,7 @@ const styles = (cellSize, sizeConst) => StyleSheet.create({
   },
   hintActionInfoText: {
     fontSize: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
-    color: "white",
+    color: theme,
     textAlign: 'center',
   }
 });
@@ -529,6 +531,7 @@ const formatTime = (inputSeconds: number) => {
 const NumberControl = (props) => {
   const { prefilled, inNoteMode, fillNumber, addNumberAsNote, inHintMode } = props;
   const cellSize = getCellSize();
+  const theme = useTheme();
   return (
     <View style={ styles(cellSize).numberControlRow }>
       {range(9).map((i) => {
@@ -539,8 +542,8 @@ const NumberControl = (props) => {
               : fillNumber(number);
         }
         return ( // Number Keys
-          <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize).numberContainer }>
-            <Text style={styles(cellSize).numberControlText}>{number}</Text>
+          <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize, null, theme.colors.primaryContainer).numberContainer }>
+            <Text style={styles(cellSize, null, theme.colors.onPrimaryContainer).numberControlText}>{number}</Text>
           </Pressable>
         );
       })}
@@ -954,6 +957,7 @@ Cell.defaultProps = {
 const ActionRow = (props) => {
   const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
   const cellSize = getCellSize();
+  const theme = useTheme();
 
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
 
@@ -961,24 +965,24 @@ const ActionRow = (props) => {
     <View style={styles(cellSize).actionControlRow}>
       {/* Undo */}
       <Pressable onPress={undo} disabled={!history.size || inHintMode}>
-        <MaterialCommunityIcons color="white" name="undo" size={cellSize/(sizeConst)}/>
+        <MaterialCommunityIcons color={theme.colors.onBackground} name="undo" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Note mode */}
       <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
         {inNoteMode
             ? // note mode on
-          <MaterialCommunityIcons color="white" name="pencil-outline" size={cellSize/(sizeConst)}/>
+          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-outline" size={cellSize/(sizeConst)}/>
             : // note mode off
-          <MaterialCommunityIcons color="white" name="pencil-off-outline" size={cellSize/(sizeConst)}/>
+          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-off-outline" size={cellSize/(sizeConst)}/>
         }
       </Pressable>
       {/* Erase */}
       <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
-        <MaterialCommunityIcons color="white" name="eraser" size={cellSize/(sizeConst)}/>
+        <MaterialCommunityIcons color={theme.colors.onBackground} name="eraser" size={cellSize/(sizeConst)}/>
       </Pressable>
       {/* Hint */}
       <Pressable onPress={ !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null }>
-        <MaterialCommunityIcons color="white" name="help" size={cellSize/(sizeConst)}/>
+        <MaterialCommunityIcons color={theme.colors.onBackground} name="help" size={cellSize/(sizeConst)}/>
       </Pressable>
     </View>
   );
@@ -1018,12 +1022,14 @@ SubmitButton.propTypes = {
 const PauseButton = ({ handlePause, isPaused }) => {
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
+  const theme = useTheme();
+
   return(
     <Pressable onPress={handlePause}>
       {
         (isPaused) ?
-            <MaterialCommunityIcons color="white" name="play" size={cellSize/(sizeConst)}/> :
-            <MaterialCommunityIcons color="white" name="pause" size={cellSize/(sizeConst)}/>
+            <MaterialCommunityIcons color={theme.colors.onBackground} name="play" size={cellSize/(sizeConst)}/> :
+            <MaterialCommunityIcons color={theme.colors.onBackground} name="pause" size={cellSize/(sizeConst)}/>
       }
     </Pressable>
   )
@@ -1035,6 +1041,8 @@ const HeaderRow = ( props ) => { //  Header w/ timer and pause button
     const [isPaused, setIsPaused] = useState(false);
     const cellSize = getCellSize();
     const navigation = useNavigation();
+
+    const theme = useTheme();
 
     // If we are resuming game, set starting time to currentTime
     if (time == 0 && currentTime != 0)
@@ -1073,7 +1081,7 @@ const HeaderRow = ( props ) => { //  Header w/ timer and pause button
 
     return (
         <View style={styles(cellSize).headerControlRow}>
-            <Text style={styles(cellSize).headerFont}>Time: {formatTime(time)}</Text>
+            <Text style={styles(cellSize, null, theme.colors.onBackground).headerFont}>Time: {formatTime(time)}</Text>
             <PauseButton handlePause={handlePause} isPaused={isPaused} />
         </View>
     );

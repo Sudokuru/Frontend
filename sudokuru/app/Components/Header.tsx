@@ -5,10 +5,13 @@ import StatisticsButton from "./Statistics/StatisticsButton";
 import {Image, Pressable, StyleSheet, View} from "react-native";
 import HomeButton from "./Home/HomeButton";
 import {useNavigation} from "@react-navigation/native";
+import {useTheme} from "react-native-paper";
 
 const Header = (props: any) => {
 
     const navigation: any = useNavigation();
+
+    const theme = useTheme();
 
     return (
         <View style={styles.toggleIcons}>

@@ -63,7 +63,7 @@ const LandingPage = () => {
                 <View style={{ flex: 1, alignItems: 'center', marginTop: 50 }}>
                     <View style={{ flexDirection: 'row', width: '100%' }}>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginLeft: reSize / 6 }}>
-                            <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18 }}>Your path to becoming a</Text>
+                            <Text style={{ color: theme.colors.onBackground, fontSize: reSize/18 }}>Your path to becoming a</Text>
                             <Text style={{ color: theme.colors.primary, fontSize: reSize/12 }}> Sudoku Guru </Text>
                             <View style={{ alignItems: 'center', marginTop: reSize / 18 }}>
                                 <Pressable
@@ -74,7 +74,7 @@ const LandingPage = () => {
                                         await canProceed();
                                     }}>
                                     <View>
-                                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                        <Text style={{ color: theme.colors.onBackground, fontSize: reSize/19, marginBottom: reSize / 140 }}>
                                         Get Started
                                         </Text>
                                     </View>
@@ -109,7 +109,7 @@ const LandingPage = () => {
                     <Header page={'Landing'} />
                     <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
                         <View style={{ alignItems: 'center' }}>
-                        <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/18, marginBottom: 20 }}>
+                        <Text style={{ color: theme.colors.onBackground, fontSize: reSize/18, marginBottom: 20 }}>
                             Your path to becoming a
                         </Text>
                         <Text style={{ color: theme.colors.primary, fontSize: reSize/12, marginBottom: 20 }}>
@@ -127,7 +127,7 @@ const LandingPage = () => {
                                     await canProceed();
                                 }}>
                                 <View>
-                                    <Text style={{ color: theme.colors.onPrimary, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                    <Text style={{ color: theme.colors.onBackground, fontSize: reSize/19, marginBottom: reSize / 140 }}>
                                     Get Started
                                     </Text>
                                 </View>
