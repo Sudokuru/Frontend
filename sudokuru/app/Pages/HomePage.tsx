@@ -30,8 +30,8 @@ const HomePage = () => {
 
     const theme = useTheme();
 
-   // const size = useWindowDimensions();
-    const reSize = 30 //Math.min(size.width, size.height) / 25;
+    const size = useWindowDimensions();
+    const reSize = Math.min(size.width, size.height) / 25;
 
     const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
 
@@ -69,20 +69,6 @@ const HomePage = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if(areLessonsLoaded){
-                if (!(learnedLessons.includes("SUDOKU_101"))) {
-                    navigation.navigate("Lesson" ,{params:'SUDOKU_101'});
-                }
-                else if (!(learnedLessons.includes("AMEND_NOTES"))) {
-                    navigation.navigate("Lesson" ,{params:'AMEND_NOTES'});
-                }
-                else if (!(learnedLessons.includes("NAKED_SINGLE"))) {
-                    navigation.navigate("Lesson" ,{params:'NAKED_SINGLE'});
-                }
-                else if (!(learnedLessons.includes("SIMPLIFY_NOTES"))) {
-                    navigation.navigate("Lesson" ,{params:'SIMPLIFY_NOTES'});
-                }
-            }
 
             // Show and display home content depending on canPlay function
             if (!canPlay(true)){
