@@ -23,7 +23,7 @@ const LessonButton = (props: any) => {
         disabled={props.disabled}
         mode="contained"
       >
-          {(!props.disabled) ? <Text>{props.firstName} {props.lastName}</Text> : <AntDesign color="white" name="lock" size={20}/>}
+          {(!props.disabled) ? <Text>{props.name}</Text> : <AntDesign color="white" name="lock" size={20}/>}
       </Button>
     </View>
   );
