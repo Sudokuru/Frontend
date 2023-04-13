@@ -16,6 +16,7 @@ import Alert from "react-native-awesome-alerts";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
+import { rgba } from 'polished';
 
 const HomePage = () => {
     const navigation: any = useNavigation();
@@ -249,6 +250,7 @@ const HomePage = () => {
                         `Strategies you have already learned will be greyed out, but you will still have access to them.`
                         }
                     messageStyle={{maxWidth: 500}}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
@@ -257,6 +259,7 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hideLearnHelp();
                     }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
                 <Alert
                     show={drillHelpVisible}
@@ -269,6 +272,7 @@ const HomePage = () => {
                         `Each drill is unlocked after completing the corresponding lesson!`
                         }
                     messageStyle={{maxWidth: 500}}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
@@ -277,6 +281,7 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hideDrillHelp();
                     }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
                 <Alert
                     show={playHelpVisible}
@@ -288,6 +293,7 @@ const HomePage = () => {
                         `If you have a game currently in progress, you can resume the game by clicking the "Resume Puzzle" button`
                         }
                     messageStyle={{maxWidth: 500}}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
                     showConfirmButton={true}
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
@@ -296,6 +302,7 @@ const HomePage = () => {
                     onConfirmPressed={() => {
                         hidePlayHelp();
                     }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
             </SafeAreaView>
         </SafeAreaProvider>
