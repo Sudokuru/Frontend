@@ -87,9 +87,12 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     }
 
     const clickCheckMark = () => {
-        learnedLessons.push(name);
-        updateLearnedLessons(learnedLessons);
-        saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+        if (!learnedLessons.includes(name))
+        {
+          learnedLessons.push(name);
+          updateLearnedLessons(learnedLessons);
+          saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+        }
         navigation.navigate("Home")
     }
 
@@ -166,7 +169,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
 
                             </View>
 
-                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() :setCount(count + 1)} >
+                          <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() : setCount(count + 1)} >
                               <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
                           </Pressable>
                       </View>
