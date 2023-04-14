@@ -30,7 +30,7 @@ const TotalStatistics = (props: any) => {
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
-            <Text style={{ fontSize: reSize/20, color: theme.colors.onPrimary, fontWeight: 'bold', marginBottom: 10 }}>Total Game Statistics</Text>
+            <Text style={{ fontSize: reSize/20, color: theme.colors.primary, fontWeight: 'bold', marginBottom: 10 }}>Total Game Statistics</Text>
             <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
                 <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                     <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Total Score: </Text>

@@ -131,7 +131,7 @@ const StatisticsPage = () => {
         confirmText={"Delete"}
         cancelText={"Cancel"}
         confirmButtonColor="red"
-        cancelButtonColor={theme.colors.background}
+        cancelButtonColor={theme.colors.primary}
         onConfirmPressed={() => {
             deleteUserStatistics(USERGAMESTATISTICSBFFURL);
             hideWarningButton();
