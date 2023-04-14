@@ -1131,7 +1131,7 @@ const HintSection = (props) => {
           <Text style={styles(cellSize).hintStratNameText}>{hintStratName}</Text>
         </View>
         <View style={styles(cellSize).hintActionInfoView}>
-          <Text style={styles(cellSize).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
+          <Text style={styles(cellSize, null, theme.colors.onBackground).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
         </View>
       </View>
       {(isRightArrowRendered(onFinalStep))
