@@ -17,7 +17,6 @@ import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from './app/Pages/DrillPage';
 import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
-import {useEffect} from "react";
 
 const drawerItemsMain = [
   {
@@ -56,7 +55,7 @@ function HomeDrawer(){
     return(
      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent
          drawerItems={drawerItemsMain} {...props} />)}
-      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true}}>
+      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true, title: "Sudokuru"}}>
           <Drawer.Screen name="Main Page" component={HomePage} />
           <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
           <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
@@ -68,7 +67,6 @@ function HomeDrawer(){
           <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
           <Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
           <Drawer.Screen name="Pointing Triplet" initialParams={{ params: ["POINTING_TRIPLET"] }} component={DrillPage} />
-          {/*<Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />*/}
      </Drawer.Navigator>)
 }
 
@@ -133,10 +131,10 @@ export default function App() {
       <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
               <NavigationContainer theme={theme}>
-                  <Stack.Navigator initialRouteName="LandingPage" screenOptions={{
-                      headerShown: false
+                  <Stack.Navigator initialRouteName="LandingPage"  screenOptions={{
+                      headerShown: false, title: "Sudokuru",
                   }}>
-                      <Stack.Screen name="Landing" component={LandingPage}/>
+                      <Stack.Screen name="Landing" component={LandingPage} />
                       <Stack.Screen name="Home" component={HomeDrawer} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>

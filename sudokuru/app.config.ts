@@ -14,6 +14,7 @@ export default {
     scheme: 'sudokuru',
     owner: "sudokuru",
     version: '0.0.0',
+    icon: 'goldLogoNoText.png',
     platforms: [
         "ios",
         "android"
@@ -26,7 +27,7 @@ export default {
         "**/*"
     ],
     web: {
-        bundler: "metro"
+        bundler: "metro",
     },
     ios: {
         bundleIdentifier: "sudokuru.vercel.app",
