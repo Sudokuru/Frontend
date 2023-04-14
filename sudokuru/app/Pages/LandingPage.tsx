@@ -195,6 +195,7 @@ const LandingPage = () => {
                     alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
                     overlayStyle={{ backgroundColor: 'transparent' }}
                 />
+                </SafeAreaView>
             </SafeAreaProvider>
         );
     }
