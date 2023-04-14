@@ -1450,7 +1450,6 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         hintSteps.push({}) // row/col and rem delete
 
         // seperate the groups which are boxes and which are not boxes
-        print("groups", groups)
         for (let i = groups.length - 2; i < groups.length; i++)
           if (groups[i].type == "box")
             boxGroups.push(groups[i])
