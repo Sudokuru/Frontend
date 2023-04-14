@@ -106,7 +106,8 @@ function CustomDrawerContent(props: any) {
   const theme = useTheme();
 
   return (
-    <ScrollView style={{backgroundColor: theme.colors.background}}>
+    <ScrollView style={{backgroundColor: theme.colors.background}}
+                forceInset={{top: 'always', horizontal: 'never'}}>
       <SafeAreaView
         style={styles.container}
       >
