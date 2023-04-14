@@ -6,7 +6,6 @@ import {StatusBar} from "expo-status-bar";
 import {useNavigation} from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
 import DifficultySlider from '../Components/Home/DifficultySlider';
 import {getKeyString} from "../Functions/Auth0/token";
