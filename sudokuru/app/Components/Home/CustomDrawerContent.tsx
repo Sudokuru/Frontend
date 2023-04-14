@@ -109,7 +109,6 @@ function CustomDrawerContent(props: any) {
     <ScrollView style={{backgroundColor: theme.colors.background}}>
       <SafeAreaView
         style={styles.container}
-        forceInset={{top: 'always', horizontal: 'never'}}
       >
         {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
       </SafeAreaView>
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 1000,
+    paddingTop: 15
   },
   centered: {
     alignItems: 'center',
