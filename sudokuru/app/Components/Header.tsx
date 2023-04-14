@@ -6,12 +6,18 @@ import {Image, Pressable, StyleSheet, View} from "react-native";
 import HomeButton from "./Home/HomeButton";
 import {useNavigation} from "@react-navigation/native";
 import {useTheme} from "react-native-paper";
+import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 const Header = (props: any) => {
 
     const navigation: any = useNavigation();
 
-    const theme = useTheme();
+    const { isThemeDark } = React.useContext(PreferencesContext);
+
+    const DARK_LOGO = require('./goldLogoText.png');
+    const LIGHT_LOGO = require('./darkBlueLogoText.png');
+
+    let logoUrl = (isThemeDark) ? DARK_LOGO : LIGHT_LOGO;
 
     return (
         <View style={styles.toggleIcons}>
@@ -25,13 +31,13 @@ const Header = (props: any) => {
                         resizeMode: 'cover',
                         height: 45,
                         width: 100,
-                    }} source={require('./goldLogoText.png')} />
+                    }} source={logoUrl} />
                      : <Pressable  onPress={() => navigation.navigate('Main Page')} >
                     <Image style={{
                         resizeMode: 'cover',
                         height: 45,
                         width: 100,
-                    }} source={require('./goldLogoText.png')} />
+                    }} source={logoUrl} />
                 </Pressable>
             }
             <View style={styles.profileButtons}>
