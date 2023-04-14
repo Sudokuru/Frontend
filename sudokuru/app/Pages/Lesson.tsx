@@ -113,7 +113,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                   <View style={{ justifyContent: 'center', flexDirection: 'row'}}>
 
                       <Pressable style={{top: reSize/4.5, height: reSize/10, right: reSize/25}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
-                          <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/15}/>
+                          <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onBackground} name="leftcircleo" size={reSize/15}/>
                       </Pressable>
 
                       {
@@ -125,14 +125,14 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       }
 
                       <Pressable style={{top: reSize/4.5, height: reSize/10, left: reSize/25}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() : setCount(count + 1)} >
-                          <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
+                          <AntDesign color={theme.colors.onBackground} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/15}/>
                       </Pressable>
                   </View>
                   <Text>{" "}</Text>
                   <View style={{width: reSize/1.5}}>
                       {
                           (steps[count][0] != null) ?
-                              <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
+                              <Text style={{color: theme.colors.onBackground, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
                               : <></>
                       }
                   </View>
@@ -157,20 +157,20 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       <View style={{ justifyContent:'center', flexDirection: 'row'}}>
 
                           <Pressable style={{top: reSize/2, height: reSize/8, left: reSize/10}} disabled={count - 1 == -1} onPress={() => setCount(count - 1)}>
-                              <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onPrimary} name="leftcircleo" size={reSize/10}/>
+                              <AntDesign color= {(count - 1 == -1) ? theme.colors.background : theme.colors.onBackground} name="leftcircleo" size={reSize/10}/>
                           </Pressable>
 
                             <View style={{width: reSize/1.2}}>
                                 {
                                     (steps[count][0] != null) ?
-                                        <Text style={{color: theme.colors.onPrimary, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
+                                        <Text style={{color: theme.colors.onBackground, textAlign: 'justify', fontSize: size.height/50}}>{steps[count][0]}</Text>
                                         : <></>
                                 }
 
                             </View>
 
                           <Pressable style={{top: reSize/2, height: reSize/8, right: reSize/10}} onPress={() => (count + 1 == steps.length) ? clickCheckMark() : setCount(count + 1)} >
-                              <AntDesign color={theme.colors.onPrimary} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
+                              <AntDesign color={theme.colors.onBackground} name={(count + 1 == steps.length) ? "checkcircleo" : "rightcircleo"} size={reSize/10}/>
                           </Pressable>
                       </View>
 
@@ -190,7 +190,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                           <View style={{flexDirection: 'row'}}>
                               <Text style={{color: theme.colors.primary, fontSize: reSize/25,  fontWeight: 'bold'}}>{title + " Lesson"}</Text>
                               <Pressable onPress={() => showLearnHelp()}>
-                                  <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                                  <MaterialCommunityIcons color={theme.colors.onBackground} name="help"/>
                               </Pressable>
                           </View>
 
@@ -211,7 +211,7 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                       closeOnTouchOutside={false}
                       closeOnHardwareBackPress={false}
                       confirmText={"OK"}
-                      confirmButtonColor={theme.colors.background}
+                      confirmButtonColor={theme.colors.primary}
                       onConfirmPressed={() => {
                           hideLearnHelp();
                       }}
