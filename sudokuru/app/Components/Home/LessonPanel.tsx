@@ -41,27 +41,38 @@ const LessonPanel = () => {
     // dynamically render in lesson buttons based on criteria
     let lessonButtonArray = [];
     let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
+    let numElemPerRow = 2;
 
-    for (let i = 0; i < availableLessons.length; i++){
-      lessonButtonArray.push(
-        <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center'}}
-        key={availableLessons[i]}
-        >
-          <LessonButton
-            backgroundColor={
-              (learnedLessons.includes(availableLessons[i]) ||
-                (lockedLessons.includes(availableLessons[i]))) ? "grey" : theme.colors.primary}
-            name={formatOneLessonName(availableLessons[i])}
-            navigation={availableLessons[i]}
-            disabled={lockedLessons.includes(availableLessons[i])}
-          ></LessonButton>
-        </View>
-      )
+    let subArray = [];
+    for (let i = 0; i < availableLessons.length; i++)
+    {
+      subArray.push(
+        <LessonButton
+          key={availableLessons[i]}
+          backgroundColor={
+            (learnedLessons.includes(availableLessons[i]) ||
+              (lockedLessons.includes(availableLessons[i]))) ? "grey" : theme.colors.primary}
+          name={formatOneLessonName(availableLessons[i])}
+          navigation={availableLessons[i]}
+          disabled={lockedLessons.includes(availableLessons[i])}
+        ></LessonButton>
+      );
+
+      // push sub-array to main array after every numElemPerRow elements
+      if ((i + 1) % numElemPerRow === 0 || i === availableLessons.length - 1){
+        lessonButtonArray.push(subArray);
+        subArray = [];
+      }
     }
 
+    // render each sub-array as a row
     return(
-      <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center'}}>
-        {lessonButtonArray}
+      <View style={{flexWrap: 'wrap', flexDirection: 'column'}}>
+        {lessonButtonArray.map((subArray, index) => (
+          <View style={{flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center'}} key={index}>
+            {subArray}
+          </View>
+        ))}
       </View>
     );
   }
