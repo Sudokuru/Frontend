@@ -8,7 +8,7 @@ const HomeButton = () => {
     const navigation: any = useNavigation();
 
     return (
-        <Button mode="contained" testID={"ViewHomePageButton"} style={{ marginRight: 5, }}  onPress={() => navigation.navigate('Main Page')}>
+        <Button mode="contained" testID={"ViewHomePageButton"} style={{ marginRight: 5, paddingTop: 5 }}  onPress={() => navigation.navigate('Main Page')}>
              <MaterialCommunityIcons name="home" size={26} color="#F2F2F2" />
         </Button>
     );

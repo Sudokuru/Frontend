@@ -122,7 +122,7 @@ const LoginButton = () => {
 
     return (
         name ? (
-                <Button mode="contained" testID={"Logout Button"} onPress={
+                <Button mode="contained" style={{ paddingTop: 5, paddingBottom: 5 }} testID={"Logout Button"} onPress={
                     () => {
                         // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
                         if (Platform.OS == "ios" || Platform.OS == "android"){

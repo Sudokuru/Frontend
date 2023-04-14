@@ -8,7 +8,7 @@ const StatisticsButton = () => {
     const navigation: any = useNavigation();
 
     return (
-        <Button mode="contained" testID={"ViewStatisticsPageButton"} style={{ marginLeft: 5, marginRight: 5, }}  onPress={() => navigation.navigate('Statistics')}>
+        <Button mode="contained" testID={"ViewStatisticsPageButton"} style={{ marginLeft: 5, marginRight: 5, paddingTop: 5  }}  onPress={() => navigation.navigate('Statistics')}>
              <MaterialCommunityIcons name="chart-line" size={26} color="#F2F2F2" />
         </Button>
     );

@@ -8,7 +8,7 @@ const ProfileButton = () => {
     const navigation: any = useNavigation();
 
     return (
-        <Button mode="contained" testID={"ViewProfilePageButton"} style={{ marginRight: 5, }} onPress={() => navigation.navigate('Profile')}>
+        <Button mode="contained" testID={"ViewProfilePageButton"} style={{ marginRight: 5, paddingTop: 5 }} onPress={() => navigation.navigate('Profile')}>
             <MaterialCommunityIcons name="account-details" size={26} color="#F2F2F2" />
         </Button>
     );
