@@ -17,7 +17,7 @@ let token: string = '';
 const ProfilePage = () => {
   const theme = useTheme();
 
-  const decoded = jwtDecode(token) as string;
+  const decoded: any = jwtDecode(token) as string;
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
