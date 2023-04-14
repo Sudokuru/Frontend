@@ -72,7 +72,7 @@ const LandingPage = () => {
                             await canProceed();
                             }}>
                             <View>
-                            <Text style={{ color: theme.colors.onBackground, fontSize: reSize/19 }}>
+                            <Text style={{ color: theme.colors.onPrimaryContainer, fontSize: reSize/19 }}>
                                 Get Started
                             </Text>
                             </View>
@@ -124,7 +124,7 @@ const LandingPage = () => {
                                         await canProceed();
                                     }}>
                                     <View>
-                                        <Text style={{ color: theme.colors.onBackground, fontSize: reSize/19, marginBottom: reSize / 140 }}>
+                                        <Text style={{ color: theme.colors.onPrimaryContainer, fontSize: reSize/19, marginBottom: reSize / 140 }}>
                                         Get Started
                                         </Text>
                                     </View>
