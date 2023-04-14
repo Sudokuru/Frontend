@@ -9,7 +9,6 @@ import {useFocusEffect} from "@react-navigation/core";
 import {
     formatOneLessonName,
     getLockedLessons,
-    getOneLessonPartialName
 } from "../../Functions/ContextParsing/learnedLessons";
 
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle"); // -- What works for me
@@ -41,7 +40,7 @@ const LessonPanel = () => {
     // dynamically render in lesson buttons based on criteria
     let lessonButtonArray = [];
     let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
-    let numElemPerRow = 2;
+    let NUM_LESSONS_PER_ROW = 4;
 
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++)
@@ -58,8 +57,8 @@ const LessonPanel = () => {
         ></LessonButton>
       );
 
-      // push sub-array to main array after every numElemPerRow elements
-      if ((i + 1) % numElemPerRow === 0 || i === availableLessons.length - 1){
+      // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
+      if ((i + 1) % NUM_LESSONS_PER_ROW === 0 || i === availableLessons.length - 1){
         lessonButtonArray.push(subArray);
         subArray = [];
       }
