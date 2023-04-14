@@ -6,7 +6,6 @@ import {StatusBar} from "expo-status-bar";
 import {useNavigation} from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
 import DifficultySlider from '../Components/Home/DifficultySlider';
 import {getKeyString} from "../Functions/Auth0/token";
@@ -167,10 +166,10 @@ const HomePage = () => {
                     <View style={styles.container1}>
 
                         <View style={{flexDirection: 'row'}}>
-                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Learn </Text>
+                            <Text style={{color: theme.colors.onBackground, fontSize: reSize,  fontWeight: 'bold'}}>Learn </Text>
                             <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>new strategies</Text>
                             <Pressable onPress={() => showLearnHelp()}>
-                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                                <MaterialCommunityIcons color={theme.colors.onBackground} name="help"/>
                             </Pressable>
                         </View>
 
@@ -180,10 +179,10 @@ const HomePage = () => {
 
 
                         <View style={{top:reSize/2, flexDirection: 'row', padding: reSize/4}}>
-                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
+                            <Text style={{color: theme.colors.onBackground, fontSize: reSize,  fontWeight: 'bold'}}>Train </Text>
                             <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>with a strategy</Text>
                             <Pressable onPress={() => showDrillHelp()}>
-                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                                <MaterialCommunityIcons color={theme.colors.onBackground} name="help"/>
                             </Pressable>
                         </View>
 
@@ -204,10 +203,10 @@ const HomePage = () => {
                         }
 
                         <View style={{top:20, flexDirection: 'row', padding: reSize/4}}>
-                            <Text style={{color: theme.colors.onPrimary, fontSize: reSize,  fontWeight: 'bold'}}>Play </Text>
+                            <Text style={{color: theme.colors.onBackground, fontSize: reSize,  fontWeight: 'bold'}}>Play </Text>
                             <Text style={{color: theme.colors.primary, fontSize: reSize,  fontWeight: 'bold'}}>with a random puzzle</Text>
                             <Pressable onPress={() => showPlayHelp()}>
-                                <MaterialCommunityIcons color={theme.colors.onPrimary} name="help"/>
+                                <MaterialCommunityIcons color={theme.colors.onBackground} name="help"/>
                             </Pressable>
                         </View>
 
@@ -264,7 +263,7 @@ const HomePage = () => {
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
                     confirmText={"OK"}
-                    confirmButtonColor={theme.colors.background}
+                    confirmButtonColor={theme.colors.primary}
                     onConfirmPressed={() => {
                         hideLearnHelp();
                     }}
@@ -286,7 +285,7 @@ const HomePage = () => {
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
                     confirmText={"OK"}
-                    confirmButtonColor={theme.colors.background}
+                    confirmButtonColor={theme.colors.primary}
                     onConfirmPressed={() => {
                         hideDrillHelp();
                     }}
@@ -307,7 +306,7 @@ const HomePage = () => {
                     closeOnTouchOutside={false}
                     closeOnHardwareBackPress={false}
                     confirmText={"OK"}
-                    confirmButtonColor={theme.colors.background}
+                    confirmButtonColor={theme.colors.primary}
                     onConfirmPressed={() => {
                         hidePlayHelp();
                     }}

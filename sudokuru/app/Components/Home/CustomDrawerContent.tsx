@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -6,21 +6,21 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
-  Image,
 } from "react-native";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
+import {useTheme} from "react-native-paper";
 
-function CustomDrawerContent(props) {
+function CustomDrawerContent(props: any) {
   const [mainDrawer, setMainDrawer] = useState(true);
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState<any>([]);
 
   const toggleMainDrawer = () => {
     setMainDrawer(true);
     setFilteredItems([]);
   };
 
-  const onItemParentPress = (key) => {
-    const filteredMainDrawerRoutes = props.drawerItems.find((e) => {
+  const onItemParentPress = (key: any) => {
+    const filteredMainDrawerRoutes = props.drawerItems.find((e: any) => {
       return e.key === key;
     });
     if (filteredMainDrawerRoutes.routes.length === 1) {
@@ -37,11 +37,11 @@ function CustomDrawerContent(props) {
 
   function renderMainDrawer() {
 
-    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+    const { learnedLessons } = React.useContext(PreferencesContext);
 
     return (
       <View>
-        {props.drawerItems.map((parent) => (
+        {props.drawerItems.map((parent: any) => (
           <View key={parent.key}>
             <TouchableOpacity
               key={parent.key}
@@ -53,8 +53,8 @@ function CustomDrawerContent(props) {
                 // Conditionally render Drill navigation depending on lessons the user has completed.
                 ((learnedLessons.includes("NAKED_SINGLE") && parent.title == "Naked Sets") || (learnedLessons.includes("HIDDEN_SINGLE") && parent.title == "Hidden Sets")
                  || (learnedLessons.includes("POINTING_SET") && parent.title == "Pointing Sets"))
-                  ? <View style={styles.parentItem}>
-                      <Text style={[styles.icon, styles.title]}>{parent.title}</Text>
+                  ? <View style={[styles.parentItem, {borderBottomColor: theme.colors.onBackground}]}>
+                      <Text style={[styles.title, {color: theme.colors.onBackground}]}>{parent.title}</Text>
                     </View> : <></>
               }
             </TouchableOpacity>
@@ -66,16 +66,16 @@ function CustomDrawerContent(props) {
 
   function renderFilteredItemsDrawer() {
 
-    const { updateLearnedLessons, learnedLessons } = React.useContext(PreferencesContext);
+    const { learnedLessons } = React.useContext(PreferencesContext);
 
     return (
       <View>
         <TouchableOpacity
           onPress={() => toggleMainDrawer()}
           style={styles.backButtonRow}>
-          <Text style={[styles.backButtonText, styles.title]}>{'BACK'}</Text>
+          <Text style={[styles.backButtonText, styles.title, {color: theme.colors.onBackground}]}>{'BACK'}</Text>
         </TouchableOpacity>
-        {filteredItems.routes.map((route) => {
+        {filteredItems.routes.map((route: any) => {
           return (
             <TouchableOpacity
               key={route.routeName}
@@ -85,7 +85,7 @@ function CustomDrawerContent(props) {
                   screen: route.routeName,
                 })
               }
-              style={styles.item}>
+            >
 
               {
                 // Conditionally render Drill navigation depending on lessons the user has completed.
@@ -94,7 +94,7 @@ function CustomDrawerContent(props) {
                     (learnedLessons.includes("HIDDEN_SET") && (route.title == "Hidden Pair" || route.title == "Hidden Triplet" || route.title == "Hidden Quadruplet")) ||
                         (learnedLessons.includes("NAKED_SET") && (route.title == "Naked Pair" || route.title == "Naked Triplet" || route.title == "Naked Quadruplet")) ||
                             (learnedLessons.includes("POINTING_SET") && (route.title == "Pointing Pair" || route.title == "Pointing Triplet")))
-                            ? <Text style={styles.title}>{route.title}</Text> : <></>
+                            ? <Text style={[styles.title, {color: theme.colors.onBackground}]}>{route.title}</Text> : <></>
               }
             </TouchableOpacity>
           );
@@ -103,17 +103,13 @@ function CustomDrawerContent(props) {
     );
   }
 
+  const theme = useTheme();
+
   return (
-    <ScrollView style={styles.drawerContainer}>
+    <ScrollView style={{backgroundColor: theme.colors.background}}>
       <SafeAreaView
         style={styles.container}
-        forceInset={{top: 'always', horizontal: 'never'}}>
-        <View style={styles.centered}>
-          <Image
-            source={{uri: 'https://reactjs.org/logo-og.png'}}
-            style={styles.logo}
-          />
-        </View>
+      >
         {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
       </SafeAreaView>
     </ScrollView>
@@ -132,9 +128,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 75,
   },
-  drawerContainer: {
-    backgroundColor: '#025E73',
-  },
   container: {
     flex: 1,
     zIndex: 1000,
@@ -146,14 +139,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F2',
     paddingTop: 4,
     paddingBottom: 4,
   },
   title: {
     margin: 16,
     fontWeight: 'bold',
-    color: '#F2F2F2',
     textAlign: 'center',
   },
   backButtonRow: {
@@ -166,7 +157,6 @@ const styles = StyleSheet.create({
   },
   backButtonText: {
     marginLeft: 10,
-    color: '#F2F2F2',
   },
 });
 

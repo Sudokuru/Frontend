@@ -1,12 +1,10 @@
 import React from 'react';
-import PreferencesToggles from "../Components/Profile/PreferencesToggles";
-import {StyleSheet, useWindowDimensions, View, TouchableOpacity, Image, ScrollView} from "react-native";
-import SaveGamePreferencesToggle from "../Components/Profile/SaveGamePreferencesToggle";
+import {StyleSheet, useWindowDimensions, View, ScrollView} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header";
 import {Switch, Text, useTheme} from "react-native-paper";
 import {getKeyString} from "../Functions/Auth0/token";
-import jwtDecode, { JwtPayload } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {formatLessonNameArray} from "../Functions/ContextParsing/learnedLessons";
 
@@ -19,7 +17,7 @@ let token: string = '';
 const ProfilePage = () => {
   const theme = useTheme();
 
-  const decoded = jwtDecode(token) as string;
+  const decoded: any = jwtDecode(token) as string;
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
@@ -34,7 +32,7 @@ const ProfilePage = () => {
                 <Header page={'Profile'}/>
                 <ScrollView>
                     <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 30 }}>
-                        <Text style={{ fontSize: reSize/20, color: '#D9A05B', fontWeight: 'bold', marginBottom: 10 }}>Profile</Text>
+                        <Text style={{ fontSize: reSize/20, color: theme.colors.primary, fontWeight: 'bold', marginBottom: 10 }}>Profile</Text>
                         <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
                             <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Name: </Text>

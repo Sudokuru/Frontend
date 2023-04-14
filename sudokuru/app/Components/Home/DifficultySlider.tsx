@@ -17,15 +17,15 @@ const DifficultySlider = (props) => {
         minimumValue={0}
         maximumValue={100}
         step={1}
-        minimumTrackTintColor={theme.colors.primaryContainer}
-        maximumTrackTintColor={theme.colors.onPrimary}
+        minimumTrackTintColor="#D9A05B"
+        maximumTrackTintColor="#000000"
         value={value}
         onValueChange={returnValue => {
             setValue(returnValue);
             props.sendData(value);
         }}
         />
-        <Text style={{color: theme.colors.onPrimary }}>Your selected difficulty: {value}</Text>
+        <Text style={{color: theme.colors.onBackground }}>Your selected difficulty: {value}</Text>
     </View>);
 }
 
