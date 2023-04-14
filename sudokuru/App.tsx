@@ -17,7 +17,6 @@ import {CombinedDarkTheme, CombinedDefaultTheme} from './app/Styling/ThemeColors
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from './app/Pages/DrillPage';
 import CustomDrawerContent from './app/Components/Home/CustomDrawerContent';
-import {useEffect} from "react";
 
 const drawerItemsMain = [
   {
@@ -56,7 +55,7 @@ function HomeDrawer(){
     return(
      <Drawer.Navigator initialRouteName="Home" drawerContent={(props) => (<CustomDrawerContent
          drawerItems={drawerItemsMain} {...props} />)}
-      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true}}>
+      screenOptions={{headerShown:false, headerTransparent:true, swipeEdgeWidth: 0, drawerPosition: "left", unmountOnBlur:true, title: "Sudokuru"}}>
           <Drawer.Screen name="Main Page" component={HomePage} />
           <Drawer.Screen name="Naked Single" initialParams={{ params: ["NAKED_SINGLE"] }} component={DrillPage} />
           <Drawer.Screen name="Naked Pair" initialParams={{ params: ["NAKED_PAIR"] }} component={DrillPage} />
@@ -68,7 +67,6 @@ function HomeDrawer(){
           <Drawer.Screen name="Hidden Quadruplet" initialParams={{ params: ["HIDDEN_QUADRUPLET"] }} component={DrillPage} />
           <Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />
           <Drawer.Screen name="Pointing Triplet" initialParams={{ params: ["POINTING_TRIPLET"] }} component={DrillPage} />
-          {/*<Drawer.Screen name="Pointing Pair" initialParams={{ params: ["POINTING_PAIR"] }} component={DrillPage} />*/}
      </Drawer.Navigator>)
 }
 
@@ -127,16 +125,42 @@ export default function App() {
             toggleHighlightBox, isHighlightBox, toggleHighlightRow, isHighlightRow, toggleHighlightColumn, isHighlightColumn]
     );
 
+    //https://stackoverflow.com/questions/63137014/how-to-set-browser-tab-title-and-add-icon
+   // Setting the browser tab icon
+   try {
+         // Select the <head> tag under <body>
+             const headTag = document.querySelector("head");
+         // Create the <link/> tag.
+             const icon = document.createElement("link");
+         // Create the rel="" attribute
+             const attributeRel = document.createAttribute("rel");
+         // Assign the value "icon" to the rel attribute so that attributeRel becomes rel="icon"
+            attributeRel.value = "icon";
+        // Create the href="" attribute
+            const attributeHref = document.createAttribute("href");
+        // Assign your application icon path to the href attribute so that attributeHref becomes href="path/to/my/icon"
+            attributeHref.value = "/assets/app/Pages/goldLogoNoText.png";
+        // Set the rel attibute to <link> so that the icon JS object becomes <link rel="icon"/>
+            icon.setAttributeNode(attributeRel);
+        // Set the href attibute to <link> so that the icon JS object becomes <link rel="icon" href="path/to/my/icon"/>
+            icon.setAttributeNode(attributeHref);
+        // Insert the <link [...] /> tag into the <head>
+            if (headTag != null) headTag.appendChild(icon);
+      } catch (e) {
+        //Browser tabs do not exist on android and iOS, so let's just do nothing here.
+   }
+
+
     const Stack = createStackNavigator();
 
   return (
       <PreferencesContext.Provider value={preferences}>
           <PaperProvider theme={theme}>
               <NavigationContainer theme={theme}>
-                  <Stack.Navigator initialRouteName="LandingPage" screenOptions={{
-                      headerShown: false
+                  <Stack.Navigator initialRouteName="LandingPage"  screenOptions={{
+                      headerShown: false, title: "Sudokuru",
                   }}>
-                      <Stack.Screen name="Landing" component={LandingPage}/>
+                      <Stack.Screen name="Landing" component={LandingPage} />
                       <Stack.Screen name="Home" component={HomeDrawer} />
                       <Stack.Screen name="Profile" component={ProfilePage} />
                       <Stack.Screen name="Statistics" component={StatisticsPage}/>
