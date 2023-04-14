@@ -17,7 +17,7 @@ const LessonButton = (props: any) => {
 
   const theme = useTheme();
 
-    const { isThemeDark } = React.useContext(PreferencesContext);
+  const { isThemeDark } = React.useContext(PreferencesContext);
 
   const buttonRenderedObject = (!props.disabled) ? props.name : <AntDesign color={theme.colors.onPrimaryContainer} name="lock" size={20}/>
 
