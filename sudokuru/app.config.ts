@@ -28,7 +28,6 @@ export default {
     ],
     web: {
         bundler: "metro",
-        favicon: "./assets/images/goldLogoNoText.ico"
     },
     ios: {
         bundleIdentifier: "sudokuru.vercel.app",
