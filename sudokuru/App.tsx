@@ -125,32 +125,6 @@ export default function App() {
             toggleHighlightBox, isHighlightBox, toggleHighlightRow, isHighlightRow, toggleHighlightColumn, isHighlightColumn]
     );
 
-    //https://stackoverflow.com/questions/63137014/how-to-set-browser-tab-title-and-add-icon
-   // Setting the browser tab icon
-   try {
-         // Select the <head> tag under <body>
-             const headTag = document.querySelector("head");
-         // Create the <link/> tag.
-             const icon = document.createElement("link");
-         // Create the rel="" attribute
-             const attributeRel = document.createAttribute("rel");
-         // Assign the value "icon" to the rel attribute so that attributeRel becomes rel="icon"
-            attributeRel.value = "icon";
-        // Create the href="" attribute
-            const attributeHref = document.createAttribute("href");
-        // Assign your application icon path to the href attribute so that attributeHref becomes href="path/to/my/icon"
-            attributeHref.value = "/assets/app/Pages/goldLogoNoText.png";
-        // Set the rel attibute to <link> so that the icon JS object becomes <link rel="icon"/>
-            icon.setAttributeNode(attributeRel);
-        // Set the href attibute to <link> so that the icon JS object becomes <link rel="icon" href="path/to/my/icon"/>
-            icon.setAttributeNode(attributeHref);
-        // Insert the <link [...] /> tag into the <head>
-            if (headTag != null) headTag.appendChild(icon);
-      } catch (e) {
-        //Browser tabs do not exist on android and iOS, so let's just do nothing here.
-   }
-
-
     const Stack = createStackNavigator();
 
   return (

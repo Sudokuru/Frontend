@@ -14,7 +14,7 @@ export default {
     scheme: 'sudokuru',
     owner: "sudokuru",
     version: '0.0.0',
-    icon: './assets/app/Pages/goldLogoNoText.png',
+    icon: './assets/favicon.ico',
     platforms: [
         "ios",
         "android"
