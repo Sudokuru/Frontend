@@ -1099,6 +1099,7 @@ const HintSection = (props) => {
   const { hintStratName, hintInfo, hintAction, currentStep, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
   const cellSize = getCellSize();
   const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
+  const theme = useTheme();
   
   const isRightArrowRendered = (onFinalStep) =>
   {
@@ -1120,7 +1121,7 @@ const HintSection = (props) => {
       {(isLeftArrowRendered(onFirstStep))
         ? // checkcircleo
         <Pressable onPress={leftArrowClicked}>
-          <AntDesign color="white" name="leftcircleo" size={cellSize/(sizeConst)}/>
+          <AntDesign color={theme.colors.onBackground} name="leftcircleo" size={cellSize/(sizeConst)}/>
         </Pressable>
         :
         <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
@@ -1136,13 +1137,13 @@ const HintSection = (props) => {
       {(isRightArrowRendered(onFinalStep))
         ?
         <Pressable onPress={rightArrowClicked}>
-          <AntDesign color="white" name="rightcircleo" size={cellSize/(sizeConst)}/>
+          <AntDesign color={theme.colors.onBackground} name="rightcircleo" size={cellSize/(sizeConst)}/>
         </Pressable>
         :
         (isCheckMarkRendered(onFinalStep))
           ?
           <Pressable onPress={checkMarkClicked}>
-            <AntDesign color="white" name="checkcircle" size={cellSize/(sizeConst)}/>
+            <AntDesign color={theme.colors.onBackground} name="checkcircle" size={cellSize/(sizeConst)}/>
           </Pressable>
           :
           <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
