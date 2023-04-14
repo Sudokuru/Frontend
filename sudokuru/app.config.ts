@@ -14,7 +14,7 @@ export default {
     scheme: 'sudokuru',
     owner: "sudokuru",
     version: '0.0.0',
-    icon: './assets/favicon.ico',
+    icon: 'favicon.ico',
     platforms: [
         "ios",
         "android"
