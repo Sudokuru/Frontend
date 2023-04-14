@@ -9,6 +9,7 @@ import Header from "../Components/Header";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import EndGameModal from "../Components/Sudoku Board/EndGameModal";
+import { rgba } from 'polished';
 
 
 
@@ -79,6 +80,8 @@ const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previo
                                 numWrongCellsPlayed={gameResultNumWrongCellsPlayed}
                                 difficulty={gameResultPuzzleDifficulty}
                                 ></EndGameModal>}
+                    alertContainerStyle = {{ backgroundColor: rgba(theme.colors.background, 0.3) }}
+                    overlayStyle={{ backgroundColor: 'transparent' }}
                 />
             </SafeAreaView>
         </SafeAreaProvider>
