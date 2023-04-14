@@ -1022,8 +1022,8 @@ const PauseButton = ({ handlePause, isPaused }) => {
     <Pressable onPress={handlePause}>
       {
         (isPaused) ?
-            <MaterialCommunityIcons color="white" name="play" size={cellSize/(sizeConst)}/> :
-            <MaterialCommunityIcons color="white" name="pause" size={cellSize/(sizeConst)}/>
+            <MaterialCommunityIcons color="white" name="play" size={cellSize/(sizeConst)} style={{ marginBottom: 5 }}/> :
+            <MaterialCommunityIcons color="white" name="pause" size={cellSize/(sizeConst)} style={{ marginBottom: 5 }}/>
       }
     </Pressable>
   )
