@@ -45,7 +45,8 @@ const Lesson = (props: { route: { params: { params: any; }; }; }) => {
                     name == "HIDDEN_SINGLE" ? lessonName = 'Hidden Single' :
                         name == "HIDDEN_SET" ? lessonName = 'Hidden Set' :
                             name == "SUDOKU_101" ? lessonName = 'Sudoku 101' :
-                                name == "SIMPLIFY_NOTES" ? lessonName = 'Simplify Notes' : lessonName = 'Null';
+                                name == "SIMPLIFY_NOTES" ? lessonName = 'Simplify Notes' :
+                                    name == "POINTING_SET" ? lessonName = 'Pointing Set' : lessonName = 'Null';
         return lessonName;
     }
 
