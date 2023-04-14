@@ -335,9 +335,7 @@ function getHint(board, solution, strategies)
   let solutionArray = componentSolutionValsToArray(solution);
   let hint;
   try {
-    console.log(JSON.stringify(boardArray) + "\n\n" + JSON.stringify(notesArray) + "\n\n" + JSON.stringify(strategies) + "\n\n" + JSON.stringify(solutionArray))
     hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
-    if (hint.strategy == "POINTING_PAIR") console.log(JSON.stringify(hint))
   } catch (e) {
     console.log(e);
   }
@@ -1446,15 +1444,14 @@ export default class SudokuBoard extends React.Component<any, any, any, any, any
         break;
       case "POINTING_PAIR":
       case "POINTING_TRIPLET":
-        console.log("Pointing Set");
         // three steps, three objects
         hintSteps.push({}) // box and causes
         hintSteps.push({}) // row/col and rem highlight
         hintSteps.push({}) // row/col and rem delete
 
         // seperate the groups which are boxes and which are not boxes
-        for (let i = 0; i < groups.length; i++)
-          if (groups[i][0] == "box")
+        for (let i = groups.length - 2; i < groups.length; i++)
+          if (groups[i].type == "box")
             boxGroups.push(groups[i])
           else
             nonBoxGroups.push(groups[i])
