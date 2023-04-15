@@ -11,6 +11,7 @@ import {AUDIENCE, CLIENT_ID, DOMAIN, SCOPE} from '@env'
 import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token";
 import {useNavigation} from "@react-navigation/native";
 import {useFocusEffect} from "@react-navigation/core";
+import {PreferencesContext} from "../../Contexts/PreferencesContext";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -120,6 +121,26 @@ const LoginButton = () => {
     }, [result]);
 
 
+    const { toggleTheme, isThemeDark, toggleHighlightSet, isHighlightSet,
+        isHighlightBox, toggleHighlightBox, toggleHighlightColumn, isHighlightColumn, toggleHighlightRow, isHighlightRow
+    } = React.useContext(PreferencesContext);
+
+    // Reset user information on logout for the next user
+    function resetUserInformation():void {
+        // remove tokens
+        removeValue("access_token");
+        removeValue("id_token");
+
+        // reset preferences
+        if (!isThemeDark) { toggleTheme(); console.log("Hello!") }
+        if (!isHighlightSet) { toggleHighlightSet(); }
+        if (!isHighlightColumn) { toggleHighlightColumn(); }
+        if (!isHighlightRow) { toggleHighlightRow(); }
+        if (!isHighlightBox) { toggleHighlightBox(); }
+
+        navigation.navigate('Landing');
+    }
+
     return (
         name ? (
                 <Button mode="contained" testID={"Logout Button"} onPress={
@@ -127,14 +148,10 @@ const LoginButton = () => {
                         // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
                         if (Platform.OS == "ios" || Platform.OS == "android"){
                             WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
-                                .then(r => removeValue("access_token"))
-                                .then(r => removeValue("id_token"))
-                                .then(r => navigation.navigate('Landing'));
+                                .then(r => resetUserInformation());
                         } else {
                             WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
-                                .then(r => removeValue("access_token"))
-                                .then(r => removeValue("id_token"))
-                                .then(r => navigation.navigate('Landing'));
+                                .then(r => resetUserInformation());
                         }
                     }
                 }>
