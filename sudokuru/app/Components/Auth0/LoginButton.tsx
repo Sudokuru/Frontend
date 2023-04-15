@@ -132,7 +132,7 @@ const LoginButton = () => {
         removeValue("id_token");
 
         // reset preferences
-        if (!isThemeDark) { toggleTheme(); console.log("Hello!") }
+        if (!isThemeDark) { toggleTheme(); }
         if (!isHighlightSet) { toggleHighlightSet(); }
         if (!isHighlightColumn) { toggleHighlightColumn(); }
         if (!isHighlightRow) { toggleHighlightRow(); }
