@@ -1,23 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, useWindowDimensions, View, ScrollView} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header";
 import {Switch, Text, useTheme} from "react-native-paper";
-import {getKeyString} from "../Functions/Auth0/token";
+import {getKeyString, getTokenName, getTokenNickname} from "../Functions/Auth0/token";
 import jwtDecode from "jwt-decode";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {formatLessonNameArray} from "../Functions/ContextParsing/learnedLessons";
+import {useFocusEffect} from "@react-navigation/core";
 
 
 
-let token: string = '';
-  getKeyString("id_token").then(result => {
-  token = result!; });
 
 const ProfilePage = () => {
-  const theme = useTheme();
 
-  const decoded: any = jwtDecode(token) as string;
+    const [email, setEmail] = useState<string>();
+    const [nickname, setNickname] = useState<string>();
+
+    // This will be run once every time the user goes to the profile page
+    // todo in the future, we can have email and nickname be stored in context and be set when user logs in
+    // todo this will avoid multiple calls to retrieve the token
+    useFocusEffect(
+        React.useCallback(() => {
+            getTokenName().then(email => setEmail(email));
+            getTokenNickname().then(nickname => setNickname(nickname));
+        }
+    , []));
+
+
+    const theme = useTheme();
 
     const size = useWindowDimensions();
     const reSize = Math.min(size.width, size.height);
@@ -36,11 +47,11 @@ const ProfilePage = () => {
                         <View style={{ backgroundColor: '#fff', borderRadius: 10, padding: 20 }}>
                             <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Name: </Text>
-                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{decoded.nickname}</Text>
+                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{nickname}</Text>
                             </View>
                             <View style={{ marginBottom: 10, flexDirection: 'row' }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Email: </Text>
-                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{decoded.name}</Text>
+                                <Text style={{ fontSize: reSize/20, fontWeight: 'bold', color: '#D9A05B' }}>{email}</Text>
                             </View>
                             <View style={{ marginBottom: 10 }}>
                                 <Text style={{ fontSize: reSize/22, color: '#025E73'}}>Strategies Learned:</Text>
