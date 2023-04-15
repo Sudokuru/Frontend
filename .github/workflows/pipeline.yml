@@ -8,7 +8,11 @@ on:
     branches:
       - main
 
-concurrency: main_workflow
+
+# https://stackoverflow.com/questions/74117321/if-condition-in-concurrency-in-gha
+# Each PR will share a group ID, each main workflow will have different group IDs
+group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
+cancel-in-progress: true
 
 jobs:
   app_preview_dev:
