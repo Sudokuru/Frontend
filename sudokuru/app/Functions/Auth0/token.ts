@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import jwtDecode from "jwt-decode";
 import {Auth0JwtPayload} from "../../../app.config";
 
-/*
+/**
  * Removes item from AsyncStorage
  * Takes in the key of the item to be removed from AsyncStorage
  */
@@ -14,7 +14,7 @@ export const removeValue = async (key: string) => {
     }
 }
 
-/*
+/**
  * Stores item in AsyncStorage
  * Takes in the key of the item to be stored
  * Takes in the value of the item to be stored
@@ -27,7 +27,7 @@ export const storeData = async (key: string, value: any) => {
     }
 }
 
-/*
+/**
  * Returns the JSON value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
@@ -42,7 +42,7 @@ export const getKeyJSON = async (key: string) => {
     }
 }
 
-/*
+/**
  * Returns the String value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
@@ -57,13 +57,13 @@ export const getKeyString = async (key: string) => {
     }
 }
 
-/*
+/**
  * Below are functions to retrieve values from the token
  * after the getKey function has been used to retrieve the JSON
  */
 
-/*
- * Returns the name value of a token
+/**
+ * Returns the name value of a token (Email)
  */
 export async function getTokenName(){
     let value: any = await getKeyJSON("id_token");
@@ -74,7 +74,19 @@ export async function getTokenName(){
     return "";
 }
 
-/*
+/**
+ * Returns the nickname value of a token
+ */
+export async function getTokenNickname(){
+    let value: any = await getKeyJSON("id_token");
+    if (value != null){
+        let { nickname } = value;
+        return nickname;
+    }
+    return "";
+}
+
+/**
  * Returns the expiration value of a token
  */
 export async function getTokenExp(){
