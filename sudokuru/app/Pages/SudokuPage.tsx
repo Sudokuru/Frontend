@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, {useEffect} from 'react';
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
@@ -17,12 +16,10 @@ import { rgba } from 'polished';
 
 let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
 
-const SudokuPage = ({route, navigation}) => { // TODO: Take in props from previous page instead of static values
+const SudokuPage = ({route, navigation}: any) => { // TODO: Take in props from previous page instead of static values
 
     const { gameType } = route.params;
     const { difficulty } = route.params;
-
-
 
     const theme = useTheme();
 

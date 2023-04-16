@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
@@ -7,7 +6,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Header from "../Components/Header";
 import {useNavigation} from "@react-navigation/native";
 
-const DrillPage = (props) => {
+const DrillPage = (props: any) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
 
   const navigation: any = useNavigation();
