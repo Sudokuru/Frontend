@@ -4,21 +4,13 @@ import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
 import {useNavigation} from "@react-navigation/native";
 
 const DrillPage = (props) => {
   let strategy = props.route.params ? props.route.params.params : "no props.route.params in DrillPage"
-  let [fontsLoaded] = useFonts({
-      Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
-  });
 
   const navigation: any = useNavigation();
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <SafeAreaProvider>
