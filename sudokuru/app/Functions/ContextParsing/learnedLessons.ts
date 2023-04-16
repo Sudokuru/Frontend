@@ -1,4 +1,4 @@
-/*
+/**
  * This function receives a lesson array and returns the formatted lessons seperated by newlines
  */
 export const formatLessonNameArray = (learnedLessons: string[]) => {
@@ -11,7 +11,7 @@ export const formatLessonNameArray = (learnedLessons: string[]) => {
   return formattedLessonArray.join('\r\n');
 }
 
-/*
+/**
  * This function formats and returns a lesson name
  */
 export const formatOneLessonName = (lessonName: string) => {
@@ -21,7 +21,7 @@ export const formatOneLessonName = (lessonName: string) => {
   return words.join(" ");
 }
 
-/*
+/**
  * This function formats a lesson name and returns the word of the provided index
  */
 export const getOneLessonPartialName = (lessonName: string, wordIndex: number) => {
@@ -30,7 +30,7 @@ export const getOneLessonPartialName = (lessonName: string, wordIndex: number) =
   return words[wordIndex];
 }
 
-/*
+/**
  * This function returns an array of all locked lessons for the user
  */
 export const getLockedLessons = (learnedLessons: string[], avaliableLessons: string[]): string[] => {
@@ -48,7 +48,7 @@ export const getLockedLessons = (learnedLessons: string[], avaliableLessons: str
   }
 }
 
-/*
+/**
  * Returns all elements from avaliableLessons that are not in learnedLessons
  */
 // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
