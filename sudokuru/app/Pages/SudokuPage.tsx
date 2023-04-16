@@ -9,14 +9,15 @@ import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import EndGameModal from "../Components/Sudoku Board/EndGameModal";
 import { rgba } from 'polished';
+import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
-let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
+const SudokuPage = ({route, navigation}: any) => {
 
-const SudokuPage = ({route, navigation}: any) => { // TODO: Take in props from previous page instead of static values
+    const { learnedLessons } = React.useContext(PreferencesContext);
 
     const { gameType } = route.params;
     const { difficulty } = route.params;
@@ -62,7 +63,7 @@ const SudokuPage = ({route, navigation}: any) => { // TODO: Take in props from p
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={strategies} navigation={navigation} showGameResults={showGameResults}/>
+                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={learnedLessons} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
