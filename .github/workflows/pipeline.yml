@@ -82,15 +82,50 @@ jobs:
         run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} eas build --non-interactive --platform android --local
         working-directory: ./sudokuru
         env:
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildDev
 
       - name: Upload SDK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Android SDK
-          path: sudokuru/Build/*.apk
+          name: Android Dev SDK
+          path: sudokuru/BuildDev/*.apk
 
-  deploy_app:
+  app_build_prod:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: npm ci
+        working-directory: ./sudokuru
+
+      - name: 🚀 Build app
+        run: USERGAMESTATISTICSBFFURL=${{ secrets.PROD_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.PROD_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.PROD_DOMAIN }} CLIENT_ID=${{ secrets.PROD_CLIENT_ID }} AUDIENCE=${{ secrets.PROD_AUDIENCE }} SCOPE=${{ secrets.PROD_SCOPE }} eas build --non-interactive --platform android --local
+        working-directory: ./sudokuru
+        env:
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildProd
+
+      - name: Upload SDK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Android Prod SDK
+          path: sudokuru/BuildProd/*.apk
+
+  deploy_app_dev:
     name: Deploy to Itch.io
     needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -99,7 +134,7 @@ jobs:
       - name: Download SDK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Android SDK
+          name: Android Dev SDK
 
       - name: Install Butler
         run: |
@@ -110,6 +145,29 @@ jobs:
 
       - name: Update Itch.io Android Alpha App
         run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-android
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+
+  deploy_app_prod:
+    name: Deploy to Itch.io
+    needs: [ app_build_prod ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download SDK Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Android Prod SDK
+
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+
+      - name: Update Itch.io Android Prod App
+        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-android
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
