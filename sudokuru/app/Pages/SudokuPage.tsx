@@ -3,7 +3,6 @@ import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { useFonts, Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import Header from "../Components/Header";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
@@ -46,15 +45,6 @@ const SudokuPage = ({route, navigation}: any) => {
             setGameResultsVisible(true);
         }
     }, [gameResultTime]);
-
-
-    let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
-    });
-
-    if (!fontsLoaded) {
-        return null;
-    }
 
     return (
         <SafeAreaProvider>
