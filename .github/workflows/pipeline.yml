@@ -84,10 +84,10 @@ jobs:
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildDev
 
-      - name: Upload SDK Artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Android Dev SDK
+          name: Android Dev APK
           path: sudokuru/BuildDev/*.apk
 
   app_build_prod:
@@ -119,10 +119,10 @@ jobs:
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildProd
 
-      - name: Upload SDK Artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Android Prod SDK
+          name: Android Prod APK
           path: sudokuru/BuildProd/*.apk
 
   deploy_app_dev:
@@ -131,10 +131,10 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download SDK Artifact
+      - name: Download APK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Android Dev SDK
+          name: Android Dev APK
 
       - name: Install Butler
         run: |
@@ -154,10 +154,10 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download SDK Artifact
+      - name: Download APK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Android Prod SDK
+          name: Android Prod APK
 
       - name: Install Butler
         run: |
