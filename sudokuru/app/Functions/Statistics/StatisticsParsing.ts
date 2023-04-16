@@ -16,5 +16,4 @@ export const retrieveTotalStatistics = (totalStatistics: any) => {
             }
         }
     }
-
 }
