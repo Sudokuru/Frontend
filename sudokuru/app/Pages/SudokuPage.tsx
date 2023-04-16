@@ -10,8 +10,6 @@ import EndGameModal from "../Components/Sudoku Board/EndGameModal";
 import { rgba } from 'polished';
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 
-
-
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
 const SudokuPage = ({route, navigation}: any) => {
