@@ -126,7 +126,7 @@ jobs:
           path: sudokuru/BuildProd/*.apk
 
   deploy_app_dev:
-    name: Deploy to Itch.io
+    name: Deploy Dev app to Itch.io
     needs: [ app_build_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -149,7 +149,7 @@ jobs:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
   deploy_app_prod:
-    name: Deploy to Itch.io
+    name: Deploy Prod app to Itch.io
     needs: [ app_build_prod ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -188,7 +188,7 @@ jobs:
 
   deploy_website_prod:
     name: Deploy Prod Website
-    needs: [ app_build_dev ]
+    needs: [ app_build_prod ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
