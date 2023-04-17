@@ -333,12 +333,14 @@ function componentSolutionValsToArray(solution)
 
 function getHint(board, solution, strategies)
 {
+  let hintStrategies = [...strategies];
+  hintStrategies.push("AMEND_NOTES", "SIMPLIFY_NOTES");
   let boardArray = componentBoardValsToArray(board);
   let notesArray = componentBoardNotesToArray(board);
   let solutionArray = componentSolutionValsToArray(solution);
   let hint;
   try {
-    hint = Puzzles.getHint(boardArray, notesArray, strategies, solutionArray);
+    hint = Puzzles.getHint(boardArray, notesArray, hintStrategies, solutionArray);
   } catch (e) {
     console.log(e);
   }
