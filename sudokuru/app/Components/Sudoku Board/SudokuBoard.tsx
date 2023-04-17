@@ -14,7 +14,6 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
-import {convertLessonsToStrategies} from "../../Functions/ContextParsing/learnedLessons";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -739,6 +738,7 @@ let puzzleString = "";
 let notesString = "";
 
 const Cell = (props) => {
+
   const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults, gameType } = props;
   const cellSize = getCellSize();
 
@@ -1189,13 +1189,6 @@ function getNumberOfGroupsAssignedForNumber(number, groups) {
 }
 
 
-interface SudokuBoardProps {
-  gameType: string;
-  strategies: string[];
-  difficulty?: number;
-  navigation?: any;
-  showGameResults?: any;
-}
 
 export default class SudokuBoard extends React.Component<SudokuBoardProps> {
   constructor(props) {
@@ -2040,4 +2033,12 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
       </View>
     );
   }
+}
+
+interface SudokuBoardProps {
+  gameType: string;
+  strategies: string[];
+  difficulty?: number;
+  navigation?: any;
+  showGameResults?: any;
 }

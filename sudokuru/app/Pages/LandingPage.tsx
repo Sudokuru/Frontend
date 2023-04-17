@@ -8,6 +8,14 @@ import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { rgba } from 'polished';
+import {
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium, Inter_700Bold,
+    useFonts
+} from "@expo-google-fonts/inter";
 
 const LandingPage = () => {
 
@@ -25,6 +33,14 @@ const LandingPage = () => {
     const newUser = 1;
 
     let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_SINGLE", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
+
+    let [fontsLoaded] = useFonts({
+        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     async function canProceed() {
         await getTokenName().then(
