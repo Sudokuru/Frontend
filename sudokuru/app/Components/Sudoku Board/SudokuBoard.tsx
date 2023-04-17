@@ -396,7 +396,7 @@ async function generateGame(url, props) {
   let gameData = null;
 
   if (props.gameType == "StartGame"){
-    console.log("DIFF", props.difficulty);
+    console.log("DIFF", props.difficulty, "TYPE: ", typeof(props.difficulty));
     console.log("JSON", JSON.stringify(props.difficulty))
     gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
         game => {
