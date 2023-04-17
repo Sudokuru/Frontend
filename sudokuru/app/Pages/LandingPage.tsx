@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React from 'react';
-import {Pressable, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import {Platform, Pressable, Text, useWindowDimensions, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from "@react-navigation/native";
 import Header from "../Components/Header";
@@ -8,7 +7,6 @@ import {getTokenName} from "../Functions/Auth0/token";
 import Alert from "react-native-awesome-alerts";
 import {useTheme} from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { useFonts, Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
 import { rgba } from 'polished';
 
 const LandingPage = () => {
@@ -27,14 +25,6 @@ const LandingPage = () => {
     const newUser = 1;
 
     let strategies = ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET", "HIDDEN_SINGLE", "HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET"];
-
-    let [fontsLoaded] = useFonts({
-        Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, Inter_500Medium, Inter_700Bold
-    });
-
-    if (!fontsLoaded) {
-        return null;
-    }
 
     async function canProceed() {
         await getTokenName().then(

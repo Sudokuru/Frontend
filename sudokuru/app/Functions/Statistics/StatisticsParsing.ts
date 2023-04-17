@@ -1,11 +1,10 @@
 
-/*
+/**
  * Given the totalStatistics value, retrieves the total statistics of the user
  */
 export const retrieveTotalStatistics = (totalStatistics: any) => {
     for (let i = 0; i < totalStatistics.length; i++){
         if (totalStatistics[i].dateRange == new Date("1111-11-11").toISOString()){
-            console.log("We FOund It");
             return {
                 totalScore: totalStatistics[i].score,
                 numGamesPlayed: totalStatistics[i].numGamesPlayed,
@@ -17,5 +16,4 @@ export const retrieveTotalStatistics = (totalStatistics: any) => {
             }
         }
     }
-
 }
