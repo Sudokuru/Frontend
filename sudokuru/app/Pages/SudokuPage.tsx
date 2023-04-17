@@ -16,6 +16,7 @@ import {convertLessonsToStrategies} from "../Functions/ContextParsing/learnedLes
 const SudokuPage = ({route, navigation}: any) => {
 
     const { learnedLessons } = React.useContext(PreferencesContext);
+    const cloneLearnedLessons = [...learnedLessons]
 
     const { gameType } = route.params;
     const { difficulty } = route.params;
@@ -52,7 +53,7 @@ const SudokuPage = ({route, navigation}: any) => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={convertLessonsToStrategies(learnedLessons)} navigation={navigation} showGameResults={showGameResults}/>
+                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={convertLessonsToStrategies(cloneLearnedLessons)} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
