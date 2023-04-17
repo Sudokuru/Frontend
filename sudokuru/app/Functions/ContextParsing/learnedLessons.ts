@@ -55,3 +55,36 @@ export const getLockedLessons = (learnedLessons: string[], avaliableLessons: str
 export const arrayDifference = (learnedLessons: string[], avaliableLessons: string[]) => {
   return avaliableLessons.filter(x => !learnedLessons.includes(x));
 }
+
+
+export const convertLessonsToStrategies = (learnedLessons: string[]) => {
+  if (learnedLessons.includes("NAKED_SET")){
+    let index = learnedLessons.indexOf("NAKED_SET");
+    learnedLessons.splice(index, 1);
+    learnedLessons.push("NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET");
+  }
+
+  if (learnedLessons.includes("HIDDEN_SET")){
+    let index = learnedLessons.indexOf("HIDDEN_SET");
+    learnedLessons.splice(index, 1);
+    learnedLessons.push("HIDDEN_PAIR", "HIDDEN_TRIPLET", "HIDDEN_QUADRUPLET");
+  }
+  if (learnedLessons.includes("POINTING_SET")){
+    let index = learnedLessons.indexOf("POINTING_SET");
+    learnedLessons.splice(index, 1);
+    learnedLessons.push("POINTING_PAIR", "POINTING_TRIPLET");
+  }
+  if (learnedLessons.includes("SUDOKU_101")){
+    let index = learnedLessons.indexOf("SUDOKU_101");
+    learnedLessons.splice(index, 1);
+  }
+  if (learnedLessons.includes("AMEND_NOTES")){
+    let index = learnedLessons.indexOf("AMEND_NOTES");
+    learnedLessons.splice(index, 1);
+  }
+  if (learnedLessons.includes("SIMPLIFY_NOTES")){
+    let index = learnedLessons.indexOf("SIMPLIFY_NOTES");
+    learnedLessons.splice(index, 1);
+  }
+  return learnedLessons;
+}

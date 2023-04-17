@@ -14,6 +14,7 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
+import {convertLessonsToStrategies} from "../../Functions/ContextParsing/learnedLessons";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -396,8 +397,6 @@ async function generateGame(url, props) {
   let gameData = null;
 
   if (props.gameType == "StartGame"){
-    console.log("DIFF", props.difficulty, "TYPE: ", typeof(props.difficulty));
-    console.log("JSON", JSON.stringify(props.difficulty))
     gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
         game => {
           // If game object is not returned, you get redirected to Main Page

@@ -47,7 +47,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "^13.4.0",
     "react-native-web": "~0.18.12",
-    "sudokuru": "1.18.0",
+    "sudokuru": "^1.18.2",
     "victory-native": "^36.6.8"
   },
   "devDependencies": {

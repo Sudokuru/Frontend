@@ -9,6 +9,7 @@ import {useTheme} from "react-native-paper";
 import EndGameModal from "../Components/Sudoku Board/EndGameModal";
 import { rgba } from 'polished';
 import {PreferencesContext} from "../Contexts/PreferencesContext";
+import {convertLessonsToStrategies} from "../Functions/ContextParsing/learnedLessons";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
@@ -18,8 +19,6 @@ const SudokuPage = ({route, navigation}: any) => {
 
     const { gameType } = route.params;
     const { difficulty } = route.params;
-
-    console.log(difficulty);
 
     const theme = useTheme();
 
@@ -53,7 +52,7 @@ const SudokuPage = ({route, navigation}: any) => {
                 <View style={homeScreenStyles.home}>
                     <View style={styles.container}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={learnedLessons} navigation={navigation} showGameResults={showGameResults}/>
+                        <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={convertLessonsToStrategies(learnedLessons)} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
                     </View>
                 </View>
