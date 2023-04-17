@@ -19,6 +19,8 @@ const SudokuPage = ({route, navigation}: any) => {
     const { gameType } = route.params;
     const { difficulty } = route.params;
 
+    console.log(difficulty);
+
     const theme = useTheme();
 
     const [gameResultsVisible, setGameResultsVisible] = React.useState(false);
