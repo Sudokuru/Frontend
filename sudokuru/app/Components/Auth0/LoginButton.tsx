@@ -12,6 +12,8 @@ import {getTokenName, removeValue, storeData} from "../../Functions/Auth0/token"
 import {useNavigation} from "@react-navigation/native";
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
+import * as Linking from 'expo-linking';
+import {red} from "react-native-reanimated/lib/types/lib";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
@@ -32,7 +34,7 @@ const scope = SCOPE;
 // we do not want to use the proxy in production
 export const isAuthSessionUseProxy = () => Constants.appOwnership === AppOwnership.Expo;
 
-const useProxy = Platform.select({ web: false, ios: isAuthSessionUseProxy(), android: isAuthSessionUseProxy() });
+const useProxy = Platform.select({ web: false, ios: false, android: isAuthSessionUseProxy() });
 let redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
 
 // Setting the redirect url for mobile for apk/iso builds
@@ -41,6 +43,7 @@ if ((Platform.OS == "ios" || Platform.OS == "android") && !useProxy){
 }
 
 const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
+const iOSRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=";
 
 const LoginButton = () => {
 
@@ -53,6 +56,10 @@ const LoginButton = () => {
     useFocusEffect(() => {
         getTokenName().then(data => setName(data));
     });
+
+    function handleRedirect() {
+        WebBrowser.dismissBrowser();
+    }
 
     const [request, result, promptAsync] = AuthSession.useAuthRequest(
         {
@@ -146,8 +153,16 @@ const LoginButton = () => {
                 <Button mode="contained" testID={"Logout Button"} onPress={
                     () => {
                         // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
-                        if (Platform.OS == "ios" || Platform.OS == "android"){
-                            WebBrowser.openAuthSessionAsync(revokeEndpoint).then(r => setName(""))
+                        // iOS auto-close https://github.com/expo/examples/issues/125
+                        if (Platform.OS == "ios") {
+                            Linking.addEventListener("url", handleRedirect);
+                            const redirectUrl = Linking.createURL("/");
+                            WebBrowser.openAuthSessionAsync(iOSRevokeEndpoint + redirectUrl).then(r => setName(""))
+                                .then(r => resetUserInformation());
+                        }
+                        else if (Platform.OS == "android"){
+                            const redirectUrl = Linking.createURL("/");
+                            WebBrowser.openAuthSessionAsync(iOSRevokeEndpoint + redirectUrl).then(r => setName(""))
                                 .then(r => resetUserInformation());
                         } else {
                             WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
