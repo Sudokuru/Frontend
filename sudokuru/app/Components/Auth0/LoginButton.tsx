@@ -27,7 +27,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 const auth0ClientId = CLIENT_ID;
 const authorizationEndpoint = "https://" + DOMAIN + "/authorize";
-const revokeEndpoint = "https://" + DOMAIN + "/logout";
+const revokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=";
 const audience = AUDIENCE;
 const scope = SCOPE;
 
@@ -41,9 +41,6 @@ let redirectUri = AuthSession.makeRedirectUri({ useProxy: useProxy });
 if ((Platform.OS == "ios" || Platform.OS == "android") && !useProxy){
     redirectUri = "sudokuru.vercel.app://" + DOMAIN + "/" + Platform.OS + "/sudokuru.vercel.app/callback";
 }
-
-const newRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=" + redirectUri;
-const iOSRevokeEndpoint = "https://" + DOMAIN + "/v2/logout?client_id=" + CLIENT_ID + "&returnTo=";
 
 const LoginButton = () => {
 
@@ -154,20 +151,10 @@ const LoginButton = () => {
                     () => {
                         // redirectUri needs to be fixed on mobile. Then this if statement can be removed.
                         // iOS auto-close https://github.com/expo/examples/issues/125
-                        if (Platform.OS == "ios") {
-                            Linking.addEventListener("url", handleRedirect);
-                            const redirectUrl = Linking.createURL("/");
-                            WebBrowser.openAuthSessionAsync(iOSRevokeEndpoint + redirectUrl).then(r => setName(""))
-                                .then(r => resetUserInformation());
-                        }
-                        else if (Platform.OS == "android"){
-                            const redirectUrl = Linking.createURL("/");
-                            WebBrowser.openAuthSessionAsync(iOSRevokeEndpoint + redirectUrl).then(r => setName(""))
-                                .then(r => resetUserInformation());
-                        } else {
-                            WebBrowser.openAuthSessionAsync(newRevokeEndpoint).then(r => setName(""))
-                                .then(r => resetUserInformation());
-                        }
+                        if (Platform.OS == "ios") { Linking.addEventListener("url", handleRedirect); }
+                        const redirectUrl = Linking.createURL("/");
+                        WebBrowser.openAuthSessionAsync(revokeEndpoint + redirectUrl).then(r => setName(""))
+                            .then(r => resetUserInformation());
                     }
                 }>
                     Logout
