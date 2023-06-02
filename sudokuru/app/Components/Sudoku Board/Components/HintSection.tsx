@@ -1,4 +1,4 @@
-import {getCellSize} from "../BoardFunctions";
+import {getCellSize} from "../Functions/BoardFunctions";
 import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
 import {useTheme} from "react-native-paper";
 import {AntDesign} from "@expo/vector-icons";

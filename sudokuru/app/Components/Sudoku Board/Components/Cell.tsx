@@ -1,4 +1,4 @@
-import {getBoxIndexFromXY, getCellNumber, getCellSize, replaceChar} from "../BoardFunctions";
+import {getBoxIndexFromXY, getCellNumber, getCellSize, replaceChar} from "../Functions/BoardFunctions";
 import React from "react";
 import {PreferencesContext} from "../../../Contexts/PreferencesContext";
 import {Pressable, StyleSheet, Text, View} from "react-native";

@@ -3,7 +3,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import {range} from "../sudoku";
 import PropTypes from "prop-types";
 import React from "react";
-import {getCellSize} from "../BoardFunctions";
+import {getCellSize} from "../Functions/BoardFunctions";
 
 const NumberControl = (props: any) => {
 

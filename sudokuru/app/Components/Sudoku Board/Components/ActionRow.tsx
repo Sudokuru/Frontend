@@ -1,4 +1,4 @@
-import {getCellSize} from "../BoardFunctions";
+import {getCellSize} from "../Functions/BoardFunctions";
 import {useTheme} from "react-native-paper";
 import {Platform, Pressable, StyleSheet, View} from "react-native";
 import {MaterialCommunityIcons} from "@expo/vector-icons";

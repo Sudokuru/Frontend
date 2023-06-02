@@ -7,7 +7,7 @@ import {Set} from "immutable";
 
 
 // Sudokuru Package Import
-const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
+const sudokuru = require("sudokuru/dist/bundle.js");
 
 // Sudokuru Package Constants
 const Puzzles = sudokuru.Puzzles;
