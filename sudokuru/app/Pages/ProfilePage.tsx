@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    container: {
+    statisticsTitle: {
         flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',

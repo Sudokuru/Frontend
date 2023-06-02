@@ -51,7 +51,7 @@ const SudokuPage = ({route, navigation}: any) => {
             <SafeAreaView>
                 <Header page={'Sudoku'}/>
                 <View style={homeScreenStyles.home}>
-                    <View style={styles.container}>
+                    <View style={styles.statisticsTitle}>
                         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
                         <SudokuBoard gameType={gameType} difficulty={difficulty} strategies={convertLessonsToStrategies(cloneLearnedLessons)} navigation={navigation} showGameResults={showGameResults}/>
                         <StatusBar style="auto" />
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    container: {
+    statisticsTitle: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

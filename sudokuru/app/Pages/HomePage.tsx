@@ -162,7 +162,7 @@ const HomePage = () => {
         <SafeAreaProvider>
             <SafeAreaView style={{height: '100%', width: '100%'}}>
                 <Header page={'Home'}/>
-                <View style={styles.container}>
+                <View style={styles.statisticsTitle}>
                     <View style={styles.container1}>
 
                         <View style={{flexDirection: 'row'}}>
@@ -319,7 +319,7 @@ const HomePage = () => {
 
 
 const styles = StyleSheet.create({
-    container: {
+    statisticsTitle: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

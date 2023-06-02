@@ -95,7 +95,7 @@ const StatisticsPage = () => {
         <SafeAreaView style={{height: '100%', width: '100%'}}>
           <ScrollView>
             <Header page="Statistics" />
-            <View style={styles.container}>
+            <View style={styles.statisticsTitle}>
               <TotalStatistics
                   totalScore={totalStatistics.totalScore}
                   numGamesPlayed={totalStatistics.numGamesPlayed}
@@ -145,7 +145,7 @@ const StatisticsPage = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  statisticsTitle: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
