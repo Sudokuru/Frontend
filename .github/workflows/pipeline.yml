@@ -2,9 +2,15 @@ name: "Pipeline"
 
 on:
   push:
+    paths:
+      - '.github/workflows/**'
+      - 'sudokuru/**'
     branches:
       - main
   pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'sudokuru/**'
     branches:
       - main
 
