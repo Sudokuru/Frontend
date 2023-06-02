@@ -160,10 +160,10 @@ const Cell = (props: any) => {
     return ( // Sudoku Cells
         <Pressable onPress={() => onClick(x, y)} disabled={landingMode} style={{ outline: "none"}}>
             <View style={[styles(cellSize).cellView,
-                (x % 3 === 0) && styles(cellSize).hardLineThickness,
-                (y % 3 === 0) && styles(cellSize).hardLineThickness,
-                (x === 8) && styles(cellSize).hardLineThickness,
-                (y === 8) && styles(cellSize).hardLineThickness,
+                (x % 3 === 0) && styles(cellSize).hardLineThicknessLeftWidth,
+                (y % 3 === 0) && styles(cellSize).hardLineThicknessTopWidth,
+                (x === 8) && styles(cellSize).hardLineThicknessRightWidth,
+                (y === 8) && styles(cellSize).hardLineThicknessBottomWidth,
 
                 // Border Highlighting
                 (inHintMode) && bgColor && {backgroundColor: bgColor},
@@ -210,8 +210,17 @@ const Cell = (props: any) => {
 let fallbackHeight = 30;
 
 const styles = (cellSize?: number, themeColor?: any) => StyleSheet.create({
-    hardLineThickness: {
+    hardLineThicknessLeftWidth: {
+        borderLeftWidth: (cellSize) ? cellSize * (3 / 40) : 40
+    },
+    hardLineThicknessTopWidth: {
+        borderTopWidth: (cellSize) ? cellSize * (3 / 40) : 40
+    },
+    hardLineThicknessRightWidth: {
         borderRightWidth: (cellSize) ? cellSize * (3 / 40) : 40
+    },
+    hardLineThicknessBottomWidth: {
+        borderBottomWidth: (cellSize) ? cellSize * (3 / 40) : 40
     },
     cellView: {
         height: cellSize ? cellSize : fallbackHeight,
