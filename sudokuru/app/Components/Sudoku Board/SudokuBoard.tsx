@@ -11,12 +11,11 @@ import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
-import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
   checkSolution,
-  formatTime, getBoxIndexFromXY, getCausesFromHint,
+  formatTime, getCausesFromHint,
   getCellNumber,
   getCellSize, getDrillSolutionCells,
   getGroupsFromHint,
@@ -24,6 +23,8 @@ import {
   strPuzzleToArray, updateBoardWithNumber, getHint
 } from "./BoardFunctions";
 import Cell from "./Components/Cell";
+import ActionRow from "./Components/ActionRow";
+import HintSection from "./Components/HintSection";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -45,10 +46,6 @@ let fallbackHeight = 30;
 let globalTime = 0;
 
 const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
-  hintArrowPlaceholderView: {
-    width: cellSize/(sizeConst),
-    height: cellSize/(sizeConst),
-  },
   hintAndPuzzleContainer: {
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -65,14 +62,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-  },
-  actionControlRow: {
-    width: cellSize ? cellSize * 8 : fallbackHeight * 8,
-    height: cellSize ? cellSize: fallbackHeight,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
   },
   headerControlRow: {
     alignSelf: "center",
@@ -102,32 +91,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
   },
-  hintSectionContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-  },
-  hintTextContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: cellSize ? cellSize * 5 : fallbackHeight * 5,
-  },
-  hintStratNameText: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2) ,
-    color: "#F2CA7E",
-  },
-  hintActionInfoText: {
-    fontSize: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
-    color: theme,
-    textAlign: 'center',
-  }
 });
 
 async function generateGame(url, props) {
@@ -279,54 +242,7 @@ export async function finishGame(activeGame, showResults) {
     });
 }
 
-
-const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
-  const cellSize = getCellSize();
-  const theme = useTheme();
-
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-
-  return (
-    <View style={styles(cellSize).actionControlRow}>
-      {/* Undo */}
-      <Pressable onPress={undo} disabled={!history.size || inHintMode}>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="undo" size={cellSize/(sizeConst)}/>
-      </Pressable>
-      {/* Note mode */}
-      <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
-        {inNoteMode
-            ? // note mode on
-          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-outline" size={cellSize/(sizeConst)}/>
-            : // note mode off
-          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-off-outline" size={cellSize/(sizeConst)}/>
-        }
-      </Pressable>
-      {/* Erase */}
-      <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="eraser" size={cellSize/(sizeConst)}/>
-      </Pressable>
-      {/* Hint */}
-      <Pressable onPress={ !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null }>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="help" size={cellSize/(sizeConst)}/>
-      </Pressable>
-    </View>
-  );
-};
-
-ActionRow.propTypes = {
-  inNoteMode: PropTypes.bool.isRequired,
-  prefilled: PropTypes.bool.isRequired,
-  undo: PropTypes.func.isRequired,
-  toggleNoteMode: PropTypes.func.isRequired,
-  eraseSelected: PropTypes.func.isRequired,
-  toggleHintMode: PropTypes.func.isRequired,
-  updateBoardInPlace: PropTypes.func.isRequired,
-  inHintMode: PropTypes.bool.isRequired,
-  boardHasConflict: PropTypes.func.isRequired,
-};
-
-const SubmitButton = (props) => {
+const DrillSubmitButton = (props) => {
   const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
 
@@ -341,7 +257,7 @@ const SubmitButton = (props) => {
   );
 };
 
-SubmitButton.propTypes = {
+DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
 };
 
@@ -419,63 +335,6 @@ HeaderRow.propTypes = {
 
 HeaderRow.defaultProps = {
     paused: false,
-}
-
-const HintSection = (props) => {
-  const { hintStratName, hintInfo, hintAction, currentStep, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
-  const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-  const theme = useTheme();
-  
-  const isRightArrowRendered = (onFinalStep) =>
-  {
-    return !onFinalStep;
-  }
-
-  const isLeftArrowRendered = (onFirstStep) =>
-  {
-    return !onFirstStep;
-  }
-
-  const isCheckMarkRendered = (onFinalStep) =>
-  {
-    return onFinalStep;
-  }
-
-  return (
-    <View style={styles(cellSize).hintSectionContainer}>
-      {(isLeftArrowRendered(onFirstStep))
-        ? // checkcircleo
-        <Pressable onPress={leftArrowClicked}>
-          <AntDesign color={theme.colors.onBackground} name="leftcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
-      <View style={styles(cellSize).hintTextContainer}>
-        <View>
-          <Text style={styles(cellSize).hintStratNameText}>{hintStratName}</Text>
-        </View>
-        <View>
-          <Text style={styles(cellSize, null, theme.colors.onBackground).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
-        </View>
-      </View>
-      {(isRightArrowRendered(onFinalStep))
-        ?
-        <Pressable onPress={rightArrowClicked}>
-          <AntDesign color={theme.colors.onBackground} name="rightcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        (isCheckMarkRendered(onFinalStep))
-          ?
-          <Pressable onPress={checkMarkClicked}>
-            <AntDesign color={theme.colors.onBackground} name="checkcircle" size={cellSize/(sizeConst)}/>
-          </Pressable>
-          :
-          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
-    </View>
-  );
 }
 
 //todo convert this class component into a functional component
@@ -1204,7 +1063,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     }
 
     return (
-      <SubmitButton
+      <DrillSubmitButton
         isDrillSolutionCorrect={isDrillSolutionCorrect}
         navigation={navigation}
       />
