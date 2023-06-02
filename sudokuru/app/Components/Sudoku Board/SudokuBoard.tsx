@@ -1,19 +1,19 @@
 // @ts-nocheck
-import React from 'react';
-import { useState } from 'react';
-import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
+import React, {useState} from 'react';
+import {Platform, Pressable, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import {List, Set} from 'immutable';
 import PropTypes from 'prop-types';
 import {useNavigation} from "@react-navigation/native";
 
-import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard, range} from './sudoku';
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard} from './sudoku';
+import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
+import NumberControl from "./Components/NumberControl";
 
 // Sudokuru Package Import
 const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
@@ -56,13 +56,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  cellContainer: {
-    height: cellSize ? cellSize : fallbackHeight,
-    width: cellSize ? cellSize : fallbackHeight,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   noteViewParent: {
     flex: 1,
     justifyContent: 'center',
@@ -103,9 +96,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     alignContent: 'stretch',
     alignItems: 'stretch',
     lineHeight: cellSize ? cellSize : fallbackHeight,
-  },  
-  borderThick: {
-    borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
   },
   conflict: {
     // styles for cells with conflict prop
@@ -148,44 +138,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
-  },
-  actionControlButton: {
-    height: cellSize ? cellSize * (0.5) : 1000,
-    width: cellSize ? cellSize * (0.5) : 1000,
-    aspectRatio: 1,
-  },
-  numberControlRow: {
-    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-    height: cellSize ? cellSize: fallbackHeight,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  numberContainer: {
-    width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
-    height: cellSize ? cellSize : fallbackHeight,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    textAlign: 'center',
-    backgroundColor: theme,
-    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
-  },
-  numberControlText: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-    color: theme,
-  },
-  controlStyle: {
-    padding: 0,
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    transition: 'filter .5s ease-in-out',
-    width: '100%'
   },
   headerControlRow: {
     alignSelf: "center",
@@ -231,16 +183,10 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     alignItems: 'center',
     width: cellSize ? cellSize * 5 : fallbackHeight * 5,
   },
-  hintStratNameView: {
-
-  },
   hintStratNameText: {
     fontFamily: 'Inter_700Bold',
     fontSize: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2) ,
     color: gold,
-  },
-  hintActionInfoView: {
-
   },
   hintActionInfoText: {
     fontSize: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
@@ -530,40 +476,6 @@ const formatTime = (inputSeconds: number) => {
   return `${paddedDays}${paddedHours}${paddedMinutes}${paddedSeconds}`;
 };
 
-const NumberControl = (props) => {
-  const { prefilled, inNoteMode, fillNumber, addNumberAsNote, inHintMode } = props;
-  const cellSize = getCellSize();
-  const theme = useTheme();
-  return (
-    <View style={ styles(cellSize).numberControlRow }>
-      {range(9).map((i) => {
-        const number = i + 1;
-        const onClick = () => {
-            inNoteMode
-              ? addNumberAsNote(number)
-              : fillNumber(number);
-        }
-        return ( // Number Keys
-          <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize, null, theme.colors.primaryContainer).numberContainer }>
-            <Text style={styles(cellSize, null, theme.colors.onPrimaryContainer).numberControlText}>{number}</Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-NumberControl.propTypes = {
-  prefilled: PropTypes.bool.isRequired,
-  inNoteMode: PropTypes.bool.isRequired,
-  fillNumber: PropTypes.func.isRequired,
-  addNumberAsNote: PropTypes.func.isRequired,
-  inHintMode: PropTypes.bool.isRequired,
-};
-
-NumberControl.defaultProps = {
-};
-
 const Puzzle = (props) => {
   const { board, renderCell } = props;
   const cellSize = getCellSize();
@@ -592,8 +504,6 @@ Puzzle.propTypes = {
   onFinalStep: PropTypes.bool,
 };
 
-Puzzle.defaultProps = {
-};
 
 // function that converts x,y cell coords to a number
 const getCellNumber = (x, y) => {
@@ -606,11 +516,6 @@ const getBoxIndexFromCellNum = (cellNum) => {
 
 const getBoxIndexFromXY = (x,y) => {
   return Math.floor(x / 3) * 3 + Math.floor(y / 3);
-}
-
-const print = (str, contents) => {
-  console.log(str)
-  console.log(contents)
 }
 
 const getCausesFromHint = (hint) => {
@@ -720,18 +625,14 @@ function replaceChar(origString, replaceChar, index) {
   let firstPart = origString.substr(0, index);
   let lastPart = origString.substr(index + 1);
 
-  let newString = firstPart + replaceChar + lastPart;
-  return newString;
+  return firstPart + replaceChar + lastPart;
 }
 
 const checkSolution = (solution, x, y, value) => {
   let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
   let solutionValue = solution.charAt(cellNum);
   
-  if (solutionValue == value)
-    return true;
-  else
-    return false;
+  return solutionValue == value;
 }
 
 let puzzleString = "";
@@ -1130,10 +1031,10 @@ const HintSection = (props) => {
         <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
       }
       <View style={styles(cellSize).hintTextContainer}>
-        <View style={styles(cellSize).hintStratNameView}>
+        <View>
           <Text style={styles(cellSize).hintStratNameText}>{hintStratName}</Text>
         </View>
-        <View style={styles(cellSize).hintActionInfoView}>
+        <View>
           <Text style={styles(cellSize, null, theme.colors.onBackground).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
         </View>
       </View>
@@ -1159,7 +1060,7 @@ const HintSection = (props) => {
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions of 1 x 1.44444
  */
-function getCellSize()
+export function getCellSize()
 {
   const size = useWindowDimensions();
   
