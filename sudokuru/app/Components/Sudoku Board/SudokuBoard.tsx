@@ -122,6 +122,7 @@ Puzzle.propTypes = {
   onFinalStep: PropTypes.bool,
 };
 
+//todo this function cannot be moved until globalTime situation is handled
 export async function saveGame(activeGame) {
     let token = null;
 
@@ -187,6 +188,7 @@ const PauseButton = ({ handlePause, isPaused }) => {
   )
 }
 
+//todo this function cannot be moved until globalTime situation is handled
 const HeaderRow = ( props ) => { //  Header w/ timer and pause button
     const { currentTime, activeGame } = props;
     const [time, setTime] = useState(0);
