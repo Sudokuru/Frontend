@@ -1,12 +1,12 @@
 // @ts-nocheck
 import React, {useState} from 'react';
 import {Platform, Pressable, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
-import {List, Set} from 'immutable';
+import {Set} from 'immutable';
 import PropTypes from 'prop-types';
 import {useNavigation} from "@react-navigation/native";
 
 import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard} from './sudoku';
-import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
@@ -17,10 +17,10 @@ import {
   checkSolution,
   formatTime, getCausesFromHint,
   getCellNumber,
-  getCellSize, getDrillSolutionCells,
+  getCellSize,
   getGroupsFromHint,
-  getNumberOfGroupsAssignedForNumber, getPlacementsFromHint, getRemovalsFromHint, parseApiAndAddNotes, replaceChar,
-  strPuzzleToArray, updateBoardWithNumber, getHint
+  getNumberOfGroupsAssignedForNumber, getPlacementsFromHint, getRemovalsFromHint,
+  updateBoardWithNumber, getHint
 } from "./Functions/BoardFunctions";
 import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
@@ -47,17 +47,6 @@ let fallbackHeight = 30;
 let globalTime = 0;
 
 const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
-  hintAndPuzzleContainer: {
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  boardContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   bottomActions: {
     display: 'flex',
     alignItems: 'center',
@@ -93,34 +82,6 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     color: '#FFFFFF',
   },
 });
-
-const Puzzle = (props) => {
-  const { board, renderCell } = props;
-  const cellSize = getCellSize();
-
-  return (
-    <View style={styles(cellSize).hintAndPuzzleContainer}>
-      <View style={styles().boardContainer}>
-        {board.get('puzzle').map((row, i) => (
-          <View key={i} style={styles().rowContainer}>
-            { row.map((cell, j) => renderCell(cell, i, j)).toArray() }
-          </View>
-        )).toArray()}
-      </View>
-    </View>
-  );
-}
-
-Puzzle.propTypes = {
-  board: PropTypes.any,
-  inHintMode: PropTypes.bool,
-  renderCell: PropTypes.func.isRequired,
-  rightArrowClicked: PropTypes.func.isRequired,
-  leftArrowClicked: PropTypes.func.isRequired,
-  checkMarkClicked: PropTypes.func.isRequired,
-  onFirstStep: PropTypes.bool,
-  onFinalStep: PropTypes.bool,
-};
 
 //todo this function cannot be moved until globalTime situation is handled
 export async function saveGame(activeGame) {
