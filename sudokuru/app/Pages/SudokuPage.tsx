@@ -77,23 +77,6 @@ const SudokuPage = ({route, navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-    toggleIcons: {
-        flexDirection: 'row',
-        margin: 5
-    },
-    profileHeader: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
-    profileText: {
-        fontSize: 20,
-    },
-    profileButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
     statisticsTitle: {
         flex: 1,
         alignItems: 'center',

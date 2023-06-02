@@ -5,7 +5,6 @@ import StatisticsButton from "./Statistics/StatisticsButton";
 import {Image, Pressable, StyleSheet, View} from "react-native";
 import HomeButton from "./Home/HomeButton";
 import {useNavigation} from "@react-navigation/native";
-import {useTheme} from "react-native-paper";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 
 const Header = (props: any) => {
@@ -53,14 +52,6 @@ const styles = StyleSheet.create({
     toggleIcons: {
         flexDirection: 'row',
         margin: 5
-    },
-    profileHeader: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
-    profileText: {
-        fontSize: 20,
     },
     profileButtons: {
         flex: 1,
