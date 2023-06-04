@@ -26,13 +26,7 @@ import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import {generateGame} from "./Functions/generateGame";
-
-// Sudokuru Package Import
-const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
-const Drills = sudokuru.Drills;
+import {Puzzles} from "sudokuru"
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -85,10 +79,12 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
 
 //todo this function cannot be moved until globalTime situation is handled
 export async function saveGame(activeGame) {
-    let token = null;
+    let token: string = "";
 
     await getKeyString("access_token").then(result => {
-      token = result;
+      if (result){
+        token = result;
+      }
     });
 
     activeGame.currentTime = globalTime;

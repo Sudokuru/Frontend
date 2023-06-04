@@ -16,16 +16,10 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from 'polished';
+import {Statistics, Puzzles} from "sudokuru"
 
 const HomePage = () => {
     const navigation: any = useNavigation();
-
-    // Sudokuru Package Import
-    const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
-
-    // Sudokuru Package Constants
-    const Puzzles = sudokuru.Puzzles;
-    const Statistics = sudokuru.Statistics;
 
     const theme = useTheme();
 
@@ -85,9 +79,11 @@ const HomePage = () => {
 
             // This determines if user has active game and displays resume button conditionally.
             async function grabCurrentGame(url: string) {
-                let token = null;
+                let token: string = "";
                 await getKeyString("access_token").then(result => {
-                    token = result;
+                    if (result){
+                        token = result;
+                    }
                 });
 
                 await Puzzles.getGame(url, token).then(
@@ -107,9 +103,11 @@ const HomePage = () => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                let token = null;
+                let token: string = "";
                 await getKeyString("access_token").then(result => {
-                    token = result;
+                    if (result){
+                        token = result;
+                    }
                 });
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {

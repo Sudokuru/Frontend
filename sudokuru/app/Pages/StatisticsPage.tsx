@@ -13,12 +13,7 @@ import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from 'polished'
-
-// Sudokuru Package Import
-const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Statistics = sudokuru.Statistics;
+import {Statistics} from 'sudokuru'
  
 const StatisticsPage = () => {
   const theme = useTheme();
@@ -38,9 +33,11 @@ const StatisticsPage = () => {
 
   async function deleteUserStatistics(url: string) {
 
-    let token = null;
+    let token: string = "";
     await getKeyString("access_token").then(result => {
-      token = result;
+      if (result){
+        token = result;
+      }
     });
 
     await Statistics.deleteStatistics(url, token).then((res: any) => {

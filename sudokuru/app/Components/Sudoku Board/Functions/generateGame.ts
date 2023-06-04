@@ -2,21 +2,16 @@ import {getKeyString} from "../../../Functions/Auth0/token";
 import {makeBoard} from "../sudoku";
 import {getDrillSolutionCells, parseApiAndAddNotes, strPuzzleToArray} from "./BoardFunctions";
 import {List} from "immutable";
-
-
-// Sudokuru Package Import
-const sudokuru = require("../../../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
-const Drills = sudokuru.Drills;
+import {Puzzles, Drills} from 'sudokuru'
 
 export async function generateGame(url: any, props: any) {
 
-    let token = null;
+    let token: string = "";
 
     await getKeyString("access_token").then(result => {
-        token = result;
+        if (result){
+            token = result;
+        }
     });
 
     let gameData = null;
@@ -61,13 +56,13 @@ export async function generateGame(url: any, props: any) {
         );
     }
     else if (props.gameType == 'StartDrill'){
-        let token = null;
+        let token: string = "";
         await getKeyString("access_token").then(
             result => {
-                token = result;
+                token = (result) ? result : "";
             });
 
-        let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, props.strategies, token).then(game => {
+        let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(url, props.strategies, token).then(game => {
             // null check to verify that game is loaded in.
             if (game == null){
                 //navigation.navigate("Home");
@@ -88,7 +83,7 @@ export async function generateGame(url: any, props: any) {
         };
     }
     else if (props.gameType == 'Demo'){
-        let game = Puzzles.getRandomGame()
+        let game = Puzzles.getRandomGame();
         let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
         return {
             board,

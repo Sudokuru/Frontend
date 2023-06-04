@@ -1,16 +1,10 @@
 import {useWindowDimensions} from "react-native";
 import {Set} from "immutable";
+import { Puzzles } from "sudokuru"
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
  */
-
-
-// Sudokuru Package Import
-const sudokuru = require("sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
 
 /*
  * This function retrieves the user's device size and calculates the cell size
