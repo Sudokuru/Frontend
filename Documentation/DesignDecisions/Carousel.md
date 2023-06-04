@@ -17,3 +17,6 @@ component is being taken from the `src` folder for both platforms. This means th
 The new solution is to use parameterization as [described here](https://github.com/dohooo/react-native-reanimated-carousel/issues/357)
 
 
+HAHA NO CAROUSEL
+
+
