@@ -14,13 +14,8 @@ import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
-
-// Sudokuru Package Import
-const sudokuru = require("../../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Puzzles = sudokuru.Puzzles;
-const Drills = sudokuru.Drills;
+import {Puzzles, Drills} from "sudokuru";
+//import { Num } from 'example-typescript-package'
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -464,6 +459,7 @@ async function generateGame(url, props) {
     };
   }
   else if (props.gameType == 'Demo'){
+    //console.log(new Num(5).add(new Num(6)).val() === 11)
     game = Puzzles.getRandomGame()
     let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
     return {

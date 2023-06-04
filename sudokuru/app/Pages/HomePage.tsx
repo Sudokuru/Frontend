@@ -16,16 +16,10 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from 'polished';
+import {Puzzles, Statistics} from "sudokuru"
 
 const HomePage = () => {
     const navigation: any = useNavigation();
-
-    // Sudokuru Package Import
-    const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
-
-    // Sudokuru Package Constants
-    const Puzzles = sudokuru.Puzzles;
-    const Statistics = sudokuru.Statistics;
 
     const theme = useTheme();
 
