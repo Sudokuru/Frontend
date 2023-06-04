@@ -2,7 +2,8 @@ import {getKeyString} from "../../../Functions/Auth0/token";
 import {makeBoard} from "../sudoku";
 import {getDrillSolutionCells, parseApiAndAddNotes, strPuzzleToArray} from "./BoardFunctions";
 import {List} from "immutable";
-import {Puzzles, Drills} from 'sudokuru'
+import {Puzzles, Drills} from 'sudokuru';
+import { Num } from 'example-typescript-package'
 
 export async function generateGame(url: any, props: any) {
 
@@ -83,6 +84,7 @@ export async function generateGame(url: any, props: any) {
         };
     }
     else if (props.gameType == 'Demo'){
+        console.log(new Num(5).add(new Num(6)).val() === 11);
         let game = Puzzles.getRandomGame();
         let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
         return {
