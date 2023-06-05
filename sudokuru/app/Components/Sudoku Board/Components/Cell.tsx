@@ -199,7 +199,8 @@ const Cell = (props: any) => {
                         </View>
                         : value && <Text style={[styles(cellSize, null).cellText,
                         (!inHintMode && conflict && styles(cellSize).conflict,
-                        (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict)]}>{value}
+                        (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
+                        (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
                     </Text>
                 }
             </View>
@@ -263,6 +264,9 @@ const styles = (cellSize?: number, themeColor?: any) => StyleSheet.create({
         // styles for cells with isSelected and conflict props
         color: '#000000',
         backgroundColor: '#FF7C75',
+    },
+    prefilled: {
+
     },
     noteViewParent: {
         flex: 1,
