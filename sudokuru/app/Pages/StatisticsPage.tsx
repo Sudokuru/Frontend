@@ -11,15 +11,9 @@ import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
-let iHateEnv = USERGAMESTATISTICSBFFURL;
 import Alert from "react-native-awesome-alerts";
-import { rgba } from 'polished'
-
-// Sudokuru Package Import
-const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
-
-// Sudokuru Package Constants
-const Statistics = sudokuru.Statistics;
+import { rgba } from 'polished';
+import { Statistics } from "sudokuru"
  
 const StatisticsPage = () => {
   const theme = useTheme();

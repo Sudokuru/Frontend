@@ -1,5 +1,5 @@
 {
-  "name": "sudokuru",
+  "name": "frontend",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -48,7 +48,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg": "^13.4.0",
     "react-native-web": "~0.18.12",
-    "sudokuru": "^1.18.4",
+    "sudokuru": "^1.19.0",
     "victory-native": "^36.6.8"
   },
   "devDependencies": {

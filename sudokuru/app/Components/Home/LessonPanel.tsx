@@ -10,9 +10,7 @@ import {
     formatOneLessonName,
     getLockedLessons,
 } from "../../Functions/ContextParsing/learnedLessons";
-
-const sudokuru = require("../../../node_modules/sudokuru/dist/bundle"); // -- What works for me
-const Lessons = sudokuru.Lessons;
+import {Lessons} from "sudokuru";
 
 const LessonPanel = () => {
 

@@ -11,10 +11,7 @@ import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERGAMESTATISTICSBFFURL} from "@env";
-
-const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js"); // -- What works for me
-const Lessons = sudokuru.Lessons;
-const Statistics = sudokuru.Statistics;
+import {Lessons, Statistics} from "sudokuru";
 
 const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     //Brings in name of strategy from carousel
