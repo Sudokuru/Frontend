@@ -12,10 +12,10 @@ because they are local references.
 
 The Drills constant is used to make calls to the Drills API
 
-```javascript
+```typescript
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
-const sudokuru = require("../../node_modules/sudokuru/dist/bundle.js");
+import {Drills} from 'sudokuru'
 
 const Drills = sudokuru.Drills;
 ```

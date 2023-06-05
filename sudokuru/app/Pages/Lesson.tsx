@@ -11,7 +11,7 @@ import {useFocusEffect} from "@react-navigation/core";
 import {PreferencesContext} from "../Contexts/PreferencesContext";
 import {getKeyString} from "../Functions/Auth0/token";
 import {USERGAMESTATISTICSBFFURL} from "@env";
-import {Lessons, Statistics} from "sudokuru"
+import {Lessons, Statistics} from "sudokuru";
 
 const Lesson = (props: { route: { params: { params: any; }; }; }) => {
     //Brings in name of strategy from carousel

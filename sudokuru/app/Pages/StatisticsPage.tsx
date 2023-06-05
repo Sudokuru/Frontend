@@ -12,8 +12,8 @@ import {useFocusEffect} from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
-import { rgba } from 'polished'
-import {Statistics} from 'sudokuru'
+import { rgba } from 'polished';
+import { Statistics } from "sudokuru";
  
 const StatisticsPage = () => {
   const theme = useTheme();
