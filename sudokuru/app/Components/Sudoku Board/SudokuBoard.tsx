@@ -26,6 +26,7 @@ import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import {generateGame} from "./Functions/generateGame";
+import Puzzle from "./Components/Puzzle";
 import {Puzzles} from "sudokuru"
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
