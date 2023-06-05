@@ -24,7 +24,6 @@
     "@react-navigation/drawer": "6.6.2",
     "@react-navigation/native": "6.1.2",
     "@react-navigation/stack": "^6.3.16",
-    "example-typescript-package": "^0.2.2",
     "expo": "48.0.6",
     "expo-auth-session": "~4.0.3",
     "expo-constants": "~14.2.1",
