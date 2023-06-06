@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Image, Platform, useWindowDimensions, Pressable} from "react-native";
-
 import Header from "../Components/Header";
-import {Text, Button, useTheme, ActivityIndicator} from 'react-native-paper';
+import {Text, useTheme, ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from "@react-navigation/native";
 import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";

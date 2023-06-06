@@ -108,7 +108,7 @@ function CustomDrawerContent(props: any) {
   return (
     <ScrollView style={{backgroundColor: theme.colors.background}}>
       <SafeAreaView
-        style={styles.container}
+        style={styles.statisticsTitle}
       >
         {mainDrawer ? renderMainDrawer() : renderFilteredItemsDrawer()}
       </SafeAreaView>
@@ -117,24 +117,10 @@ function CustomDrawerContent(props: any) {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    height: 100,
-    flexDirection: 'row',
-    paddingVertical: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 75,
-  },
-  container: {
+  statisticsTitle: {
     flex: 1,
     zIndex: 1000,
     paddingTop: 15
-  },
-  centered: {
-    alignItems: 'center',
   },
   parentItem: {
     flexDirection: 'row',

@@ -18,7 +18,7 @@ const DrillPage = (props: any) => {
         <Header page={'Sudoku'}/>
         <View style={homeScreenStyles.home}>
 
-          <View style={styles.container}>
+          <View style={styles.statisticsTitle}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
             <SudokuBoard gameType={'StartDrill'} strategies={strategy} navigation={navigation}/>
             <StatusBar style="auto" />
@@ -30,33 +30,10 @@ const DrillPage = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-    toggleIcons: {
-        flexDirection: 'row',
-        margin: 5
-    },
-    profileHeader: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
-    profileText: {
-        fontSize: 20,
-    },
-    profileButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    container: {
+    statisticsTitle: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    backButton: {
-        paddingHorizontal: 5,
-        paddingVertical: 5,
-        top: 100,
-        position: 'absolute',
     },
 });
 

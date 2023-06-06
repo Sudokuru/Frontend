@@ -79,9 +79,11 @@ const HomePage = () => {
 
             // This determines if user has active game and displays resume button conditionally.
             async function grabCurrentGame(url: string) {
-                let token = null;
+                let token: string = "";
                 await getKeyString("access_token").then(result => {
-                    token = result;
+                    if (result){
+                        token = result;
+                    }
                 });
 
                 await Puzzles.getGame(url, token).then(
@@ -101,9 +103,11 @@ const HomePage = () => {
             // This determines what lessons the user has learned and conditionally displays everything.
             async function getUserLearnedLessons(url: string) {
 
-                let token = null;
+                let token: string = "";
                 await getKeyString("access_token").then(result => {
-                    token = result;
+                    if (result){
+                        token = result;
+                    }
                 });
 
                 await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
@@ -156,7 +160,7 @@ const HomePage = () => {
         <SafeAreaProvider>
             <SafeAreaView style={{height: '100%', width: '100%'}}>
                 <Header page={'Home'}/>
-                <View style={styles.container}>
+                <View style={styles.statisticsTitle}>
                     <View style={styles.container1}>
 
                         <View style={{flexDirection: 'row'}}>
@@ -313,7 +317,7 @@ const HomePage = () => {
 
 
 const styles = StyleSheet.create({
-    container: {
+    statisticsTitle: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',

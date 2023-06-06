@@ -1,21 +1,33 @@
 // @ts-nocheck
-import React from 'react';
-import { useState } from 'react';
-import { StyleSheet, Text, View, Pressable, useWindowDimensions, Platform } from 'react-native';
-import {List, Set} from 'immutable';
+import React, {useState} from 'react';
+import {Platform, Pressable, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {Set} from 'immutable';
 import PropTypes from 'prop-types';
 import {useNavigation} from "@react-navigation/native";
 
-import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard, range} from './sudoku';
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {highlightBox, highlightColumn, highlightRow, isPeer as areCoordinatePeers, makeBoard} from './sudoku';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 import {getKeyString} from "../../Functions/Auth0/token";
 import {USERACTIVEGAMESBFFURL} from '@env'
 import {useFocusEffect} from "@react-navigation/core";
-import {PreferencesContext} from "../../Contexts/PreferencesContext";
 import {useTheme} from "react-native-paper";
-import {Puzzles, Drills} from "sudokuru";
-//import { Num } from 'example-typescript-package'
+import NumberControl from "./Components/NumberControl";
+import {
+  checkSolution,
+  formatTime, getCausesFromHint,
+  getCellNumber,
+  getCellSize,
+  getGroupsFromHint,
+  getNumberOfGroupsAssignedForNumber, getPlacementsFromHint, getRemovalsFromHint,
+  updateBoardWithNumber, getHint
+} from "./Functions/BoardFunctions";
+import Cell from "./Components/Cell";
+import ActionRow from "./Components/ActionRow";
+import HintSection from "./Components/HintSection";
+import {generateGame} from "./Functions/generateGame";
+import Puzzle from "./Components/Puzzle";
+import {Puzzles} from "sudokuru"
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -29,158 +41,12 @@ let fallbackHeight = 30;
 // Global variables for activeGame elements
 let globalTime = 0;
 
-// const darkBrown = "#A64732";
-
-// cause/removal cells
-const gold = "#F2CA7E";
-
 const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
-  hardLineThickness : {thickness: cellSize * (3 / 40)},
-  hintArrowPlaceholderView: {
-    width: cellSize/(sizeConst),
-    height: cellSize/(sizeConst),
-  },
-  hintAndPuzzleContainer: {
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  boardContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  cellContainer: {
-    height: cellSize ? cellSize : fallbackHeight,
-    width: cellSize ? cellSize : fallbackHeight,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  noteViewParent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noteViewElement: {
-    width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-    height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-    paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20
-  },
-  noteText: {
-    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-    fontFamily: 'Inter_200ExtraLight',
-  },
-  removalNoteText: {
-    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-    fontFamily: 'Inter_300Light',
-    color: "#FF0000",
-  },
-  placementNoteText: {
-    fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-    fontFamily: 'Inter_300Light',
-    color: gold,
-  },
-  cellView: {
-    height: cellSize ? cellSize : fallbackHeight,
-    width: cellSize ? cellSize : fallbackHeight,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-    backgroundColor: 'white',
-  },
-  cellText: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-    textAlign: 'center',
-    alignContent: 'stretch',
-    alignItems: 'stretch',
-    lineHeight: cellSize ? cellSize : fallbackHeight,
-  },  
-  borderThick: {
-    borderLeftWidth: cellSize ? cellSize / 4 : fallbackHeight / 4,
-  },
-  conflict: {
-    // styles for cells with conflict prop
-    color: '#000000',
-    backgroundColor: '#FFC3BF',
-  },
-  peer: {
-    // styles for cells with isPeer prop
-    color: '#000000',
-    backgroundColor: '#C5DDF4',
-  },
-  sameValue: {
-    // styles for cells with sameValue prop
-    color: '#000000',
-    backgroundColor: '#c8dcc4',
-  },
-  selected: {
-    // styles for cells with isSelected prop
-    color: '#000000',
-    backgroundColor: '#9cc4ec',
-  },
-  prefilled: {
-    // styles for cells with prefilled prop
-  },
-  selectedConflict: {
-    // styles for cells with isSelected and conflict props
-    color: '#000000',
-    backgroundColor: '#FF7C75',
-  },
   bottomActions: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexWrap: 'wrap',
-  },
-  actionControlRow: {
-    width: cellSize ? cellSize * 8 : fallbackHeight * 8,
-    height: cellSize ? cellSize: fallbackHeight,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginBottom: cellSize ? cellSize * (1 / 4): fallbackHeight * (1 / 4),
-  },
-  actionControlButton: {
-    height: cellSize ? cellSize * (0.5) : 1000,
-    width: cellSize ? cellSize * (0.5) : 1000,
-    aspectRatio: 1,
-  },
-  numberControlRow: {
-    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-    height: cellSize ? cellSize: fallbackHeight,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  numberContainer: {
-    width: cellSize ? cellSize * (50 / 60) : fallbackHeight * (50 / 60),
-    height: cellSize ? cellSize : fallbackHeight,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
-    textAlign: 'center',
-    backgroundColor: theme,
-    borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60)
-  },
-  numberControlText: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: cellSize ? cellSize * (3 / 4) + 1 : fallbackHeight * (3 / 4) + 1,
-    color: theme,
-  },
-  controlStyle: {
-    padding: 0,
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    transition: 'filter .5s ease-in-out',
-    width: '100%'
   },
   headerControlRow: {
     alignSelf: "center",
@@ -201,7 +67,7 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: gold,
+    backgroundColor: "#F2CA7E",
     borderRadius: cellSize ? cellSize * (10 / 60) : fallbackHeight * (10 / 60),
     marginTop: cellSize ? cellSize * (1 / 2): fallbackHeight * (1 / 2),
   },
@@ -210,483 +76,16 @@ const styles = (cellSize, sizeConst, theme) => StyleSheet.create({
     fontSize: cellSize ? cellSize * (1 / 3) + 1 : fallbackHeight * (1 / 3) + 1,
     color: '#FFFFFF',
   },
-  hintSectionContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-  },
-  hintTextContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: cellSize ? cellSize * 5 : fallbackHeight * 5,
-  },
-  hintStratNameView: {
-
-  },
-  hintStratNameText: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2) ,
-    color: gold,
-  },
-  hintActionInfoView: {
-
-  },
-  hintActionInfoText: {
-    fontSize: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
-    color: theme,
-    textAlign: 'center',
-  }
 });
 
-// USAGE
-// board = addNumberAsNote(...)
-function addNumberAsNote (number, board, i, j) {
-  let selectedCell = board.get('puzzle').getIn([i, j]);
-  if (!selectedCell)
-  {
-    return;
-  }
-  const prefilled = selectedCell.get('prefilled');
-  if (prefilled)
-  {
-    return;
-  }
-  let notes = selectedCell.get('notes') || new Set();
-  notes = notes.add(number);
-  selectedCell = selectedCell.set('notes', notes);
-  board = board.setIn(['puzzle', i, j], selectedCell);
-  return board;
-};
-
-function componentBoardValsToArray(board)
-{
-  let boardArray = [];
-  let temp = [];
-  for (let i = 0; i < 9; i++)
-  {
-    temp = [];
-    for (let j = 0; j < 9; j++)
-    {
-      currVal = board.get('puzzle').getIn([i, j, 'value']);
-      temp.push(!currVal ? "0" : currVal.toString());
-    }
-    boardArray.push(temp);
-  }
-  return boardArray;
-}
-
-function componentBoardNotesToArray(board)
-{
-  let notesArray = [];
-  let temp = [];
-  for (let i = 0; i < 9; i++)
-  {
-    for (let j = 0; j < 9; j++)
-    {
-      temp = [];
-      let notesSetFromComponent = board.get('puzzle').getIn([i, j, 'notes']);
-      if (!notesSetFromComponent)
-      {
-        notesArray.push(temp);
-        continue;
-      }
-      for (let k = 1; k <= 9; k++)
-      {
-        if (notesSetFromComponent.includes(k))
-        {
-          temp.push((k).toString());
-        }
-      }
-      notesArray.push(temp);
-    }
-  }
-  return notesArray;
-}
-
-function componentSolutionValsToArray(solution)
-{
-  let solArray = [];
-  let temp = [];
-  for (let i = 0; i < 9; i++)
-  {
-    temp = [];
-    for (let j = 0; j < 9; j++)
-    {
-      temp.push(solution[9 * j + i].toString());
-    }
-    solArray.push(temp);
-  }
-  return solArray;
-}
-
-function getHint(board, solution, strategies)
-{
-  let hintStrategies = [...strategies];
-  hintStrategies.push("AMEND_NOTES", "SIMPLIFY_NOTES");
-  let boardArray = componentBoardValsToArray(board);
-  let notesArray = componentBoardNotesToArray(board);
-  let solutionArray = componentSolutionValsToArray(solution);
-  let hint;
-  try {
-    hint = Puzzles.getHint(boardArray, notesArray, hintStrategies, solutionArray);
-  } catch (e) {
-    console.log(e);
-  }
-  return hint;
-}
-
-function parseApiAndAddNotes(board, puzzleCurrentNotesState, isDrill)
-{
-  if (!puzzleCurrentNotesState)
-  {
-    return;
-  }
-  if (puzzleCurrentNotesState.length != 729)
-  {
-    return;
-  }
-  let stringIndex = 0;
-  for (let i = 0; i < 9; i++)
-  {
-    for (let j = 0; j < 9; j++)
-    {
-      for (let currNoteIndex = 0; currNoteIndex < 9; currNoteIndex++)
-      {
-        stringIndex = 81 * i + 9 * j + currNoteIndex;
-
-        if (puzzleCurrentNotesState.charAt(stringIndex) == 1){
-          if (isDrill){
-            board = addNumberAsNote(currNoteIndex + 1, board, j, i);
-          } else {
-            board = addNumberAsNote(currNoteIndex + 1, board, i, j);
-          }
-        }
-      }
-    }
-  }
-  return board;
-}
-
-function strPuzzleToArray(str) {
-  let arr = [];
-  for (let i = 0; i < str.length; i += 9) {
-    arr.push(str.slice(i, i + 9).split('').map(Number));
-  }
-  let output = arr[0].map((_, colIndex) => arr.map(row => row[colIndex]));
-  return { puzzle: output };
-}
-
-async function generateGame(url, props) {
-
-  let token = null;
-
-  await getKeyString("access_token").then(result => {
-    token = result;
-  });
-
-  let gameData = null;
-
-  if (props.gameType == "StartGame"){
-    gameData = await Puzzles.startGame(url, props.difficulty, props.strategies, token).then(
-        game => {
-          // If game object is not returned, you get redirected to Main Page
-          if (game == null){
-            //navigation.navigate("Home");
-            return;
-          }
-          let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-          return {
-            board,
-            history: List.of(board),
-            historyOffSet: 0,
-            solution: game[0].puzzleSolution,
-            activeGame: game,
-          };
-        }
-    );
-  }
-  else if (props.gameType == "ResumeGame"){
-    gameData = await Puzzles.getGame(url, token).then(
-        game => {
-          // If game object is not returned, you get redirected to Main Page
-          if (game == null){
-            //navigation.navigate("Home");
-            return;
-          }
-          let board = makeBoard(strPuzzleToArray(game[0].moves[game[0].moves.length-1].puzzleCurrentState), game[0].puzzle);
-          board = parseApiAndAddNotes(board, game[0].moves[game[0].moves.length-1].puzzleCurrentNotesState, false);
-          return {
-            board,
-            history: List.of(board),
-            historyOffSet: 0,
-            solution: game[0].puzzleSolution,
-            activeGame: game,
-          };
-        }
-    );
-  }
-  else if (props.gameType == 'StartDrill'){
-    let token = null;
-    await getKeyString("access_token").then(
-        result => {
-          token = result;
-        });
-
-    let { board, originalBoard, puzzleSolution } = await Drills.getGame(url, props.strategies, token).then(game => {
-      // null check to verify that game is loaded in.
-      if (game == null){
-        //navigation.navigate("Home");
-        return;
-      }
-      let board = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
-      board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
-      let originalBoard = makeBoard(strPuzzleToArray(game.puzzleCurrentState), game.puzzleCurrentState);
-      originalBoard = parseApiAndAddNotes(originalBoard, game.puzzleCurrentNotesState, true);
-      let puzzleSolution = game.puzzleSolution;
-      return { board, originalBoard, puzzleSolution };
-    });
-
-    let drillSolutionCells = getDrillSolutionCells(board, puzzleSolution, props.strategies);
-
-    return {
-      board, history: List.of(board), historyOffSet: 0, drillSolutionCells, originalBoard, solution: puzzleSolution
-    };
-  }
-  else if (props.gameType == 'Demo'){
-    //console.log(new Num(5).add(new Num(6)).val() === 11)
-    game = Puzzles.getRandomGame()
-    let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-    return {
-      board,
-      history: List.of(board),
-      historyOffSet: 0,
-      solution: game[0].puzzleSolution,
-      activeGame: game,
-    };
-  }
-
-  return gameData;
-}
-
-// for each cell that is a part of the hint, store the coordinates and the resulting state
-// if there is a notes field for the cell, the notes must match
-// if there is a value field for the cell, the value must match
-function getDrillSolutionCells(board, solution, strategies)
-{
-  let drillSolutionCells = [];
-  let hint = getHint(board, solution, strategies);
-  if (hint)
-  {
-    for (let i = 0; i < hint.removals.length; i++)
-    {
-      let temp = {};
-      let currRemoval = hint.removals[i];
-      temp.x = currRemoval[0];
-      temp.y = currRemoval[1];
-      temp.notes = board.get('puzzle').getIn([temp.x, temp.y]).get('notes');
-      for (let j = 2; j < currRemoval.length; j++)
-      {
-        temp.notes = temp.notes.delete(currRemoval[j]);
-      }
-      drillSolutionCells.push(temp);
-    }
-
-    if (hint.placements[0])
-    {
-      let temp = {}
-      temp.x = hint.placements[0][0];
-      temp.y = hint.placements[0][1];
-      temp.value = hint.placements[0][2];
-      drillSolutionCells.push(temp);
-    }
-  }
-  return drillSolutionCells;
-};
-
-// https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds
-const formatTime = (inputSeconds: number) => {
-  // Get minutes and remaining seconds
-  const days = Math.floor(inputSeconds / (3600*24));
-  const hours = Math.floor(inputSeconds % (3600*24) / 3600);
-  const minutes = Math.floor(inputSeconds % 3600 / 60);
-  const seconds = Math.floor(inputSeconds % 60);
-  // Pad with zeros if needed
-  const paddedDays = days > 0 ? (days < 10 ? "0" : "") + days + ":" : "";
-  const paddedHours = hours > 0 ? (hours < 10 ? "0" : "") + hours + ":" : (hours == 0 && days != 0) ? "00" : "";
-  const paddedMinutes = minutes > 0 ? (minutes < 10 ? "0" : "") + minutes + ":" : (minutes == 0 && hours != 0) ? "00" : "";
-  const paddedSeconds = seconds > 0 ? (seconds < 10 ? "0" : "") + seconds : (seconds == 0 && minutes != 0) ? "00" : "0";
-
-  // Return formatted string
-  return `${paddedDays}${paddedHours}${paddedMinutes}${paddedSeconds}`;
-};
-
-const NumberControl = (props) => {
-  const { prefilled, inNoteMode, fillNumber, addNumberAsNote, inHintMode } = props;
-  const cellSize = getCellSize();
-  const theme = useTheme();
-  return (
-    <View style={ styles(cellSize).numberControlRow }>
-      {range(9).map((i) => {
-        const number = i + 1;
-        const onClick = () => {
-            inNoteMode
-              ? addNumberAsNote(number)
-              : fillNumber(number);
-        }
-        return ( // Number Keys
-          <Pressable key={number} onPress={onClick} disabled={prefilled || inHintMode} style={ styles(cellSize, null, theme.colors.primaryContainer).numberContainer }>
-            <Text style={styles(cellSize, null, theme.colors.onPrimaryContainer).numberControlText}>{number}</Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
-NumberControl.propTypes = {
-  prefilled: PropTypes.bool.isRequired,
-  inNoteMode: PropTypes.bool.isRequired,
-  fillNumber: PropTypes.func.isRequired,
-  addNumberAsNote: PropTypes.func.isRequired,
-  inHintMode: PropTypes.bool.isRequired,
-};
-
-NumberControl.defaultProps = {
-};
-
-const Puzzle = (props) => {
-  const { board, renderCell } = props;
-  const cellSize = getCellSize();
-
-  return (
-    <View style={styles(cellSize).hintAndPuzzleContainer}>
-      <View style={styles().boardContainer}>
-        {board.get('puzzle').map((row, i) => (
-          <View key={i} style={styles().rowContainer}>
-            { row.map((cell, j) => renderCell(cell, i, j)).toArray() }
-          </View>
-        )).toArray()}
-      </View>
-    </View>
-  );
-}
-
-Puzzle.propTypes = {
-  board: PropTypes.any,
-  inHintMode: PropTypes.bool,
-  renderCell: PropTypes.func.isRequired,
-  rightArrowClicked: PropTypes.func.isRequired,
-  leftArrowClicked: PropTypes.func.isRequired,
-  checkMarkClicked: PropTypes.func.isRequired,
-  onFirstStep: PropTypes.bool,
-  onFinalStep: PropTypes.bool,
-};
-
-Puzzle.defaultProps = {
-};
-
-// function that converts x,y cell coords to a number
-const getCellNumber = (x, y) => {
-  return y + x * 9;
-};
-
-const getBoxIndexFromCellNum = (cellNum) => {
-  return Math.floor((cellNum % 9) / 3);
-}
-
-const getBoxIndexFromXY = (x,y) => {
-  return Math.floor(x / 3) * 3 + Math.floor(y / 3);
-}
-
-const print = (str, contents) => {
-  console.log(str)
-  console.log(contents)
-}
-
-const getCausesFromHint = (hint) => {
-  let causes = []
-  for (let i = 0; i < hint.cause.length; i++)
-  {
-    causes.push(hint.cause[i])
-  }
-  return causes
-}
-
-const getGroupsFromHint = (hint) => {
-  let groups = []
-  let temp = {}
-  for (let i = 0; i < hint.groups.length; i++)
-  {
-    temp = {}
-    switch (hint.groups[i][0])
-    {
-      case 0: // column
-        temp.type = "col"
-        temp.index = hint.groups[i][1]
-        break;
-      case 1: // row
-        temp.type = "row"
-        temp.index = hint.groups[i][1]
-        break;
-      case 2: // box
-        temp.type = "box"
-        temp.index = hint.groups[i][1]
-        break;
-    }
-    groups.push(temp)
-  }
-  return groups
-}
-
-const getPlacementsFromHint = (hint) => {
-  let placements = []
-  let temp = {}
-  for (let i = 0; i < hint.placements.length; i++)
-  {
-    temp = {}
-    temp.position = []
-    temp.position.push(hint.placements[i][0])
-    temp.position.push(hint.placements[i][1])
-    temp.value = hint.placements[i][2]
-    placements.push(temp)
-  }
-  return placements
-}
-
-const getRemovalsFromHint = (board, hint) => {
-  let removals = []
-  let temp = {}
-  for (let i = 0; i < hint.removals.length; i++)
-  {
-    let x = hint.removals[i][0]
-    let y = hint.removals[i][1]
-    temp = {}
-    temp.position = []
-    temp.position.push(x)
-    temp.position.push(y)
-    temp.values = []
-    temp.values.push()
-    for (let j = 2; j < hint.removals[i].length; j++)
-      temp.values.push(hint.removals[i][j])
-
-    removals.push(temp)
-  }
-  return removals
-}
-
-// let demoHighlightInput = [[0,7, darkBrown], [1,5, darkBrown], [2,0], [3, 4, 6, gold]];
-
-async function saveGame(activeGame) {
-    let token = null;
+//todo this function cannot be moved until globalTime situation is handled
+export async function saveGame(activeGame) {
+    let token: string = "";
 
     await getKeyString("access_token").then(result => {
-      token = result;
+      if (result){
+        token = result;
+      }
     });
 
     activeGame.currentTime = globalTime;
@@ -698,7 +97,7 @@ async function saveGame(activeGame) {
     });
 }
 
-async function finishGame(activeGame, showResults) {
+export async function finishGame(activeGame, showResults) {
     let token = null;
 
     await getKeyString("access_token").then(result => {
@@ -712,294 +111,7 @@ async function finishGame(activeGame, showResults) {
     });
 }
 
-function replaceChar(origString, replaceChar, index) {
-  let firstPart = origString.substr(0, index);
-  let lastPart = origString.substr(index + 1);
-
-  let newString = firstPart + replaceChar + lastPart;
-  return newString;
-}
-
-const checkSolution = (solution, x, y, value) => {
-  let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
-  let solutionValue = solution.charAt(cellNum);
-  
-  if (solutionValue == value)
-    return true;
-  else
-    return false;
-}
-
-let puzzleString = "";
-let notesString = "";
-
-const Cell = (props) => {
-
-  const { value, onClick, isPeer, isBox, isRow, isColumn, isSelected, sameValue, prefilled, notes, conflict, x, y, inHintMode, hintSteps, currentStep, game, showResults, gameType } = props;
-  const cellSize = getCellSize();
-
-  let bgColor = '#808080';
-  let isRemovalHighlight = [false, false, false, false, false, false, false, false, false];
-  let isPlacementHighlight = [false, false, false, false, false, false, false, false, false];
-
-  const { isHighlightSet, isHighlightBox, isHighlightRow, isHighlightColumn } = React.useContext(PreferencesContext);
-
-  const highlightPeers = (isHighlightBox && isHighlightRow && isHighlightColumn);
-
-  if (inHintMode && currentStep > -1)
-  {
-    let currentHint = hintSteps[currentStep];
-
-    if (currentHint.groups) // group highlighting
-    {
-      for (let i = 0; i < currentHint.groups.length; i++)
-      {
-        // if the col matches hint, highlight the current col
-        if (currentHint.groups[i].type == "col" && x === currentHint.groups[i].index)
-          bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (currentHint.groups[i].type == "row" && y === currentHint.groups[i].index)
-          bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (currentHint.groups[i].type == "box" && getBoxIndexFromXY(x, y) === currentHint.groups[i].index)
-          bgColor = "white";
-      }
-    }
-    if (currentHint.causes) // cause highlighting
-    {
-      for (let i = 0; i < currentHint.causes.length; i++)
-      {
-        let currentCause_x = currentHint.causes[i][0];
-        let currentCause_y = currentHint.causes[i][1];
-        if (currentCause_x == x && currentCause_y == y)
-        {
-          // naked single hard code override
-          if (currentHint.placements) bgColor = "white";
-          else bgColor = gold;
-        }
-      }
-    }
-    // This handles just the styling, note deletion is not possible since the state would change during a render
-    if (currentHint.removals) // removal highlighting
-    {
-      for (let i = 0; i < currentHint.removals.length; i++)
-      {
-        let currentRemoval = currentHint.removals[i];
-        let currentRemoval_x = currentRemoval.position[0];
-        let currentRemoval_y = currentRemoval.position[1];
-        if (currentRemoval_x == x && currentRemoval_y == y)
-        {
-          if (currentRemoval.mode == "highlight")
-          {
-            for (let j = 0; j < currentRemoval.values.length; j++)
-              isRemovalHighlight[currentRemoval.values[j] - 1] = true;
-          }
-        }
-      }
-    }
-
-    if (currentHint.placements) // placement highlighting
-    {
-        let currentPlacement = currentHint.placements;
-        let currentPlacement_x = currentPlacement.position[0];
-        let currentPlacement_y = currentPlacement.position[1];
-        if (currentPlacement_x == x && currentPlacement_y == y)
-        {
-          if (currentPlacement.mode == "highlight")
-          {
-            isPlacementHighlight[currentPlacement.value - 1] = true;
-          }
-        }
-    }
-  }
-
-  if (!drillMode && !landingMode)
-  {
-    // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
-    if (getCellNumber(x, y) === 0)
-    {
-      puzzleString = "";
-      notesString = "";
-    }
-
-    puzzleString += value ? value : 0;
-
-    // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
-    if (notes === null)
-    {
-      notesString += "000000000";
-    }
-    else
-    {
-      for (let i = 1; i <= 9; i++)
-      {
-        notesString += notes.has(i) ? 1 : 0;
-      }
-    }
-
-    // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
-    if (getCellNumber(x, y) === 80)
-    {
-
-      let flippedPuzzleString = "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-
-      // flip the puzzleString so it is correct orientation.
-      for (let i = 0; i < puzzleString.length/9; i++)
-        for (let j = 0; j < puzzleString.length/9; j++)
-          flippedPuzzleString = replaceChar(flippedPuzzleString, puzzleString.charAt((j*9+i)), j+(i*9));
-
-      // If there's no moves in the moves array, add the current move to the moves array
-      if (game.moves.length === 0) {
-        game.moves.push({ puzzleCurrentState: flippedPuzzleString, puzzleCurrentNotesState: notesString });
-        saveGame(game);
-      }
-
-      // If there's a difference between the last move and the current move, replace previous move with current move
-      else if (game.moves[0].puzzleCurrentState !== flippedPuzzleString
-      || game.moves[0].puzzleCurrentNotesState !== notesString) {
-        game.moves[0].puzzleCurrentState = flippedPuzzleString;
-        game.moves[0].puzzleCurrentNotesState = notesString;
-        saveGame(game);
-      }
-
-      // If all cells are filled in with the correct values, we want to finish the game
-      if (flippedPuzzleString == game.puzzleSolution && (gameType != 'Demo')){
-          finishGame(game, showResults);
-      }
-    }
-  }
-
-  const getNoteContents = (noteVal) =>
-  {
-    if (notes.has(noteVal))
-    {
-      let styleVal = styles(cellSize).noteText;
-      if (isRemovalHighlight[noteVal - 1]) styleVal = styles(cellSize).removalNoteText;
-      else if (isPlacementHighlight[noteVal - 1]) styleVal = styles(cellSize).placementNoteText;
-
-      return <Text style={styleVal}>{noteVal}</Text>
-    }
-  }
-
-  return ( // Sudoku Cells
-    <Pressable onPress={() => onClick(x, y)} disabled={landingMode} style={{ outline: 'none'}}>
-      <View style={[styles(cellSize).cellView,
-        (x % 3 === 0) && {borderLeftWidth: styles(cellSize).hardLineThickness.thickness},
-        (y % 3 === 0) && {borderTopWidth: styles(cellSize).hardLineThickness.thickness},
-        (x === 8) && {borderRightWidth: styles(cellSize).hardLineThickness.thickness},
-        (y === 8) && {borderBottomWidth: styles(cellSize).hardLineThickness.thickness},
-
-        // Border Highlighting
-        (inHintMode) && bgColor && {backgroundColor: bgColor},
-
-        (!inHintMode && conflict) && styles(cellSize).conflict,
-        (!inHintMode && !conflict && highlightPeers && isPeer) && styles(cellSize).peer,
-        (!inHintMode && !conflict && !highlightPeers && isHighlightBox && isBox && isPeer) && styles(cellSize).peer,
-        (!inHintMode && !conflict && !highlightPeers && isHighlightRow && isRow && isPeer) && styles(cellSize).peer,
-        (!inHintMode && !conflict && !highlightPeers && isHighlightColumn && isColumn && isPeer) && styles(cellSize).peer,
-        (!inHintMode && !conflict && sameValue && isHighlightSet) && styles(cellSize).sameValue,
-        (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
-        (!inHintMode && !conflict && isSelected) && styles(cellSize).selected]}>
-        {
-          notes ?
-            <View style={styles(cellSize).noteViewParent}>
-              <View style={{ flexDirection: 'row' }}>
-                <View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(1)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(4)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(7)}</View>
-                </View>
-                <View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(2)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(5)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(8)}</View>
-                </View>
-                <View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(3)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(6)}</View>
-                  <View style={styles(cellSize).noteViewElement} >{getNoteContents(9)}</View>
-                </View>
-              </View>
-            </View>
-            : value && <Text style={[styles(cellSize, null).cellText,
-            (!inHintMode && conflict && styles(cellSize).conflict,
-            (!inHintMode && conflict && isSelected) && styles(cellSize).selectedConflict,
-            (!inHintMode && prefilled) && styles(cellSize).prefilled)]}>{value}
-          </Text>
-        }
-      </View>
-    </Pressable>
-  );
-};
-
-Cell.propTypes = {
-    value: PropTypes.number,
-    onClick: PropTypes.func.isRequired,
-    isPeer: PropTypes.bool.isRequired,
-    isSelected: PropTypes.bool.isRequired,
-    sameValue: PropTypes.bool.isRequired,
-    prefilled: PropTypes.bool.isRequired,
-    notes: PropTypes.instanceOf(Set),
-    conflict: PropTypes.bool.isRequired,
-    eraseSelected: PropTypes.func.isRequired,
-    inHintMode: PropTypes.bool,
-    hintSteps: PropTypes.any,
-    currentStep: PropTypes.number,
-};
-
-Cell.defaultProps = {
-    notes: null,
-    value: null,
-    inHintMode: false,
-};
-
-const ActionRow = (props) => {
-  const { history, prefilled, inNoteMode, undo, toggleNoteMode, eraseSelected, toggleHintMode, updateBoardInPlace, inHintMode, boardHasConflict } = props;
-  const cellSize = getCellSize();
-  const theme = useTheme();
-
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-
-  return (
-    <View style={styles(cellSize).actionControlRow}>
-      {/* Undo */}
-      <Pressable onPress={undo} disabled={!history.size || inHintMode}>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="undo" size={cellSize/(sizeConst)}/>
-      </Pressable>
-      {/* Note mode */}
-      <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
-        {inNoteMode
-            ? // note mode on
-          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-outline" size={cellSize/(sizeConst)}/>
-            : // note mode off
-          <MaterialCommunityIcons color={theme.colors.onBackground} name="pencil-off-outline" size={cellSize/(sizeConst)}/>
-        }
-      </Pressable>
-      {/* Erase */}
-      <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="eraser" size={cellSize/(sizeConst)}/>
-      </Pressable>
-      {/* Hint */}
-      <Pressable onPress={ !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null }>
-        <MaterialCommunityIcons color={theme.colors.onBackground} name="help" size={cellSize/(sizeConst)}/>
-      </Pressable>
-    </View>
-  );
-};
-
-ActionRow.propTypes = {
-  inNoteMode: PropTypes.bool.isRequired,
-  prefilled: PropTypes.bool.isRequired,
-  undo: PropTypes.func.isRequired,
-  toggleNoteMode: PropTypes.func.isRequired,
-  eraseSelected: PropTypes.func.isRequired,
-  toggleHintMode: PropTypes.func.isRequired,
-  updateBoardInPlace: PropTypes.func.isRequired,
-  inHintMode: PropTypes.bool.isRequired,
-  boardHasConflict: PropTypes.func.isRequired,
-};
-
-const SubmitButton = (props) => {
+const DrillSubmitButton = (props) => {
   const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
 
@@ -1014,7 +126,7 @@ const SubmitButton = (props) => {
   );
 };
 
-SubmitButton.propTypes = {
+DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
 };
 
@@ -1034,6 +146,7 @@ const PauseButton = ({ handlePause, isPaused }) => {
   )
 }
 
+//todo this function cannot be moved until globalTime situation is handled
 const HeaderRow = ( props ) => { //  Header w/ timer and pause button
     const { currentTime, activeGame } = props;
     const [time, setTime] = useState(0);
@@ -1094,114 +207,12 @@ HeaderRow.defaultProps = {
     paused: false,
 }
 
-const HintSection = (props) => {
-  const { hintStratName, hintInfo, hintAction, currentStep, rightArrowClicked, leftArrowClicked, checkMarkClicked, onFirstStep, onFinalStep } = props;
-  const cellSize = getCellSize();
-  const sizeConst = (Platform.OS == 'web') ? 1.5 : 1;
-  const theme = useTheme();
-  
-  const isRightArrowRendered = (onFinalStep) =>
-  {
-    return !onFinalStep;
-  }
-
-  const isLeftArrowRendered = (onFirstStep) =>
-  {
-    return !onFirstStep;
-  }
-
-  const isCheckMarkRendered = (onFinalStep) =>
-  {
-    return onFinalStep;
-  }
-
-  return (
-    <View style={styles(cellSize).hintSectionContainer}>
-      {(isLeftArrowRendered(onFirstStep))
-        ? // checkcircleo
-        <Pressable onPress={leftArrowClicked}>
-          <AntDesign color={theme.colors.onBackground} name="leftcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
-      <View style={styles(cellSize).hintTextContainer}>
-        <View style={styles(cellSize).hintStratNameView}>
-          <Text style={styles(cellSize).hintStratNameText}>{hintStratName}</Text>
-        </View>
-        <View style={styles(cellSize).hintActionInfoView}>
-          <Text style={styles(cellSize, null, theme.colors.onBackground).hintActionInfoText}>{currentStep == 0 ? hintInfo : hintAction}</Text>
-        </View>
-      </View>
-      {(isRightArrowRendered(onFinalStep))
-        ?
-        <Pressable onPress={rightArrowClicked}>
-          <AntDesign color={theme.colors.onBackground} name="rightcircleo" size={cellSize/(sizeConst)}/>
-        </Pressable>
-        :
-        (isCheckMarkRendered(onFinalStep))
-          ?
-          <Pressable onPress={checkMarkClicked}>
-            <AntDesign color={theme.colors.onBackground} name="checkcircle" size={cellSize/(sizeConst)}/>
-          </Pressable>
-          :
-          <View style={styles(cellSize, sizeConst).hintArrowPlaceholderView}></View>
-      }
-    </View>
-  );
-}
-
-/*
- * This function retrieves the user's device size and calculates the cell size
- * board has width and height dimensions of 1 x 1.44444
- */
-function getCellSize()
-{
-  const size = useWindowDimensions();
-  
-  return Math.min(size.width * 1.44444, size.height) / 15;
-}
-
-function updateBoardWithNumber({ x, y, number, fill = true, board }) {
-
-  let cell = board.get('puzzle').getIn([x, y]);
-  cell = cell.delete('notes');
-  cell = fill ? cell.set('value', number) : cell.delete('value');
-
-  const increment = fill ? 1 : -1;
-  const rowPath = ['choices', 'rows', x, number];
-  const columnPath = ['choices', 'columns', y, number];
-  const squarePath = ['choices', 'squares', ((Math.floor(x / 3)) * 3) + Math.floor(y / 3), number];
-  
-  return board.setIn(rowPath, board.getIn(rowPath) + increment)
-    .setIn(columnPath, board.getIn(columnPath) + increment)
-    .setIn(squarePath, board.getIn(squarePath) + increment)
-    .setIn(['puzzle', x, y], cell);
-}
-
-function getNumberOfGroupsAssignedForNumber(number, groups) {
-  return groups.reduce((accumulator, row) =>
-    accumulator + (row.get(number) > 0 ? 1 : 0), 0);
-}
-
-
-
+//todo convert this class component into a functional component
 export default class SudokuBoard extends React.Component<SudokuBoardProps> {
   constructor(props) {
     super(props);
   };
   state = generateGame(USERACTIVEGAMESBFFURL, this.props);
-
-  componentDidMount = () => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js').then((reg) => {
-        console.log('ServiceWorker scope: ', reg.scope);
-        console.log('service worker registration successful');
-      }).catch((err) => {
-        console.warn('service worker registration failed', err.message);
-      });
-    }
-  }
 
   getSelectedCell = () => {
     const { board } = this.state;
@@ -1719,6 +730,8 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
                 game={game}
                 showResults={this.props.showGameResults}
                 gameType={this.props.gameType}
+                landingMode={landingMode}
+                drillMode={drillMode}
             />
         );
     };
@@ -1920,7 +933,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     }
 
     return (
-      <SubmitButton
+      <DrillSubmitButton
         isDrillSolutionCorrect={isDrillSolutionCorrect}
         navigation={navigation}
       />

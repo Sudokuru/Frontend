@@ -13,7 +13,7 @@ import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import {retrieveTotalStatistics} from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from 'polished';
-import { Statistics } from "sudokuru"
+import { Statistics } from "sudokuru";
  
 const StatisticsPage = () => {
   const theme = useTheme();
@@ -33,9 +33,11 @@ const StatisticsPage = () => {
 
   async function deleteUserStatistics(url: string) {
 
-    let token = null;
+    let token: string = "";
     await getKeyString("access_token").then(result => {
-      token = result;
+      if (result){
+        token = result;
+      }
     });
 
     await Statistics.deleteStatistics(url, token).then((res: any) => {
@@ -89,7 +91,7 @@ const StatisticsPage = () => {
         <SafeAreaView style={{height: '100%', width: '100%'}}>
           <ScrollView>
             <Header page="Statistics" />
-            <View style={styles.container}>
+            <View style={styles.statisticsTitle}>
               <TotalStatistics
                   totalScore={totalStatistics.totalScore}
                   numGamesPlayed={totalStatistics.numGamesPlayed}
@@ -139,7 +141,7 @@ const StatisticsPage = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  statisticsTitle: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
