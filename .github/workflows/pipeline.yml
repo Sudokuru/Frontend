@@ -30,13 +30,13 @@ jobs:
 
       - name: Run Prettier Check
         id: prettier-run
+        working-directory: ./sudokuru
         uses: rutajdash/prettier-cli-action@v1.0.0
         with:
           fail_on_error: true
           prettier_version: '2.8.8'
           ignore_path: './sudokuru/.prettierignore'
           file_pattern: '**/*'
-          working-directory: ./sudokuru
 
       - name: Prettier Output
         if: ${{ failure() }}
