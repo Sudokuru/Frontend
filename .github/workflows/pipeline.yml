@@ -36,6 +36,7 @@ jobs:
           prettier_version: '2.8.8'
           ignore_path: './sudokuru/.prettierignore'
           file_pattern: '**/*'
+          working-directory: ./sudokuru
 
       - name: Prettier Output
         if: ${{ failure() }}
