@@ -32,30 +32,6 @@ jobs:
         run: npx prettier --check .
         working-directory: ./sudokuru
 
-#      - name: Prettify Code Check
-#        uses: creyD/prettier_action@v4.3
-#        with:
-#          working_directory: ${{ github.workspace }}/sudokuru
-#          dry: true
-#          prettier_version: 2.8.8
-#          prettier_options: --write
-
-#      - name: Run Prettier Check
-#        id: prettier-run
-#        uses: rutajdash/prettier-cli-action@v1.0.0
-#        with:
-#          fail_on_error: true
-#          prettier_version: '2.8.8'
-#          ignore_path: './sudokuru/.prettierignore'
-#          file_pattern: '**/*'
-#
-#      - name: Prettier Output
-#        if: ${{ failure() }}
-#        shell: bash
-#        run: |
-#          echo "The following files are not formatted:"
-#          echo "${{steps.prettier-run.outputs.prettier_output}}"
-
   app_preview_dev:
     if: ${{ github.ref != 'refs/heads/main' }}
     runs-on: ubuntu-latest
