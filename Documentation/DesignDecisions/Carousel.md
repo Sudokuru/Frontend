@@ -1,4 +1,3 @@
-
 # Carousel Design Decisions
 
 We have decided to use the react-native-reanimated-carousel component created by [dohooo](https://github.com/dohooo/react-native-reanimated-carousel)<br>
@@ -15,5 +14,3 @@ However, now that we have switched to using Universal Metro for both web and mob
 component is being taken from the `src` folder for both platforms. This means the previous hardcoded "fix" no longer works
 
 The new solution is to use parameterization as [described here](https://github.com/dohooo/react-native-reanimated-carousel/issues/357)
-
-
