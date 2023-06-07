@@ -3,7 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet } from "react-native";
+import { Alert, Platform } from "react-native";
 import { Button } from "react-native-paper";
 import { Auth0JwtPayload } from "../../../app.config";
 import Constants, { AppOwnership } from "expo-constants";
@@ -17,7 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import * as Linking from "expo-linking";
-import { red } from "react-native-reanimated/lib/types/lib";
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.
