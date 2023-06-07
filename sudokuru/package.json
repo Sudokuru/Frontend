@@ -10,7 +10,11 @@
     "web": "npx expo start --web --clear",
     "build:metro-web": "npx expo export --platform web",
     "vercel:preview": "vercel --name sudokuru-dev --yes",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "prepare": "cd .. && husky install sudokuru/.husky"
+  },
+  "lint-staged": {
+    "**/*": "npx prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
@@ -52,6 +56,8 @@
     "@babel/core": "^7.20.0",
     "@types/react": "^18.0.30",
     "@types/react-native": "^0.70.13",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
     "metro": "^0.76.0",
     "prettier": "^2.8.8",
     "typescript": "^5.1.3",
