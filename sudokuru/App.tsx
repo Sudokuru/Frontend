@@ -23,7 +23,7 @@ import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
 
 const drawerItemsMain = [
   {
-    key: "Naked Sets", //test
+    key: "Naked Sets",
     title: "Naked Sets",
     routes: [
       { nav: "Home", routeName: "Naked Single", title: "Naked Single" },
