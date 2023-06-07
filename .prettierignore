@@ -3,6 +3,7 @@ node_modules/
 .idea/
 .husky/
 .github/
+License.md
 
 sudokuru/node_modules/
 sudokuru/.expo/
