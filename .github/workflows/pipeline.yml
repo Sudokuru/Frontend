@@ -29,7 +29,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Prettier Check
-        run: npx prettier --check .
+        run: |
+          npm i prettier@2.8.8
+          npx prettier --check .
         working-directory: ./sudokuru
 
   app_preview_dev:
