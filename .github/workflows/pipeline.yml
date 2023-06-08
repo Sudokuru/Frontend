@@ -31,7 +31,7 @@ jobs:
       - name: Prettier Check
         run: |
           npm i prettier@2.8.8
-          npm run prettier
+          npx prettier --check .
 
   app_preview_dev:
     if: ${{ github.ref != 'refs/heads/main' }}
