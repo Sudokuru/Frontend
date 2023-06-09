@@ -30,6 +30,25 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
   return false;
 }
 
+/**
+ * Given hint data and cell location returns true if the current group should be highlighted, false otherwise
+ * @param currentHint - hint data
+ * @param row - row cell is in
+ * @param col - column cell is in
+ */
+function highlightGroups(currentHint: any, row: any, col: any):boolean {
+  if (currentHint.groups) {
+    // group highlighting
+    for (let i = 0; i < currentHint.groups.length; i++) {
+      // If the group matches hint, highlight the group
+      if (highlightGroup(currentHint.groups[i].type, currentHint.groups[i].index, row, col, getBoxIndexFromXY(col, row))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 const Cell = (props: any) => {
   const {
     value,
@@ -88,14 +107,8 @@ const Cell = (props: any) => {
   if (inHintMode && currentStep > -1) {
     let currentHint = hintSteps[currentStep];
 
-    if (currentHint.groups) {
-      // group highlighting
-      for (let i = 0; i < currentHint.groups.length; i++) {
-        // If the group matches hint, highlight the group
-        if (highlightGroup(currentHint.groups[i].type, currentHint.groups[i].index, y, x, getBoxIndexFromXY(x, y))) {
-          bgColor = "white";
-        }
-      }
+    if (highlightGroups(currentHint, y, x)) {
+      bgColor = "white";
     }
     if (currentHint.causes) {
       // cause highlighting
