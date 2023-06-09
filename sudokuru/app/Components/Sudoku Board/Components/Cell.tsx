@@ -72,6 +72,7 @@ const Cell = (props: any) => {
   if (inHintMode && currentStep > -1) {
     let currentHint = hintSteps[currentStep];
 
+    // Highlight the cell if it is part of the hint
     if (highlightGroups(currentHint, y, x)) {
       bgColor = "white";
     }

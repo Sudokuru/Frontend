@@ -9,13 +9,13 @@ function getBoxIndexFromXY(x: number, y: number):number {
 }
 
 /**
- * Given a group type, index, and cell position, returns true if the group should be highlighted, false otherwise
+ * Given the type and index of a group that should be highlighted along with a cell position, returns true if the cell is in the given group and thus should be highlighted, false otherwise
  * @param groupType - row, col, or box
  * @param index - index of the group
  * @param row - row of the cell
  * @param col - column of the cell
  * @param box - box of the cell
- * @returns true if the group should be highlighted, false otherwise
+ * @returns true if the cell should be highlighted, false otherwise
  */
 function highlightGroup(groupType: string, index: any, row: any, col: any, box: any):boolean {
     if (groupType == "row" && index == row) return true;
@@ -25,7 +25,7 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
   }
 
   /**
-  * Given hint data and cell location returns true if the current group should be highlighted, false otherwise
+  * Given hint data and cell location returns true if the current cell should be highlighted because of the group it is in, false otherwise
   * @param currentHint - hint data
   * @param row - row cell is in
   * @param col - column cell is in
@@ -34,7 +34,7 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
    if (currentHint.groups) {
      // group highlighting
      for (let i = 0; i < currentHint.groups.length; i++) {
-       // If the group matches hint, highlight the group
+       // If the group matches hint, highlight the cell
        if (highlightGroup(currentHint.groups[i].type, currentHint.groups[i].index, row, col, getBoxIndexFromXY(col, row))) {
          return true;
        }
