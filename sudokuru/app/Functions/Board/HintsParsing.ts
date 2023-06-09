@@ -42,3 +42,23 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
    }
    return false;
  }
+
+ /**
+  * Given hint data and cell location returns true if the current cell should be highlighted because of the cause it is in, false otherwise
+  * @param currentHint - hint data
+  * @param row - row cell is in
+  * @param col - column cell is in
+  * @returns true if the current cell should be highlighted because of the cause it is in, false otherwise
+  */
+ export function highlightCauses(currentHint: any, row: any, col: any):boolean {
+    if (currentHint.causes) {
+        for (let i = 0; i < currentHint.causes.length; i++) {
+            let currentCause_x = currentHint.causes[i][0];
+            let currentCause_y = currentHint.causes[i][1];
+            if (currentCause_x == col && currentCause_y == row) {
+                return true;
+            }
+        }
+    }
+    return false;
+ }

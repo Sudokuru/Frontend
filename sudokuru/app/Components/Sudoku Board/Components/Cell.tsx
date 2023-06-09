@@ -9,7 +9,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
-import { highlightGroups } from "../../../Functions/Board/HintsParsing";
+import { highlightCauses, highlightGroups } from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
@@ -76,16 +76,15 @@ const Cell = (props: any) => {
     if (highlightGroups(currentHint, y, x)) {
       bgColor = "white";
     }
-    if (currentHint.causes) {
-      // cause highlighting
-      for (let i = 0; i < currentHint.causes.length; i++) {
-        let currentCause_x = currentHint.causes[i][0];
-        let currentCause_y = currentHint.causes[i][1];
-        if (currentCause_x == x && currentCause_y == y) {
-          // naked single hard code override
-          if (currentHint.placements) bgColor = "white";
-          else bgColor = "#F2CA7E";
-        }
+    // Highlight the cell if it is part of the cause of the hint
+    if (highlightCauses(currentHint, y, x)) {
+      // If the hint is a placement, highlight the cell white, otherwise highlight it yellow
+      // i.e. if the hint is a naked single, highlight the cell white, otherwise highlight it yellow
+      if (currentHint.placements) {
+        bgColor = "white";
+      }
+      else {
+        bgColor = "#F2CA7E";
       }
     }
     // This handles just the styling, note deletion is not possible since the state would change during a render
