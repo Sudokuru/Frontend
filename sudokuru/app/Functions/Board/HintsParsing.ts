@@ -87,3 +87,24 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
     }
     return;
  }
+
+ /**
+  * Given hint data and cell location sets the placement highlights for the cell
+  * @param isPlacementHighlight - array of booleans representing whether or not each number should be highlighted for placement
+  * @param currentHint - hint data
+  * @param row - row cell is in
+  * @param col - column cell is in
+  */
+ export function setPlacementHighlights(isPlacementHighlight: boolean[], currentHint: any, row: any, col: any):void {
+    if (currentHint.placements) {
+        let currentPlacement = currentHint.placements;
+        let currentPlacement_x = currentPlacement.position[0];
+        let currentPlacement_y = currentPlacement.position[1];
+        if (currentPlacement_x == col && currentPlacement_y == row) {
+            if (currentPlacement.mode == "highlight") {
+                isPlacementHighlight[currentPlacement.value - 1] = true;
+            }
+        }
+    }
+    return;
+ }

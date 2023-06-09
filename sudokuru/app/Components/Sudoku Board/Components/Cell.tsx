@@ -9,7 +9,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
-import { highlightCauses, highlightGroups, setRemovalHighlights } from "../../../Functions/Board/HintsParsing";
+import { highlightCauses, highlightGroups, setPlacementHighlights, setRemovalHighlights } from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
@@ -91,17 +91,8 @@ const Cell = (props: any) => {
     // Sets what notes should be highlighted for removal based on hint
     setRemovalHighlights(isRemovalHighlight, currentHint, y, x);
 
-    if (currentHint.placements) {
-      // placement highlighting
-      let currentPlacement = currentHint.placements;
-      let currentPlacement_x = currentPlacement.position[0];
-      let currentPlacement_y = currentPlacement.position[1];
-      if (currentPlacement_x == x && currentPlacement_y == y) {
-        if (currentPlacement.mode == "highlight") {
-          isPlacementHighlight[currentPlacement.value - 1] = true;
-        }
-      }
-    }
+    // Sets what notes should be highlighted for placement based on hint
+    setPlacementHighlights(isPlacementHighlight, currentHint, y, x);
   }
 
   if (!drillMode && !landingMode) {
