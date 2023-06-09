@@ -14,6 +14,22 @@ import { finishGame, saveGame } from "../SudokuBoard";
 let puzzleString = "";
 let notesString = "";
 
+/**
+ * Given a group type, index, and cell position, returns true if the group should be highlighted, false otherwise
+ * @param groupType - row, col, or box
+ * @param index - index of the group
+ * @param row - row of the cell
+ * @param col - column of the cell
+ * @param box - box of the cell
+ * @returns true if the group should be highlighted, false otherwise
+ */
+function highlightGroup(groupType: string, index: any, row: any, col: any, box: any):boolean {
+  if (groupType == "row" && index == row) return true;
+  if (groupType == "col" && index == col) return true;
+  if (groupType == "box" && index == box) return true;
+  return false;
+}
+
 const Cell = (props: any) => {
   const {
     value,
@@ -75,24 +91,10 @@ const Cell = (props: any) => {
     if (currentHint.groups) {
       // group highlighting
       for (let i = 0; i < currentHint.groups.length; i++) {
-        // if the col matches hint, highlight the current col
-        if (
-          currentHint.groups[i].type == "col" &&
-          x === currentHint.groups[i].index
-        )
+        // If the group matches hint, highlight the group
+        if (highlightGroup(currentHint.groups[i].type, currentHint.groups[i].index, y, x, getBoxIndexFromXY(x, y))) {
           bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (
-          currentHint.groups[i].type == "row" &&
-          y === currentHint.groups[i].index
-        )
-          bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (
-          currentHint.groups[i].type == "box" &&
-          getBoxIndexFromXY(x, y) === currentHint.groups[i].index
-        )
-          bgColor = "white";
+        }
       }
     }
     if (currentHint.causes) {
