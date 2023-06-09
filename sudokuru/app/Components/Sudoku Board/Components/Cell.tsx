@@ -9,7 +9,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
-import { highlightCauses, highlightGroups } from "../../../Functions/Board/HintsParsing";
+import { highlightCauses, highlightGroups, setRemovalHighlights } from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
@@ -88,20 +88,8 @@ const Cell = (props: any) => {
       }
     }
     // This handles just the styling, note deletion is not possible since the state would change during a render
-    if (currentHint.removals) {
-      // removal highlighting
-      for (let i = 0; i < currentHint.removals.length; i++) {
-        let currentRemoval = currentHint.removals[i];
-        let currentRemoval_x = currentRemoval.position[0];
-        let currentRemoval_y = currentRemoval.position[1];
-        if (currentRemoval_x == x && currentRemoval_y == y) {
-          if (currentRemoval.mode == "highlight") {
-            for (let j = 0; j < currentRemoval.values.length; j++)
-              isRemovalHighlight[currentRemoval.values[j] - 1] = true;
-          }
-        }
-      }
-    }
+    // Sets what notes should be highlighted for removal based on hint
+    setRemovalHighlights(isRemovalHighlight, currentHint, y, x);
 
     if (currentHint.placements) {
       // placement highlighting

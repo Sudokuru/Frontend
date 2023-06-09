@@ -62,3 +62,28 @@ function highlightGroup(groupType: string, index: any, row: any, col: any, box: 
     }
     return false;
  }
+
+ /**
+  * Given hint data and cell location sets the removal highlights for the cell
+  * @param isRemovalHighlight - array of booleans representing whether or not each number should be highlighted for removal
+  * @param currentHint - hint data
+  * @param row - row cell is in
+  * @param col - column cell is in
+  */
+ export function setRemovalHighlights(isRemovalHighlight: boolean[], currentHint: any, row: any, col: any):void {
+    if (currentHint.removals) {
+        for (let i = 0; i < currentHint.removals.length; i++) {
+            let currentRemoval = currentHint.removals[i];
+            let currentRemoval_x = currentRemoval.position[0];
+            let currentRemoval_y = currentRemoval.position[1];
+            if (currentRemoval_x == col && currentRemoval_y == row) {
+                if (currentRemoval.mode == "highlight") {
+                    for (let j = 0; j < currentRemoval.values.length; j++) {
+                        isRemovalHighlight[currentRemoval.values[j] - 1] = true;
+                    }
+                }
+            }
+        }
+    }
+    return;
+ }
