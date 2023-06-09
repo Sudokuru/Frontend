@@ -1,5 +1,4 @@
 import {
-  getBoxIndexFromXY,
   getCellNumber,
   getCellSize,
   replaceChar,
@@ -10,44 +9,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
+import { highlightGroups } from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
-
-/**
- * Given a group type, index, and cell position, returns true if the group should be highlighted, false otherwise
- * @param groupType - row, col, or box
- * @param index - index of the group
- * @param row - row of the cell
- * @param col - column of the cell
- * @param box - box of the cell
- * @returns true if the group should be highlighted, false otherwise
- */
-function highlightGroup(groupType: string, index: any, row: any, col: any, box: any):boolean {
-  if (groupType == "row" && index == row) return true;
-  if (groupType == "col" && index == col) return true;
-  if (groupType == "box" && index == box) return true;
-  return false;
-}
-
-/**
- * Given hint data and cell location returns true if the current group should be highlighted, false otherwise
- * @param currentHint - hint data
- * @param row - row cell is in
- * @param col - column cell is in
- */
-function highlightGroups(currentHint: any, row: any, col: any):boolean {
-  if (currentHint.groups) {
-    // group highlighting
-    for (let i = 0; i < currentHint.groups.length; i++) {
-      // If the group matches hint, highlight the group
-      if (highlightGroup(currentHint.groups[i].type, currentHint.groups[i].index, row, col, getBoxIndexFromXY(col, row))) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
 
 const Cell = (props: any) => {
   const {
