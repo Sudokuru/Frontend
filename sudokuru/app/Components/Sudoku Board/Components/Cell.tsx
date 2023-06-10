@@ -9,7 +9,12 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
-import { highlightCauses, highlightGroups, setPlacementHighlights, setRemovalHighlights } from "../../../Functions/Board/HintsParsing";
+import {
+  highlightCauses,
+  highlightGroups,
+  setPlacementHighlights,
+  setRemovalHighlights,
+} from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
@@ -82,8 +87,7 @@ const Cell = (props: any) => {
       // i.e. if the hint is a naked single, highlight the cell white, otherwise highlight it yellow
       if (currentHint.placements) {
         bgColor = "white";
-      }
-      else {
+      } else {
         bgColor = "#F2CA7E";
       }
     }
