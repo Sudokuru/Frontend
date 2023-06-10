@@ -1,8 +1,3 @@
-## Requirements:
-
-For local development, you will need to install [CORS Unblock](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino)<br>
-This is only needed for the web, and
-
 ## Common Issues:
 
 #### Data is not being returned from the Database call

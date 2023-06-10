@@ -4,6 +4,9 @@ Run `npm i` in the root folder
 Run `npm i` in the sudokuru folder  
 Run `npm run start`
 
+For local development, you will need to install [CORS Unblock](https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino)<br>
+This is only needed for the website (localhost and preview branches).
+
 You will need to add a `.env` file inside the sudokuru folder.  
 Dummy values will be stored in `.env.template` file for reference.  
 The values needed for the `.env` file can be found in our shared password notebook kept in the secret location on campus in the MSB bathroom.  
