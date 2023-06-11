@@ -252,17 +252,13 @@ HeaderRow.defaultProps = {
 
 //todo convert this class component into a functional component
 const SudokuBoard = (props: any) => {
-  let state = generateGame(USERACTIVEGAMESBFFURL, props);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const [board, setBoard] = useState();
   const [history, setHistory] = useState<any>();
-  const [historyOffSet, setHistoryOffSet] = useState();
+  const [historyOffSet, setHistoryOffSet] = useState<number>();
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
-
-  console.log("STATE: ", state);
 
   useEffect(() => {
     generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
@@ -307,6 +303,7 @@ const SudokuBoard = (props: any) => {
   };
 
   const addNumberAsNote = (number) => {
+    console.log(board);
     let selectedCell = getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get("prefilled");
@@ -350,16 +347,8 @@ const SudokuBoard = (props: any) => {
     setHistoryOffSet(history.size - 1);
   };
 
-  const canUndo = () => historyOffSet > 0;
-
-  const redo = () => {
-    if (history.size) {
-      setHistoryOffSet(Math.min(history.size - 1, historyOffSet + 1));
-      setBoard(history.get(historyOffSet));
-    }
-  };
-
   const undo = () => {
+    console.log(history);
     if (history.size) {
       setHistoryOffSet(Math.max(0, historyOffSet - 1));
       setBoard(history.get(historyOffSet));
@@ -367,13 +356,20 @@ const SudokuBoard = (props: any) => {
   };
 
   const toggleNoteMode = () => {
+    console.log(board.get("inNoteMode"));
     let currNoteMode = board.get("inNoteMode");
     setBoard(board.set("inNoteMode", !currNoteMode));
   };
 
   const toggleHintMode = () => {
     let newHintMode = !board.get("inHintMode");
-    setBoard(board.set("inHintMode", newHintMode));
+    let boardClone = board.set("inHintMode", newHintMode);
+    console.log(newHintMode);
+    console.log("BOARD: ", board);
+    console.log("NEW BOARD", boardClone);
+    console.log(newHintMode);
+    setBoard(boardClone);
+    console.log("BOARD+", board);
 
     // Increment global hint value by one
     if (props.gameType != "StartDrill" && newHintMode) {
@@ -1028,7 +1024,6 @@ const SudokuBoard = (props: any) => {
   };
 
   const autoHint = () => {
-    const { board } = state;
     if (!board.get("inHintMode")) {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -1067,7 +1062,8 @@ const SudokuBoard = (props: any) => {
 
   if (!board) {
     generateGame(USERACTIVEGAMESBFFURL, props).then((game) => {
-      (state = game), initAutoHintTimer;
+      setActiveGame(game);
+      initAutoHintTimer();
     });
   }
 
