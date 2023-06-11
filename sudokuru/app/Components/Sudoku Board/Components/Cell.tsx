@@ -1,5 +1,4 @@
 import {
-  getBoxIndexFromXY,
   getCellNumber,
   getCellSize,
   replaceChar,
@@ -10,6 +9,12 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
 import { finishGame, saveGame } from "../SudokuBoard";
+import {
+  highlightCauses,
+  highlightGroups,
+  setPlacementHighlights,
+  setRemovalHighlights,
+} from "../../../Functions/Board/HintsParsing";
 
 let puzzleString = "";
 let notesString = "";
@@ -72,68 +77,26 @@ const Cell = (props: any) => {
   if (inHintMode && currentStep > -1) {
     let currentHint = hintSteps[currentStep];
 
-    if (currentHint.groups) {
-      // group highlighting
-      for (let i = 0; i < currentHint.groups.length; i++) {
-        // if the col matches hint, highlight the current col
-        if (
-          currentHint.groups[i].type == "col" &&
-          x === currentHint.groups[i].index
-        )
-          bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (
-          currentHint.groups[i].type == "row" &&
-          y === currentHint.groups[i].index
-        )
-          bgColor = "white";
-        // if the row matches hint, highlight the current row
-        if (
-          currentHint.groups[i].type == "box" &&
-          getBoxIndexFromXY(x, y) === currentHint.groups[i].index
-        )
-          bgColor = "white";
-      }
+    // Highlight the cell if it is part of the hint
+    if (highlightGroups(currentHint, y, x)) {
+      bgColor = "white";
     }
-    if (currentHint.causes) {
-      // cause highlighting
-      for (let i = 0; i < currentHint.causes.length; i++) {
-        let currentCause_x = currentHint.causes[i][0];
-        let currentCause_y = currentHint.causes[i][1];
-        if (currentCause_x == x && currentCause_y == y) {
-          // naked single hard code override
-          if (currentHint.placements) bgColor = "white";
-          else bgColor = "#F2CA7E";
-        }
+    // Highlight the cell if it is part of the cause of the hint
+    if (highlightCauses(currentHint, y, x)) {
+      // If the hint is a placement, highlight the cell white, otherwise highlight it yellow
+      // i.e. if the hint is a naked single, highlight the cell white, otherwise highlight it yellow
+      if (currentHint.placements) {
+        bgColor = "white";
+      } else {
+        bgColor = "#F2CA7E";
       }
     }
     // This handles just the styling, note deletion is not possible since the state would change during a render
-    if (currentHint.removals) {
-      // removal highlighting
-      for (let i = 0; i < currentHint.removals.length; i++) {
-        let currentRemoval = currentHint.removals[i];
-        let currentRemoval_x = currentRemoval.position[0];
-        let currentRemoval_y = currentRemoval.position[1];
-        if (currentRemoval_x == x && currentRemoval_y == y) {
-          if (currentRemoval.mode == "highlight") {
-            for (let j = 0; j < currentRemoval.values.length; j++)
-              isRemovalHighlight[currentRemoval.values[j] - 1] = true;
-          }
-        }
-      }
-    }
+    // Sets what notes should be highlighted for removal based on hint
+    setRemovalHighlights(isRemovalHighlight, currentHint, y, x);
 
-    if (currentHint.placements) {
-      // placement highlighting
-      let currentPlacement = currentHint.placements;
-      let currentPlacement_x = currentPlacement.position[0];
-      let currentPlacement_y = currentPlacement.position[1];
-      if (currentPlacement_x == x && currentPlacement_y == y) {
-        if (currentPlacement.mode == "highlight") {
-          isPlacementHighlight[currentPlacement.value - 1] = true;
-        }
-      }
-    }
+    // Sets what notes should be highlighted for placement based on hint
+    setPlacementHighlights(isPlacementHighlight, currentHint, y, x);
   }
 
   if (!drillMode && !landingMode) {
