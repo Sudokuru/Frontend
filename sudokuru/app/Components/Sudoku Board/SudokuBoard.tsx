@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Platform,
   Pressable,
@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { Set } from "immutable";
+import { List, Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
 
@@ -24,7 +24,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getKeyString } from "../../Functions/Auth0/token";
 import { USERACTIVEGAMESBFFURL } from "@env";
 import { useFocusEffect } from "@react-navigation/core";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
   checkSolution,
@@ -251,22 +251,52 @@ HeaderRow.defaultProps = {
 };
 
 //todo convert this class component into a functional component
-export default class SudokuBoard extends React.Component<SudokuBoardProps> {
-  constructor(props) {
-    super(props);
-  }
-  state = generateGame(USERACTIVEGAMESBFFURL, this.props);
+const SudokuBoard = (props: any) => {
+  let state = generateGame(USERACTIVEGAMESBFFURL, props);
 
-  getSelectedCell = () => {
-    const { board } = this.state;
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [board, setBoard] = useState();
+  const [history, setHistory] = useState<any>();
+  const [historyOffSet, setHistoryOffSet] = useState();
+  const [solution, setSolution] = useState();
+  const [activeGame, setActiveGame] = useState();
+
+  console.log("STATE: ", state);
+
+  useEffect(() => {
+    generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
+      console.log("THIS IS RESULT", result);
+      setBoard(result.board);
+      setHistory(result.history);
+      setHistoryOffSet(result.historyOffSet);
+      setSolution(result.solution);
+      setActiveGame(result.activeGame);
+      setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("component mounted");
+    // return a function to execute at unmount
+    return () => {
+      console.log("component will unmount");
+      clearInterval(this.interval);
+    };
+  }, []); // notice the empty array
+
+  // if we are loading then we return the loading icon
+  if (isLoading) return <ActivityIndicator animating={true} color="red" />;
+
+  const getSelectedCell = () => {
     const selected = board.get("selected");
     return selected && board.get("puzzle").getIn([selected.x, selected.y]);
   };
 
-  getNumberValueCount = (number) => {
-    const rows = this.state.board.getIn(["choices", "rows"]);
-    const columns = this.state.board.getIn(["choices", "columns"]);
-    const squares = this.state.board.getIn(["choices", "squares"]);
+  const getNumberValueCount = (number) => {
+    const rows = board.getIn(["choices", "rows"]);
+    const columns = board.getIn(["choices", "columns"]);
+    const squares = board.getIn(["choices", "squares"]);
     return Math.min(
       getNumberOfGroupsAssignedForNumber(number, squares),
       Math.min(
@@ -276,22 +306,23 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     );
   };
 
-  addNumberAsNote = (number) => {
-    let { board, solution } = this.state;
-    let selectedCell = this.getSelectedCell();
+  const addNumberAsNote = (number) => {
+    let selectedCell = getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get("prefilled");
     if (prefilled) return;
     const { x, y } = board.get("selected");
     const currentValue = selectedCell.get("value");
     if (currentValue) {
-      board = updateBoardWithNumber({
-        x,
-        y,
-        number: currentValue,
-        fill: false,
-        board: this.state.board,
-      });
+      setBoard(
+        updateBoardWithNumber({
+          x,
+          y,
+          number: currentValue,
+          fill: false,
+          board: board,
+        })
+      );
     }
     let notes = selectedCell.get("notes") || Set();
     let actualValue = solution ? solution[x][y] : -1;
@@ -302,67 +333,51 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     }
     selectedCell = selectedCell.set("notes", notes);
     selectedCell = selectedCell.delete("value");
-    board = board.setIn(["puzzle", x, y], selectedCell);
-    this.updateBoard(board);
+    setBoard(board.setIn(["puzzle", x, y], selectedCell));
+    updateBoard(board);
   };
 
-  updateBoard = (newBoard) => {
-    let { history } = this.state;
-    const { historyOffSet } = this.state;
-    history = history.slice(0, historyOffSet + 1);
-    history = history.push(newBoard);
-    this.setState({
-      board: newBoard,
-      history,
-      historyOffSet: history.size - 1,
-    });
+  const updateBoard = (newBoard) => {
+    setHistory(history.slice(0, historyOffSet + 1));
+    setHistory(history.push(newBoard));
+    setBoard(newBoard);
+    setHistoryOffSet(history.size - 1);
   };
 
-  updateBoardInPlace = () => {
-    let { board, history } = this.state;
-    const { historyOffSet } = this.state;
-    history = history.slice(0, historyOffSet + 1);
-    history = history.push(board);
-    this.setState({ board, history, historyOffSet: history.size - 1 });
+  const updateBoardInPlace = () => {
+    setHistory(history.slice(0, historyOffSet + 1));
+    setHistory(history.push(board));
+    setHistoryOffSet(history.size - 1);
   };
 
-  canUndo = () => this.state.historyOffSet > 0;
+  const canUndo = () => historyOffSet > 0;
 
-  redo = () => {
-    const { history } = this.state;
-    let { historyOffSet } = this.state;
+  const redo = () => {
     if (history.size) {
-      historyOffSet = Math.min(history.size - 1, historyOffSet + 1);
-      const board = history.get(historyOffSet);
-      this.setState({ board, historyOffSet });
+      setHistoryOffSet(Math.min(history.size - 1, historyOffSet + 1));
+      setBoard(history.get(historyOffSet));
     }
   };
 
-  undo = () => {
-    const { history } = this.state;
-    let { historyOffSet, board } = this.state;
+  const undo = () => {
     if (history.size) {
-      historyOffSet = Math.max(0, historyOffSet - 1);
-      board = history.get(historyOffSet);
-      this.setState({ board, historyOffSet, history });
+      setHistoryOffSet(Math.max(0, historyOffSet - 1));
+      setBoard(history.get(historyOffSet));
     }
   };
 
-  toggleNoteMode = () => {
-    let { board } = this.state;
+  const toggleNoteMode = () => {
     let currNoteMode = board.get("inNoteMode");
-    board = board.set("inNoteMode", !currNoteMode);
-    this.setState({ board });
+    setBoard(board.set("inNoteMode", !currNoteMode));
   };
 
-  toggleHintMode = () => {
-    let { board, solution } = this.state;
+  const toggleHintMode = () => {
     let newHintMode = !board.get("inHintMode");
-    board = board.set("inHintMode", newHintMode);
+    setBoard(board.set("inHintMode", newHintMode));
 
     // Increment global hint value by one
-    if (this.props.gameType != "StartDrill" && newHintMode) {
-      this.state.activeGame[0].numHintsUsed++;
+    if (props.gameType != "StartDrill" && newHintMode) {
+      activeGame[0].numHintsUsed++;
     }
 
     if (!newHintMode) {
@@ -371,32 +386,32 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
 
       // if they prematurely exit hint mode, undo the hint
       if (currentStep < hintStepsLength - 1) {
-        this.undo();
+        undo();
       }
 
-      board = board.set("currentStep", -1);
-      board = board.set("hintSteps", []);
+      setBoard(board.set("currentStep", -1));
+      setBoard(board.set("hintSteps", []));
 
       // if they are on the final step, push the hint operation to the history stack
-      if (currentStep == hintStepsLength - 1) this.updateBoard(board);
-      else this.setState({ board });
+      if (currentStep == hintStepsLength - 1) updateBoard(board);
+      else setBoard(board);
       return;
     }
-    board = board.set("currentStep", 0);
+    setBoard(board.set("currentStep", 0));
     let hint = solution
-      ? getHint(board, solution, this.props.strategies)
-      : getHint(board, null, this.props.strategies);
+      ? getHint(board, solution, props.strategies)
+      : getHint(board, null, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    hintStratName = words.join(" ");
-    board = board.set("hintStratName", hintStratName);
+    let hintStratName = words.join(" ");
+    setBoard(board.set("hintStratName", hintStratName));
     const hintInfo = hint.info;
-    board = board.set("hintInfo", hintInfo);
+    setBoard(board.set("hintInfo", hintInfo));
     const hintAction = hint.action;
-    board = board.set("hintAction", hintAction);
+    setBoard(board.set("hintAction", hintAction));
 
     let causes = [];
     let groups = [];
@@ -416,10 +431,12 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         for (let i = 0; i < removals.length; i++)
-          board = this.addEveryNote(
-            removals[i].position[0],
-            removals[i].position[1],
-            board
+          setBoard(
+            addEveryNote(
+              removals[i].position[0],
+              removals[i].position[1],
+              board
+            )
           );
 
         // two steps, two objects
@@ -589,39 +606,39 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
         console.log("the switch statement matched none of the strategies :(");
         break;
     }
-    board = board.set("hintSteps", hintSteps);
-    this.setState({ board });
+    setBoard(board.set("hintSteps", hintSteps));
   };
 
-  addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
-    let { board } = this.state;
-    board = board.set("currentStep", currentStep);
-    board = updateBoardWithNumber({
-      x,
-      y,
-      number: valueToAdd,
-      fill: true,
-      board,
-    });
+  const addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
+    setBoard(board.set("currentStep", currentStep));
+    setBoard(
+      updateBoardWithNumber({
+        x,
+        y,
+        number: valueToAdd,
+        fill: true,
+        board,
+      })
+    );
     return board;
   };
 
-  deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
-    let { board } = this.state;
-    board = board.set("currentStep", currentStep);
-    board = updateBoardWithNumber({
-      x,
-      y,
-      number: valueToRemove,
-      fill: false,
-      board,
-    });
-    board = board.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
+  const deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
+    setBoard(board.set("currentStep", currentStep));
+    setBoard(
+      updateBoardWithNumber({
+        x,
+        y,
+        number: valueToRemove,
+        fill: false,
+        board,
+      })
+    );
+    setBoard(board.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove)));
     return board;
   };
 
-  addEveryNote = (x, y, board) => {
-    // let { board } = this.state;
+  const addEveryNote = (x, y, board) => {
     let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
     for (let i = 1; i <= 9; i++) {
       if (!notes.has(i)) {
@@ -632,7 +649,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     return board;
   };
 
-  addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
+  const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
     let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
     board = board.set("currentStep", currentStep);
     for (let i = 0; i < notesToAdd.length; i++) {
@@ -644,7 +661,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     return board;
   };
 
-  deleteNotesFromRemovals = (x, y, notesToRemove, currentStep, board) => {
+  const deleteNotesFromRemovals = (x, y, notesToRemove, currentStep, board) => {
     board = board.set("currentStep", currentStep);
     let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
     for (let i = 0; i < notesToRemove.length; i++) {
@@ -661,9 +678,8 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
    * If notes are present in selected cell, removes all notes
    * If value is present in selected cell, removes value if value is incorrect
    */
-  eraseSelected = () => {
-    let { board, solution } = this.state;
-    let selectedCell = this.getSelectedCell();
+  const eraseSelected = () => {
+    let selectedCell = getSelectedCell();
     if (!selectedCell) return;
 
     const { x, y } = board.get("selected");
@@ -672,84 +688,83 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     let actualValue = solution ? solution[x][y] : -1;
     if (currentValue) {
       if (currentValue !== actualValue) {
-        this.fillNumber(false);
+        fillNumber(false);
       } else {
         // User has attempted to remove a correct value
         return;
       }
     } else {
       selectedCell = selectedCell.set("notes", Set());
-      board = board.setIn(["puzzle", x, y], selectedCell);
-      this.updateBoard(board);
+      setBoard(board.setIn(["puzzle", x, y], selectedCell));
+      updateBoard(board);
     }
   };
 
-  fillNumber = (number) => {
-    let { board, game } = this.state;
-    const selectedCell = this.getSelectedCell();
+  const fillNumber = (number) => {
+    const selectedCell = getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get("prefilled");
     if (prefilled) return;
     const { x, y } = board.get("selected");
     const currentValue = selectedCell.get("value");
     if (currentValue) {
-      board = updateBoardWithNumber({
-        x,
-        y,
-        number: currentValue,
-        fill: false,
-        board: this.state.board,
-      });
+      setBoard(
+        updateBoardWithNumber({
+          x,
+          y,
+          number: currentValue,
+          fill: false,
+          board: board,
+        })
+      );
     }
     const setNumber = currentValue !== number && number;
     if (setNumber) {
-      board = updateBoardWithNumber({
-        x,
-        y,
-        number,
-        fill: true,
-        board,
-      });
+      setBoard(
+        updateBoardWithNumber({
+          x,
+          y,
+          number,
+          fill: true,
+          board,
+        })
+      );
 
       if (
-        this.props.gameType != "StartDrill" &&
-        !checkSolution(this.state.activeGame[0].puzzleSolution, x, y, number)
+        props.gameType != "StartDrill" &&
+        !checkSolution(activeGame[0].puzzleSolution, x, y, number)
       ) {
-        this.state.activeGame[0].numWrongCellsPlayed++;
+        activeGame[0].numWrongCellsPlayed++;
       }
     }
-    this.updateBoard(board);
+    updateBoard(board);
   };
 
-  selectCell = (x, y) => {
-    let { board } = this.state;
-    board = board.set("selected", { x, y });
-    this.setState({ board });
+  const selectCell = (x, y) => {
+    setBoard(board.set("selected", { x, y }));
   };
 
-  isConflict = (i, j) => {
-    const { value } = this.state.board.getIn(["puzzle", i, j]).toJSON();
+  const isConflict = (i, j) => {
+    const { value } = board.getIn(["puzzle", i, j]).toJSON();
     if (!value) return false;
 
     let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
-    let solutionValue = this.state.solution.charAt(cellNum);
+    let solutionValue = solution.charAt(cellNum);
 
-    if (solutionValue == value || value == null) return false;
-    else return true;
+    return !(solutionValue == value || value == null);
   };
 
-  boardHasConflict = () => {
+  const boardHasConflict = () => {
     for (let i = 0; i < 9; i++)
-      for (let j = 0; j < 9; j++) if (this.isConflict(i, j)) return true;
+      for (let j = 0; j < 9; j++) if (isConflict(i, j)) return true;
 
     return false;
   };
 
-  renderCell = (cell, x, y) => {
-    const { board } = this.state;
-    const selected = this.getSelectedCell();
+  const renderCell = (cell, x, y) => {
+    const selected = getSelectedCell();
     const { value, prefilled, notes } = cell.toJSON();
-    const conflict = this.isConflict(x, y);
+    const conflict = isConflict(x, y);
     const peer = areCoordinatePeers({ x, y }, board.get("selected"));
     const box = highlightBox({ x, y }, board.get("selected"));
     const row = highlightRow({ x, y }, board.get("selected"));
@@ -765,7 +780,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     let currentStep = board.get("currentStep");
 
     let game = null;
-    if (this.props.gameType != "StartDrill") game = this.state.activeGame[0];
+    if (props.gameType != "StartDrill") game = activeGame[0];
 
     return (
       <Cell
@@ -779,53 +794,48 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
         isColumn={column}
         value={value}
         onClick={(x, y) => {
-          this.selectCell(x, y);
+          selectCell(x, y);
         }}
         key={y}
         x={x}
         y={y}
         conflict={conflict}
-        eraseSelected={this.eraseSelected}
+        eraseSelected={eraseSelected}
         inHintMode={inHintMode}
         hintSteps={hintSteps}
         currentStep={currentStep}
         game={game}
-        showResults={this.props.showGameResults}
-        gameType={this.props.gameType}
+        showResults={props.showGameResults}
+        gameType={props.gameType}
         landingMode={landingMode}
         drillMode={drillMode}
       />
     );
   };
 
-  renderTopBar = () => {
+  const renderTopBar = () => {
     return (
       <HeaderRow
-        currentTime={this.state.activeGame[0].currentTime}
-        activeGame={this.state.activeGame[0]}
+        currentTime={activeGame[0].currentTime}
+        activeGame={activeGame[0]}
       />
     );
   };
 
-  rightArrowClicked = () => {
-    let { board } = this.state;
+  const rightArrowClicked = () => {
+    let { board } = state;
     let hintSteps = board.get("hintSteps");
     let currentStep = board.get("currentStep") + 1;
     if (currentStep == undefined || currentStep == hintSteps.length) return;
-    board = board.set("currentStep", currentStep);
-    this.setState({ board });
+    setBoard(board.set("currentStep", currentStep));
     if (hintSteps[currentStep].removals) {
       for (let i = hintSteps[currentStep].removals.length - 1; i >= 0; i--) {
         if (hintSteps[currentStep].removals[i].mode === "delete") {
           let x = hintSteps[currentStep].removals[i].position[0];
           let y = hintSteps[currentStep].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep].removals[i].values;
-          board = this.deleteNotesFromRemovals(
-            x,
-            y,
-            notesToRemove,
-            currentStep,
-            board
+          setBoard(
+            deleteNotesFromRemovals(x, y, notesToRemove, currentStep, board)
           );
         }
       }
@@ -835,14 +845,13 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
         let x = hintSteps[currentStep].placements.position[0];
         let y = hintSteps[currentStep].placements.position[1];
         let valueToAdd = hintSteps[currentStep].placements.value;
-        board = this.addValueFromPlacement(x, y, valueToAdd, currentStep);
+        setBoard(addValueFromPlacement(x, y, valueToAdd, currentStep));
       }
     }
-    this.setState({ board });
   };
 
-  leftArrowClicked = () => {
-    let { board } = this.state;
+  const leftArrowClicked = () => {
+    let { board } = state;
     let hintSteps = board.get("hintSteps");
     let currentStep = board.get("currentStep") - 1;
     if (currentStep == undefined || currentStep < 0) return;
@@ -853,13 +862,7 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
           let x = hintSteps[currentStep + 1].removals[i].position[0];
           let y = hintSteps[currentStep + 1].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
-          board = this.addNotesFromRemovals(
-            x,
-            y,
-            notesToRemove,
-            currentStep,
-            board
-          );
+          board = addNotesFromRemovals(x, y, notesToRemove, currentStep, board);
         }
       }
     }
@@ -868,32 +871,30 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
         let x = hintSteps[currentStep + 1].placements.position[0];
         let y = hintSteps[currentStep + 1].placements.position[1];
         let valueToRemove = hintSteps[currentStep + 1].placements.value;
-        board = this.deleteValueFromPlacement(x, y, valueToRemove, currentStep);
+        board = deleteValueFromPlacement(x, y, valueToRemove, currentStep);
       }
     }
-    this.setState({ board });
   };
 
-  checkMarkClicked = () => {
-    this.toggleHintMode();
+  const checkMarkClicked = () => {
+    toggleHintMode();
   };
 
-  handleKeyDown = (event) => {
-    const { board } = this.state;
+  const handleKeyDown = (event) => {
+    const { board } = state;
     let inHintMode = board.get("inHintMode");
     let inNoteMode = board.get("inNoteMode");
     const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) {
       // check if input is a digit from 1 to 9
-      if (inNoteMode) this.addNumberAsNote(parseInt(inputValue, 10));
-      else this.fillNumber(parseInt(inputValue, 10));
+      if (inNoteMode) addNumberAsNote(parseInt(inputValue, 10));
+      else fillNumber(parseInt(inputValue, 10));
     }
     if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
-      this.eraseSelected();
+      eraseSelected();
   };
 
-  renderPuzzle = () => {
-    const { board } = this.state;
+  const renderPuzzle = () => {
     let onFirstStep = false;
     let onFinalStep = false;
     if (board.get("hintSteps") != undefined) {
@@ -905,20 +906,19 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     return (
       <Puzzle
         inHintMode={board.get("inHintMode")}
-        renderCell={this.renderCell}
+        renderCell={renderCell}
         board={board}
-        rightArrowClicked={this.rightArrowClicked}
-        leftArrowClicked={this.leftArrowClicked}
-        checkMarkClicked={this.checkMarkClicked}
+        rightArrowClicked={rightArrowClicked}
+        leftArrowClicked={leftArrowClicked}
+        checkMarkClicked={checkMarkClicked}
         onFirstStep={onFirstStep}
         onFinalStep={onFinalStep}
       />
     );
   };
 
-  renderNumberControl = () => {
-    const { board } = this.state;
-    const selectedCell = this.getSelectedCell();
+  const renderNumberControl = () => {
+    const selectedCell = getSelectedCell();
     const prefilled = selectedCell && selectedCell.get("prefilled");
     const inNoteMode = board.get("inNoteMode");
     const inHintMode = board.get("inHintMode");
@@ -926,23 +926,19 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
       <NumberControl
         prefilled={prefilled}
         inNoteMode={inNoteMode}
-        getNumberValueCount={this.getNumberValueCount}
-        fillNumber={this.fillNumber}
-        addNumberAsNote={this.addNumberAsNote}
+        getNumberValueCount={getNumberValueCount}
+        fillNumber={fillNumber}
+        addNumberAsNote={addNumberAsNote}
         inHintMode={inHintMode}
       />
     );
   };
 
-  renderActions = () => {
-    const { board, history } = this.state;
-    const selectedCell = this.getSelectedCell();
+  const renderActions = () => {
+    const selectedCell = getSelectedCell();
     const prefilled = selectedCell && selectedCell.get("prefilled");
     const inNoteMode = board.get("inNoteMode");
     const inHintMode = board.get("inHintMode");
-    const undo = this.undo;
-    const toggleNoteMode = this.toggleNoteMode;
-    const eraseSelected = this.eraseSelected;
 
     return (
       <ActionRow
@@ -952,19 +948,19 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
-        toggleHintMode={this.toggleHintMode}
-        updateBoardInPlace={this.updateBoardInPlace}
+        toggleHintMode={toggleHintMode}
+        updateBoardInPlace={updateBoardInPlace}
         inHintMode={inHintMode}
-        boardHasConflict={this.boardHasConflict}
+        boardHasConflict={boardHasConflict}
       />
     );
   };
 
-  renderSubmitButton = () => {
-    const { navigation } = this.props;
+  const renderSubmitButton = () => {
+    const { navigation } = props;
     const isDrillSolutionCorrect = () => {
-      const { drillSolutionCells, originalBoard } = this.state;
-      let { board } = this.state;
+      const { drillSolutionCells, originalBoard } = state;
+      let { board } = state;
       for (let i = 0; i < drillSolutionCells.length; i++) {
         let x = drillSolutionCells[i].x;
         let y = drillSolutionCells[i].y;
@@ -974,18 +970,20 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
           let boardNotes = board.getIn(["puzzle", x, y, "notes"]) || Set();
           if (!boardNotes.equals(solutionNotes)) {
             board = originalBoard;
-            this.setState({ board }, () => {
-              this.toggleHintMode();
-            });
+            (state = board),
+              () => {
+                toggleHintMode();
+              };
             return false;
           }
         } else if (solutionPlacement) {
           let boardValue = board.getIn(["puzzle", x, y, "value"]) || -1;
           if (boardValue != solutionPlacement) {
             board = originalBoard;
-            this.setState({ board }, () => {
-              this.toggleHintMode();
-            });
+            (state = board),
+              () => {
+                toggleHintMode();
+              };
             return false;
           }
         }
@@ -1001,8 +999,8 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     );
   };
 
-  renderHintSection = () => {
-    const { board } = this.state;
+  const renderHintSection = () => {
+    const { board } = state;
     let onFirstStep = false;
     let onFinalStep = false;
     if (board.get("hintSteps") != undefined) {
@@ -1011,39 +1009,39 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
       if (currentStep + 1 == 1) onFirstStep = true;
       if (currentStep + 1 == numHintSteps) onFinalStep = true;
     }
-    hintStratName = board ? board.get("hintStratName") : "Hint";
-    currentStep = board ? board.get("currentStep") : -1;
-    hintInfo = board ? board.get("hintInfo") : "Info";
-    hintAction = board ? board.get("hintAction") : "Action";
+    let hintStratName = board ? board.get("hintStratName") : "Hint";
+    let currentStep = board ? board.get("currentStep") : -1;
+    let hintInfo = board ? board.get("hintInfo") : "Info";
+    let hintAction = board ? board.get("hintAction") : "Action";
     return (
       <HintSection
         hintStratName={hintStratName}
         hintInfo={hintInfo}
         hintAction={hintAction}
         currentStep={currentStep}
-        rightArrowClicked={this.rightArrowClicked}
-        leftArrowClicked={this.leftArrowClicked}
-        checkMarkClicked={this.checkMarkClicked}
+        rightArrowClicked={rightArrowClicked}
+        leftArrowClicked={leftArrowClicked}
+        checkMarkClicked={checkMarkClicked}
         onFirstStep={onFirstStep}
         onFinalStep={onFinalStep}
       />
     );
   };
 
-  autoHint = () => {
-    const { board } = this.state;
+  const autoHint = () => {
+    const { board } = state;
     if (!board.get("inHintMode")) {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (
             !checkSolution(
-              this.state.activeGame[0].puzzleSolution,
+              activeGame[0].puzzleSolution,
               i,
               j,
               board.get("puzzle").getIn([i, j]).get("value")
             )
           ) {
-            this.toggleHintMode();
+            toggleHintMode();
             return;
           }
         }
@@ -1053,53 +1051,48 @@ export default class SudokuBoard extends React.Component<SudokuBoardProps> {
     } else {
       // if you're on the final index of the hint
       if (board.get("currentStep") + 1 === board.get("hintSteps").length) {
-        this.checkMarkClicked();
+        checkMarkClicked();
       }
       // if you're not on the final step
       else {
-        this.rightArrowClicked();
+        rightArrowClicked();
       }
     }
   };
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
+  const initAutoHintTimer = () => {
+    if (props.gameType == "Demo") {
+      this.interval = setInterval(autoHint, 1500);
+    }
+  };
+
+  if (!board) {
+    generateGame(USERACTIVEGAMESBFFURL, props).then((game) => {
+      (state = game), initAutoHintTimer;
+    });
   }
 
-  initAutoHintTimer = () => {
-    if (this.props.gameType == "Demo") {
-      this.interval = setInterval(this.autoHint, 1500);
-    }
-  };
+  drillMode = props.gameType == "StartDrill";
+  landingMode = props.gameType == "Demo";
+  let inHintMode = board ? board.get("inHintMode") : false;
 
-  render = () => {
-    const { board } = this.state;
-    if (!board) {
-      generateGame(USERACTIVEGAMESBFFURL, this.props).then((game) => {
-        this.setState(game, this.initAutoHintTimer);
-      });
-    }
+  return (
+    <View onKeyDown={handleKeyDown} styles={{ borderWidth: 1 }}>
+      {board && !landingMode && !drillMode && renderTopBar()}
+      {board && renderPuzzle()}
+      {board && (
+        <View style={styles().bottomActions}>
+          {!landingMode && renderActions()}
+          {!landingMode && !inHintMode && renderNumberControl()}
+          {drillMode && !inHintMode && renderSubmitButton()}
+          {!landingMode && inHintMode && renderHintSection()}
+        </View>
+      )}
+    </View>
+  );
+};
 
-    drillMode = this.props.gameType == "StartDrill";
-    landingMode = this.props.gameType == "Demo";
-    inHintMode = board ? board.get("inHintMode") : false;
-
-    return (
-      <View onKeyDown={this.handleKeyDown} styles={{ borderWidth: 1 }}>
-        {board && !landingMode && !drillMode && this.renderTopBar()}
-        {board && this.renderPuzzle()}
-        {board && (
-          <View style={styles().bottomActions}>
-            {!landingMode && this.renderActions()}
-            {!landingMode && !inHintMode && this.renderNumberControl()}
-            {drillMode && !inHintMode && this.renderSubmitButton()}
-            {!landingMode && inHintMode && this.renderHintSection()}
-          </View>
-        )}
-      </View>
-    );
-  };
-}
+export default SudokuBoard;
 
 interface SudokuBoardProps {
   gameType: string;
