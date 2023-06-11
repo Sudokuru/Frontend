@@ -881,7 +881,6 @@ const SudokuBoard = (props: any) => {
   };
 
   const handleKeyDown = (event) => {
-    const { board } = state;
     let inHintMode = board.get("inHintMode");
     let inNoteMode = board.get("inNoteMode");
     const inputValue = event.nativeEvent.key;
