@@ -995,7 +995,6 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderHintSection = () => {
-    const { board } = state;
     let onFirstStep = false;
     let onFinalStep = false;
     if (board.get("hintSteps") != undefined) {
@@ -1053,19 +1052,6 @@ const SudokuBoard = (props: any) => {
       }
     }
   };
-
-  const initAutoHintTimer = () => {
-    if (props.gameType == "Demo") {
-      this.interval = setInterval(autoHint, 1500);
-    }
-  };
-
-  if (!board) {
-    generateGame(USERACTIVEGAMESBFFURL, props).then((game) => {
-      setActiveGame(game);
-      initAutoHintTimer();
-    });
-  }
 
   drillMode = props.gameType == "StartDrill";
   landingMode = props.gameType == "Demo";
