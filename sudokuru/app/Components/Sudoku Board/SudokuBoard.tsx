@@ -254,11 +254,17 @@ HeaderRow.defaultProps = {
 const SudokuBoard = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  // shared states
   const [board, setBoard] = useState();
   const [history, setHistory] = useState<any>();
   const [historyOffSet, setHistoryOffSet] = useState<number>();
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
+
+  // drill states
+  // These could probably stay as props since these values are constant and not altered.
+  const [drillSolutionCells, setDrillSolutionCells] = useState();
+  const [originalBoard, setOriginalBoard] = useState();
 
   const autoHint = () => {
     if (!board.get("inHintMode")) {
@@ -304,6 +310,11 @@ const SudokuBoard = (props: any) => {
       setHistoryOffSet(result.historyOffSet);
       setSolution(result.solution);
       setActiveGame(result.activeGame);
+
+      if (props.gameType == "StartDrill") {
+        setDrillSolutionCells(result.drillSolutionCells);
+        setOriginalBoard(result.originalBoard);
+      }
 
       setIsLoading(false);
     });
@@ -1002,31 +1013,25 @@ const SudokuBoard = (props: any) => {
   const renderSubmitButton = () => {
     const { navigation } = props;
     const isDrillSolutionCorrect = () => {
-      const { drillSolutionCells, originalBoard } = state;
-      let { board } = state;
+      console.log("HELLO!");
+      let newBoard = board;
       for (let i = 0; i < drillSolutionCells.length; i++) {
         let x = drillSolutionCells[i].x;
         let y = drillSolutionCells[i].y;
         let solutionNotes = drillSolutionCells[i].notes;
         let solutionPlacement = drillSolutionCells[i].value;
         if (solutionNotes) {
-          let boardNotes = board.getIn(["puzzle", x, y, "notes"]) || Set();
+          let boardNotes = newBoard.getIn(["puzzle", x, y, "notes"]) || Set();
           if (!boardNotes.equals(solutionNotes)) {
-            board = originalBoard;
-            (state = board),
-              () => {
-                toggleHintMode();
-              };
+            newBoard = originalBoard;
+            setBoard(newBoard);
             return false;
           }
         } else if (solutionPlacement) {
-          let boardValue = board.getIn(["puzzle", x, y, "value"]) || -1;
+          let boardValue = newBoard.getIn(["puzzle", x, y, "value"]) || -1;
           if (boardValue != solutionPlacement) {
-            board = originalBoard;
-            (state = board),
-              () => {
-                toggleHintMode();
-              };
+            newBoard = originalBoard;
+            setBoard(newBoard);
             return false;
           }
         }
