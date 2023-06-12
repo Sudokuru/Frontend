@@ -277,8 +277,14 @@ const SudokuBoard = (props: any) => {
           }
         }
       }
-      // no value did not match the solution, so stop trying to get new steps
-      clearInterval(this.interval);
+      // previous board was filled, so now get new board
+      generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
+        setBoard(result.board);
+        setHistory(result.history);
+        setHistoryOffSet(result.historyOffSet);
+        setSolution(result.solution);
+        setActiveGame(result.activeGame);
+      });
     } else {
       // if you're on the final index of the hint
       if (board.get("currentStep") + 1 === board.get("hintSteps").length) {
@@ -304,13 +310,14 @@ const SudokuBoard = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (props.gameType == "Demo") {
+    if (props.gameType == "Demo" && board) {
       const interval = setInterval(() => {
         autoHint();
+        console.log("Hello!");
       }, 2000);
       return () => clearInterval(interval);
     }
-  }, [board]);
+  });
 
   // if we are loading then we return the loading icon
   if (isLoading) return <ActivityIndicator animating={true} color="red" />;
