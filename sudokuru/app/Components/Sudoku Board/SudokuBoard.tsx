@@ -335,8 +335,8 @@ const SudokuBoard = (props: any) => {
   };
 
   const updateBoard = (newBoard) => {
-    setHistory(history.slice(0, historyOffSet + 1));
-    setHistory(history.push(newBoard));
+    setHistory(...history.slice(0, historyOffSet + 1));
+    setHistory(...history.push(newBoard));
     setBoard(newBoard);
     setHistoryOffSet(history.size - 1);
   };
@@ -362,14 +362,9 @@ const SudokuBoard = (props: any) => {
   };
 
   const toggleHintMode = () => {
-    let newHintMode = !board.get("inHintMode");
-    let boardClone = board.set("inHintMode", newHintMode);
-    console.log(newHintMode);
-    console.log("BOARD: ", board);
-    console.log("NEW BOARD", boardClone);
-    console.log(newHintMode);
-    setBoard(boardClone);
-    console.log("BOARD+", board);
+    let newBoard = board;
+    let newHintMode = !newBoard.get("inHintMode");
+    newBoard = newBoard.set("inHintMode", newHintMode);
 
     // Increment global hint value by one
     if (props.gameType != "StartDrill" && newHintMode) {
@@ -377,37 +372,37 @@ const SudokuBoard = (props: any) => {
     }
 
     if (!newHintMode) {
-      let hintStepsLength = board.get("hintSteps").length;
-      let currentStep = board.get("currentStep");
+      let hintStepsLength = newBoard.get("hintSteps").length;
+      let currentStep = newBoard.get("currentStep");
 
       // if they prematurely exit hint mode, undo the hint
       if (currentStep < hintStepsLength - 1) {
         undo();
       }
 
-      setBoard(board.set("currentStep", -1));
-      setBoard(board.set("hintSteps", []));
+      newBoard = newBoard.set("currentStep", -1);
+      newBoard = newBoard.set("hintSteps", []);
 
       // if they are on the final step, push the hint operation to the history stack
-      if (currentStep == hintStepsLength - 1) updateBoard(board);
-      else setBoard(board);
+      if (currentStep == hintStepsLength - 1) updateBoard(newBoard);
+      else setBoard(newBoard);
       return;
     }
-    setBoard(board.set("currentStep", 0));
+    newBoard = newBoard.set("currentStep", 0);
     let hint = solution
-      ? getHint(board, solution, props.strategies)
-      : getHint(board, null, props.strategies);
+      ? getHint(newBoard, solution, props.strategies)
+      : getHint(newBoard, null, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
     for (let i = 0; i < words.length; i++)
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
     let hintStratName = words.join(" ");
-    setBoard(board.set("hintStratName", hintStratName));
+    newBoard = newBoard.set("hintStratName", hintStratName);
     const hintInfo = hint.info;
-    setBoard(board.set("hintInfo", hintInfo));
+    newBoard = newBoard.set("hintInfo", hintInfo);
     const hintAction = hint.action;
-    setBoard(board.set("hintAction", hintAction));
+    newBoard = newBoard.set("hintAction", hintAction);
 
     let causes = [];
     let groups = [];
@@ -427,12 +422,10 @@ const SudokuBoard = (props: any) => {
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         for (let i = 0; i < removals.length; i++)
-          setBoard(
-            addEveryNote(
-              removals[i].position[0],
-              removals[i].position[1],
-              board
-            )
+          newBoard = addEveryNote(
+            removals[i].position[0],
+            removals[i].position[1],
+            newBoard
           );
 
         // two steps, two objects
@@ -602,7 +595,8 @@ const SudokuBoard = (props: any) => {
         console.log("the switch statement matched none of the strategies :(");
         break;
     }
-    setBoard(board.set("hintSteps", hintSteps));
+    newBoard = newBoard.set("hintSteps", hintSteps);
+    setBoard(newBoard);
   };
 
   const addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
@@ -819,7 +813,6 @@ const SudokuBoard = (props: any) => {
   };
 
   const rightArrowClicked = () => {
-    let { board } = state;
     let hintSteps = board.get("hintSteps");
     let currentStep = board.get("currentStep") + 1;
     if (currentStep == undefined || currentStep == hintSteps.length) return;
@@ -847,7 +840,6 @@ const SudokuBoard = (props: any) => {
   };
 
   const leftArrowClicked = () => {
-    let { board } = state;
     let hintSteps = board.get("hintSteps");
     let currentStep = board.get("currentStep") - 1;
     if (currentStep == undefined || currentStep < 0) return;
@@ -1055,7 +1047,9 @@ const SudokuBoard = (props: any) => {
 
   drillMode = props.gameType == "StartDrill";
   landingMode = props.gameType == "Demo";
+  console.log("INHINTMODE? ", board.get("inHintMode"));
   let inHintMode = board ? board.get("inHintMode") : false;
+  console.log("INHINTMODE2? ", inHintMode);
 
   return (
     <View onKeyDown={handleKeyDown} styles={{ borderWidth: 1 }}>
