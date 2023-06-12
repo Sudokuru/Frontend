@@ -260,26 +260,57 @@ const SudokuBoard = (props: any) => {
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
 
+  const autoHint = () => {
+    if (!board.get("inHintMode")) {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (
+            !checkSolution(
+              activeGame[0].puzzleSolution,
+              i,
+              j,
+              board.get("puzzle").getIn([i, j]).get("value")
+            )
+          ) {
+            toggleHintMode();
+            return;
+          }
+        }
+      }
+      // no value did not match the solution, so stop trying to get new steps
+      clearInterval(this.interval);
+    } else {
+      // if you're on the final index of the hint
+      if (board.get("currentStep") + 1 === board.get("hintSteps").length) {
+        checkMarkClicked();
+      }
+      // if you're not on the final step
+      else {
+        rightArrowClicked();
+      }
+    }
+  };
+
   useEffect(() => {
     generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
-      console.log("THIS IS RESULT", result);
       setBoard(result.board);
       setHistory(result.history);
       setHistoryOffSet(result.historyOffSet);
       setSolution(result.solution);
       setActiveGame(result.activeGame);
+
       setIsLoading(false);
     });
   }, []);
 
   useEffect(() => {
-    console.log("component mounted");
-    // return a function to execute at unmount
-    return () => {
-      console.log("component will unmount");
-      clearInterval(this.interval);
-    };
-  }, []); // notice the empty array
+    if (props.gameType == "Demo") {
+      const interval = setInterval(() => {
+        autoHint();
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [board]);
 
   // if we are loading then we return the loading icon
   if (isLoading) return <ActivityIndicator animating={true} color="red" />;
@@ -303,23 +334,21 @@ const SudokuBoard = (props: any) => {
   };
 
   const addNumberAsNote = (number) => {
-    console.log(board);
+    let newBoard = board;
     let selectedCell = getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get("prefilled");
     if (prefilled) return;
-    const { x, y } = board.get("selected");
+    const { x, y } = newBoard.get("selected");
     const currentValue = selectedCell.get("value");
     if (currentValue) {
-      setBoard(
-        updateBoardWithNumber({
-          x,
-          y,
-          number: currentValue,
-          fill: false,
-          board: board,
-        })
-      );
+      newBoard = updateBoardWithNumber({
+        x,
+        y,
+        number: currentValue,
+        fill: false,
+        board: newBoard,
+      });
     }
     let notes = selectedCell.get("notes") || Set();
     let actualValue = solution ? solution[x][y] : -1;
@@ -330,35 +359,44 @@ const SudokuBoard = (props: any) => {
     }
     selectedCell = selectedCell.set("notes", notes);
     selectedCell = selectedCell.delete("value");
-    setBoard(board.setIn(["puzzle", x, y], selectedCell));
-    updateBoard(board);
+    newBoard = newBoard.setIn(["puzzle", x, y], selectedCell);
+    updateBoard(newBoard);
   };
 
   const updateBoard = (newBoard) => {
-    setHistory(...history.slice(0, historyOffSet + 1));
-    setHistory(...history.push(newBoard));
+    let newHistory = history;
+    newHistory = newHistory.slice(0, historyOffSet + 1);
+    newHistory = newHistory.push(newBoard);
+
+    setHistoryOffSet(newHistory.size - 1);
+    setHistory(newHistory);
     setBoard(newBoard);
-    setHistoryOffSet(history.size - 1);
   };
 
   const updateBoardInPlace = () => {
-    setHistory(history.slice(0, historyOffSet + 1));
-    setHistory(history.push(board));
-    setHistoryOffSet(history.size - 1);
+    let newHistory = history;
+    newHistory = newHistory.slice(0, historyOffSet + 1);
+    newHistory = newHistory.push(board);
+    setHistory(newHistory);
+    setHistoryOffSet(newHistory.size - 1);
   };
 
   const undo = () => {
-    console.log(history);
+    let newHistoryOffSet = historyOffSet;
+    let newBoard = board;
     if (history.size) {
-      setHistoryOffSet(Math.max(0, historyOffSet - 1));
-      setBoard(history.get(historyOffSet));
+      newHistoryOffSet = Math.max(0, newHistoryOffSet - 1);
+      newBoard = history.get(newHistoryOffSet);
+      setHistoryOffSet(newHistoryOffSet);
+      setBoard(newBoard);
     }
   };
 
   const toggleNoteMode = () => {
-    console.log(board.get("inNoteMode"));
-    let currNoteMode = board.get("inNoteMode");
-    setBoard(board.set("inNoteMode", !currNoteMode));
+    let newBoard = board;
+    let currNoteMode = newBoard.get("inNoteMode");
+    newBoard = newBoard.set("inNoteMode", !currNoteMode);
+    setBoard(newBoard);
   };
 
   const toggleHintMode = () => {
@@ -600,32 +638,30 @@ const SudokuBoard = (props: any) => {
   };
 
   const addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
-    setBoard(board.set("currentStep", currentStep));
-    setBoard(
-      updateBoardWithNumber({
-        x,
-        y,
-        number: valueToAdd,
-        fill: true,
-        board,
-      })
-    );
-    return board;
+    let newBoard = board;
+    newBoard = newBoard.set("currentStep", currentStep);
+    newBoard = updateBoardWithNumber({
+      x,
+      y,
+      number: valueToAdd,
+      fill: true,
+      board: newBoard,
+    });
+    return newBoard;
   };
 
   const deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
-    setBoard(board.set("currentStep", currentStep));
-    setBoard(
-      updateBoardWithNumber({
-        x,
-        y,
-        number: valueToRemove,
-        fill: false,
-        board,
-      })
-    );
-    setBoard(board.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove)));
-    return board;
+    let newBoard = board;
+    newBoard = newBoard.set("currentStep", currentStep);
+    newBoard = updateBoardWithNumber({
+      x,
+      y,
+      number: valueToRemove,
+      fill: false,
+      board: newBoard,
+    });
+    newBoard = newBoard.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
+    return newBoard;
   };
 
   const addEveryNote = (x, y, board) => {
@@ -684,13 +720,15 @@ const SudokuBoard = (props: any) => {
         return;
       }
     } else {
+      let newBoard = board;
       selectedCell = selectedCell.set("notes", Set());
-      setBoard(board.setIn(["puzzle", x, y], selectedCell));
-      updateBoard(board);
+      newBoard = newBoard.setIn(["puzzle", x, y], selectedCell);
+      updateBoard(newBoard);
     }
   };
 
   const fillNumber = (number) => {
+    let newBoard = board;
     const selectedCell = getSelectedCell();
     if (!selectedCell) return;
     const prefilled = selectedCell.get("prefilled");
@@ -698,27 +736,23 @@ const SudokuBoard = (props: any) => {
     const { x, y } = board.get("selected");
     const currentValue = selectedCell.get("value");
     if (currentValue) {
-      setBoard(
-        updateBoardWithNumber({
-          x,
-          y,
-          number: currentValue,
-          fill: false,
-          board: board,
-        })
-      );
+      newBoard = updateBoardWithNumber({
+        x,
+        y,
+        number: currentValue,
+        fill: false,
+        board: newBoard,
+      });
     }
     const setNumber = currentValue !== number && number;
     if (setNumber) {
-      setBoard(
-        updateBoardWithNumber({
-          x,
-          y,
-          number,
-          fill: true,
-          board,
-        })
-      );
+      newBoard = updateBoardWithNumber({
+        x,
+        y,
+        number,
+        fill: true,
+        board: newBoard,
+      });
 
       if (
         props.gameType != "StartDrill" &&
@@ -727,7 +761,7 @@ const SudokuBoard = (props: any) => {
         activeGame[0].numWrongCellsPlayed++;
       }
     }
-    updateBoard(board);
+    updateBoard(newBoard);
   };
 
   const selectCell = (x, y) => {
@@ -813,18 +847,23 @@ const SudokuBoard = (props: any) => {
   };
 
   const rightArrowClicked = () => {
-    let hintSteps = board.get("hintSteps");
-    let currentStep = board.get("currentStep") + 1;
+    let newBoard = board;
+    let hintSteps = newBoard.get("hintSteps");
+    let currentStep = newBoard.get("currentStep") + 1;
     if (currentStep == undefined || currentStep == hintSteps.length) return;
-    setBoard(board.set("currentStep", currentStep));
+    newBoard = newBoard.set("currentStep", currentStep);
     if (hintSteps[currentStep].removals) {
       for (let i = hintSteps[currentStep].removals.length - 1; i >= 0; i--) {
         if (hintSteps[currentStep].removals[i].mode === "delete") {
           let x = hintSteps[currentStep].removals[i].position[0];
           let y = hintSteps[currentStep].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep].removals[i].values;
-          setBoard(
-            deleteNotesFromRemovals(x, y, notesToRemove, currentStep, board)
+          newBoard = deleteNotesFromRemovals(
+            x,
+            y,
+            notesToRemove,
+            currentStep,
+            newBoard
           );
         }
       }
@@ -834,23 +873,31 @@ const SudokuBoard = (props: any) => {
         let x = hintSteps[currentStep].placements.position[0];
         let y = hintSteps[currentStep].placements.position[1];
         let valueToAdd = hintSteps[currentStep].placements.value;
-        setBoard(addValueFromPlacement(x, y, valueToAdd, currentStep));
+        newBoard = addValueFromPlacement(x, y, valueToAdd, currentStep);
       }
     }
+    setBoard(newBoard);
   };
 
   const leftArrowClicked = () => {
-    let hintSteps = board.get("hintSteps");
-    let currentStep = board.get("currentStep") - 1;
+    let newBoard = board;
+    let hintSteps = newBoard.get("hintSteps");
+    let currentStep = newBoard.get("currentStep") - 1;
     if (currentStep == undefined || currentStep < 0) return;
-    board = board.set("currentStep", currentStep);
+    newBoard = newBoard.set("currentStep", currentStep);
     if (hintSteps[currentStep].removals) {
       for (let i = 0; i < hintSteps[currentStep].removals.length; i++) {
         if (hintSteps[currentStep + 1].removals[i].mode === "delete") {
           let x = hintSteps[currentStep + 1].removals[i].position[0];
           let y = hintSteps[currentStep + 1].removals[i].position[1];
           let notesToRemove = hintSteps[currentStep + 1].removals[i].values;
-          board = addNotesFromRemovals(x, y, notesToRemove, currentStep, board);
+          newBoard = addNotesFromRemovals(
+            x,
+            y,
+            notesToRemove,
+            currentStep,
+            newBoard
+          );
         }
       }
     }
@@ -859,9 +906,10 @@ const SudokuBoard = (props: any) => {
         let x = hintSteps[currentStep + 1].placements.position[0];
         let y = hintSteps[currentStep + 1].placements.position[1];
         let valueToRemove = hintSteps[currentStep + 1].placements.value;
-        board = deleteValueFromPlacement(x, y, valueToRemove, currentStep);
+        newBoard = deleteValueFromPlacement(x, y, valueToRemove, currentStep);
       }
     }
+    setBoard(newBoard);
   };
 
   const checkMarkClicked = () => {
@@ -943,6 +991,7 @@ const SudokuBoard = (props: any) => {
     );
   };
 
+  // todo fix this
   const renderSubmitButton = () => {
     const { navigation } = props;
     const isDrillSolutionCorrect = () => {
@@ -1014,42 +1063,9 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  const autoHint = () => {
-    if (!board.get("inHintMode")) {
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-          if (
-            !checkSolution(
-              activeGame[0].puzzleSolution,
-              i,
-              j,
-              board.get("puzzle").getIn([i, j]).get("value")
-            )
-          ) {
-            toggleHintMode();
-            return;
-          }
-        }
-      }
-      // no value did not match the solution, so stop trying to get new steps
-      clearInterval(this.interval);
-    } else {
-      // if you're on the final index of the hint
-      if (board.get("currentStep") + 1 === board.get("hintSteps").length) {
-        checkMarkClicked();
-      }
-      // if you're not on the final step
-      else {
-        rightArrowClicked();
-      }
-    }
-  };
-
   drillMode = props.gameType == "StartDrill";
   landingMode = props.gameType == "Demo";
-  console.log("INHINTMODE? ", board.get("inHintMode"));
   let inHintMode = board ? board.get("inHintMode") : false;
-  console.log("INHINTMODE2? ", inHintMode);
 
   return (
     <View onKeyDown={handleKeyDown} styles={{ borderWidth: 1 }}>
