@@ -324,7 +324,6 @@ const SudokuBoard = (props: any) => {
     if (props.gameType == "Demo" && board) {
       const interval = setInterval(() => {
         autoHint();
-        console.log("Hello!");
       }, 2000);
       return () => clearInterval(interval);
     }
@@ -1013,7 +1012,6 @@ const SudokuBoard = (props: any) => {
   const renderSubmitButton = () => {
     const { navigation } = props;
     const isDrillSolutionCorrect = () => {
-      console.log("HELLO!");
       let newBoard = board;
       for (let i = 0; i < drillSolutionCells.length; i++) {
         let x = drillSolutionCells[i].x;
