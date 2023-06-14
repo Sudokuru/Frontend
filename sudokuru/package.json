@@ -52,7 +52,7 @@
     "@babel/core": "^7.20.0",
     "@types/react": "^18.0.30",
     "@types/react-native": "^0.70.13",
-    "metro": "^0.76.0",
+    "metro": "^0.76.6",
     "typescript": "^5.1.3",
     "vercel": "^28.18.1"
   },

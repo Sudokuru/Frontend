@@ -16,8 +16,6 @@ The Drills constant is used to make calls to the Drills API
 import { getKeyString } from "../Functions/Auth0/token";
 import { USERACTIVEGAMESBFFURL } from "@env";
 import { Drills } from "sudokuru";
-
-const Drills = sudokuru.Drills;
 ```
 
 #### Function call
