@@ -23,6 +23,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import NavigationBar from "../Components/NavigationBar";
 
 const LandingPage = () => {
   const theme = useTheme();
@@ -83,6 +84,7 @@ const LandingPage = () => {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
+          <NavigationBar page={"Landing"} />
         </SafeAreaView>
       </SafeAreaProvider>
     );
