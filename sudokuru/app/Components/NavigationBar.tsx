@@ -8,6 +8,7 @@ const NavigationBar = (props: any) => {
 
   const HOME_LOGO = require("./homeLogo.png");
   const PLAY_LOGO = require("./playLogo.png");
+  const DRILL_LOGO = require("./drillLogo.png");
 
   return (
     <View style={styles.toggleIcons}>
@@ -32,6 +33,18 @@ const NavigationBar = (props: any) => {
                 width: 110,
               }}
               source={PLAY_LOGO}
+            />
+          </Pressable>
+      }
+      {
+          <Pressable onPress={() => navigation.navigate("Landing")} style={props.page == "Drill" ? styles.onPage : styles.notOnPage}>
+            <Image
+              style={{
+                resizeMode: "cover",
+                height: 45,
+                width: 110,
+              }}
+              source={DRILL_LOGO}
             />
           </Pressable>
       }
