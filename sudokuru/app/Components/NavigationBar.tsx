@@ -11,7 +11,7 @@ const NavigationBar = (props: any) => {
   return (
     <View style={styles.toggleIcons}>
       {
-          <Pressable onPress={() => navigation.navigate("Landing")}>
+          <Pressable onPress={() => navigation.navigate("Landing")} style={props.page == "Landing" ? styles.onPage : null}>
             <Image
               style={{
                 resizeMode: "cover",
@@ -30,10 +30,14 @@ const styles = StyleSheet.create({
   toggleIcons: {
     flexDirection: "column",
     height: "100%",
-    width: "10%",
-    padding: 20,
+    width: 130,
     backgroundColor: "#012f39",
   },
+  onPage: {
+    width: 130,
+    padding: 10,
+    backgroundColor: "#000000",
+  }
 });
 
 export default NavigationBar;
