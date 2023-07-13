@@ -6,10 +6,22 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 const NavigationBar = (props: any) => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark } = React.useContext(PreferencesContext);
+  const HOME_LOGO = require("./homeLogo.png");
 
   return (
     <View style={styles.toggleIcons}>
+      {
+          <Pressable onPress={() => navigation.navigate("Landing")}>
+            <Image
+              style={{
+                resizeMode: "cover",
+                height: 45,
+                width: 110,
+              }}
+              source={HOME_LOGO}
+            />
+          </Pressable>
+      }
     </View>
   );
 };
