@@ -89,14 +89,24 @@ const LandingPage = () => {
           <View style={styles.animatedBoard}>
             <SudokuBoard gameType={"Demo"} strategies={strategies} />
           </View>
-          <Text style={{
-            color: "white",
-            fontSize: reSize / 24,
-            paddingVertical: 60,
-            paddingHorizontal: 70,
-          }}>
-            Your path to becoming a
-          </Text>
+          <View style={styles.path}>
+            <Text style={{
+              color: "white",
+              fontSize: reSize / 24,
+              paddingTop: 60,
+              paddingHorizontal: 70,
+            }}>
+              Your path to becoming a
+            </Text>
+            <Text style={{
+              color: "#d9a05b",
+              fontSize: reSize / 16,
+              paddingTop: 15,
+              paddingHorizontal: 70,
+            }}>
+              Sudoku Guru
+            </Text>
+          </View>
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -122,6 +132,10 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 60,
     },
+  path: {
+    flexDirection: "column",
+    alignItems: "center",
+  }
 });
 
 export default LandingPage;
