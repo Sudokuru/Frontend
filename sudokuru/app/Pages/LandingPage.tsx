@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
   animatedBoard: {
     flexDirection: "row",
     flexWrap: "wrap",
+    paddingVertical: 30,
+    paddingHorizontal: 60,
     },
 });
 
