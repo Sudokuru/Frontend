@@ -89,6 +89,14 @@ const LandingPage = () => {
           <View style={styles.animatedBoard}>
             <SudokuBoard gameType={"Demo"} strategies={strategies} />
           </View>
+          <Text style={{
+            color: "white",
+            fontSize: reSize / 24,
+            paddingVertical: 60,
+            paddingHorizontal: 70,
+          }}>
+            Your path to becoming a
+          </Text>
         </SafeAreaView>
       </SafeAreaProvider>
     );
