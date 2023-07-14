@@ -14,6 +14,7 @@ import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { rgba } from "polished";
+import { StyleSheet } from "react-native";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -83,8 +84,11 @@ const LandingPage = () => {
   if (isWeb) {
     return (
       <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
+        <SafeAreaView style={styles.main}>
           <NavigationBar page={"Landing"} />
+          <View style={styles.animatedBoard}>
+            <SudokuBoard gameType={"Demo"} strategies={strategies} />
+          </View>
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -97,5 +101,17 @@ const LandingPage = () => {
     );
   }
 };
+
+const styles = StyleSheet.create({
+  main: {
+    flexDirection: "row",
+    height: "100%",
+    width: "100%",
+  },
+  animatedBoard: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    },
+});
 
 export default LandingPage;
