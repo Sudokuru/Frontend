@@ -86,12 +86,7 @@ const LandingPage = () => {
   if (isWeb) {
     return (
       <SafeAreaProvider>
-        <SafeAreaView style={{
-          flexDirection: "row",
-          height: "100%",
-          width: "100%",
-          overflow: "hidden",
-        }}>
+        <SafeAreaView style={styles.page}>
           <NavigationBar page={"Landing"} />
           <View style={styles.main}>
             <View style={styles.top}>
@@ -99,41 +94,52 @@ const LandingPage = () => {
                 <SudokuBoard gameType={"Demo"} strategies={strategies} />
               </View>
               <View style={styles.rightOfBoard}>
-                <Text style={{
-                  color: "white",
-                  fontSize: reSize / 24,
-                  paddingTop: 60,
-                }}>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: reSize / 24,
+                    paddingTop: 60,
+                  }}
+                >
                   Your path to becoming a
                 </Text>
-                <Text style={{
-                  color: "#d9a05b",
-                  fontSize: reSize / 16,
-                  paddingTop: 15,
-                }}>
+                <Text
+                  style={{
+                    color: "#d9a05b",
+                    fontSize: reSize / 16,
+                    paddingTop: 15,
+                  }}
+                >
                   Sudoku Guru
                 </Text>
                 <View style={styles.backgroundWithBorder}>
-                  <Text style={{
-                    color: "white",
-                    fontSize: reSize / 28,
-                    textAlign: "center",
-                  }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: reSize / 28,
+                      textAlign: "center",
+                    }}
+                  >
                     “The journey of a thousand miles begins with one step"
                   </Text>
-                  <Text style={{
-                    color: "white",
-                    fontSize: reSize / 28,
-                    textAlign: "center",
-                  }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      fontSize: reSize / 28,
+                      textAlign: "center",
+                    }}
+                  >
                     - Lao Tzu
                   </Text>
                 </View>
                 <View style={styles.backgroundWithBorder}>
-                  <Pressable onPress={() => navigation.navigate("Landing")} style={{
-                    maxHeight: "100%",
-                    maxWidth: "100%",
-                  }}>
+                  <Pressable
+                    onPress={() => navigation.navigate("Landing")}
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                    }}
+                  >
                     <Image
                       style={{
                         resizeMode: "contain",
@@ -148,37 +154,45 @@ const LandingPage = () => {
             </View>
             <View style={styles.bottom}>
               <View style={styles.bottomLeft}>
-                <Text style={{
-                  color: "white",
-                  fontSize: reSize / 30,
-                  textAlign: "center",
-                }}>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: reSize / 30,
+                    textAlign: "center",
+                  }}
+                >
                   Don't know what Sudoku is?
                 </Text>
-                <Text style={{
-                  color: "white",
-                  fontSize: reSize / 30,
-                  textAlign: "center",
-                }}>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: reSize / 30,
+                    textAlign: "center",
+                  }}
+                >
                   It's a logic puzzle, learn more with lessons!
                 </Text>
               </View>
               <View style={styles.bottomRight}>
-              <Text style={{
-                color: "white",
-                fontSize: reSize / 30,
-                textAlign: "center",
-              }}>
-                Want to get faster at Sudoku?
-              </Text>
-              <Text style={{
-                color: "white",
-                fontSize: reSize / 30,
-                textAlign: "center",
-              }}>
-                Practice strategies with drills!
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: reSize / 30,
+                    textAlign: "center",
+                  }}
+                >
+                  Want to get faster at Sudoku?
+                </Text>
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: reSize / 30,
+                    textAlign: "center",
+                  }}
+                >
+                  Practice strategies with drills!
+                </Text>
+              </View>
             </View>
           </View>
         </SafeAreaView>
@@ -187,14 +201,19 @@ const LandingPage = () => {
   } else {
     return (
       <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
-        </SafeAreaView>
+        <SafeAreaView style={{ height: "100%", width: "100%" }}></SafeAreaView>
       </SafeAreaProvider>
     );
   }
 };
 
 const styles = StyleSheet.create({
+  page: {
+    flexDirection: "row",
+    height: "100%",
+    width: "100%",
+    overflow: "hidden",
+  },
   main: {
     flexDirection: "column",
     height: "100%",
@@ -229,7 +248,7 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     paddingHorizontal: 60,
     width: "40%",
-    },
+  },
   rightOfBoard: {
     flexDirection: "column",
     alignItems: "center",
