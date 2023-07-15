@@ -14,7 +14,7 @@ import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { rgba } from "polished";
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -39,6 +39,8 @@ const LandingPage = () => {
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const newUser = 1;
+
+  const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
 
   let strategies = [
     "AMEND_NOTES",
@@ -104,18 +106,11 @@ const LandingPage = () => {
             }}>
               Sudoku Guru
             </Text>
-            <View style={{
-              marginTop: 30,
-              marginHorizontal: "12%",
-              borderColor: "#d9a05b",
-              borderWidth: 3,
-              borderRadius: 5,
-            }}>
+            <View style={styles.backgroundWithBorder}>
               <Text style={{
                 color: "white",
                 fontSize: reSize / 28,
                 textAlign: "center",
-                backgroundColor: "#012f39"
               }}>
                 “The journey of a thousand miles begins with one step"
               </Text>
@@ -123,10 +118,24 @@ const LandingPage = () => {
                 color: "white",
                 fontSize: reSize / 28,
                 textAlign: "center",
-                backgroundColor: "#012f39"
               }}>
                 - Lao Tzu
               </Text>
+            </View>
+            <View style={styles.backgroundWithBorder}>
+              <Pressable onPress={() => navigation.navigate("Landing")} style={{
+                maxHeight: "100%",
+                maxWidth: "100%",
+              }}>
+                <Image
+                  style={{
+                    resizeMode: "contain",
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                  }}
+                  source={PLAY_SUDOKU_LOGO}
+                />
+              </Pressable>
             </View>
           </View>
         </SafeAreaView>
@@ -158,7 +167,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     width: "35%",
-  }
+  },
+  backgroundWithBorder: {
+    marginTop: 30,
+    marginHorizontal: "12%",
+    borderColor: "#d9a05b",
+    borderWidth: 3,
+    borderRadius: 5,
+    backgroundColor: "#012f39",
+    maxHeight: "20%",
+    maxWidth: "80%",
+  },
 });
 
 export default LandingPage;
