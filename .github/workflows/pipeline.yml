@@ -2,18 +2,21 @@ name: "Pipeline"
 
 on:
   push:
-    paths:
-      - '.github/workflows/pipeline.yml'
-      - 'sudokuru/**'
+    # It is easier to list paths to exclude rather than paths to include
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - "license.md"
     branches:
       - main
   pull_request:
-    paths:
-      - '.github/workflows/pipeline.yml'
-      - 'sudokuru/**'
+    # It is easier to list paths to exclude rather than paths to include
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+      - "license.md"
     branches:
       - main
-
 
 # https://stackoverflow.com/questions/74117321/if-condition-in-concurrency-in-gha
 # A PR will have workflows in the same group, different PRs will have workflows in different groups, and each main workflow will have different group IDs
@@ -54,15 +57,12 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci && npx expo install expo-updates
-        working-directory: ./sudokuru
 
       - name: 🚀 Publish App preview
         run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
-        working-directory: ./sudokuru
 
       - name: Publish Website Preview
         run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
-        working-directory: ./sudokuru
 
       - name: Post comment with preview link
         uses: KeisukeYamashita/create-comment@v1
@@ -95,11 +95,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
-        working-directory: ./sudokuru
 
       - name: 🚀 Build app
         run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} eas build --non-interactive --platform android --local
-        working-directory: ./sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildDev
 
@@ -107,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Android Dev APK
-          path: sudokuru/BuildDev/*.apk
+          path: BuildDev/*.apk
 
   app_build_prod:
     runs-on: ubuntu-latest
@@ -131,11 +129,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: npm ci
-        working-directory: ./sudokuru
 
       - name: 🚀 Build app
         run: USERGAMESTATISTICSBFFURL=${{ secrets.PROD_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.PROD_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.PROD_DOMAIN }} CLIENT_ID=${{ secrets.PROD_CLIENT_ID }} AUDIENCE=${{ secrets.PROD_AUDIENCE }} SCOPE=${{ secrets.PROD_SCOPE }} eas build --non-interactive --platform android --local
-        working-directory: ./sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildProd
 
@@ -143,7 +139,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Android Prod APK
-          path: sudokuru/BuildProd/*.apk
+          path: BuildProd/*.apk
 
   deploy_app_dev:
     name: Deploy Dev app to Itch.io
@@ -201,10 +197,8 @@ jobs:
         uses: actions/checkout@v3
 
       - run: npm ci
-        working-directory: ./sudokuru
 
       - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
-        working-directory: ./sudokuru
 
   deploy_website_prod:
     name: Deploy Prod Website
@@ -216,7 +210,5 @@ jobs:
         uses: actions/checkout@v3
 
       - run: npm ci
-        working-directory: ./sudokuru
 
       - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
-        working-directory: ./sudokuru
