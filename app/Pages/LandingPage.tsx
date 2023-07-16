@@ -41,6 +41,7 @@ const LandingPage = () => {
   const newUser = 1;
 
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
+  const START_LESSONS_LOGO = require("./startLessonsLogo.png");
 
   let strategies = [
     "AMEND_NOTES",
@@ -172,6 +173,24 @@ const LandingPage = () => {
                 >
                   It's a logic puzzle, learn more with lessons!
                 </Text>
+                <View style={styles.buttonBackgroundAndBorder}>
+                  <Pressable
+                    onPress={() => navigation.navigate("Landing")}
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <Image
+                      style={{
+                        resizeMode: "contain",
+                        maxHeight: "100%",
+                        maxWidth: "100%",
+                      }}
+                      source={START_LESSONS_LOGO}
+                    />
+                  </Pressable>
+                </View>
               </View>
               <View style={styles.bottomRight}>
                 <Text
@@ -221,12 +240,12 @@ const styles = StyleSheet.create({
   },
   top: {
     flexDirection: "row",
-    height: "65%",
+    height: "45%",
     width: "100%",
   },
   bottom: {
     flexDirection: "row",
-    height: "25%",
+    height: "15%",
     width: "70%",
     borderColor: "#d9a05b",
     borderWidth: 3,
@@ -245,7 +264,7 @@ const styles = StyleSheet.create({
   animatedBoard: {
     flexDirection: "row",
     flexWrap: "wrap",
-    paddingVertical: 30,
+    paddingTop: 30,
     paddingHorizontal: 60,
     width: "40%",
   },
@@ -263,6 +282,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#012f39",
     maxHeight: "25%",
     maxWidth: "80%",
+  },
+  buttonBackgroundAndBorder: {
+    borderColor: "#d9a05b",
+    borderWidth: 3,
+    borderRadius: 5,
+    backgroundColor: "#012f39",
+    maxHeight: "40%",
+    maxWidth: "70%",
+    alignSelf: "center",
   },
 });
 
