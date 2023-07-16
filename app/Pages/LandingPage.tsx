@@ -42,6 +42,7 @@ const LandingPage = () => {
 
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
   const START_LESSONS_LOGO = require("./startLessonsLogo.png");
+  const START_DRILLS_LOGO = require("./startDrillsLogo.png");
 
   let strategies = [
     "AMEND_NOTES",
@@ -211,6 +212,24 @@ const LandingPage = () => {
                 >
                   Practice strategies with drills!
                 </Text>
+                <View style={styles.buttonBackgroundAndBorder}>
+                  <Pressable
+                    onPress={() => navigation.navigate("Landing")}
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    <Image
+                      style={{
+                        resizeMode: "contain",
+                        maxHeight: "100%",
+                        maxWidth: "100%",
+                      }}
+                      source={START_DRILLS_LOGO}
+                    />
+                  </Pressable>
+                </View>
               </View>
             </View>
           </View>
