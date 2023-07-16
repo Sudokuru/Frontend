@@ -28,6 +28,103 @@ const LandingPage = () => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: "row",
+      height: "100%",
+      width: "100%",
+      overflow: "hidden",
+    },
+    main: {
+      flexDirection: "column",
+      height: "100%",
+      width: "100%",
+    },
+    top: {
+      flexDirection: "row",
+      height: "45%",
+      width: "100%",
+    },
+    bottom: {
+      flexDirection: "row",
+      height: "15%",
+      width: "70%",
+      borderColor: "#d9a05b",
+      borderWidth: 3,
+      borderRadius: 5,
+      backgroundColor: "#012f39",
+      marginHorizontal: 60,
+    },
+    path: {
+      color: "white",
+      fontSize: reSize / 24,
+      paddingTop: 60,
+    },
+    guru: {
+      color: "#d9a05b",
+      fontSize: reSize / 16,
+      paddingTop: 15,
+    },
+    quote: {
+      color: "white",
+      fontSize: reSize / 28,
+      textAlign: "center",
+    },
+    bottomLeft: {
+      flexDirection: "column",
+      width: "50%",
+    },
+    bottomRight: {
+      flexDirection: "column",
+      width: "50%",
+    },
+    bottomText: {
+      color: "white",
+      fontSize: reSize / 30,
+      textAlign: "center",
+    },
+    pressable: {
+      maxHeight: "100%",
+      maxWidth: "100%",
+    },
+    image: {
+      resizeMode: "contain",
+      maxHeight: "100%",
+      maxWidth: "100%",
+    },
+    animatedBoard: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      paddingTop: 30,
+      paddingHorizontal: 60,
+      width: "40%",
+    },
+    rightOfBoard: {
+      flexDirection: "column",
+      alignItems: "center",
+      width: "35%",
+    },
+    backgroundWithBorder: {
+      marginTop: 30,
+      marginHorizontal: "12%",
+      borderColor: "#d9a05b",
+      borderWidth: 3,
+      borderRadius: 5,
+      backgroundColor: "#012f39",
+      maxHeight: "25%",
+      maxWidth: "80%",
+    },
+    buttonBackgroundAndBorder: {
+      borderColor: "#d9a05b",
+      borderWidth: 3,
+      borderRadius: 5,
+      backgroundColor: "#012f39",
+      maxHeight: "40%",
+      maxWidth: "70%",
+      alignSelf: "center",
+    },
+  });
+
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
   const START_LESSONS_LOGO = require("./startLessonsLogo.png");
   const START_DRILLS_LOGO = require("./startDrillsLogo.png");
@@ -69,138 +166,54 @@ const LandingPage = () => {
                 <SudokuBoard gameType={"Demo"} strategies={strategies} />
               </View>
               <View style={styles.rightOfBoard}>
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: reSize / 24,
-                    paddingTop: 60,
-                  }}
-                >
-                  Your path to becoming a
-                </Text>
-                <Text
-                  style={{
-                    color: "#d9a05b",
-                    fontSize: reSize / 16,
-                    paddingTop: 15,
-                  }}
-                >
-                  Sudoku Guru
-                </Text>
+                <Text style={styles.path}>Your path to becoming a</Text>
+                <Text style={styles.guru}>Sudoku Guru</Text>
                 <View style={styles.backgroundWithBorder}>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: reSize / 28,
-                      textAlign: "center",
-                    }}
-                  >
+                  <Text style={styles.quote}>
                     “The journey of a thousand miles begins with one step"
                   </Text>
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: reSize / 28,
-                      textAlign: "center",
-                    }}
-                  >
-                    - Lao Tzu
-                  </Text>
+                  <Text style={styles.quote}>- Lao Tzu</Text>
                 </View>
                 <View style={styles.backgroundWithBorder}>
                   <Pressable
                     onPress={() => navigation.navigate("Landing")}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                    }}
+                    style={styles.pressable}
                   >
-                    <Image
-                      style={{
-                        resizeMode: "contain",
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                      }}
-                      source={PLAY_SUDOKU_LOGO}
-                    />
+                    <Image style={styles.image} source={PLAY_SUDOKU_LOGO} />
                   </Pressable>
                 </View>
               </View>
             </View>
             <View style={styles.bottom}>
               <View style={styles.bottomLeft}>
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: reSize / 30,
-                    textAlign: "center",
-                  }}
-                >
+                <Text style={styles.bottomText}>
                   Don't know what Sudoku is?
                 </Text>
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: reSize / 30,
-                    textAlign: "center",
-                  }}
-                >
+                <Text style={styles.bottomText}>
                   It's a logic puzzle, learn more with lessons!
                 </Text>
                 <View style={styles.buttonBackgroundAndBorder}>
                   <Pressable
                     onPress={() => navigation.navigate("Landing")}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                    }}
+                    style={styles.pressable}
                   >
-                    <Image
-                      style={{
-                        resizeMode: "contain",
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                      }}
-                      source={START_LESSONS_LOGO}
-                    />
+                    <Image style={styles.image} source={START_LESSONS_LOGO} />
                   </Pressable>
                 </View>
               </View>
               <View style={styles.bottomRight}>
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: reSize / 30,
-                    textAlign: "center",
-                  }}
-                >
+                <Text style={styles.bottomText}>
                   Want to get faster at Sudoku?
                 </Text>
-                <Text
-                  style={{
-                    color: "white",
-                    fontSize: reSize / 30,
-                    textAlign: "center",
-                  }}
-                >
+                <Text style={styles.bottomText}>
                   Practice strategies with drills!
                 </Text>
                 <View style={styles.buttonBackgroundAndBorder}>
                   <Pressable
                     onPress={() => navigation.navigate("Landing")}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                    }}
+                    style={styles.pressable}
                   >
-                    <Image
-                      style={{
-                        resizeMode: "contain",
-                        maxHeight: "100%",
-                        maxWidth: "100%",
-                      }}
-                      source={START_DRILLS_LOGO}
-                    />
+                    <Image style={styles.image} source={START_DRILLS_LOGO} />
                   </Pressable>
                 </View>
               </View>
@@ -217,73 +230,5 @@ const LandingPage = () => {
     );
   }
 };
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "row",
-    height: "100%",
-    width: "100%",
-    overflow: "hidden",
-  },
-  main: {
-    flexDirection: "column",
-    height: "100%",
-    width: "100%",
-  },
-  top: {
-    flexDirection: "row",
-    height: "45%",
-    width: "100%",
-  },
-  bottom: {
-    flexDirection: "row",
-    height: "15%",
-    width: "70%",
-    borderColor: "#d9a05b",
-    borderWidth: 3,
-    borderRadius: 5,
-    backgroundColor: "#012f39",
-    marginHorizontal: 60,
-  },
-  bottomLeft: {
-    flexDirection: "column",
-    width: "50%",
-  },
-  bottomRight: {
-    flexDirection: "column",
-    width: "50%",
-  },
-  animatedBoard: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    paddingTop: 30,
-    paddingHorizontal: 60,
-    width: "40%",
-  },
-  rightOfBoard: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "35%",
-  },
-  backgroundWithBorder: {
-    marginTop: 30,
-    marginHorizontal: "12%",
-    borderColor: "#d9a05b",
-    borderWidth: 3,
-    borderRadius: 5,
-    backgroundColor: "#012f39",
-    maxHeight: "25%",
-    maxWidth: "80%",
-  },
-  buttonBackgroundAndBorder: {
-    borderColor: "#d9a05b",
-    borderWidth: 3,
-    borderRadius: 5,
-    backgroundColor: "#012f39",
-    maxHeight: "40%",
-    maxWidth: "70%",
-    alignSelf: "center",
-  },
-});
 
 export default LandingPage;
