@@ -8,12 +8,7 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Components/Header";
-import { getTokenName } from "../Functions/Auth0/token";
-import Alert from "react-native-awesome-alerts";
-import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { rgba } from "polished";
 import { Image, StyleSheet } from "react-native";
 import {
   Inter_100Thin,
@@ -27,18 +22,11 @@ import {
 import NavigationBar from "../Components/NavigationBar";
 
 const LandingPage = () => {
-  const theme = useTheme();
-
   const isWeb = Platform.OS === "web";
 
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
-
-  const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const newUser = 1;
 
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
   const START_LESSONS_LOGO = require("./startLessonsLogo.png");
@@ -68,21 +56,6 @@ const LandingPage = () => {
 
   if (!fontsLoaded) {
     return null;
-  }
-
-  async function canProceed() {
-    await getTokenName().then((result) => {
-      if (result != "") {
-        if (newUser == 1) {
-          navigation.replace("Home");
-          return null;
-        } else {
-          navigation.replace("Lesson", { params: "AMEND_NOTES" });
-        }
-      } else {
-        showModal();
-      }
-    });
   }
 
   if (isWeb) {
