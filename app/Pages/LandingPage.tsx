@@ -45,6 +45,12 @@ const LandingPage = () => {
       height: "45%",
       width: "100%",
     },
+    skinnyTop: {
+      flexDirection: "column",
+      height: "30%",
+      width: "100%",
+      alignItems: "center",
+    },
     bottom: {
       flexDirection: "row",
       height: "15%",
@@ -98,6 +104,11 @@ const LandingPage = () => {
       paddingTop: 30,
       paddingHorizontal: 60,
       width: "40%",
+    },
+    aboveBoard: {
+      flexDirection: "column",
+      alignItems: "center",
+      width: "45%",
     },
     rightOfBoard: {
       flexDirection: "column",
@@ -155,7 +166,7 @@ const LandingPage = () => {
     return null;
   }
 
-  if (isWeb) {
+  if (isWeb && size.width > size.height / 0.649) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.page}>
@@ -216,6 +227,23 @@ const LandingPage = () => {
                     <Image style={styles.image} source={START_DRILLS_LOGO} />
                   </Pressable>
                 </View>
+              </View>
+            </View>
+          </View>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  } else if (isWeb) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.page}>
+          <NavigationBar page={"Landing"} />
+          <View style={styles.main}>
+            <View style={styles.skinnyTop}>
+              <View style={styles.aboveBoard}>
+                <Text style={styles.path}>Your path to becoming a</Text>
+                <Text style={styles.guru}>Sudoku Guru</Text>
+                <SudokuBoard gameType={"Demo"} strategies={strategies} />
               </View>
             </View>
           </View>
