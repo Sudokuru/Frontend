@@ -18,14 +18,7 @@ const NavigationBar = (props: any) => {
           onPress={() => navigation.navigate("Landing")}
           style={props.page == "Landing" ? styles.onPage : styles.notOnPage}
         >
-          <Image
-            style={{
-              resizeMode: "cover",
-              height: 45,
-              width: 110,
-            }}
-            source={HOME_LOGO}
-          />
+          <Image style={styles.image} source={HOME_LOGO} />
         </Pressable>
       }
       {
@@ -33,14 +26,7 @@ const NavigationBar = (props: any) => {
           onPress={() => navigation.navigate("Landing")}
           style={props.page == "Play" ? styles.onPage : styles.notOnPage}
         >
-          <Image
-            style={{
-              resizeMode: "cover",
-              height: 45,
-              width: 110,
-            }}
-            source={PLAY_LOGO}
-          />
+          <Image style={styles.image} source={PLAY_LOGO} />
         </Pressable>
       }
       {
@@ -48,14 +34,7 @@ const NavigationBar = (props: any) => {
           onPress={() => navigation.navigate("Landing")}
           style={props.page == "Drill" ? styles.onPage : styles.notOnPage}
         >
-          <Image
-            style={{
-              resizeMode: "cover",
-              height: 45,
-              width: 110,
-            }}
-            source={DRILL_LOGO}
-          />
+          <Image style={styles.image} source={DRILL_LOGO} />
         </Pressable>
       }
       {
@@ -63,14 +42,7 @@ const NavigationBar = (props: any) => {
           onPress={() => navigation.navigate("Landing")}
           style={props.page == "Learn" ? styles.onPage : styles.notOnPage}
         >
-          <Image
-            style={{
-              resizeMode: "cover",
-              height: 45,
-              width: 110,
-            }}
-            source={LEARN_LOGO}
-          />
+          <Image style={styles.image} source={LEARN_LOGO} />
         </Pressable>
       }
     </View>
@@ -92,6 +64,11 @@ const styles = StyleSheet.create({
   notOnPage: {
     width: 130,
     padding: 10,
+  },
+  image: {
+    resizeMode: "cover",
+    height: 45,
+    width: 110,
   },
 });
 
