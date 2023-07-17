@@ -5,20 +5,20 @@ node_modules/
 .github/
 License.md
 
-sudokuru/node_modules/
-sudokuru/.expo/
-sudokuru/dist/
-sudokuru/.env
-sudokuru/npm-debug.*
+node_modules/
+.expo/
+dist/
+.env
+npm-debug.*
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
 *.orig.*
-sudokuru/web-build/
+web-build/
 
 # macOS
-sudokuru/.DS_Store
+.DS_Store
 
-sudokuru/.vercel
+.vercel
