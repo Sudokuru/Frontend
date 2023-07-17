@@ -12,8 +12,9 @@ import { getTokenName, getTokenNickname } from "../Functions/Auth0/token";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/ContextParsing/learnedLessons";
 import { useFocusEffect } from "@react-navigation/core";
+import NavigationBar from "../Components/NavigationBar";
 
-const ProfilePage = () => {
+const SettingsPage = () => {
   const [email, setEmail] = useState<string>();
   const [nickname, setNickname] = useState<string>();
 
@@ -48,8 +49,8 @@ const ProfilePage = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
-        <Header page={"Profile"} />
+      <SafeAreaView style={{ flexDirection: "row" }}>
+        <NavigationBar />
         <ScrollView>
           <View
             style={{
@@ -239,4 +240,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default SettingsPage;

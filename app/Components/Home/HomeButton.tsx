@@ -12,7 +12,7 @@ const HomeButton = () => {
       mode="contained"
       testID={"ViewHomePageButton"}
       style={{ marginRight: 5 }}
-      onPress={() => navigation.navigate("Main Page")}
+      onPress={() => navigation.navigate("Landing")}
     >
       <MaterialCommunityIcons
         name="home"

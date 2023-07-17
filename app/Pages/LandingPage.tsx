@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Platform,
-  Pressable,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Platform, Pressable, useWindowDimensions, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
@@ -20,6 +14,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import NavigationBar from "../Components/NavigationBar";
+import { Surface, Text } from "react-native-paper";
 
 const LandingPage = () => {
   const isWeb = Platform.OS === "web";
@@ -55,24 +50,24 @@ const LandingPage = () => {
       flexDirection: "row",
       height: "15%",
       width: "70%",
-      borderColor: "#d9a05b",
+      //borderColor: "#d9a05b",
       borderWidth: 3,
       borderRadius: 5,
-      backgroundColor: "#012f39",
+      //backgroundColor: "#012f39",
       marginHorizontal: 60,
     },
     path: {
-      color: "white",
+      //color: "white",
       fontSize: reSize / 24,
       paddingTop: 60,
     },
     guru: {
-      color: "#d9a05b",
+      //color: "#d9a05b",
       fontSize: reSize / 16,
       paddingTop: 15,
     },
     quote: {
-      color: "white",
+      //color: "white",
       fontSize: reSize / 28,
       textAlign: "center",
     },
@@ -85,7 +80,7 @@ const LandingPage = () => {
       width: "50%",
     },
     bottomText: {
-      color: "white",
+      //color: "white",
       fontSize: reSize / 30,
       textAlign: "center",
     },
@@ -118,18 +113,18 @@ const LandingPage = () => {
     backgroundWithBorder: {
       marginTop: 30,
       marginHorizontal: "12%",
-      borderColor: "#d9a05b",
+      //borderColor: "#d9a05b",
       borderWidth: 3,
       borderRadius: 5,
-      backgroundColor: "#012f39",
+      //backgroundColor: "#012f39",
       maxHeight: "25%",
       maxWidth: "80%",
     },
     buttonBackgroundAndBorder: {
-      borderColor: "#d9a05b",
+      //borderColor: "#d9a05b",
       borderWidth: 3,
       borderRadius: 5,
-      backgroundColor: "#012f39",
+      // backgroundColor: "#012f39",
       maxHeight: "40%",
       maxWidth: "70%",
       alignSelf: "center",
@@ -170,7 +165,7 @@ const LandingPage = () => {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.page}>
-          <NavigationBar page={"Landing"} />
+          <NavigationBar />
           <View style={styles.main}>
             <View style={styles.top}>
               <View style={styles.animatedBoard}>
@@ -179,23 +174,23 @@ const LandingPage = () => {
               <View style={styles.rightOfBoard}>
                 <Text style={styles.path}>Your path to becoming a</Text>
                 <Text style={styles.guru}>Sudoku Guru</Text>
-                <View style={styles.backgroundWithBorder}>
+                <Surface style={styles.backgroundWithBorder}>
                   <Text style={styles.quote}>
                     “The journey of a thousand miles begins with one step"
                   </Text>
                   <Text style={styles.quote}>- Lao Tzu</Text>
-                </View>
-                <View style={styles.backgroundWithBorder}>
+                </Surface>
+                <Surface style={styles.backgroundWithBorder} elevation={5}>
                   <Pressable
                     onPress={() => navigation.navigate("Landing")}
                     style={styles.pressable}
                   >
                     <Image style={styles.image} source={PLAY_SUDOKU_LOGO} />
                   </Pressable>
-                </View>
+                </Surface>
               </View>
             </View>
-            <View style={styles.bottom}>
+            <Surface style={styles.bottom} elevation={5}>
               <View style={styles.bottomLeft}>
                 <Text style={styles.bottomText}>
                   Don't know what Sudoku is?
@@ -228,28 +223,27 @@ const LandingPage = () => {
                   </Pressable>
                 </View>
               </View>
-            </View>
+            </Surface>
           </View>
         </SafeAreaView>
       </SafeAreaProvider>
     );
   } else if (isWeb) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.page}>
-          <NavigationBar page={"Landing"} />
-          <View style={styles.main}>
-            <View style={styles.skinnyTop}>
-              <View style={styles.aboveBoard}>
-                <Text style={styles.path}>Your path to becoming a</Text>
-                <Text style={styles.guru}>Sudoku Guru</Text>
-                <SudokuBoard gameType={"Demo"} strategies={strategies} />
-              </View>
-            </View>
-          </View>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
+    return null;
+    // <SafeAreaProvider>
+    //   <SafeAreaView style={styles.page}>
+    //     <NavigationBar page={"Landing"} />
+    //     <View style={styles.main}>
+    //       <View style={styles.skinnyTop}>
+    //         <View style={styles.aboveBoard}>
+    //           <Text style={styles.path}>Your path to becoming a</Text>
+    //           <Text style={styles.guru}>Sudoku Guru</Text>
+    //           <SudokuBoard gameType={"Demo"} strategies={strategies} />
+    //         </View>
+    //       </View>
+    //     </View>
+    //   </SafeAreaView>
+    // </SafeAreaProvider>
   } else {
     return (
       <SafeAreaProvider>

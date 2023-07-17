@@ -1,10 +1,11 @@
 import React from "react";
-import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { Drawer } from "react-native-paper";
 
-const NavigationBar = (props: any) => {
+const NavigationBar = () => {
   const navigation: any = useNavigation();
+
+  const [active, setActive] = React.useState("");
 
   const HOME_LOGO = require("./homeLogo.png");
   const PLAY_LOGO = require("./playLogo.png");
@@ -12,64 +13,54 @@ const NavigationBar = (props: any) => {
   const LEARN_LOGO = require("./learnLogo.png");
 
   return (
-    <View style={styles.toggleIcons}>
-      {
-        <Pressable
-          onPress={() => navigation.navigate("Landing")}
-          style={props.page == "Landing" ? styles.onPage : styles.notOnPage}
-        >
-          <Image style={styles.image} source={HOME_LOGO} />
-        </Pressable>
-      }
-      {
-        <Pressable
-          onPress={() => navigation.navigate("Landing")}
-          style={props.page == "Play" ? styles.onPage : styles.notOnPage}
-        >
-          <Image style={styles.image} source={PLAY_LOGO} />
-        </Pressable>
-      }
-      {
-        <Pressable
-          onPress={() => navigation.navigate("Landing")}
-          style={props.page == "Drill" ? styles.onPage : styles.notOnPage}
-        >
-          <Image style={styles.image} source={DRILL_LOGO} />
-        </Pressable>
-      }
-      {
-        <Pressable
-          onPress={() => navigation.navigate("Landing")}
-          style={props.page == "Learn" ? styles.onPage : styles.notOnPage}
-        >
-          <Image style={styles.image} source={LEARN_LOGO} />
-        </Pressable>
-      }
-    </View>
+    <Drawer.Section title="Some title">
+      <Drawer.Item
+        icon={"home"}
+        label="Home"
+        active={active === "first"}
+        onPress={() => {
+          setActive("first");
+          navigation.navigate("Landing");
+        }}
+      />
+      <Drawer.Item
+        icon={"play"}
+        label="Play"
+        active={active === "second"}
+        onPress={() => {
+          setActive("second");
+          navigation.navigate("Landing");
+        }}
+      />
+      <Drawer.Item
+        icon={"book-open-page-variant"}
+        label="Learn"
+        active={active === "third"}
+        onPress={() => {
+          setActive("third");
+          navigation.navigate("Landing");
+        }}
+      />
+      <Drawer.Item
+        icon={"whistle"}
+        label="Drill"
+        active={active === "forth"}
+        onPress={() => {
+          setActive("forth");
+          navigation.navigate("Landing");
+        }}
+      />
+      <Drawer.Item
+        icon={"cog"}
+        label="Settings"
+        active={active === "fifth"}
+        onPress={() => {
+          setActive("fifth");
+          navigation.navigate("Profile");
+        }}
+      />
+    </Drawer.Section>
   );
 };
-
-const styles = StyleSheet.create({
-  toggleIcons: {
-    flexDirection: "column",
-    height: "100%",
-    width: 130,
-    backgroundColor: "#012f39",
-  },
-  onPage: {
-    width: 130,
-    padding: 10,
-    backgroundColor: "#000000",
-  },
-  notOnPage: {
-    width: 130,
-    padding: 10,
-  },
-  image: {
-    resizeMode: "cover",
-    height: 45,
-    width: 110,
-  },
-});
 
 export default NavigationBar;
