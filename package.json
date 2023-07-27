@@ -14,7 +14,7 @@
     "docker:pull": "docker pull ghcr.io/sudokuru/usergamestatisticsbff && docker pull ghcr.io/sudokuru/useractivegamesbff && docker pull ghcr.io/sudokuru/usergamestatistics && docker pull ghcr.io/sudokuru/puzzle && docker pull ghcr.io/sudokuru/useractivegames",
     "docker:imageVersions": "docker images",
     "prepare": "husky install",
-    "prettier": "npx prettier --write sudokuru"
+    "prettier": "npx prettier --write ."
   },
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
