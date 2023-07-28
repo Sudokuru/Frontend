@@ -12,7 +12,7 @@ import {
   getTokenName,
   removeValue,
   storeData,
-} from "../../Functions/Auth0/token";
+} from "../../Functions/AsyncStorage/token";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";

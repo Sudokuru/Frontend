@@ -15,7 +15,7 @@ import Alert from "react-native-awesome-alerts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { getKeyString } from "../Functions/Auth0/token";
+import { getKeyString } from "../Functions/AsyncStorage/token";
 import { USERGAMESTATISTICSBFFURL } from "@env";
 import { Lessons, Statistics } from "sudokuru";
 

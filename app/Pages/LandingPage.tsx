@@ -9,7 +9,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
-import { getTokenName } from "../Functions/Auth0/token";
+import { getTokenName } from "../Functions/AsyncStorage/token";
 import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
@@ -65,7 +65,7 @@ const LandingPage = () => {
   }
 
   async function canProceed() {
-    await getTokenName().then((result) => {
+    await getTokenName().then((result): any => {
       if (result != "") {
         if (newUser == 1) {
           navigation.replace("Home");

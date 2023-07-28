@@ -21,7 +21,7 @@ import {
 } from "./sudoku";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { getKeyString } from "../../Functions/Auth0/token";
+import { getKeyString } from "../../Functions/AsyncStorage/token";
 import { USERACTIVEGAMESBFFURL } from "@env";
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -44,7 +44,7 @@ import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { Puzzles } from "sudokuru";
+import { gameResults, Puzzles } from "sudokuru";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -128,7 +128,7 @@ export async function finishGame(activeGame, showResults) {
     token = result;
   });
 
-  Puzzles.finishGame(url, activeGame.puzzle, token).then((res) => {
+  Puzzles.finishGame(url, activeGame.puzzle, token).then((res: gameResults) => {
     if (res) {
       showResults(
         res.score,

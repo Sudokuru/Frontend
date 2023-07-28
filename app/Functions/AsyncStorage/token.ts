@@ -31,7 +31,7 @@ export const storeData = async (key: string, value: any) => {
  * Returns the JSON value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
-export const getKeyJSON = async (key: string) => {
+export const getKeyJSONAuth0 = async (key: string) => {
   try {
     let jsonValue = await AsyncStorage.getItem(key);
     if (jsonValue != null) {
@@ -66,7 +66,7 @@ export const getKeyString = async (key: string) => {
  * Returns the name value of a token (Email)
  */
 export async function getTokenName() {
-  let value: any = await getKeyJSON("id_token");
+  let value: any = await getKeyJSONAuth0("id_token");
   if (value != null) {
     let { name } = value;
     return name;
@@ -78,7 +78,7 @@ export async function getTokenName() {
  * Returns the nickname value of a token
  */
 export async function getTokenNickname() {
-  let value: any = await getKeyJSON("id_token");
+  let value: any = await getKeyJSONAuth0("id_token");
   if (value != null) {
     let { nickname } = value;
     return nickname;
@@ -90,7 +90,7 @@ export async function getTokenNickname() {
  * Returns the expiration value of a token
  */
 export async function getTokenExp() {
-  let value: any = await getKeyJSON("id_token");
+  let value: any = await getKeyJSONAuth0("id_token");
   if (value != null) {
     let { exp } = value;
     return exp;

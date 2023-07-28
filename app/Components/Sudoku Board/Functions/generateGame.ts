@@ -1,4 +1,4 @@
-import { getKeyString } from "../../../Functions/Auth0/token";
+import { getKeyString } from "../../../Functions/AsyncStorage/token";
 import { makeBoard } from "../sudoku";
 import {
   getDrillSolutionCells,
@@ -6,7 +6,7 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
-import { Puzzles, Drills } from "sudokuru";
+import { Puzzles, Drills, drill } from "sudokuru";
 
 export async function generateGame(url: any, props: any) {
   let token: string = "";
@@ -76,7 +76,7 @@ export async function generateGame(url: any, props: any) {
       url,
       props.strategies,
       token
-    ).then((game) => {
+    ).then((game: drill) => {
       // null check to verify that game is loaded in.
       if (game == null) {
         //navigation.navigate("Home");
