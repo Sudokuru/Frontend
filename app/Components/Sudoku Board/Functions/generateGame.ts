@@ -1,4 +1,7 @@
 import { getKeyString } from "../../../Functions/AsyncStorage/token";
+import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
+import { Drills } from "../../Api/Drills";
+import { Puzzles } from "../../Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
   getDrillSolutionCells,
@@ -6,7 +9,6 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
-import { Puzzles, Drills, drill, activeGame, puzzle } from "sudokuru";
 
 export async function generateGame(url: any, props: any) {
   let token: string = "";

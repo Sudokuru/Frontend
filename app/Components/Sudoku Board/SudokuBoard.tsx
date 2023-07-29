@@ -37,14 +37,15 @@ import {
   getPlacementsFromHint,
   getRemovalsFromHint,
   updateBoardWithNumber,
-  getHint,
+  getNextHint,
 } from "./Functions/BoardFunctions";
 import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { gameResults, Puzzles } from "sudokuru";
+import { gameResults } from "sudokuru";
+import { Puzzles } from "../Api/Puzzles";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -445,8 +446,8 @@ const SudokuBoard = (props: any) => {
     }
     newBoard = newBoard.set("currentStep", 0);
     let hint = solution
-      ? getHint(newBoard, solution, props.strategies)
-      : getHint(newBoard, null, props.strategies);
+      ? getNextHint(newBoard, solution, props.strategies)
+      : getNextHint(newBoard, null, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");

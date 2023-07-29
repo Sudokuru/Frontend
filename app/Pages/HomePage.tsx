@@ -16,7 +16,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
-import { Puzzles, Statistics } from "sudokuru";
+import { Puzzles } from "../Components/Api/Puzzles";
+import { Statistics } from "../Components/Api/Statistics";
 
 const HomePage = () => {
   const navigation: any = useNavigation();

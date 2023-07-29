@@ -8,7 +8,7 @@ import {
   formatOneLessonName,
   getLockedLessons,
 } from "../../Functions/ContextParsing/learnedLessons";
-import { Lessons } from "sudokuru";
+import { Lessons } from "../Api/Lessons";
 
 const LessonPanel = () => {
   const theme = useTheme();

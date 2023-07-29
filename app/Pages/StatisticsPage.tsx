@@ -13,7 +13,7 @@ import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { retrieveTotalStatistics } from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { Statistics } from "sudokuru";
+import { Statistics } from "../Components/Api/Statistics";
 
 const StatisticsPage = () => {
   const theme = useTheme();
