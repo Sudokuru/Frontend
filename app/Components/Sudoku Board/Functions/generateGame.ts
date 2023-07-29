@@ -6,7 +6,7 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
-import { Puzzles, Drills, drill } from "sudokuru";
+import { Puzzles, Drills, drill, activeGame, puzzle } from "sudokuru";
 
 export async function generateGame(url: any, props: any) {
   let token: string = "";
@@ -25,7 +25,7 @@ export async function generateGame(url: any, props: any) {
       props.difficulty,
       props.strategies,
       token
-    ).then((game) => {
+    ).then((game: puzzle[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
@@ -41,7 +41,7 @@ export async function generateGame(url: any, props: any) {
       };
     });
   } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame(url, token).then((game) => {
+    gameData = await Puzzles.getGame(url, token).then((game: activeGame[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
