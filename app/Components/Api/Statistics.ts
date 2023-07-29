@@ -34,7 +34,7 @@ export class Statistics {
           " GET request has status " +
           res.status
       );
-      return null;
+      return JSON.parse("{}");
     }
   }
 
@@ -79,7 +79,7 @@ export class Statistics {
     if (res.status === SUCCESS) {
       return await res.json();
     } else if (res.status === NOT_FOUND) {
-      return null;
+      return JSON.parse("{}");
     } else {
       console.log(
         "Error: " +
@@ -87,7 +87,7 @@ export class Statistics {
           " GET request has status " +
           res.status
       );
-      return null;
+      return JSON.parse("{}");
     }
   }
 

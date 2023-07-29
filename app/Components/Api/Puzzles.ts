@@ -1,7 +1,7 @@
 import { sudokuStrategyArray } from "sudokuru";
 import { difficultyConversion } from "sudokuru";
-import { puzzle } from "../../Types/puzzle.types";
-import { activeGame } from "../../Types/puzzle.types";
+import { gameResults, puzzle } from "../../Types/Puzzle.Types";
+import { activeGame } from "../../Types/Puzzle.Types";
 
 const START_GAME: string = "api/v1/newGame?closestDifficulty=";
 const GET_GAME: string = "api/v1/activeGames";
@@ -12,7 +12,7 @@ const SUCCESS: number = 200;
 const NOT_FOUND: number = 404;
 
 // Random games to be used by getRandomGame for landing page
-const RANDOM_GAMES: puzzle[][] = [
+const DEMO_RANDOM_GAMES: puzzle[][] = [
   [
     {
       puzzle:
@@ -170,7 +170,8 @@ export class Puzzles {
       console.log(
         "Error: " + START_GAME + " GET request has status " + res.status
       );
-      return null;
+      return JSON.parse("{}");
+      null;
     }
   }
 
@@ -195,12 +196,12 @@ export class Puzzles {
     if (res.status === SUCCESS) {
       return await res.json();
     } else if (res.status === NOT_FOUND) {
-      return null;
+      return JSON.parse("{}");
     } else {
       console.log(
         "Error: " + GET_GAME + " GET request has status " + res.status
       );
-      return null;
+      return JSON.parse("{}");
     }
   }
 
@@ -258,12 +259,12 @@ export class Puzzles {
     if (res.status === SUCCESS) {
       return await res.json();
     } else if (res.status === NOT_FOUND) {
-      return null;
+      return JSON.parse("{}");
     } else {
       console.log(
         "Error: " + FINISH_GAME + " DELETE request has status " + res.status
       );
-      return null;
+      return JSON.parse("{}");
     }
   }
 
@@ -272,6 +273,8 @@ export class Puzzles {
    * @returns JSON puzzle object
    */
   public static getRandomGame(): puzzle[] {
-    return RANDOM_GAMES[Math.floor(Math.random() * RANDOM_GAMES.length)];
+    return DEMO_RANDOM_GAMES[
+      Math.floor(Math.random() * DEMO_RANDOM_GAMES.length)
+    ];
   }
 }
