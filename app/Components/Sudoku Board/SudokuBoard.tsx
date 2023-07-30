@@ -21,7 +21,7 @@ import {
 } from "./sudoku";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { getKeyString } from "../../Functions/AsyncStorage/token";
+import { getKeyString } from "../../Functions/AsyncStorage/AsyncStorage";
 import { USERACTIVEGAMESBFFURL } from "@env";
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -45,7 +45,7 @@ import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
-import { Puzzles } from "../Api/Puzzles";
+import { Puzzles } from "../../Functions/Api/Puzzles";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;

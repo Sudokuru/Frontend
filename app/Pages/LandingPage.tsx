@@ -9,7 +9,7 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
-import { getTokenName } from "../Functions/AsyncStorage/token";
+import { getTokenName } from "../Functions/AsyncStorage/AsyncStorage";
 import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";

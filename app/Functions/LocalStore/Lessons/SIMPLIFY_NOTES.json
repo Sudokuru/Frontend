@@ -1,0 +1,14 @@
+[
+  [
+    "Using a placed value, simplify notes lets you to eliminate it from the notes of any cell that shares a row, column, and/or box with the placed value cell.",
+    "https://sudokuru.s3.amazonaws.com/Lessons/NAKED_SINGLE_STEP_4.png"
+  ],
+  [
+    "You can remove the red 8 as a note from the cell directly to the left of the highlighted placed 8 because they share a row (and box).",
+    "https://sudokuru.s3.amazonaws.com/Lessons/NAKED_SINGLE_STEP_5.png"
+  ],
+  [
+    "You have now learned how to use the simplify notes strategy to solve Sudoku puzzles! Part of what makes simplify notes so effective is that they can have a domino effect. For instance, the cell we just removed an 8 from is now a naked single.",
+    "https://sudokuru.s3.amazonaws.com/Lessons/NAKED_SINGLE_STEP_7.png"
+  ]
+]

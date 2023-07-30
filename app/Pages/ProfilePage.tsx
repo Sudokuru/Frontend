@@ -11,7 +11,7 @@ import { Switch, Text, useTheme } from "react-native-paper";
 import {
   getTokenName,
   getTokenNickname,
-} from "../Functions/AsyncStorage/token";
+} from "../Functions/AsyncStorage/AsyncStorage";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/ContextParsing/learnedLessons";
 import { useFocusEffect } from "@react-navigation/core";

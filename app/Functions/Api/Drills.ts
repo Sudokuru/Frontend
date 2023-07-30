@@ -1,7 +1,7 @@
 import { calculateNotes, sudokuStrategy, sudokuStrategyArray } from "sudokuru";
 import { activeGame, puzzle } from "../../Types/Puzzle.Types";
 import { drill } from "../../Types/Puzzle.Types";
-import { returnLocalDrillGame } from "../LocalStore/LocalDatabase";
+import { returnLocalDrillGame } from "../LocalStore/DataStore/LocalDatabase";
 
 const GET_DRILL_GAME: string = "api/v1/drillGames?drillStrategies[]=";
 

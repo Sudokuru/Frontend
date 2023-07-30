@@ -1,12 +1,12 @@
-import { getKeyString } from "../../../Functions/AsyncStorage/token";
+import { getKeyString } from "../../../Functions/AsyncStorage/AsyncStorage";
 import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
 import {
   Drills,
   drillOfflineMode,
   drillOnlineMode,
   getDrillMode,
-} from "../../Api/Drills";
-import { Puzzles } from "../../Api/Puzzles";
+} from "../../../Functions/Api/Drills";
+import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
   getDrillSolutionCells,
