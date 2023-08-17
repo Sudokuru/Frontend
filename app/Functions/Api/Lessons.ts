@@ -1,3 +1,16 @@
+export interface lessonOfflineMode {
+  mode: getLessonMode.Offline;
+}
+
+export interface lessonOnlineMode {
+  mode: getLessonMode.Online;
+}
+
+export enum getLessonMode {
+  Offline,
+  Online,
+}
+
 /**
  * Functions to handle requesting lessons
  */
@@ -6,13 +19,28 @@ export class Lessons {
    * Returns a list of all the strategies that have lessons
    * @returns string array of strategy names that getSteps can be called with
    */
-  public static async getStrategies(): Promise<string[]> {
-    const response: Response = await fetch(
-      "https://sudokuru.s3.amazonaws.com/Lessons/strategies.json",
-      { cache: "no-cache" }
-    );
-    const json = await response.json();
-    return json;
+  public static async getStrategies(
+    args: lessonOfflineMode | lessonOnlineMode
+  ): Promise<string[]> {
+    if (args.mode === getLessonMode.Online) {
+      const response: Response = await fetch(
+        "https://sudokuru.s3.amazonaws.com/Lessons/strategies.json",
+        { cache: "no-cache" }
+      );
+      const json = await response.json();
+      return json;
+    } else {
+      return [
+        "SUDOKU_101",
+        "AMEND_NOTES",
+        "NAKED_SINGLE",
+        "SIMPLIFY_NOTES",
+        "NAKED_SET",
+        "HIDDEN_SINGLE",
+        "HIDDEN_SET",
+        "POINTING_SET",
+      ];
+    }
   }
 
   /**

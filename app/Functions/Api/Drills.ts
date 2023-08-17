@@ -22,11 +22,6 @@ export enum getDrillMode {
   Online,
 }
 
-let value: drillOfflineMode | drillOnlineMode = {
-  mode: getDrillMode.Offline,
-  strategy: "AMEND_NOTES",
-};
-
 /**
  * Functions to handle requesting drills
  */
