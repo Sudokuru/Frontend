@@ -1,13 +1,3 @@
-import { JwtPayload } from "jwt-decode";
-
-export interface Auth0JwtPayload extends JwtPayload {
-  nickname: string;
-  name: string;
-  picture: string;
-  updated_at: string;
-  nonce?: string;
-}
-
 export default {
   name: "Sudokuru",
   slug: "sudokuru",

@@ -69,15 +69,9 @@ export class Drills {
 
     // retrieve drill if we are in offline mode
     else if (args.mode === getDrillMode.Offline) {
-      console.log("OFFLINE MODE!");
-      console.log(args.strategy.toString());
-      let strategy = args.strategy;
       let data: puzzle = returnLocalDrillGame(args.strategy);
-      console.log("HIII");
       let boardString: string = data.puzzle;
-      console.log(boardString);
       let notes: string = calculateNotes(boardString);
-      console.log("GREETINGS");
       return {
         puzzleCurrentState: boardString,
         puzzleCurrentNotesState: notes,
