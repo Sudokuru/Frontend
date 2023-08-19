@@ -8,7 +8,10 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import { Switch, Text, useTheme } from "react-native-paper";
-import { getTokenName, getTokenNickname } from "../Functions/Auth0/token";
+import {
+  getTokenName,
+  getTokenNickname,
+} from "../Functions/AsyncStorage/AsyncStorage";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/ContextParsing/learnedLessons";
 import { useFocusEffect } from "@react-navigation/core";

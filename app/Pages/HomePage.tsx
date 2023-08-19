@@ -8,7 +8,7 @@ import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import DifficultySlider from "../Components/Home/DifficultySlider";
-import { getKeyString } from "../Functions/Auth0/token";
+import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
 import { USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL } from "@env";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -16,7 +16,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
-import { Puzzles, Statistics } from "sudokuru";
+import { Puzzles } from "../Functions/Api/Puzzles";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const HomePage = () => {
   const navigation: any = useNavigation();

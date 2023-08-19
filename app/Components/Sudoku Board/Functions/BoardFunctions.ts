@@ -1,6 +1,6 @@
 import { useWindowDimensions } from "react-native";
 import { Set } from "immutable";
-import { Puzzles } from "sudokuru";
+import { getHint as getHint } from "sudokuru";
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -149,7 +149,7 @@ export function getDrillSolutionCells(
   strategies: any
 ) {
   let drillSolutionCells = [];
-  let hint = getHint(board, solution, strategies);
+  let hint = getNextHint(board, solution, strategies);
   if (hint) {
     for (let i = 0; i < hint.removals.length; i++) {
       let temp: any = {};
@@ -274,7 +274,7 @@ function componentSolutionValsToArray(solution: any) {
   return solArray;
 }
 
-export function getHint(board: any, solution: any, strategies: any) {
+export function getNextHint(board: any, solution: any, strategies: any) {
   let hintStrategies = [...strategies];
   hintStrategies.push("AMEND_NOTES", "SIMPLIFY_NOTES");
   let boardArray = componentBoardValsToArray(board);
@@ -282,12 +282,7 @@ export function getHint(board: any, solution: any, strategies: any) {
   let solutionArray = componentSolutionValsToArray(solution);
   let hint;
   try {
-    hint = Puzzles.getHint(
-      boardArray,
-      notesArray,
-      hintStrategies,
-      solutionArray
-    );
+    hint = getHint(boardArray, notesArray, hintStrategies, solutionArray);
   } catch (e) {
     console.log(e);
   }

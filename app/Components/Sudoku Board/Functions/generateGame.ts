@@ -1,4 +1,12 @@
-import { getKeyString } from "../../../Functions/Auth0/token";
+import { getKeyString } from "../../../Functions/AsyncStorage/AsyncStorage";
+import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
+import {
+  Drills,
+  drillOfflineMode,
+  drillOnlineMode,
+  getDrillMode,
+} from "../../../Functions/Api/Drills";
+import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
   getDrillSolutionCells,
@@ -6,7 +14,6 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
-import { Puzzles, Drills } from "sudokuru";
 
 export async function generateGame(url: any, props: any) {
   let token: string = "";
@@ -25,7 +32,7 @@ export async function generateGame(url: any, props: any) {
       props.difficulty,
       props.strategies,
       token
-    ).then((game) => {
+    ).then((game: puzzle[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
@@ -41,7 +48,7 @@ export async function generateGame(url: any, props: any) {
       };
     });
   } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame(url, token).then((game) => {
+    gameData = await Puzzles.getGame(url, token).then((game: activeGame[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
@@ -67,16 +74,36 @@ export async function generateGame(url: any, props: any) {
       };
     });
   } else if (props.gameType == "StartDrill") {
-    let token: string = "";
-    await getKeyString("access_token").then((result) => {
-      token = result ? result : "";
-    });
+    // by default we are in offline mode for retrieving drills.
+    let DRILL_MODE = getDrillMode.Offline;
+    let drillGetGameArgs: drillOfflineMode | drillOnlineMode;
+
+    // initializing value to be offline by default
+    drillGetGameArgs = {
+      mode: getDrillMode.Offline,
+      strategy: props.strategies.toString(),
+    };
+
+    // retrieve necessary values if we are in online mode for the Drill request.
+    if (DRILL_MODE.valueOf() === getDrillMode.Online) {
+      let token: string = "";
+      await getKeyString("access_token").then((result) => {
+        token = result ? result : "";
+      });
+
+      drillGetGameArgs = {
+        mode: getDrillMode.Online,
+        strategy: props.strategies.toString(),
+        token: token,
+        url: url,
+      };
+    }
+
+    console.log(drillGetGameArgs);
 
     let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(
-      url,
-      props.strategies,
-      token
-    ).then((game) => {
+      drillGetGameArgs
+    ).then((game: drill) => {
       // null check to verify that game is loaded in.
       if (game == null) {
         //navigation.navigate("Home");

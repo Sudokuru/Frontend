@@ -37,9 +37,12 @@
     "expo-font": "~11.1.1",
     "expo-linking": "^4.0.1",
     "expo-status-bar": "~1.4.4",
+    "husky": "^8.0.3",
     "immutable": "^4.2.4",
     "jwt-decode": "^3.1.2",
+    "lint-staged": "^13.2.2",
     "polished": "^4.2.2",
+    "prettier": "2.8.8",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -52,11 +55,8 @@
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.12",
-    "sudokuru": "1.19.0",
-    "victory-native": "^36.6.8",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier": "2.8.8"
+    "sudokuru": "2.1.0",
+    "victory-native": "^36.6.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

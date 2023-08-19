@@ -4,7 +4,7 @@ import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
-import { getKeyString } from "../Functions/Auth0/token";
+import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
 import { USERGAMESTATISTICSBFFURL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -13,7 +13,7 @@ import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { retrieveTotalStatistics } from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { Statistics } from "sudokuru";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const StatisticsPage = () => {
   const theme = useTheme();
