@@ -1,5 +1,4 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { difficultyConversion } from "sudokuru";
 import { gameResults, puzzle } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 
@@ -145,8 +144,6 @@ export class Puzzles {
     strategies: sudokuStrategyArray,
     token: string
   ): Promise<puzzle[]> {
-    difficulty = difficultyConversion(difficulty, strategies);
-
     let concatUrlString = "";
     for (let i = 0; i < strategies.length; i++) {
       concatUrlString =
