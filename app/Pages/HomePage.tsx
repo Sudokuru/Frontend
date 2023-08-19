@@ -17,12 +17,7 @@ import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import { Puzzles } from "../Functions/Api/Puzzles";
-import {
-  Statistics,
-  getStatisticsMode,
-  statisticsOfflineMode,
-  statisticsOnlineMode,
-} from "../Functions/Api/Statistics";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const HomePage = () => {
   const navigation: any = useNavigation();
@@ -106,23 +101,8 @@ const HomePage = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // setting lesson mode to offline
-      let STATISTICS_MODE = getStatisticsMode.Offline;
-      let getStatisticsArgs: statisticsOfflineMode | statisticsOnlineMode = {
-        mode: STATISTICS_MODE,
-      };
-
       // This determines what lessons the user has learned and conditionally displays everything.
-      async function getUserLearnedLessons(url: string) {
-        if (STATISTICS_MODE === getStatisticsMode.Online) {
-          let token: string = "";
-          await getKeyString("access_token").then((result) => {
-            if (result) {
-              token = result;
-            }
-          });
-        }
-
+      async function getUserLearnedLessons() {
         await Statistics.getLearnedLessons().then((lessons: any) => {
           if (lessons !== null) {
             // prevent the infinite loop
@@ -149,7 +129,7 @@ const HomePage = () => {
           }
         });
       }
-      getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+      getUserLearnedLessons();
     }, [learnedLessons])
   );
 

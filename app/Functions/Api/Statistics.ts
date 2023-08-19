@@ -12,21 +12,6 @@ const DELETE_GAME_STATISTICS: string = "api/v1/gameStatistics";
 const SUCCESS: number = 200;
 const NOT_FOUND: number = 404;
 
-export interface statisticsOfflineMode {
-  mode: getStatisticsMode.Offline;
-}
-
-export interface statisticsOnlineMode {
-  mode: getStatisticsMode.Online;
-  url: string;
-  token: string;
-}
-
-export enum getStatisticsMode {
-  Offline,
-  Online,
-}
-
 export class Statistics {
   /**
    * Given a user auth token retrieves the user's learned lessons
