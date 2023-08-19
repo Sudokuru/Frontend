@@ -105,17 +105,9 @@ const styles = (cellSize, sizeConst, theme) =>
 
 //todo this function cannot be moved until globalTime situation is handled
 export async function saveGame(activeGame) {
-  let token: string = "";
-
-  await getKeyString("access_token").then((result) => {
-    if (result) {
-      token = result;
-    }
-  });
-
   activeGame.currentTime = globalTime;
 
-  Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then((res) => {
+  Puzzles.saveGame(activeGame).then((res) => {
     if (res) {
       console.log("Game progress was saved successfully!");
     }

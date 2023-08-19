@@ -2,6 +2,7 @@ import { sudokuStrategyArray } from "sudokuru";
 import { gameResults, puzzle } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
+import { getKeyJSON, storeData } from "../AsyncStorage/AsyncStorage";
 
 const START_GAME: string = "api/v1/newGame?closestDifficulty=";
 const GET_GAME: string = "api/v1/activeGames";
@@ -215,60 +216,18 @@ export class Puzzles {
 
   /**
    * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
-   * @param url - server url e.g. http://localhost:3100/
-   * @param token - authentication token
-   * @returns promise of puzzle JSON object
+   * @returns promise of activeGame JSON object
    */
-  public static async getGame(
-    url: string,
-    token: string
-  ): Promise<activeGame[]> {
-    const res: Response = await fetch(url + GET_GAME, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    if (res.status === SUCCESS) {
-      return await res.json();
-    } else if (res.status === NOT_FOUND) {
-      return JSON.parse("{}");
-    } else {
-      console.log(
-        "Error: " + GET_GAME + " GET request has status " + res.status
-      );
-      return JSON.parse("{}");
-    }
+  public static async getGame(): Promise<activeGame[]> {
+    return await getKeyJSON("active_game");
   }
 
   /**
-   * Given a game saves it to users account and returns true if successful
-   * @param url - server url e.g. http://localhost:3100/
+   * Given a game saves it to AsyncStorage
    * @param game - activeGame JSON object
-   * @param puzzle activeGame puzzle string
-   * @param token - authentication token
    */
-  public static async saveGame(
-    url: string,
-    game: activeGame,
-    puzzle: string,
-    token: string
-  ): Promise<boolean> {
-    const res: Response = await fetch(
-      url + SAVE_GAME + JSON.stringify(puzzle),
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(game),
-      }
-    );
-
-    return res.status === SUCCESS;
+  public static async saveGame(game: activeGame) {
+    storeData("active_game", JSON.stringify([game]));
   }
 
   /**
