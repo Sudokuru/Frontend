@@ -9,11 +9,8 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../Components/Header";
-import { getTokenName } from "../Functions/AsyncStorage/AsyncStorage";
-import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { rgba } from "polished";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -32,11 +29,6 @@ const LandingPage = () => {
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
-
-  const [visible, setVisible] = React.useState(false);
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  const newUser = 1;
 
   let strategies = [
     "AMEND_NOTES",
@@ -62,21 +54,6 @@ const LandingPage = () => {
 
   if (!fontsLoaded) {
     return null;
-  }
-
-  async function canProceed() {
-    await getTokenName().then((result): any => {
-      if (result != "") {
-        if (newUser == 1) {
-          navigation.replace("Home");
-          return null;
-        } else {
-          navigation.replace("Lesson", { params: "AMEND_NOTES" });
-        }
-      } else {
-        showModal();
-      }
-    });
   }
 
   if (isWeb && size.width > size.height / 0.649) {
@@ -135,9 +112,7 @@ const LandingPage = () => {
                       marginTop: reSize / 12,
                     },
                   ]}
-                  onPress={async () => {
-                    await canProceed();
-                  }}
+                  onPress={() => navigation.replace("Home")}
                 >
                   <View>
                     <Text
@@ -162,21 +137,6 @@ const LandingPage = () => {
               </View>
             </View>
           </View>
-          <Alert
-            show={visible}
-            message="Please Login!"
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={true}
-            confirmButtonColor={theme.colors.background}
-            onConfirmPressed={() => {
-              hideModal();
-            }}
-            alertContainerStyle={{
-              backgroundColor: rgba(theme.colors.background, 0.3),
-            }}
-            overlayStyle={{ backgroundColor: "transparent" }}
-          />
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -224,9 +184,7 @@ const LandingPage = () => {
                       padding: reSize / 120,
                     },
                   ]}
-                  onPress={async () => {
-                    await canProceed();
-                  }}
+                  onPress={() => navigation.replace("Home")}
                 >
                   <View>
                     <Text
@@ -243,21 +201,6 @@ const LandingPage = () => {
               </View>
             </View>
           </View>
-          <Alert
-            show={visible}
-            message="Please Login!"
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={true}
-            confirmButtonColor={theme.colors.background}
-            onConfirmPressed={() => {
-              hideModal();
-            }}
-            alertContainerStyle={{
-              backgroundColor: rgba(theme.colors.background, 0.3),
-            }}
-            overlayStyle={{ backgroundColor: "transparent" }}
-          />
         </SafeAreaView>
       </SafeAreaProvider>
     );
@@ -305,9 +248,7 @@ const LandingPage = () => {
                       padding: reSize / 50,
                     },
                   ]}
-                  onPress={async () => {
-                    await canProceed();
-                  }}
+                  onPress={() => navigation.replace("Home")}
                 >
                   <View>
                     <Text
@@ -324,21 +265,6 @@ const LandingPage = () => {
               </View>
             </View>
           </View>
-          <Alert
-            show={visible}
-            message="Please Login!"
-            closeOnTouchOutside={false}
-            closeOnHardwareBackPress={false}
-            showConfirmButton={true}
-            confirmButtonColor={theme.colors.background}
-            onConfirmPressed={() => {
-              hideModal();
-            }}
-            alertContainerStyle={{
-              backgroundColor: rgba(theme.colors.background, 0.3),
-            }}
-            overlayStyle={{ backgroundColor: "transparent" }}
-          />
         </SafeAreaView>
       </SafeAreaProvider>
     );
