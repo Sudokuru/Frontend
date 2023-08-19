@@ -93,32 +93,21 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     }, [])
   );
 
-  async function saveUserLearnedLessons(url: string) {
-    let token = null;
-    await getKeyString("access_token").then((result) => {
-      token = result;
-    });
-
-    let jsonBody = {
-      strategiesLearned: learnedLessons,
-    };
-
-    await Statistics.saveLearnedLessons(url, jsonBody, token).then(
-      (res: any) => {
-        if (res) {
-          console.log("Lessons save successfully!");
-        } else {
-          console.log("Lesson not saved");
-        }
+  async function saveUserLearnedLessons(learnedLessons: string[]) {
+    await Statistics.saveLearnedLessons(learnedLessons).then((res: any) => {
+      if (res) {
+        console.log("Lessons save successfully!");
+      } else {
+        console.log("Lesson not saved");
       }
-    );
+    });
   }
 
   const clickCheckMark = () => {
     if (!learnedLessons.includes(name)) {
       learnedLessons.push(name);
       updateLearnedLessons(learnedLessons);
-      saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+      saveUserLearnedLessons(learnedLessons);
     }
     navigation.navigate("Home");
   };
