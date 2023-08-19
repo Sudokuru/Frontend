@@ -144,6 +144,8 @@ export class Puzzles {
     strategies: sudokuStrategyArray,
     token: string
   ): Promise<puzzle[]> {
+    difficulty = difficulty * 1000;
+
     let concatUrlString = "";
     for (let i = 0; i < strategies.length; i++) {
       concatUrlString =
