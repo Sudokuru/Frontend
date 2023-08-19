@@ -20,6 +20,7 @@ import {
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from "./app/Pages/DrillPage";
 import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
+import { Statistics } from "./app/Functions/Api/Statistics";
 
 const drawerItemsMain = [
   {
@@ -131,7 +132,7 @@ function HomeDrawer() {
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(true);
-  const [learnedLessons, setLearnedLessons] = React.useState<string[]>([]);
+  const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [isHighlightSet, setHighlightSet] = React.useState(true);
   const [isHighlightBox, setHighlightBox] = React.useState(true);
   const [isHighlightRow, setHighlightRow] = React.useState(true);

@@ -17,12 +17,7 @@ import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import { Puzzles } from "../Functions/Api/Puzzles";
-import {
-  Statistics,
-  getStatisticsMode,
-  statisticsOfflineMode,
-  statisticsOnlineMode,
-} from "../Functions/Api/Statistics";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const HomePage = () => {
   const navigation: any = useNavigation();
@@ -106,56 +101,35 @@ const HomePage = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // setting lesson mode to offline
-      let STATISTICS_MODE = getStatisticsMode.Offline;
-      let getStatisticsArgs: statisticsOfflineMode | statisticsOnlineMode = {
-        mode: STATISTICS_MODE,
-      };
-
       // This determines what lessons the user has learned and conditionally displays everything.
-      async function getUserLearnedLessons(url: string) {
-        if (STATISTICS_MODE === getStatisticsMode.Online) {
-          let token: string = "";
-          await getKeyString("access_token").then((result) => {
-            if (result) {
-              token = result;
+      async function getUserLearnedLessons() {
+        await Statistics.getLearnedLessons().then((lessons: any) => {
+          if (lessons !== null) {
+            // prevent the infinite loop
+            if (learnedLessons != lessons && !areLessonsLoaded) {
+              updateLearnedLessons(lessons);
             }
-          });
-        }
 
-        await Statistics.getLearnedLessons(getStatisticsArgs).then(
-          (lessons: any) => {
-            console.log("LESSONS: ", lessons);
-            if (lessons !== null) {
-              // prevent the infinite loop
-              if (
-                learnedLessons != lessons.strategiesLearned &&
-                !areLessonsLoaded
-              ) {
-                updateLearnedLessons(lessons.strategiesLearned);
+            setLessonsLoaded(true);
+
+            if (areLessonsLoaded) {
+              if (!learnedLessons.includes("SUDOKU_101")) {
+                navigation.navigate("Lesson", { params: "SUDOKU_101" });
+              } else if (!learnedLessons.includes("AMEND_NOTES")) {
+                navigation.navigate("Lesson", { params: "AMEND_NOTES" });
+              } else if (!learnedLessons.includes("NAKED_SINGLE")) {
+                navigation.navigate("Lesson", { params: "NAKED_SINGLE" });
+              } else if (!learnedLessons.includes("SIMPLIFY_NOTES")) {
+                navigation.navigate("Lesson", { params: "SIMPLIFY_NOTES" });
               }
-
-              setLessonsLoaded(true);
-
-              if (areLessonsLoaded) {
-                console.log("Learned lessons: ", learnedLessons);
-                if (!learnedLessons.includes("SUDOKU_101")) {
-                  navigation.navigate("Lesson", { params: "SUDOKU_101" });
-                } else if (!learnedLessons.includes("AMEND_NOTES")) {
-                  navigation.navigate("Lesson", { params: "AMEND_NOTES" });
-                } else if (!learnedLessons.includes("NAKED_SINGLE")) {
-                  navigation.navigate("Lesson", { params: "NAKED_SINGLE" });
-                } else if (!learnedLessons.includes("SIMPLIFY_NOTES")) {
-                  navigation.navigate("Lesson", { params: "SIMPLIFY_NOTES" });
-                }
-              }
-            } else {
-              console.log("Error retrieving lessons of user");
             }
+          } else {
+            console.log("User has not learned any lessons!");
+            setLessonsLoaded(true);
           }
-        );
+        });
       }
-      getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+      getUserLearnedLessons();
     }, [learnedLessons])
   );
 

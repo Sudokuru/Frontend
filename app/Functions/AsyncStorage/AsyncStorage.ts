@@ -1,6 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import jwtDecode from "jwt-decode";
-import { Auth0JwtPayload } from "../../../app.config";
 
 /**
  * Removes item from AsyncStorage
@@ -28,28 +26,13 @@ export const storeData = async (key: string, value: any) => {
 };
 
 /**
- * Returns the JSON value of an item in AsyncStorage
- * Takes in the key of the item to be returned
- */
-export const getKeyJSONAuth0 = async (key: string) => {
-  try {
-    let jsonValue = await AsyncStorage.getItem(key);
-    if (jsonValue != null) {
-      return jwtDecode<Auth0JwtPayload>(jsonValue);
-    }
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-/**
  * Returns the String value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
 export const getKeyString = async (key: string) => {
   try {
     let value = await AsyncStorage.getItem(key);
-    if (value != null) {
+    if (value !== null) {
       return value;
     }
   } catch (e) {
@@ -57,43 +40,13 @@ export const getKeyString = async (key: string) => {
   }
 };
 
-/**
- * Below are functions to retrieve values from the token
- * after the getKey function has been used to retrieve the JSON
- */
-
-/**
- * Returns the name value of a token (Email)
- */
-export async function getTokenName() {
-  let value: any = await getKeyJSONAuth0("id_token");
-  if (value != null) {
-    let { name } = value;
-    return name;
+export const getKeyJSON = async (key: string) => {
+  try {
+    let value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      return JSON.parse(value);
+    }
+  } catch (e) {
+    console.log(e);
   }
-  return "";
-}
-
-/**
- * Returns the nickname value of a token
- */
-export async function getTokenNickname() {
-  let value: any = await getKeyJSONAuth0("id_token");
-  if (value != null) {
-    let { nickname } = value;
-    return nickname;
-  }
-  return "";
-}
-
-/**
- * Returns the expiration value of a token
- */
-export async function getTokenExp() {
-  let value: any = await getKeyJSONAuth0("id_token");
-  if (value != null) {
-    let { exp } = value;
-    return exp;
-  }
-  return "";
-}
+};
