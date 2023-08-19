@@ -6,6 +6,21 @@ const DELETE_GAME_STATISTICS: string = "api/v1/gameStatistics";
 const SUCCESS: number = 200;
 const NOT_FOUND: number = 404;
 
+export interface statisticsOfflineMode {
+  mode: getStatisticsMode.Offline;
+}
+
+export interface statisticsOnlineMode {
+  mode: getStatisticsMode.Online;
+  url: string;
+  token: string;
+}
+
+export enum getStatisticsMode {
+  Offline,
+  Online,
+}
+
 export class Statistics {
   /**
    * Given a user auth token retrieves the user's learned lessons
@@ -14,27 +29,43 @@ export class Statistics {
    * @returns promise of puzzle JSON object
    */
   public static async getLearnedLessons(
-    url: string,
-    token: string
+    args: statisticsOnlineMode | statisticsOfflineMode
   ): Promise<JSON> {
-    const res: Response = await fetch(url + GET_LEARNED_LESSONS, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    if (args.mode === getStatisticsMode.Online) {
+      const res: Response = await fetch(args.url + GET_LEARNED_LESSONS, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + args.token,
+        },
+      });
 
-    if (res.status === SUCCESS) {
-      return await res.json();
+      if (res.status === SUCCESS) {
+        return await res.json();
+      } else {
+        console.log(
+          "Error: " +
+            GET_LEARNED_LESSONS +
+            " GET request has status " +
+            res.status
+        );
+        return JSON.parse("{}");
+      }
     } else {
-      console.log(
-        "Error: " +
-          GET_LEARNED_LESSONS +
-          " GET request has status " +
-          res.status
+      return JSON.parse(
+        JSON.stringify({
+          strategiesLearned: [
+            "SUDOKU_101",
+            "AMEND_NOTES",
+            "NAKED_SINGLE",
+            "SIMPLIFY_NOTES",
+            "NAKED_SET",
+            "HIDDEN_SINGLE",
+            "HIDDEN_SET",
+            "POINTING_SET",
+          ],
+        })
       );
-      return JSON.parse("{}");
     }
   }
 
