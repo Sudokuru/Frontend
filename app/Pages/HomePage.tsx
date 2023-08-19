@@ -123,37 +123,31 @@ const HomePage = () => {
           });
         }
 
-        await Statistics.getLearnedLessons(getStatisticsArgs).then(
-          (lessons: any) => {
-            console.log("LESSONS: ", lessons);
-            if (lessons !== null) {
-              // prevent the infinite loop
-              if (
-                learnedLessons != lessons.strategiesLearned &&
-                !areLessonsLoaded
-              ) {
-                updateLearnedLessons(lessons.strategiesLearned);
-              }
-
-              setLessonsLoaded(true);
-
-              if (areLessonsLoaded) {
-                console.log("Learned lessons: ", learnedLessons);
-                if (!learnedLessons.includes("SUDOKU_101")) {
-                  navigation.navigate("Lesson", { params: "SUDOKU_101" });
-                } else if (!learnedLessons.includes("AMEND_NOTES")) {
-                  navigation.navigate("Lesson", { params: "AMEND_NOTES" });
-                } else if (!learnedLessons.includes("NAKED_SINGLE")) {
-                  navigation.navigate("Lesson", { params: "NAKED_SINGLE" });
-                } else if (!learnedLessons.includes("SIMPLIFY_NOTES")) {
-                  navigation.navigate("Lesson", { params: "SIMPLIFY_NOTES" });
-                }
-              }
-            } else {
-              console.log("Error retrieving lessons of user");
+        await Statistics.getLearnedLessons().then((lessons: any) => {
+          if (lessons !== null) {
+            // prevent the infinite loop
+            if (learnedLessons != lessons && !areLessonsLoaded) {
+              updateLearnedLessons(lessons);
             }
+
+            setLessonsLoaded(true);
+
+            if (areLessonsLoaded) {
+              if (!learnedLessons.includes("SUDOKU_101")) {
+                navigation.navigate("Lesson", { params: "SUDOKU_101" });
+              } else if (!learnedLessons.includes("AMEND_NOTES")) {
+                navigation.navigate("Lesson", { params: "AMEND_NOTES" });
+              } else if (!learnedLessons.includes("NAKED_SINGLE")) {
+                navigation.navigate("Lesson", { params: "NAKED_SINGLE" });
+              } else if (!learnedLessons.includes("SIMPLIFY_NOTES")) {
+                navigation.navigate("Lesson", { params: "SIMPLIFY_NOTES" });
+              }
+            }
+          } else {
+            console.log("User has not learned any lessons!");
+            setLessonsLoaded(true);
           }
-        );
+        });
       }
       getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
     }, [learnedLessons])

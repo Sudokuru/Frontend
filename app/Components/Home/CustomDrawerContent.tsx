@@ -37,6 +37,7 @@ function CustomDrawerContent(props: any) {
 
   function renderMainDrawer() {
     const { learnedLessons } = React.useContext(PreferencesContext);
+    console.log(learnedLessons, "GREETINGS LEARNED LESSONS!");
 
     return (
       <View>

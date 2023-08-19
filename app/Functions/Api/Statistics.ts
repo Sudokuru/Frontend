@@ -1,3 +1,9 @@
+import {
+  getKeyJSON,
+  getKeyString,
+  storeData,
+} from "../AsyncStorage/AsyncStorage";
+
 const GET_LEARNED_LESSONS: string = "api/v1/learnedLessons";
 const SAVE_LEARNED_LESSONS: string = "api/v1/learnedLessons";
 const GET_GAME_STATISTICS: string = "api/v1/gameStatistics";
@@ -28,69 +34,28 @@ export class Statistics {
    * @param token - authentication token
    * @returns promise of puzzle JSON object
    */
-  public static async getLearnedLessons(
-    args: statisticsOnlineMode | statisticsOfflineMode
-  ): Promise<JSON> {
-    if (args.mode === getStatisticsMode.Online) {
-      const res: Response = await fetch(args.url + GET_LEARNED_LESSONS, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + args.token,
-        },
-      });
-
-      if (res.status === SUCCESS) {
-        return await res.json();
-      } else {
-        console.log(
-          "Error: " +
-            GET_LEARNED_LESSONS +
-            " GET request has status " +
-            res.status
-        );
-        return JSON.parse("{}");
-      }
+  public static async getLearnedLessons(): Promise<JSON | undefined> {
+    let value = await getKeyJSON("learned_lessons");
+    if (value === undefined) {
+      return JSON.parse(JSON.stringify(["NONE"]));
     } else {
-      return JSON.parse(
-        JSON.stringify({
-          strategiesLearned: [
-            "SUDOKU_101",
-            "AMEND_NOTES",
-            "NAKED_SINGLE",
-            "SIMPLIFY_NOTES",
-            "NAKED_SET",
-            "HIDDEN_SINGLE",
-            "HIDDEN_SET",
-            "POINTING_SET",
-          ],
-        })
-      );
+      return value;
     }
   }
 
   /**
    * Given a user auth token and learnedLessons, saves the user's learned lessons and returns true or false
-   * @param url - server url e.g. http://localhost:3100/
    * @param learnedLessons - A JSON object representing all lessons the user has learned
-   * @param token - authentication token
-   * @returns true or false
    */
-  public static async saveLearnedLessons(
-    url: string,
-    learnedLessons: string,
-    token: string
-  ): Promise<boolean> {
-    const res: Response = await fetch(url + SAVE_LEARNED_LESSONS, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      body: JSON.stringify(learnedLessons),
-    });
-
-    return res.status === SUCCESS;
+  public static async saveLearnedLessons(learnedLessons: string[]) {
+    // Removing NONE placeholder value if user has learned a lesson
+    if (learnedLessons.includes("NONE") && learnedLessons.length > 1) {
+      let index = learnedLessons.indexOf("NONE");
+      if (index !== -1) {
+        learnedLessons.splice(index, 1);
+      }
+    }
+    storeData("learned_lessons", JSON.stringify(learnedLessons));
   }
 
   /**
