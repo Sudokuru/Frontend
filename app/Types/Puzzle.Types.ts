@@ -2,6 +2,7 @@ import { sudokuStrategyArray } from "sudokuru";
 
 export interface puzzle {
   puzzle: string;
+  moves: move[];
   puzzleSolution: string;
   strategies: sudokuStrategyArray;
   difficulty: number;

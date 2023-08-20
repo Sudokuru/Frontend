@@ -1,11 +1,5 @@
-import {
-  getKeyJSON,
-  getKeyString,
-  storeData,
-} from "../AsyncStorage/AsyncStorage";
+import { getKeyJSON, storeData } from "../AsyncStorage/AsyncStorage";
 
-const GET_LEARNED_LESSONS: string = "api/v1/learnedLessons";
-const SAVE_LEARNED_LESSONS: string = "api/v1/learnedLessons";
 const GET_GAME_STATISTICS: string = "api/v1/gameStatistics";
 const DELETE_GAME_STATISTICS: string = "api/v1/gameStatistics";
 // HTTP Status Codes
@@ -14,9 +8,7 @@ const NOT_FOUND: number = 404;
 
 export class Statistics {
   /**
-   * Given a user auth token retrieves the user's learned lessons
-   * @param url - server url e.g. http://localhost:3100/
-   * @param token - authentication token
+   * retrieves the user's learned lessons
    * @returns promise of puzzle JSON object
    */
   public static async getLearnedLessons(): Promise<JSON | undefined> {
@@ -29,7 +21,7 @@ export class Statistics {
   }
 
   /**
-   * Given a user auth token and learnedLessons, saves the user's learned lessons and returns true or false
+   * Given a user's learnedLessons, saves the user's learned lessons
    * @param learnedLessons - A JSON object representing all lessons the user has learned
    */
   public static async saveLearnedLessons(learnedLessons: string[]) {

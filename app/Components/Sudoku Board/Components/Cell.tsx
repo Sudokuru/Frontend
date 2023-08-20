@@ -152,7 +152,7 @@ const Cell = (props: any) => {
 
       // If all cells are filled in with the correct values, we want to finish the game
       if (flippedPuzzleString == game.puzzleSolution && gameType != "Demo") {
-        finishGame(game, showResults);
+        finishGame(showResults);
       }
     }
   }
