@@ -1,0 +1,7 @@
+export const NOT_SELECTED_CONFLICT_COLOR = "#FFC3BF";
+export const SELECTED_CONFLICT_COLOR = "#FF7C75";
+export const PEER_SELECTED_COLOR = "#C5DDF4";
+export const VALUE_SELECTED_COLOR = "#C8DCC4";
+export const SELECTED_COLOR = "#9CC4EC";
+export const REMOVE_NOTE_TEXT_COLOR = "#FF0000";
+export const PLACE_NOTE_TEXT_COLOR = "#F2CA7E";

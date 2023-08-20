@@ -15,6 +15,7 @@ import {
   setPlacementHighlights,
   setRemovalHighlights,
 } from "../../../Functions/Board/HintsParsing";
+import { NOT_SELECTED_CONFLICT_COLOR, PEER_SELECTED_COLOR, PLACE_NOTE_TEXT_COLOR, REMOVE_NOTE_TEXT_COLOR, SELECTED_COLOR, SELECTED_CONFLICT_COLOR, VALUE_SELECTED_COLOR } from "../../../Styling/HighlightColors";
 
 let puzzleString = "";
 let notesString = "";
@@ -325,27 +326,27 @@ const styles = (cellSize?: number, themeColor?: any) =>
     conflict: {
       // styles for cells with conflict prop
       color: "#000000",
-      backgroundColor: "#FFC3BF",
+      backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
     },
     peer: {
       // styles for cells with isPeer prop
       color: "#000000",
-      backgroundColor: "#C5DDF4",
+      backgroundColor: PEER_SELECTED_COLOR,
     },
     sameValue: {
       // styles for cells with sameValue prop
       color: "#000000",
-      backgroundColor: "#c8dcc4",
+      backgroundColor: VALUE_SELECTED_COLOR,
     },
     selected: {
       // styles for cells with isSelected prop
       color: "#000000",
-      backgroundColor: "#9cc4ec",
+      backgroundColor: SELECTED_COLOR,
     },
     selectedConflict: {
       // styles for cells with isSelected and conflict props
       color: "#000000",
-      backgroundColor: "#FF7C75",
+      backgroundColor: SELECTED_CONFLICT_COLOR,
     },
     prefilled: {},
     noteViewParent: {
@@ -365,12 +366,12 @@ const styles = (cellSize?: number, themeColor?: any) =>
     removalNoteText: {
       fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
       fontFamily: "Inter_300Light",
-      color: "#FF0000",
+      color: REMOVE_NOTE_TEXT_COLOR,
     },
     placementNoteText: {
       fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
       fontFamily: "Inter_300Light",
-      color: "#F2CA7E",
+      color: PLACE_NOTE_TEXT_COLOR,
     },
   });
 
