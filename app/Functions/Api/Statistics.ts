@@ -1,19 +1,18 @@
-import { getKeyJSON, storeData } from "../AsyncStorage/AsyncStorage";
-
-const GET_GAME_STATISTICS: string = "api/v1/gameStatistics";
-const DELETE_GAME_STATISTICS: string = "api/v1/gameStatistics";
-// HTTP Status Codes
-const SUCCESS: number = 200;
-const NOT_FOUND: number = 404;
+import { statistics } from "../../Types/Puzzle.Types";
+import {
+  getKeyJSON,
+  removeData,
+  storeData,
+} from "../AsyncStorage/AsyncStorage";
 
 export class Statistics {
   /**
    * retrieves the user's learned lessons
    * @returns promise of puzzle JSON object
    */
-  public static async getLearnedLessons(): Promise<JSON | undefined> {
+  public static async getLearnedLessons(): Promise<JSON> {
     let value = await getKeyJSON("learned_lessons");
-    if (value === undefined) {
+    if (value == undefined) {
       return JSON.parse(JSON.stringify(["NONE"]));
     } else {
       return value;
@@ -36,52 +35,31 @@ export class Statistics {
   }
 
   /**
-   * Given a user's auth token returns all statistics objects for given user
-   * @param url - server url e.g. http://localhost:3100/
-   * @param token - authentication token
+   * returns all statistics objects for given user
    */
-  public static async getStatistics(url: string, token: string): Promise<JSON> {
-    const res: Response = await fetch(url + GET_GAME_STATISTICS, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    if (res.status === SUCCESS) {
-      return await res.json();
-    } else if (res.status === NOT_FOUND) {
-      return JSON.parse("{}");
-    } else {
-      console.log(
-        "Error: " +
-          GET_GAME_STATISTICS +
-          " GET request has status " +
-          res.status
-      );
-      return JSON.parse("{}");
+  public static async getStatistics(): Promise<statistics> {
+    let value = await getKeyJSON("statistics");
+    if (value == null) {
+      let statistics: statistics = {
+        totalScore: 0,
+        numGamesPlayed: 0,
+        fastestSolveTime: 0,
+        averageSolveTime: 0,
+        totalSolveTime: 0,
+        numHintsUsed: 0,
+        numWrongCellsPlayed: 0,
+      };
+      await storeData("statistics", JSON.stringify(statistics));
+      return statistics;
     }
+    return value;
   }
 
   /**
-   * Given a user's auth token, this function deletes the user's statistics and returns true if successful
-   * @param url - server url e.g. http://localhost:3100/
-   * @param token - authentication token
-   * @returns boolean value
+   * this function deletes the user's statistics
    */
-  public static async deleteStatistics(
-    url: string,
-    token: string
-  ): Promise<boolean> {
-    const res: Response = await fetch(url + DELETE_GAME_STATISTICS, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    return res.status === SUCCESS;
+  public static async deleteStatistics() {
+    await removeData("statistics");
+    await removeData("learned_lessons");
   }
 }

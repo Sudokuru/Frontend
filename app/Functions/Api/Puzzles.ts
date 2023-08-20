@@ -8,14 +8,6 @@ import {
   storeData,
 } from "../AsyncStorage/AsyncStorage";
 
-const START_GAME: string = "api/v1/newGame?closestDifficulty=";
-const GET_GAME: string = "api/v1/activeGames";
-const SAVE_GAME: string = "api/v1/activeGames?puzzle=";
-const FINISH_GAME: string = "api/v1/activeGames?puzzle=";
-// HTTP Status Codes
-const SUCCESS: number = 200;
-const NOT_FOUND: number = 404;
-
 // Random games to be used by getRandomGame for landing page
 const DEMO_RANDOM_GAMES: puzzle[][] = [
   [
@@ -265,7 +257,16 @@ export class Puzzles {
       difficultyScore + hintAndIncorrectCellsScore + timeScore
     );
 
-    console.log(numHintsUsed, numWrongCellsPlayed, score);
+    // Create or update user's statistics
+
+    // totalScore={totalStatistics.totalScore}
+    // numGamesPlayed={totalStatistics.numGamesPlayed}
+    // fastestSolveTime={totalStatistics.fastestSolveTime}
+    // averageSolveTime={totalStatistics.averageSolveTime}
+    // totalSolveTime={totalStatistics.totalSolveTime}
+    // numHintsUsed={totalStatistics.numHintsUsed}
+    // numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
+
     // return results
     return {
       score: score,

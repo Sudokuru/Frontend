@@ -1,5 +1,5 @@
 import { calculateNotes, sudokuStrategy, sudokuStrategyArray } from "sudokuru";
-import { activeGame, puzzle } from "../../Types/Puzzle.Types";
+import { puzzle } from "../../Types/Puzzle.Types";
 import { drill } from "../../Types/Puzzle.Types";
 import { returnLocalDrillGame } from "../LocalStore/DataStore/LocalDatabase";
 
@@ -8,8 +8,8 @@ import { returnLocalDrillGame } from "../LocalStore/DataStore/LocalDatabase";
  */
 export class Drills {
   /**
-   * Drills.getGame retrieves the requested drill game either from a remote database or from the device's local storage.
-   * @param args can either by of type drillOfflineMode or drillOnlineMode, parameters for retrieving drills.
+   * Drills.getGame retrieves the requested drill game from the device's local storage.
+   * @param strategy the name of the sudoku strategy to retrieve the relevant drill.
    * @returns a drill object corresponding to the drill type being requested.
    */
   public static async getGame(strategy: sudokuStrategy): Promise<drill> {
