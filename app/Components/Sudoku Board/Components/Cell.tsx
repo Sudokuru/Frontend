@@ -177,12 +177,14 @@ const Cell = (props: any) => {
       style={{ outline: "none" }}
     >
       <View
+        testID={"cellr" + y + "c" + x}
         style={[
           styles(cellSize).cellView,
           x % 3 === 0 && styles(cellSize).hardLineThicknessLeftWidth,
           y % 3 === 0 && styles(cellSize).hardLineThicknessTopWidth,
           x === 8 && styles(cellSize).hardLineThicknessRightWidth,
           y === 8 && styles(cellSize).hardLineThicknessBottomWidth,
+          {},
 
           // Border Highlighting
           inHintMode && bgColor && { backgroundColor: bgColor },
