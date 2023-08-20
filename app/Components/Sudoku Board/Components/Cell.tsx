@@ -177,6 +177,7 @@ const Cell = (props: any) => {
       style={{ outline: "none" }}
     >
       <View
+        testID={"cellr" + y + "c" + x}
         style={[
           styles(cellSize).cellView,
           x % 3 === 0 && styles(cellSize).hardLineThicknessLeftWidth,
