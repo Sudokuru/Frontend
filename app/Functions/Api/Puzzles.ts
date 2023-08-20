@@ -1,5 +1,5 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle } from "../../Types/Puzzle.Types";
+import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
 import {
@@ -7,6 +7,7 @@ import {
   removeData,
   storeData,
 } from "../AsyncStorage/AsyncStorage";
+import { Statistics } from "./Statistics";
 
 // Random games to be used by getRandomGame for landing page
 const DEMO_RANDOM_GAMES: puzzle[][] = [
@@ -259,13 +260,24 @@ export class Puzzles {
 
     // Create or update user's statistics
 
-    // totalScore={totalStatistics.totalScore}
-    // numGamesPlayed={totalStatistics.numGamesPlayed}
-    // fastestSolveTime={totalStatistics.fastestSolveTime}
-    // averageSolveTime={totalStatistics.averageSolveTime}
-    // totalSolveTime={totalStatistics.totalSolveTime}
-    // numHintsUsed={totalStatistics.numHintsUsed}
-    // numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
+    let statistics: statistics = await Statistics.getStatistics();
+
+    statistics.totalScore += score;
+    if (
+      finalTime < statistics.fastestSolveTime ||
+      statistics.fastestSolveTime === 0
+    ) {
+      statistics.fastestSolveTime = finalTime;
+    }
+    statistics.totalSolveTime += finalTime;
+    statistics.numGamesPlayed += 1;
+    statistics.numHintsUsed += numHintsUsed;
+    statistics.numWrongCellsPlayed += numWrongCellsPlayed;
+    statistics.averageSolveTime = Math.round(
+      statistics.totalSolveTime / statistics.numGamesPlayed
+    );
+
+    Statistics.saveStatisitics(statistics);
 
     // return results
     return {

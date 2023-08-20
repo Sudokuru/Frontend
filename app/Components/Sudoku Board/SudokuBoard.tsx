@@ -108,6 +108,9 @@ export async function saveGame(activeGame) {
   activeGame.currentTime = globalTime;
 
   Puzzles.saveGame(activeGame).then((res) => {
+    if (activeGame.numWrongCellsPlayed == null) {
+      activeGame.numWrongCellsPlayed = 0;
+    }
     if (res) {
       console.log("Game progress was saved successfully!");
     }

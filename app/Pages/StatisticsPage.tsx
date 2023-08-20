@@ -41,7 +41,6 @@ const StatisticsPage = () => {
   async function getUserStatistics() {
     await Statistics.getStatistics().then((res: any) => {
       if (res) {
-        console.log(res, "RESULT");
         setTotalStatistics(res);
       } else {
         console.log("Cannot get user statistics!");

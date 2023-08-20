@@ -49,10 +49,14 @@ export class Statistics {
         numHintsUsed: 0,
         numWrongCellsPlayed: 0,
       };
-      await storeData("statistics", JSON.stringify(statistics));
+      await this.saveStatisitics(statistics);
       return statistics;
     }
     return value;
+  }
+
+  public static async saveStatisitics(statistics: statistics) {
+    storeData("statistics", JSON.stringify(statistics));
   }
 
   /**
