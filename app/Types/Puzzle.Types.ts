@@ -38,3 +38,21 @@ export interface gameResults {
   numWrongCellsPlayed: number;
   difficulty: number;
 }
+
+export interface statistics {
+  totalScore: number;
+  numGamesPlayed: number;
+  fastestSolveTime: number;
+  averageSolveTime: number;
+  totalSolveTime: number;
+  numHintsUsed: number;
+  numWrongCellsPlayed: number;
+}
+
+export interface profile {
+  theme: boolean;
+  highlightIdenticalValues: boolean;
+  highlightBox: boolean;
+  highlightRow: boolean;
+  highlightColumn: boolean;
+}

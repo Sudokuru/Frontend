@@ -78,8 +78,12 @@ const Cell = (props: any) => {
     false,
   ];
 
-  const { isHighlightSet, isHighlightBox, isHighlightRow, isHighlightColumn } =
-    React.useContext(PreferencesContext);
+  const {
+    isHighlightIdenticalValues,
+    isHighlightBox,
+    isHighlightRow,
+    isHighlightColumn,
+  } = React.useContext(PreferencesContext);
 
   const highlightPeers = isHighlightBox && isHighlightRow && isHighlightColumn;
 
@@ -243,7 +247,7 @@ const Cell = (props: any) => {
           !inHintMode &&
             !conflict &&
             sameValue &&
-            isHighlightSet &&
+            isHighlightIdenticalValues &&
             styles(cellSize).sameValue,
           !inHintMode &&
             conflict &&

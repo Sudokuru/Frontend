@@ -1,35 +1,12 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  useWindowDimensions,
-  View,
-  ScrollView,
-} from "react-native";
+import { useWindowDimensions, View, ScrollView } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import { Switch, Text, useTheme } from "react-native-paper";
-import {
-  getTokenName,
-  getTokenNickname,
-} from "../Functions/AsyncStorage/AsyncStorage";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/ContextParsing/learnedLessons";
-import { useFocusEffect } from "@react-navigation/core";
 
 const ProfilePage = () => {
-  const [email, setEmail] = useState<string>();
-  const [nickname, setNickname] = useState<string>();
-
-  // This will be run once every time the user goes to the profile page
-  // todo in the future, we can have email and nickname be stored in context and be set when user logs in
-  // todo this will avoid multiple calls to retrieve the token
-  useFocusEffect(
-    React.useCallback(() => {
-      getTokenName().then((email) => setEmail(email));
-      getTokenNickname().then((nickname) => setNickname(nickname));
-    }, [])
-  );
-
   const theme = useTheme();
 
   const size = useWindowDimensions();
@@ -39,8 +16,8 @@ const ProfilePage = () => {
     learnedLessons,
     toggleTheme,
     isThemeDark,
-    toggleHighlightSet,
-    isHighlightSet,
+    toggleHighlightIdenticalValues,
+    isHighlightIdenticalValues,
     isHighlightBox,
     toggleHighlightBox,
     toggleHighlightColumn,
@@ -74,34 +51,6 @@ const ProfilePage = () => {
             <View
               style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}
             >
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Name:{" "}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: reSize / 20,
-                    fontWeight: "bold",
-                    color: "#D9A05B",
-                  }}
-                >
-                  {nickname}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Email:{" "}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: reSize / 20,
-                    fontWeight: "bold",
-                    color: "#D9A05B",
-                  }}
-                >
-                  {email}
-                </Text>
-              </View>
               <View style={{ marginBottom: 10 }}>
                 <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
                   Strategies Learned:
@@ -140,7 +89,7 @@ const ProfilePage = () => {
               </View>
               <View style={{ marginBottom: 10, flexDirection: "row" }}>
                 <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Peers:{" "}
+                  Highlight Identical Values:{" "}
                 </Text>
                 <View
                   style={{
@@ -151,12 +100,12 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightSet}
-                    onValueChange={toggleHighlightSet}
+                    value={isHighlightIdenticalValues}
+                    onValueChange={toggleHighlightIdenticalValues}
                     testID={
-                      isHighlightSet
-                        ? "HighlightPeersEnabled"
-                        : "HighlightPeersDisabled"
+                      isHighlightIdenticalValues
+                        ? "HighlightIdenticalValuesEnabled"
+                        : "HighlightIdenticalValuesDisabled"
                     }
                     style={{ alignSelf: "center", flexDirection: "column" }}
                   />
