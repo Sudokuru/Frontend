@@ -20,7 +20,6 @@ import {
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from "./app/Pages/DrillPage";
 import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
-import { Statistics } from "./app/Functions/Api/Statistics";
 import { Profile } from "./app/Functions/Api/Profile";
 
 const drawerItemsMain = [
