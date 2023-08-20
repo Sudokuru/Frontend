@@ -2,7 +2,7 @@ import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   PEER_SELECTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
-  VALUE_SELECTED_COLOR_RGB,
+  IDENTICAL_VALUE_COLOR,
 } from "../../app/Styling/HighlightColors";
 
 describe("Sudoku play component functions", () => {
@@ -62,7 +62,7 @@ describe("Sudoku play component functions", () => {
                     cy.get("[data-testid=cellr" + i + "c" + j + "]").should(
                       "have.css",
                       "background-color",
-                      VALUE_SELECTED_COLOR_RGB
+                      IDENTICAL_VALUE_COLOR
                     );
                   } else {
                     cy.get("[data-testid=cellr" + i + "c" + j + "]").should(

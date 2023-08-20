@@ -22,7 +22,7 @@ import {
   REMOVE_NOTE_TEXT_COLOR,
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
-  VALUE_SELECTED_COLOR,
+  IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
 
 let puzzleString = "";
@@ -344,7 +344,7 @@ const styles = (cellSize?: number, themeColor?: any) =>
     sameValue: {
       // styles for cells with sameValue prop
       color: "#000000",
-      backgroundColor: VALUE_SELECTED_COLOR,
+      backgroundColor: IDENTICAL_VALUE_COLOR,
     },
     selected: {
       // styles for cells with isSelected prop
