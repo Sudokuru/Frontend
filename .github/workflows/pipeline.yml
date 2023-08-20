@@ -163,7 +163,7 @@ jobs:
 
   deploy_app_prod:
     name: Deploy Prod app to Itch.io
-    needs: [ deploy_app_dev, deploy_website_dev ]
+    needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
