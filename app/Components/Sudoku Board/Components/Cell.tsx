@@ -15,7 +15,15 @@ import {
   setPlacementHighlights,
   setRemovalHighlights,
 } from "../../../Functions/Board/HintsParsing";
-import { NOT_SELECTED_CONFLICT_COLOR, PEER_SELECTED_COLOR, PLACE_NOTE_TEXT_COLOR, REMOVE_NOTE_TEXT_COLOR, SELECTED_COLOR, SELECTED_CONFLICT_COLOR, VALUE_SELECTED_COLOR } from "../../../Styling/HighlightColors";
+import {
+  NOT_SELECTED_CONFLICT_COLOR,
+  PEER_SELECTED_COLOR,
+  PLACE_NOTE_TEXT_COLOR,
+  REMOVE_NOTE_TEXT_COLOR,
+  SELECTED_COLOR,
+  SELECTED_CONFLICT_COLOR,
+  VALUE_SELECTED_COLOR,
+} from "../../../Styling/HighlightColors";
 
 let puzzleString = "";
 let notesString = "";

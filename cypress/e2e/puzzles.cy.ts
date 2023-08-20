@@ -1,4 +1,9 @@
-import { NOT_HIGHLIGHTED_COLOR_RGB, PEER_SELECTED_COLOR_RGB, SELECTED_COLOR_RGB, VALUE_SELECTED_COLOR_RGB } from "../../app/Styling/HighlightColors";
+import {
+  NOT_HIGHLIGHTED_COLOR_RGB,
+  PEER_SELECTED_COLOR_RGB,
+  SELECTED_COLOR_RGB,
+  VALUE_SELECTED_COLOR_RGB,
+} from "../../app/Styling/HighlightColors";
 
 describe("Sudoku play component functions", () => {
   // Before tests insert learned lessons in localstorage
