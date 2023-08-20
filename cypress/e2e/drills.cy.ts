@@ -10,6 +10,31 @@ describe("template spec", () => {
     cy.contains("Get Started").click();
     cy.contains("Start Drill").click();
     cy.contains("Naked Sets").click();
-    cy.contains("Naked Pair").click();
+    cy.get('[data-testid="Naked Single"]').click();
+    cy.log("test");
+    var singleCount = 0;
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        cy.get("[data-testid^=cellr" + i + "c" + j + "]")
+          .invoke("data", "testid")
+          .then((cellId) => {
+            let cellIdString = cellId.toString();
+            cy.log(cellIdString);
+            if (cellIdString.includes("notes:")) {
+              let notesIndex = cellIdString.indexOf("notes:");
+              let notesString = cellIdString.substring(notesIndex + 6);
+              if (notesString.length === 1) {
+                singleCount++;
+                cy.log("SUCCESS");
+                cy.log(singleCount.toString());
+              } else {
+                cy.log(notesString);
+              }
+            }
+          });
+      }
+    }
+    //expect(singleCount).to.equal(1);
+    cy.log(singleCount.toString());
   });
 });
