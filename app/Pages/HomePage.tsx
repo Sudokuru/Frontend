@@ -87,7 +87,7 @@ const HomePage = () => {
           }
         });
 
-        await Puzzles.getGame(url, token).then((game: any) => {
+        await Puzzles.getGame().then((game: any) => {
           if (game !== null && game[0].moves.length > 0) {
             showResumeButton();
           } else {
