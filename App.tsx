@@ -21,6 +21,7 @@ import Lesson from "./app/Pages/Lesson";
 import DrillPage from "./app/Pages/DrillPage";
 import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
 import { Statistics } from "./app/Functions/Api/Statistics";
+import { Profile } from "./app/Functions/Api/Profile";
 
 const drawerItemsMain = [
   {
@@ -139,9 +140,21 @@ export default function App() {
   const [isHighlightRow, setHighlightRow] = React.useState(true);
   const [isHighlightColumn, setHighlightColumn] = React.useState(true);
 
+  // set initial values of theme
+  React.useEffect(() => {
+    Profile.getProfile().then((data) => {
+      setIsThemeDark(data.theme);
+      setHighlightIdenticalValues(data.highlightIdenticalValues);
+      setHighlightBox(data.highlightBox);
+      setHighlightRow(data.highlightRow);
+      setHighlightColumn(data.highlightColumn);
+    });
+  }, []);
+
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
   const toggleTheme = React.useCallback(() => {
+    Profile.setProfileValue("theme");
     return setIsThemeDark(!isThemeDark);
   }, [isThemeDark]);
 
@@ -153,18 +166,22 @@ export default function App() {
   );
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
+    Profile.setProfileValue("highlightIdenticalValues");
     return setHighlightIdenticalValues(!isHighlightIdenticalValues);
   }, [isHighlightIdenticalValues]);
 
   const toggleHighlightBox = React.useCallback(() => {
+    Profile.setProfileValue("highlightBox");
     return setHighlightBox(!isHighlightBox);
   }, [isHighlightBox]);
 
   const toggleHighlightRow = React.useCallback(() => {
+    Profile.setProfileValue("highlightRow");
     return setHighlightRow(!isHighlightRow);
   }, [isHighlightRow]);
 
   const toggleHighlightColumn = React.useCallback(() => {
+    Profile.setProfileValue("highlightColumn");
     return setHighlightColumn(!isHighlightColumn);
   }, [isHighlightColumn]);
 

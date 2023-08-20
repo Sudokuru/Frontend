@@ -48,3 +48,11 @@ export interface statistics {
   numHintsUsed: number;
   numWrongCellsPlayed: number;
 }
+
+export interface profile {
+  theme: boolean;
+  highlightIdenticalValues: boolean;
+  highlightBox: boolean;
+  highlightRow: boolean;
+  highlightColumn: boolean;
+}
