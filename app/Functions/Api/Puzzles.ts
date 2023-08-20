@@ -1,5 +1,5 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle } from "../../Types/Puzzle.Types";
+import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
 import {
@@ -7,14 +7,7 @@ import {
   removeData,
   storeData,
 } from "../AsyncStorage/AsyncStorage";
-
-const START_GAME: string = "api/v1/newGame?closestDifficulty=";
-const GET_GAME: string = "api/v1/activeGames";
-const SAVE_GAME: string = "api/v1/activeGames?puzzle=";
-const FINISH_GAME: string = "api/v1/activeGames?puzzle=";
-// HTTP Status Codes
-const SUCCESS: number = 200;
-const NOT_FOUND: number = 404;
+import { Statistics } from "./Statistics";
 
 // Random games to be used by getRandomGame for landing page
 const DEMO_RANDOM_GAMES: puzzle[][] = [
@@ -265,7 +258,27 @@ export class Puzzles {
       difficultyScore + hintAndIncorrectCellsScore + timeScore
     );
 
-    console.log(numHintsUsed, numWrongCellsPlayed, score);
+    // Create or update user's statistics
+
+    let statistics: statistics = await Statistics.getStatistics();
+
+    statistics.totalScore += score;
+    if (
+      finalTime < statistics.fastestSolveTime ||
+      statistics.fastestSolveTime === 0
+    ) {
+      statistics.fastestSolveTime = finalTime;
+    }
+    statistics.totalSolveTime += finalTime;
+    statistics.numGamesPlayed += 1;
+    statistics.numHintsUsed += numHintsUsed;
+    statistics.numWrongCellsPlayed += numWrongCellsPlayed;
+    statistics.averageSolveTime = Math.round(
+      statistics.totalSolveTime / statistics.numGamesPlayed
+    );
+
+    Statistics.saveStatisitics(statistics);
+
     // return results
     return {
       score: score,

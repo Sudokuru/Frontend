@@ -4,7 +4,6 @@ import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
-import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
 import { USERGAMESTATISTICSBFFURL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -32,44 +31,27 @@ const StatisticsPage = () => {
   const showWarningButton = () => setWarningVisible(true);
   const hideWarningButton = () => setWarningVisible(false);
 
-  async function deleteUserStatistics(url: string) {
-    let token: string = "";
-    await getKeyString("access_token").then((result) => {
-      if (result) {
-        token = result;
-      }
-    });
-
-    await Statistics.deleteStatistics(url, token).then((res: any) => {
-      if (res) {
-        console.log("Statistics deleted successfully!");
-      } else {
-        console.log("Statistics not deleted");
-      }
+  async function deleteUserStatistics() {
+    await Statistics.deleteStatistics().then(() => {
       updateLearnedLessons([]);
       navigation.navigate("Home");
     });
   }
 
-  async function getUserStatistics(url: string) {
-    let token = null;
-    await getKeyString("access_token").then((result) => {
-      token = result;
-    });
-
-    await Statistics.getStatistics(url, token).then((res: any) => {
+  async function getUserStatistics() {
+    await Statistics.getStatistics().then((res: any) => {
       if (res) {
-        setTotalStatistics(retrieveTotalStatistics(res));
-        setLoading(false);
+        setTotalStatistics(res);
       } else {
         console.log("Cannot get user statistics!");
       }
+      setLoading(false);
     });
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      getUserStatistics(USERGAMESTATISTICSBFFURL);
+      getUserStatistics();
     }, [])
   );
 
