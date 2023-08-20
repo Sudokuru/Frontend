@@ -16,8 +16,8 @@ const ProfilePage = () => {
     learnedLessons,
     toggleTheme,
     isThemeDark,
-    toggleHighlightSet,
-    isHighlightSet,
+    toggleHighlightIdenticalValues,
+    isHighlightIdenticalValues,
     isHighlightBox,
     toggleHighlightBox,
     toggleHighlightColumn,
@@ -89,7 +89,7 @@ const ProfilePage = () => {
               </View>
               <View style={{ marginBottom: 10, flexDirection: "row" }}>
                 <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Peers:{" "}
+                  Highlight Identical Values:{" "}
                 </Text>
                 <View
                   style={{
@@ -100,12 +100,12 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightSet}
-                    onValueChange={toggleHighlightSet}
+                    value={isHighlightIdenticalValues}
+                    onValueChange={toggleHighlightIdenticalValues}
                     testID={
-                      isHighlightSet
-                        ? "HighlightPeersEnabled"
-                        : "HighlightPeersDisabled"
+                      isHighlightIdenticalValues
+                        ? "HighlightIdenticalValuesEnabled"
+                        : "HighlightIdenticalValuesDisabled"
                     }
                     style={{ alignSelf: "center", flexDirection: "column" }}
                   />
