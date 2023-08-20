@@ -15,9 +15,15 @@ import Alert from "react-native-awesome-alerts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { getKeyString } from "../Functions/Auth0/token";
+import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
 import { USERGAMESTATISTICSBFFURL } from "@env";
-import { Lessons, Statistics } from "sudokuru";
+import {
+  Lessons,
+  getLessonMode,
+  lessonOfflineMode,
+  lessonOnlineMode,
+} from "../Functions/Api/Lessons";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -70,43 +76,38 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     return;
   }
 
+  // setting lesson mode to offline
+  let LESSON_MODE = getLessonMode.Offline;
+  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+    mode: LESSON_MODE,
+  };
+
   //2d array - [[],[]]. 1st array indicates which step, 2nd array indicates text or image.
   // This useFocusEffect stores the steps in state when page is loaded in.
   useFocusEffect(
     React.useCallback(() => {
-      Lessons.getSteps(name).then((result: any) => {
+      Lessons.getSteps(name, getlessonArgs).then((result: any) => {
         setSteps(result);
         setIsLoading(false);
       });
     }, [])
   );
 
-  async function saveUserLearnedLessons(url: string) {
-    let token = null;
-    await getKeyString("access_token").then((result) => {
-      token = result;
-    });
-
-    let jsonBody = {
-      strategiesLearned: learnedLessons,
-    };
-
-    await Statistics.saveLearnedLessons(url, jsonBody, token).then(
-      (res: any) => {
-        if (res) {
-          console.log("Lessons save successfully!");
-        } else {
-          console.log("Lesson not saved");
-        }
+  async function saveUserLearnedLessons(learnedLessons: string[]) {
+    await Statistics.saveLearnedLessons(learnedLessons).then((res: any) => {
+      if (res) {
+        console.log("Lessons save successfully!");
+      } else {
+        console.log("Lesson not saved");
       }
-    );
+    });
   }
 
   const clickCheckMark = () => {
     if (!learnedLessons.includes(name)) {
       learnedLessons.push(name);
       updateLearnedLessons(learnedLessons);
-      saveUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+      saveUserLearnedLessons(learnedLessons);
     }
     navigation.navigate("Home");
   };
@@ -149,7 +150,11 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             {steps[count][1] != null ? (
               <Image
                 style={{ width: reSize / 2, height: reSize / 2 }}
-                source={{ uri: steps[count][1] }}
+                source={
+                  LESSON_MODE === getLessonMode.Online
+                    ? { uri: steps[count][1] }
+                    : steps[count][1]
+                }
               />
             ) : (
               <></>
@@ -203,7 +208,11 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           {steps[count][1] != null ? (
             <Image
               style={{ width: reSize / 1.3, height: reSize / 1.3 }}
-              source={{ uri: steps[count][1] }}
+              source={
+                LESSON_MODE === getLessonMode.Online
+                  ? { uri: steps[count][1] }
+                  : steps[count][1]
+              }
             />
           ) : (
             <></>

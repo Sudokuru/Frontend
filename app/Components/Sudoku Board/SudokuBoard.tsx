@@ -21,7 +21,7 @@ import {
 } from "./sudoku";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { getKeyString } from "../../Functions/Auth0/token";
+import { getKeyString } from "../../Functions/AsyncStorage/AsyncStorage";
 import { USERACTIVEGAMESBFFURL } from "@env";
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -37,14 +37,15 @@ import {
   getPlacementsFromHint,
   getRemovalsFromHint,
   updateBoardWithNumber,
-  getHint,
+  getNextHint,
 } from "./Functions/BoardFunctions";
 import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { Puzzles } from "sudokuru";
+import { gameResults } from "sudokuru";
+import { Puzzles } from "../../Functions/Api/Puzzles";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 let url = USERACTIVEGAMESBFFURL;
@@ -104,31 +105,20 @@ const styles = (cellSize, sizeConst, theme) =>
 
 //todo this function cannot be moved until globalTime situation is handled
 export async function saveGame(activeGame) {
-  let token: string = "";
-
-  await getKeyString("access_token").then((result) => {
-    if (result) {
-      token = result;
-    }
-  });
-
   activeGame.currentTime = globalTime;
 
-  Puzzles.saveGame(url, activeGame, activeGame.puzzle, token).then((res) => {
+  Puzzles.saveGame(activeGame).then((res) => {
+    if (activeGame.numWrongCellsPlayed == null) {
+      activeGame.numWrongCellsPlayed = 0;
+    }
     if (res) {
       console.log("Game progress was saved successfully!");
     }
   });
 }
 
-export async function finishGame(activeGame, showResults) {
-  let token = null;
-
-  await getKeyString("access_token").then((result) => {
-    token = result;
-  });
-
-  Puzzles.finishGame(url, activeGame.puzzle, token).then((res) => {
+export async function finishGame(showResults) {
+  Puzzles.finishGame().then((res: gameResults) => {
     if (res) {
       showResults(
         res.score,
@@ -168,7 +158,7 @@ const PauseButton = ({ handlePause, isPaused }) => {
   const theme = useTheme();
 
   return (
-    <Pressable onPress={handlePause}>
+    <Pressable testID="PauseButton" onPress={handlePause}>
       {isPaused ? (
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
@@ -423,7 +413,11 @@ const SudokuBoard = (props: any) => {
 
     // Increment global hint value by one
     if (props.gameType != "StartDrill" && newHintMode) {
-      activeGame[0].numHintsUsed++;
+      if (activeGame[0].numHintsUsed == null) {
+        activeGame[0].numHintsUsed = 1;
+      } else {
+        activeGame[0].numHintsUsed++;
+      }
     }
 
     if (!newHintMode) {
@@ -445,8 +439,8 @@ const SudokuBoard = (props: any) => {
     }
     newBoard = newBoard.set("currentStep", 0);
     let hint = solution
-      ? getHint(newBoard, solution, props.strategies)
-      : getHint(newBoard, null, props.strategies);
+      ? getNextHint(newBoard, solution, props.strategies)
+      : getNextHint(newBoard, null, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
@@ -775,7 +769,11 @@ const SudokuBoard = (props: any) => {
         props.gameType != "StartDrill" &&
         !checkSolution(activeGame[0].puzzleSolution, x, y, number)
       ) {
-        activeGame[0].numWrongCellsPlayed++;
+        if (activeGame[0].numWrongCellsPlayed === null) {
+          activeGame[0].numWrongCellsPlayed = 1;
+        } else {
+          activeGame[0].numWrongCellsPlayed++;
+        }
       }
     }
     updateBoard(newBoard);

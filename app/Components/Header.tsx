@@ -1,5 +1,4 @@
 import React from "react";
-import LoginButton from "./Auth0/LoginButton";
 import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
 import { Image, Pressable, StyleSheet, View } from "react-native";
@@ -61,7 +60,6 @@ const Header = (props: any) => {
         ) : (
           <ProfileButton />
         )}
-        <LoginButton />
       </View>
     </View>
   );

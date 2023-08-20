@@ -7,8 +7,8 @@ const PreferencesToggles = () => {
   const {
     toggleTheme,
     isThemeDark,
-    toggleHighlightSet,
-    isHighlightSet,
+    toggleHighlightIdenticalValues,
+    isHighlightIdenticalValues,
     isHighlightBox,
     toggleHighlightBox,
     toggleHighlightColumn,
@@ -29,10 +29,12 @@ const PreferencesToggles = () => {
       <Text>Highlight Peers</Text>
       <Switch
         color={"#025E73"}
-        value={isHighlightSet}
-        onValueChange={toggleHighlightSet}
+        value={isHighlightIdenticalValues}
+        onValueChange={toggleHighlightIdenticalValues}
         testID={
-          isHighlightSet ? "HighlightPeersEnabled" : "HighlightPeersDisabled"
+          isHighlightIdenticalValues
+            ? "HighlightPeersEnabled"
+            : "HighlightPeersDisabled"
         }
       />
       <Text>Highlight Box</Text>

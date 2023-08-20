@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { ActivityIndicator, Text, useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import LessonButton from "./LessonButton";
 import { useFocusEffect } from "@react-navigation/core";
@@ -8,7 +8,12 @@ import {
   formatOneLessonName,
   getLockedLessons,
 } from "../../Functions/ContextParsing/learnedLessons";
-import { Lessons } from "sudokuru";
+import {
+  Lessons,
+  getLessonMode,
+  lessonOfflineMode,
+  lessonOnlineMode,
+} from "../../Functions/Api/Lessons";
 
 const LessonPanel = () => {
   const theme = useTheme();
@@ -18,9 +23,15 @@ const LessonPanel = () => {
   const [availableLessons, setAvailableLessons] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
+  // setting lesson mode to offline
+  let LESSON_MODE = getLessonMode.Offline;
+  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+    mode: LESSON_MODE,
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      Lessons.getStrategies().then((result: any) => {
+      Lessons.getStrategies(getlessonArgs).then((result: any) => {
         setAvailableLessons(result);
         setIsLoading(false);
       });

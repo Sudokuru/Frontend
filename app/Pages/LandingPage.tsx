@@ -2,6 +2,8 @@ import React from "react";
 import { Platform, Pressable, useWindowDimensions, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import Header from "../Components/Header";
+import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { Image, StyleSheet } from "react-native";
 import {

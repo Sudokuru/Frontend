@@ -8,7 +8,7 @@ import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import DifficultySlider from "../Components/Home/DifficultySlider";
-import { getKeyString } from "../Functions/Auth0/token";
+import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
 import { USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL } from "@env";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -16,7 +16,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
-import { Puzzles, Statistics } from "sudokuru";
+import { Puzzles } from "../Functions/Api/Puzzles";
+import { Statistics } from "../Functions/Api/Statistics";
 
 const HomePage = () => {
   const navigation: any = useNavigation();
@@ -86,7 +87,7 @@ const HomePage = () => {
           }
         });
 
-        await Puzzles.getGame(url, token).then((game: any) => {
+        await Puzzles.getGame().then((game: any) => {
           if (game !== null && game[0].moves.length > 0) {
             showResumeButton();
           } else {
@@ -101,22 +102,12 @@ const HomePage = () => {
   useFocusEffect(
     React.useCallback(() => {
       // This determines what lessons the user has learned and conditionally displays everything.
-      async function getUserLearnedLessons(url: string) {
-        let token: string = "";
-        await getKeyString("access_token").then((result) => {
-          if (result) {
-            token = result;
-          }
-        });
-
-        await Statistics.getLearnedLessons(url, token).then((lessons: any) => {
+      async function getUserLearnedLessons() {
+        await Statistics.getLearnedLessons().then((lessons: any) => {
           if (lessons !== null) {
             // prevent the infinite loop
-            if (
-              learnedLessons != lessons.strategiesLearned &&
-              !areLessonsLoaded
-            ) {
-              updateLearnedLessons(lessons.strategiesLearned);
+            if (learnedLessons != lessons && !areLessonsLoaded) {
+              updateLearnedLessons(lessons);
             }
 
             setLessonsLoaded(true);
@@ -133,11 +124,12 @@ const HomePage = () => {
               }
             }
           } else {
-            console.log("Error retrieving lessons of user");
+            console.log("User has not learned any lessons!");
+            setLessonsLoaded(true);
           }
         });
       }
-      getUserLearnedLessons(USERGAMESTATISTICSBFFURL);
+      getUserLearnedLessons();
     }, [learnedLessons])
   );
 

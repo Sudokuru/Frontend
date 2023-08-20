@@ -74,7 +74,38 @@ jobs:
             Preview Website for PR:
             ${{ env.previewUrl }}
 
-  app_build_dev:
+  website_test_dev:
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          start: npm run web
+          wait-on: 'http://localhost:19000/'
+          wait-on-timeout: 120
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: ./cypress/screenshots
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-videos
+          path: ./cypress/videos
+
+  app_build_android:
     runs-on: ubuntu-latest
     needs: [ code_scan ]
     steps:
@@ -97,60 +128,26 @@ jobs:
         run: npm ci
 
       - name: 🚀 Build app
-        run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} eas build --non-interactive --platform android --local
+        run: eas build --non-interactive --platform android --local
         env:
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildDev
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Android Dev APK
-          path: BuildDev/*.apk
-
-  app_build_prod:
-    runs-on: ubuntu-latest
-    needs: [ code_scan ]
-    if: ${{ github.ref == 'refs/heads/main' }}
-    steps:
-      - name: 🏗 Setup repo
-        uses: actions/checkout@v3
-
-      - name: 🏗 Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: 🏗 Setup Expo and EAS
-        uses: expo/expo-github-action@v7
-        with:
-          expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: 📦 Install dependencies
-        run: npm ci
-
-      - name: 🚀 Build app
-        run: USERGAMESTATISTICSBFFURL=${{ secrets.PROD_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.PROD_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.PROD_DOMAIN }} CLIENT_ID=${{ secrets.PROD_CLIENT_ID }} AUDIENCE=${{ secrets.PROD_AUDIENCE }} SCOPE=${{ secrets.PROD_SCOPE }} eas build --non-interactive --platform android --local
-        env:
-          EAS_LOCAL_BUILD_ARTIFACTS_DIR: BuildProd
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Android Prod APK
-          path: BuildProd/*.apk
+          name: Android APK
+          path: Build/*.apk
 
   deploy_app_dev:
     name: Deploy Dev app to Itch.io
-    needs: [ app_build_dev ]
+    needs: [ app_build_android, website_test_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download APK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Android Dev APK
+          name: Android APK
 
       - name: Install Butler
         run: |
@@ -166,14 +163,14 @@ jobs:
 
   deploy_app_prod:
     name: Deploy Prod app to Itch.io
-    needs: [ app_build_prod ]
+    needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download APK Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Android Prod APK
+          name: Android APK
 
       - name: Install Butler
         run: |
@@ -189,7 +186,7 @@ jobs:
 
   deploy_website_dev:
     name: Deploy Dev Website
-    needs: [ app_build_dev ]
+    needs: [ app_build_android, website_test_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
@@ -202,7 +199,7 @@ jobs:
 
   deploy_website_prod:
     name: Deploy Prod Website
-    needs: [ app_build_prod ]
+    needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:

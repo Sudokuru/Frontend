@@ -1,4 +1,12 @@
-import { getKeyString } from "../../../Functions/Auth0/token";
+import { getKeyString } from "../../../Functions/AsyncStorage/AsyncStorage";
+import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
+import {
+  Drills,
+  drillOfflineMode,
+  drillOnlineMode,
+  getDrillMode,
+} from "../../../Functions/Api/Drills";
+import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
   getDrillSolutionCells,
@@ -6,7 +14,6 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
-import { Puzzles, Drills } from "sudokuru";
 
 export async function generateGame(url: any, props: any) {
   let token: string = "";
@@ -20,28 +27,25 @@ export async function generateGame(url: any, props: any) {
   let gameData = null;
 
   if (props.gameType == "StartGame") {
-    gameData = await Puzzles.startGame(
-      url,
-      props.difficulty,
-      props.strategies,
-      token
-    ).then((game) => {
-      // If game object is not returned, you get redirected to Main Page
-      if (game == null) {
-        //navigation.navigate("Home");
-        return;
+    gameData = await Puzzles.startGame(props.difficulty, props.strategies).then(
+      (game: puzzle[]) => {
+        // If game object is not returned, you get redirected to Main Page
+        if (game == null) {
+          //navigation.navigate("Home");
+          return;
+        }
+        let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
+        return {
+          board,
+          history: List.of(board),
+          historyOffSet: 0,
+          solution: game[0].puzzleSolution,
+          activeGame: game,
+        };
       }
-      let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-      return {
-        board,
-        history: List.of(board),
-        historyOffSet: 0,
-        solution: game[0].puzzleSolution,
-        activeGame: game,
-      };
-    });
+    );
   } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame(url, token).then((game) => {
+    gameData = await Puzzles.getGame(url, token).then((game: activeGame[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
@@ -67,16 +71,9 @@ export async function generateGame(url: any, props: any) {
       };
     });
   } else if (props.gameType == "StartDrill") {
-    let token: string = "";
-    await getKeyString("access_token").then((result) => {
-      token = result ? result : "";
-    });
-
     let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(
-      url,
-      props.strategies,
-      token
-    ).then((game) => {
+      props.strategies.toString()
+    ).then((game: drill) => {
       // null check to verify that game is loaded in.
       if (game == null) {
         //navigation.navigate("Home");
