@@ -93,13 +93,13 @@ jobs:
           wait-on: 'http://localhost:19000/'
 
       - uses: actions/upload-artifact@v3
-        if: failure()
+        if: always()
         with:
           name: cypress-screenshots
           path: ./cypress/screenshots
 
       - uses: actions/upload-artifact@v3
-        if: failure()
+        if: always()
         with:
           name: cypress-videos
           path: ./cypress/videos
