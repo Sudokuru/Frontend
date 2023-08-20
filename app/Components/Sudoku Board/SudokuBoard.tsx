@@ -114,14 +114,8 @@ export async function saveGame(activeGame) {
   });
 }
 
-export async function finishGame(activeGame, showResults) {
-  let token = null;
-
-  await getKeyString("access_token").then((result) => {
-    token = result;
-  });
-
-  Puzzles.finishGame(url, activeGame.puzzle, token).then((res: gameResults) => {
+export async function finishGame(showResults) {
+  Puzzles.finishGame().then((res: gameResults) => {
     if (res) {
       showResults(
         res.score,
@@ -416,7 +410,11 @@ const SudokuBoard = (props: any) => {
 
     // Increment global hint value by one
     if (props.gameType != "StartDrill" && newHintMode) {
-      activeGame[0].numHintsUsed++;
+      if (activeGame[0].numHintsUsed == null) {
+        activeGame[0].numHintsUsed = 1;
+      } else {
+        activeGame[0].numHintsUsed++;
+      }
     }
 
     if (!newHintMode) {
@@ -768,7 +766,11 @@ const SudokuBoard = (props: any) => {
         props.gameType != "StartDrill" &&
         !checkSolution(activeGame[0].puzzleSolution, x, y, number)
       ) {
-        activeGame[0].numWrongCellsPlayed++;
+        if (activeGame[0].numWrongCellsPlayed === null) {
+          activeGame[0].numWrongCellsPlayed = 1;
+        } else {
+          activeGame[0].numWrongCellsPlayed++;
+        }
       }
     }
     updateBoard(newBoard);

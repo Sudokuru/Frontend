@@ -2,7 +2,11 @@ import { sudokuStrategyArray } from "sudokuru";
 import { gameResults, puzzle } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
-import { getKeyJSON, storeData } from "../AsyncStorage/AsyncStorage";
+import {
+  getKeyJSON,
+  removeData,
+  storeData,
+} from "../AsyncStorage/AsyncStorage";
 
 const START_GAME: string = "api/v1/newGame?closestDifficulty=";
 const GET_GAME: string = "api/v1/activeGames";
@@ -231,38 +235,45 @@ export class Puzzles {
   }
 
   /**
-   * Given an user auth token deletes the users active game and returns if successful
-   * @param url - server url e.g. http://localhost:3100/
-   * @param puzzle activeGame puzzle string
-   * @param token - authentication token
-   * @returns promise of puzzle JSON object
+   * Given deletes the users active game and returns game results/statistics
+   * @returns promise of gameResults JSON object
    */
-  public static async finishGame(
-    url: string,
-    puzzle: string,
-    token: string
-  ): Promise<gameResults> {
-    const res: Response = await fetch(
-      url + FINISH_GAME + JSON.stringify(puzzle),
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
+  public static async finishGame(): Promise<gameResults> {
+    // retrieve the active game
+    let activeGame: activeGame[] = await getKeyJSON("active_game");
+    // remove the game from storage
+    await removeData("active_game");
+
+    // retrieve statistics from the game
+    let numWrongCellsPlayed = activeGame[0].numWrongCellsPlayed
+      ? activeGame[0].numWrongCellsPlayed
+      : 0;
+    let finalTime = activeGame[0].currentTime;
+    let difficulty = activeGame[0].difficulty;
+    let numHintsUsed = activeGame[0].numHintsUsed
+      ? activeGame[0].numHintsUsed
+      : 0;
+
+    // calculate score
+    let difficultyScore: number = (difficulty / 1000) * 30;
+    let hintAndIncorrectCellsScore: number =
+      numWrongCellsPlayed + numHintsUsed > 40
+        ? 0
+        : 40 - numWrongCellsPlayed - numHintsUsed;
+    let timeScore: number = finalTime / 60 > 30 ? 0 : 30 - finalTime / 60;
+    let score: number = Math.round(
+      difficultyScore + hintAndIncorrectCellsScore + timeScore
     );
 
-    if (res.status === SUCCESS) {
-      return await res.json();
-    } else if (res.status === NOT_FOUND) {
-      return JSON.parse("{}");
-    } else {
-      console.log(
-        "Error: " + FINISH_GAME + " DELETE request has status " + res.status
-      );
-      return JSON.parse("{}");
-    }
+    console.log(numHintsUsed, numWrongCellsPlayed, score);
+    // return results
+    return {
+      score: score,
+      solveTime: finalTime,
+      numHintsUsed: numHintsUsed,
+      numWrongCellsPlayed: numWrongCellsPlayed,
+      difficulty: difficulty,
+    };
   }
 
   /**
