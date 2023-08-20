@@ -5,3 +5,4 @@ export const VALUE_SELECTED_COLOR = "#C8DCC4";
 export const SELECTED_COLOR = "#9CC4EC";
 export const REMOVE_NOTE_TEXT_COLOR = "#FF0000";
 export const PLACE_NOTE_TEXT_COLOR = "#F2CA7E";
+export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
