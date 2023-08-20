@@ -1,3 +1,10 @@
+import {
+  NOT_HIGHLIGHTED_COLOR_RGB,
+  PEER_SELECTED_COLOR_RGB,
+  SELECTED_COLOR_RGB,
+  IDENTICAL_VALUE_COLOR,
+} from "../../app/Styling/HighlightColors";
+
 describe("Sudoku play component functions", () => {
   // Before tests insert learned lessons in localstorage
   beforeEach(() => {
@@ -33,14 +40,14 @@ describe("Sudoku play component functions", () => {
               cy.get("[data-testid=cellr" + i + "c" + j + "]").should(
                 "have.css",
                 "background-color",
-                "rgb(156, 196, 236)"
+                SELECTED_COLOR_RGB
               );
               // validate background color of surrounding cells
             } else if ((j < 3 && i < 3) || j === 0 || i === 0) {
               cy.get("[data-testid=cellr" + i + "c" + j + "]").should(
                 "have.css",
                 "background-color",
-                "rgb(197, 221, 244)"
+                PEER_SELECTED_COLOR_RGB
               );
               // validate background of remaining cells
             } else {
@@ -55,13 +62,13 @@ describe("Sudoku play component functions", () => {
                     cy.get("[data-testid=cellr" + i + "c" + j + "]").should(
                       "have.css",
                       "background-color",
-                      "rgb(200, 220, 196)"
+                      IDENTICAL_VALUE_COLOR
                     );
                   } else {
                     cy.get("[data-testid=cellr" + i + "c" + j + "]").should(
                       "have.css",
                       "background-color",
-                      "rgb(255, 255, 255)"
+                      NOT_HIGHLIGHTED_COLOR_RGB
                     );
                   }
                 });
