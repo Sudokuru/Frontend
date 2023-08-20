@@ -9,19 +9,21 @@ export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
+        b: parseInt(result[3], 16),
+      }
+    : null;
 }
-function RGB(hex: string):string {
-    const rgb = hexToRGB(hex);
-    if (rgb === null) {
-        throw new Error(`Invalid hex color: ${hex}`);
-    }
-    return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+function RGB(hex: string): string {
+  const rgb = hexToRGB(hex);
+  if (rgb === null) {
+    throw new Error(`Invalid hex color: ${hex}`);
+  }
+  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
 export const NOT_SELECTED_CONFLICT_COLOR_RGB = RGB(NOT_SELECTED_CONFLICT_COLOR);
