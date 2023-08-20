@@ -5,7 +5,7 @@ import { PreferencesContext } from "./app/Contexts/PreferencesContext";
 import { Provider as PaperProvider } from "react-native-paper";
 import { createStackNavigator } from "@react-navigation/stack";
 // pages
-import SettingsPage from "./app/Pages/SettingsPage";
+import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
@@ -231,7 +231,7 @@ export default function App() {
           >
             <Stack.Screen name="Landing" component={LandingPage} />
             <Stack.Screen name="Home" component={HomeDrawer} />
-            <Stack.Screen name="Profile" component={SettingsPage} />
+            <Stack.Screen name="Profile" component={ProfilePage} />
             <Stack.Screen name="Statistics" component={StatisticsPage} />
             <Stack.Screen name="Sudoku" component={SudokuPage} />
             <Stack.Screen name="Lesson" component={Lesson} />
