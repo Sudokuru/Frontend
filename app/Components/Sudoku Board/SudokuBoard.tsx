@@ -155,7 +155,7 @@ const PauseButton = ({ handlePause, isPaused }) => {
   const theme = useTheme();
 
   return (
-    <Pressable onPress={handlePause}>
+    <Pressable testID="PauseButton" onPress={handlePause}>
       {isPaused ? (
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
