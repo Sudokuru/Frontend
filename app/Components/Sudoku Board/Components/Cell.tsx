@@ -178,6 +178,22 @@ const Cell = (props: any) => {
     }
   };
 
+  const getCellContents = () => {
+    var contents = "";
+    if (notes) {
+      contents += "notes:";
+      for (let i = 1; i <= 9; i++) {
+        if (notes.has(i)) {
+          contents += i.toString();
+        }
+      }
+    } else if (value) {
+      contents += "value:";
+      contents += value.toString();
+    }
+    return contents;
+  };
+
   return (
     // Sudoku Cells
     <Pressable
@@ -186,7 +202,7 @@ const Cell = (props: any) => {
       style={{ outline: "none" }}
     >
       <View
-        testID={"cellr" + y + "c" + x}
+        testID={"cellr" + y + "c" + x + getCellContents()}
         style={[
           styles(cellSize).cellView,
           x % 3 === 0 && styles(cellSize).hardLineThicknessLeftWidth,
