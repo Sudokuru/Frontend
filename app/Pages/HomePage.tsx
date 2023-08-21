@@ -9,7 +9,6 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import DifficultySlider from "../Components/Home/DifficultySlider";
 import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
-import { USERACTIVEGAMESBFFURL, USERGAMESTATISTICSBFFURL } from "@env";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -79,14 +78,7 @@ const HomePage = () => {
       }
 
       // This determines if user has active game and displays resume button conditionally.
-      async function grabCurrentGame(url: string) {
-        let token: string = "";
-        await getKeyString("access_token").then((result) => {
-          if (result) {
-            token = result;
-          }
-        });
-
+      async function grabCurrentGame() {
         await Puzzles.getGame().then((game: any) => {
           if (game !== null && game[0].moves.length > 0) {
             showResumeButton();
@@ -95,8 +87,8 @@ const HomePage = () => {
           }
         });
       }
-      grabCurrentGame(USERACTIVEGAMESBFFURL);
-    }, [learnedLessons])
+      grabCurrentGame();
+    }, [learnedLessons]),
   );
 
   useFocusEffect(
@@ -130,7 +122,7 @@ const HomePage = () => {
         });
       }
       getUserLearnedLessons();
-    }, [learnedLessons])
+    }, [learnedLessons]),
   );
 
   // returns if user can play game or do drills

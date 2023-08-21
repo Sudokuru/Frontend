@@ -1,11 +1,5 @@
-import { getKeyString } from "../../../Functions/AsyncStorage/AsyncStorage";
 import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
-import {
-  Drills,
-  drillOfflineMode,
-  drillOnlineMode,
-  getDrillMode,
-} from "../../../Functions/Api/Drills";
+import { Drills } from "../../../Functions/Api/Drills";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
@@ -15,15 +9,7 @@ import {
 } from "./BoardFunctions";
 import { List } from "immutable";
 
-export async function generateGame(url: any, props: any) {
-  let token: string = "";
-
-  await getKeyString("access_token").then((result) => {
-    if (result) {
-      token = result;
-    }
-  });
-
+export async function generateGame(props: any) {
   let gameData = null;
 
   if (props.gameType == "StartGame") {
@@ -42,10 +28,10 @@ export async function generateGame(url: any, props: any) {
           solution: game[0].puzzleSolution,
           activeGame: game,
         };
-      }
+      },
     );
   } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame(url, token).then((game: activeGame[]) => {
+    gameData = await Puzzles.getGame().then((game: activeGame[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
@@ -53,14 +39,14 @@ export async function generateGame(url: any, props: any) {
       }
       let board = makeBoard(
         strPuzzleToArray(
-          game[0].moves[game[0].moves.length - 1].puzzleCurrentState
+          game[0].moves[game[0].moves.length - 1].puzzleCurrentState,
         ),
-        game[0].puzzle
+        game[0].puzzle,
       );
       board = parseApiAndAddNotes(
         board,
         game[0].moves[game[0].moves.length - 1].puzzleCurrentNotesState,
-        false
+        false,
       );
       return {
         board,
@@ -72,7 +58,7 @@ export async function generateGame(url: any, props: any) {
     });
   } else if (props.gameType == "StartDrill") {
     let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(
-      props.strategies.toString()
+      props.strategies.toString(),
     ).then((game: drill) => {
       // null check to verify that game is loaded in.
       if (game == null) {
@@ -81,17 +67,17 @@ export async function generateGame(url: any, props: any) {
       }
       let board = makeBoard(
         strPuzzleToArray(game.puzzleCurrentState),
-        game.puzzleCurrentState
+        game.puzzleCurrentState,
       );
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       let originalBoard = makeBoard(
         strPuzzleToArray(game.puzzleCurrentState),
-        game.puzzleCurrentState
+        game.puzzleCurrentState,
       );
       originalBoard = parseApiAndAddNotes(
         originalBoard,
         game.puzzleCurrentNotesState,
-        true
+        true,
       );
       let puzzleSolution = game.puzzleSolution;
       return { board, originalBoard, puzzleSolution };
@@ -100,7 +86,7 @@ export async function generateGame(url: any, props: any) {
     let drillSolutionCells = getDrillSolutionCells(
       board,
       puzzleSolution,
-      props.strategies
+      props.strategies,
     );
 
     return {

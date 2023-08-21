@@ -21,8 +21,6 @@ import {
 } from "./sudoku";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { getKeyString } from "../../Functions/AsyncStorage/AsyncStorage";
-import { USERACTIVEGAMESBFFURL } from "@env";
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
@@ -46,9 +44,6 @@ import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
-
-// startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
-let url = USERACTIVEGAMESBFFURL;
 
 let drillMode = false;
 
@@ -125,7 +120,7 @@ export async function finishGame(showResults) {
         res.solveTime,
         res.numHintsUsed,
         res.numWrongCellsPlayed,
-        res.difficulty
+        res.difficulty,
       );
     }
   });
@@ -208,7 +203,7 @@ const HeaderRow = (props) => {
         clearInterval(interval);
       }
       return () => clearInterval(interval);
-    }, [isPaused])
+    }, [isPaused]),
   );
 
   const handlePause = () => {
@@ -265,7 +260,7 @@ const SudokuBoard = (props: any) => {
               activeGame[0].puzzleSolution,
               i,
               j,
-              board.get("puzzle").getIn([i, j]).get("value")
+              board.get("puzzle").getIn([i, j]).get("value"),
             )
           ) {
             toggleHintMode();
@@ -274,7 +269,7 @@ const SudokuBoard = (props: any) => {
         }
       }
       // previous board was filled, so now get new board
-      generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
+      generateGame(props).then((result) => {
         setBoard(result.board);
         setHistory(result.history);
         setHistoryOffSet(result.historyOffSet);
@@ -294,7 +289,7 @@ const SudokuBoard = (props: any) => {
   };
 
   useEffect(() => {
-    generateGame(USERACTIVEGAMESBFFURL, props).then((result) => {
+    generateGame(props).then((result) => {
       setBoard(result.board);
       setHistory(result.history);
       setHistoryOffSet(result.historyOffSet);
@@ -335,8 +330,8 @@ const SudokuBoard = (props: any) => {
       getNumberOfGroupsAssignedForNumber(number, squares),
       Math.min(
         getNumberOfGroupsAssignedForNumber(number, rows),
-        getNumberOfGroupsAssignedForNumber(number, columns)
-      )
+        getNumberOfGroupsAssignedForNumber(number, columns),
+      ),
     );
   };
 
@@ -474,7 +469,7 @@ const SudokuBoard = (props: any) => {
           newBoard = addEveryNote(
             removals[i].position[0],
             removals[i].position[1],
-            newBoard
+            newBoard,
           );
 
         // two steps, two objects
@@ -878,7 +873,7 @@ const SudokuBoard = (props: any) => {
             y,
             notesToRemove,
             currentStep,
-            newBoard
+            newBoard,
           );
         }
       }
@@ -911,7 +906,7 @@ const SudokuBoard = (props: any) => {
             y,
             notesToRemove,
             currentStep,
-            newBoard
+            newBoard,
           );
         }
       }
