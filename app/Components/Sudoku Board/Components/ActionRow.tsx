@@ -61,6 +61,7 @@ const ActionRow = (props: any) => {
       </Pressable>
       {/* Hint */}
       <Pressable
+        testID={"hintButton"}
         onPress={
           !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null
         }
