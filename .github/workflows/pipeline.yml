@@ -19,7 +19,6 @@ on:
     paths-ignore:
       - ".github/**"
       - "docs/**"
-      - "cypress/**"
       - "README.md"
       - "License.md"
       - ".gitignore"
