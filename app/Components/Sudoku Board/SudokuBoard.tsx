@@ -1076,7 +1076,11 @@ const SudokuBoard = (props: any) => {
   let inHintMode = board ? board.get("inHintMode") : false;
 
   return (
-    <View onKeyDown={handleKeyDown} styles={{ borderWidth: 1 }}>
+    <View
+      testID={"sudokuBoard"}
+      onKeyDown={handleKeyDown}
+      styles={{ borderWidth: 1 }}
+    >
       {board && !landingMode && !drillMode && renderTopBar()}
       {board && renderPuzzle()}
       {board && (

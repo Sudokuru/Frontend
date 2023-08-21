@@ -65,7 +65,7 @@ const HintSection = (props: any) => {
         </View>
       </View>
       {isRightArrowRendered(onFinalStep) ? (
-        <Pressable onPress={rightArrowClicked}>
+        <Pressable testID={"rightArrow"} onPress={rightArrowClicked}>
           <AntDesign
             color={theme.colors.onBackground}
             name="rightcircleo"
@@ -73,7 +73,7 @@ const HintSection = (props: any) => {
           />
         </Pressable>
       ) : isCheckMarkRendered(onFinalStep) ? (
-        <Pressable onPress={checkMarkClicked}>
+        <Pressable testID={"checkMark"} onPress={checkMarkClicked}>
           <AntDesign
             color={theme.colors.onBackground}
             name="checkcircle"
