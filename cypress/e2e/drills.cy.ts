@@ -54,7 +54,13 @@ describe("naked single drills", () => {
               note +
               "]"
           )
-          .should("exist");
+          .should("exist")
+          .then(() => {
+            cy.contains("Submit").click();
+          })
+          .then(() => {
+            cy.contains("Learn new strategies").should("exist");
+          });
       });
   });
 });
