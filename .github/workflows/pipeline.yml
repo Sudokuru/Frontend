@@ -1,20 +1,30 @@
 name: "Pipeline"
 
 on:
+  workflow_dispatch:
   push:
-    # It is easier to list paths to exclude rather than paths to include
     paths-ignore:
+      - ".github/**"
       - "docs/**"
+      - "cypress/**"
       - "README.md"
-      - "license.md"
+      - "License.md"
+      - ".gitignore"
+      - ".prettierignore"
+      - ".prettierrc.json"
+      - "cypress.config.ts"
     branches:
       - main
   pull_request:
-    # It is easier to list paths to exclude rather than paths to include
     paths-ignore:
+      - ".github/**"
       - "docs/**"
       - "README.md"
-      - "license.md"
+      - "License.md"
+      - ".gitignore"
+      - ".prettierignore"
+      - ".prettierrc.json"
+      - "cypress.config.ts"
     branches:
       - main
 

@@ -4,7 +4,6 @@ import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
-import { USERGAMESTATISTICSBFFURL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
