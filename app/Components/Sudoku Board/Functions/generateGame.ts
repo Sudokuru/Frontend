@@ -1,11 +1,5 @@
-import { getKeyString } from "../../../Functions/AsyncStorage/AsyncStorage";
 import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
-import {
-  Drills,
-  drillOfflineMode,
-  drillOnlineMode,
-  getDrillMode,
-} from "../../../Functions/Api/Drills";
+import { Drills } from "../../../Functions/Api/Drills";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { makeBoard } from "../sudoku";
 import {
@@ -15,15 +9,7 @@ import {
 } from "./BoardFunctions";
 import { List } from "immutable";
 
-export async function generateGame(url: any, props: any) {
-  let token: string = "";
-
-  await getKeyString("access_token").then((result) => {
-    if (result) {
-      token = result;
-    }
-  });
-
+export async function generateGame(props: any) {
   let gameData = null;
 
   if (props.gameType == "StartGame") {
@@ -45,7 +31,7 @@ export async function generateGame(url: any, props: any) {
       }
     );
   } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame(url, token).then((game: activeGame[]) => {
+    gameData = await Puzzles.getGame().then((game: activeGame[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");
