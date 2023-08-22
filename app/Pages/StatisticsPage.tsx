@@ -51,7 +51,7 @@ const StatisticsPage = () => {
   useFocusEffect(
     React.useCallback(() => {
       getUserStatistics();
-    }, []),
+    }, [])
   );
 
   if (isLoading) {

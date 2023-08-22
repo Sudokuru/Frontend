@@ -88,7 +88,7 @@ const HomePage = () => {
         });
       }
       grabCurrentGame();
-    }, [learnedLessons]),
+    }, [learnedLessons])
   );
 
   useFocusEffect(
@@ -122,7 +122,7 @@ const HomePage = () => {
         });
       }
       getUserLearnedLessons();
-    }, [learnedLessons]),
+    }, [learnedLessons])
   );
 
   // returns if user can play game or do drills

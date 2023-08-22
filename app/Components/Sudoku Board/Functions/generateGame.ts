@@ -28,7 +28,7 @@ export async function generateGame(props: any) {
           solution: game[0].puzzleSolution,
           activeGame: game,
         };
-      },
+      }
     );
   } else if (props.gameType == "ResumeGame") {
     gameData = await Puzzles.getGame().then((game: activeGame[]) => {
@@ -39,14 +39,14 @@ export async function generateGame(props: any) {
       }
       let board = makeBoard(
         strPuzzleToArray(
-          game[0].moves[game[0].moves.length - 1].puzzleCurrentState,
+          game[0].moves[game[0].moves.length - 1].puzzleCurrentState
         ),
-        game[0].puzzle,
+        game[0].puzzle
       );
       board = parseApiAndAddNotes(
         board,
         game[0].moves[game[0].moves.length - 1].puzzleCurrentNotesState,
-        false,
+        false
       );
       return {
         board,
@@ -58,7 +58,7 @@ export async function generateGame(props: any) {
     });
   } else if (props.gameType == "StartDrill") {
     let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(
-      props.strategies.toString(),
+      props.strategies.toString()
     ).then((game: drill) => {
       // null check to verify that game is loaded in.
       if (game == null) {
@@ -67,17 +67,17 @@ export async function generateGame(props: any) {
       }
       let board = makeBoard(
         strPuzzleToArray(game.puzzleCurrentState),
-        game.puzzleCurrentState,
+        game.puzzleCurrentState
       );
       board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
       let originalBoard = makeBoard(
         strPuzzleToArray(game.puzzleCurrentState),
-        game.puzzleCurrentState,
+        game.puzzleCurrentState
       );
       originalBoard = parseApiAndAddNotes(
         originalBoard,
         game.puzzleCurrentNotesState,
-        true,
+        true
       );
       let puzzleSolution = game.puzzleSolution;
       return { board, originalBoard, puzzleSolution };
@@ -86,7 +86,7 @@ export async function generateGame(props: any) {
     let drillSolutionCells = getDrillSolutionCells(
       board,
       puzzleSolution,
-      props.strategies,
+      props.strategies
     );
 
     return {

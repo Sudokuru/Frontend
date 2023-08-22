@@ -120,7 +120,7 @@ export async function finishGame(showResults) {
         res.solveTime,
         res.numHintsUsed,
         res.numWrongCellsPlayed,
-        res.difficulty,
+        res.difficulty
       );
     }
   });
@@ -203,7 +203,7 @@ const HeaderRow = (props) => {
         clearInterval(interval);
       }
       return () => clearInterval(interval);
-    }, [isPaused]),
+    }, [isPaused])
   );
 
   const handlePause = () => {
@@ -260,7 +260,7 @@ const SudokuBoard = (props: any) => {
               activeGame[0].puzzleSolution,
               i,
               j,
-              board.get("puzzle").getIn([i, j]).get("value"),
+              board.get("puzzle").getIn([i, j]).get("value")
             )
           ) {
             toggleHintMode();
@@ -330,8 +330,8 @@ const SudokuBoard = (props: any) => {
       getNumberOfGroupsAssignedForNumber(number, squares),
       Math.min(
         getNumberOfGroupsAssignedForNumber(number, rows),
-        getNumberOfGroupsAssignedForNumber(number, columns),
-      ),
+        getNumberOfGroupsAssignedForNumber(number, columns)
+      )
     );
   };
 
@@ -469,7 +469,7 @@ const SudokuBoard = (props: any) => {
           newBoard = addEveryNote(
             removals[i].position[0],
             removals[i].position[1],
-            newBoard,
+            newBoard
           );
 
         // two steps, two objects
@@ -873,7 +873,7 @@ const SudokuBoard = (props: any) => {
             y,
             notesToRemove,
             currentStep,
-            newBoard,
+            newBoard
           );
         }
       }
@@ -906,7 +906,7 @@ const SudokuBoard = (props: any) => {
             y,
             notesToRemove,
             currentStep,
-            newBoard,
+            newBoard
           );
         }
       }
