@@ -68,9 +68,7 @@ const LandingPage = () => {
         <Header></Header>
         <View style={{ flexDirection: "row" }}>
           <NavigationBar />
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <SudokuBoard gameType={"Demo"} strategies={strategies} />
-          </View>
+          <SudokuBoard gameType={"Demo"} strategies={strategies} />
           <View
             style={{
               flexGrow: 1,
