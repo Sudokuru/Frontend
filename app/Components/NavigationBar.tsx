@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Drawer } from "react-native-paper";
 
-const NavigationBar = () => {
+const NavigationBar = (props: any) => {
   const navigation: any = useNavigation();
 
   const [active, setActive] = React.useState("");
@@ -13,7 +13,7 @@ const NavigationBar = () => {
   const LEARN_LOGO = require("./learnLogo.png");
 
   return (
-    <Drawer.Section title="Some title">
+    <Drawer.Section showDivider={false}>
       <Drawer.Item
         icon={"home"}
         label="Home"
