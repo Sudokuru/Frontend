@@ -7,8 +7,8 @@ const NavigationButton = (props: any) => {
   const minWindowSize = getMinWindowDimensions();
   const theme = useTheme();
 
-  const WIDTH: number = minWindowSize / 2.5;
-  const HEIGHT: number = minWindowSize / 5;
+  const WIDTH_FACTOR: number = minWindowSize / 2.5;
+  const HEIGHT_FACTOR: number = minWindowSize / 5;
   const HOVER_SIZE_FACTOR: number = 1.1;
 
   return (
@@ -18,8 +18,10 @@ const NavigationButton = (props: any) => {
           <Surface
             elevation={5}
             style={{
-              width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
-              height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,
+              width: hovered ? WIDTH_FACTOR * HOVER_SIZE_FACTOR : WIDTH_FACTOR,
+              height: hovered
+                ? HEIGHT_FACTOR * HOVER_SIZE_FACTOR
+                : HEIGHT_FACTOR,
               borderColor: theme.colors.outline,
               borderWidth: 4,
             }}
