@@ -13,7 +13,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import NavigationBar from "../Components/NavigationBar";
+import NavigationSideBar from "../Components/NavigationBar";
 import { Surface, Text, useTheme } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
@@ -67,7 +67,7 @@ const LandingPage = () => {
       <SafeAreaView style={{ width: size.width, height: size.height }}>
         <Header></Header>
         <View style={{ flexDirection: "row" }}>
-          <NavigationBar />
+          <NavigationSideBar />
           <SudokuBoard gameType={"Demo"} strategies={strategies} />
           <View
             style={{
