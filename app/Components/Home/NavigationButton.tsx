@@ -6,6 +6,11 @@ import { getMinWindowDimensions } from "../../Functions/global/WindowDimensions"
 const NavigationButton = (props: any) => {
   const minWindowSize = getMinWindowDimensions();
   const theme = useTheme();
+
+  const WIDTH: number = minWindowSize / 2.5;
+  const HEIGHT: number = minWindowSize / 5;
+  const HOVER_SIZE_FACTOR: number = 1.1;
+
   return (
     <Pressable>
       {({ hovered }: any) => {
@@ -13,10 +18,8 @@ const NavigationButton = (props: any) => {
           <Surface
             elevation={5}
             style={{
-              width: hovered
-                ? (minWindowSize / 2.5) * 1.1
-                : minWindowSize / 2.5,
-              height: hovered ? (minWindowSize / 5) * 1.1 : minWindowSize / 5,
+              width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
+              height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,
               borderColor: theme.colors.outline,
               borderWidth: 4,
             }}
