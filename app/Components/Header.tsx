@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 interface header {
-  page: string;
+  page?: string;
 }
 
 const Header = (props: header) => {
