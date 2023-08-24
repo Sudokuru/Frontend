@@ -16,7 +16,7 @@ const HomeButton = () => {
     >
       <MaterialCommunityIcons
         name="home"
-        size={26}
+        size={24}
         color={theme.colors.onPrimaryContainer}
       />
     </Button>
