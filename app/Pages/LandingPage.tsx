@@ -65,7 +65,7 @@ const LandingPage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        <Header />
+        <Header page="Landing" />
         <View style={{ flexDirection: "row" }}>
           <NavigationSideBar />
           <SudokuBoard gameType={"Demo"} strategies={strategies} />
@@ -77,9 +77,18 @@ const LandingPage = () => {
               gap: minWindowSize / 20,
             }}
           >
-            <NavigationButton image={START_LESSONS_LOGO} />
-            <NavigationButton image={START_DRILLS_LOGO} />
-            <NavigationButton image={PLAY_SUDOKU_LOGO} />
+            <NavigationButton
+              image={START_LESSONS_LOGO}
+              navigationPage="LearnHome"
+            />
+            <NavigationButton
+              image={START_DRILLS_LOGO}
+              navigationPage="DrillHome"
+            />
+            <NavigationButton
+              image={PLAY_SUDOKU_LOGO}
+              navigationPage="PlayHome"
+            />
           </View>
         </View>
       </SafeAreaView>

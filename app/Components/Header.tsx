@@ -9,7 +9,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 const Header = (props: any) => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark } = React.useContext(PreferencesContext);
+  const { isThemeDark, updateCurrentPage } =
+    React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("./goldLogoText.png");
   const LIGHT_LOGO = require("./darkBlueLogoText.png");
@@ -25,10 +26,10 @@ const Header = (props: any) => {
     >
       {
         /*
-         * If we are on the Home page, Logo will not navigate to the Home page
-         * If we are on any other page, Logo wil navigate to the Home page
+         * If we are on the Landing page, Logo will not navigate to the Landing page
+         * If we are on any other page, Logo will navigate to the Landing page
          */
-        props.page == "Home" ? (
+        props.page == "Landing" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -38,7 +39,12 @@ const Header = (props: any) => {
             source={logoUrl}
           />
         ) : (
-          <Pressable onPress={() => navigation.navigate("Home")}>
+          <Pressable
+            onPress={() => {
+              updateCurrentPage("Landing");
+              navigation.navigate("Landing");
+            }}
+          >
             <Image
               style={{
                 resizeMode: "cover",

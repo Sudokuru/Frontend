@@ -2,17 +2,27 @@ import React from "react";
 import { Pressable, Image } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
 import { getMinWindowDimensions } from "../../Functions/global/WindowDimensions";
+import { useNavigation } from "@react-navigation/native";
+import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 const NavigationButton = (props: any) => {
   const minWindowSize = getMinWindowDimensions();
   const theme = useTheme();
+  const navigation: any = useNavigation();
+
+  const { updateCurrentPage } = React.useContext(PreferencesContext);
 
   const WIDTH_FACTOR: number = minWindowSize / 2.5;
   const HEIGHT_FACTOR: number = minWindowSize / 5;
   const HOVER_SIZE_FACTOR: number = 1.1;
 
   return (
-    <Pressable>
+    <Pressable
+      onPress={() => {
+        updateCurrentPage(props.navigationPage);
+        navigation.navigate(props.navigationPage);
+      }}
+    >
       {({ hovered }: any) => {
         return (
           <Surface
