@@ -5,7 +5,12 @@ import { getMinWindowDimensions } from "../../Functions/global/WindowDimensions"
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
-const NavigationButton = (props: any) => {
+interface navigationButton {
+  navigationPage: string;
+  image: NodeRequire;
+}
+
+const NavigationButton = (props: navigationButton) => {
   const minWindowSize = getMinWindowDimensions();
   const theme = useTheme();
   const navigation: any = useNavigation();
