@@ -22,27 +22,44 @@ import Lesson from "./app/Pages/Lesson";
 import DrillPage from "./app/Pages/DrillPage";
 import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
 import { Profile } from "./app/Functions/Api/Profile";
+import DrillHomePage from "./app/Pages/DrillHome";
 
 const drawerItemsMain = [
   {
     key: "Naked Sets",
     title: "Naked Sets",
     routes: [
-      { nav: "Home", routeName: "Naked Single", title: "Naked Single" },
-      { nav: "Home", routeName: "Naked Pair", title: "Naked Pair" },
-      { nav: "Home", routeName: "Naked Triplet", title: "Naked Triplet" },
-      { nav: "Home", routeName: "Naked Quadruplet", title: "Naked Quadruplet" },
+      { nav: "DrillDrawer", routeName: "Naked Single", title: "Naked Single" },
+      { nav: "DrillDrawer", routeName: "Naked Pair", title: "Naked Pair" },
+      {
+        nav: "DrillDrawer",
+        routeName: "Naked Triplet",
+        title: "Naked Triplet",
+      },
+      {
+        nav: "DrillDrawer",
+        routeName: "Naked Quadruplet",
+        title: "Naked Quadruplet",
+      },
     ],
   },
   {
     key: "Hidden Sets",
     title: "Hidden Sets",
     routes: [
-      { nav: "Home", routeName: "Hidden Single", title: "Hidden Single" },
-      { nav: "Home", routeName: "Hidden Pair", title: "Hidden Pair" },
-      { nav: "Home", routeName: "Hidden Triplet", title: "Hidden Triplet" },
       {
-        nav: "Home",
+        nav: "DrillDrawer",
+        routeName: "Hidden Single",
+        title: "Hidden Single",
+      },
+      { nav: "DrillDrawer", routeName: "Hidden Pair", title: "Hidden Pair" },
+      {
+        nav: "DrillDrawer",
+        routeName: "Hidden Triplet",
+        title: "Hidden Triplet",
+      },
+      {
+        nav: "DrillDrawer",
         routeName: "Hidden Quadruplet",
         title: "Hidden Quadruplet",
       },
@@ -52,18 +69,26 @@ const drawerItemsMain = [
     key: "Pointing Sets",
     title: "Pointing Sets",
     routes: [
-      { nav: "Home", routeName: "Pointing Pair", title: "Pointing Pair" },
-      { nav: "Home", routeName: "Pointing Triplet", title: "Pointing Triplet" },
+      {
+        nav: "DrillDrawer",
+        routeName: "Pointing Pair",
+        title: "Pointing Pair",
+      },
+      {
+        nav: "DrillDrawer",
+        routeName: "Pointing Triplet",
+        title: "Pointing Triplet",
+      },
     ],
   },
 ];
 
-function HomeDrawer() {
+function DrillDrawer() {
   const Drawer = createDrawerNavigator();
 
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="DrillDrawer"
       drawerContent={(props) => (
         <CustomDrawerContent drawerItems={drawerItemsMain} {...props} />
       )}
@@ -76,7 +101,7 @@ function HomeDrawer() {
         title: "Sudokuru",
       }}
     >
-      <Drawer.Screen name="Main Page" component={HomePage} />
+      <Drawer.Screen name="DrillDrawer" component={DrillHomePage} />
       <Drawer.Screen
         name="Naked Single"
         initialParams={{ params: ["NAKED_SINGLE"] }}
@@ -242,12 +267,12 @@ export default function App() {
             }}
           >
             <Stack.Screen name="Landing" component={LandingPage} />
-            <Stack.Screen name="Home" component={HomeDrawer} />
             <Stack.Screen name="Profile" component={ProfilePage} />
             <Stack.Screen name="Statistics" component={StatisticsPage} />
             <Stack.Screen name="Sudoku" component={SudokuPage} />
             <Stack.Screen name="Lesson" component={Lesson} />
             <Stack.Screen name="LearnHome" component={LearnHomePage} />
+            <Stack.Screen name="DrillDrawer" component={DrillDrawer} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

@@ -35,7 +35,7 @@ const NavigationSideBar = (props: any) => {
         active={isCurrentPage === "DrillHome"}
         onPress={() => {
           updateCurrentPage("DrillHome");
-          navigation.navigate("DrillHome");
+          navigation.navigate("DrillDrawer");
         }}
       />
       <Drawer.Item

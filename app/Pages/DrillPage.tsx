@@ -13,6 +13,8 @@ const DrillPage = (props: any) => {
 
   const navigation: any = useNavigation();
 
+  console.log("GREETINGS");
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>

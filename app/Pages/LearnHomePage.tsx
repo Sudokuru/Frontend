@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { View, Pressable, useWindowDimensions } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -22,16 +22,16 @@ const LearnHomePage = () => {
   const theme = useTheme();
 
   const { updateLearnedLessons, learnedLessons } =
-    React.useContext(PreferencesContext);
+    useContext(PreferencesContext);
 
-  const [areLessonsLoaded, setLessonsLoaded] = React.useState(false);
+  const [areLessonsLoaded, setLessonsLoaded] = useState(false);
 
-  const [learnHelpVisible, setLearnHelpVisible] = React.useState(false);
+  const [learnHelpVisible, setLearnHelpVisible] = useState(false);
   const showLearnHelp = () => setLearnHelpVisible(true);
   const hideLearnHelp = () => setLearnHelpVisible(false);
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       // This determines what lessons the user has learned and conditionally displays everything.
       async function getUserLearnedLessons() {
         await Statistics.getLearnedLessons().then((lessons: any) => {
