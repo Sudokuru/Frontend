@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Pressable, useWindowDimensions, Text } from "react-native";
-import { Button, useTheme, ActivityIndicator } from "react-native-paper";
+import { View, Pressable, useWindowDimensions } from "react-native";
+import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
