@@ -109,7 +109,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveUserLearnedLessons(learnedLessons);
     }
-    navigation.navigate("Home");
+    navigation.navigate("LearnHome");
   };
 
   const [count, setCount] = useState(0);
