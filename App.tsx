@@ -133,6 +133,7 @@ function HomeDrawer() {
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(true);
+  const [isCurrentPage, setCurrentPage] = React.useState("Landing");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [isHighlightIdenticalValues, setHighlightIdenticalValues] =
     React.useState(true);
@@ -157,6 +158,13 @@ export default function App() {
     Profile.setProfileValue("theme");
     return setIsThemeDark(!isThemeDark);
   }, [isThemeDark]);
+
+  const updateCurrentPage = React.useCallback(
+    (props: any) => {
+      return setCurrentPage(props);
+    },
+    [isCurrentPage]
+  );
 
   const updateLearnedLessons = React.useCallback(
     (props: any) => {
@@ -189,6 +197,8 @@ export default function App() {
     () => ({
       toggleTheme,
       isThemeDark,
+      updateCurrentPage,
+      isCurrentPage,
       updateLearnedLessons,
       learnedLessons,
       toggleHighlightIdenticalValues,
@@ -203,6 +213,8 @@ export default function App() {
     [
       toggleTheme,
       isThemeDark,
+      updateCurrentPage,
+      isCurrentPage,
       updateLearnedLessons,
       learnedLessons,
       toggleHighlightIdenticalValues,
