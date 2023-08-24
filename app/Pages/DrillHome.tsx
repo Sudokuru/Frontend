@@ -7,6 +7,7 @@ import Alert from "react-native-awesome-alerts";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import NavigationSideBar from "../Components/NavigationBar";
+import Header from "../Components/Header";
 
 const DrillHomePage = () => {
   const navigation: any = useNavigation();
@@ -27,6 +28,7 @@ const DrillHomePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
+        <Header />
         <View style={{ flexDirection: "row" }}>
           <NavigationSideBar />
           <View

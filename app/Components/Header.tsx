@@ -6,7 +6,11 @@ import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
-const Header = (props: any) => {
+interface header {
+  page: string;
+}
+
+const Header = (props: header) => {
   const navigation: any = useNavigation();
 
   const { isThemeDark, updateCurrentPage } =
@@ -65,14 +69,14 @@ const Header = (props: any) => {
           marginLeft: 10,
         }}
       >
-        {props.page == "Landing" ? (
+        {props.page == "No" ? (
           <></>
         ) : props.page == "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {props.page == "Landing" ? (
+        {props.page == "No" ? (
           <></>
         ) : props.page == "Profile" ? (
           <HomeButton />

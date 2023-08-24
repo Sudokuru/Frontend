@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Image } from "react-native";
+import { Pressable, Image, ImageURISource } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
 import { getMinWindowDimensions } from "../../Functions/global/WindowDimensions";
 import { useNavigation } from "@react-navigation/native";
@@ -7,7 +7,10 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 interface navigationButton {
   navigationPage: string;
-  image: NodeRequire;
+  image: ImageURISource;
+  widthFactor?: number;
+  heightFactor?: number;
+  hoverSizeFactor?: number;
 }
 
 const NavigationButton = (props: navigationButton) => {
@@ -17,9 +20,14 @@ const NavigationButton = (props: navigationButton) => {
 
   const { updateCurrentPage } = React.useContext(PreferencesContext);
 
-  const WIDTH_FACTOR: number = minWindowSize / 2.5;
-  const HEIGHT_FACTOR: number = minWindowSize / 5;
-  const HOVER_SIZE_FACTOR: number = 1.1;
+  const WIDTH_FACTOR: number = props.widthFactor ? props.widthFactor : 2.5;
+  const HEIGHT_FACTOR: number = props.heightFactor ? props.heightFactor : 5;
+  const HOVER_SIZE_FACTOR: number = props.hoverSizeFactor
+    ? props.hoverSizeFactor
+    : 1.1;
+
+  const WIDTH: number = minWindowSize / WIDTH_FACTOR;
+  const HEIGHT: number = minWindowSize / HEIGHT_FACTOR;
 
   return (
     <Pressable
@@ -33,10 +41,8 @@ const NavigationButton = (props: navigationButton) => {
           <Surface
             elevation={5}
             style={{
-              width: hovered ? WIDTH_FACTOR * HOVER_SIZE_FACTOR : WIDTH_FACTOR,
-              height: hovered
-                ? HEIGHT_FACTOR * HOVER_SIZE_FACTOR
-                : HEIGHT_FACTOR,
+              width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
+              height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,
               borderColor: theme.colors.outline,
               borderWidth: 4,
             }}
