@@ -22,23 +22,21 @@ const LessonButton = (props: any) => {
   );
 
   return (
-    <View>
-      <Button
-        onPress={() =>
-          navigation.navigate("Lesson", { params: props.navigation })
-        }
-        style={styles(reSize).statisticsTitle}
-        disabled={props.disabled}
-        buttonColor={props.backgroundColor}
-        dark={
-          props.backgroundColor == "grey" ||
-          (props.backgroundColor != "grey" && !isThemeDark)
-        }
-        mode="contained"
-      >
-        {buttonRenderedObject}
-      </Button>
-    </View>
+    <Button
+      onPress={() =>
+        navigation.navigate("Lesson", { params: props.navigation })
+      }
+      style={styles(reSize).statisticsTitle}
+      disabled={props.disabled}
+      buttonColor={props.backgroundColor}
+      dark={
+        props.backgroundColor == "grey" ||
+        (props.backgroundColor != "grey" && !isThemeDark)
+      }
+      mode="contained"
+    >
+      {buttonRenderedObject}
+    </Button>
   );
 };
 

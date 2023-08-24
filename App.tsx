@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // pages
 import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
+import LearnHomePage from "./app/Pages/LearnHomePage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
 import HomePage from "./app/Pages/HomePage";
@@ -234,6 +235,7 @@ export default function App() {
             <Stack.Screen name="Statistics" component={StatisticsPage} />
             <Stack.Screen name="Sudoku" component={SudokuPage} />
             <Stack.Screen name="Lesson" component={Lesson} />
+            <Stack.Screen name="LearnHome" component={LearnHomePage} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

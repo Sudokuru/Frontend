@@ -65,7 +65,7 @@ const LandingPage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        <Header></Header>
+        <Header />
         <View style={{ flexDirection: "row" }}>
           <NavigationSideBar />
           <SudokuBoard gameType={"Demo"} strategies={strategies} />

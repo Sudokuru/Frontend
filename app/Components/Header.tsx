@@ -17,13 +17,18 @@ const Header = (props: any) => {
   let logoUrl = isThemeDark ? DARK_LOGO : LIGHT_LOGO;
 
   return (
-    <View style={styles.toggleIcons}>
+    <View
+      style={{
+        flexDirection: "row",
+        margin: 5,
+      }}
+    >
       {
         /*
-         * If we are on the landing page, Logo will not navigate to the Home page
+         * If we are on the Home page, Logo will not navigate to the Home page
          * If we are on any other page, Logo wil navigate to the Home page
          */
-        props.page == "Landing" ? (
+        props.page == "Home" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -33,7 +38,7 @@ const Header = (props: any) => {
             source={logoUrl}
           />
         ) : (
-          <Pressable onPress={() => navigation.navigate("Main Page")}>
+          <Pressable onPress={() => navigation.navigate("Home")}>
             <Image
               style={{
                 resizeMode: "cover",
@@ -45,7 +50,15 @@ const Header = (props: any) => {
           </Pressable>
         )
       }
-      <View style={styles.profileButtons}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          marginRight: 15,
+          marginLeft: 10,
+        }}
+      >
         {props.page == "Landing" ? (
           <></>
         ) : props.page == "Statistics" ? (
@@ -64,19 +77,5 @@ const Header = (props: any) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  toggleIcons: {
-    flexDirection: "row",
-    margin: 5,
-  },
-  profileButtons: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    marginLeft: 10,
-  },
-});
 
 export default Header;
