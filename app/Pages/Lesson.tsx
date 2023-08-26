@@ -15,8 +15,6 @@ import Alert from "react-native-awesome-alerts";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { getKeyString } from "../Functions/AsyncStorage/AsyncStorage";
-import { USERGAMESTATISTICSBFFURL } from "@env";
 import {
   Lessons,
   getLessonMode,
@@ -109,7 +107,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveUserLearnedLessons(learnedLessons);
     }
-    navigation.navigate("Home");
+    navigation.navigate("LearnHome");
   };
 
   const [count, setCount] = useState(0);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
@@ -8,15 +8,24 @@ import Alert from "react-native-awesome-alerts";
 import { useTheme } from "react-native-paper";
 import EndGameModal from "../Components/Sudoku Board/EndGameModal";
 import { rgba } from "polished";
-import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { convertLessonsToStrategies } from "../Functions/ContextParsing/learnedLessons";
+import { sudokuStrategyArray } from "sudokuru";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
-const SudokuPage = ({ route, navigation }: any) => {
-  const { learnedLessons } = React.useContext(PreferencesContext);
-  const cloneLearnedLessons = [...learnedLessons];
+let strategies: sudokuStrategyArray = [
+  "AMEND_NOTES",
+  "SIMPLIFY_NOTES",
+  "NAKED_SINGLE",
+  "NAKED_PAIR",
+  "NAKED_TRIPLET",
+  "NAKED_QUADRUPLET",
+  "HIDDEN_SINGLE",
+  "HIDDEN_PAIR",
+  "HIDDEN_TRIPLET",
+  "HIDDEN_QUADRUPLET",
+];
 
+const SudokuPage = ({ route, navigation }: any) => {
   const { gameType } = route.params;
   const { difficulty } = route.params;
 
@@ -47,7 +56,7 @@ const SudokuPage = ({ route, navigation }: any) => {
   };
 
   // we show the game results if time does not equal zero and on score change
-  useEffect(() => {
+  React.useEffect(() => {
     if (gameResultTime != 0) {
       setGameResultsVisible(true);
     }
@@ -63,7 +72,7 @@ const SudokuPage = ({ route, navigation }: any) => {
             <SudokuBoard
               gameType={gameType}
               difficulty={difficulty}
-              strategies={convertLessonsToStrategies(cloneLearnedLessons)}
+              strategies={strategies}
               navigation={navigation}
               showGameResults={showGameResults}
             />

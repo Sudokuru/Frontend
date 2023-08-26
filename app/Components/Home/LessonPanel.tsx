@@ -44,7 +44,7 @@ const LessonPanel = () => {
     // dynamically render in lesson buttons based on criteria
     let lessonButtonArray = [];
     let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
-    let NUM_LESSONS_PER_ROW = 4;
+    let NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++) {

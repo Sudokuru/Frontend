@@ -6,10 +6,15 @@ import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
-const Header = (props: any) => {
+interface header {
+  page?: string;
+}
+
+const Header = (props: header) => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark } = React.useContext(PreferencesContext);
+  const { isThemeDark, updateCurrentPage } =
+    React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("./goldLogoText.png");
   const LIGHT_LOGO = require("./darkBlueLogoText.png");
@@ -17,11 +22,16 @@ const Header = (props: any) => {
   let logoUrl = isThemeDark ? DARK_LOGO : LIGHT_LOGO;
 
   return (
-    <View style={styles.toggleIcons}>
+    <View
+      style={{
+        flexDirection: "row",
+        margin: 5,
+      }}
+    >
       {
         /*
-         * If we are on the landing page, Logo will not navigate to the Home page
-         * If we are on any other page, Logo wil navigate to the Home page
+         * If we are on the Landing page, Logo will not navigate to the Landing page
+         * If we are on any other page, Logo will navigate to the Landing page
          */
         props.page == "Landing" ? (
           <Image
@@ -33,7 +43,12 @@ const Header = (props: any) => {
             source={logoUrl}
           />
         ) : (
-          <Pressable onPress={() => navigation.navigate("Main Page")}>
+          <Pressable
+            onPress={() => {
+              updateCurrentPage("Landing");
+              navigation.navigate("Landing");
+            }}
+          >
             <Image
               style={{
                 resizeMode: "cover",
@@ -45,15 +60,23 @@ const Header = (props: any) => {
           </Pressable>
         )
       }
-      <View style={styles.profileButtons}>
-        {props.page == "Landing" ? (
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          marginRight: 15,
+          marginLeft: 10,
+        }}
+      >
+        {props.page == "No" ? (
           <></>
         ) : props.page == "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {props.page == "Landing" ? (
+        {props.page == "No" ? (
           <></>
         ) : props.page == "Profile" ? (
           <HomeButton />
@@ -64,19 +87,5 @@ const Header = (props: any) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  toggleIcons: {
-    flexDirection: "row",
-    margin: 5,
-  },
-  profileButtons: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginRight: 15,
-    marginLeft: 10,
-  },
-});
 
 export default Header;

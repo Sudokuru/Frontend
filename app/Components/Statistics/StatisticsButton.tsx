@@ -11,12 +11,12 @@ const StatisticsButton = () => {
     <Button
       mode="contained"
       testID={"ViewStatisticsPageButton"}
-      style={{ marginLeft: 5, marginRight: 5 }}
+      style={{ marginRight: 5 }}
       onPress={() => navigation.navigate("Statistics")}
     >
       <MaterialCommunityIcons
         name="chart-line"
-        size={26}
+        size={24}
         color={theme.colors.onPrimaryContainer}
       />
     </Button>
