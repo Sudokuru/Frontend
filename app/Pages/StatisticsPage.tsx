@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
@@ -22,7 +22,7 @@ const StatisticsPage = () => {
   const { updateLearnedLessons, learnedLessons } =
     React.useContext(PreferencesContext);
 
-  const [isLoading, setLoading] = React.useState(true);
+  const [isLoading, setLoading] = React.useState<boolean>(true);
   const [totalStatistics, setTotalStatistics] = React.useState<any>();
 
   const [warningVisible, setWarningVisible] = React.useState(false);
@@ -67,7 +67,13 @@ const StatisticsPage = () => {
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
           <ScrollView>
             <Header page="Statistics" />
-            <View style={styles.statisticsTitle}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <TotalStatistics
                 totalScore={totalStatistics.totalScore}
                 numGamesPlayed={totalStatistics.numGamesPlayed}
@@ -118,13 +124,5 @@ const StatisticsPage = () => {
     );
   }
 };
-
-const styles = StyleSheet.create({
-  statisticsTitle: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default StatisticsPage;
