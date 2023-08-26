@@ -1072,7 +1072,13 @@ const SudokuBoard = (props: any) => {
 
   return (
     <View
-      testID={"sudokuBoard"}
+      testID={
+        landingMode
+          ? "sudokuDemoBoard"
+          : drillMode
+          ? "sudokuDrillBoard"
+          : "sudokuBoard"
+      }
       onKeyDown={handleKeyDown}
       styles={{ borderWidth: 1 }}
     >
