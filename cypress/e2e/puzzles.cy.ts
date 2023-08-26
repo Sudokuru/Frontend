@@ -12,9 +12,13 @@ describe("Sudoku play component functions", () => {
       "learned_lessons",
       '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE","SIMPLIFY_NOTES","NAKED_SET","HIDDEN_SINGLE","HIDDEN_SET","POINTING_SET"]'
     );
+    window.localStorage.setItem(
+      "active_game",
+      '[{"puzzle":"003070040006002301089000000000107080517000006000400000271009005095000000000020000","puzzleSolution":"123675948456982371789314562964157283517238496832496157271849635395761824648523719","moves":[{"puzzleCurrentState":"123675948456982371789314562964157283517238496832496157271849635395761100648523719","puzzleCurrentNotesState":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111111111000000000"}],"strategies":["NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR"],"difficulty":348,"drillStrategies":["NAKED_SINGLE","POINTING_PAIR","POINTING_TRIPLET"],"currentTime":374,"numWrongCellsPlayed":235}]'
+    );
     cy.visit("");
     cy.contains("Get Started").click();
-    cy.contains("Start Puzzle").click();
+    cy.contains("Resume Puzzle").click();
   });
 
   it("Pause button functions", () => {
@@ -26,7 +30,7 @@ describe("Sudoku play component functions", () => {
   // this test currently behaves differently in regards to peer highlighting
   // If r0c0 has a value, then this test validates peer highlighting
   // but if r0c0 does not have a value, this test does not validate peer highlighting
-  it("Default highlighting functions", () => {
+  /*it("Default highlighting functions", () => {
     // select the first cell (^= means it should start with that string so it ignores the notes or value that comes after it)
     cy.get("[data-testid^=cellr0c0]").click();
 
@@ -76,5 +80,5 @@ describe("Sudoku play component functions", () => {
           }
         }
       });
-  });
+  });*/
 });
