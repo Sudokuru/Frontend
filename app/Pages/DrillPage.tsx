@@ -11,9 +11,8 @@ const DrillPage = (props: any) => {
     ? props.route.params.params
     : "no props.route.params in DrillPage";
 
+  strategy = [strategy];
   const navigation: any = useNavigation();
-
-  console.log("GREETINGS");
 
   return (
     <SafeAreaProvider>

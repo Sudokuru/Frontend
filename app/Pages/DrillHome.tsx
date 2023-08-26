@@ -8,6 +8,7 @@ import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import NavigationSideBar from "../Components/NavigationBar";
 import Header from "../Components/Header";
+import DrillPanel from "../Components/Home/DrillPanel";
 
 const DrillHomePage = () => {
   const navigation: any = useNavigation();
@@ -76,15 +77,7 @@ const DrillHomePage = () => {
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               {drillsVisible ? (
                 <View style={{ padding: reSize / 4 }}>
-                  <Button
-                    style={{ top: reSize / 2 }}
-                    mode="contained"
-                    onPress={() => {
-                      navigation.openDrawer();
-                    }}
-                  >
-                    Start Drill
-                  </Button>
+                  <DrillPanel />
                 </View>
               ) : (
                 <LessonButton

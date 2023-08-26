@@ -83,7 +83,7 @@ const LandingPage = () => {
             />
             <NavigationButton
               image={START_DRILLS_LOGO}
-              navigationPage="DrillDrawer"
+              navigationPage="DrillHome"
             />
             <NavigationButton
               image={PLAY_SUDOKU_LOGO}

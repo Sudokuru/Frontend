@@ -10,9 +10,7 @@ import LandingPage from "./app/Pages/LandingPage";
 import LearnHomePage from "./app/Pages/LearnHomePage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
-import HomePage from "./app/Pages/HomePage";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
 // theme imports
 import {
   CombinedDarkTheme,
@@ -20,142 +18,9 @@ import {
 } from "./app/Styling/ThemeColors";
 import Lesson from "./app/Pages/Lesson";
 import DrillPage from "./app/Pages/DrillPage";
-import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
 import { Profile } from "./app/Functions/Api/Profile";
 import DrillHomePage from "./app/Pages/DrillHome";
 import PlayHomePage from "./app/Pages/PlayHomePage";
-
-const drawerItemsMain = [
-  {
-    key: "Naked Sets",
-    title: "Naked Sets",
-    routes: [
-      { nav: "DrillDrawer", routeName: "Naked Single", title: "Naked Single" },
-      { nav: "DrillDrawer", routeName: "Naked Pair", title: "Naked Pair" },
-      {
-        nav: "DrillDrawer",
-        routeName: "Naked Triplet",
-        title: "Naked Triplet",
-      },
-      {
-        nav: "DrillDrawer",
-        routeName: "Naked Quadruplet",
-        title: "Naked Quadruplet",
-      },
-    ],
-  },
-  {
-    key: "Hidden Sets",
-    title: "Hidden Sets",
-    routes: [
-      {
-        nav: "DrillDrawer",
-        routeName: "Hidden Single",
-        title: "Hidden Single",
-      },
-      { nav: "DrillDrawer", routeName: "Hidden Pair", title: "Hidden Pair" },
-      {
-        nav: "DrillDrawer",
-        routeName: "Hidden Triplet",
-        title: "Hidden Triplet",
-      },
-      {
-        nav: "DrillDrawer",
-        routeName: "Hidden Quadruplet",
-        title: "Hidden Quadruplet",
-      },
-    ],
-  },
-  {
-    key: "Pointing Sets",
-    title: "Pointing Sets",
-    routes: [
-      {
-        nav: "DrillDrawer",
-        routeName: "Pointing Pair",
-        title: "Pointing Pair",
-      },
-      {
-        nav: "DrillDrawer",
-        routeName: "Pointing Triplet",
-        title: "Pointing Triplet",
-      },
-    ],
-  },
-];
-
-function DrillDrawer() {
-  const Drawer = createDrawerNavigator();
-
-  return (
-    <Drawer.Navigator
-      initialRouteName="DrillDrawer"
-      drawerContent={(props) => (
-        <CustomDrawerContent drawerItems={drawerItemsMain} {...props} />
-      )}
-      screenOptions={{
-        headerShown: false,
-        headerTransparent: true,
-        swipeEdgeWidth: 0,
-        drawerPosition: "left",
-        unmountOnBlur: true,
-        title: "Sudokuru",
-      }}
-    >
-      <Drawer.Screen name="DrillDrawer" component={DrillHomePage} />
-      <Drawer.Screen
-        name="Naked Single"
-        initialParams={{ params: ["NAKED_SINGLE"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Naked Pair"
-        initialParams={{ params: ["NAKED_PAIR"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Naked Triplet"
-        initialParams={{ params: ["NAKED_TRIPLET"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Naked Quadruplet"
-        initialParams={{ params: ["NAKED_QUADRUPLET"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Hidden Single"
-        initialParams={{ params: ["HIDDEN_SINGLE"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Hidden Pair"
-        initialParams={{ params: ["HIDDEN_PAIR"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Hidden Triplet"
-        initialParams={{ params: ["HIDDEN_TRIPLET"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Hidden Quadruplet"
-        initialParams={{ params: ["HIDDEN_QUADRUPLET"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Pointing Pair"
-        initialParams={{ params: ["POINTING_PAIR"] }}
-        component={DrillPage}
-      />
-      <Drawer.Screen
-        name="Pointing Triplet"
-        initialParams={{ params: ["POINTING_TRIPLET"] }}
-        component={DrillPage}
-      />
-    </Drawer.Navigator>
-  );
-}
 
 export default function App() {
   const [isThemeDark, setIsThemeDark] = React.useState(true);
@@ -274,7 +139,8 @@ export default function App() {
             <Stack.Screen name="Lesson" component={Lesson} />
             <Stack.Screen name="LearnHome" component={LearnHomePage} />
             <Stack.Screen name="PlayHome" component={PlayHomePage} />
-            <Stack.Screen name="DrillDrawer" component={DrillDrawer} />
+            <Stack.Screen name="DrillHome" component={DrillHomePage} />
+            <Stack.Screen name="Drill" component={DrillPage} />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

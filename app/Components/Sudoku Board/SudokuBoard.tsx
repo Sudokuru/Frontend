@@ -133,7 +133,7 @@ const DrillSubmitButton = (props) => {
   return (
     <Pressable
       onPress={() => {
-        if (isDrillSolutionCorrect()) navigation.navigate("Main Page");
+        if (isDrillSolutionCorrect()) navigation.navigate("DrillHome");
       }}
     >
       <View style={styles(cellSize).submitButtonView}>
