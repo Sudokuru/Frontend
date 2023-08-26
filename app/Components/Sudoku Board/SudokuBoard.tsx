@@ -212,7 +212,7 @@ const HeaderRow = (props) => {
     //   navigation.replace('Home');
     // });
     saveGame(activeGame);
-    navigation.replace("Home");
+    navigation.replace("PlayHome");
   };
 
   return (
