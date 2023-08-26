@@ -34,12 +34,16 @@ const DrillHomePage = () => {
           <View
             style={{
               flexDirection: "column",
-              alignItems: "center",
-              alignSelf: "center",
               flexGrow: 1,
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                alignSelf: "center",
+              }}
+            >
               <Text
                 style={{
                   color: theme.colors.primary,

@@ -23,6 +23,7 @@ import DrillPage from "./app/Pages/DrillPage";
 import CustomDrawerContent from "./app/Components/Home/CustomDrawerContent";
 import { Profile } from "./app/Functions/Api/Profile";
 import DrillHomePage from "./app/Pages/DrillHome";
+import PlayHomePage from "./app/Pages/PlayHomePage";
 
 const drawerItemsMain = [
   {
@@ -272,6 +273,7 @@ export default function App() {
             <Stack.Screen name="Sudoku" component={SudokuPage} />
             <Stack.Screen name="Lesson" component={Lesson} />
             <Stack.Screen name="LearnHome" component={LearnHomePage} />
+            <Stack.Screen name="PlayHome" component={PlayHomePage} />
             <Stack.Screen name="DrillDrawer" component={DrillDrawer} />
           </Stack.Navigator>
         </NavigationContainer>
