@@ -8,7 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
-import { retrieveTotalStatistics } from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
@@ -33,7 +32,6 @@ const StatisticsPage = () => {
   async function deleteUserStatistics() {
     await Statistics.deleteStatistics().then(() => {
       updateLearnedLessons([]);
-      navigation.navigate("Home");
     });
   }
 
@@ -107,8 +105,9 @@ const StatisticsPage = () => {
           confirmButtonColor="red"
           cancelButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
-            deleteUserStatistics(USERGAMESTATISTICSBFFURL);
-            hideWarningButton();
+            deleteUserStatistics().then(() => {
+              hideWarningButton();
+            });
           }}
           onCancelPressed={() => {
             hideWarningButton();
