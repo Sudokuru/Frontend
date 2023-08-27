@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // pages
 import ProfilePage from "./app/Pages/ProfilePage";
 import LandingPage from "./app/Pages/LandingPage";
-import LearnHomePage from "./app/Pages/LearnHomePage";
+import LearnPage from "./app/Pages/LearnPage";
 import StatisticsPage from "./app/Pages/StatisticsPage";
 import SudokuPage from "./app/Pages/SudokuPage";
 import { NavigationContainer } from "@react-navigation/native";
@@ -17,10 +17,10 @@ import {
   CombinedDefaultTheme,
 } from "./app/Styling/ThemeColors";
 import Lesson from "./app/Pages/Lesson";
-import DrillPage from "./app/Pages/DrillPage";
+import Drill from "./app/Pages/DrillGame";
 import { Profile } from "./app/Functions/Api/Profile";
-import DrillHomePage from "./app/Pages/DrillHome";
-import PlayHomePage from "./app/Pages/PlayHomePage";
+import DrillPage from "./app/Pages/DrillPage";
+import PlayPage from "./app/Pages/PlayPage";
 import InitializeContext from "./app/Contexts/InitializeContext";
 import DrawerNavigator from "./app/Navigation/DrawerNavigator";
 
@@ -33,23 +33,6 @@ export default function App() {
     <PreferencesContext.Provider value={preferences}>
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
-          {/* <Stack.Navigator
-            initialRouteName="LandingPage"
-            screenOptions={{
-              headerShown: false,
-              title: "Sudokuru",
-            }}
-          >
-            <Stack.Screen name="Landing" component={LandingPage} />
-            <Stack.Screen name="Profile" component={ProfilePage} />
-            <Stack.Screen name="Statistics" component={StatisticsPage} />
-            <Stack.Screen name="Sudoku" component={SudokuPage} />
-            <Stack.Screen name="Lesson" component={Lesson} />
-            <Stack.Screen name="LearnHome" component={LearnHomePage} />
-            <Stack.Screen name="PlayHome" component={PlayHomePage} />
-            <Stack.Screen name="DrillHome" component={DrillHomePage} />
-            <Stack.Screen name="Drill" component={DrillPage} />
-          </Stack.Navigator> */}
           <DrawerNavigator />
         </NavigationContainer>
       </PaperProvider>

@@ -11,7 +11,7 @@ import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
 import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
 
-const LearnHomePage = () => {
+const LearnPage = () => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
@@ -137,4 +137,4 @@ const LearnHomePage = () => {
   );
 };
 
-export default LearnHomePage;
+export default LearnPage;

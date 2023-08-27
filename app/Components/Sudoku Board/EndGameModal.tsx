@@ -64,7 +64,7 @@ const EndGameModal = (props: any) => {
           <Text style={styles(reSize).statisticValue}>{props.difficulty}</Text>
         </View>
       </View>
-      <Button mode="contained" onPress={() => navigation.navigate("PlayHome")}>
+      <Button mode="contained" onPress={() => navigation.navigate("PlayPage")}>
         Go Home
       </Button>
     </View>

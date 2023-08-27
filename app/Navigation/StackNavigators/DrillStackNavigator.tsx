@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import DrillHomePage from "../../Pages/DrillHome";
+import DrillPage from "../../Pages/DrillPage";
+import DrillGame from "../../Pages/DrillGame";
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,8 @@ const DrillStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="DrillPage" component={DrillHomePage} />
+      <Stack.Screen name="DrillPage" component={DrillPage} />
+      <Stack.Screen name="DrillGame" component={DrillGame} />
     </Stack.Navigator>
   );
 };

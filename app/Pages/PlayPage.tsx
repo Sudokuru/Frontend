@@ -22,7 +22,7 @@ let strategies: sudokuStrategyArray = [
   "HIDDEN_QUADRUPLET",
 ];
 
-const PlayHomePage = () => {
+const PlayPage = () => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
@@ -107,7 +107,9 @@ const PlayHomePage = () => {
                   style={{ margin: newSize / 4 }}
                   mode="outlined"
                   onPress={() =>
-                    navigation.navigate("Sudoku", { gameType: "ResumeGame" })
+                    navigation.navigate("SudokuPage", {
+                      gameType: "ResumeGame",
+                    })
                   }
                 >
                   Resume Puzzle
@@ -119,7 +121,7 @@ const PlayHomePage = () => {
                 style={{ margin: newSize / 4 }}
                 mode="contained"
                 onPress={() => {
-                  navigation.navigate("Sudoku", {
+                  navigation.navigate("SudokuPage", {
                     gameType: "StartGame",
                     difficulty: 100,
                     strategies: strategies,
@@ -158,4 +160,4 @@ const PlayHomePage = () => {
   );
 };
 
-export default PlayHomePage;
+export default PlayPage;

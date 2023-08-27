@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import PlayHomePage from "../../Pages/PlayHomePage";
+import PlayPage from "../../Pages/PlayPage";
+import SudokuPage from "../../Pages/SudokuPage";
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,8 @@ const PlayStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="PlayPage" component={PlayHomePage} />
+      <Stack.Screen name="PlayPage" component={PlayPage} />
+      <Stack.Screen name="SudokuPage" component={SudokuPage} />
     </Stack.Navigator>
   );
 };

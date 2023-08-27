@@ -7,7 +7,6 @@ import {
   useWindowDimensions,
   Pressable,
 } from "react-native";
-import Header from "../Components/Header";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -107,7 +106,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveUserLearnedLessons(learnedLessons);
     }
-    navigation.navigate("LearnHome");
+    navigation.navigate("LearnPage");
   };
 
   const [count, setCount] = useState(0);
@@ -280,7 +279,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ height: "100%", width: "100%" }}>
-        <Header page={"Lesson"} />
         <View>
           <View style={styles.container1}>
             <View style={{ flexDirection: "row" }}>

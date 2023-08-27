@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import LearnHomePage from "../../Pages/LearnHomePage";
+import LearnPage from "../../Pages/LearnPage";
+import Lesson from "../../Pages/Lesson";
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,8 @@ const LearnStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="LearnPage" component={LearnHomePage} />
+      <Stack.Screen name="LearnPage" component={LearnPage} />
+      <Stack.Screen name="Lesson" component={Lesson} />
     </Stack.Navigator>
   );
 };
