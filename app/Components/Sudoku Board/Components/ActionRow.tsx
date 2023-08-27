@@ -38,7 +38,11 @@ const ActionRow = (props: any) => {
         />
       </Pressable>
       {/* Note mode */}
-      <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
+      <Pressable
+        onPress={toggleNoteMode}
+        disabled={inHintMode}
+        testID={"toggleNoteModeButton"}
+      >
         {inNoteMode ? (
           // note mode on
           <MaterialCommunityIcons
