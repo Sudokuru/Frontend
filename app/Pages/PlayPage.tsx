@@ -5,7 +5,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
+import { useMinWindowDimensions } from "../Functions/global/WindowDimensions";
 import { Puzzles } from "../Functions/Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
 
@@ -26,7 +26,7 @@ const PlayPage = () => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
-  const minWindowSize = getMinWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
   const newSize = minWindowSize / 25;
 
   const theme = useTheme();

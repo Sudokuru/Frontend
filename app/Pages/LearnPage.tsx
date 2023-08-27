@@ -9,13 +9,13 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
-import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
+import { useMinWindowDimensions } from "../Functions/global/WindowDimensions";
 
 const LearnPage = () => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
-  const minWindowSize = getMinWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
 
   const theme = useTheme();
 

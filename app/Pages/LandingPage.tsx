@@ -15,11 +15,12 @@ import {
 import { useTheme } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
-  getMinWindowDimensions,
-  getWindowDimensions,
+  useMinWindowDimensions,
+  // useNewWindowDimensions
 } from "../Functions/global/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { getBoardSize } from "../Components/Sudoku Board/Functions/BoardFunctions";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -30,8 +31,11 @@ const LandingPage = () => {
   const navigation: any = useNavigation();
 
   const windowSize = useWindowDimensions();
-  const minWindowSize = getMinWindowDimensions();
+
+  const minWindowSize = useMinWindowDimensions();
   const theme = useTheme();
+
+  const boardSize = getBoardSize();
 
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
   const START_LESSONS_LOGO = require("./startLessonsLogo.png");
@@ -67,27 +71,37 @@ const LandingPage = () => {
     <SafeAreaProvider>
       <SafeAreaView
         style={{
+          flex: 1,
           width: windowSize.width,
           height: windowSize.height,
           flexDirection: "row",
-          backgroundColor: "red",
-          alignItems: "center",
+          //alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "red",
         }}
       >
-        <SudokuBoard gameType={"Demo"} strategies={strategies} />
         <View
           style={{
-            flexGrow: 1,
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "center",
-            gap: minWindowSize / 20,
+            backgroundColor: "blue",
+          }}
+        >
+          <SudokuBoard gameType={"Demo"} strategies={strategies} />
+          <NavigationButton image={PLAY_SUDOKU_LOGO} navigationPage="Play" />
+        </View>
+        {/* <View
+          style={{
+            //flexGrow: 1,
+            alignItems: "center",
+            //justifyContent: "center",
+            margin: minWindowSize / 20,
           }}
         >
           <NavigationButton image={START_LESSONS_LOGO} navigationPage="Learn" />
           <NavigationButton image={START_DRILLS_LOGO} navigationPage="Drill" />
           <NavigationButton image={PLAY_SUDOKU_LOGO} navigationPage="Play" />
-        </View>
+        </View> */}
       </SafeAreaView>
     </SafeAreaProvider>
   );

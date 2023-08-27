@@ -1,9 +1,10 @@
 import React from "react";
 import { Pressable, Image, ImageURISource } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
-import { getMinWindowDimensions } from "../../Functions/global/WindowDimensions";
+import { useMinWindowDimensions } from "../../Functions/global/WindowDimensions";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import { getBoardSize } from "../Sudoku Board/Functions/BoardFunctions";
 
 interface navigationButton {
   navigationPage: string;
@@ -14,7 +15,7 @@ interface navigationButton {
 }
 
 const NavigationButton = (props: navigationButton) => {
-  const minWindowSize = getMinWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
   const theme = useTheme();
   const navigation: any = useNavigation();
 

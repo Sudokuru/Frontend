@@ -26,6 +26,7 @@ const DrawerNavigator = () => {
         drawerStyle: {
           width: 210,
           backgroundColor: theme.colors.background,
+          overflow: "hidden", //white space was being caused during some resizes
         },
         headerShown: true,
         header: ({ navigation, route, options }) => {

@@ -1,6 +1,7 @@
 import { useWindowDimensions } from "react-native";
 import { Set } from "immutable";
 import { getHint as getHint } from "sudokuru";
+import { useNewWindowDimensions } from "../../../Functions/global/WindowDimensions";
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -10,10 +11,13 @@ import { getHint as getHint } from "sudokuru";
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions of 1 x 1.44444
  */
-export function getCellSize() {
+export function getCellSize(): number {
   const size = useWindowDimensions();
-
   return Math.min(size.width * 1.44444, size.height) / 15;
+}
+
+export function getBoardSize(): number {
+  return getCellSize() * 9;
 }
 
 export function getNumberOfGroupsAssignedForNumber(number: any, groups: any) {
