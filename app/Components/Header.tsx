@@ -5,15 +5,12 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { IconButton } from "react-native-paper";
 
-interface header {
-  page?: string;
-}
-
-const Header = (props: header) => {
+const Header = () => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark, updateCurrentPage } =
+  const { isThemeDark, isCurrentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("./goldLogoText.png");
@@ -28,12 +25,18 @@ const Header = (props: header) => {
         margin: 5,
       }}
     >
+      <IconButton
+        icon="menu"
+        testID="OpenDrawerNavigation"
+        size={20}
+        onPress={() => navigation.toggleDrawer()}
+      />
       {
         /*
          * If we are on the Landing page, Logo will not navigate to the Landing page
          * If we are on any other page, Logo will navigate to the Landing page
          */
-        props.page == "Landing" ? (
+        isCurrentPage == "Landing" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -65,20 +68,18 @@ const Header = (props: header) => {
           flex: 1,
           flexDirection: "row",
           justifyContent: "flex-end",
-          marginRight: 15,
-          marginLeft: 10,
         }}
       >
-        {props.page == "No" ? (
+        {isCurrentPage == "No" ? (
           <></>
-        ) : props.page == "Statistics" ? (
+        ) : isCurrentPage == "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {props.page == "No" ? (
+        {isCurrentPage == "No" ? (
           <></>
-        ) : props.page == "Profile" ? (
+        ) : isCurrentPage == "Profile" ? (
           <HomeButton />
         ) : (
           <ProfileButton />

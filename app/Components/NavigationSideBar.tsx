@@ -12,7 +12,17 @@ const NavigationSideBar = (props: any) => {
   return (
     <Drawer.Section showDivider={false}>
       <Drawer.Item
+        icon={"menu"}
+        testID="CloseDrawerNavigation"
+        label="Close"
+        active={false}
+        onPress={() => {
+          props.navigation.closeDrawer();
+        }}
+      />
+      <Drawer.Item
         icon={"home"}
+        testID="HomeButton"
         label="Home"
         active={isCurrentPage === "Landing"}
         onPress={() => {
@@ -22,29 +32,32 @@ const NavigationSideBar = (props: any) => {
       />
       <Drawer.Item
         icon={"book-open-page-variant"}
+        testID="LearnButton"
         label="Learn"
-        active={isCurrentPage === "LearnHome"}
+        active={isCurrentPage === "Learn"}
         onPress={() => {
-          updateCurrentPage("LearnHome");
-          navigation.navigate("LearnHome");
+          updateCurrentPage("Learn");
+          navigation.navigate("Learn");
         }}
       />
       <Drawer.Item
         icon={"whistle"}
+        testID="DrillButton"
         label="Drill"
-        active={isCurrentPage === "DrillHome"}
+        active={isCurrentPage === "Drill"}
         onPress={() => {
-          updateCurrentPage("DrillHome");
-          navigation.navigate("DrillHome");
+          updateCurrentPage("Drill");
+          navigation.navigate("Drill");
         }}
       />
       <Drawer.Item
         icon={"play"}
+        testID="PlayButton"
         label="Play"
-        active={isCurrentPage === "PlayHome"}
+        active={isCurrentPage === "Play"}
         onPress={() => {
-          updateCurrentPage("PlayHome");
-          navigation.navigate("PlayHome");
+          updateCurrentPage("Play");
+          navigation.navigate("Play");
         }}
       />
     </Drawer.Section>

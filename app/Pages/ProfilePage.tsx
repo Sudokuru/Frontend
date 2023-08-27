@@ -29,7 +29,6 @@ const ProfilePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
-        <Header page={"Profile"} />
         <ScrollView>
           <View
             style={{

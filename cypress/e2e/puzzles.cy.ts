@@ -13,7 +13,8 @@ describe("Sudoku play component functions", () => {
       '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE","SIMPLIFY_NOTES","NAKED_SET","HIDDEN_SINGLE","HIDDEN_SET","POINTING_SET"]'
     );
     cy.visit("");
-    cy.contains("Play").click();
+    cy.get("[data-testid=OpenDrawerNavigation]").click();
+    cy.get("[data-testid=PlayButton]").click();
     cy.contains("Start Puzzle").click();
   });
 

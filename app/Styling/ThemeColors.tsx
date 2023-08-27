@@ -11,7 +11,7 @@ const dTheme = {
   colors: {
     ...MD3DarkTheme.colors,
     primary: "#D9A05B",
-    onPrimary: "#000000",
+    onPrimary: "#025E73",
     primaryContainer: "rgb(217, 160, 91)",
     onPrimaryContainer: "#000000",
     elevation: "#025E73",
@@ -22,11 +22,11 @@ const dTheme = {
     tertiary: "#F2F2F2",
     tertiaryContainer: "#F2F2F2",
     backdrop: "#025E73",
-    onSecondaryContainer: "#000000",
+    onSecondaryContainer: "#D9A05B",
     onTertiary: "#F2F2F2",
     onTertiaryContainer: "#F2F2F2",
     onSurface: "#F2F2F2",
-    onSurfaceVariant: "#F2F2F2",
+    onSurfaceVariant: "#D9A05B",
   },
 };
 
@@ -46,11 +46,11 @@ const d2Theme = {
     tertiary: "#F2F2F2",
     tertiaryContainer: "#F2F2F2",
     backdrop: "#025E73",
-    onSecondaryContainer: "#000000",
+    onSecondaryContainer: "#D9A05B",
     onTertiary: "#F2F2F2",
     onTertiaryContainer: "#F2F2F2",
     onSurface: "#F2F2F2",
-    onSurfaceVariant: "#F2F2F2",
+    onSurfaceVariant: "#D9A05B",
   },
 };
 
