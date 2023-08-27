@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -56,7 +55,6 @@ const StatisticsPage = () => {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          <Header page="Statistics" />
           <ActivityIndicator animating={true} color={theme.colors.primary} />
         </SafeAreaView>
       </SafeAreaProvider>
@@ -66,7 +64,6 @@ const StatisticsPage = () => {
       <SafeAreaProvider>
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
           <ScrollView>
-            <Header page="Statistics" />
             <View
               style={{
                 flex: 1,

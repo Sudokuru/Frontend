@@ -133,7 +133,7 @@ const DrillSubmitButton = (props) => {
   return (
     <Pressable
       onPress={() => {
-        if (isDrillSolutionCorrect()) navigation.navigate("DrillHome");
+        if (isDrillSolutionCorrect()) navigation.navigate("DrillPage");
       }}
     >
       <View style={styles(cellSize).submitButtonView}>
@@ -212,7 +212,7 @@ const HeaderRow = (props) => {
     //   navigation.replace('Home');
     // });
     saveGame(activeGame);
-    navigation.replace("PlayHome");
+    navigation.replace("PlayPage");
   };
 
   return (
