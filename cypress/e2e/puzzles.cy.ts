@@ -5,6 +5,7 @@ import {
   IDENTICAL_VALUE_COLOR_RGB,
   NOT_SELECTED_CONFLICT_COLOR_RGB,
   SELECTED_CONFLICT_COLOR_RGB,
+  REMOVE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
 
 describe("Sudoku play component functions", () => {
@@ -112,9 +113,11 @@ describe("Sudoku play component functions", () => {
       cy.get("[data-testid=cellr7c6value\\:8]").should("exist");
       cy.Select_Cell(7, 7).get("[data-testid=numberControl2]").click();
       cy.get("[data-testid=cellr7c7value\\:2]").should("exist");
-      cy.get("[data-testid=hintButton]")
-        .click()
-        .get("[data-testid=rightArrow]")
+      cy.get("[data-testid=hintButton]").click();
+      cy.get("[data-testid=note5]")
+        .children()
+        .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
+      cy.get("[data-testid=rightArrow]")
         .click()
         .get("[data-testid=checkMark]")
         .click();
