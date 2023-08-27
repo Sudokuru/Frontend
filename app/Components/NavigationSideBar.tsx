@@ -2,8 +2,9 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Drawer } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { DrawerActions } from "@react-navigation/native";
 
-const NavigationSideBar = () => {
+const NavigationSideBar = (props: any) => {
   const navigation: any = useNavigation();
 
   const { isCurrentPage, updateCurrentPage } =
@@ -11,6 +12,14 @@ const NavigationSideBar = () => {
 
   return (
     <Drawer.Section showDivider={false}>
+      <Drawer.Item
+        icon={"menu"}
+        label="Close Menu"
+        active={false}
+        onPress={() => {
+          props.navigation.closeDrawer();
+        }}
+      />
       <Drawer.Item
         icon={"home"}
         label="Home"

@@ -17,8 +17,8 @@ const DrawerNavigator = () => {
 
   return (
     <Drawer.Navigator
-      drawerContent={() => {
-        return <NavigationSideBar />;
+      drawerContent={({ navigation }) => {
+        return <NavigationSideBar navigation={navigation} />;
       }}
       screenOptions={{
         headerShown: true,

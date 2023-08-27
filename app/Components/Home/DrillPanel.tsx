@@ -31,7 +31,7 @@ const DrillPanel = () => {
         key={drillStrategies[i]}
         mode="contained"
         onPress={() => {
-          navigation.navigate("Drill", { params: drillStrategies[i] });
+          navigation.navigate("DrillGame", { params: drillStrategies[i] });
         }}
         style={{ margin: 10 }}
       >

@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
