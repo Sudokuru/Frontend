@@ -29,7 +29,9 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Should solve game", () => {
-    cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
+    });
   });
 
   // todo update this test to resolve flaws
