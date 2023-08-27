@@ -12,25 +12,20 @@ describe("naked single drills", () => {
       singleRow = 0,
       singleCol = 0;
     let note = "";
-    cy.get("[data-testid=sudokuDrillBoard]")
-      .within(() => {
+    cy.Get_Cell_IDs()
+      .then((cellIds) => {
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
-            cy.get("[data-testid^=cellr" + i + "c" + j + "]")
-              .invoke("data", "testid")
-              .then((cellId) => {
-                let cellIdString = cellId.toString();
-                if (cellIdString.includes("notes:")) {
-                  let notesIndex = cellIdString.indexOf("notes:");
-                  let notesString = cellIdString.substring(notesIndex + 6);
-                  if (notesString.length === 1) {
-                    singleCount++;
-                    singleRow = i;
-                    singleCol = j;
-                    note = notesString;
-                  }
-                }
-              });
+            if (cellIds[i][j].includes("notes:")) {
+              let notesIndex = cellIds[i][j].indexOf("notes:");
+              let notesString = cellIds[i][j].substring(notesIndex + 6);
+              if (notesString.length === 1) {
+                singleCount++;
+                singleRow = i;
+                singleCol = j;
+                note = notesString;
+              }
+            }
           }
         }
       })
