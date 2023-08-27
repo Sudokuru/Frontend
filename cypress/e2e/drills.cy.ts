@@ -12,7 +12,7 @@ describe("naked single drills", () => {
       singleRow = 0,
       singleCol = 0;
     let note = "";
-    cy.Get_Cell_IDs()
+    cy.Get_Cell_IDs("sudokuDrillBoard")
       .then((cellIds) => {
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {

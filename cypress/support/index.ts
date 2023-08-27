@@ -12,8 +12,9 @@ declare global {
       /**
        * Custom command to get the cell ids of the sudoku board.
        * @example cy.Get_Cell_IDs()
+       * @param boardType - The type of board to get the cell ids from e.g. "sudokuDrillBoard"
        */
-      Get_Cell_IDs(): Chainable<JQuery<HTMLElement>>;
+      Get_Cell_IDs(boardType: string): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

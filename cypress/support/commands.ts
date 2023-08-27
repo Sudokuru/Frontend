@@ -3,12 +3,12 @@ Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.contains("NAKED_SINGLE").click();
 });
 
-Cypress.Commands.add("Get_Cell_IDs", () => {
+Cypress.Commands.add("Get_Cell_IDs", (boardType) => {
   let cellIds: string[][] = new Array(9);
   for (let i = 0; i < 9; i++) {
     cellIds[i] = new Array(9);
   }
-  cy.get("[data-testid=sudokuDrillBoard]")
+  cy.get("[data-testid=" + boardType + "]")
     .within(() => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
