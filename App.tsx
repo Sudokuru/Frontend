@@ -22,6 +22,7 @@ import { Profile } from "./app/Functions/Api/Profile";
 import DrillHomePage from "./app/Pages/DrillHome";
 import PlayHomePage from "./app/Pages/PlayHomePage";
 import InitializeContext from "./app/Contexts/InitializeContext";
+import DrawerNavigator from "./app/Navigation/DrawerNavigator";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -32,7 +33,7 @@ export default function App() {
     <PreferencesContext.Provider value={preferences}>
       <PaperProvider theme={theme}>
         <NavigationContainer theme={theme}>
-          <Stack.Navigator
+          {/* <Stack.Navigator
             initialRouteName="LandingPage"
             screenOptions={{
               headerShown: false,
@@ -48,7 +49,8 @@ export default function App() {
             <Stack.Screen name="PlayHome" component={PlayHomePage} />
             <Stack.Screen name="DrillHome" component={DrillHomePage} />
             <Stack.Screen name="Drill" component={DrillPage} />
-          </Stack.Navigator>
+          </Stack.Navigator> */}
+          <DrawerNavigator />
         </NavigationContainer>
       </PaperProvider>
     </PreferencesContext.Provider>

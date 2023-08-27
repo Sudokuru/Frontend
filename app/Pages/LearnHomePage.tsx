@@ -55,9 +55,9 @@ const LearnHomePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        <Header />
+        {/* <Header /> */}
         <View style={{ flexDirection: "row" }}>
-          <NavigationSideBar />
+          {/* <NavigationSideBar /> */}
           <View
             style={{
               flexDirection: "column",

@@ -5,6 +5,7 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { IconButton } from "react-native-paper";
 
 interface header {
   page?: string;
@@ -28,6 +29,11 @@ const Header = (props: header) => {
         margin: 5,
       }}
     >
+      <IconButton
+        icon="menu"
+        size={20}
+        onPress={() => navigation.toggleDrawer()}
+      />
       {
         /*
          * If we are on the Landing page, Logo will not navigate to the Landing page
