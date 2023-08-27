@@ -13,6 +13,7 @@ const NavigationSideBar = (props: any) => {
     <Drawer.Section showDivider={false}>
       <Drawer.Item
         icon={"menu"}
+        testID="CloseDrawerNavigation"
         label="Close Menu"
         active={false}
         onPress={() => {
@@ -21,6 +22,7 @@ const NavigationSideBar = (props: any) => {
       />
       <Drawer.Item
         icon={"home"}
+        testID="HomeButton"
         label="Home"
         active={isCurrentPage === "Landing"}
         onPress={() => {
@@ -30,6 +32,7 @@ const NavigationSideBar = (props: any) => {
       />
       <Drawer.Item
         icon={"book-open-page-variant"}
+        testID="LearnButton"
         label="Learn"
         active={isCurrentPage === "Learn"}
         onPress={() => {
@@ -39,6 +42,7 @@ const NavigationSideBar = (props: any) => {
       />
       <Drawer.Item
         icon={"whistle"}
+        testID="DrillButton"
         label="Drill"
         active={isCurrentPage === "Drill"}
         onPress={() => {
@@ -48,6 +52,7 @@ const NavigationSideBar = (props: any) => {
       />
       <Drawer.Item
         icon={"play"}
+        testID="PlayButton"
         label="Play"
         active={isCurrentPage === "Play"}
         onPress={() => {

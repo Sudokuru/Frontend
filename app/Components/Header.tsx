@@ -27,6 +27,7 @@ const Header = () => {
     >
       <IconButton
         icon="menu"
+        testID="OpenDrawerNavigation"
         size={20}
         onPress={() => navigation.toggleDrawer()}
       />
