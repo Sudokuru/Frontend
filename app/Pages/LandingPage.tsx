@@ -16,7 +16,7 @@ import { useTheme } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
   useMinWindowDimensions,
-  // useNewWindowDimensions
+  useNewWindowDimensions,
 } from "../Functions/global/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
 import { useHeaderHeight } from "@react-navigation/elements";
@@ -30,7 +30,7 @@ const LandingPage = () => {
 
   const navigation: any = useNavigation();
 
-  const windowSize = useWindowDimensions();
+  const windowSize = useNewWindowDimensions();
 
   const minWindowSize = useMinWindowDimensions();
   const theme = useTheme();
@@ -71,37 +71,64 @@ const LandingPage = () => {
     <SafeAreaProvider>
       <SafeAreaView
         style={{
-          flex: 1,
           width: windowSize.width,
           height: windowSize.height,
-          flexDirection: "row",
-          //alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "red",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: minWindowSize / 25,
+          // backgroundColor: 'orange'
         }}
       >
         <View
           style={{
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "blue",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: minWindowSize / 25,
+            // backgroundColor: 'green'
           }}
         >
           <SudokuBoard gameType={"Demo"} strategies={strategies} />
-          <NavigationButton image={PLAY_SUDOKU_LOGO} navigationPage="Play" />
+          {windowSize.width >= 430 ? (
+            <View
+              style={{
+                flexDirection: "column",
+                gap: minWindowSize / 25,
+                // backgroundColor: 'blue'
+              }}
+            >
+              <NavigationButton
+                image={PLAY_SUDOKU_LOGO}
+                navigationPage="Play"
+              />
+              <NavigationButton
+                image={START_DRILLS_LOGO}
+                navigationPage="Drill"
+              />
+              <NavigationButton
+                image={PLAY_SUDOKU_LOGO}
+                navigationPage="Play"
+              />
+              <NavigationButton
+                image={PLAY_SUDOKU_LOGO}
+                navigationPage="Play"
+              />
+            </View>
+          ) : (
+            <></>
+          )}
         </View>
-        {/* <View
+        <View
           style={{
-            //flexGrow: 1,
-            alignItems: "center",
-            //justifyContent: "center",
-            margin: minWindowSize / 20,
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: minWindowSize / 25,
+            // backgroundColor: 'blue'
           }}
         >
           <NavigationButton image={START_LESSONS_LOGO} navigationPage="Learn" />
           <NavigationButton image={START_DRILLS_LOGO} navigationPage="Drill" />
           <NavigationButton image={PLAY_SUDOKU_LOGO} navigationPage="Play" />
-        </View> */}
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

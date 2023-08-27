@@ -7,11 +7,11 @@ export const useMinWindowDimensions = (): number => {
   return Math.min(size.width, size.height - headerHeight);
 };
 
-// export function useNewWindowDimensions(): ScaledSize {
-//   const size = useWindowDimensions();
-//   const clone = structuredClone(size);
-//   const headerHeight = useHeaderHeight();
-//   clone.height = size.height - headerHeight;
-//   console.log("COMPARE: ", size, "TO: ", clone);
-//   return clone;
-// };
+export function useNewWindowDimensions(): ScaledSize {
+  const size = useWindowDimensions();
+  const clone = JSON.parse(JSON.stringify(size));
+  const headerHeight = useHeaderHeight();
+  clone.height = size.height - headerHeight;
+  console.log("COMPARE: ", size, "TO: ", clone);
+  return clone;
+}

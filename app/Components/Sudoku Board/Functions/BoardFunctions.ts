@@ -12,7 +12,7 @@ import { useNewWindowDimensions } from "../../../Functions/global/WindowDimensio
  * board has width and height dimensions of 1 x 1.44444
  */
 export function getCellSize(): number {
-  const size = useWindowDimensions();
+  const size = useNewWindowDimensions();
   return Math.min(size.width * 1.44444, size.height) / 15;
 }
 
