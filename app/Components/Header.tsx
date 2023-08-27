@@ -67,8 +67,6 @@ const Header = () => {
           flex: 1,
           flexDirection: "row",
           justifyContent: "flex-end",
-          marginRight: 15,
-          marginLeft: 10,
         }}
       >
         {isCurrentPage == "No" ? (

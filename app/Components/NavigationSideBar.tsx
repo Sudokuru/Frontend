@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Drawer } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { DrawerActions } from "@react-navigation/native";
 
 const NavigationSideBar = (props: any) => {
   const navigation: any = useNavigation();
@@ -54,24 +53,6 @@ const NavigationSideBar = (props: any) => {
         onPress={() => {
           updateCurrentPage("Play");
           navigation.navigate("Play");
-        }}
-      />
-      <Drawer.Item
-        icon={"calculator-variant"}
-        label="Statistics"
-        active={isCurrentPage === "Statistics"}
-        onPress={() => {
-          updateCurrentPage("Statistics");
-          navigation.navigate("Statistics");
-        }}
-      />
-      <Drawer.Item
-        icon={"account"}
-        label="Profile"
-        active={isCurrentPage === "Profile"}
-        onPress={() => {
-          updateCurrentPage("Profile");
-          navigation.navigate("Profile");
         }}
       />
     </Drawer.Section>
