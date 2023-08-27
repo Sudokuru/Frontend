@@ -7,10 +7,7 @@ describe("naked single drills", () => {
     cy.visit("");
   });
   it("finds naked single in drill and hint is correctly applied", () => {
-    cy.contains("Get Started").click();
-    cy.contains("Start Drill").click();
-    cy.contains("Naked Sets").click();
-    cy.get('[data-testid="Naked Single"]').click();
+    cy.Start_Naked_Single_Drill();
     let singleCount = 0,
       singleRow = 0,
       singleCol = 0;
