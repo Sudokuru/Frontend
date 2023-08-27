@@ -133,7 +133,7 @@ const DrillSubmitButton = (props) => {
   return (
     <Pressable
       onPress={() => {
-        if (isDrillSolutionCorrect()) navigation.navigate("Main Page");
+        if (isDrillSolutionCorrect()) navigation.navigate("DrillHome");
       }}
     >
       <View style={styles(cellSize).submitButtonView}>
@@ -212,7 +212,7 @@ const HeaderRow = (props) => {
     //   navigation.replace('Home');
     // });
     saveGame(activeGame);
-    navigation.replace("Home");
+    navigation.replace("PlayHome");
   };
 
   return (
@@ -1072,7 +1072,13 @@ const SudokuBoard = (props: any) => {
 
   return (
     <View
-      testID={"sudokuBoard"}
+      testID={
+        landingMode
+          ? "sudokuDemoBoard"
+          : drillMode
+          ? "sudokuDrillBoard"
+          : "sudokuBoard"
+      }
       onKeyDown={handleKeyDown}
       styles={{ borderWidth: 1 }}
     >

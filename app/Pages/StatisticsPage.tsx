@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Header from "../Components/Header";
@@ -8,7 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
-import { retrieveTotalStatistics } from "../Functions/Statistics/StatisticsParsing";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
@@ -23,7 +22,7 @@ const StatisticsPage = () => {
   const { updateLearnedLessons, learnedLessons } =
     React.useContext(PreferencesContext);
 
-  const [isLoading, setLoading] = React.useState(true);
+  const [isLoading, setLoading] = React.useState<boolean>(true);
   const [totalStatistics, setTotalStatistics] = React.useState<any>();
 
   const [warningVisible, setWarningVisible] = React.useState(false);
@@ -33,7 +32,6 @@ const StatisticsPage = () => {
   async function deleteUserStatistics() {
     await Statistics.deleteStatistics().then(() => {
       updateLearnedLessons([]);
-      navigation.navigate("Home");
     });
   }
 
@@ -69,7 +67,13 @@ const StatisticsPage = () => {
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
           <ScrollView>
             <Header page="Statistics" />
-            <View style={styles.statisticsTitle}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <TotalStatistics
                 totalScore={totalStatistics.totalScore}
                 numGamesPlayed={totalStatistics.numGamesPlayed}
@@ -107,8 +111,9 @@ const StatisticsPage = () => {
           confirmButtonColor="red"
           cancelButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
-            deleteUserStatistics(USERGAMESTATISTICSBFFURL);
-            hideWarningButton();
+            deleteUserStatistics().then(() => {
+              hideWarningButton();
+            });
           }}
           onCancelPressed={() => {
             hideWarningButton();
@@ -119,13 +124,5 @@ const StatisticsPage = () => {
     );
   }
 };
-
-const styles = StyleSheet.create({
-  statisticsTitle: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default StatisticsPage;

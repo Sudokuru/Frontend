@@ -3,6 +3,8 @@ import React from "react";
 export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
   isThemeDark: false,
+  updateCurrentPage: (props: any) => {},
+  isCurrentPage: "Landing",
   updateLearnedLessons: (props: any) => {},
   learnedLessons: [""],
   toggleHighlightIdenticalValues: () => {},

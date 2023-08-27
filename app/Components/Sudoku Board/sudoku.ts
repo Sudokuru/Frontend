@@ -35,7 +35,6 @@ export function makeBoard({ puzzle }, initialPuzzle) {
       };
     })
   );
-  // console.log(initialPuzzle);
   return fromJS({
     puzzle: result,
     selected: false,

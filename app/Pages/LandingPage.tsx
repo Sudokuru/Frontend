@@ -1,16 +1,9 @@
-import React from "react";
-import {
-  Platform,
-  Pressable,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Platform, Pressable, useWindowDimensions, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../Components/Header";
-import { useTheme } from "react-native-paper";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import { Image } from "react-native";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -20,17 +13,30 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import NavigationSideBar from "../Components/NavigationBar";
+import { Surface, Text, useTheme } from "react-native-paper";
+import { sudokuStrategyArray } from "sudokuru";
+import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
+import Header from "../Components/Header";
+import NavigationButton from "../Components/Home/NavigationButton";
+
+// Example of how to use PressableStates
+// https://github.com/necolas/react-native-web/issues/1708
 
 const LandingPage = () => {
-  const theme = useTheme();
-
   const isWeb = Platform.OS === "web";
 
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
+  const minWindowSize = getMinWindowDimensions();
 
-  let strategies = [
+  const theme = useTheme();
+
+  const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
+  const START_LESSONS_LOGO = require("./startLessonsLogo.png");
+  const START_DRILLS_LOGO = require("./startDrillsLogo.png");
+
+  let strategies: sudokuStrategyArray = [
     "AMEND_NOTES",
     "SIMPLIFY_NOTES",
     "NAKED_SINGLE",
@@ -56,219 +62,38 @@ const LandingPage = () => {
     return null;
   }
 
-  if (isWeb && size.width > size.height / 0.649) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView>
-          <Header page={"Landing"} />
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={{ width: size.width, height: size.height }}>
+        <Header page="Landing" />
+        <View style={{ flexDirection: "row" }}>
+          <NavigationSideBar />
+          <SudokuBoard gameType={"Demo"} strategies={strategies} />
           <View
             style={{
-              flex: 1,
-              justifyContent: "center",
+              flexGrow: 1,
               alignItems: "center",
-              marginTop: 50,
+              justifyContent: "center",
+              gap: minWindowSize / 20,
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                width: "90%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginRight: reSize / 6,
-                }}
-              >
-                <Text
-                  style={{
-                    color: theme.colors.onBackground,
-                    fontSize: reSize / 18,
-                  }}
-                >
-                  Your path to becoming a
-                </Text>
-                <Text
-                  style={{
-                    color: theme.colors.primary,
-                    fontSize: reSize / 12,
-                    marginBottom: reSize / 12,
-                  }}
-                >
-                  {" "}
-                  Sudoku Guru{" "}
-                </Text>
-                <Pressable
-                  style={({ pressed }) => [
-                    {
-                      opacity: pressed ? 0.5 : 1.0,
-                      backgroundColor: theme.colors.primary,
-                      borderRadius: reSize / 120,
-                      padding: reSize / 120,
-                      marginTop: reSize / 12,
-                    },
-                  ]}
-                  onPress={() => navigation.replace("Home")}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: theme.colors.onPrimaryContainer,
-                        fontSize: reSize / 19,
-                      }}
-                    >
-                      Get Started
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginLeft: reSize / 6,
-                }}
-              >
-                <SudokuBoard gameType={"Demo"} strategies={strategies} />
-              </View>
-            </View>
+            <NavigationButton
+              image={START_LESSONS_LOGO}
+              navigationPage="LearnHome"
+            />
+            <NavigationButton
+              image={START_DRILLS_LOGO}
+              navigationPage="DrillHome"
+            />
+            <NavigationButton
+              image={PLAY_SUDOKU_LOGO}
+              navigationPage="PlayHome"
+            />
           </View>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
-  } else if (isWeb) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          <Header page={"Landing"} />
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 0,
-            }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  fontSize: reSize / 22,
-                  marginBottom: 0,
-                }}
-              >
-                Your path to becoming a
-              </Text>
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                  fontSize: reSize / 18,
-                  marginBottom: 0,
-                }}
-              >
-                Sudoku Guru
-              </Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <SudokuBoard gameType={"Demo"} strategies={strategies} />
-              <View style={{ alignItems: "center", marginTop: reSize / 40 }}>
-                <Pressable
-                  style={({ pressed }) => [
-                    {
-                      opacity: pressed ? 0.5 : 1.0,
-                      backgroundColor: theme.colors.primary,
-                      borderRadius: reSize / 120,
-                      padding: reSize / 120,
-                    },
-                  ]}
-                  onPress={() => navigation.replace("Home")}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: theme.colors.onPrimaryContainer,
-                        fontSize: reSize / 19,
-                        marginBottom: reSize / 140,
-                      }}
-                    >
-                      Get Started
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
-  } else {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          <Header page={"Landing"} />
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 50,
-            }}
-          >
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  fontSize: reSize / 18,
-                  marginBottom: 20,
-                }}
-              >
-                Your path to becoming a
-              </Text>
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                  fontSize: reSize / 12,
-                  marginBottom: 20,
-                }}
-              >
-                Sudoku Guru
-              </Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <SudokuBoard gameType={"Demo"} strategies={strategies} />
-              <View style={{ alignItems: "center", marginTop: reSize / 18 }}>
-                <Pressable
-                  style={({ pressed }) => [
-                    {
-                      opacity: pressed ? 0.5 : 1.0,
-                      backgroundColor: theme.colors.primary,
-                      borderRadius: reSize / 120,
-                      padding: reSize / 50,
-                    },
-                  ]}
-                  onPress={() => navigation.replace("Home")}
-                >
-                  <View>
-                    <Text
-                      style={{
-                        color: theme.colors.onBackground,
-                        fontSize: reSize / 19,
-                        marginBottom: reSize / 140,
-                      }}
-                    >
-                      Get Started
-                    </Text>
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-          </View>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
-  }
+        </View>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
 };
 
 export default LandingPage;

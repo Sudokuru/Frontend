@@ -7,12 +7,13 @@ describe("naked single drills", () => {
     cy.visit("");
   });
   it("finds naked single in drill and hint is correctly applied", () => {
-    cy.Start_Naked_Single_Drill();
+    cy.contains("Drill").click();
+    cy.contains("NAKED_SINGLE").click();
     let singleCount = 0,
       singleRow = 0,
       singleCol = 0;
     let note = "";
-    cy.get("[data-testid=sudokuBoard]")
+    cy.get("[data-testid=sudokuDrillBoard]")
       .within(() => {
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
@@ -56,7 +57,7 @@ describe("naked single drills", () => {
             cy.contains("Submit").click();
           })
           .then(() => {
-            cy.contains("Learn new strategies").should("exist");
+            cy.contains("NAKED_SINGLE").should("exist");
           });
       });
   });
