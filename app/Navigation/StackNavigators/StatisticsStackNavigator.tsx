@@ -8,6 +8,7 @@ const StatisticsStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: "Sudokuru",
         headerShown: false,
       }}
     >

@@ -9,6 +9,7 @@ const DrillStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: "Sudokuru",
         headerShown: false,
       }}
     >

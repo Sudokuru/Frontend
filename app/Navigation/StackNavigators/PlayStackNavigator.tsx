@@ -9,6 +9,7 @@ const PlayStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: "Sudokuru",
         headerShown: false,
       }}
     >

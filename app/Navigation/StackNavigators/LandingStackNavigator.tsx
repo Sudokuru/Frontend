@@ -10,6 +10,7 @@ const LandingStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: "Sudokuru",
         headerShown: false,
       }}
     >

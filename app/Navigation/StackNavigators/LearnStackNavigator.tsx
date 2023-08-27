@@ -9,6 +9,7 @@ const LearnStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        title: "Sudokuru",
         headerShown: false,
       }}
     >
