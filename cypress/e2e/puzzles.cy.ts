@@ -104,8 +104,14 @@ describe("Sudoku play component functions", () => {
       cy.get("[data-testid=eraseButton]").click();
       cy.Cell_Should_Have_Color(7, 6, SELECTED_COLOR_RGB);
       cy.get("[data-testid=toggleNoteModeButton]").click();
-      cy.Select_Cell(7, 6).type("123");
+      cy.Select_Cell(7, 6).type("12");
+      cy.get("[data-testid=numberControl3]").click();
       cy.get("[data-testid=cellr7c6notes\\:123]").should("exist");
+      cy.get("[data-testid=toggleNoteModeButton]").click();
+      cy.Select_Cell(7, 6).type("8");
+      cy.get("[data-testid=cellr7c6value\\:8]").should("exist");
+      cy.Select_Cell(7, 7).get("[data-testid=numberControl2]").click();
+      cy.get("[data-testid=cellr7c7value\\:2]").should("exist");
     });
   });
 
