@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Platform, Pressable, useWindowDimensions, View } from "react-native";
+import React from "react";
+import { Platform, useWindowDimensions, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { Image } from "react-native";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -13,11 +12,9 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import NavigationSideBar from "../Components/NavigationBar";
-import { Surface, Text, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
-import Header from "../Components/Header";
 import NavigationButton from "../Components/Home/NavigationButton";
 
 // Example of how to use PressableStates
@@ -65,9 +62,7 @@ const LandingPage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        {/* <Header page="Landing" /> */}
         <View style={{ flexDirection: "row" }}>
-          {/* <NavigationSideBar /> */}
           <SudokuBoard gameType={"Demo"} strategies={strategies} />
           <View
             style={{

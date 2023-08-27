@@ -11,7 +11,7 @@ const LearnStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={LearnHomePage} />
+      <Stack.Screen name="LearnPage" component={LearnHomePage} />
     </Stack.Navigator>
   );
 };

@@ -4,14 +4,12 @@ import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import Header from "../Components/Header";
 import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
 import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
-import NavigationSideBar from "../Components/NavigationBar";
 
 const LearnHomePage = () => {
   const navigation: any = useNavigation();
@@ -55,9 +53,7 @@ const LearnHomePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        {/* <Header /> */}
         <View style={{ flexDirection: "row" }}>
-          {/* <NavigationSideBar /> */}
           <View
             style={{
               flexDirection: "column",

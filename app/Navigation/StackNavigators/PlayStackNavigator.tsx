@@ -11,7 +11,7 @@ const PlayStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={PlayHomePage} />
+      <Stack.Screen name="PlayPage" component={PlayHomePage} />
     </Stack.Navigator>
   );
 };

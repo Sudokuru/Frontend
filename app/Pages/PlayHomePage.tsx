@@ -1,13 +1,11 @@
 import React from "react";
 import { View, Pressable, useWindowDimensions } from "react-native";
-import { Text, useTheme, ActivityIndicator, Button } from "react-native-paper";
+import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import Header from "../Components/Header";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
-import NavigationSideBar from "../Components/NavigationBar";
 import { Puzzles } from "../Functions/Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
 
@@ -60,9 +58,7 @@ const PlayHomePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        {/* <Header /> */}
         <View style={{ flexDirection: "row" }}>
-          {/* <NavigationSideBar /> */}
           <View
             style={{
               flexDirection: "column",

@@ -23,28 +23,28 @@ const NavigationSideBar = (props: any) => {
       <Drawer.Item
         icon={"book-open-page-variant"}
         label="Learn"
-        active={isCurrentPage === "LearnHome"}
+        active={isCurrentPage === "Learn"}
         onPress={() => {
-          updateCurrentPage("LearnHome");
-          navigation.navigate("LearnHome");
+          updateCurrentPage("Learn");
+          navigation.navigate("Learn");
         }}
       />
       <Drawer.Item
         icon={"whistle"}
         label="Drill"
-        active={isCurrentPage === "DrillHome"}
+        active={isCurrentPage === "Drill"}
         onPress={() => {
-          updateCurrentPage("DrillHome");
-          navigation.navigate("DrillHome");
+          updateCurrentPage("Drill");
+          navigation.navigate("Drill");
         }}
       />
       <Drawer.Item
         icon={"play"}
         label="Play"
-        active={isCurrentPage === "PlayHome"}
+        active={isCurrentPage === "Play"}
         onPress={() => {
-          updateCurrentPage("PlayHome");
-          navigation.navigate("PlayHome");
+          updateCurrentPage("Play");
+          navigation.navigate("Play");
         }}
       />
     </Drawer.Section>

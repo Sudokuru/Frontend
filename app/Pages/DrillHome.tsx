@@ -6,7 +6,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
-import NavigationSideBar from "../Components/NavigationBar";
+import NavigationSideBar from "../Components/NavigationSideBar";
 import Header from "../Components/Header";
 import DrillPanel from "../Components/Home/DrillPanel";
 
@@ -29,9 +29,7 @@ const DrillHomePage = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={{ width: size.width, height: size.height }}>
-        {/* <Header /> */}
         <View style={{ flexDirection: "row" }}>
-          {/* <NavigationSideBar /> */}
           <View
             style={{
               flexDirection: "column",

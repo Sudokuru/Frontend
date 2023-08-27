@@ -7,14 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton } from "react-native-paper";
 
-interface header {
-  page?: string;
-}
-
-const Header = (props: header) => {
+const Header = () => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark, updateCurrentPage } =
+  const { isThemeDark, isCurrentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("./goldLogoText.png");
@@ -39,7 +35,7 @@ const Header = (props: header) => {
          * If we are on the Landing page, Logo will not navigate to the Landing page
          * If we are on any other page, Logo will navigate to the Landing page
          */
-        props.page == "Landing" ? (
+        isCurrentPage == "Landing" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -75,16 +71,16 @@ const Header = (props: header) => {
           marginLeft: 10,
         }}
       >
-        {props.page == "No" ? (
+        {isCurrentPage == "No" ? (
           <></>
-        ) : props.page == "Statistics" ? (
+        ) : isCurrentPage == "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {props.page == "No" ? (
+        {isCurrentPage == "No" ? (
           <></>
-        ) : props.page == "Profile" ? (
+        ) : isCurrentPage == "Profile" ? (
           <HomeButton />
         ) : (
           <ProfileButton />

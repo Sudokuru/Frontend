@@ -56,7 +56,6 @@ const StatisticsPage = () => {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          {/* <Header page="Statistics" /> */}
           <ActivityIndicator animating={true} color={theme.colors.primary} />
         </SafeAreaView>
       </SafeAreaProvider>
@@ -66,7 +65,6 @@ const StatisticsPage = () => {
       <SafeAreaProvider>
         <SafeAreaView style={{ height: "100%", width: "100%" }}>
           <ScrollView>
-            {/* <Header page="Statistics" /> */}
             <View
               style={{
                 flex: 1,

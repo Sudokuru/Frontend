@@ -1,19 +1,19 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import DrillHomePage from "../../Pages/DrillHome";
+import StatisticsPage from "../../Pages/StatisticsPage";
 
 const Stack = createStackNavigator();
 
-const DrillStackNavigator = () => {
+const StatisticsStackNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="DrillPage" component={DrillHomePage} />
+      <Stack.Screen name="StatisticsPage" component={StatisticsPage} />
     </Stack.Navigator>
   );
 };
 
-export default DrillStackNavigator;
+export default StatisticsStackNavigator;

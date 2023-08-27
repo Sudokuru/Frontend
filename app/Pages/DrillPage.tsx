@@ -17,7 +17,6 @@ const DrillPage = (props: any) => {
   return (
     <SafeAreaProvider>
       <SafeAreaView>
-        {/* <Header page={"Sudoku"} /> */}
         <View style={homeScreenStyles.home}>
           <View style={styles.statisticsTitle}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}

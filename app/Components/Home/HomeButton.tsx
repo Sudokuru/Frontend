@@ -7,15 +7,17 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 const HomeButton = () => {
   const navigation: any = useNavigation();
   const theme = useTheme();
-
-  const { isCurrentPage } = React.useContext(PreferencesContext);
+  const { updateCurrentPage } = React.useContext(PreferencesContext);
 
   return (
     <Button
       mode="contained"
       testID={"ViewHomePageButton"}
       style={{ marginRight: 5 }}
-      onPress={() => navigation.navigate(isCurrentPage)}
+      onPress={() => {
+        updateCurrentPage("Landing");
+        navigation.navigate("Landing");
+      }}
     >
       <MaterialCommunityIcons
         name="home"
