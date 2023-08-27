@@ -99,6 +99,10 @@ describe("Sudoku play component functions", () => {
           }
         }
       }
+      cy.Select_Cell(7, 6);
+      cy.Cell_Should_Have_Color(7, 6, SELECTED_CONFLICT_COLOR_RGB);
+      cy.get("[data-testid=eraseButton]").click();
+      cy.Cell_Should_Have_Color(7, 6, SELECTED_COLOR_RGB);
     });
   });
 

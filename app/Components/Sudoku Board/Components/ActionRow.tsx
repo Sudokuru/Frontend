@@ -56,7 +56,11 @@ const ActionRow = (props: any) => {
         )}
       </Pressable>
       {/* Erase */}
-      <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
+      <Pressable
+        onPress={eraseSelected}
+        disabled={prefilled || inHintMode}
+        testID={"eraseButton"}
+      >
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
           name="eraser"
