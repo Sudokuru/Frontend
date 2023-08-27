@@ -93,6 +93,7 @@ const LandingPage = () => {
               style={{
                 flexDirection: "column",
                 gap: minWindowSize / 25,
+                justifyContent: "center",
                 // backgroundColor: 'blue'
               }}
             >

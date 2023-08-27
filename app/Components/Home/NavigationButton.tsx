@@ -23,8 +23,8 @@ const NavigationButton = (props: navigationButton) => {
 
   const { updateCurrentPage } = React.useContext(PreferencesContext);
 
-  const WIDTH_FACTOR: number = props.widthFactor ? props.widthFactor : 5;
-  const HEIGHT_FACTOR: number = props.heightFactor ? props.heightFactor : 10;
+  const WIDTH_FACTOR: number = props.widthFactor ? props.widthFactor : 4.5;
+  const HEIGHT_FACTOR: number = props.heightFactor ? props.heightFactor : 9;
   const HOVER_SIZE_FACTOR: number = props.hoverSizeFactor
     ? props.hoverSizeFactor
     : 1.1;
