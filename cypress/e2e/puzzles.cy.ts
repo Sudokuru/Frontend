@@ -132,6 +132,7 @@ describe("Sudoku play component functions", () => {
         .children()
         .should("have.css", "color", PLACE_NOTE_TEXT_COLOR_RGB);
       cy.get("[data-testid=rightArrow]").click();
+      cy.get("[data-testid=sudokuBoard]").should("not.exist");
     });
   });
 });
