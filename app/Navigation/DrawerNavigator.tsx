@@ -24,6 +24,7 @@ const DrawerNavigator = () => {
       }}
       screenOptions={{
         drawerStyle: {
+          width: 210,
           backgroundColor: theme.colors.background,
         },
         headerShown: true,
