@@ -6,6 +6,8 @@ import {
   NOT_SELECTED_CONFLICT_COLOR_RGB,
   SELECTED_CONFLICT_COLOR_RGB,
   REMOVE_NOTE_TEXT_COLOR_RGB,
+  NOTE_TEXT_COLOR_RGB,
+  PLACE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
 
 describe("Sudoku play component functions", () => {
@@ -114,6 +116,9 @@ describe("Sudoku play component functions", () => {
       cy.Select_Cell(7, 7).get("[data-testid=numberControl2]").click();
       cy.get("[data-testid=cellr7c7value\\:2]").should("exist");
       cy.get("[data-testid=hintButton]").click();
+      cy.get("[data-testid=note4]")
+        .children()
+        .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
       cy.get("[data-testid=note5]")
         .children()
         .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
@@ -122,6 +127,11 @@ describe("Sudoku play component functions", () => {
         .get("[data-testid=checkMark]")
         .click();
       cy.get("[data-testid=cellr7c8notes\\:4]").should("exist");
+      cy.get("[data-testid=hintButton]").click();
+      cy.get("[data-testid=note4]")
+        .children()
+        .should("have.css", "color", PLACE_NOTE_TEXT_COLOR_RGB);
+      cy.get("[data-testid=rightArrow]").click();
     });
   });
 
