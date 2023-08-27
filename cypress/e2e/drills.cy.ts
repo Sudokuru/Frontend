@@ -16,16 +16,16 @@ describe("naked single drills", () => {
       .then((cellIds) => {
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
-            if (cellIds[i][j].includes("notes:")) {
-              let notesIndex = cellIds[i][j].indexOf("notes:");
-              let notesString = cellIds[i][j].substring(notesIndex + 6);
-              if (notesString.length === 1) {
-                singleCount++;
-                singleRow = i;
-                singleCol = j;
-                note = notesString;
+            cy.Get_Cell_Notes(cellIds[i][j]).then((notes) => {
+              if (notes !== null) {
+                if (notes.length === 1) {
+                  singleCount++;
+                  singleRow = i;
+                  singleCol = j;
+                  note = notes;
+                }
               }
-            }
+            });
           }
         }
       })

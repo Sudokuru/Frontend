@@ -15,6 +15,14 @@ declare global {
        * @param boardType - The type of board to get the cell ids from e.g. "sudokuDrillBoard"
        */
       Get_Cell_IDs(boardType: string): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to get the notes from a cell id.
+       * @example cy.Get_Cell_Notes()
+       * @param cellId - The id of the cell to get the notes from
+       * @returns The notes of the cell or null if the cell does not have notes
+       */
+      Get_Cell_Notes(cellId: string): Chainable<any>;
     }
   }
 }

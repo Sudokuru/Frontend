@@ -24,3 +24,11 @@ Cypress.Commands.add("Get_Cell_IDs", (boardType) => {
       return cellIds;
     });
 });
+
+Cypress.Commands.add("Get_Cell_Notes", (cellId) => {
+  if (!cellId.includes("notes:")) {
+    return cy.wrap(null);
+  }
+  let notesIndex = cellId.indexOf("notes:");
+  return cy.wrap(cellId.substring(notesIndex + 6));
+});
