@@ -46,7 +46,7 @@ const NavigationButton = (props: navigationButton) => {
             style={{
               width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
               height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,
-              borderColor: theme.colors.outline,
+              borderColor: theme.colors.onSurfaceVariant,
               borderWidth: 4,
             }}
           >
