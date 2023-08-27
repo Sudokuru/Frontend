@@ -31,6 +31,30 @@ describe("Sudoku play component functions", () => {
   it("Should solve game", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
+      cy.Cell_Should_Have_Color(7, 7, NOT_HIGHLIGHTED_COLOR_RGB);
+      cy.Select_Cell(7, 7);
+      for (let row = 0; row < 9; row++) {
+        for (let column = 0; column < 9; column++) {
+          if (row === 7 && column === 6) {
+            cy.Cell_Should_Have_Color(
+              row,
+              column,
+              NOT_SELECTED_CONFLICT_COLOR_RGB
+            );
+          } else if (row === 7 && column === 7) {
+            cy.Cell_Should_Have_Color(row, column, SELECTED_COLOR_RGB);
+          } else if (row === 7) {
+            cy.Cell_Should_Have_Color(row, column, PEER_SELECTED_COLOR_RGB);
+          } else if (column === 7 && row !== 7) {
+            cy.Cell_Should_Have_Color(row, column, PEER_SELECTED_COLOR_RGB);
+          } else if (row > 5 && column > 5) {
+            cy.Cell_Should_Have_Color(row, column, PEER_SELECTED_COLOR_RGB);
+          } else {
+            cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
+          }
+        }
+      }
+      cy.Select_Cell(7, 7).type("1");
     });
   });
 

@@ -41,3 +41,7 @@ Cypress.Commands.add("Cell_Should_Have_Color", (row, column, color) => {
     color
   );
 });
+
+Cypress.Commands.add("Select_Cell", (row, column) => {
+  cy.get("[data-testid^=cellr" + row + "c" + column + "]").click();
+});
