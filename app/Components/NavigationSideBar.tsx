@@ -14,7 +14,7 @@ const NavigationSideBar = (props: any) => {
       <Drawer.Item
         icon={"menu"}
         testID="CloseDrawerNavigation"
-        label="Close Menu"
+        label="Close"
         active={false}
         onPress={() => {
           props.navigation.closeDrawer();
