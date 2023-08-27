@@ -26,7 +26,11 @@ const ActionRow = (props: any) => {
   return (
     <View style={styles(cellSize).actionControlRow}>
       {/* Undo */}
-      <Pressable onPress={undo} disabled={!history.size || inHintMode}>
+      <Pressable
+        onPress={undo}
+        disabled={!history.size || inHintMode}
+        testID={"undoButton"}
+      >
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
           name="undo"

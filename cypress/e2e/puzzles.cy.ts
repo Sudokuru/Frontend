@@ -85,6 +85,20 @@ describe("Sudoku play component functions", () => {
           }
         }
       }
+      cy.get("[data-testid=undoButton]").click();
+      for (let row = 0; row < 9; row++) {
+        for (let column = 0; column < 9; column++) {
+          if (row === 7 && column === 6) {
+            cy.Cell_Should_Have_Color(
+              row,
+              column,
+              NOT_SELECTED_CONFLICT_COLOR_RGB
+            );
+          } else {
+            cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
+          }
+        }
+      }
     });
   });
 
