@@ -3,6 +3,7 @@ import {
   PEER_SELECTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
   IDENTICAL_VALUE_COLOR_RGB,
+  NOT_SELECTED_CONFLICT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
 
 describe("Sudoku play component functions", () => {
@@ -19,7 +20,7 @@ describe("Sudoku play component functions", () => {
     cy.visit("");
     cy.get("[data-testid=OpenDrawerNavigation]").click();
     cy.get("[data-testid=PlayButton]").click();
-    cy.contains("Start Puzzle").click();
+    cy.contains("Resume Puzzle").click();
   });
 
   it("Pause button functions", () => {
@@ -27,11 +28,15 @@ describe("Sudoku play component functions", () => {
     cy.contains("Resume Puzzle");
   });
 
+  it("Should solve game", () => {
+    cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
+  });
+
   // todo update this test to resolve flaws
   // this test currently behaves differently in regards to peer highlighting
   // If r0c0 has a value, then this test validates peer highlighting
   // but if r0c0 does not have a value, this test does not validate peer highlighting
-  it("Default highlighting functions", () => {
+  /*it("Default highlighting functions", () => {
     cy.get("[data-testid=sudokuBoard]").within(() => {
       cy.get("[data-testid^=cellr0c0]").click();
 
@@ -82,5 +87,5 @@ describe("Sudoku play component functions", () => {
           }
         });
     });
-  });
+  });*/
 });

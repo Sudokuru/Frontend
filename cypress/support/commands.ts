@@ -33,3 +33,11 @@ Cypress.Commands.add("Get_Cell_Notes", (cellId) => {
   let notesIndex = cellId.indexOf("notes:");
   return cy.wrap(cellId.substring(notesIndex + 6));
 });
+
+Cypress.Commands.add("Cell_Should_Have_Color", (row, column, color) => {
+  cy.get("[data-testid^=cellr" + row + "c" + column + "]").should(
+    "have.css",
+    "background-color",
+    color
+  );
+});

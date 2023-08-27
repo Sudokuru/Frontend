@@ -23,6 +23,19 @@ declare global {
        * @returns The notes of the cell or null if the cell does not have notes
        */
       Get_Cell_Notes(cellId: string): Chainable<any>;
+
+      /**
+       * Custom command to check if a cell has a certain color.
+       * @example cy.Cell_Should_Have_Color(0, 0, SELECTED_COLOR_RGB)
+       * @param row - The row of the cell to check
+       * @param column - The column of the cell to check
+       * @param color - The color to check for
+       */
+      Cell_Should_Have_Color(
+        row: number,
+        column: number,
+        color: string
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
