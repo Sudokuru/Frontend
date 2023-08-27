@@ -9,11 +9,13 @@ import { useWindowDimensions } from "react-native";
 import NavigationSideBar from "../Components/NavigationSideBar";
 import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator";
 import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
+import { useTheme } from "react-native-paper";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const size = useWindowDimensions();
+  const theme = useTheme();
 
   return (
     <Drawer.Navigator
@@ -21,6 +23,9 @@ const DrawerNavigator = () => {
         return <NavigationSideBar navigation={navigation} />;
       }}
       screenOptions={{
+        drawerStyle: {
+          backgroundColor: theme.colors.background,
+        },
         headerShown: true,
         header: ({ navigation, route, options }) => {
           return <Header />;
