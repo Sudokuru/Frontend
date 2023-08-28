@@ -7,32 +7,25 @@ describe("naked single drills", () => {
     cy.visit("");
   });
   it("finds naked single in drill and hint is correctly applied", () => {
-    cy.get("[data-testid=OpenDrawerNavigation]").click();
-    cy.get("[data-testid=DrillButton]").click();
-    cy.contains("NAKED_SINGLE").click();
+    cy.Start_Naked_Single_Drill();
     let singleCount = 0,
       singleRow = 0,
       singleCol = 0;
     let note = "";
-    cy.get("[data-testid=sudokuDrillBoard]")
-      .within(() => {
+    cy.Get_Cell_IDs("sudokuDrillBoard")
+      .then((cellIds: string[][]) => {
         for (let i = 0; i < 9; i++) {
           for (let j = 0; j < 9; j++) {
-            cy.get("[data-testid^=cellr" + i + "c" + j + "]")
-              .invoke("data", "testid")
-              .then((cellId) => {
-                let cellIdString = cellId.toString();
-                if (cellIdString.includes("notes:")) {
-                  let notesIndex = cellIdString.indexOf("notes:");
-                  let notesString = cellIdString.substring(notesIndex + 6);
-                  if (notesString.length === 1) {
-                    singleCount++;
-                    singleRow = i;
-                    singleCol = j;
-                    note = notesString;
-                  }
+            cy.Get_Cell_Notes(cellIds[i][j]).then((notes) => {
+              if (notes !== null) {
+                if (notes.length === 1) {
+                  singleCount++;
+                  singleRow = i;
+                  singleCol = j;
+                  note = notes;
                 }
-              });
+              }
+            });
           }
         }
       })

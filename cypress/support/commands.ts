@@ -1,37 +1,47 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+Cypress.Commands.add("Start_Naked_Single_Drill", () => {
+  cy.get("[data-testid=OpenDrawerNavigation]").click();
+  cy.get("[data-testid=DrillButton]").click();
+  cy.contains("NAKED_SINGLE").click();
+});
+
+Cypress.Commands.add("Get_Cell_IDs", (boardType) => {
+  let cellIds: string[][] = new Array(9);
+  for (let i = 0; i < 9; i++) {
+    cellIds[i] = new Array(9);
+  }
+  cy.get("[data-testid=" + boardType + "]")
+    .within(() => {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          cy.get("[data-testid^=cellr" + i + "c" + j + "]")
+            .invoke("data", "testid")
+            .then((cellId) => {
+              cellIds[i][j] = cellId.toString();
+            });
+        }
+      }
+    })
+    .then(() => {
+      return cellIds;
+    });
+});
+
+Cypress.Commands.add("Get_Cell_Notes", (cellId) => {
+  if (!cellId.includes("notes:")) {
+    return cy.wrap(null);
+  }
+  let notesIndex = cellId.indexOf("notes:");
+  return cy.wrap(cellId.substring(notesIndex + 6));
+});
+
+Cypress.Commands.add("Cell_Should_Have_Color", (row, column, color) => {
+  cy.get("[data-testid^=cellr" + row + "c" + column + "]").should(
+    "have.css",
+    "background-color",
+    color
+  );
+});
+
+Cypress.Commands.add("Select_Cell", (row, column) => {
+  cy.get("[data-testid^=cellr" + row + "c" + column + "]").click();
+});

@@ -5,6 +5,7 @@ export const IDENTICAL_VALUE_COLOR = "#C8DCC4";
 export const SELECTED_COLOR = "#9CC4EC";
 export const REMOVE_NOTE_TEXT_COLOR = "#FF0000";
 export const PLACE_NOTE_TEXT_COLOR = "#F2CA7E";
+export const NOTE_TEXT_COLOR = "#000000";
 export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
@@ -33,4 +34,5 @@ export const IDENTICAL_VALUE_COLOR_RGB = RGB(IDENTICAL_VALUE_COLOR);
 export const SELECTED_COLOR_RGB = RGB(SELECTED_COLOR);
 export const REMOVE_NOTE_TEXT_COLOR_RGB = RGB(REMOVE_NOTE_TEXT_COLOR);
 export const PLACE_NOTE_TEXT_COLOR_RGB = RGB(PLACE_NOTE_TEXT_COLOR);
+export const NOTE_TEXT_COLOR_RGB = RGB(NOTE_TEXT_COLOR);
 export const NOT_HIGHLIGHTED_COLOR_RGB = RGB(NOT_HIGHLIGHTED_COLOR);

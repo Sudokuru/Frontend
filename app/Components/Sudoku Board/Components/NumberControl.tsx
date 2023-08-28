@@ -26,6 +26,7 @@ const NumberControl = (props: any) => {
             style={
               styles(cellSize, theme.colors.primaryContainer).numberContainer
             }
+            testID={"numberControl" + number}
           >
             <Text
               style={
