@@ -113,9 +113,11 @@ jobs:
         with:
           textReportPath: './coverage/coverage-final.txt'
           srcBasePath: '.'
-      - uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          message: ${{ steps.coverage.outputs.markdownReport }}
+      
+      - run: echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
+      # - uses: marocchino/sticky-pull-request-comment@v2
+      #   with:
+      #     message: ${{ steps.coverage.outputs.markdownReport }}
 
       - uses: actions/upload-artifact@v3
         if: failure()
