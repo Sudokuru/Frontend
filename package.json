@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
+    "prepare": "husky install",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
     "ios": "expo start --ios --clear",
     "web": "npx expo start --web --clear",
+    "web:test": "cross-env ENV=development npx expo start --web --clear",
     "build:metro-web": "npx expo export --platform web",
     "vercel:preview": "vercel --name sudokuru-dev --yes",
-    "docker:start": "npm run docker:pull && docker-compose up -d",
-    "docker:pull": "docker pull ghcr.io/sudokuru/usergamestatisticsbff && docker pull ghcr.io/sudokuru/useractivegamesbff && docker pull ghcr.io/sudokuru/usergamestatistics && docker pull ghcr.io/sudokuru/puzzle && docker pull ghcr.io/sudokuru/useractivegames",
-    "docker:imageVersions": "docker images",
-    "prepare": "husky install",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "cypress:open": "npx cypress open",
+    "cypress:run": "npx cypress run --config video=false,screenshotOnRunFailure=false"
   },
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
@@ -53,6 +53,7 @@
     "@types/react": "^18.0.30",
     "@types/react-native": "^0.70.13",
     "babel-plugin-istanbul": "^6.1.1",
+    "cross-env": "^7.0.3",
     "cypress": "^12.17.4",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",

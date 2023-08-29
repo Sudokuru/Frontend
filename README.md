@@ -1,4 +1,4 @@
-# How to start the frontend app
+# Start the frontend app
 
 Run `npm i` in the root folder  
 Run `npm run start`
@@ -12,6 +12,17 @@ Contact Thomas to get added to the Expo organization so that you can log in with
 For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 
 For Web, hit the w key to start up the website at `localhost:19000`
+
+# Run Code Coverage and Cypress E2E tests
+
+Run `npm run web:test`  
+This starts the website in development mode, with access to the development plugins.  
+Run `npm run cypress:open` or `npx cypress open` to open up the cypress testing interface.  
+After running tests, `.nyc_output` and `coverage` folders are generated. The coverage folder contains all of the code coverage results from the tests.  
+More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
+**Note: Running individual spec files will override the code coverage of the previous spec file**  
+To generate a code-coverage report for all spec files, run the command `npx cypress run`. This will run all of the tests at the same time and output a combined code-coverage report at the end.  
+To disable screenshots and video for cypress tests run `npm run cypress:run`
 
 # Deployments
 
