@@ -103,6 +103,8 @@ jobs:
           wait-on: 'http://localhost:19000/'
           wait-on-timeout: 120
 
+      - run: ls -A
+
       - uses: fingerprintjs/action-coverage-report-md@v1
         id: coverage
         with:
