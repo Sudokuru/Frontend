@@ -105,11 +105,14 @@ jobs:
 
       - run: ls -A -R
 
+      - run: npx nyc report --reporter=text > coverage-final.txt
+        working-directory: ./coverage
+
       - uses: fingerprintjs/action-coverage-report-md@v1
         id: coverage
         with:
-          textReportPath: 'coverage-final.json'
-          srcBasePath: 'coverage'
+          textReportPath: 'coverage-final.txt'
+          srcBasePath: './coverage'
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: ${{ steps.coverage.outputs.markdownReport }}
