@@ -103,13 +103,13 @@ jobs:
           wait-on: 'http://localhost:19000/'
           wait-on-timeout: 120
 
-      - run: ls -A
+      - run: ls -A -R
 
       - uses: fingerprintjs/action-coverage-report-md@v1
         id: coverage
         with:
-          textReportPath: './coverage-final.json'
-          srcBasePath: './coverage'
+          textReportPath: 'coverage-final.json'
+          srcBasePath: 'coverage'
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: ${{ steps.coverage.outputs.markdownReport }}
