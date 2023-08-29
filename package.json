@@ -1,7 +1,7 @@
 {
   "name": "sudokuru-frontend",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "./app/App.tsx",
   "scripts": {
     "prepare": "husky install",
     "start": "expo start --clear",
