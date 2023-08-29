@@ -111,8 +111,8 @@ jobs:
       - uses: fingerprintjs/action-coverage-report-md@v1
         id: coverage
         with:
-          textReportPath: 'coverage-final.txt'
-          srcBasePath: './coverage'
+          textReportPath: './coverage/coverage-final.txt'
+          srcBasePath: '.'
       - uses: marocchino/sticky-pull-request-comment@v2
         with:
           message: ${{ steps.coverage.outputs.markdownReport }}
