@@ -1,0 +1,75 @@
+---------------------------------------|---------|----------|---------|---------|-------------------
+File                                   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------------------------------|---------|----------|---------|---------|-------------------
+All files                              |   64.41 |    53.03 |   56.55 |   64.67 |                   
+ Frontend                              |     100 |      100 |     100 |     100 |                   
+  App.tsx                              |     100 |      100 |     100 |     100 |                   
+ Frontend/app/Components               |   69.56 |    58.33 |   55.55 |   69.56 |                   
+  Header.tsx                           |      80 |    58.33 |   66.66 |      80 | 51-52             
+  NavigationSideBar.tsx                |   61.53 |      100 |      50 |   61.53 | 20-40             
+ Frontend/app/Components/Home          |   43.66 |    31.03 |   33.33 |   43.47 |                   
+  DrillPanel.tsx                       |     100 |      100 |     100 |     100 |                   
+  HomeButton.tsx                       |   16.66 |      100 |       0 |   16.66 | 7-17              
+  LessonButton.tsx                     |   18.18 |        0 |       0 |   18.18 | 9-27,44           
+  LessonPanel.tsx                      |       4 |        0 |       0 |    4.16 | 19-80             
+  NavigationButton.tsx                 |   85.71 |       50 |   66.66 |   85.71 | 35-36             
+ Frontend/app/Components/Profile       |   66.66 |      100 |      50 |   66.66 |                   
+  ProfileButton.tsx                    |   66.66 |      100 |      50 |   66.66 | 16-17             
+ Frontend/app/Components/Statistics    |      25 |        0 |      20 |      25 |                   
+  StatisticsButton.tsx                 |   66.66 |      100 |      50 |   66.66 | 16-17             
+  TotalStatistics.tsx                  |   11.11 |        0 |       0 |   11.11 | 7-45,99           
+ Frontend/app/Components/Sudoku Board  |   64.91 |    58.64 |    75.9 |   65.32 |                   
+  EndGameModal.tsx                     |   93.33 |       80 |      75 |   93.33 | 70                
+  SudokuBoard.tsx                      |   70.44 |    65.01 |   88.67 |    71.7 | ...1019,1024-1026 
+  sudoku.ts                            |   30.76 |    21.56 |      50 |   27.08 | 5,49-129,160-215  
+ ...Components/Sudoku Board/Components |   98.33 |    78.64 |     100 |   98.27 |                   
+  ActionRow.tsx                        |     100 |    77.77 |     100 |     100 | 24,96-101         
+  Cell.tsx                             |   97.26 |    80.82 |     100 |    97.1 | 149-153           
+  HintSection.tsx                      |     100 |    76.92 |     100 |     100 | 20,75,106-122     
+  NumberControl.tsx                    |     100 |     62.5 |     100 |     100 | 51-72             
+  Puzzle.tsx                           |     100 |      100 |     100 |     100 |                   
+ .../Components/Sudoku Board/Functions |   89.18 |    65.78 |   85.18 |   88.66 |                   
+  BoardFunctions.ts                    |   91.09 |    67.74 |   86.95 |   90.69 | ...18,287,298,301 
+  generateGame.ts                      |   77.41 |    57.14 |      75 |   77.41 | 16-24,38,66       
+ Frontend/app/Contexts                 |   71.79 |       50 |   27.77 |   71.79 |                   
+  InitializeContext.ts                 |   71.05 |       50 |   45.45 |   71.05 | ...57,61-62,66-67 
+  PreferencesContext.ts                |     100 |      100 |       0 |     100 |                   
+ Frontend/app/Functions/Api            |   38.31 |    16.66 |   52.94 |   38.67 |                   
+  Drills.ts                            |     100 |      100 |     100 |     100 |                   
+  Lessons.ts                           |       0 |        0 |       0 |       0 | 27-271            
+  Profile.ts                           |   31.57 |     8.33 |   66.66 |   31.57 | 18,26-38          
+  Puzzles.ts                           |   80.64 |    58.33 |      80 |   83.33 | 202-211           
+  Statistics.ts                        |   33.33 |       10 |      40 |   33.33 | 14-34,55,66-67    
+ Frontend/app/Functions/AsyncStorage   |   54.16 |       50 |      60 |   54.16 |                   
+  AsyncStorage.ts                      |   54.16 |       50 |      60 |   54.16 | ...24,33-39,50,58 
+ Frontend/app/Functions/Board          |     100 |    97.36 |     100 |     100 |                   
+  HintsParsing.ts                      |     100 |    97.36 |     100 |     100 | 68                
+ Frontend/app/Functions/ContextParsing |      12 |        0 |       0 |   13.04 |                   
+  learnedLessons.ts                    |      12 |        0 |       0 |   13.04 | ...43-50,62,66-94 
+ ...app/Functions/LocalStore/DataStore |    37.5 |        5 |      50 |    37.5 |                   
+  LocalDatabase.ts                     |    37.5 |        5 |      50 |    37.5 | 11,23-60          
+ Frontend/app/Functions/global         |     100 |      100 |     100 |     100 |                   
+  WindowDimensions.ts                  |     100 |      100 |     100 |     100 |                   
+ Frontend/app/Navigation               |     100 |      100 |     100 |     100 |                   
+  DrawerNavigator.tsx                  |     100 |      100 |     100 |     100 |                   
+ ...end/app/Navigation/StackNavigators |   83.33 |      100 |      50 |   83.33 |                   
+  DrillStackNavigator.tsx              |     100 |      100 |     100 |     100 |                   
+  LandingStackNavigator.tsx            |     100 |      100 |     100 |     100 |                   
+  LearnStackNavigator.tsx              |   66.66 |      100 |       0 |   66.66 | 9                 
+  PlayStackNavigator.tsx               |     100 |      100 |     100 |     100 |                   
+  ProfileStackNavigator.tsx            |   66.66 |      100 |       0 |   66.66 | 8                 
+  StatisticsStackNavigator.tsx         |   66.66 |      100 |       0 |   66.66 | 8                 
+ Frontend/app/Pages                    |    41.2 |     12.5 |   19.67 |   43.78 |                   
+  DrillGame.tsx                        |     100 |       50 |     100 |     100 | 9                 
+  DrillPage.tsx                        |   66.66 |       50 |   14.28 |   85.71 | 58-106            
+  LandingPage.tsx                      |     100 |      100 |     100 |     100 |                   
+  LearnPage.tsx                        |    4.16 |        0 |       0 |    4.54 | 15-131            
+  Lesson.tsx                           |       4 |        0 |       0 |    4.16 | 27-324            
+  PlayPage.tsx                         |      75 |    83.33 |      50 |   83.33 | 42,89,124-154     
+  ProfilePage.tsx                      |   16.66 |        0 |       0 |   16.66 | 10-29             
+  StatisticsPage.tsx                   |    3.44 |        0 |       0 |     3.7 | 15-116            
+  SudokuPage.tsx                       |     100 |      100 |     100 |     100 |                   
+ Frontend/app/Styling                  |   96.66 |       50 |     100 |   96.66 |                   
+  HighlightColors.ts                   |   95.83 |       50 |     100 |   95.83 | 25                
+  ThemeColors.tsx                      |     100 |      100 |     100 |     100 |                   
+---------------------------------------|---------|----------|---------|---------|-------------------
