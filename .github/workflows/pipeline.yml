@@ -103,20 +103,6 @@ jobs:
           wait-on: 'http://localhost:19000/'
           wait-on-timeout: 120
 
-      - run: npx nyc report --reporter=text > coverage-final.txt
-        working-directory: ./coverage
-
-      - uses: fingerprintjs/action-coverage-report-md@v1
-        id: coverage
-        with:
-          textReportPath: './coverage/coverage-final.txt'
-          srcBasePath: '.'
-      
-      - run: echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
-      # - uses: marocchino/sticky-pull-request-comment@v2
-      #   with:
-      #     message: ${{ steps.coverage.outputs.markdownReport }}
-
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -128,6 +114,23 @@ jobs:
         with:
           name: cypress-videos
           path: ./cypress/videos
+
+      - run: npx nyc report --reporter=text > coverage-final.txt
+        working-directory: ./coverage
+  
+      - uses: fingerprintjs/action-coverage-report-md@v1
+        id: coverage
+        with:
+          textReportPath: './coverage/coverage-final.txt'
+          srcBasePath: '.'
+      
+      - run: echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
+
+      - run: echo "Testing Markdown" >> $GITHUB_STEP_SUMMARY
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.coverage.outputs.markdownReport }}
 
   # app_build_android:
   #   runs-on: ubuntu-latest
