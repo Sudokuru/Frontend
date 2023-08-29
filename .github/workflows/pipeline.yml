@@ -103,8 +103,6 @@ jobs:
           wait-on: 'http://localhost:19000/'
           wait-on-timeout: 120
 
-      - run: ls -A -R
-
       - run: npx nyc report --reporter=text > coverage-final.txt
         working-directory: ./coverage
 
