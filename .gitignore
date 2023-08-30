@@ -1,5 +1,7 @@
 .idea/
 node_modules/
+coverage/
+.nyc_output/
 .expo/
 dist/
 .env
