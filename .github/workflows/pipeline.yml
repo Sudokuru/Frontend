@@ -118,6 +118,11 @@ jobs:
       - name: Coveralls
         uses: coverallsapp/github-action@v2
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
       - run: npx nyc report --reporter=text > coverage-final.txt
         working-directory: ./coverage
   
