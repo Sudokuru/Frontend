@@ -115,6 +115,9 @@ jobs:
           name: cypress-videos
           path: ./cypress/videos
 
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+
       - run: npx nyc report --reporter=text > coverage-final.txt
         working-directory: ./coverage
   
