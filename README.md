@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/SudoKuru/Frontend/badge.svg?branch=main)](https://coveralls.io/github/SudoKuru/Frontend?branch=main)
+
 # Start the frontend app
 
 Run `npm i` in the root folder  
