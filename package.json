@@ -11,10 +11,10 @@
     "web": "npx expo start --web --clear",
     "web:dev": "cross-env ENV=development npx expo start --web --clear",
     "build:metro-web": "npx expo export --platform web",
-    "vercel:preview": "vercel --name sudokuru-dev --yes",
+    "preview:vercel": "vercel --name sudokuru-dev --yes",
     "prettier": "npx prettier --write .",
-    "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run --config video=false,screenshotOnRunFailure=false",
+    "open:cypress": "npx cypress open",
+    "test:cypress": "npx cypress run --config video=false,screenshotOnRunFailure=false",
     "test:unit": "jest"
   },
   "lint-staged": {
