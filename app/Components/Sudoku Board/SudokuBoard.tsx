@@ -242,8 +242,6 @@ const SudokuBoard = (props: any) => {
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
 
-  const [gameType, setGameType] = useState();
-
   // drill states
   // These could probably stay as props since these values are constant and not altered.
   const [drillSolutionCells, setDrillSolutionCells] = useState();
