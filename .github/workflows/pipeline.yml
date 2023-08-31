@@ -7,7 +7,7 @@ on:
       - ".github/**"
       - "docs/**"
       - "cypress/**"
-      - "**.test.ts"
+      - "**/*.test.ts"
       - "README.md"
       - "License.md"
       - ".gitignore"
