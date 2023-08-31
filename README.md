@@ -15,7 +15,7 @@ For Web, hit the w key to start up the website at `localhost:19000`
 
 # Run Code Coverage and Cypress E2E tests
 
-Run `npm run web:test`  
+Run `npm run web:dev`  
 This starts the website in development mode, with access to the development plugins.  
 Run `npm run cypress:open` or `npx cypress open` to open up the cypress testing interface.  
 **Note: Running individual spec files will override the code coverage of the previous spec file**  
