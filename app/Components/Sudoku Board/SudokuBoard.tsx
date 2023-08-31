@@ -168,7 +168,6 @@ const PauseButton = ({ handlePause, isPaused }) => {
   );
 };
 
-//todo this function cannot be moved until globalTime situation is handled
 const HeaderRow = (props) => {
   //  Header w/ timer and pause button
   const { currentTime, activeGame, timer, setTimer } = props;
