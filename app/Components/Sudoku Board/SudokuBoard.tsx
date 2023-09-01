@@ -47,9 +47,6 @@ import { Puzzles } from "../../Functions/Api/Puzzles";
 
 let fallbackHeight = 30;
 
-// Global variables for activeGame elements
-let globalTime = 0;
-
 const styles = (cellSize, sizeConst, theme) =>
   StyleSheet.create({
     bottomActions: {
@@ -95,8 +92,8 @@ const styles = (cellSize, sizeConst, theme) =>
   });
 
 //todo this function cannot be moved until globalTime situation is handled
-export async function saveGame(activeGame) {
-  activeGame.currentTime = globalTime;
+export async function saveGame(activeGame, timer) {
+  activeGame.currentTime = timer;
 
   Puzzles.saveGame(activeGame).then((res) => {
     if (activeGame.numWrongCellsPlayed == null) {
@@ -167,39 +164,26 @@ const PauseButton = ({ handlePause, isPaused }) => {
   );
 };
 
-//todo this function cannot be moved until globalTime situation is handled
 const HeaderRow = (props) => {
   //  Header w/ timer and pause button
-  const { currentTime, activeGame } = props;
-  const [time, setTime] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const { currentTime, activeGame, timer, setTimer } = props;
   const cellSize = getCellSize();
   const navigation = useNavigation();
 
   const theme = useTheme();
 
-  // If we are resuming game, set starting time to currentTime
-  if (time == 0 && currentTime != 0) {
-    setTime(currentTime);
-  }
-  // if we are starting a new game, reset globalTime
-  else if (time == 0 && globalTime != 0) {
-    globalTime = 0;
-  }
-
   useFocusEffect(
     React.useCallback(() => {
       let interval = null;
-      if (!isPaused) {
-        interval = setInterval(() => {
-          setTime((time) => time + 1);
-          globalTime = globalTime + 1;
-        }, 1000);
-      } else {
-        clearInterval(interval);
-      }
+      interval = setInterval(() => {
+        if (currentTime && currentTime >= timer) {
+          setTimer(currentTime + 1);
+        } else {
+          setTimer(timer + 1);
+        }
+      }, 1000);
       return () => clearInterval(interval);
-    }, [isPaused])
+    })
   );
 
   const handlePause = () => {
@@ -207,7 +191,7 @@ const HeaderRow = (props) => {
     // saveGame(activeGame).then(() => {
     //   navigation.replace('Home');
     // });
-    saveGame(activeGame);
+    saveGame(activeGame, timer);
     navigation.replace("PlayPage");
   };
 
@@ -216,9 +200,9 @@ const HeaderRow = (props) => {
       <Text
         style={styles(cellSize, null, theme.colors.onBackground).headerFont}
       >
-        Time: {formatTime(time)}
+        Time: {formatTime(currentTime > timer ? currentTime : timer)}
       </Text>
-      <PauseButton handlePause={handlePause} isPaused={isPaused} />
+      <PauseButton handlePause={handlePause} isPaused={false} />
     </View>
   );
 };
@@ -241,6 +225,9 @@ const SudokuBoard = (props: any) => {
   const [historyOffSet, setHistoryOffSet] = useState<number>();
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
+
+  const setTimer = (timer: number) => useTimer(timer);
+  const [timer, useTimer] = useState<number>(0);
 
   // drill states
   // These could probably stay as props since these values are constant and not altered.
@@ -848,6 +835,8 @@ const SudokuBoard = (props: any) => {
       <HeaderRow
         currentTime={activeGame[0].currentTime}
         activeGame={activeGame[0]}
+        timer={timer}
+        setTimer={setTimer}
       />
     );
   };
