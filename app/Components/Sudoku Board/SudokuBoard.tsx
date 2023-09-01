@@ -45,10 +45,6 @@ import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 
-let drillMode = false;
-
-let landingMode = false;
-
 let fallbackHeight = 30;
 
 const styles = (cellSize, sizeConst, theme) =>
@@ -828,8 +824,8 @@ const SudokuBoard = (props: any) => {
         game={game}
         showResults={props.showGameResults}
         gameType={props.gameType}
-        landingMode={landingMode}
-        drillMode={drillMode}
+        landingMode={props.gameType == "Demo"}
+        drillMode={props.gameType == "StartDrill"}
       />
     );
   };
@@ -919,10 +915,17 @@ const SudokuBoard = (props: any) => {
     let inHintMode = board.get("inHintMode");
     let inNoteMode = board.get("inNoteMode");
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) {
+    if (
+      /^[1-9]$/.test(inputValue) &&
+      !inHintMode &&
+      !(props.gameType == "Demo")
+    ) {
       // check if input is a digit from 1 to 9
-      if (inNoteMode) addNumberAsNote(parseInt(inputValue, 10));
-      else fillNumber(parseInt(inputValue, 10));
+      if (inNoteMode) {
+        addNumberAsNote(parseInt(inputValue, 10));
+      } else {
+        fillNumber(parseInt(inputValue, 10));
+      }
     }
     if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
       eraseSelected();
@@ -1055,30 +1058,33 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  drillMode = props.gameType == "StartDrill";
-  landingMode = props.gameType == "Demo";
   let inHintMode = board ? board.get("inHintMode") : false;
 
   return (
     <View
       testID={
-        landingMode
+        props.gameType == "Demo"
           ? "sudokuDemoBoard"
-          : drillMode
+          : props.gameType == "StartDrill"
           ? "sudokuDrillBoard"
           : "sudokuBoard"
       }
       onKeyDown={handleKeyDown}
       styles={{ borderWidth: 1 }}
     >
-      {board && !landingMode && !drillMode && renderTopBar()}
+      {board &&
+        !(props.gameType == "Demo") &&
+        !(props.gameType == "StartDrill") &&
+        renderTopBar()}
       {board && renderPuzzle()}
       {board && (
         <View style={styles().bottomActions}>
-          {!landingMode && renderActions()}
-          {!landingMode && !inHintMode && renderNumberControl()}
-          {drillMode && !inHintMode && renderSubmitButton()}
-          {!landingMode && inHintMode && renderHintSection()}
+          {!(props.gameType == "Demo") && renderActions()}
+          {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
+          {props.gameType == "StartDrill" &&
+            !inHintMode &&
+            renderSubmitButton()}
+          {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
         </View>
       )}
     </View>
