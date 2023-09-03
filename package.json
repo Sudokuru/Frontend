@@ -20,14 +20,6 @@
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
   },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
-    ],
-    "collectCoverage": false,
-    "coverageDirectory": "jest-coverage"
-  },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo-google-fonts/inter": "^0.2.3",
@@ -68,6 +60,7 @@
     "husky": "^8.0.3",
     "jest": "^29.6.4",
     "jest-expo": "^49.0.0",
+    "jest-junit": "^16.0.0",
     "lint-staged": "^14.0.1",
     "metro": "^0.76.6",
     "prettier": "2.8.8",
