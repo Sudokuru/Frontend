@@ -1,7 +1,9 @@
 .idea/
 node_modules/
 coverage/
+jest-coverage/
 .nyc_output/
+junit.xml
 .expo/
 dist/
 .env

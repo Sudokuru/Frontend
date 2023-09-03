@@ -14,7 +14,7 @@ import {
   highlightGroups,
   setPlacementHighlights,
   setRemovalHighlights,
-} from "../../../Functions/Board/HintsParsing";
+} from "../Functions/HintsParsing";
 import {
   NOT_SELECTED_CONFLICT_COLOR,
   PEER_SELECTED_COLOR,
