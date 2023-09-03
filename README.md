@@ -17,6 +17,13 @@ For iOS, scan the QR code with your camera app, for Android you will need to sca
 
 For Web, hit the w key to start up the website at `localhost:19000`
 
+# Run Code Coverage and Jest E2E tests
+
+To enable code coverage, toggle `collectCoverage` to `true` in `jest.config.ts` file. Coverage results are outputed to `jest-coverage` folder.
+
+Run `npm run test:unit`
+This will run all jest tests and output to the `junit.xml` file and to console.
+
 # Run Code Coverage and Cypress E2E tests
 
 Run `npm run web:dev`  

@@ -5,7 +5,6 @@ const config: Config = {
   reporters: [
     "default",
     "github-actions",
-    //   "jest-junit"
     [
       "jest-junit",
       {
