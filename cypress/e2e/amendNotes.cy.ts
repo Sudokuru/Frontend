@@ -43,14 +43,16 @@ describe("Amend notes strategy", () => {
           }
         }
       }
-      cy.get("[data-testid=note1]")
-        .children()
-        .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-      for (let i = 2; i <= 9; i++) {
-        cy.get("[data-testid=note" + i + "]")
+      cy.get("[data-testid^=cellr0c0]").within(() => {
+        cy.get("[data-testid=note1]")
           .children()
-          .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-      }
+          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
+        for (let i = 2; i <= 9; i++) {
+          cy.get("[data-testid=note" + i + "]")
+            .children()
+            .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
+        }
+      });
       cy.get("[data-testid=rightArrow]").click();
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
@@ -69,20 +71,16 @@ describe("Amend notes strategy", () => {
           }
         }
       }
-      cy.get("[data-testid=note1]")
-        .children()
-        .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-      for (let i = 2; i <= 9; i++) {
-        if (i !== 4 && i !== 5) {
+      cy.get("[data-testid^=cellr0c0]").within(() => {
+        cy.get("[data-testid=note1]")
+          .children()
+          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
+        for (let i = 2; i <= 9; i++) {
           cy.get("[data-testid=note" + i + "]")
             .children()
             .should("not.exist");
-        } else {
-          cy.get("[data-testid=note" + i + "]")
-            .children()
-            .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
         }
-      }
+      });
     });
   });
 });
