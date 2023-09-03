@@ -1,3 +1,5 @@
+import { Set } from "immutable";
+
 /**
  * Given the x and y coordinates of a cell, returns the index of the box the cell is in
  * @param x - x coordinate of cell
@@ -132,3 +134,14 @@ export function setPlacementHighlights(
   }
   return;
 }
+
+export const addEveryNote = (x: number, y: number, board: Object) => {
+  let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
+  for (let i = 1; i <= 9; i++) {
+    if (!notes.has(i)) {
+      notes = notes.add(i);
+    }
+  }
+  board = board.setIn(["puzzle", x, y, "notes"], notes);
+  return board;
+};

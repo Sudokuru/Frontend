@@ -36,6 +36,7 @@ import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
+import { addEveryNote } from "../../Functions/Board/HintsParsing";
 
 let fallbackHeight = 30;
 
@@ -619,17 +620,6 @@ const SudokuBoard = (props: any) => {
     });
     newBoard = newBoard.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
     return newBoard;
-  };
-
-  const addEveryNote = (x, y, board) => {
-    let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-    for (let i = 1; i <= 9; i++) {
-      if (!notes.has(i)) {
-        notes = notes.add(i);
-      }
-    }
-    board = board.setIn(["puzzle", x, y, "notes"], notes);
-    return board;
   };
 
   const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
