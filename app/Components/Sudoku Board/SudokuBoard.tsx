@@ -37,6 +37,7 @@ import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import { addEveryNote } from "../../Functions/Board/HintsParsing";
+import Hint from "../../Functions/Board/Hint";
 
 let fallbackHeight = 30;
 
@@ -415,6 +416,7 @@ const SudokuBoard = (props: any) => {
     let nonBoxGroups = [];
 
     let hintSteps = [];
+    let hintObject: Hint;
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         for (let i = 0; i < removals.length; i++)
@@ -424,9 +426,8 @@ const SudokuBoard = (props: any) => {
             newBoard
           );
 
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
+        hintObject = new Hint(2);
+        hintSteps = hintObject.getHintSteps();
 
         // highlight the groups, causes, and removals
         hintSteps[0].groups = groups;
