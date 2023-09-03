@@ -36,9 +36,8 @@ export default class Hint {
     for (let step: number = 0; step < this.stepCount; step++) {
       hintSteps.push({});
       if (this.groups[step].length > 0) {
-        hintSteps[step].groups = [];
         for (let group: number = 0; group < this.groups[step].length; group++) {
-          hintSteps[step].groups.push(this.groups[step][group].getGroup());
+          hintSteps[step].groups = this.groups[step][group].getGroup();
         }
       }
     }

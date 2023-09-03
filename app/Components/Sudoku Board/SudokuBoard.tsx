@@ -430,19 +430,17 @@ const SudokuBoard = (props: any) => {
         hintObject = new Hint(2);
 
         // highlight the groups, causes, and removals
+        let tempGroup: Group = new Group();
         for (let i: number = 0; i < groups.length; i++) {
-          let tempGroup: Group = new Group();
-          for (let j: number = 0; j < groups[i].length; j++) {
-            if (groups[i].type === "row") {
-              tempGroup.setRow(groups[i].index);
-            } else if (groups[i].type === "column") {
-              tempGroup.setColumn(groups[i].index);
-            } else if (groups[i].type === "box") {
-              tempGroup.setBox(groups[i].index);
-            }
+          if (groups[i].type === "row") {
+            tempGroup.setRow(groups[i].index);
+          } else if (groups[i].type === "col") {
+            tempGroup.setCol(groups[i].index);
+          } else if (groups[i].type === "box") {
+            tempGroup.setBox(groups[i].index);
           }
-          hintObject.addGroup(tempGroup);
         }
+        hintObject.addGroup(0, tempGroup);
 
         hintSteps = hintObject.getHintSteps();
 
