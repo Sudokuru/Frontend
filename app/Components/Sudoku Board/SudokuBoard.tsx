@@ -44,6 +44,7 @@ import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
+import PauseButton from "./Components/PauseButton";
 
 let fallbackHeight = 30;
 
@@ -138,30 +139,6 @@ const DrillSubmitButton = (props) => {
 
 DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
-};
-
-const PauseButton = ({ handlePause, isPaused }) => {
-  const cellSize = getCellSize();
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
-  const theme = useTheme();
-
-  return (
-    <Pressable testID="PauseButton" onPress={handlePause}>
-      {isPaused ? (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="play"
-          size={cellSize / sizeConst}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="pause"
-          size={cellSize / sizeConst}
-        />
-      )}
-    </Pressable>
-  );
 };
 
 const HeaderRow = (props) => {
