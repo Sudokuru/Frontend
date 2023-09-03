@@ -36,9 +36,9 @@ import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
-import { addEveryNote } from "../../Functions/Board/HintsParsing";
 import Hint from "../../Functions/Board/Hint";
 import Group from "../../Functions/Board/Group";
+import { addEveryNote } from "./Functions/HintsParsing";
 
 let fallbackHeight = 30;
 
