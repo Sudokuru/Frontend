@@ -38,7 +38,11 @@ import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import Hint from "../../Functions/Board/Hint";
 import Group from "../../Functions/Board/Group";
-import { addEveryNote, addGroupToHint } from "./Functions/HintsParsing";
+import {
+  addEveryNote,
+  addEveryRemovalNoteToBoard,
+  addGroupToHint,
+} from "./Functions/HintsParsing";
 
 let fallbackHeight = 30;
 
@@ -420,12 +424,7 @@ const SudokuBoard = (props: any) => {
     let hintObject: Hint;
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
-        for (let i = 0; i < removals.length; i++)
-          newBoard = addEveryNote(
-            removals[i].position[0],
-            removals[i].position[1],
-            newBoard
-          );
+        newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
 
         hintObject = new Hint(2);
 
