@@ -1,14 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import { List, Set } from "immutable";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
 
@@ -17,9 +10,7 @@ import {
   highlightColumn,
   highlightRow,
   isPeer as areCoordinatePeers,
-  makeBoard,
 } from "./sudoku";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
