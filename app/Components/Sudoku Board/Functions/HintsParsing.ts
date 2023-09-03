@@ -19,10 +19,10 @@ function getBoxIndexFromXY(x: number, y: number): number {
  */
 function highlightGroup(
   groupType: string,
-  index: any,
-  row: any,
-  col: any,
-  box: any
+  index: number,
+  row: number,
+  col: number,
+  box: number
 ): boolean {
   if (groupType == "row" && index == row) return true;
   if (groupType == "col" && index == col) return true;
@@ -36,7 +36,11 @@ function highlightGroup(
  * @param row - row cell is in
  * @param col - column cell is in
  */
-export function highlightGroups(currentHint: any, row: any, col: any): boolean {
+export function highlightGroups(
+  currentHint: any,
+  row: number,
+  col: number
+): boolean {
   if (currentHint.groups) {
     // group highlighting
     for (let i = 0; i < currentHint.groups.length; i++) {
@@ -64,8 +68,12 @@ export function highlightGroups(currentHint: any, row: any, col: any): boolean {
  * @param col - column cell is in
  * @returns true if the current cell should be highlighted because of the cause it is in, false otherwise
  */
-export function highlightCauses(currentHint: any, row: any, col: any): boolean {
-  if (currentHint.causes) {
+export function highlightCauses(
+  currentHint: any,
+  row: number,
+  col: number
+): boolean {
+  if (currentHint && currentHint.causes) {
     for (let i = 0; i < currentHint.causes.length; i++) {
       let currentCause_x = currentHint.causes[i][0];
       let currentCause_y = currentHint.causes[i][1];
@@ -87,8 +95,8 @@ export function highlightCauses(currentHint: any, row: any, col: any): boolean {
 export function setRemovalHighlights(
   isRemovalHighlight: boolean[],
   currentHint: any,
-  row: any,
-  col: any
+  row: number,
+  col: number
 ): void {
   if (currentHint.removals) {
     for (let i = 0; i < currentHint.removals.length; i++) {
