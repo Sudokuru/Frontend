@@ -50,4 +50,11 @@ export default class Group {
     }
     return group;
   }
+
+  /**
+   * Returns the legacy SudokuBoard format for causes
+   */
+  public getCause(): number[] {
+    return [this.row, this.col];
+  }
 }

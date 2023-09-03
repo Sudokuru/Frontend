@@ -36,13 +36,12 @@ import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
-import Hint from "../../Functions/Board/Hint";
-import Group from "../../Functions/Board/Group";
 import {
   addEveryNote,
   addEveryRemovalNoteToBoard,
   addGroupToHint,
 } from "./Functions/HintsParsing";
+import Hint from "./Functions/Hint";
 
 let fallbackHeight = 30;
 
@@ -430,10 +429,10 @@ const SudokuBoard = (props: any) => {
 
         // highlight the groups, causes, and removals
         addGroupToHint(hintObject, 0, groups);
+        hintObject.addCauses(0, causes);
 
         hintSteps = hintObject.getHintSteps();
 
-        hintSteps[0].causes = causes;
         hintSteps[0].removals = [];
         for (let i = 0; i < removals.length; i++)
           hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
