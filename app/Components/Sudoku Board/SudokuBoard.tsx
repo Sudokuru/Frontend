@@ -38,7 +38,7 @@ import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import Hint from "../../Functions/Board/Hint";
 import Group from "../../Functions/Board/Group";
-import { addEveryNote } from "./Functions/HintsParsing";
+import { addEveryNote, addGroupToHint } from "./Functions/HintsParsing";
 
 let fallbackHeight = 30;
 
@@ -430,17 +430,7 @@ const SudokuBoard = (props: any) => {
         hintObject = new Hint(2);
 
         // highlight the groups, causes, and removals
-        let tempGroup: Group = new Group();
-        for (let i: number = 0; i < groups.length; i++) {
-          if (groups[i].type === "row") {
-            tempGroup.setRow(groups[i].index);
-          } else if (groups[i].type === "col") {
-            tempGroup.setCol(groups[i].index);
-          } else if (groups[i].type === "box") {
-            tempGroup.setBox(groups[i].index);
-          }
-        }
-        hintObject.addGroup(0, tempGroup);
+        addGroupToHint(hintObject, 0, groups);
 
         hintSteps = hintObject.getHintSteps();
 

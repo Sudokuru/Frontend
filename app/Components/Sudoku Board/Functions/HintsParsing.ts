@@ -1,4 +1,6 @@
 import { Set } from "immutable";
+import Hint from "./Hint";
+import Group from "./Group";
 
 /**
  * Given the x and y coordinates of a cell, returns the index of the box the cell is in
@@ -140,6 +142,31 @@ export function setPlacementHighlights(
       }
     }
   }
+  return;
+}
+
+/**
+ * Given hint object and group data, adds the group to the hint object
+ * @param hint - hint object to add group to
+ * @param hintStepNumber - step number to add group to
+ * @param group - group to add
+ */
+export function addGroupToHint(
+  hint: Hint,
+  hintStepNumber: number,
+  group: any
+): void {
+  let tempGroup: Group = new Group();
+  for (let i: number = 0; i < group.length; i++) {
+    if (group[i].type === "row") {
+      tempGroup.setRow(group[i].index);
+    } else if (group[i].type === "col") {
+      tempGroup.setCol(group[i].index);
+    } else if (group[i].type === "box") {
+      tempGroup.setBox(group[i].index);
+    }
+  }
+  hint.addGroup(hintStepNumber, tempGroup);
   return;
 }
 
