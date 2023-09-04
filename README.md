@@ -1,4 +1,8 @@
-# How to start the frontend app
+[![Pipeline](https://github.com/SudoKuru/Frontend/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/SudoKuru/Frontend/actions/workflows/pipeline.yml)
+[![Coveralls Coverage](https://coveralls.io/repos/github/SudoKuru/Frontend/badge.svg?branch=main)](https://coveralls.io/github/SudoKuru/Frontend?branch=main)
+[![Codecov Coverage](https://codecov.io/gh/SudoKuru/Frontend/graph/badge.svg?token=XQSTKPTBFF)](https://codecov.io/gh/SudoKuru/Frontend)
+
+# Start the frontend app
 
 Run `npm i` in the root folder  
 Run `npm run start`
@@ -13,12 +17,31 @@ For iOS, scan the QR code with your camera app, for Android you will need to sca
 
 For Web, hit the w key to start up the website at `localhost:19000`
 
+# Run Code Coverage and Jest E2E tests
+
+To enable code coverage, toggle `collectCoverage` to `true` in `jest.config.ts` file. Coverage results are outputed to `jest-coverage` folder.
+
+Run `npm run test:unit`
+This will run all jest tests and output to the `junit.xml` file and to console.
+
+# Run Code Coverage and Cypress E2E tests
+
+Run `npm run web:dev`  
+This starts the website in development mode, with access to the development plugins.  
+Run `npm run open:cypress` or `npx cypress open` to open up the cypress testing interface.  
+**Note: Running individual spec files will override the code coverage of the previous spec file**  
+To generate a code-coverage report for all spec files, run the command `npx cypress run`. This will run all of the tests at the same time and output a combined code-coverage report at the end.  
+To disable screenshots and video for cypress tests run `npm run test:cypress`  
+After running tests, `.nyc_output` and `coverage` folders are generated. The coverage folder contains all of the code coverage results from the tests.  
+More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
+The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
+
 # Deployments
 
 ### Preview Branch
 
 In order to deploy your local branch in preview mode, run the following command:  
-`npm run vercel:preview`  
+`npm run preview:vercel`  
 You will need to log in with our team email account.  
 The console will output a preview url for viewing.
 

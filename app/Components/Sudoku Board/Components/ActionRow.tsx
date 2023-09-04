@@ -26,7 +26,11 @@ const ActionRow = (props: any) => {
   return (
     <View style={styles(cellSize).actionControlRow}>
       {/* Undo */}
-      <Pressable onPress={undo} disabled={!history.size || inHintMode}>
+      <Pressable
+        onPress={undo}
+        disabled={!history.size || inHintMode}
+        testID={"undoButton"}
+      >
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
           name="undo"
@@ -34,7 +38,11 @@ const ActionRow = (props: any) => {
         />
       </Pressable>
       {/* Note mode */}
-      <Pressable onPress={toggleNoteMode} disabled={inHintMode}>
+      <Pressable
+        onPress={toggleNoteMode}
+        disabled={inHintMode}
+        testID={"toggleNoteModeButton"}
+      >
         {inNoteMode ? (
           // note mode on
           <MaterialCommunityIcons
@@ -52,7 +60,11 @@ const ActionRow = (props: any) => {
         )}
       </Pressable>
       {/* Erase */}
-      <Pressable onPress={eraseSelected} disabled={prefilled || inHintMode}>
+      <Pressable
+        onPress={eraseSelected}
+        disabled={prefilled || inHintMode}
+        testID={"eraseButton"}
+      >
         <MaterialCommunityIcons
           color={theme.colors.onBackground}
           name="eraser"

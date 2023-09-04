@@ -1,14 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import { List, Set } from "immutable";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
 
@@ -17,9 +10,7 @@ import {
   highlightColumn,
   highlightRow,
   isPeer as areCoordinatePeers,
-  makeBoard,
 } from "./sudoku";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -44,15 +35,14 @@ import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
-
-let drillMode = false;
-
-let landingMode = false;
+import PauseButton from "./Components/PauseButton";
+import {
+  addEveryRemovalNoteToBoard,
+  getHintObject,
+} from "./Functions/HintsParsing";
+import Hint from "./Functions/Hint";
 
 let fallbackHeight = 30;
-
-// Global variables for activeGame elements
-let globalTime = 0;
 
 const styles = (cellSize, sizeConst, theme) =>
   StyleSheet.create({
@@ -99,8 +89,8 @@ const styles = (cellSize, sizeConst, theme) =>
   });
 
 //todo this function cannot be moved until globalTime situation is handled
-export async function saveGame(activeGame) {
-  activeGame.currentTime = globalTime;
+export async function saveGame(activeGame, timer) {
+  activeGame.currentTime = timer;
 
   Puzzles.saveGame(activeGame).then((res) => {
     if (activeGame.numWrongCellsPlayed == null) {
@@ -147,63 +137,26 @@ DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
 };
 
-const PauseButton = ({ handlePause, isPaused }) => {
-  const cellSize = getCellSize();
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
-  const theme = useTheme();
-
-  return (
-    <Pressable testID="PauseButton" onPress={handlePause}>
-      {isPaused ? (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="play"
-          size={cellSize / sizeConst}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="pause"
-          size={cellSize / sizeConst}
-        />
-      )}
-    </Pressable>
-  );
-};
-
-//todo this function cannot be moved until globalTime situation is handled
 const HeaderRow = (props) => {
   //  Header w/ timer and pause button
-  const { currentTime, activeGame } = props;
-  const [time, setTime] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const { currentTime, activeGame, timer, setTimer } = props;
   const cellSize = getCellSize();
   const navigation = useNavigation();
 
   const theme = useTheme();
 
-  // If we are resuming game, set starting time to currentTime
-  if (time == 0 && currentTime != 0) {
-    setTime(currentTime);
-  }
-  // if we are starting a new game, reset globalTime
-  else if (time == 0 && globalTime != 0) {
-    globalTime = 0;
-  }
-
   useFocusEffect(
     React.useCallback(() => {
       let interval = null;
-      if (!isPaused) {
-        interval = setInterval(() => {
-          setTime((time) => time + 1);
-          globalTime = globalTime + 1;
-        }, 1000);
-      } else {
-        clearInterval(interval);
-      }
+      interval = setInterval(() => {
+        if (currentTime && currentTime >= timer) {
+          setTimer(currentTime + 1);
+        } else {
+          setTimer(timer + 1);
+        }
+      }, 1000);
       return () => clearInterval(interval);
-    }, [isPaused])
+    })
   );
 
   const handlePause = () => {
@@ -211,7 +164,7 @@ const HeaderRow = (props) => {
     // saveGame(activeGame).then(() => {
     //   navigation.replace('Home');
     // });
-    saveGame(activeGame);
+    saveGame(activeGame, timer);
     navigation.replace("PlayPage");
   };
 
@@ -220,9 +173,9 @@ const HeaderRow = (props) => {
       <Text
         style={styles(cellSize, null, theme.colors.onBackground).headerFont}
       >
-        Time: {formatTime(time)}
+        Time: {formatTime(currentTime > timer ? currentTime : timer)}
       </Text>
-      <PauseButton handlePause={handlePause} isPaused={isPaused} />
+      <PauseButton handlePause={handlePause} isPaused={false} />
     </View>
   );
 };
@@ -245,6 +198,9 @@ const SudokuBoard = (props: any) => {
   const [historyOffSet, setHistoryOffSet] = useState<number>();
   const [solution, setSolution] = useState();
   const [activeGame, setActiveGame] = useState();
+
+  const setTimer = (timer: number) => useTimer(timer);
+  const [timer, useTimer] = useState<number>(0);
 
   // drill states
   // These could probably stay as props since these values are constant and not altered.
@@ -463,32 +419,15 @@ const SudokuBoard = (props: any) => {
     let nonBoxGroups = [];
 
     let hintSteps = [];
+    let hintObject: Hint;
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
-        for (let i = 0; i < removals.length; i++)
-          newBoard = addEveryNote(
-            removals[i].position[0],
-            removals[i].position[1],
-            newBoard
-          );
-
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
+        newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
+        hintObject = getHintObject(2, groups, causes, removals, [
+          "highlight",
+          "delete",
+        ]);
+        hintSteps = hintObject.getHintSteps();
         break;
       case "SIMPLIFY_NOTES": // DONE
         // two steps, two objects
@@ -670,17 +609,6 @@ const SudokuBoard = (props: any) => {
     return newBoard;
   };
 
-  const addEveryNote = (x, y, board) => {
-    let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-    for (let i = 1; i <= 9; i++) {
-      if (!notes.has(i)) {
-        notes = notes.add(i);
-      }
-    }
-    board = board.setIn(["puzzle", x, y, "notes"], notes);
-    return board;
-  };
-
   const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
     let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
     board = board.set("currentStep", currentStep);
@@ -841,8 +769,8 @@ const SudokuBoard = (props: any) => {
         game={game}
         showResults={props.showGameResults}
         gameType={props.gameType}
-        landingMode={landingMode}
-        drillMode={drillMode}
+        landingMode={props.gameType == "Demo"}
+        drillMode={props.gameType == "StartDrill"}
       />
     );
   };
@@ -852,6 +780,8 @@ const SudokuBoard = (props: any) => {
       <HeaderRow
         currentTime={activeGame[0].currentTime}
         activeGame={activeGame[0]}
+        timer={timer}
+        setTimer={setTimer}
       />
     );
   };
@@ -930,10 +860,17 @@ const SudokuBoard = (props: any) => {
     let inHintMode = board.get("inHintMode");
     let inNoteMode = board.get("inNoteMode");
     const inputValue = event.nativeEvent.key;
-    if (/^[1-9]$/.test(inputValue) && !inHintMode && !landingMode) {
+    if (
+      /^[1-9]$/.test(inputValue) &&
+      !inHintMode &&
+      !(props.gameType == "Demo")
+    ) {
       // check if input is a digit from 1 to 9
-      if (inNoteMode) addNumberAsNote(parseInt(inputValue, 10));
-      else fillNumber(parseInt(inputValue, 10));
+      if (inNoteMode) {
+        addNumberAsNote(parseInt(inputValue, 10));
+      } else {
+        fillNumber(parseInt(inputValue, 10));
+      }
     }
     if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
       eraseSelected();
@@ -1066,30 +1003,33 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  drillMode = props.gameType == "StartDrill";
-  landingMode = props.gameType == "Demo";
   let inHintMode = board ? board.get("inHintMode") : false;
 
   return (
     <View
       testID={
-        landingMode
+        props.gameType == "Demo"
           ? "sudokuDemoBoard"
-          : drillMode
+          : props.gameType == "StartDrill"
           ? "sudokuDrillBoard"
           : "sudokuBoard"
       }
       onKeyDown={handleKeyDown}
       styles={{ borderWidth: 1 }}
     >
-      {board && !landingMode && !drillMode && renderTopBar()}
+      {board &&
+        !(props.gameType == "Demo") &&
+        !(props.gameType == "StartDrill") &&
+        renderTopBar()}
       {board && renderPuzzle()}
       {board && (
         <View style={styles().bottomActions}>
-          {!landingMode && renderActions()}
-          {!landingMode && !inHintMode && renderNumberControl()}
-          {drillMode && !inHintMode && renderSubmitButton()}
-          {!landingMode && inHintMode && renderHintSection()}
+          {!(props.gameType == "Demo") && renderActions()}
+          {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
+          {props.gameType == "StartDrill" &&
+            !inHintMode &&
+            renderSubmitButton()}
+          {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
         </View>
       )}
     </View>

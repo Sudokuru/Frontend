@@ -1,13 +1,14 @@
 import "react-native-gesture-handler"; // This needs to be at top to work
 import "@expo/metro-runtime"; // web fast refresh for development
 import * as React from "react";
-import { PreferencesContext } from "./app/Contexts/PreferencesContext";
+import { PreferencesContext } from "./Contexts/PreferencesContext";
 import { Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
-import InitializeContext from "./app/Contexts/InitializeContext";
-import DrawerNavigator from "./app/Navigation/DrawerNavigator";
+import InitializeContext from "./Contexts/InitializeContext";
+import DrawerNavigator from "./Navigation/DrawerNavigator";
+import { registerRootComponent } from "expo";
 
-export default function App() {
+function App() {
   const { theme, preferences } = InitializeContext();
 
   return (
@@ -20,3 +21,5 @@ export default function App() {
     </PreferencesContext.Provider>
   );
 }
+
+export default registerRootComponent(App);
