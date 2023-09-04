@@ -37,9 +37,7 @@ import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import {
-  addEveryNote,
   addEveryRemovalNoteToBoard,
-  addGroupToHint,
   getHintObject,
 } from "./Functions/HintsParsing";
 import Hint from "./Functions/Hint";
