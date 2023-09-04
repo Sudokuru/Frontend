@@ -1,14 +1,7 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import {
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
-import { List, Set } from "immutable";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
 
@@ -17,9 +10,7 @@ import {
   highlightColumn,
   highlightRow,
   isPeer as areCoordinatePeers,
-  makeBoard,
 } from "./sudoku";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -44,6 +35,12 @@ import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import { gameResults } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
+import PauseButton from "./Components/PauseButton";
+import {
+  addEveryRemovalNoteToBoard,
+  getHintObject,
+} from "./Functions/HintsParsing";
+import Hint from "./Functions/Hint";
 
 let fallbackHeight = 30;
 
@@ -138,30 +135,6 @@ const DrillSubmitButton = (props) => {
 
 DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
-};
-
-const PauseButton = ({ handlePause, isPaused }) => {
-  const cellSize = getCellSize();
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
-  const theme = useTheme();
-
-  return (
-    <Pressable testID="PauseButton" onPress={handlePause}>
-      {isPaused ? (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="play"
-          size={cellSize / sizeConst}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="pause"
-          size={cellSize / sizeConst}
-        />
-      )}
-    </Pressable>
-  );
 };
 
 const HeaderRow = (props) => {
@@ -446,32 +419,15 @@ const SudokuBoard = (props: any) => {
     let nonBoxGroups = [];
 
     let hintSteps = [];
+    let hintObject: Hint;
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
-        for (let i = 0; i < removals.length; i++)
-          newBoard = addEveryNote(
-            removals[i].position[0],
-            removals[i].position[1],
-            newBoard
-          );
-
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
+        newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
+        hintObject = getHintObject(2, groups, causes, removals, [
+          "highlight",
+          "delete",
+        ]);
+        hintSteps = hintObject.getHintSteps();
         break;
       case "SIMPLIFY_NOTES": // DONE
         // two steps, two objects
@@ -651,17 +607,6 @@ const SudokuBoard = (props: any) => {
     });
     newBoard = newBoard.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
     return newBoard;
-  };
-
-  const addEveryNote = (x, y, board) => {
-    let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-    for (let i = 1; i <= 9; i++) {
-      if (!notes.has(i)) {
-        notes = notes.add(i);
-      }
-    }
-    board = board.setIn(["puzzle", x, y, "notes"], notes);
-    return board;
   };
 
   const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
