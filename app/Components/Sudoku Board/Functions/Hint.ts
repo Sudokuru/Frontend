@@ -53,12 +53,19 @@ export default class Hint {
    * @param step - step to add the removal to
    * @param position - position of the removal
    * @param values - values of the removal
+   * @param mode - mode of the removal
    */
-  public addRemoval(step: number, position: number[], values: number[]): void {
+  public addRemoval(
+    step: number,
+    position: number[],
+    values: number[],
+    mode: string
+  ): void {
     let tempGroup: Group = new Group();
     tempGroup.setRow(position[0]);
     tempGroup.setCol(position[1]);
     tempGroup.setValues(values);
+    tempGroup.setMode(mode);
     this.removals[step].push(tempGroup);
   }
 
