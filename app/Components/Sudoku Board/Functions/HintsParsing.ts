@@ -154,7 +154,7 @@ export function setPlacementHighlights(
 export function addGroupToHint(
   hint: Hint,
   hintStepNumber: number,
-  group: any
+  group: any[]
 ): void {
   let tempGroup: Group = new Group();
   for (let i: number = 0; i < group.length; i++) {
@@ -196,4 +196,36 @@ export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
     );
   }
   return board;
+}
+
+/**
+ * Creates a hint object from the given hint data
+ * @param steps - number of steps in the hint
+ * @param groups - groups involved in the hint
+ * @param causes - causes involved in the hint
+ * @param removals - removals involved in the hint
+ * @param removalModes - modes of the removals involved in the hint at each step
+ * @returns
+ */
+export function getHintObject(
+  steps: number,
+  groups: any[],
+  causes: number[][],
+  removals: any[],
+  removalModes: string[]
+): Hint {
+  let hint: Hint = new Hint(steps);
+  for (let step: number = 0; step < steps; step++) {
+    addGroupToHint(hint, step, groups);
+    hint.addCauses(step, causes);
+    for (let removal: number = 0; removal < removals.length; removal++) {
+      hint.addRemoval(
+        step,
+        removals[removal].position,
+        removals[removal].values,
+        removalModes[step]
+      );
+    }
+  }
+  return hint;
 }

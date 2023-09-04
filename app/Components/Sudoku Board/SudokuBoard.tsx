@@ -40,6 +40,7 @@ import {
   addEveryNote,
   addEveryRemovalNoteToBoard,
   addGroupToHint,
+  getHintObject,
 } from "./Functions/HintsParsing";
 import Hint from "./Functions/Hint";
 
@@ -424,30 +425,10 @@ const SudokuBoard = (props: any) => {
     switch (hint.strategy) {
       case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
         newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
-
-        hintObject = new Hint(2);
-
-        // highlight the groups, causes, and removals
-        addGroupToHint(hintObject, 0, groups);
-        addGroupToHint(hintObject, 1, groups);
-        hintObject.addCauses(0, causes);
-        hintObject.addCauses(1, causes);
-        for (let removal: number = 0; removal < removals.length; removal++) {
-          hintObject.addRemoval(
-            0,
-            removals[removal].position,
-            removals[removal].values,
-            "highlight"
-          );
-        }
-        for (let removal: number = 0; removal < removals.length; removal++) {
-          hintObject.addRemoval(
-            1,
-            removals[removal].position,
-            removals[removal].values,
-            "delete"
-          );
-        }
+        hintObject = getHintObject(2, groups, causes, removals, [
+          "highlight",
+          "delete",
+        ]);
         hintSteps = hintObject.getHintSteps();
         break;
       case "SIMPLIFY_NOTES": // DONE
