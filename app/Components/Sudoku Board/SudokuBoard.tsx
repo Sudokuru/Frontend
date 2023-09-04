@@ -429,7 +429,9 @@ const SudokuBoard = (props: any) => {
 
         // highlight the groups, causes, and removals
         addGroupToHint(hintObject, 0, groups);
+        addGroupToHint(hintObject, 1, groups);
         hintObject.addCauses(0, causes);
+        hintObject.addCauses(1, causes);
         for (let removal: number = 0; removal < removals.length; removal++) {
           hintObject.addRemoval(
             0,
@@ -438,14 +440,15 @@ const SudokuBoard = (props: any) => {
             "highlight"
           );
         }
+        for (let removal: number = 0; removal < removals.length; removal++) {
+          hintObject.addRemoval(
+            1,
+            removals[removal].position,
+            removals[removal].values,
+            "delete"
+          );
+        }
         hintSteps = hintObject.getHintSteps();
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "SIMPLIFY_NOTES": // DONE
         // two steps, two objects
