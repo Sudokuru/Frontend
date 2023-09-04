@@ -5,9 +5,13 @@ export default class Group {
   private row: number;
   private col: number;
   private box: number;
+  private values: number[];
+  private mode: string;
 
   constructor() {
     this.row = this.col = this.box = -1;
+    this.values = [];
+    this.mode = "";
   }
 
   /**
@@ -35,6 +39,22 @@ export default class Group {
   }
 
   /**
+   * Sets the values of the group
+   * @param values - values of the group
+   */
+  public setValues(values: number[]): void {
+    this.values = values;
+  }
+
+  /**
+   * Sets the mode of the group
+   * @param mode - mode of the group
+   */
+  public setMode(mode: string): void {
+    this.mode = mode;
+  }
+
+  /**
    * Returns the legacy SudokuBoard format of the group
    */
   public getGroup(): any {
@@ -56,5 +76,16 @@ export default class Group {
    */
   public getCause(): number[] {
     return [this.row, this.col];
+  }
+
+  /**
+   * Returns the legacy SudokuBoard format for removals
+   */
+  public getRemoval(): Object {
+    return {
+      mode: this.mode,
+      position: [this.row, this.col],
+      values: this.values,
+    };
   }
 }
