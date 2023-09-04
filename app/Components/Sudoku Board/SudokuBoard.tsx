@@ -430,12 +430,15 @@ const SudokuBoard = (props: any) => {
         // highlight the groups, causes, and removals
         addGroupToHint(hintObject, 0, groups);
         hintObject.addCauses(0, causes);
-
+        for (let removal: number = 0; removal < removals.length; removal++) {
+          hintObject.addRemoval(
+            0,
+            removals[removal].position,
+            removals[removal].values,
+            "highlight"
+          );
+        }
         hintSteps = hintObject.getHintSteps();
-
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
 
         // highlight the groups, causes, and delete the removals
         hintSteps[1].groups = groups;
