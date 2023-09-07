@@ -26,10 +26,6 @@ const LandingPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
-  const headerHeight = useHeaderHeight();
-
-  console.log(windowSize, headerHeight);
-
   const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
   const START_LESSONS_LOGO = require("./startLessonsLogo.png");
   const START_DRILLS_LOGO = require("./startDrillsLogo.png");

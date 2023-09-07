@@ -1,12 +1,14 @@
 import React from "react";
-import { Pressable, Image, ImageURISource } from "react-native";
-import { Surface, useTheme } from "react-native-paper";
 import {
-  useMinWindowDimensions,
-  useNewWindowDimensions,
-} from "../../Functions/global/WindowDimensions";
+  Pressable,
+  Image,
+  ImageURISource,
+  useWindowDimensions,
+} from "react-native";
+import { Surface, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import { useNewWindowDimensions } from "../../Functions/global/WindowDimensions";
 
 interface navigationButton {
   navigationPage: string;

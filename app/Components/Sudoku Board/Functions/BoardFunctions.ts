@@ -1,7 +1,6 @@
 import { useWindowDimensions } from "react-native";
 import { Set } from "immutable";
 import { getHint as getHint } from "sudokuru";
-import { useNewWindowDimensions } from "../../../Functions/global/WindowDimensions";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { gameResults } from "../../../Types/Puzzle.Types";
 /*
@@ -14,7 +13,7 @@ import { gameResults } from "../../../Types/Puzzle.Types";
  * board has width and height dimensions of 1 x 1.44444
  */
 export function getCellSize(): number {
-  const size = useNewWindowDimensions();
+  const size = useWindowDimensions();
   return Math.min(size.width * 1.44444, size.height) / 15;
 }
 
