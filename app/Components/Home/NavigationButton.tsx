@@ -42,7 +42,6 @@ const NavigationButton = (props: navigationButton) => {
       {({ hovered }: any) => {
         return (
           <Surface
-            elevation={5}
             style={{
               width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
               height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,

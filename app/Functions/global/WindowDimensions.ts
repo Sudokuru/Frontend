@@ -12,6 +12,5 @@ export function useNewWindowDimensions(): ScaledSize {
   const clone = JSON.parse(JSON.stringify(size));
   const headerHeight = useHeaderHeight();
   clone.height = size.height - headerHeight;
-  console.log("COMPARE: ", size, "TO: ", clone);
   return clone;
 }
