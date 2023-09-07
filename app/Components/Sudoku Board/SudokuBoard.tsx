@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
+import { saveGame } from "./Functions/BoardFunctions";
 
 import {
   highlightBox,
@@ -88,34 +89,6 @@ const styles = (cellSize, sizeConst, theme) =>
     },
   });
 
-//todo this function cannot be moved until globalTime situation is handled
-export async function saveGame(activeGame, timer) {
-  activeGame.currentTime = timer;
-
-  Puzzles.saveGame(activeGame).then((res) => {
-    if (activeGame.numWrongCellsPlayed == null) {
-      activeGame.numWrongCellsPlayed = 0;
-    }
-    if (res) {
-      console.log("Game progress was saved successfully!");
-    }
-  });
-}
-
-export async function finishGame(showResults) {
-  Puzzles.finishGame().then((res: gameResults) => {
-    if (res) {
-      showResults(
-        res.score,
-        res.solveTime,
-        res.numHintsUsed,
-        res.numWrongCellsPlayed,
-        res.difficulty
-      );
-    }
-  });
-}
-
 const DrillSubmitButton = (props) => {
   const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
@@ -160,10 +133,6 @@ const HeaderRow = (props) => {
   );
 
   const handlePause = () => {
-    // setIsPaused(prevState => !prevState);
-    // saveGame(activeGame).then(() => {
-    //   navigation.replace('Home');
-    // });
     saveGame(activeGame, timer);
     navigation.replace("PlayPage");
   };
@@ -771,6 +740,7 @@ const SudokuBoard = (props: any) => {
         gameType={props.gameType}
         landingMode={props.gameType == "Demo"}
         drillMode={props.gameType == "StartDrill"}
+        timer={timer}
       />
     );
   };

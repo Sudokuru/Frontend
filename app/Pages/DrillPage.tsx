@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { View, Pressable, useWindowDimensions } from "react-native";
-import { Text, Button, useTheme, ActivityIndicator } from "react-native-paper";
+import { View, Pressable } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import DrillPanel from "../Components/Home/DrillPanel";
+import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
 
 const DrillPage = () => {
   const navigation: any = useNavigation();
 
   const theme = useTheme();
 
-  const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height) / 25;
+  const windowSize = useNewWindowDimensions();
+  const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const [drillsVisible, setDrillsVisible] = useState(true);
   const showDrillsButton = () => setDrillsVisible(true);
@@ -26,7 +27,9 @@ const DrillPage = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ width: size.width, height: size.height }}>
+      <SafeAreaView
+        style={{ width: windowSize.width, height: windowSize.height }}
+      >
         <View style={{ flexDirection: "row" }}>
           <View
             style={{

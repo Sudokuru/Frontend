@@ -1,6 +1,8 @@
 import { useWindowDimensions } from "react-native";
 import { Set } from "immutable";
 import { getHint as getHint } from "sudokuru";
+import { Puzzles } from "../../../Functions/Api/Puzzles";
+import { gameResults } from "../../../Types/Puzzle.Types";
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -10,10 +12,13 @@ import { getHint as getHint } from "sudokuru";
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions of 1 x 1.44444
  */
-export function getCellSize() {
+export function getCellSize(): number {
   const size = useWindowDimensions();
-
   return Math.min(size.width * 1.44444, size.height) / 15;
+}
+
+export function getBoardSize(): number {
+  return getCellSize() * 9;
 }
 
 export function getNumberOfGroupsAssignedForNumber(number: any, groups: any) {
@@ -334,4 +339,31 @@ export function strPuzzleToArray(str: any) {
     arr.map((row) => row[colIndex])
   );
   return { puzzle: output };
+}
+
+export async function saveGame(activeGame: any, timer: any) {
+  activeGame.currentTime = timer;
+
+  Puzzles.saveGame(activeGame).then((res: any) => {
+    if (activeGame.numWrongCellsPlayed == null) {
+      activeGame.numWrongCellsPlayed = 0;
+    }
+    if (res) {
+      console.log("Game progress was saved successfully!");
+    }
+  });
+}
+
+export async function finishGame(showResults: any) {
+  Puzzles.finishGame().then((res: gameResults) => {
+    if (res) {
+      showResults(
+        res.score,
+        res.solveTime,
+        res.numHintsUsed,
+        res.numWrongCellsPlayed,
+        res.difficulty
+      );
+    }
+  });
 }

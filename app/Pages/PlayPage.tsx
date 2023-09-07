@@ -1,11 +1,14 @@
 import React from "react";
-import { View, Pressable, useWindowDimensions } from "react-native";
+import { View, Pressable } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
+import {
+  useMinWindowDimensions,
+  useNewWindowDimensions,
+} from "../Functions/global/WindowDimensions";
 import { Puzzles } from "../Functions/Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
 
@@ -25,8 +28,8 @@ let strategies: sudokuStrategyArray = [
 const PlayPage = () => {
   const navigation: any = useNavigation();
 
-  const size = useWindowDimensions();
-  const minWindowSize = getMinWindowDimensions();
+  const windowSize = useNewWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
   const newSize = minWindowSize / 25;
 
   const theme = useTheme();
@@ -57,7 +60,9 @@ const PlayPage = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ width: size.width, height: size.height }}>
+      <SafeAreaView
+        style={{ width: windowSize.width, height: windowSize.height }}
+      >
         <View style={{ flexDirection: "row" }}>
           <View
             style={{

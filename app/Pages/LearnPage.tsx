@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
-import { View, Pressable, useWindowDimensions } from "react-native";
+import { View, Pressable } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
@@ -9,13 +8,10 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
-import { getMinWindowDimensions } from "../Functions/global/WindowDimensions";
+import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
 
 const LearnPage = () => {
-  const navigation: any = useNavigation();
-
-  const size = useWindowDimensions();
-  const minWindowSize = getMinWindowDimensions();
+  const windowSize = useNewWindowDimensions();
 
   const theme = useTheme();
 
@@ -52,7 +48,9 @@ const LearnPage = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ width: size.width, height: size.height }}>
+      <SafeAreaView
+        style={{ width: windowSize.width, height: windowSize.height }}
+      >
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
