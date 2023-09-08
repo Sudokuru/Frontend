@@ -1,14 +1,15 @@
 import {
+  finishGame,
   getCellNumber,
   getCellSize,
   replaceChar,
+  saveGame,
 } from "../Functions/BoardFunctions";
 import React from "react";
 import { PreferencesContext } from "../../../Contexts/PreferencesContext";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
 import { Set } from "immutable";
-import { finishGame, saveGame } from "../SudokuBoard";
 import {
   highlightCauses,
   highlightGroups,
@@ -51,6 +52,7 @@ const Cell = (props: any) => {
     gameType,
     landingMode,
     drillMode,
+    timer,
   } = props;
   const cellSize = getCellSize();
 
@@ -150,7 +152,7 @@ const Cell = (props: any) => {
           puzzleCurrentState: flippedPuzzleString,
           puzzleCurrentNotesState: notesString,
         });
-        saveGame(game);
+        saveGame(game, timer);
       }
 
       // If there's a difference between the last move and the current move, replace previous move with current move
@@ -160,7 +162,7 @@ const Cell = (props: any) => {
       ) {
         game.moves[0].puzzleCurrentState = flippedPuzzleString;
         game.moves[0].puzzleCurrentNotesState = notesString;
-        saveGame(game);
+        saveGame(game, timer);
       }
 
       // If all cells are filled in with the correct values, we want to finish the game
