@@ -44,6 +44,14 @@ declare global {
        * @param column - The column of the cell to select
        */
       Select_Cell(row: number, column: number): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to get a cell.
+       * @example cy.Get_Cell(0, 0)
+       * @param row - The row of the cell to select
+       * @param column - The column of the cell to select
+       */
+      Get_Cell(row: number, column: number): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

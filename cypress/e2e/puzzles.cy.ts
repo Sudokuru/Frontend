@@ -32,7 +32,7 @@ describe("Sudoku play component functions", () => {
     cy.contains("Resume Puzzle");
   });
 
-  it("Should solve game", () => {
+  it("Board Highlighting should render correctly when cell is selected", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
       cy.Cell_Should_Have_Color(7, 7, NOT_HIGHLIGHTED_COLOR_RGB);
@@ -58,6 +58,11 @@ describe("Sudoku play component functions", () => {
           }
         }
       }
+    });
+  });
+
+  it("Board Highlighting should render correctly when cell value is entered", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 7).type("1");
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
@@ -88,6 +93,41 @@ describe("Sudoku play component functions", () => {
           }
         }
       }
+    });
+  });
+
+  for (let i = 1; i <= 9; i++) {
+    it(
+      "Typing '" + i + "' in empty cell should fill cell with '" + i + "'",
+      () => {
+        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+          cy.Select_Cell(7, 7).type(i.toString());
+          cy.get("[data-testid=cellr7c7value\\:" + i + "]").should("exist");
+        });
+      }
+    );
+  }
+
+  for (let i = 1; i <= 9; i++) {
+    it(
+      "Clicking numpad '" +
+        i +
+        "' in empty cell should fill cell with '" +
+        i +
+        "'",
+      () => {
+        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+          cy.Select_Cell(7, 7);
+          cy.get("[data-testid=numberControl" + i + "]").click();
+          cy.get("[data-testid=cellr7c7value\\:" + i + "]").should("exist");
+        });
+      }
+    );
+  }
+
+  it("Board Highlighting should render correctly when undo button is entered", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.Select_Cell(7, 7).type("1");
       cy.get("[data-testid=undoButton]").click();
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
@@ -102,6 +142,19 @@ describe("Sudoku play component functions", () => {
           }
         }
       }
+    });
+  });
+
+  it("Undo button should remove value entered on previous move with keypad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.Select_Cell(7, 7).type("1");
+      cy.get("[data-testid=undoButton]").click();
+      cy.Get_Cell(7, 7).children().should("not.exist");
+    });
+  });
+
+  it("Should solve game", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 6);
       cy.Cell_Should_Have_Color(7, 6, SELECTED_CONFLICT_COLOR_RGB);
       cy.get("[data-testid=eraseButton]").click();
