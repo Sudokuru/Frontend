@@ -75,8 +75,23 @@ export const getCellNumber = (x: any, y: any) => {
   return y + x * 9;
 };
 
-export const getBoxIndexFromCellNum = (cellNum: any) => {
+/**
+ * Given a cell number, returns the row index
+ * @param cellNum - cell number (going from 0 to 80 from left to right, top to bottom)
+ * @returns the box index (going from 0 to 8 from left to right, top to bottom)
+ */
+export const getBoxIndexFromCellNum = (cellNum: number) => {
   return Math.floor((cellNum % 9) / 3);
+};
+
+/**
+ * Given a cells row and column, returns the box index
+ * @param row - row of the cell
+ * @param column - column of the cell
+ * @returns the box index (going from 0 to 8 from left to right, top to bottom)
+ */
+export const getBoxIndexFromCellCoords = (row: number, column: number) => {
+  return getBoxIndexFromCellNum(getCellNumber(row, column));
 };
 
 export const getCausesFromHint = (hint: any) => {
