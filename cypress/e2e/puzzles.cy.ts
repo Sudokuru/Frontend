@@ -98,7 +98,11 @@ describe("Sudoku play component functions", () => {
 
   for (let i = 1; i <= 9; i++) {
     it(
-      "Typing '" + i + "' in empty cell should fill cell with '" + i + "'",
+      "Typing '" +
+        i +
+        "' in empty cell should fill cell with '" +
+        i +
+        "' value",
       () => {
         cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
           cy.Select_Cell(7, 7).type(i.toString());
@@ -114,12 +118,43 @@ describe("Sudoku play component functions", () => {
         i +
         "' in empty cell should fill cell with '" +
         i +
-        "'",
+        "' value",
       () => {
         cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
           cy.Select_Cell(7, 7);
           cy.get("[data-testid=numberControl" + i + "]").click();
           cy.get("[data-testid=cellr7c7value\\:" + i + "]").should("exist");
+        });
+      }
+    );
+  }
+
+  for (let i = 1; i <= 9; i++) {
+    it(
+      "Typing '" + i + "' in empty cell should fill cell with '" + i + "' note",
+      () => {
+        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+          cy.get("[data-testid=toggleNoteModeButton]").click();
+          cy.Select_Cell(7, 7).type(i.toString());
+          cy.get("[data-testid=cellr7c7notes\\:" + i + "]").should("exist");
+        });
+      }
+    );
+  }
+
+  for (let i = 1; i <= 9; i++) {
+    it(
+      "Clicking numpad '" +
+        i +
+        "' in empty cell should fill cell with '" +
+        i +
+        "' note",
+      () => {
+        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+          cy.get("[data-testid=toggleNoteModeButton]").click();
+          cy.Select_Cell(7, 7);
+          cy.get("[data-testid=numberControl" + i + "]").click();
+          cy.get("[data-testid=cellr7c7notes\\:" + i + "]").should("exist");
         });
       }
     );
@@ -145,15 +180,57 @@ describe("Sudoku play component functions", () => {
     });
   });
 
-  //todo need more tests to make sure all types of undo functionality works
-  //todo such as numpad entry, erase entry, numpad value override, keypad value override,
-  //todo note entry, note removal, notes erasal, value erasal
-  it("Undo button should remove value entered on previous move with keypad", () => {
+  it("Undo button should remove value entered on previous move from keypad", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 7).type("1");
       cy.get("[data-testid=undoButton]").click();
       cy.Get_Cell(7, 7).children().should("not.exist");
     });
+  });
+
+  //todo write this test
+  it.skip("Undo button should remove value entered on previous move from numpad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace value erased on previous move from erase button", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace notes erased on previous move from erase button", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace value overridden on previous move with keypad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace value overridden on previous move with numpad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should remove note entered on previous move with numpad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should remove note entered on previous move with keypad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace note removed on previous move with numpad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
+  });
+
+  //todo write this test
+  it.skip("Undo button should replace note removed on previous move with keypad", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {});
   });
 
   it("Selecting invalid cell should update highlighting of cell correctly", () => {
@@ -163,6 +240,25 @@ describe("Sudoku play component functions", () => {
     });
   });
 
+  it("Erase button should be disabled if a cell with a given is selected", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.get("[data-testid=cellr0c2value\\:3]").should("exist");
+      cy.Select_Cell(0, 2);
+      cy.get("[data-testid=eraseButton]").should(
+        "have.css",
+        "pointer-events",
+        "none"
+      );
+    });
+  });
+
+  //todo write this test
+  it.skip("Erase button should be disabled if a cell with a correct value is selected", () => {});
+
+  //todo write this test
+  it.skip("Erasing an incorrect value should succeed", () => {});
+
+  //todo break this up into individual tests
   it.only("Should solve game", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 6);
