@@ -27,6 +27,12 @@ describe("Simplify notes strategy", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.get("[data-testid=hintButton]").click();
       cy.contains("Simplify Notes");
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        5,
+        -1,
+        -1,
+        HINT_NOT_HIGHLIGHTED_COLOR_RGB
+      );
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (row === 5) {
@@ -35,12 +41,6 @@ describe("Simplify notes strategy", () => {
             } else {
               cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
             }
-          } else {
-            cy.Cell_Should_Have_Color(
-              row,
-              column,
-              HINT_NOT_HIGHLIGHTED_COLOR_RGB
-            );
           }
         }
       }
@@ -56,6 +56,12 @@ describe("Simplify notes strategy", () => {
       cy.get("[data-testid=cellr5c3notes\\:4]").should("exist");
       cy.get("[data-testid=checkMark]").click();
       cy.get("[data-testid=hintButton]").click();
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        -1,
+        7,
+        -1,
+        HINT_NOT_HIGHLIGHTED_COLOR_RGB
+      );
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (column === 7) {
@@ -64,12 +70,6 @@ describe("Simplify notes strategy", () => {
             } else {
               cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
             }
-          } else {
-            cy.Cell_Should_Have_Color(
-              row,
-              column,
-              HINT_NOT_HIGHLIGHTED_COLOR_RGB
-            );
           }
         }
       }
@@ -87,6 +87,12 @@ describe("Simplify notes strategy", () => {
       cy.get("[data-testid=cellr8c7notes\\:567]").should("exist");
       cy.get("[data-testid=checkMark]").click();
       cy.get("[data-testid=hintButton]").click();
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        -1,
+        -1,
+        5,
+        HINT_NOT_HIGHLIGHTED_COLOR_RGB
+      );
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (row > 2 && row < 6 && column > 5) {
@@ -95,12 +101,6 @@ describe("Simplify notes strategy", () => {
             } else {
               cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
             }
-          } else {
-            cy.Cell_Should_Have_Color(
-              row,
-              column,
-              HINT_NOT_HIGHLIGHTED_COLOR_RGB
-            );
           }
         }
       }
