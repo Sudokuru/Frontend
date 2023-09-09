@@ -306,5 +306,6 @@ describe("Sudoku play component functions", () => {
       cy.Select_Cell(7, 8).type("4");
     });
     cy.get("[data-testid='StartNewGameButton-text']").click();
+    cy.contains("Start Puzzle");
   });
 });
