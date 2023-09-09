@@ -81,7 +81,12 @@ export const getCellNumber = (x: any, y: any) => {
  * @returns the box index (going from 0 to 8 from left to right, top to bottom)
  */
 export const getBoxIndexFromCellNum = (cellNum: number) => {
-  return Math.floor((cellNum % 9) / 3);
+  let row = Math.floor(cellNum / 9);
+  let column = cellNum % 9;
+  const BOX_LENGTH = 3;
+  let box: number = Math.floor(column / BOX_LENGTH);
+  box += Math.floor(row / BOX_LENGTH) * BOX_LENGTH;
+  return box;
 };
 
 /**
