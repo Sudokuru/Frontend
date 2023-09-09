@@ -296,7 +296,7 @@ describe("Sudoku play component functions", () => {
     });
   });
 
-  it.only("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
+  it("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 6).type("8");
       cy.Select_Cell(7, 7).type("2");
