@@ -145,6 +145,9 @@ describe("Sudoku play component functions", () => {
     });
   });
 
+  //todo need more tests to make sure all types of undo functionality works
+  //todo such as numpad entry, erase entry, numpad value override, keypad value override,
+  //todo note entry, note removal, notes erasal, value erasal
   it("Undo button should remove value entered on previous move with keypad", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 7).type("1");
@@ -153,10 +156,16 @@ describe("Sudoku play component functions", () => {
     });
   });
 
-  it("Should solve game", () => {
+  it("Selecting invalid cell should update highlighting of cell correctly", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 6);
       cy.Cell_Should_Have_Color(7, 6, SELECTED_CONFLICT_COLOR_RGB);
+    });
+  });
+
+  it.only("Should solve game", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.Select_Cell(7, 6);
       cy.get("[data-testid=eraseButton]").click();
       cy.Cell_Should_Have_Color(7, 6, SELECTED_COLOR_RGB);
       cy.get("[data-testid=toggleNoteModeButton]").click();
