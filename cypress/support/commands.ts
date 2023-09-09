@@ -1,3 +1,5 @@
+import { getBoxIndexFromCellCoords } from "../../app/Components/Sudoku Board/Functions/BoardFunctions";
+
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.get("[data-testid=OpenDrawerNavigation]").click();
   cy.get("[data-testid=DrillButton]").click();
@@ -49,3 +51,20 @@ Cypress.Commands.add("Select_Cell", (row, column) => {
 Cypress.Commands.add("Get_Cell", (row, column) => {
   cy.get("[data-testid^=cellr" + row + "c" + column + "]");
 });
+
+Cypress.Commands.add(
+  "Board_Should_Have_Color_Except_For_Groups",
+  (row, column, box, color) => {
+    for (let r: number = 0; r < 9; r++) {
+      for (let c: number = 0; c < 9; c++) {
+        if (
+          r !== row &&
+          c !== column &&
+          getBoxIndexFromCellCoords(r, c) !== box
+        ) {
+          cy.Cell_Should_Have_Color(r, c, color);
+        }
+      }
+    }
+  }
+);

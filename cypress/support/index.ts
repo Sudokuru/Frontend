@@ -52,6 +52,21 @@ declare global {
        * @param column - The column of the cell to get
        */
       Get_Cell(row: number, column: number): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to check if the board except for cells in certain groups have a certain color.
+       * @example cy.Board_Should_Have_Color_Except_For_Groups(0, 3, -1, 3, SELECTED_COLOR_RGB)
+       * @param row - The row to be ignored (-1 to not ignore any rows)
+       * @param column - The column to be ignored (-1 to not ignore any columns)
+       * @param box - The box to be ignored (-1 to not ignore any boxes)
+       * @param color - The color to check for
+       */
+      Board_Should_Have_Color_Except_For_Groups(
+        row: number,
+        column: number,
+        box: number,
+        color: string
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
