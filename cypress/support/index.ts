@@ -67,6 +67,15 @@ declare global {
         box: number,
         color: string
       ): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to get the box index from cell coordinates.
+       * @example cy.Get_Box_Index_From_Cell_Coords(0, 0)
+       * @param row - The row of the cell
+       * @param column - The column of the cell
+       * @returns The box index of the cell
+       */
+      Get_Box_Index_From_Cell_Coords(row: number, column: number): number;
     }
   }
 }

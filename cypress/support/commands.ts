@@ -1,5 +1,3 @@
-import { getBoxIndexFromCellCoords } from "../../app/Components/Sudoku Board/Functions/BoardFunctions";
-
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.get("[data-testid=OpenDrawerNavigation]").click();
   cy.get("[data-testid=DrillButton]").click();
@@ -60,7 +58,7 @@ Cypress.Commands.add(
         if (
           r !== row &&
           c !== column &&
-          getBoxIndexFromCellCoords(r, c) !== box
+          cy.Get_Box_Index_From_Cell_Coords(r, c) !== box
         ) {
           cy.Cell_Should_Have_Color(r, c, color);
         }
@@ -68,3 +66,10 @@ Cypress.Commands.add(
     }
   }
 );
+
+Cypress.Commands.add("Get_Box_Index_From_Cell_Coords", (row, column) => {
+  const BOX_LENGTH = 3;
+  let box: number = Math.floor(column / BOX_LENGTH);
+  box += Math.floor(row / BOX_LENGTH) * BOX_LENGTH;
+  return box;
+});
