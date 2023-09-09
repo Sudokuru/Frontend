@@ -55,12 +55,12 @@ Cypress.Commands.add(
   (row, column, box, color) => {
     for (let r: number = 0; r < 9; r++) {
       for (let c: number = 0; c < 9; c++) {
-        if (
-          r !== row &&
-          c !== column &&
-          cy.Get_Box_Index_From_Cell_Coords(r, c) !== box
-        ) {
-          cy.Cell_Should_Have_Color(r, c, color);
+        if (r !== row && c !== column) {
+          cy.Get_Box_Index_From_Cell_Coords(r, c).then((boxIndex) => {
+            if (boxIndex !== box) {
+              cy.Cell_Should_Have_Color(r, c, color);
+            }
+          });
         }
       }
     }
@@ -71,5 +71,5 @@ Cypress.Commands.add("Get_Box_Index_From_Cell_Coords", (row, column) => {
   const BOX_LENGTH = 3;
   let box: number = Math.floor(column / BOX_LENGTH);
   box += Math.floor(row / BOX_LENGTH) * BOX_LENGTH;
-  return box;
+  return cy.wrap(box);
 });

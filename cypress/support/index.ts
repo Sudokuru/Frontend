@@ -75,7 +75,10 @@ declare global {
        * @param column - The column of the cell
        * @returns The box index of the cell
        */
-      Get_Box_Index_From_Cell_Coords(row: number, column: number): number;
+      Get_Box_Index_From_Cell_Coords(
+        row: number,
+        column: number
+      ): Chainable<number>;
     }
   }
 }
