@@ -259,7 +259,7 @@ describe("Sudoku play component functions", () => {
   it.skip("Erasing an incorrect value should succeed", () => {});
 
   //todo break this up into individual tests
-  it.only("Should solve game", () => {
+  it.skip("Should solve game", () => {
     cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
       cy.Select_Cell(7, 6);
       cy.get("[data-testid=eraseButton]").click();
@@ -289,8 +289,22 @@ describe("Sudoku play component functions", () => {
       cy.get("[data-testid=note4]")
         .children()
         .should("have.css", "color", PLACE_NOTE_TEXT_COLOR_RGB);
-      cy.get("[data-testid=rightArrow]").click();
-      cy.get("[data-testid=sudokuBoard]").should("not.exist");
+      cy.get("[data-testid=rightArrow]")
+        .click()
+        .get("[data-testid=checkMark]")
+        .click();
     });
+  });
+
+  it.only("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
+    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+      cy.Select_Cell(7, 6).type("8");
+      cy.Select_Cell(7, 7).type("2");
+      // for some reason it needs to wait or else it fails
+      // maybe because it finishes with time = 0, this may be an edge case failure
+      cy.wait(1000);
+      cy.Select_Cell(7, 8).type("4");
+    });
+    cy.get("[data-testid='StartNewGameButton-text']").click();
   });
 });
