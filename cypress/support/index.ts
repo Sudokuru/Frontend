@@ -38,22 +38,6 @@ declare global {
       ): Chainable<JQuery<HTMLElement>>;
 
       /**
-       * Custom command to select a cell.
-       * @example cy.Select_Cell(0, 0)
-       * @param row - The row of the cell to select
-       * @param column - The column of the cell to select
-       */
-      Select_Cell(row: number, column: number): Chainable<JQuery<HTMLElement>>;
-
-      /**
-       * Custom command to get a cell.
-       * @example cy.Get_Cell(0, 0)
-       * @param row - The row of the cell to get
-       * @param column - The column of the cell to get
-       */
-      Get_Cell(row: number, column: number): Chainable<JQuery<HTMLElement>>;
-
-      /**
        * Custom command to check if the board except for cells in certain groups have a certain color.
        * @example cy.Board_Should_Have_Color_Except_For_Groups(0, 3, -1, 3, SELECTED_COLOR_RGB)
        * @param row - The row to be ignored (-1 to not ignore any rows)

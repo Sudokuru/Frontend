@@ -36,7 +36,7 @@ const HintSection = (props: any) => {
     <View style={styles(cellSize).hintSectionContainer}>
       {isLeftArrowRendered(onFirstStep) ? (
         // checkcircleo
-        <Pressable onPress={leftArrowClicked}>
+        <Pressable testID={"hintLeftArrow"} onPress={leftArrowClicked}>
           <AntDesign
             color={theme.colors.onBackground}
             name="leftcircleo"
@@ -65,7 +65,7 @@ const HintSection = (props: any) => {
         </View>
       </View>
       {isRightArrowRendered(onFinalStep) ? (
-        <Pressable testID={"rightArrow"} onPress={rightArrowClicked}>
+        <Pressable testID={"hintRightArrow"} onPress={rightArrowClicked}>
           <AntDesign
             color={theme.colors.onBackground}
             name="rightcircleo"
@@ -73,7 +73,7 @@ const HintSection = (props: any) => {
           />
         </Pressable>
       ) : isCheckMarkRendered(onFinalStep) ? (
-        <Pressable testID={"checkMark"} onPress={checkMarkClicked}>
+        <Pressable testID={"hintCheckMark"} onPress={checkMarkClicked}>
           <AntDesign
             color={theme.colors.onBackground}
             name="checkcircle"
