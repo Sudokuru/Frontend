@@ -1,3 +1,8 @@
+import {
+  HINT_SELECTED_COLOR_RGB,
+  NOT_HIGHLIGHTED_COLOR_RGB,
+} from "../../app/Styling/HighlightColors";
+
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.get("[data-testid=OpenDrawerNavigation]").click();
   cy.get("[data-testid=DrillButton]").click();
@@ -73,3 +78,43 @@ Cypress.Commands.add("Get_Box_Index_From_Cell_Coords", (row, column) => {
   box += Math.floor(row / BOX_LENGTH) * BOX_LENGTH;
   return cy.wrap(box);
 });
+
+Cypress.Commands.add(
+  "Group_Should_Only_Have_Indexes_Selected",
+  (groupType, index, selectedIndexes) => {
+    let pointer: number = 0;
+    for (let i: number = 0; i < 9; i++) {
+      let selected: boolean = false;
+      if (pointer < selectedIndexes.length && i === selectedIndexes[pointer]) {
+        selected = true;
+        pointer++;
+      }
+      if (groupType === 0) {
+        // row
+        cy.Cell_Should_Have_Color(
+          index,
+          i,
+          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
+        );
+      } else if (groupType === 1) {
+        // column
+        cy.Cell_Should_Have_Color(
+          i,
+          index,
+          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
+        );
+      } else {
+        // box
+        let row: number = Math.floor(index / 3) * 3; // gets first row of box
+        row += Math.floor(i / 3); // adds offset
+        let col: number = (index % 3) * 3; // gets first column of box
+        col += i % 3; // adds offset
+        cy.Cell_Should_Have_Color(
+          row,
+          col,
+          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
+        );
+      }
+    }
+  }
+);

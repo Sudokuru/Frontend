@@ -33,17 +33,7 @@ describe("Simplify notes strategy", () => {
         -1,
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
-      for (let row = 0; row < 9; row++) {
-        for (let column = 0; column < 9; column++) {
-          if (row === 5) {
-            if (column === 7) {
-              cy.Cell_Should_Have_Color(row, column, HINT_SELECTED_COLOR_RGB);
-            } else {
-              cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-            }
-          }
-        }
-      }
+      cy.Group_Should_Only_Have_Indexes_Selected(0, 5, [7]);
       cy.get("[data-testid=cellr5c3notes\\:49]").within(() => {
         cy.get("[data-testid=note4]")
           .children()
@@ -62,17 +52,7 @@ describe("Simplify notes strategy", () => {
         -1,
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
-      for (let row = 0; row < 9; row++) {
-        for (let column = 0; column < 9; column++) {
-          if (column === 7) {
-            if (row === 5) {
-              cy.Cell_Should_Have_Color(row, column, HINT_SELECTED_COLOR_RGB);
-            } else {
-              cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-            }
-          }
-        }
-      }
+      cy.Group_Should_Only_Have_Indexes_Selected(1, 7, [5]);
       cy.get("[data-testid=cellr8c7notes\\:5679]").within(() => {
         for (let note = 5; note < 8; note++) {
           cy.get("[data-testid=note" + note + "]")
@@ -93,17 +73,7 @@ describe("Simplify notes strategy", () => {
         5,
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
-      for (let row = 0; row < 9; row++) {
-        for (let column = 0; column < 9; column++) {
-          if (row > 2 && row < 6 && column > 5) {
-            if (row === 5 && column === 7) {
-              cy.Cell_Should_Have_Color(row, column, HINT_SELECTED_COLOR_RGB);
-            } else {
-              cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-            }
-          }
-        }
-      }
+      cy.Group_Should_Only_Have_Indexes_Selected(2, 5, [7]);
       cy.get("[data-testid=cellr3c8notes\\:579]").within(() => {
         cy.get("[data-testid=note5]")
           .children()

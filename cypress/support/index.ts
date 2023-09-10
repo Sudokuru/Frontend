@@ -79,6 +79,19 @@ declare global {
         row: number,
         column: number
       ): Chainable<number>;
+
+      /**
+       * Custom command to check if only certain cells in a group have a certain color.
+       * @example cy.Group_Should_Only_Have_Indexes_Selected(0, 1, {0, 1, 2})
+       * @param groupType - The type of group to check (row = 0, column = 1, box = 2)
+       * @param index - The index of the group to check (0 - 8)
+       * @param selectedIndexes - The indexes of the cells in the group that should be selected
+       */
+      Group_Should_Only_Have_Indexes_Selected(
+        groupType: number,
+        index: number,
+        selectedIndexes: number[]
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }
