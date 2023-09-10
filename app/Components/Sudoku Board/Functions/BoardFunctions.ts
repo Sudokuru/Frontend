@@ -75,30 +75,6 @@ export const getCellNumber = (x: any, y: any) => {
   return y + x * 9;
 };
 
-/**
- * Given a cell number, returns the row index
- * @param cellNum - cell number (going from 0 to 80 from left to right, top to bottom)
- * @returns the box index (going from 0 to 8 from left to right, top to bottom)
- */
-export const getBoxIndexFromCellNum = (cellNum: number) => {
-  let row = Math.floor(cellNum / 9);
-  let column = cellNum % 9;
-  const BOX_LENGTH = 3;
-  let box: number = Math.floor(column / BOX_LENGTH);
-  box += Math.floor(row / BOX_LENGTH) * BOX_LENGTH;
-  return box;
-};
-
-/**
- * Given a cells row and column, returns the box index
- * @param row - row of the cell
- * @param column - column of the cell
- * @returns the box index (going from 0 to 8 from left to right, top to bottom)
- */
-export const getBoxIndexFromCellCoords = (row: number, column: number) => {
-  return getBoxIndexFromCellNum(getCellNumber(row, column));
-};
-
 export const getCausesFromHint = (hint: any) => {
   let causes = [];
   for (let i = 0; i < hint.cause.length; i++) {
