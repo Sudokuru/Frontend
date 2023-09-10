@@ -1,6 +1,8 @@
+import { DRILL_DRAWER_BUTTON, OPEN_DRAWER_NAVIGATION } from "../global/testIds";
+
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
-  cy.get("[data-testid=OpenDrawerNavigation]").click();
-  cy.get("[data-testid=DrillButton]").click();
+  cy.get(OPEN_DRAWER_NAVIGATION).click();
+  cy.get(DRILL_DRAWER_BUTTON).click();
   cy.contains("NAKED_SINGLE").click();
 });
 
@@ -40,12 +42,4 @@ Cypress.Commands.add("Cell_Should_Have_Color", (row, column, color) => {
     "background-color",
     color
   );
-});
-
-Cypress.Commands.add("Select_Cell", (row, column) => {
-  cy.get("[data-testid^=cellr" + row + "c" + column + "]").click();
-});
-
-Cypress.Commands.add("Get_Cell", (row, column) => {
-  cy.get("[data-testid^=cellr" + row + "c" + column + "]");
 });
