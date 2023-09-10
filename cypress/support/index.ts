@@ -76,6 +76,23 @@ declare global {
         index: number,
         selectedIndexes: number[]
       ): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to check if a cell with given notes exists and the notes have remove or placed color (or NOTE_TEXT_COLOR if not specified)
+       * @example cy.Cell_Should_Have_Notes_With_Colors(3, 5, "123", "12", "3", "")
+       * @param row - The row of the cell
+       * @param column - The column of the cell
+       * @param notes - The notes of the cell (in ascending order)
+       * @param noteRemoveColored - The notes that should have REMOVE_NOTE_TEXT_COLOR (in ascending order)
+       * @param notePlaceColored - The notes that should have PLACE_NOTE_TEXT_COLOR (in ascending order)
+       */
+      Cell_Should_Have_Notes_With_Colors(
+        row: number,
+        column: number,
+        notes: string,
+        noteRemoveColored: string,
+        notePlaceColored: string
+      ): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

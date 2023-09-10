@@ -1,9 +1,16 @@
 import {
   HINT_SELECTED_COLOR_RGB,
+  NOTE_TEXT_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
+  PLACE_NOTE_TEXT_COLOR_RGB,
+  REMOVE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
 
-import { DRILL_DRAWER_BUTTON, OPEN_DRAWER_NAVIGATION } from "../global/testIds";
+import {
+  CELL_WITH_NOTES,
+  DRILL_DRAWER_BUTTON,
+  OPEN_DRAWER_NAVIGATION,
+} from "../global/testIds";
 
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.get(OPEN_DRAWER_NAVIGATION).click();
@@ -110,5 +117,25 @@ Cypress.Commands.add(
         );
       }
     }
+  }
+);
+
+Cypress.Commands.add(
+  "Cell_Should_Have_Notes_With_Colors",
+  (row, column, notes, noteRemoveColored, notePlacedColored) => {
+    cy.get(CELL_WITH_NOTES(row, column, notes)).within(() => {
+      let color: string;
+      for (let i: number = 0; i < notes.length; i++) {
+        color = NOTE_TEXT_COLOR_RGB;
+        if (noteRemoveColored.includes(notes[i])) {
+          color = REMOVE_NOTE_TEXT_COLOR_RGB;
+        } else if (notePlacedColored.includes(notes[i])) {
+          color = PLACE_NOTE_TEXT_COLOR_RGB;
+        }
+        cy.get("[data-testid=note" + notes[i] + "]")
+          .children()
+          .should("have.css", "color", color);
+      }
+    });
   }
 );

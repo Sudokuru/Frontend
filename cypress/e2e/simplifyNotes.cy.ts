@@ -1,10 +1,4 @@
-import {
-  HINT_NOT_HIGHLIGHTED_COLOR_RGB,
-  HINT_SELECTED_COLOR_RGB,
-  NOTE_TEXT_COLOR_RGB,
-  NOT_HIGHLIGHTED_COLOR_RGB,
-  REMOVE_NOTE_TEXT_COLOR_RGB,
-} from "../../app/Styling/HighlightColors";
+import { HINT_NOT_HIGHLIGHTED_COLOR_RGB } from "../../app/Styling/HighlightColors";
 import {
   CELL_WITH_NOTES,
   HINT_BUTTON,
@@ -44,14 +38,7 @@ describe("Simplify notes strategy", () => {
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
       cy.Group_Should_Only_Have_Indexes_Selected(0, 5, [7]);
-      cy.get(CELL_WITH_NOTES(5, 3, "49")).within(() => {
-        cy.get("[data-testid=note4]")
-          .children()
-          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        cy.get("[data-testid=note9]")
-          .children()
-          .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-      });
+      cy.Cell_Should_Have_Notes_With_Colors(5, 3, "49", "9", "");
       cy.get(HINT_RIGHT_ARROW).click();
       cy.get(CELL_WITH_NOTES(5, 3, "4")).should("exist");
       cy.get(HINT_CHECK_MARK).click();
@@ -63,16 +50,7 @@ describe("Simplify notes strategy", () => {
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
       cy.Group_Should_Only_Have_Indexes_Selected(1, 7, [5]);
-      cy.get(CELL_WITH_NOTES(8, 7, "5679")).within(() => {
-        for (let note = 5; note < 8; note++) {
-          cy.get("[data-testid=note" + note + "]")
-            .children()
-            .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        }
-        cy.get("[data-testid=note9]")
-          .children()
-          .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-      });
+      cy.Cell_Should_Have_Notes_With_Colors(8, 7, "5679", "9", "");
       cy.get(HINT_RIGHT_ARROW).click();
       cy.get(CELL_WITH_NOTES(8, 7, "567")).should("exist");
       cy.get(HINT_CHECK_MARK).click();
@@ -84,17 +62,7 @@ describe("Simplify notes strategy", () => {
         HINT_NOT_HIGHLIGHTED_COLOR_RGB
       );
       cy.Group_Should_Only_Have_Indexes_Selected(2, 5, [7]);
-      cy.get(CELL_WITH_NOTES(3, 8, "579")).within(() => {
-        cy.get("[data-testid=note5]")
-          .children()
-          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        cy.get("[data-testid=note7]")
-          .children()
-          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        cy.get("[data-testid=note9]")
-          .children()
-          .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-      });
+      cy.Cell_Should_Have_Notes_With_Colors(3, 8, "579", "9", "");
       cy.get(HINT_RIGHT_ARROW).click();
       cy.get(CELL_WITH_NOTES(3, 8, "57")).should("exist");
     });
