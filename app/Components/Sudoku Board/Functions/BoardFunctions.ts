@@ -75,10 +75,6 @@ export const getCellNumber = (x: any, y: any) => {
   return y + x * 9;
 };
 
-export const getBoxIndexFromCellNum = (cellNum: any) => {
-  return Math.floor((cellNum % 9) / 3);
-};
-
 export const getCausesFromHint = (hint: any) => {
   let causes = [];
   for (let i = 0; i < hint.cause.length; i++) {

@@ -8,6 +8,7 @@ export const REMOVE_NOTE_TEXT_COLOR = "#FF0000";
 export const PLACE_NOTE_TEXT_COLOR = "#F2CA7E";
 export const NOTE_TEXT_COLOR = "#000000";
 export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
+export const HINT_NOT_HIGHILGHTED_COLOR = "#808080";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {
@@ -38,3 +39,4 @@ export const REMOVE_NOTE_TEXT_COLOR_RGB = RGB(REMOVE_NOTE_TEXT_COLOR);
 export const PLACE_NOTE_TEXT_COLOR_RGB = RGB(PLACE_NOTE_TEXT_COLOR);
 export const NOTE_TEXT_COLOR_RGB = RGB(NOTE_TEXT_COLOR);
 export const NOT_HIGHLIGHTED_COLOR_RGB = RGB(NOT_HIGHLIGHTED_COLOR);
+export const HINT_NOT_HIGHLIGHTED_COLOR_RGB = RGB(HINT_NOT_HIGHILGHTED_COLOR);

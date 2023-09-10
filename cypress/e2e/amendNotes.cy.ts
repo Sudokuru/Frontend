@@ -1,11 +1,5 @@
+import { HINT_NOT_HIGHLIGHTED_COLOR_RGB } from "../../app/Styling/HighlightColors";
 import {
-  HINT_SELECTED_COLOR_RGB,
-  NOTE_TEXT_COLOR_RGB,
-  NOT_HIGHLIGHTED_COLOR_RGB,
-  REMOVE_NOTE_TEXT_COLOR_RGB,
-} from "../../app/Styling/HighlightColors";
-import {
-  CELL,
   HINT_BUTTON,
   HINT_RIGHT_ARROW,
   LOCAL_STORAGE_ALL_LEARNED_LESSONS,
@@ -35,61 +29,27 @@ describe("Amend notes strategy", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Amend Notes");
-      for (let row = 0; row < 9; row++) {
-        for (let column = 0; column < 9; column++) {
-          if (row === 0 || column === 0 || (row < 3 && column < 3)) {
-            if (
-              (row === 0 && (column === 2 || column === 4 || column === 7)) ||
-              (row === 1 && column === 2) ||
-              (row === 2 && (column === 1 || column === 2)) ||
-              (row === 4 && column === 0) ||
-              (row === 6 && column === 0)
-            ) {
-              cy.Cell_Should_Have_Color(row, column, HINT_SELECTED_COLOR_RGB);
-            } else {
-              cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-            }
-          }
-        }
-      }
-      cy.get("[data-testid^=cellr0c0]").within(() => {
-        cy.get("[data-testid=note1]")
-          .children()
-          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        for (let i = 2; i <= 9; i++) {
-          cy.get("[data-testid=note" + i + "]")
-            .children()
-            .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-        }
-      });
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        0,
+        0,
+        0,
+        HINT_NOT_HIGHLIGHTED_COLOR_RGB
+      );
+      cy.Group_Should_Only_Have_Indexes_Selected(0, 0, [2, 4, 7]);
+      cy.Group_Should_Only_Have_Indexes_Selected(1, 0, [4, 6]);
+      cy.Group_Should_Only_Have_Indexes_Selected(2, 0, [2, 5, 7, 8]);
+      cy.Cell_Should_Have_Notes_With_Colors(0, 0, "123456789", "23456789", "");
       cy.get(HINT_RIGHT_ARROW).click();
-      for (let row = 0; row < 9; row++) {
-        for (let column = 0; column < 9; column++) {
-          if (row === 0 || column === 0 || (row < 3 && column < 3)) {
-            if (
-              (row === 0 && (column === 2 || column === 4 || column === 7)) ||
-              (row === 1 && column === 2) ||
-              (row === 2 && (column === 1 || column === 2)) ||
-              (row === 4 && column === 0) ||
-              (row === 6 && column === 0)
-            ) {
-              cy.Cell_Should_Have_Color(row, column, HINT_SELECTED_COLOR_RGB);
-            } else {
-              cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-            }
-          }
-        }
-      }
-      cy.get("[data-testid^=cellr0c0]").within(() => {
-        cy.get("[data-testid=note1]")
-          .children()
-          .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
-        for (let i = 2; i <= 9; i++) {
-          cy.get("[data-testid=note" + i + "]")
-            .children()
-            .should("not.exist");
-        }
-      });
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        0,
+        0,
+        0,
+        HINT_NOT_HIGHLIGHTED_COLOR_RGB
+      );
+      cy.Group_Should_Only_Have_Indexes_Selected(0, 0, [2, 4, 7]);
+      cy.Group_Should_Only_Have_Indexes_Selected(1, 0, [4, 6]);
+      cy.Group_Should_Only_Have_Indexes_Selected(2, 0, [2, 5, 7, 8]);
+      cy.Cell_Should_Have_Notes_With_Colors(0, 0, "1", "", "");
     });
   });
 });
