@@ -6,12 +6,11 @@ import {
 } from "../../app/Styling/HighlightColors";
 import {
   CELL,
-  CELL_WITH_NOTES,
   HINT_BUTTON,
   HINT_RIGHT_ARROW,
   LOCAL_STORAGE_ALL_LEARNED_LESSONS,
   OPEN_DRAWER_NAVIGATION,
-  PLAY_BUTTON,
+  PLAY_DRAWER_BUTTON,
   SUDOKU_BOARD,
 } from "../global/testIds";
 
@@ -28,7 +27,7 @@ describe("Amend notes strategy", () => {
     );
     cy.visit("");
     cy.get(OPEN_DRAWER_NAVIGATION).click();
-    cy.get(PLAY_BUTTON).click();
+    cy.get(PLAY_DRAWER_BUTTON).click();
     cy.contains("Resume Puzzle").click();
   });
 
@@ -53,7 +52,7 @@ describe("Amend notes strategy", () => {
           }
         }
       }
-      cy.get(CELL(0, 0)).within(() => {
+      cy.get("[data-testid^=cellr0c0]").within(() => {
         cy.get("[data-testid=note1]")
           .children()
           .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
@@ -81,7 +80,7 @@ describe("Amend notes strategy", () => {
           }
         }
       }
-      cy.get(CELL(0, 0)).within(() => {
+      cy.get("[data-testid^=cellr0c0]").within(() => {
         cy.get("[data-testid=note1]")
           .children()
           .should("have.css", "color", NOTE_TEXT_COLOR_RGB);

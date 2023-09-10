@@ -1,5 +1,6 @@
 import {
   CELL_WITH_NOTES,
+  CELL_WITH_VALUE,
   HINT_BUTTON,
   HINT_CHECK_MARK,
   HINT_RIGHT_ARROW,
@@ -45,7 +46,7 @@ describe("naked single drills", () => {
           .click()
           .get(HINT_CHECK_MARK)
           .click()
-          .get(CELL_WITH_NOTES(singleRow, singleCol, note))
+          .get(CELL_WITH_VALUE(singleRow, singleCol, Number(note)))
           .should("exist")
           .then(() => {
             cy.contains("Submit").click();
