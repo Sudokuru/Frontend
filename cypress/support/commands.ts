@@ -1,5 +1,7 @@
+import { OPEN_DRAWER_NAVIGATION } from "../global/testIds";
+
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
-  cy.get("[data-testid=OpenDrawerNavigation]").click();
+  cy.get(OPEN_DRAWER_NAVIGATION).click();
   cy.get("[data-testid=DrillButton]").click();
   cy.contains("NAKED_SINGLE").click();
 });

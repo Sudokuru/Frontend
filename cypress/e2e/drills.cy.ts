@@ -1,17 +1,25 @@
+import {
+  CELL_WITH_NOTES,
+  HINT_BUTTON,
+  HINT_CHECK_MARK,
+  HINT_RIGHT_ARROW,
+  LOCAL_STORAGE_ALL_LEARNED_LESSONS,
+} from "../global/testIds";
+
 describe("naked single drills", () => {
   beforeEach(() => {
     window.localStorage.setItem(
       "learned_lessons",
-      '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE","SIMPLIFY_NOTES","NAKED_SET","HIDDEN_SINGLE","HIDDEN_SET","POINTING_SET"]'
+      LOCAL_STORAGE_ALL_LEARNED_LESSONS
     );
     cy.visit("");
   });
   it("finds naked single in drill and hint is correctly applied", () => {
     cy.Start_Naked_Single_Drill();
-    let singleCount = 0,
-      singleRow = 0,
-      singleCol = 0;
-    let note = "";
+    let singleCount: number = 0,
+      singleRow: number = 0,
+      singleCol: number = 0;
+    let note: string = "";
     cy.Get_Cell_IDs("sudokuDrillBoard")
       .then((cellIds: string[][]) => {
         for (let i = 0; i < 9; i++) {
@@ -31,21 +39,13 @@ describe("naked single drills", () => {
       })
       .then(() => {
         expect(singleCount).to.equal(1);
-        cy.get("[data-testid=hintButton]")
+        cy.get(HINT_BUTTON)
           .click()
-          .get("[data-testid=rightArrow]")
+          .get(HINT_RIGHT_ARROW)
           .click()
-          .get("[data-testid=checkMark]")
+          .get(HINT_CHECK_MARK)
           .click()
-          .get(
-            "[data-testid=cellr" +
-              singleRow +
-              "c" +
-              singleCol +
-              "value\\:" +
-              note +
-              "]"
-          )
+          .get(CELL_WITH_NOTES(singleRow, singleCol, note))
           .should("exist")
           .then(() => {
             cy.contains("Submit").click();

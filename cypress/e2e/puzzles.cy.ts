@@ -9,31 +9,48 @@ import {
   NOTE_TEXT_COLOR_RGB,
   PLACE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
+import {
+  CELL_WITH_NOTES,
+  CELL_WITH_VALUE,
+  ERASE_BUTTON,
+  HINT_BUTTON,
+  HINT_CHECK_MARK,
+  HINT_RIGHT_ARROW,
+  LOCAL_STORAGE_ALL_LEARNED_LESSONS,
+  NUMBER_BUTTON,
+  OPEN_DRAWER_NAVIGATION,
+  PAUSE_BUTTON,
+  PLAY_BUTTON,
+  START_NEW_GAME_BUTTON,
+  SUDOKU_BOARD,
+  TOGGLE_NOTE_MODE_BUTTON,
+  UNDO_BUTTON,
+} from "../global/testIds";
 
 describe("Sudoku play component functions", () => {
   // Before tests insert learned lessons in localstorage
   beforeEach(() => {
     window.localStorage.setItem(
       "learned_lessons",
-      '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE","SIMPLIFY_NOTES","NAKED_SET","HIDDEN_SINGLE","HIDDEN_SET","POINTING_SET"]'
+      LOCAL_STORAGE_ALL_LEARNED_LESSONS
     );
     window.localStorage.setItem(
       "active_game",
       '[{"puzzle":"003070040006002301089000000000107080517000006000400000271009005095000000000020000","puzzleSolution":"123675948456982371789314562964157283517238496832496157271849635395761824648523719","moves":[{"puzzleCurrentState":"123675948456982371789314562964157283517238496832496157271849635395761100648523719","puzzleCurrentNotesState":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000110000000000000"}],"strategies":["NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR"],"difficulty":348,"drillStrategies":["NAKED_SINGLE","POINTING_PAIR","POINTING_TRIPLET"],"currentTime":374,"numWrongCellsPlayed":235}]'
     );
     cy.visit("");
-    cy.get("[data-testid=OpenDrawerNavigation]").click();
-    cy.get("[data-testid=PlayButton]").click();
+    cy.get(OPEN_DRAWER_NAVIGATION).click();
+    cy.get(PLAY_BUTTON).click();
     cy.contains("Resume Puzzle").click();
   });
 
   it("Pause button functions", () => {
-    cy.get("[data-testid^=PauseButton]").click();
+    cy.get(PAUSE_BUTTON).click();
     cy.contains("Resume Puzzle");
   });
 
   it("Board Highlighting should render correctly when cell is selected", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Cell_Should_Have_Color(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
       cy.Cell_Should_Have_Color(7, 7, NOT_HIGHLIGHTED_COLOR_RGB);
       cy.Select_Cell(7, 7);
@@ -62,7 +79,7 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Board Highlighting should render correctly when cell value is entered", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 7).type("1");
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
@@ -104,9 +121,9 @@ describe("Sudoku play component functions", () => {
         i +
         "' value",
       () => {
-        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+        cy.get(SUDOKU_BOARD).within(() => {
           cy.Select_Cell(7, 7).type(i.toString());
-          cy.get("[data-testid=cellr7c7value\\:" + i + "]").should("exist");
+          cy.get(CELL_WITH_VALUE(7, 7, i)).should("exist");
         });
       }
     );
@@ -120,10 +137,10 @@ describe("Sudoku play component functions", () => {
         i +
         "' value",
       () => {
-        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+        cy.get(SUDOKU_BOARD).within(() => {
           cy.Select_Cell(7, 7);
-          cy.get("[data-testid=numberControl" + i + "]").click();
-          cy.get("[data-testid=cellr7c7value\\:" + i + "]").should("exist");
+          cy.get(NUMBER_BUTTON(i)).click();
+          cy.get(CELL_WITH_VALUE(7, 7, i)).should("exist");
         });
       }
     );
@@ -133,10 +150,10 @@ describe("Sudoku play component functions", () => {
     it(
       "Typing '" + i + "' in empty cell should fill cell with '" + i + "' note",
       () => {
-        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-          cy.get("[data-testid=toggleNoteModeButton]").click();
+        cy.get(SUDOKU_BOARD).within(() => {
+          cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
           cy.Select_Cell(7, 7).type(i.toString());
-          cy.get("[data-testid=cellr7c7notes\\:" + i + "]").should("exist");
+          cy.get(CELL_WITH_NOTES(7, 7, i.toString())).should("exist");
         });
       }
     );
@@ -150,20 +167,20 @@ describe("Sudoku play component functions", () => {
         i +
         "' note",
       () => {
-        cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-          cy.get("[data-testid=toggleNoteModeButton]").click();
+        cy.get(SUDOKU_BOARD).within(() => {
+          cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
           cy.Select_Cell(7, 7);
-          cy.get("[data-testid=numberControl" + i + "]").click();
-          cy.get("[data-testid=cellr7c7notes\\:" + i + "]").should("exist");
+          cy.get(NUMBER_BUTTON(i)).click();
+          cy.get(CELL_WITH_NOTES(7, 7, i.toString())).should("exist");
         });
       }
     );
   }
 
   it("Board Highlighting should render correctly when undo button is entered", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 7).type("1");
-      cy.get("[data-testid=undoButton]").click();
+      cy.get(UNDO_BUTTON).click();
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (row === 7 && column === 6) {
@@ -181,171 +198,160 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Undo button should remove value entered on previous move from keypad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 7).type("1");
-      cy.get("[data-testid=cellr7c7value\\:1]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
+      cy.get(CELL_WITH_VALUE(7, 7, 1)).should("exist");
+      cy.get(UNDO_BUTTON).click();
       cy.Get_Cell(7, 7).children().should("not.exist");
     });
   });
 
   it("Undo button should remove value entered on previous move from numpad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 7);
-      cy.get("[data-testid=numberControl1]").click();
-      cy.get("[data-testid=cellr7c7value\\:1]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
+      cy.get(NUMBER_BUTTON(1)).click();
+      cy.get(CELL_WITH_VALUE(7, 7, 1)).should("exist");
+      cy.get(UNDO_BUTTON).click();
       cy.Get_Cell(7, 7).children().should("not.exist");
     });
   });
 
   it("Undo button should replace value erased on previous move from erase button", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6);
-      cy.get("[data-testid=eraseButton]").click();
-      cy.get("[data-testid=cellr7c6value\\:1]").should("not.exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c6value\\:1]").should("exist");
+      cy.get(ERASE_BUTTON).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 1)).should("not.exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 1)).should("exist");
     });
   });
 
   it("Undo button should replace notes erased on previous move from erase button", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 8);
-      cy.get("[data-testid=eraseButton]").click();
-      cy.get("[data-testid=cellr7c8notes\\:45]").should("not.exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c8notes\\:45]").should("exist");
+      cy.get(ERASE_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "45")).should("not.exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "45")).should("exist");
     });
   });
 
   it("Undo button should replace value overridden on previous move with keypad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6).type("2");
-      cy.get("[data-testid=cellr7c6value\\:2]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c6value\\:1]").should("exist");
+      cy.get(CELL_WITH_VALUE(7, 6, 2)).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 1)).should("exist");
     });
   });
 
   it("Undo button should replace value overridden on previous move with numpad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6);
-      cy.get("[data-testid=numberControl2]").click();
-      cy.get("[data-testid=cellr7c6value\\:2]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c6value\\:1]").should("exist");
+      cy.get(NUMBER_BUTTON(2)).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 2)).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 1)).should("exist");
     });
   });
 
   it("Undo button should remove note entered on previous move with keypad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 7).type("1");
-      cy.get("[data-testid=cellr7c7notes\\:1]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c7notes\\:1]").should("not.exist");
+      cy.get(CELL_WITH_NOTES(7, 7, "1")).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 7, "1")).should("not.exist");
     });
   });
 
   it("Undo button should remove note entered on previous move with numpad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 7);
-      cy.get("[data-testid=numberControl1]").click();
-      cy.get("[data-testid=cellr7c7notes\\:1]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c7notes\\:1]").should("not.exist");
+      cy.get(NUMBER_BUTTON(1)).click();
+      cy.get(CELL_WITH_NOTES(7, 7, "1")).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 7, "1")).should("not.exist");
     });
   });
 
   it("Undo button should replace note removed on previous move with keypad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 8).type("5");
-      cy.get("[data-testid=cellr7c8notes\\:4]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c8notes\\:45]").should("exist");
+      cy.get(CELL_WITH_NOTES(7, 8, "4")).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "45")).should("exist");
     });
   });
 
   it("Undo button should replace note removed on previous move with numpad", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 8);
-      cy.get("[data-testid=numberControl5]").click();
-      cy.get("[data-testid=cellr7c8notes\\:4]").should("exist");
-      cy.get("[data-testid=undoButton]").click();
-      cy.get("[data-testid=cellr7c8notes\\:45]").should("exist");
+      cy.get(NUMBER_BUTTON(5)).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "4")).should("exist");
+      cy.get(UNDO_BUTTON).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "45")).should("exist");
     });
   });
 
   it("Selecting invalid cell should update highlighting of cell correctly", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6);
       cy.Cell_Should_Have_Color(7, 6, SELECTED_CONFLICT_COLOR_RGB);
     });
   });
 
   it("Erase button should be disabled if a cell with a given is selected", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=cellr0c2value\\:3]").should("exist");
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL_WITH_VALUE(0, 2, 3)).should("exist");
       cy.Select_Cell(0, 2);
-      cy.get("[data-testid=eraseButton]").should(
-        "have.css",
-        "pointer-events",
-        "none"
-      );
+      cy.get(ERASE_BUTTON).should("have.css", "pointer-events", "none");
     });
   });
 
   //todo Implement functionality so that this test passes
   it.skip("Erase button should be disabled if a cell with a correct value is selected", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
-      cy.get("[data-testid=cellr0c0value\\:1]").should("exist");
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL_WITH_VALUE(0, 0, 1)).should("exist");
       cy.Select_Cell(0, 0);
-      cy.get("[data-testid=eraseButton]").should(
-        "have.css",
-        "pointer-events",
-        "none"
-      );
+      cy.get(ERASE_BUTTON).should("have.css", "pointer-events", "none");
     });
   });
 
   it("Erasing an incorrect value should succeed", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6);
-      cy.get("[data-testid=eraseButton]").click();
-      cy.get("[data-testid=cellr7c6value\\:1]").should("not.exist");
+      cy.get(ERASE_BUTTON).click();
+      cy.get(CELL_WITH_VALUE(7, 6, 1)).should("not.exist");
     });
   });
 
   it("Should solve game with multiple action types", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6);
-      cy.get("[data-testid=eraseButton]").click();
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+      cy.get(ERASE_BUTTON).click();
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 6).type("12");
-      cy.get("[data-testid=numberControl3]").click();
-      cy.get("[data-testid=cellr7c6notes\\:123]").should("exist");
-      cy.get("[data-testid=toggleNoteModeButton]").click();
+      cy.get(NUMBER_BUTTON(3)).click();
+      cy.get(CELL_WITH_NOTES(7, 6, "123")).should("exist");
+      cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
       cy.Select_Cell(7, 6).type("8");
-      cy.get("[data-testid=cellr7c6value\\:8]").should("exist");
-      cy.Select_Cell(7, 7).get("[data-testid=numberControl2]").click();
-      cy.get("[data-testid=cellr7c7value\\:2]").should("exist");
-      cy.get("[data-testid=hintButton]").click();
+      cy.get(CELL_WITH_VALUE(7, 6, 8)).should("exist");
+      cy.Select_Cell(7, 7).get(NUMBER_BUTTON(2)).click();
+      cy.get(CELL_WITH_VALUE(7, 7, 2)).should("exist");
+      cy.get(HINT_BUTTON).click();
       cy.get("[data-testid=note4]")
         .children()
         .should("have.css", "color", NOTE_TEXT_COLOR_RGB);
       cy.get("[data-testid=note5]")
         .children()
         .should("have.css", "color", REMOVE_NOTE_TEXT_COLOR_RGB);
-      cy.get("[data-testid=rightArrow]")
-        .click()
-        .get("[data-testid=checkMark]")
-        .click();
-      cy.get("[data-testid=cellr7c8notes\\:4]").should("exist");
-      cy.get("[data-testid=hintButton]").click();
+      cy.get(HINT_RIGHT_ARROW).click().get(HINT_CHECK_MARK).click();
+      cy.get(CELL_WITH_NOTES(7, 8, "4")).should("exist");
+      cy.get(HINT_BUTTON).click();
       cy.get("[data-testid=note4]")
         .children()
         .should("have.css", "color", PLACE_NOTE_TEXT_COLOR_RGB);
@@ -353,7 +359,7 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
-    cy.get("[data-testid=" + "sudokuBoard" + "]").within(() => {
+    cy.get(SUDOKU_BOARD).within(() => {
       cy.Select_Cell(7, 6).type("8");
       cy.Select_Cell(7, 7).type("2");
       // for some reason it needs to wait or else it fails
@@ -361,7 +367,7 @@ describe("Sudoku play component functions", () => {
       cy.wait(1000);
       cy.Select_Cell(7, 8).type("4");
     });
-    cy.get("[data-testid='StartNewGameButton-text']").click();
+    cy.get(START_NEW_GAME_BUTTON).click();
     cy.contains("Start Puzzle");
   });
 });
