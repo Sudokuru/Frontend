@@ -203,7 +203,7 @@ describe("Sudoku play component functions", () => {
       cy.get(CELL(7, 7)).click().type("1");
       cy.get(CELL_WITH_VALUE(7, 7, 1)).should("exist");
       cy.get(UNDO_BUTTON).click();
-      cy.Get_Cell(7, 7).children().should("not.exist");
+      cy.get(CELL(7, 7)).children().should("not.exist");
     });
   });
 
@@ -213,7 +213,7 @@ describe("Sudoku play component functions", () => {
       cy.get(NUMBER_BUTTON(1)).click();
       cy.get(CELL_WITH_VALUE(7, 7, 1)).should("exist");
       cy.get(UNDO_BUTTON).click();
-      cy.Get_Cell(7, 7).children().should("not.exist");
+      cy.get(CELL(7, 7)).children().should("not.exist");
     });
   });
 
