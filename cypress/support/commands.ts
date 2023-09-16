@@ -81,8 +81,8 @@ Cypress.Commands.add("Get_Box_Index_From_Cell_Coords", (row, column) => {
 });
 
 Cypress.Commands.add(
-  "Group_Should_Only_Have_Indexes_Selected",
-  (groupType, index, selectedIndexes) => {
+  "Group_Should_Have_Given_Indexes_Color_A_Rest_B",
+  (groupType, index, selectedIndexes, colorA, colorB) => {
     let pointer: number = 0;
     for (let i: number = 0; i < 9; i++) {
       let selected: boolean = false;
@@ -92,31 +92,32 @@ Cypress.Commands.add(
       }
       if (groupType === 0) {
         // row
-        cy.Cell_Should_Have_Color(
-          index,
-          i,
-          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
-        );
+        cy.Cell_Should_Have_Color(index, i, selected ? colorA : colorB);
       } else if (groupType === 1) {
         // column
-        cy.Cell_Should_Have_Color(
-          i,
-          index,
-          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
-        );
+        cy.Cell_Should_Have_Color(i, index, selected ? colorA : colorB);
       } else {
         // box
         let row: number = Math.floor(index / 3) * 3; // gets first row of box
         row += Math.floor(i / 3); // adds offset
         let col: number = (index % 3) * 3; // gets first column of box
         col += i % 3; // adds offset
-        cy.Cell_Should_Have_Color(
-          row,
-          col,
-          selected ? HINT_SELECTED_COLOR_RGB : NOT_HIGHLIGHTED_COLOR_RGB
-        );
+        cy.Cell_Should_Have_Color(row, col, selected ? colorA : colorB);
       }
     }
+  }
+);
+
+Cypress.Commands.add(
+  "Group_Should_Only_Have_Indexes_Selected",
+  (groupType, index, selectedIndexes) => {
+    cy.Group_Should_Have_Given_Indexes_Color_A_Rest_B(
+      groupType,
+      index,
+      selectedIndexes,
+      HINT_SELECTED_COLOR_RGB,
+      NOT_HIGHLIGHTED_COLOR_RGB
+    );
   }
 );
 

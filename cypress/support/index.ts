@@ -65,7 +65,24 @@ declare global {
       ): Chainable<number>;
 
       /**
-       * Custom command to check if only certain cells in a group have a certain color.
+       * Custom command to check if only certain cells in a group have a certain color and the rest have a different color.
+       * @example cy.Group_Should_Only_Have_Indexes_Selected(0, 1, {0, 1, 2}, SELECTED_COLOR_RGB, NOT_HIGHLIGHTED_COLOR_RGB)
+       * @param groupType - The type of group to check (row = 0, column = 1, box = 2)
+       * @param index - The index of the group to check (0 - 8)
+       * @param selectedIndexes - The indexes of the cells in the group that should be selected in ascending order
+       * @param colorA - The color that the selected cells should have
+       * @param colorB - The color that the unselected cells should have
+       */
+      Group_Should_Have_Given_Indexes_Color_A_Rest_B(
+        groupType: number,
+        index: number,
+        selectedIndexes: number[],
+        colorA: string,
+        colorB: string
+      ): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Custom command to check if only certain cells in a group have Hint Selected Color and the rest have Not Highlighted Color.
        * @example cy.Group_Should_Only_Have_Indexes_Selected(0, 1, {0, 1, 2})
        * @param groupType - The type of group to check (row = 0, column = 1, box = 2)
        * @param index - The index of the group to check (0 - 8)
