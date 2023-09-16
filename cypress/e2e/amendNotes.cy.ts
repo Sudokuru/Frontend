@@ -1,6 +1,10 @@
-import { HINT_NOT_HIGHLIGHTED_COLOR_RGB } from "../../app/Styling/HighlightColors";
+import {
+  HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+  NOT_HIGHLIGHTED_COLOR_RGB,
+} from "../../app/Styling/HighlightColors";
 import {
   HINT_BUTTON,
+  HINT_CHECK_MARK,
   HINT_RIGHT_ARROW,
   LOCAL_STORAGE_ALL_LEARNED_LESSONS,
   OPEN_DRAWER_NAVIGATION,
@@ -50,6 +54,13 @@ describe("Amend notes strategy", () => {
       cy.Group_Should_Only_Have_Indexes_Selected(1, 0, [4, 6]);
       cy.Group_Should_Only_Have_Indexes_Selected(2, 0, [2, 5, 7, 8]);
       cy.Cell_Should_Have_Notes_With_Colors(0, 0, "1", "", "");
+      cy.get(HINT_CHECK_MARK).click();
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        -1,
+        -1,
+        -1,
+        NOT_HIGHLIGHTED_COLOR_RGB
+      );
     });
   });
 });

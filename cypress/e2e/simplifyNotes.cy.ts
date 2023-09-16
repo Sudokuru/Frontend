@@ -1,4 +1,7 @@
-import { HINT_NOT_HIGHLIGHTED_COLOR_RGB } from "../../app/Styling/HighlightColors";
+import {
+  HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+  NOT_HIGHLIGHTED_COLOR_RGB,
+} from "../../app/Styling/HighlightColors";
 import {
   CELL_WITH_NOTES,
   HINT_BUTTON,
@@ -65,6 +68,13 @@ describe("Simplify notes strategy", () => {
       cy.Cell_Should_Have_Notes_With_Colors(3, 8, "579", "9", "");
       cy.get(HINT_RIGHT_ARROW).click();
       cy.get(CELL_WITH_NOTES(3, 8, "57")).should("exist");
+      cy.get(HINT_CHECK_MARK).click();
+      cy.Board_Should_Have_Color_Except_For_Groups(
+        -1,
+        -1,
+        -1,
+        NOT_HIGHLIGHTED_COLOR_RGB
+      );
     });
   });
 });
