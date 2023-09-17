@@ -115,20 +115,9 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           start: 'npm run web:dev'
+          command: 'npm run test:cypress'
           wait-on: 'http://localhost:19000/'
           wait-on-timeout: 120
-
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: ./cypress/screenshots
-
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: cypress-videos
-          path: ./cypress/videos
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2
