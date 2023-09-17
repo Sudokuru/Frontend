@@ -1,3 +1,6 @@
+Source code was derived from here:
+https://github.com/goldensunliu/react-sudoku-game
+
 # Stuff to track
 
 ## Board Object
