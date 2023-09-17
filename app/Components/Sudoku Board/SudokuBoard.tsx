@@ -23,7 +23,6 @@ import {
   getCellNumber,
   getCellSize,
   getGroupsFromHint,
-  getNumberOfGroupsAssignedForNumber,
   getPlacementsFromHint,
   getRemovalsFromHint,
   updateBoardWithNumber,
@@ -245,19 +244,6 @@ const SudokuBoard = (props: any) => {
   const getSelectedCell = () => {
     const selected = board.get("selected");
     return selected && board.get("puzzle").getIn([selected.x, selected.y]);
-  };
-
-  const getNumberValueCount = (number) => {
-    const rows = board.getIn(["choices", "rows"]);
-    const columns = board.getIn(["choices", "columns"]);
-    const squares = board.getIn(["choices", "squares"]);
-    return Math.min(
-      getNumberOfGroupsAssignedForNumber(number, squares),
-      Math.min(
-        getNumberOfGroupsAssignedForNumber(number, rows),
-        getNumberOfGroupsAssignedForNumber(number, columns)
-      )
-    );
   };
 
   const addNumberAsNote = (number) => {
@@ -878,7 +864,6 @@ const SudokuBoard = (props: any) => {
       <NumberControl
         prefilled={prefilled}
         inNoteMode={inNoteMode}
-        getNumberValueCount={getNumberValueCount}
         fillNumber={fillNumber}
         addNumberAsNote={addNumberAsNote}
         inHintMode={inHintMode}
