@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./app/App.tsx",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && bash -c 'npm run linuxInit'",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
@@ -55,6 +55,7 @@
     "@types/react": "^18.0.30",
     "@types/react-native": "^0.70.13",
     "babel-plugin-istanbul": "^6.1.1",
+    "bun": "^1.0.2",
     "cross-env": "^7.0.3",
     "cypress": "^12.17.4",
     "husky": "^8.0.3",
