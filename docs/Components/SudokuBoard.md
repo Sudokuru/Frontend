@@ -46,10 +46,11 @@ notes is a Set of some stuff
 
 ## Props
 
-gameType: A string that determines the game type. Currently can be 'Demo', 'Drill', or 'Puzzle'
-strategies: An array of strings (strategies) that the board can use to solve the puzzle
-difficulty?: The difficulty of the puzzle to retrieve
-navigation?: navigation object so that SudokuBoard can navigate away from the page
+gameType: A string that determines the game type. Currently can be 'Demo', 'Drill', or 'Puzzle'  
+strategies: An array of strings (strategies) that the board can use to solve the puzzle  
+difficulty?: The difficulty of the puzzle to retrieve  
+navigation?: navigation object so that SudokuBoard can navigate away from the page  
 showGameResults?: function that can be called to show game results
 
-currently showGameResults is called outside of the Sudoku Board component. This is because the Alert was restricted by the size of the SudokuBoard view, and would not use up the full screen.
+currently showGameResults is called outside of the Sudoku Board component.  
+This is because the Alert was restricted by the size of the SudokuBoard view, and would not use up the full screen.
