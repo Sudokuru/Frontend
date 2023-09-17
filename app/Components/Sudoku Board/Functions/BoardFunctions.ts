@@ -21,13 +21,6 @@ export function getBoardSize(): number {
   return getCellSize() * 9;
 }
 
-export function getNumberOfGroupsAssignedForNumber(number: any, groups: any) {
-  return groups.reduce(
-    (accumulator: any, row: any) => accumulator + (row.get(number) > 0 ? 1 : 0),
-    0
-  );
-}
-
 export function updateBoardWithNumber({
   x,
   y,
@@ -39,21 +32,7 @@ export function updateBoardWithNumber({
   cell = cell.delete("notes");
   cell = fill ? cell.set("value", number) : cell.delete("value");
 
-  const increment = fill ? 1 : -1;
-  const rowPath = ["choices", "rows", x, number];
-  const columnPath = ["choices", "columns", y, number];
-  const squarePath = [
-    "choices",
-    "squares",
-    Math.floor(x / 3) * 3 + Math.floor(y / 3),
-    number,
-  ];
-
-  return board
-    .setIn(rowPath, board.getIn(rowPath) + increment)
-    .setIn(columnPath, board.getIn(columnPath) + increment)
-    .setIn(squarePath, board.getIn(squarePath) + increment)
-    .setIn(["puzzle", x, y], cell);
+  return board.setIn(["puzzle", x, y], cell);
 }
 
 export const checkSolution = (solution: any, x: any, y: any, value: any) => {

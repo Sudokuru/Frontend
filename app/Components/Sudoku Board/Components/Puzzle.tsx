@@ -7,6 +7,8 @@ const Puzzle = (props: any) => {
   const { board, renderCell } = props;
   const cellSize = getCellSize();
 
+  console.log(board);
+
   return (
     <View style={styles(cellSize).hintAndPuzzleContainer}>
       <View style={styles().boardContainer}>
