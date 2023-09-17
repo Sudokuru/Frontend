@@ -4,6 +4,7 @@
   "main": "./app/App.tsx",
   "scripts": {
     "prepare": "husky install && bash -c 'npm run linuxInit'",
+    "linuxInit": "chmod ug+x .husky/* && chmod ug+x .git/hooks/*",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
