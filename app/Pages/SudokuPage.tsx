@@ -23,6 +23,8 @@ let strategies: sudokuStrategyArray = [
   "HIDDEN_PAIR",
   "HIDDEN_TRIPLET",
   "HIDDEN_QUADRUPLET",
+  "POINTING_PAIR",
+  "POINTING_TRIPLET",
 ];
 
 const SudokuPage = ({ route, navigation }: any) => {
