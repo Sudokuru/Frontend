@@ -376,7 +376,7 @@ const SudokuBoard = (props: any) => {
     let hintSteps = [];
     let hintObject: Hint;
     switch (hint.strategy) {
-      case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
+      case "AMEND_NOTES":
         newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
         hintObject = getHintObject(2, groups, causes, removals, [
           "highlight",
@@ -384,24 +384,12 @@ const SudokuBoard = (props: any) => {
         ]);
         hintSteps = hintObject.getHintSteps();
         break;
-      case "SIMPLIFY_NOTES": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
+      case "SIMPLIFY_NOTES":
+        hintObject = getHintObject(2, groups, causes, removals, [
+          "highlight",
+          "delete",
+        ]);
+        hintSteps = hintObject.getHintSteps();
         break;
       case "NAKED_SINGLE": // DONE
         // two steps, two objects
