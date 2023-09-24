@@ -8,6 +8,7 @@ export default class Hint {
   private groups: Group[][];
   private causes: Group[][];
   private removals: Group[][];
+  private placement: Group[];
 
   /**
    * Creates a hint object
@@ -23,6 +24,7 @@ export default class Hint {
       this.causes.push([]);
       this.removals.push([]);
     }
+    this.placement = [];
   }
 
   /**
@@ -70,6 +72,21 @@ export default class Hint {
   }
 
   /**
+   * Adds a placement to the hint (must be called in order of the steps)
+   * @param position - position of the placement
+   * @param value - value of the placement
+   * @param mode - mode of the placement
+   */
+  public addPlacement(position: number[], value: number, mode: string): void {
+    let tempGroup: Group = new Group();
+    tempGroup.setRow(position[0]);
+    tempGroup.setCol(position[1]);
+    tempGroup.setValues([value]);
+    tempGroup.setMode(mode);
+    this.placement.push(tempGroup);
+  }
+
+  /**
    * Returns the hint steps using legacy SudokuBoard format
    */
   public getHintSteps(): any[] {
@@ -98,6 +115,9 @@ export default class Hint {
             this.removals[step][removal].getRemoval()
           );
         }
+      }
+      if (this.placement.length > 0) {
+        hintSteps[step].placements = this.placement[step].getPlacement();
       }
     }
     return hintSteps;

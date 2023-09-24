@@ -88,4 +88,15 @@ export default class Group {
       values: this.values,
     };
   }
+
+  /**
+   * Returns the legacy SudokuBoard format for placements
+   */
+  public getPlacement(): Object {
+    return {
+      mode: this.mode,
+      position: [this.row, this.col],
+      value: this.values[0],
+    };
+  }
 }
