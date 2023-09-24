@@ -378,31 +378,40 @@ const SudokuBoard = (props: any) => {
     switch (hint.strategy) {
       case "AMEND_NOTES":
         newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
-        hintObject = getHintObject(2, groups, causes, removals, [
-          "highlight",
-          "delete",
-        ]);
+        hintObject = getHintObject(
+          2,
+          groups,
+          causes,
+          removals,
+          ["highlight", "delete"],
+          placements,
+          []
+        );
         hintSteps = hintObject.getHintSteps();
         break;
       case "SIMPLIFY_NOTES":
-        hintObject = getHintObject(2, groups, causes, removals, [
-          "highlight",
-          "delete",
-        ]);
+        hintObject = getHintObject(
+          2,
+          groups,
+          causes,
+          removals,
+          ["highlight", "delete"],
+          placements,
+          []
+        );
         hintSteps = hintObject.getHintSteps();
         break;
-      case "NAKED_SINGLE": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the cause and placement
-        hintSteps[0].causes = causes;
-        hintSteps[0].placements = { ...placements[0], mode: "highlight" };
-
-        // highlight the cause and insert the placement
-        hintSteps[1].causes = causes;
-        hintSteps[1].placements = { ...placements[0], mode: "place" };
+      case "NAKED_SINGLE":
+        hintObject = getHintObject(
+          2,
+          groups,
+          causes,
+          removals,
+          [],
+          placements,
+          ["highlight", "place"]
+        );
+        hintSteps = hintObject.getHintSteps();
         break;
       case "NAKED_PAIR": // DONE
       case "NAKED_TRIPLET": // DONE

@@ -205,6 +205,8 @@ export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
  * @param causes - causes involved in the hint
  * @param removals - removals involved in the hint
  * @param removalModes - modes of the removals involved in the hint at each step
+ * @param placement - placement involved in the hint
+ * @param placementModes - modes of the placement involved in the hint at each step
  * @returns
  */
 export function getHintObject(
@@ -212,7 +214,9 @@ export function getHintObject(
   groups: any[],
   causes: number[][],
   removals: any[],
-  removalModes: string[]
+  removalModes: string[],
+  placement: any,
+  placementModes: string[]
 ): Hint {
   let hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
@@ -224,6 +228,13 @@ export function getHintObject(
         removals[removal].position,
         removals[removal].values,
         removalModes[step]
+      );
+    }
+    if (placement.length > 0) {
+      hint.addPlacement(
+        placement[0].position,
+        placement[0].value,
+        placementModes[step]
       );
     }
   }
