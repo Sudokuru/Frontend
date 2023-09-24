@@ -416,6 +416,10 @@ const SudokuBoard = (props: any) => {
       case "NAKED_PAIR":
       case "NAKED_TRIPLET":
       case "NAKED_QUADRUPLET":
+      case "HIDDEN_SINGLE":
+      case "HIDDEN_PAIR":
+      case "HIDDEN_TRIPLET":
+      case "HIDDEN_QUADRUPLET":
         hintObject = getHintObject(
           2,
           groups,
@@ -426,28 +430,6 @@ const SudokuBoard = (props: any) => {
           []
         );
         hintSteps = hintObject.getHintSteps();
-        break;
-      case "HIDDEN_SINGLE": // DONE
-      case "HIDDEN_PAIR": // DONE
-      case "HIDDEN_TRIPLET": // DONE
-      case "HIDDEN_QUADRUPLET": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
         break;
       case "POINTING_PAIR":
       case "POINTING_TRIPLET":
