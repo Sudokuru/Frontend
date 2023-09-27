@@ -431,12 +431,19 @@ const SudokuBoard = (props: any) => {
           placements,
           []
         );
-        hintObject.adjustForPointingSet();
         break;
       default:
         console.log("the switch statement matched none of the strategies :(");
         break;
     }
+
+    if (
+      hint.strategy === "POINTING_PAIR" ||
+      hint.strategy === "POINTING_TRIPLET"
+    ) {
+      hintObject.adjustForPointingSet();
+    }
+
     hintSteps = hintObject.getHintSteps();
     newBoard = newBoard.set("hintSteps", hintSteps);
     setBoard(newBoard);
