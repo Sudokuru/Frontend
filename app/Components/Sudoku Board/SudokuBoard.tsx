@@ -387,7 +387,6 @@ const SudokuBoard = (props: any) => {
           placements,
           []
         );
-        hintSteps = hintObject.getHintSteps();
         break;
       case "SIMPLIFY_NOTES":
         hintObject = getHintObject(
@@ -399,7 +398,6 @@ const SudokuBoard = (props: any) => {
           placements,
           []
         );
-        hintSteps = hintObject.getHintSteps();
         break;
       case "NAKED_SINGLE":
         hintObject = getHintObject(
@@ -411,7 +409,6 @@ const SudokuBoard = (props: any) => {
           placements,
           ["highlight", "place"]
         );
-        hintSteps = hintObject.getHintSteps();
         break;
       case "NAKED_PAIR":
       case "NAKED_TRIPLET":
@@ -429,7 +426,6 @@ const SudokuBoard = (props: any) => {
           placements,
           []
         );
-        hintSteps = hintObject.getHintSteps();
         break;
       case "POINTING_PAIR":
       case "POINTING_TRIPLET":
@@ -443,12 +439,12 @@ const SudokuBoard = (props: any) => {
           []
         );
         hintObject.adjustForPointingSet();
-        hintSteps = hintObject.getHintSteps();
         break;
       default:
         console.log("the switch statement matched none of the strategies :(");
         break;
     }
+    hintSteps = hintObject.getHintSteps();
     newBoard = newBoard.set("hintSteps", hintSteps);
     setBoard(newBoard);
   };
