@@ -87,6 +87,35 @@ export default class Hint {
   }
 
   /**
+   * Adjusts groups to match pointing set format
+   */
+  public adjustForPointingSet(): void {
+    // Get box involved in pointing set
+    let box: number = this.groups[1][0].getBox();
+    // Determine if row or column is involved in pointing set
+    let row: number = this.groups[0][0].getRow();
+    let col: number = this.groups[0][0].getCol();
+    let isRow: boolean = row !== -1;
+    // Create row or column group
+    let temp: Group = new Group();
+    if (isRow) {
+      temp.setRow(row);
+    } else {
+      temp.setCol(col);
+    }
+    // Adjust groups to match pointing set format
+    this.groups[0] = [];
+    this.groups[0].push(new Group());
+    this.groups[0][0].setBox(box);
+    this.groups[1] = [];
+    this.groups[1].push(temp);
+    this.groups[2] = [];
+    this.groups[2].push(temp);
+    // Adjust removals to match pointing set format
+    this.removals[0] = [];
+  }
+
+  /**
    * Returns the hint steps using legacy SudokuBoard format
    */
   public getHintSteps(): any[] {
