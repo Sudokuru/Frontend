@@ -373,21 +373,14 @@ const SudokuBoard = (props: any) => {
     let boxGroups = [];
     let nonBoxGroups = [];
 
+    if (hint.strategy === "AMEND_NOTES") {
+      newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
+    }
+
     let hintSteps = [];
     let hintObject: Hint;
     switch (hint.strategy) {
       case "AMEND_NOTES":
-        newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
-        hintObject = getHintObject(
-          2,
-          groups,
-          causes,
-          removals,
-          ["highlight", "delete"],
-          placements,
-          []
-        );
-        break;
       case "SIMPLIFY_NOTES":
         hintObject = getHintObject(
           2,
