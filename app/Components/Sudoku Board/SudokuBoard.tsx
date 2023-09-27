@@ -433,34 +433,17 @@ const SudokuBoard = (props: any) => {
         break;
       case "POINTING_PAIR":
       case "POINTING_TRIPLET":
-        // three steps, three objects
-        hintSteps.push({}); // box and causes
-        hintSteps.push({}); // row/col and rem highlight
-        hintSteps.push({}); // row/col and rem delete
-
-        // seperate the groups which are boxes and which are not boxes
-        for (let i = groups.length - 2; i < groups.length; i++)
-          if (groups[i].type == "box") boxGroups.push(groups[i]);
-          else nonBoxGroups.push(groups[i]);
-
-        // highlight the boxGroups and causes
-        hintSteps[0].groups = boxGroups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-
-        // highlight the nonBoxGroups, causes, and removals
-        hintSteps[1].groups = nonBoxGroups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the nonBoxGroups, causes, and removals
-        hintSteps[2].groups = nonBoxGroups;
-        hintSteps[2].causes = causes;
-        hintSteps[2].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[2].removals.push({ ...removals[i], mode: "delete" });
+        hintObject = getHintObject(
+          3,
+          groups,
+          causes,
+          removals,
+          ["", "highlight", "delete"],
+          placements,
+          []
+        );
+        hintObject.adjustForPointingSet();
+        hintSteps = hintObject.getHintSteps();
         break;
       case "BOX_LINE_REDUCTION": // DONE
         // three steps, three objects
