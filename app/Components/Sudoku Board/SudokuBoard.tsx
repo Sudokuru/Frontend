@@ -370,9 +370,6 @@ const SudokuBoard = (props: any) => {
       if (hint.removals) removals = getRemovalsFromHint(board, hint);
     }
 
-    let boxGroups = [];
-    let nonBoxGroups = [];
-
     if (hint.strategy === "AMEND_NOTES") {
       newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
     }
