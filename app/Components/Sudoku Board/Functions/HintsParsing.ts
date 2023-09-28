@@ -210,6 +210,19 @@ function getStepCount(strategy: string): number {
 }
 
 /**
+ * Returns the hint removal modes based on the strategy used in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getRemovalModes(strategy: string): string[] {
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    return ["", "highlight", "delete"];
+  } else if (strategy === "NAKED_SINGLE") {
+    return ["highlight", "place"];
+  }
+  return ["highlight", "delete"];
+}
+
+/**
  * Creates a hint object from the given hint data
  * @param strategy - strategy used in the hint
  * @param steps - number of steps in the hint
@@ -226,11 +239,11 @@ export function getHintObject(
   groups: any[],
   causes: number[][],
   removals: any[],
-  removalModes: string[],
   placement: any,
   placementModes: string[]
 ): Hint {
   let steps: number = getStepCount(strategy);
+  let removalModes: string[] = getRemovalModes(strategy);
   let hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
     addGroupToHint(hint, step, groups);

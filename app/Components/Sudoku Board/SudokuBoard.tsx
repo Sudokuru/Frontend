@@ -384,7 +384,6 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          ["highlight", "delete"],
           placements,
           []
         );
@@ -395,7 +394,6 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          [],
           placements,
           ["highlight", "place"]
         );
@@ -412,7 +410,6 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          ["highlight", "delete"],
           placements,
           []
         );
@@ -424,7 +421,6 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          ["", "highlight", "delete"],
           placements,
           []
         );
