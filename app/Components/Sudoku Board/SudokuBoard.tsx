@@ -384,8 +384,7 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          placements,
-          []
+          placements
         );
         break;
       case "NAKED_SINGLE":
@@ -394,8 +393,7 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          placements,
-          ["highlight", "place"]
+          placements
         );
         break;
       case "NAKED_PAIR":
@@ -410,8 +408,7 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          placements,
-          []
+          placements
         );
         break;
       case "POINTING_PAIR":
@@ -421,8 +418,7 @@ const SudokuBoard = (props: any) => {
           groups,
           causes,
           removals,
-          placements,
-          []
+          placements
         );
         break;
       default:

@@ -223,6 +223,17 @@ function getRemovalModes(strategy: string): string[] {
 }
 
 /**
+ * Returns the hint placement modes based on the strategy used in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getPlacementModes(strategy: string): string[] {
+  if (strategy === "NAKED_SINGLE") {
+    return ["highlight", "place"];
+  }
+  return [];
+}
+
+/**
  * Creates a hint object from the given hint data
  * @param strategy - strategy used in the hint
  * @param steps - number of steps in the hint
@@ -239,11 +250,11 @@ export function getHintObject(
   groups: any[],
   causes: number[][],
   removals: any[],
-  placement: any,
-  placementModes: string[]
+  placement: any
 ): Hint {
   let steps: number = getStepCount(strategy);
   let removalModes: string[] = getRemovalModes(strategy);
+  let placementModes: string[] = getPlacementModes(strategy);
   let hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
     addGroupToHint(hint, step, groups);
