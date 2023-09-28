@@ -382,13 +382,6 @@ const SudokuBoard = (props: any) => {
       placements
     );
 
-    if (
-      hint.strategy === "POINTING_PAIR" ||
-      hint.strategy === "POINTING_TRIPLET"
-    ) {
-      hintObject.adjustForPointingSet();
-    }
-
     let hintSteps: any[] = hintObject.getHintSteps();
     newBoard = newBoard.set("hintSteps", hintSteps);
     setBoard(newBoard);

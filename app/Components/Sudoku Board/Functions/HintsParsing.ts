@@ -275,5 +275,8 @@ export function getHintObject(
       );
     }
   }
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    hint.adjustForPointingSet();
+  }
   return hint;
 }
