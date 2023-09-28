@@ -380,7 +380,7 @@ const SudokuBoard = (props: any) => {
       case "AMEND_NOTES":
       case "SIMPLIFY_NOTES":
         hintObject = getHintObject(
-          2,
+          hint.strategy,
           groups,
           causes,
           removals,
@@ -391,7 +391,7 @@ const SudokuBoard = (props: any) => {
         break;
       case "NAKED_SINGLE":
         hintObject = getHintObject(
-          2,
+          hint.strategy,
           groups,
           causes,
           removals,
@@ -408,7 +408,7 @@ const SudokuBoard = (props: any) => {
       case "HIDDEN_TRIPLET":
       case "HIDDEN_QUADRUPLET":
         hintObject = getHintObject(
-          2,
+          hint.strategy,
           groups,
           causes,
           removals,
@@ -420,7 +420,7 @@ const SudokuBoard = (props: any) => {
       case "POINTING_PAIR":
       case "POINTING_TRIPLET":
         hintObject = getHintObject(
-          3,
+          hint.strategy,
           groups,
           causes,
           removals,

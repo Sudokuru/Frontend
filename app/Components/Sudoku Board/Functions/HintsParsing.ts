@@ -199,7 +199,19 @@ export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
 }
 
 /**
+ * Returns the number of steps in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getStepCount(strategy: string): number {
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    return 3;
+  }
+  return 2;
+}
+
+/**
  * Creates a hint object from the given hint data
+ * @param strategy - strategy used in the hint
  * @param steps - number of steps in the hint
  * @param groups - groups involved in the hint
  * @param causes - causes involved in the hint
@@ -210,7 +222,7 @@ export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
  * @returns
  */
 export function getHintObject(
-  steps: number,
+  strategy: string,
   groups: any[],
   causes: number[][],
   removals: any[],
@@ -218,6 +230,7 @@ export function getHintObject(
   placement: any,
   placementModes: string[]
 ): Hint {
+  let steps: number = getStepCount(strategy);
   let hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
     addGroupToHint(hint, step, groups);
