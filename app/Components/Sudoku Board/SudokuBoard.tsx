@@ -33,7 +33,7 @@ import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { gameResults } from "sudokuru";
+import { gameResults, getHint } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import {
@@ -374,57 +374,13 @@ const SudokuBoard = (props: any) => {
       newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
     }
 
-    let hintSteps = [];
-    let hintObject: Hint;
-    switch (hint.strategy) {
-      case "AMEND_NOTES":
-      case "SIMPLIFY_NOTES":
-        hintObject = getHintObject(
-          hint.strategy,
-          groups,
-          causes,
-          removals,
-          placements
-        );
-        break;
-      case "NAKED_SINGLE":
-        hintObject = getHintObject(
-          hint.strategy,
-          groups,
-          causes,
-          removals,
-          placements
-        );
-        break;
-      case "NAKED_PAIR":
-      case "NAKED_TRIPLET":
-      case "NAKED_QUADRUPLET":
-      case "HIDDEN_SINGLE":
-      case "HIDDEN_PAIR":
-      case "HIDDEN_TRIPLET":
-      case "HIDDEN_QUADRUPLET":
-        hintObject = getHintObject(
-          hint.strategy,
-          groups,
-          causes,
-          removals,
-          placements
-        );
-        break;
-      case "POINTING_PAIR":
-      case "POINTING_TRIPLET":
-        hintObject = getHintObject(
-          hint.strategy,
-          groups,
-          causes,
-          removals,
-          placements
-        );
-        break;
-      default:
-        console.log("the switch statement matched none of the strategies :(");
-        break;
-    }
+    let hintObject: Hint = getHintObject(
+      hint.strategy,
+      groups,
+      causes,
+      removals,
+      placements
+    );
 
     if (
       hint.strategy === "POINTING_PAIR" ||
@@ -433,7 +389,7 @@ const SudokuBoard = (props: any) => {
       hintObject.adjustForPointingSet();
     }
 
-    hintSteps = hintObject.getHintSteps();
+    let hintSteps: any[] = hintObject.getHintSteps();
     newBoard = newBoard.set("hintSteps", hintSteps);
     setBoard(newBoard);
   };
