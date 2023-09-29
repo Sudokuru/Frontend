@@ -199,21 +199,62 @@ export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
 }
 
 /**
+ * Returns the number of steps in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getStepCount(strategy: string): number {
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    return 3;
+  }
+  return 2;
+}
+
+/**
+ * Returns the hint removal modes based on the strategy used in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getRemovalModes(strategy: string): string[] {
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    return ["", "highlight", "delete"];
+  } else if (strategy === "NAKED_SINGLE") {
+    return ["highlight", "place"];
+  }
+  return ["highlight", "delete"];
+}
+
+/**
+ * Returns the hint placement modes based on the strategy used in the hint
+ * @param strategy - strategy used in the hint
+ */
+function getPlacementModes(strategy: string): string[] {
+  if (strategy === "NAKED_SINGLE") {
+    return ["highlight", "place"];
+  }
+  return [];
+}
+
+/**
  * Creates a hint object from the given hint data
+ * @param strategy - strategy used in the hint
  * @param steps - number of steps in the hint
  * @param groups - groups involved in the hint
  * @param causes - causes involved in the hint
  * @param removals - removals involved in the hint
  * @param removalModes - modes of the removals involved in the hint at each step
+ * @param placement - placement involved in the hint
+ * @param placementModes - modes of the placement involved in the hint at each step
  * @returns
  */
 export function getHintObject(
-  steps: number,
+  strategy: string,
   groups: any[],
   causes: number[][],
   removals: any[],
-  removalModes: string[]
+  placement: any
 ): Hint {
+  let steps: number = getStepCount(strategy);
+  let removalModes: string[] = getRemovalModes(strategy);
+  let placementModes: string[] = getPlacementModes(strategy);
   let hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
     addGroupToHint(hint, step, groups);
@@ -226,6 +267,16 @@ export function getHintObject(
         removalModes[step]
       );
     }
+    if (placement.length > 0) {
+      hint.addPlacement(
+        placement[0].position,
+        placement[0].value,
+        placementModes[step]
+      );
+    }
+  }
+  if (strategy === "POINTING_PAIR" || strategy === "POINTING_TRIPLET") {
+    hint.adjustForPointingSet();
   }
   return hint;
 }

@@ -33,7 +33,7 @@ import ActionRow from "./Components/ActionRow";
 import HintSection from "./Components/HintSection";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { gameResults } from "sudokuru";
+import { gameResults, getHint } from "sudokuru";
 import { Puzzles } from "../../Functions/Api/Puzzles";
 import PauseButton from "./Components/PauseButton";
 import {
@@ -370,169 +370,19 @@ const SudokuBoard = (props: any) => {
       if (hint.removals) removals = getRemovalsFromHint(board, hint);
     }
 
-    let boxGroups = [];
-    let nonBoxGroups = [];
-
-    let hintSteps = [];
-    let hintObject: Hint;
-    switch (hint.strategy) {
-      case "AMEND_NOTES": // ...done? TODO: try to get weird undo stuff worked out
-        newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
-        hintObject = getHintObject(2, groups, causes, removals, [
-          "highlight",
-          "delete",
-        ]);
-        hintSteps = hintObject.getHintSteps();
-        break;
-      case "SIMPLIFY_NOTES": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "NAKED_SINGLE": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the cause and placement
-        hintSteps[0].causes = causes;
-        hintSteps[0].placements = { ...placements[0], mode: "highlight" };
-
-        // highlight the cause and insert the placement
-        hintSteps[1].causes = causes;
-        hintSteps[1].placements = { ...placements[0], mode: "place" };
-        break;
-      case "NAKED_PAIR": // DONE
-      case "NAKED_TRIPLET": // DONE
-      case "NAKED_QUADRUPLET": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "HIDDEN_SINGLE": // DONE
-      case "HIDDEN_PAIR": // DONE
-      case "HIDDEN_TRIPLET": // DONE
-      case "HIDDEN_QUADRUPLET": // DONE
-        // two steps, two objects
-        hintSteps.push({});
-        hintSteps.push({});
-
-        // highlight the groups, causes, and removals
-        hintSteps[0].groups = groups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[0].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the groups, causes, and delete the removals
-        hintSteps[1].groups = groups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "POINTING_PAIR":
-      case "POINTING_TRIPLET":
-        // three steps, three objects
-        hintSteps.push({}); // box and causes
-        hintSteps.push({}); // row/col and rem highlight
-        hintSteps.push({}); // row/col and rem delete
-
-        // seperate the groups which are boxes and which are not boxes
-        for (let i = groups.length - 2; i < groups.length; i++)
-          if (groups[i].type == "box") boxGroups.push(groups[i]);
-          else nonBoxGroups.push(groups[i]);
-
-        // highlight the boxGroups and causes
-        hintSteps[0].groups = boxGroups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-
-        // highlight the nonBoxGroups, causes, and removals
-        hintSteps[1].groups = nonBoxGroups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the nonBoxGroups, causes, and removals
-        hintSteps[2].groups = nonBoxGroups;
-        hintSteps[2].causes = causes;
-        hintSteps[2].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[2].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "BOX_LINE_REDUCTION": // DONE
-        // three steps, three objects
-        hintSteps.push({}); // box and causes
-        hintSteps.push({}); // row/col and rem highlight
-        hintSteps.push({}); // row/col and rem delete
-
-        // seperate the groups which are boxes and which are not boxes
-        for (let i = 0; i < groups.length; i++)
-          if (groups[i].type == "box") boxGroups.push(groups[i]);
-          else nonBoxGroups.push(groups[i]);
-
-        // highlight the nonBoxGroups and causes
-        hintSteps[0].groups = nonBoxGroups;
-        hintSteps[0].causes = causes;
-        hintSteps[0].removals = [];
-
-        // highlight the boxGroups, causes, and removals
-        hintSteps[1].groups = boxGroups;
-        hintSteps[1].causes = causes;
-        hintSteps[1].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[1].removals.push({ ...removals[i], mode: "highlight" });
-
-        // highlight the nonBoxGroups, causes, and removals
-        hintSteps[2].groups = nonBoxGroups;
-        hintSteps[2].causes = causes;
-        hintSteps[2].removals = [];
-        for (let i = 0; i < removals.length; i++)
-          hintSteps[2].removals.push({ ...removals[i], mode: "delete" });
-        break;
-      case "X_WING":
-        console.log("X Wing");
-        break;
-      case "SWORDFISH":
-        console.log("Swordfish");
-        break;
-      case "SINGLES_CHAINING":
-        console.log("Singles Chaining");
-        break;
-      default:
-        console.log("the switch statement matched none of the strategies :(");
-        break;
+    if (hint.strategy === "AMEND_NOTES") {
+      newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
     }
+
+    let hintObject: Hint = getHintObject(
+      hint.strategy,
+      groups,
+      causes,
+      removals,
+      placements
+    );
+
+    let hintSteps: any[] = hintObject.getHintSteps();
     newBoard = newBoard.set("hintSteps", hintSteps);
     setBoard(newBoard);
   };

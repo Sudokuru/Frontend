@@ -55,6 +55,27 @@ export default class Group {
   }
 
   /**
+   * Returns the row of the group
+   */
+  public getRow(): number {
+    return this.row;
+  }
+
+  /**
+   * Returns the column of the group
+   */
+  public getCol(): number {
+    return this.col;
+  }
+
+  /**
+   * Returns the box of the group
+   */
+  public getBox(): number {
+    return this.box;
+  }
+
+  /**
    * Returns the legacy SudokuBoard format of the group
    */
   public getGroup(): any {
@@ -86,6 +107,17 @@ export default class Group {
       mode: this.mode,
       position: [this.row, this.col],
       values: this.values,
+    };
+  }
+
+  /**
+   * Returns the legacy SudokuBoard format for placements
+   */
+  public getPlacement(): Object {
+    return {
+      mode: this.mode,
+      position: [this.row, this.col],
+      value: this.values[0],
     };
   }
 }
