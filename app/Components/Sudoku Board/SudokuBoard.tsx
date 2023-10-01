@@ -354,10 +354,8 @@ const SudokuBoard = (props: any) => {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
     let hintStratName = words.join(" ");
     newBoard = newBoard.set("hintStratName", hintStratName);
-    const hintInfo = hint.info;
-    newBoard = newBoard.set("hintInfo", hintInfo);
-    const hintAction = hint.action;
-    newBoard = newBoard.set("hintAction", hintAction);
+    newBoard = newBoard.set("hintInfo", hint.info);
+    newBoard = newBoard.set("hintAction", hint.action);
 
     let removals = getRemovalsFromHint(board, hint);
 
