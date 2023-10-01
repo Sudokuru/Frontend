@@ -313,8 +313,10 @@ const SudokuBoard = (props: any) => {
   };
 
   const toggleHintMode = () => {
+    // Create new board variable to store the temporary hint board state
     let newBoard = board;
-    let newHintMode = !newBoard.get("inHintMode");
+    // Stores whether or not the board is in hint mode
+    let newHintMode: boolean = !newBoard.get("inHintMode");
     newBoard = newBoard.set("inHintMode", newHintMode);
 
     // Increment global hint value by one
@@ -326,6 +328,7 @@ const SudokuBoard = (props: any) => {
       }
     }
 
+    // If they are exiting hint mode, update board state by either reverting (if they prematurely exit hint mode) or updating (if they are on the final step)
     if (!newHintMode) {
       let hintStepsLength = newBoard.get("hintSteps").length;
       let currentStep = newBoard.get("currentStep");
@@ -343,6 +346,9 @@ const SudokuBoard = (props: any) => {
       else setBoard(newBoard);
       return;
     }
+
+    // If they are entering hint mode, update board state by adding the hint
+
     newBoard = newBoard.set("currentStep", 0);
     let hint = getNextHint(newBoard, solution, props.strategies);
 
