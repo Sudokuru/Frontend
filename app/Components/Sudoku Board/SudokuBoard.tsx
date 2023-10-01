@@ -344,9 +344,7 @@ const SudokuBoard = (props: any) => {
       return;
     }
     newBoard = newBoard.set("currentStep", 0);
-    let hint = solution
-      ? getNextHint(newBoard, solution, props.strategies)
-      : getNextHint(newBoard, null, props.strategies);
+    let hint = getNextHint(newBoard, solution, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
