@@ -363,12 +363,10 @@ const SudokuBoard = (props: any) => {
     let groups = [];
     let placements = [];
     let removals = [];
-    if (hint) {
-      if (hint.cause) causes = getCausesFromHint(hint);
-      if (hint.groups) groups = getGroupsFromHint(hint);
-      if (hint.placements) placements = getPlacementsFromHint(hint);
-      if (hint.removals) removals = getRemovalsFromHint(board, hint);
-    }
+    if (hint.cause) causes = getCausesFromHint(hint);
+    if (hint.groups) groups = getGroupsFromHint(hint);
+    if (hint.placements) placements = getPlacementsFromHint(hint);
+    if (hint.removals) removals = getRemovalsFromHint(board, hint);
 
     if (hint.strategy === "AMEND_NOTES") {
       newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
