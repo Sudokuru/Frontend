@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -27,16 +27,27 @@ const DrillPanel = () => {
   let subArray = [];
   for (let i = 0; i < drillStrategies.length; i++) {
     subArray.push(
-      <Button
-        key={drillStrategies[i]}
-        mode="contained"
-        onPress={() => {
-          navigation.navigate("DrillGame", { params: drillStrategies[i] });
-        }}
-        style={{ margin: 10 }}
-      >
-        {drillStrategies[i]}
-      </Button>
+      <Card>
+        <Card.Title
+          title="Card Title"
+          subtitle="Card Subtitle"
+          left={(props) => drillStrategies[i]}
+        />
+        <Card.Content>
+          <Text variant="titleLarge">Card title</Text>
+          <Text variant="bodyMedium">Card content</Text>
+        </Card.Content>
+        <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+        <Card.Actions>
+          <Button
+            onPress={() => {
+              navigation.navigate("DrillGame", { params: drillStrategies[i] });
+            }}
+          >
+            Play
+          </Button>
+        </Card.Actions>
+      </Card>
     );
 
     // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
