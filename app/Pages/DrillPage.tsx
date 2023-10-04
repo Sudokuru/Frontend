@@ -8,6 +8,7 @@ import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
+import { ScrollView } from "react-native-gesture-handler";
 
 const DrillPage = () => {
   const navigation: any = useNavigation();
@@ -26,7 +27,7 @@ const DrillPage = () => {
   const hideDrillHelp = () => setDrillHelpVisible(false);
 
   return (
-    <SafeAreaProvider>
+    <ScrollView>
       <SafeAreaView
         style={{ width: windowSize.width, height: windowSize.height }}
       >
@@ -111,7 +112,7 @@ const DrillPage = () => {
           overlayStyle={{ backgroundColor: "transparent" }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
 
