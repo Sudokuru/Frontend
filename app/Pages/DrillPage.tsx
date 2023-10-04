@@ -77,7 +77,7 @@ const DrillPage = () => {
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               {drillsVisible ? (
                 <View style={{ padding: reSize / 4 }}>
-                  <DrillPanel />
+                  <DrillPanel width={windowSize.width} />
                 </View>
               ) : (
                 <LessonButton

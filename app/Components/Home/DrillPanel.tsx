@@ -17,7 +17,7 @@ let drillStrategies: sudokuStrategyArray = [
   "POINTING_TRIPLET",
 ];
 
-const DrillPanel = () => {
+const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
 
   // dynamically render in lesson buttons based on criteria
