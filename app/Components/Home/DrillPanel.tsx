@@ -25,38 +25,43 @@ const DrillPanel = (props: any) => {
   let NUM_LESSONS_PER_ROW = 2;
 
   let subArray = [];
+  let widthLeft = props.width;
   for (let i = 0; i < drillStrategies.length; i++) {
     subArray.push(
-      <Card>
-        <Card.Title
-          title="Card Title"
-          subtitle="Card Subtitle"
-          left={(props) => drillStrategies[i]}
-        />
-        <Card.Content>
-          <Text variant="titleLarge">Card title</Text>
-          <Text variant="bodyMedium">Card content</Text>
-        </Card.Content>
-        <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
-        <Card.Actions>
-          <Button
-            onPress={() => {
-              navigation.navigate("DrillGame", { params: drillStrategies[i] });
-            }}
-          >
-            Play
-          </Button>
-        </Card.Actions>
-      </Card>
+      <View style={{ width: 200 }}>
+        <Card>
+          <Card.Title
+            title="Card Title"
+            subtitle="Card Subtitle"
+            left={(props) => drillStrategies[i]}
+          />
+          <Card.Content>
+            <Text variant="titleLarge">Card title</Text>
+            <Text variant="bodyMedium">Card content</Text>
+          </Card.Content>
+          <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+          <Card.Actions>
+            <Button
+              onPress={() => {
+                navigation.navigate("DrillGame", {
+                  params: drillStrategies[i],
+                });
+              }}
+            >
+              Play
+            </Button>
+          </Card.Actions>
+        </Card>
+      </View>
     );
 
-    // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
-    if (
-      (i + 1) % NUM_LESSONS_PER_ROW === 0 ||
-      i === drillStrategies.length - 1
-    ) {
+    // push sub-array to main array after too little width left
+    if (widthLeft < 600) {
       drillButtonArray.push(subArray);
       subArray = [];
+      widthLeft = props.width;
+    } else {
+      widthLeft -= 200;
     }
   }
 
