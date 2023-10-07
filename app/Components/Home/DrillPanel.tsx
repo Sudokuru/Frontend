@@ -20,15 +20,20 @@ let drillStrategies: sudokuStrategyArray = [
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
 
-  // dynamically render in lesson buttons based on criteria
   let drillButtonArray = [];
-  let NUM_LESSONS_PER_ROW = 2;
-
   let subArray = [];
-  let widthLeft = props.width;
+  const CARD_WIDTH: number = 200;
+  let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
+  // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
+  while (
+    columnCount - 1 >=
+    Math.ceil(drillStrategies.length / (columnCount - 1))
+  ) {
+    columnCount--;
+  }
   for (let i = 0; i < drillStrategies.length; i++) {
     subArray.push(
-      <View style={{ width: 200 }}>
+      <View style={{ width: CARD_WIDTH }}>
         <Card>
           <Card.Title
             title="Card Title"
@@ -55,14 +60,15 @@ const DrillPanel = (props: any) => {
       </View>
     );
 
-    // push sub-array to main array after too little width left
-    if (widthLeft < 600) {
+    // Add row
+    if ((i + 1) % columnCount === 0) {
       drillButtonArray.push(subArray);
       subArray = [];
-      widthLeft = props.width;
-    } else {
-      widthLeft -= 200;
     }
+  }
+  // Add last row if not evenly divisible
+  if (subArray.length > 0) {
+    drillButtonArray.push(subArray);
   }
 
   // render each sub-array as a row
