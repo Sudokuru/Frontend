@@ -27,7 +27,7 @@ const DrillPage = () => {
 
   return (
     <ScrollView>
-      <SafeAreaView style={{ width: windowSize.width }}>
+      <SafeAreaView>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
