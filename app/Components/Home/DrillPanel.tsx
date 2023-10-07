@@ -36,9 +36,9 @@ const DrillPanel = (props: any) => {
       <View style={{ width: CARD_WIDTH }}>
         <Card>
           <Card.Title
-            title="Card Title"
-            subtitle="Card Subtitle"
-            left={(props) => drillStrategies[i]}
+            title=<Text>Title</Text>
+            subtitle=<Text>Subtitle</Text>
+            left={(props) => <Text>{drillStrategies[i]}</Text>}
           />
           <Card.Content>
             <Text variant="titleLarge">Card title</Text>
