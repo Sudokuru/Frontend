@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -8,7 +8,6 @@ import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
-import { ScrollView } from "react-native-gesture-handler";
 
 const DrillPage = () => {
   const navigation: any = useNavigation();
@@ -28,9 +27,7 @@ const DrillPage = () => {
 
   return (
     <ScrollView>
-      <SafeAreaView
-        style={{ width: windowSize.width, height: windowSize.height }}
-      >
+      <SafeAreaView style={{ width: windowSize.width }}>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
