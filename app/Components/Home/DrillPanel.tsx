@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text, Title } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -16,6 +16,19 @@ let drillStrategies: sudokuStrategyArray = [
   "POINTING_PAIR",
   "POINTING_TRIPLET",
 ];
+
+/**
+ * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
+ * @param str - the string to convert
+ * @returns the converted string
+ */
+const toTitle = (str: string) => {
+  return str
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
@@ -76,15 +89,9 @@ const DrillPanel = (props: any) => {
           }}
         >
           <Card>
-            <Card.Title
-              title=<Text>Title</Text>
-              subtitle=<Text>Subtitle</Text>
-              left={(props) => <Text>{drillStrategies[i]}</Text>}
-            />
-            <Card.Content>
-              <Text variant="titleLarge">Card title</Text>
-              <Text variant="bodyMedium">Card content</Text>
-            </Card.Content>
+            <Title style={{ alignSelf: "center" }}>
+              {toTitle(drillStrategies[i])}
+            </Title>
             <Image
               source={img}
               style={{
