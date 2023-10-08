@@ -10,22 +10,38 @@ import {
   PLACE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
 import {
+  ACTIVE_GAME,
+  ACTIVE_GAME_TWO,
   CELL,
   CELL_WITH_NOTES,
   CELL_WITH_VALUE,
+  END_GAME_DIFFICULTY,
+  END_GAME_NUM_HINTS_USED,
+  END_GAME_NUM_WRONG_CELLS_PLAYED,
+  END_GAME_SCORE,
+  END_GAME_TIME,
   ERASE_BUTTON,
   HINT_BUTTON,
   HINT_CHECK_MARK,
   HINT_RIGHT_ARROW,
+  HOME_PLAY_BUTTON,
   LOCAL_STORAGE_ALL_LEARNED_LESSONS,
   NUMBER_BUTTON,
   OPEN_DRAWER_NAVIGATION,
   PAUSE_BUTTON,
   PLAY_DRAWER_BUTTON,
   START_NEW_GAME_BUTTON,
+  STATISTICS_AVERAGE_SOLVE_TIME,
+  STATISTICS_FASTEST_SOLVE_TIME,
+  STATISTICS_NUM_GAMES_PLAYED,
+  STATISTICS_NUM_HINTS_USED,
+  STATISTICS_NUM_WRONG_CELLS_PLAYED,
+  STATISTICS_TOTAL_SCORE,
+  STATISTICS_TOTAL_SOLVE_TIME,
   SUDOKU_BOARD,
   TOGGLE_NOTE_MODE_BUTTON,
   UNDO_BUTTON,
+  VIEW_STATISTICS_PAGE_BUTTON,
 } from "../global/testIds";
 
 describe("Sudoku play component functions", () => {
@@ -35,10 +51,7 @@ describe("Sudoku play component functions", () => {
       "learned_lessons",
       LOCAL_STORAGE_ALL_LEARNED_LESSONS
     );
-    window.localStorage.setItem(
-      "active_game",
-      '[{"puzzle":"003070040006002301089000000000107080517000006000400000271009005095000000000020000","puzzleSolution":"123675948456982371789314562964157283517238496832496157271849635395761824648523719","moves":[{"puzzleCurrentState":"123675948456982371789314562964157283517238496832496157271849635395761100648523719","puzzleCurrentNotesState":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000110000000000000"}],"strategies":["NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR"],"difficulty":348,"drillStrategies":["NAKED_SINGLE","POINTING_PAIR","POINTING_TRIPLET"],"currentTime":374,"numWrongCellsPlayed":235}]'
-    );
+    window.localStorage.setItem("active_game", ACTIVE_GAME);
     cy.visit("");
     cy.get(OPEN_DRAWER_NAVIGATION).click();
     cy.get(PLAY_DRAWER_BUTTON).click();
@@ -360,15 +373,111 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
+    cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
       cy.get(CELL(7, 7)).click().type("2");
-      // for some reason it needs to wait or else it fails
-      // maybe because it finishes with time = 0, this may be an edge case failure
-      cy.wait(1000);
       cy.get(CELL(7, 8)).click().type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.contains("Start Puzzle");
+  });
+
+  it("Completing a game should display correct game results", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
+    cy.wait(1000);
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+    cy.get(END_GAME_SCORE).should("have.text", "34");
+    cy.get(END_GAME_TIME).should("have.text", "06:15");
+    cy.get(END_GAME_NUM_HINTS_USED).should("have.text", "0");
+    cy.get(END_GAME_NUM_WRONG_CELLS_PLAYED).should("have.text", "235");
+    cy.get(END_GAME_DIFFICULTY).should("have.text", "348");
+  });
+
+  it("Completing a game should display correct statistics", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
+    cy.wait(1000);
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+    cy.get(START_NEW_GAME_BUTTON).click();
+    cy.get(VIEW_STATISTICS_PAGE_BUTTON).filter(":visible").click();
+    cy.get(STATISTICS_TOTAL_SCORE).filter(":visible").should("have.text", "34");
+    cy.get(STATISTICS_NUM_GAMES_PLAYED)
+      .filter(":visible")
+      .should("have.text", "1");
+    cy.get(STATISTICS_FASTEST_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "06:15");
+    cy.get(STATISTICS_AVERAGE_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "06:15");
+    cy.get(STATISTICS_TOTAL_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "06:15");
+    cy.get(STATISTICS_NUM_HINTS_USED)
+      .filter(":visible")
+      .should("have.text", "0");
+    cy.get(STATISTICS_NUM_WRONG_CELLS_PLAYED)
+      .filter(":visible")
+      .should("have.text", "235");
+  });
+
+  it("Completing multiple games should display correct statistics", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
+    cy.wait(1000);
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+    cy.get(START_NEW_GAME_BUTTON).click();
+    cy.visit("", {
+      onBeforeLoad(win) {
+        win.localStorage.setItem("active_game", ACTIVE_GAME_TWO);
+      },
+    });
+    cy.get(HOME_PLAY_BUTTON).click();
+    cy.contains("Resume Puzzle").click();
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
+    cy.wait(1000);
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+    cy.get(START_NEW_GAME_BUTTON).click();
+    cy.get(VIEW_STATISTICS_PAGE_BUTTON).filter(":visible").click();
+    cy.get(STATISTICS_TOTAL_SCORE).filter(":visible").should("have.text", "73");
+    cy.get(STATISTICS_NUM_GAMES_PLAYED)
+      .filter(":visible")
+      .should("have.text", "2");
+    cy.get(STATISTICS_FASTEST_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "03:21");
+    cy.get(STATISTICS_AVERAGE_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "04:48");
+    cy.get(STATISTICS_TOTAL_SOLVE_TIME)
+      .filter(":visible")
+      .should("have.text", "09:36");
+    cy.get(STATISTICS_NUM_HINTS_USED)
+      .filter(":visible")
+      .should("have.text", "50");
+    cy.get(STATISTICS_NUM_WRONG_CELLS_PLAYED)
+      .filter(":visible")
+      .should("have.text", "435");
   });
 });
