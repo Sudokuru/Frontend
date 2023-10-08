@@ -73,30 +73,37 @@ const TotalStatistics = (props: StatisticsProps) => {
         <Statistic
           statisticName="Total Score: "
           statisticValue={props.totalScore}
+          testID="totalScore"
         />
         <Statistic
           statisticName="Games Played: "
           statisticValue={props.numGamesPlayed}
+          testID="numGamesPlayed"
         />
         <Statistic
           statisticName="Fastest Solve Time: "
           statisticValue={formatTime(props.fastestSolveTime)}
+          testID="fastestSolveTime"
         />
         <Statistic
           statisticName="Average Solve Time: "
           statisticValue={formatTime(props.averageSolveTime)}
+          testID="averageSolveTime"
         />
         <Statistic
           statisticName="Total Solve Time: "
           statisticValue={formatTime(props.totalSolveTime)}
+          testID="totalSolveTime"
         />
         <Statistic
           statisticName="Total Hints Used: "
           statisticValue={props.numHintsUsed}
+          testID="numHintsUsed"
         />
         <Statistic
           statisticName="Total Wrong Cells Played: "
           statisticValue={props.numWrongCellsPlayed}
+          testID="numWrongCellsPlayed"
         />
       </View>
     </View>

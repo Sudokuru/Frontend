@@ -41,22 +41,30 @@ const EndGameModal = (props: any) => {
         Game Results
       </Text>
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
-        <Statistic statisticName="Score: " statisticValue={props.score} />
+        <Statistic
+          statisticName="Score: "
+          statisticValue={props.score}
+          testID="score"
+        />
         <Statistic
           statisticName="Time Spent Playing: "
           statisticValue={formatTime(props.time)}
+          testID="time"
         />
         <Statistic
           statisticName="Number of Hints Used: "
           statisticValue={props.numHintsUsed}
+          testID="numHintsUsed"
         />
         <Statistic
           statisticName="Number of Wrong Cells Played: "
           statisticValue={props.numWrongCellsPlayed}
+          testID="numWrongCellsPlayed"
         />
         <Statistic
           statisticName="Internal Game Difficulty Score: "
           statisticValue={props.difficulty}
+          testID="difficulty"
         />
       </View>
       <Button

@@ -5,6 +5,7 @@ import { View, useWindowDimensions } from "react-native";
 export interface StatisticProps {
   statisticName: string;
   statisticValue: string | number;
+  testID: string;
 }
 
 const Statistic = (props: StatisticProps) => {
@@ -21,6 +22,7 @@ const Statistic = (props: StatisticProps) => {
           fontWeight: "bold",
           color: "#D9A05B",
         }}
+        testID={props.testID}
       >
         {props.statisticValue}
       </Text>
