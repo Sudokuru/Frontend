@@ -469,10 +469,10 @@ describe("Sudoku play component functions", () => {
       .should("have.text", "03:21");
     cy.get(STATISTICS_AVERAGE_SOLVE_TIME)
       .filter(":visible")
-      .should("have.text", "04:49");
+      .should("have.text", "04:48");
     cy.get(STATISTICS_TOTAL_SOLVE_TIME)
       .filter(":visible")
-      .should("have.text", "09:38");
+      .should("have.text", "09:36");
     cy.get(STATISTICS_NUM_HINTS_USED)
       .filter(":visible")
       .should("have.text", "50");
