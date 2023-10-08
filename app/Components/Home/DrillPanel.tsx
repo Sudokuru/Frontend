@@ -80,7 +80,13 @@ const DrillPanel = (props: any) => {
         break;
     }
     subArray.push(
-      <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
+      <View
+        style={{
+          width: CARD_WIDTH,
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+        }}
+      >
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("DrillGame", {
