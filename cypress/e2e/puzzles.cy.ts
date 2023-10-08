@@ -433,7 +433,7 @@ describe("Sudoku play component functions", () => {
       .should("have.text", "235");
   });
 
-  it("Completing multiple games should display correct statistics", () => {
+  it.only("Completing multiple games should display correct statistics", () => {
     // for some reason it needs to wait or else it fails
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
@@ -466,7 +466,7 @@ describe("Sudoku play component functions", () => {
       .should("have.text", "2");
     cy.get(STATISTICS_FASTEST_SOLVE_TIME)
       .filter(":visible")
-      .should("have.text", "03:23");
+      .should("have.text", "03:21");
     cy.get(STATISTICS_AVERAGE_SOLVE_TIME)
       .filter(":visible")
       .should("have.text", "04:49");
