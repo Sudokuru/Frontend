@@ -373,6 +373,8 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing a game and clicking 'Start New Game' should take you to the play game page", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
@@ -384,6 +386,8 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing a game should display correct game results", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
@@ -398,6 +402,8 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing a game should display correct statistics", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
@@ -428,6 +434,8 @@ describe("Sudoku play component functions", () => {
   });
 
   it("Completing multiple games should display correct statistics", () => {
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
@@ -442,12 +450,12 @@ describe("Sudoku play component functions", () => {
     });
     cy.get(HOME_PLAY_BUTTON).click();
     cy.contains("Resume Puzzle").click();
+    // for some reason it needs to wait or else it fails
+    // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
-      cy.wait(1000);
       cy.get(CELL(7, 7)).click().type("2");
-      cy.wait(1000);
       cy.get(CELL(7, 8)).click().type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
