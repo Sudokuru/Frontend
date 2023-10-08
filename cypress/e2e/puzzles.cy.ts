@@ -427,7 +427,7 @@ describe("Sudoku play component functions", () => {
       .should("have.text", "235");
   });
 
-  it.only("Completing multiple games should display correct statistics", () => {
+  it("Completing multiple games should display correct statistics", () => {
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 6)).click().type("8");
