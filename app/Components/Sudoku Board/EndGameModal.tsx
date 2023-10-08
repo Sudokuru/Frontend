@@ -47,7 +47,7 @@ const EndGameModal = (props: any) => {
           testID="score"
         />
         <Statistic
-          statisticName="Time Spent Playing: "
+          statisticName="Time Spent: "
           statisticValue={formatTime(props.time)}
           testID="time"
         />
@@ -57,7 +57,7 @@ const EndGameModal = (props: any) => {
           testID="numHintsUsed"
         />
         <Statistic
-          statisticName="Number of Wrong Cells Played: "
+          statisticName="Mistakes Made: "
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />

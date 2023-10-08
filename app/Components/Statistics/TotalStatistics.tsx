@@ -101,7 +101,7 @@ const TotalStatistics = (props: StatisticsProps) => {
           testID="numHintsUsed"
         />
         <Statistic
-          statisticName="Total Wrong Cells Played: "
+          statisticName="Total Mistakes Made: "
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
