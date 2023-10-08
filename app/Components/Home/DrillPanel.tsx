@@ -94,7 +94,10 @@ const DrillPanel = (props: any) => {
             });
           }}
         >
-          <Card elevation={3}>
+          <Card
+            mode="outlined"
+            theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+          >
             <Title style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Title>
