@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
@@ -68,36 +68,33 @@ const DrillPanel = (props: any) => {
     }
     subArray.push(
       <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
-        <Card>
-          <Card.Title
-            title=<Text>Title</Text>
-            subtitle=<Text>Subtitle</Text>
-            left={(props) => <Text>{drillStrategies[i]}</Text>}
-          />
-          <Card.Content>
-            <Text variant="titleLarge">Card title</Text>
-            <Text variant="bodyMedium">Card content</Text>
-          </Card.Content>
-          <Image
-            source={img}
-            style={{
-              width: (CARD_WIDTH * 2) / 3,
-              height: CARD_HEIGHT / 2,
-              resizeMode: "contain",
-            }}
-          />
-          <Card.Actions>
-            <Button
-              onPress={() => {
-                navigation.navigate("DrillGame", {
-                  params: drillStrategies[i],
-                });
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("DrillGame", {
+              params: drillStrategies[i],
+            });
+          }}
+        >
+          <Card>
+            <Card.Title
+              title=<Text>Title</Text>
+              subtitle=<Text>Subtitle</Text>
+              left={(props) => <Text>{drillStrategies[i]}</Text>}
+            />
+            <Card.Content>
+              <Text variant="titleLarge">Card title</Text>
+              <Text variant="bodyMedium">Card content</Text>
+            </Card.Content>
+            <Image
+              source={img}
+              style={{
+                width: (CARD_WIDTH * 2) / 3,
+                height: CARD_HEIGHT / 2,
+                resizeMode: "contain",
               }}
-            >
-              Play
-            </Button>
-          </Card.Actions>
-        </Card>
+            />
+          </Card>
+        </TouchableOpacity>
       </View>
     );
 
