@@ -94,7 +94,7 @@ const DrillPanel = (props: any) => {
             });
           }}
         >
-          <Card>
+          <Card elevation={3}>
             <Title style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Title>
