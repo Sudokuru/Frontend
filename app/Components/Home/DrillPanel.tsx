@@ -32,6 +32,39 @@ const DrillPanel = (props: any) => {
     columnCount--;
   }
   for (let i = 0; i < drillStrategies.length; i++) {
+    let img;
+    switch (i) {
+      case 0:
+        img = require("./DrillCardImages/NAKED_SINGLE.png");
+        break;
+      case 1:
+        img = require("./DrillCardImages/NAKED_PAIR.png");
+        break;
+      case 2:
+        img = require("./DrillCardImages/NAKED_TRIPLET.png");
+        break;
+      case 3:
+        img = require("./DrillCardImages/NAKED_QUADRUPLET.png");
+        break;
+      case 4:
+        img = require("./DrillCardImages/HIDDEN_SINGLE.png");
+        break;
+      case 5:
+        img = require("./DrillCardImages/HIDDEN_PAIR.png");
+        break;
+      case 6:
+        img = require("./DrillCardImages/HIDDEN_TRIPLET.png");
+        break;
+      case 7:
+        img = require("./DrillCardImages/HIDDEN_QUADRUPLET.png");
+        break;
+      case 8:
+        img = require("./DrillCardImages/POINTING_PAIR.png");
+        break;
+      case 9:
+        img = require("./DrillCardImages/POINTING_TRIPLET.png");
+        break;
+    }
     subArray.push(
       <View style={{ width: CARD_WIDTH }}>
         <Card>
@@ -45,7 +78,7 @@ const DrillPanel = (props: any) => {
             <Text variant="bodyMedium">Card content</Text>
           </Card.Content>
           <Image
-            source={require("./DrillCardImages/NAKED_SINGLE.png")}
+            source={img}
             style={{ width: "100%", resizeMode: "contain" }}
           />
           <Card.Actions>
