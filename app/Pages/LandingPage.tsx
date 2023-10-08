@@ -75,9 +75,21 @@ const LandingPage = () => {
             gap: minWindowSize / 25,
           }}
         >
-          <NavigationButton image={START_LESSONS_LOGO} navigationPage="Learn" />
-          <NavigationButton image={START_DRILLS_LOGO} navigationPage="Drill" />
-          <NavigationButton image={PLAY_SUDOKU_LOGO} navigationPage="Play" />
+          <NavigationButton
+            image={START_LESSONS_LOGO}
+            navigationPage="Learn"
+            testID="HomeLearnButton"
+          />
+          <NavigationButton
+            image={START_DRILLS_LOGO}
+            navigationPage="Drill"
+            testID="HomeDrillButton"
+          />
+          <NavigationButton
+            image={PLAY_SUDOKU_LOGO}
+            navigationPage="Play"
+            testID="HomePlayButton"
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
