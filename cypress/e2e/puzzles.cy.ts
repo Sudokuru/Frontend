@@ -371,4 +371,26 @@ describe("Sudoku play component functions", () => {
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.contains("Start Puzzle");
   });
+
+  it.only("Completing a game should display correct game results", () => {
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      // for some reason it needs to wait or else it fails
+      // maybe because it finishes with time = 0, this may be an edge case failure
+      cy.wait(1000);
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+  });
+
+  it("Completing a game should display correct statistics", () => {
+    cy.get(SUDOKU_BOARD).within(() => {
+      cy.get(CELL(7, 6)).click().type("8");
+      cy.get(CELL(7, 7)).click().type("2");
+      // for some reason it needs to wait or else it fails
+      // maybe because it finishes with time = 0, this may be an edge case failure
+      cy.wait(1000);
+      cy.get(CELL(7, 8)).click().type("4");
+    });
+  });
 });

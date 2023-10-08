@@ -1,7 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Statistic from "./Statistic";
 
 const TotalStatistics = (props: any) => {
   const size = useWindowDimensions();
@@ -43,84 +44,55 @@ const TotalStatistics = (props: any) => {
   };
 
   return (
-    <View style={styles().totalStatisticsView}>
-      <Text style={styles(reSize, theme.colors.primary).statisticsTitle}>
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        marginVertical: 30,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: reSize ? reSize / 20 : 20,
+          color: theme.colors.primary,
+          fontWeight: "bold",
+          marginBottom: 10,
+        }}
+      >
         Total Game Statistics
       </Text>
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
-        <View style={{ marginBottom: 10, flexDirection: "row" }}>
-          <Text style={styles(reSize).statisticText}>Total Score: </Text>
-          <Text style={styles(reSize).statisticValue}>{props.totalScore}</Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Games Played: </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {props.numGamesPlayed}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Fastest Solve Time: </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {formatTime(props.fastestSolveTime)}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Average Solve Time: </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {formatTime(props.averageSolveTime)}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Total Solve Time: </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {formatTime(props.totalSolveTime)}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Total Hints Used: </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {props.numHintsUsed}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>
-            Total Wrong Cells Played:{" "}
-          </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {props.numWrongCellsPlayed}
-          </Text>
-        </View>
+        <Statistic
+          statisticName="Total Score: "
+          statisticValue={props.totalScore}
+        />
+        <Statistic
+          statisticName="Games Played: "
+          statisticValue={props.numGamesPlayed}
+        />
+        <Statistic
+          statisticName="Fastest Solve Time: "
+          statisticValue={props.fastestSolveTime}
+        />
+        <Statistic
+          statisticName="Average Solve Time: "
+          statisticValue={props.averageSolveTime}
+        />
+        <Statistic
+          statisticName="Total Solve Time: "
+          statisticValue={props.totalSolveTime}
+        />
+        <Statistic
+          statisticName="Total Hints Used: "
+          statisticValue={props.numHintsUsed}
+        />
+        <Statistic
+          statisticName="Total Wrong Cells Played: "
+          statisticValue={props.numWrongCellsPlayed}
+        />
       </View>
     </View>
   );
 };
-
-const styles = (reSize?: number, themeColor?: any) =>
-  StyleSheet.create({
-    totalStatisticsView: {
-      alignItems: "center",
-      justifyContent: "center",
-      marginVertical: 30,
-    },
-    statisticsTitle: {
-      fontSize: reSize ? reSize / 20 : 20,
-      color: themeColor,
-      fontWeight: "bold",
-      marginBottom: 10,
-    },
-    statisticView: {
-      marginBottom: 10,
-      flexDirection: "row",
-    },
-    statisticText: {
-      fontSize: reSize ? reSize / 22 : 20,
-      color: "#025E73",
-    },
-    statisticValue: {
-      fontSize: reSize ? reSize / 20 : 20,
-      fontWeight: "bold",
-      color: "#D9A05B",
-    },
-  });
 
 export default TotalStatistics;
