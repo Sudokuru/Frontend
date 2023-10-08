@@ -313,8 +313,10 @@ const SudokuBoard = (props: any) => {
   };
 
   const toggleHintMode = () => {
+    // Create new board variable to store the temporary hint board state
     let newBoard = board;
-    let newHintMode = !newBoard.get("inHintMode");
+    // Stores whether or not the board is in hint mode
+    let newHintMode: boolean = !newBoard.get("inHintMode");
     newBoard = newBoard.set("inHintMode", newHintMode);
 
     // Increment global hint value by one
@@ -326,6 +328,7 @@ const SudokuBoard = (props: any) => {
       }
     }
 
+    // If they are exiting hint mode, update board state by either reverting (if they prematurely exit hint mode) or updating (if they are on the final step)
     if (!newHintMode) {
       let hintStepsLength = newBoard.get("hintSteps").length;
       let currentStep = newBoard.get("currentStep");
@@ -343,10 +346,11 @@ const SudokuBoard = (props: any) => {
       else setBoard(newBoard);
       return;
     }
+
+    // If they are entering hint mode, update board state by adding the hint
+
     newBoard = newBoard.set("currentStep", 0);
-    let hint = solution
-      ? getNextHint(newBoard, solution, props.strategies)
-      : getNextHint(newBoard, null, props.strategies);
+    let hint = getNextHint(newBoard, solution, props.strategies);
 
     if (!hint) return;
     const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
@@ -354,21 +358,10 @@ const SudokuBoard = (props: any) => {
       words[i] = words[i][0].toUpperCase() + words[i].substr(1);
     let hintStratName = words.join(" ");
     newBoard = newBoard.set("hintStratName", hintStratName);
-    const hintInfo = hint.info;
-    newBoard = newBoard.set("hintInfo", hintInfo);
-    const hintAction = hint.action;
-    newBoard = newBoard.set("hintAction", hintAction);
+    newBoard = newBoard.set("hintInfo", hint.info);
+    newBoard = newBoard.set("hintAction", hint.action);
 
-    let causes = [];
-    let groups = [];
-    let placements = [];
-    let removals = [];
-    if (hint) {
-      if (hint.cause) causes = getCausesFromHint(hint);
-      if (hint.groups) groups = getGroupsFromHint(hint);
-      if (hint.placements) placements = getPlacementsFromHint(hint);
-      if (hint.removals) removals = getRemovalsFromHint(board, hint);
-    }
+    let removals = getRemovalsFromHint(board, hint);
 
     if (hint.strategy === "AMEND_NOTES") {
       newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
@@ -376,10 +369,10 @@ const SudokuBoard = (props: any) => {
 
     let hintObject: Hint = getHintObject(
       hint.strategy,
-      groups,
-      causes,
+      getGroupsFromHint(hint),
+      getCausesFromHint(hint),
       removals,
-      placements
+      getPlacementsFromHint(hint)
     );
 
     let hintSteps: any[] = hintObject.getHintSteps();

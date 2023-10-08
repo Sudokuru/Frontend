@@ -6,7 +6,9 @@ import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
-import TotalStatistics from "../Components/Statistics/TotalStatistics";
+import TotalStatistics, {
+  StatisticsProps,
+} from "../Components/Statistics/TotalStatistics";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { Statistics } from "../Functions/Api/Statistics";
@@ -22,7 +24,17 @@ const StatisticsPage = () => {
     React.useContext(PreferencesContext);
 
   const [isLoading, setLoading] = React.useState<boolean>(true);
-  const [totalStatistics, setTotalStatistics] = React.useState<any>();
+  const [totalStatistics, setTotalStatistics] = React.useState<StatisticsProps>(
+    {
+      totalScore: 0,
+      averageSolveTime: 0,
+      fastestSolveTime: 0,
+      numGamesPlayed: 0,
+      numHintsUsed: 0,
+      numWrongCellsPlayed: 0,
+      totalSolveTime: 0,
+    }
+  );
 
   const [warningVisible, setWarningVisible] = React.useState(false);
   const showWarningButton = () => setWarningVisible(true);
