@@ -433,7 +433,7 @@ describe("Sudoku play component functions", () => {
       .should("have.text", "235");
   });
 
-  it.only("Completing multiple games should display correct statistics", () => {
+  it("Completing multiple games should display correct statistics", () => {
     // for some reason it needs to wait or else it fails
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
