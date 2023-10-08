@@ -52,7 +52,7 @@ describe("naked single drills", () => {
             cy.contains("Submit").click();
           })
           .then(() => {
-            cy.contains("NAKED_SINGLE").should("exist");
+            cy.contains("Naked Single").should("exist");
           });
       });
   });

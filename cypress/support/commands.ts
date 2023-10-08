@@ -15,7 +15,7 @@ import {
 Cypress.Commands.add("Start_Naked_Single_Drill", () => {
   cy.get(OPEN_DRAWER_NAVIGATION).click();
   cy.get(DRILL_DRAWER_BUTTON).click();
-  cy.contains("NAKED_SINGLE").click();
+  cy.contains("Naked Single").click();
 });
 
 Cypress.Commands.add("Get_Cell_IDs", (boardType) => {
