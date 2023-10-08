@@ -1,7 +1,8 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Statistic from "../Statistics/Statistic";
 
 const EndGameModal = (props: any) => {
   const size = useWindowDimensions();
@@ -29,40 +30,34 @@ const EndGameModal = (props: any) => {
         marginVertical: 30,
       }}
     >
-      <Text style={styles(reSize).totalGameResultsText}>Game Results</Text>
+      <Text
+        style={{
+          fontSize: reSize ? reSize / 20 : 20,
+          color: "#D9A05B",
+          fontWeight: "bold",
+          marginBottom: 10,
+        }}
+      >
+        Game Results
+      </Text>
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Score:</Text>
-          <Text style={styles(reSize).statisticValue}>{props.score}</Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>Time Spent Playing:</Text>
-          <Text style={styles(reSize).statisticValue}>
-            {formatTime(props.time)}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>
-            Number of Hints Used:
-          </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {props.numHintsUsed}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>
-            Number of Wrong Cells Played:
-          </Text>
-          <Text style={styles(reSize).statisticValue}>
-            {props.numWrongCellsPlayed}
-          </Text>
-        </View>
-        <View style={styles().statisticView}>
-          <Text style={styles(reSize).statisticText}>
-            Internal Game Difficulty Score:
-          </Text>
-          <Text style={styles(reSize).statisticValue}>{props.difficulty}</Text>
-        </View>
+        <Statistic statisticName="Score: " statisticValue={props.score} />
+        <Statistic
+          statisticName="Time Spent Playing: "
+          statisticValue={formatTime(props.time)}
+        />
+        <Statistic
+          statisticName="Number of Hints Used: "
+          statisticValue={props.numHintsUsed}
+        />
+        <Statistic
+          statisticName="Number of Wrong Cells Played: "
+          statisticValue={props.numWrongCellsPlayed}
+        />
+        <Statistic
+          statisticName="Internal Game Difficulty Score: "
+          statisticValue={props.difficulty}
+        />
       </View>
       <Button
         mode="contained"
@@ -74,27 +69,5 @@ const EndGameModal = (props: any) => {
     </View>
   );
 };
-
-const styles = (reSize?: number, themeColor?: any) =>
-  StyleSheet.create({
-    totalGameResultsText: {
-      fontSize: reSize ? reSize / 20 : 20,
-      color: "#D9A05B",
-      fontWeight: "bold",
-      marginBottom: 10,
-    },
-    statisticView: {
-      marginBottom: 10,
-    },
-    statisticText: {
-      fontSize: reSize ? reSize / 22 : 20,
-      color: "#025E73",
-    },
-    statisticValue: {
-      fontSize: reSize ? reSize / 20 : 20,
-      fontWeight: "bold",
-      color: "#D9A05B",
-    },
-  });
 
 export default EndGameModal;

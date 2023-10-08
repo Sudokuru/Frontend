@@ -1,15 +1,23 @@
 import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Statistic from "./Statistic";
 
-const TotalStatistics = (props: any) => {
+export interface StatisticsProps {
+  totalScore: number;
+  numGamesPlayed: number;
+  fastestSolveTime: number;
+  averageSolveTime: number;
+  totalSolveTime: number;
+  numHintsUsed: number;
+  numWrongCellsPlayed: number;
+}
+
+const TotalStatistics = (props: StatisticsProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const theme = useTheme();
-  const navigation: any = useNavigation();
 
   // https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds
   const formatTime = (inputSeconds: number) => {
@@ -72,15 +80,15 @@ const TotalStatistics = (props: any) => {
         />
         <Statistic
           statisticName="Fastest Solve Time: "
-          statisticValue={props.fastestSolveTime}
+          statisticValue={formatTime(props.fastestSolveTime)}
         />
         <Statistic
           statisticName="Average Solve Time: "
-          statisticValue={props.averageSolveTime}
+          statisticValue={formatTime(props.averageSolveTime)}
         />
         <Statistic
           statisticName="Total Solve Time: "
-          statisticValue={props.totalSolveTime}
+          statisticValue={formatTime(props.totalSolveTime)}
         />
         <Statistic
           statisticName="Total Hints Used: "
