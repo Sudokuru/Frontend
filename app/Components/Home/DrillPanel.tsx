@@ -22,7 +22,8 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  const CARD_WIDTH: number = 200;
+  const CARD_WIDTH: number = 300;
+  const CARD_HEIGHT: number = 600;
   let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
   while (
@@ -66,7 +67,7 @@ const DrillPanel = (props: any) => {
         break;
     }
     subArray.push(
-      <View style={{ width: CARD_WIDTH }}>
+      <View style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}>
         <Card>
           <Card.Title
             title=<Text>Title</Text>
@@ -79,7 +80,11 @@ const DrillPanel = (props: any) => {
           </Card.Content>
           <Image
             source={img}
-            style={{ width: "100%", resizeMode: "contain" }}
+            style={{
+              width: (CARD_WIDTH * 2) / 3,
+              height: CARD_HEIGHT / 2,
+              resizeMode: "contain",
+            }}
           />
           <Card.Actions>
             <Button
