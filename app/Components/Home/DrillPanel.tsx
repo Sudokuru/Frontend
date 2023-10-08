@@ -98,6 +98,7 @@ const DrillPanel = (props: any) => {
                 width: (CARD_WIDTH * 2) / 3,
                 height: CARD_HEIGHT / 2,
                 resizeMode: "contain",
+                alignSelf: "center",
               }}
             />
           </Card>
