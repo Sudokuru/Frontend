@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -26,10 +26,8 @@ const DrillPage = () => {
   const hideDrillHelp = () => setDrillHelpVisible(false);
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
-        style={{ width: windowSize.width, height: windowSize.height }}
-      >
+    <ScrollView>
+      <SafeAreaView>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
@@ -76,7 +74,7 @@ const DrillPage = () => {
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               {drillsVisible ? (
                 <View style={{ padding: reSize / 4 }}>
-                  <DrillPanel />
+                  <DrillPanel width={windowSize.width} />
                 </View>
               ) : (
                 <LessonButton
@@ -111,7 +109,7 @@ const DrillPage = () => {
           overlayStyle={{ backgroundColor: "transparent" }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
 

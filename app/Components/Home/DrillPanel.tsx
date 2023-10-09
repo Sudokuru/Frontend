@@ -1,7 +1,7 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
+import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -17,36 +17,132 @@ let drillStrategies: sudokuStrategyArray = [
   "POINTING_TRIPLET",
 ];
 
-const DrillPanel = () => {
+let drillImages: ImageURISource[] = [
+  require("./DrillCardImages/NAKED_SINGLE.png"),
+  require("./DrillCardImages/NAKED_PAIR.png"),
+  require("./DrillCardImages/NAKED_TRIPLET.png"),
+  require("./DrillCardImages/NAKED_QUADRUPLET.png"),
+  require("./DrillCardImages/HIDDEN_SINGLE.png"),
+  require("./DrillCardImages/HIDDEN_PAIR.png"),
+  require("./DrillCardImages/HIDDEN_TRIPLET.png"),
+  require("./DrillCardImages/HIDDEN_QUADRUPLET.png"),
+  require("./DrillCardImages/POINTING_PAIR.png"),
+  require("./DrillCardImages/POINTING_TRIPLET.png"),
+];
+
+type drillDifficulty =
+  | "Very Easy"
+  | "Easy"
+  | "Intermediate"
+  | "Hard"
+  | "Very Hard";
+
+/**
+ * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
+ * @param str - the string to convert
+ * @returns the converted string
+ */
+const toTitle = (str: string) => {
+  return str
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
+
+const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
 
-  // dynamically render in lesson buttons based on criteria
   let drillButtonArray = [];
-  let NUM_LESSONS_PER_ROW = 2;
-
   let subArray = [];
+  const CARD_WIDTH: number = 300;
+  const CARD_HEIGHT: number = 600;
+  let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
+  // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
+  while (
+    columnCount - 1 >=
+    Math.ceil(drillStrategies.length / (columnCount - 1))
+  ) {
+    columnCount--;
+  }
   for (let i = 0; i < drillStrategies.length; i++) {
+    let img: ImageURISource = drillImages[i];
+    let difficulty: drillDifficulty, difficultyColor: string;
+    switch (drillStrategies[i]) {
+      case "NAKED_SINGLE":
+        difficulty = "Very Easy";
+        difficultyColor = "#4CBB17";
+        break;
+      case "NAKED_PAIR":
+        difficulty = "Easy";
+        difficultyColor = "#7CFC00";
+        break;
+      case "NAKED_TRIPLET":
+      case "NAKED_QUADRUPLET":
+        difficulty = "Intermediate";
+        difficultyColor = "#FFFF00";
+        break;
+      case "HIDDEN_SINGLE":
+        difficulty = "Hard";
+        difficultyColor = "#FFA500";
+        break;
+      default:
+        difficulty = "Very Hard";
+        difficultyColor = "#FF0000";
+        break;
+    }
     subArray.push(
-      <Button
-        key={drillStrategies[i]}
-        mode="contained"
-        onPress={() => {
-          navigation.navigate("DrillGame", { params: drillStrategies[i] });
+      <View
+        style={{
+          width: CARD_WIDTH,
+          paddingHorizontal: 20,
+          paddingVertical: 20,
         }}
-        style={{ margin: 10 }}
       >
-        {drillStrategies[i]}
-      </Button>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("DrillGame", {
+              params: drillStrategies[i],
+            });
+          }}
+        >
+          <Card
+            mode="outlined"
+            theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+          >
+            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+              {toTitle(drillStrategies[i])}
+            </Text>
+            <Text
+              variant="headlineSmall"
+              style={{ alignSelf: "center" }}
+              theme={{ colors: { onSurface: difficultyColor } }}
+            >
+              {difficulty}
+            </Text>
+            <Image
+              source={img}
+              style={{
+                width: (CARD_WIDTH * 2) / 3,
+                height: CARD_HEIGHT / 2,
+                resizeMode: "contain",
+                alignSelf: "center",
+              }}
+            />
+          </Card>
+        </TouchableOpacity>
+      </View>
     );
 
-    // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
-    if (
-      (i + 1) % NUM_LESSONS_PER_ROW === 0 ||
-      i === drillStrategies.length - 1
-    ) {
+    // Add row
+    if ((i + 1) % columnCount === 0) {
       drillButtonArray.push(subArray);
       subArray = [];
     }
+  }
+  // Add last row if not evenly divisible
+  if (subArray.length > 0) {
+    drillButtonArray.push(subArray);
   }
 
   // render each sub-array as a row
