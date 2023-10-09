@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
@@ -15,6 +15,19 @@ let drillStrategies: sudokuStrategyArray = [
   "HIDDEN_QUADRUPLET",
   "POINTING_PAIR",
   "POINTING_TRIPLET",
+];
+
+let drillImages: ImageURISource[] = [
+  require("./DrillCardImages/NAKED_SINGLE.png"),
+  require("./DrillCardImages/NAKED_PAIR.png"),
+  require("./DrillCardImages/NAKED_TRIPLET.png"),
+  require("./DrillCardImages/NAKED_QUADRUPLET.png"),
+  require("./DrillCardImages/HIDDEN_SINGLE.png"),
+  require("./DrillCardImages/HIDDEN_PAIR.png"),
+  require("./DrillCardImages/HIDDEN_TRIPLET.png"),
+  require("./DrillCardImages/HIDDEN_QUADRUPLET.png"),
+  require("./DrillCardImages/POINTING_PAIR.png"),
+  require("./DrillCardImages/POINTING_TRIPLET.png"),
 ];
 
 /**
@@ -46,39 +59,7 @@ const DrillPanel = (props: any) => {
     columnCount--;
   }
   for (let i = 0; i < drillStrategies.length; i++) {
-    let img;
-    switch (i) {
-      case 0:
-        img = require("./DrillCardImages/NAKED_SINGLE.png");
-        break;
-      case 1:
-        img = require("./DrillCardImages/NAKED_PAIR.png");
-        break;
-      case 2:
-        img = require("./DrillCardImages/NAKED_TRIPLET.png");
-        break;
-      case 3:
-        img = require("./DrillCardImages/NAKED_QUADRUPLET.png");
-        break;
-      case 4:
-        img = require("./DrillCardImages/HIDDEN_SINGLE.png");
-        break;
-      case 5:
-        img = require("./DrillCardImages/HIDDEN_PAIR.png");
-        break;
-      case 6:
-        img = require("./DrillCardImages/HIDDEN_TRIPLET.png");
-        break;
-      case 7:
-        img = require("./DrillCardImages/HIDDEN_QUADRUPLET.png");
-        break;
-      case 8:
-        img = require("./DrillCardImages/POINTING_PAIR.png");
-        break;
-      case 9:
-        img = require("./DrillCardImages/POINTING_TRIPLET.png");
-        break;
-    }
+    let img: ImageURISource = drillImages[i];
     let difficulty: string, difficultyColor: string;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
