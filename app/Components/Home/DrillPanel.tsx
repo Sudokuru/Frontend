@@ -117,10 +117,12 @@ const DrillPanel = (props: any) => {
             mode="outlined"
             theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
           >
-            <Title style={{ alignSelf: "center" }}>
+            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
-            </Title>
-            <Text>{difficulty}</Text>
+            </Text>
+            <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+              {difficulty}
+            </Text>
             <Image
               source={img}
               style={{
