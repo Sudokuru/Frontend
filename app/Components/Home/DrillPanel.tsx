@@ -1,7 +1,7 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
-import { Button, Card, Text, Title } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
 let drillStrategies: sudokuStrategyArray = [
