@@ -79,23 +79,28 @@ const DrillPanel = (props: any) => {
         img = require("./DrillCardImages/POINTING_TRIPLET.png");
         break;
     }
-    let difficulty: string;
+    let difficulty: string, difficultyColor: string;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
         difficulty = "Very Easy";
+        difficultyColor = "#4CBB17";
         break;
       case "NAKED_PAIR":
         difficulty = "Easy";
+        difficultyColor = "#7CFC00";
         break;
       case "NAKED_TRIPLET":
       case "NAKED_QUADRUPLET":
         difficulty = "Intermediate";
+        difficultyColor = "#FFFF00";
         break;
       case "HIDDEN_SINGLE":
         difficulty = "Hard";
+        difficultyColor = "#FFA500";
         break;
       default:
         difficulty = "Very Hard";
+        difficultyColor = "#FF0000";
         break;
     }
     subArray.push(
@@ -120,7 +125,11 @@ const DrillPanel = (props: any) => {
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Text>
-            <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+            <Text
+              variant="headlineSmall"
+              style={{ alignSelf: "center" }}
+              theme={{ colors: { onSurface: difficultyColor } }}
+            >
               {difficulty}
             </Text>
             <Image
