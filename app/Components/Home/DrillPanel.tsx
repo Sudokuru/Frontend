@@ -79,6 +79,25 @@ const DrillPanel = (props: any) => {
         img = require("./DrillCardImages/POINTING_TRIPLET.png");
         break;
     }
+    let difficulty: string;
+    switch (drillStrategies[i]) {
+      case "NAKED_SINGLE":
+        difficulty = "Very Easy";
+        break;
+      case "NAKED_PAIR":
+        difficulty = "Easy";
+        break;
+      case "NAKED_TRIPLET":
+      case "NAKED_QUADRUPLET":
+        difficulty = "Intermediate";
+        break;
+      case "HIDDEN_SINGLE":
+        difficulty = "Hard";
+        break;
+      default:
+        difficulty = "Very Hard";
+        break;
+    }
     subArray.push(
       <View
         style={{
@@ -101,6 +120,7 @@ const DrillPanel = (props: any) => {
             <Title style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Title>
+            <Text>{difficulty}</Text>
             <Image
               source={img}
               style={{
