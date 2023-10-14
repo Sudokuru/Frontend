@@ -18,16 +18,16 @@ let drillStrategies: sudokuStrategyArray = [
 ];
 
 let drillImages: ImageURISource[] = [
-  require("./DrillCardImages/NAKED_SINGLE.png"),
-  require("./DrillCardImages/NAKED_PAIR.png"),
-  require("./DrillCardImages/NAKED_TRIPLET.png"),
-  require("./DrillCardImages/NAKED_QUADRUPLET.png"),
-  require("./DrillCardImages/HIDDEN_SINGLE.png"),
-  require("./DrillCardImages/HIDDEN_PAIR.png"),
-  require("./DrillCardImages/HIDDEN_TRIPLET.png"),
-  require("./DrillCardImages/HIDDEN_QUADRUPLET.png"),
-  require("./DrillCardImages/POINTING_PAIR.png"),
-  require("./DrillCardImages/POINTING_TRIPLET.png"),
+  require("./CardImages/NAKED_SINGLE.png"),
+  require("./CardImages/NAKED_PAIR.png"),
+  require("./CardImages/NAKED_TRIPLET.png"),
+  require("./CardImages/NAKED_QUADRUPLET.png"),
+  require("./CardImages/HIDDEN_SINGLE.png"),
+  require("./CardImages/HIDDEN_PAIR.png"),
+  require("./CardImages/HIDDEN_TRIPLET.png"),
+  require("./CardImages/HIDDEN_QUADRUPLET.png"),
+  require("./CardImages/POINTING_PAIR.png"),
+  require("./CardImages/POINTING_TRIPLET.png"),
 ];
 
 type drillDifficulty =
