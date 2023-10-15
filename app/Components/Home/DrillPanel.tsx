@@ -3,7 +3,7 @@ import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
-import { CARD_WIDTH } from "./Cards";
+import { CARD_PADDING, CARD_WIDTH } from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -95,8 +95,7 @@ const DrillPanel = (props: any) => {
       <View
         style={{
           width: CARD_WIDTH,
-          paddingHorizontal: 20,
-          paddingVertical: 20,
+          padding: CARD_PADDING,
         }}
       >
         <TouchableOpacity
