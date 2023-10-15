@@ -48,7 +48,7 @@ jobs:
   #         npx prettier --check .
 
   app_preview_dev:
-    if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
+    # if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
   #   needs: [ code_scan ]
     steps:
@@ -100,21 +100,6 @@ jobs:
         with:
           name: Lighthouse Preview
           path: ${{ github.workspace }}/tmp/artifacts
-
-      - name: Rename JSON report
-        run: mv ${{ github.workspace }}/tmp/artifacts/results.json ${{ github.workspace }}/tmp/artifacts/manifest.json 
-
-      - name: Lighthouse Preview Summary
-        id: Lighthouse
-        uses: iyu88/lighthouse-report-formatter@1.0.0
-        with:
-          lh_directory: '${{ github.workspace }}'
-          manifest_path: ${{ github.workspace }}/tmp/artifacts
-
-      - run: | 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Lighthouse Preview Report" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.lighthouse.outputs.comments }}" >> $GITHUB_STEP_SUMMARY
 
   # website_test_dev:
   #   runs-on: ubuntu-latest
@@ -284,28 +269,10 @@ jobs:
           name: Lighthouse Dev
           path: ${{ github.workspace }}/tmp/artifacts
 
-      - name: Rename JSON report
-        run: mv ${{ github.workspace }}/tmp/artifacts/results.json ${{ github.workspace }}/tmp/artifacts/manifest.json 
-
-      - run: ls ${{ github.workspace }}/tmp/artifacts
-
-      - name: Lighthouse Dev Summary
-        id: Lighthouse
-        uses: iyu88/lighthouse-report-formatter@1.0.0
-        with:
-          lh_directory: ./tmp/
-          manifest_path: artifacts
-
-      - run: | 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Lighthouse Dev Report" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.lighthouse.outputs.comments }}" >> $GITHUB_STEP_SUMMARY
-
-
   deploy_website_prod:
     name: Deploy Prod Website
     # needs: [ deploy_website_dev, deploy_app_dev ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    #if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       # - name: Checkout repository
@@ -330,15 +297,3 @@ jobs:
         with:
           name: Lighthouse Prod
           path: ${{ github.workspace }}/tmp/artifacts
-
-      - name: Lighthouse Dev Summary
-        id: Lighthouse
-        uses: iyu88/lighthouse-report-formatter@1.0.0
-        with:
-          lh_directory: '${{ github.workspace }}'
-          manifest_path: /tmp/artifacts
-
-      - run: | 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Lighthouse Dev Report" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.lighthouse.outputs.comments }}" >> $GITHUB_STEP_SUMMARY
