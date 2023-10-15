@@ -8,6 +8,7 @@ import {
   CARD_IMAGE_WIDTH,
   CARD_PADDING,
   CARD_WIDTH,
+  calculateCardsPerRow,
 } from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -61,14 +62,10 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
-  // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
-  while (
-    columnCount - 1 >=
-    Math.ceil(drillStrategies.length / (columnCount - 1))
-  ) {
-    columnCount--;
-  }
+  let columnCount: number = calculateCardsPerRow(
+    props.width,
+    drillStrategies.length
+  );
   for (let i = 0; i < drillStrategies.length; i++) {
     let img: ImageURISource = drillImages[i];
     let difficulty: drillDifficulty, difficultyColor: string;
