@@ -1,6 +1,6 @@
 import React from "react";
-import { View } from "react-native";
-import { ActivityIndicator, Button, useTheme } from "react-native-paper";
+import { TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Button, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import {
@@ -51,13 +51,13 @@ const LessonPanel = () => {
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++) {
       subArray.push(
-        <Button
+        <TouchableOpacity
           onPress={() => {
             navigation.navigate("Lesson", { params: availableLessons[i] });
           }}
         >
-          {formatOneLessonName(availableLessons[i])}
-        </Button>
+          <Card>{formatOneLessonName(availableLessons[i])}</Card>
+        </TouchableOpacity>
         /*<LessonButton
           key={availableLessons[i]}
           backgroundColor={
