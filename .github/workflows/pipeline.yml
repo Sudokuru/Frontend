@@ -241,7 +241,17 @@ jobs:
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
         with:
-          urls: 'https://sudokuru-dev.vercel.app,https://www.google.com'
+          urls: https://sudokuru-dev.vercel.app
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse reports
+          path: ${{ github.workspace }}/tmp/artifacts
+
 
   deploy_website_prod:
     name: Deploy Prod Website
