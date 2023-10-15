@@ -33,6 +33,28 @@ let lessonImages: ImageURISource[] = [
   require("./CardImages/POINTING_PAIR.png"),
 ];
 
+let learnedLessonImages: ImageURISource[] = [
+  require("./CardImages/Learned/SUDOKU_101.png"),
+  require("./CardImages/Learned/AMEND_NOTES.png"),
+  require("./CardImages/Learned/NAKED_SINGLE.png"),
+  require("./CardImages/Learned/SIMPLIFY_NOTES.png"),
+  require("./CardImages/Learned/NAKED_SET.png"),
+  require("./CardImages/Learned/HIDDEN_SINGLE.png"),
+  require("./CardImages/Learned/HIDDEN_SET.png"),
+  require("./CardImages/Learned/POINTING_SET.png"),
+];
+
+let lockedLessonImages: ImageURISource[] = [
+  require("./CardImages/Locked/SUDOKU_101.png"),
+  require("./CardImages/Locked/AMEND_NOTES.png"),
+  require("./CardImages/Locked/NAKED_SINGLE.png"),
+  require("./CardImages/Locked/SIMPLIFY_NOTES.png"),
+  require("./CardImages/Locked/NAKED_SET.png"),
+  require("./CardImages/Locked/HIDDEN_SINGLE.png"),
+  require("./CardImages/Locked/HIDDEN_SET.png"),
+  require("./CardImages/Locked/POINTING_SET.png"),
+];
+
 const LessonPanel = (props: any) => {
   const theme = useTheme();
 
@@ -72,7 +94,14 @@ const LessonPanel = (props: any) => {
       availableLessons.length
     );
     for (let i = 0; i < availableLessons.length; i++) {
-      let img: ImageURISource = lessonImages[i];
+      let img: ImageURISource;
+      if (learnedLessons.includes(availableLessons[i])) {
+        img = learnedLessonImages[i];
+      } else if (lockedLessons.includes(availableLessons[i])) {
+        img = lockedLessonImages[i];
+      } else {
+        img = lessonImages[i];
+      }
       subArray.push(
         <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
           <TouchableOpacity
