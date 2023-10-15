@@ -238,6 +238,8 @@ jobs:
 
       # - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
 
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
         with:
@@ -259,9 +261,26 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # - name: Checkout repository
+      #   uses: actions/checkout@v3
 
-      - run: npm ci
+      # - run: npm ci
 
-      - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
+      # - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
+
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: https://sudokuru.vercel.app
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+          fooApiToken: ${{ secrets.FOO_TOKEN }}
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Prod
+          path: ${{ github.workspace }}/tmp/artifacts
