@@ -20,6 +20,8 @@ import {
   CARD_PADDING,
   CARD_WIDTH,
   calculateCardsPerRow,
+  difficulty,
+  getDifficultyColor,
 } from "./Cards";
 
 let lessonImages: ImageURISource[] = [
@@ -102,6 +104,28 @@ const LessonPanel = (props: any) => {
       } else {
         img = lessonImages[i];
       }
+      let difficulty: difficulty;
+      switch (availableLessons[i]) {
+        case "SUDOKU_101":
+        case "AMEND_NOTES":
+        case "NAKED_SINGLE":
+        case "SIMPLIFY_NOTES":
+          difficulty = "Very Easy";
+          break;
+        case "NAKED_SET":
+          difficulty = "Easy";
+          break;
+        case "HIDDEN_SINGLE":
+          difficulty = "Intermediate";
+          break;
+        case "HIDDEN_SET":
+          difficulty = "Hard";
+          break;
+        default:
+          difficulty = "Very Hard";
+          break;
+      }
+      let difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
         <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
           <TouchableOpacity
@@ -115,6 +139,13 @@ const LessonPanel = (props: any) => {
             >
               <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
                 {formatOneLessonName(availableLessons[i])}
+              </Text>
+              <Text
+                variant="headlineSmall"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: difficultyColor } }}
+              >
+                {difficulty}
               </Text>
               <Image
                 source={img}
