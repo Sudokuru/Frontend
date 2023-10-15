@@ -159,18 +159,6 @@ const LessonPanel = (props: any) => {
             </Card>
           </TouchableOpacity>
         </View>
-        /*<LessonButton
-          key={availableLessons[i]}
-          backgroundColor={
-            learnedLessons.includes(availableLessons[i]) ||
-            lockedLessons.includes(availableLessons[i])
-              ? "grey"
-              : theme.colors.primary
-          }
-          name={formatOneLessonName(availableLessons[i])}
-          navigation={availableLessons[i]}
-          disabled={lockedLessons.includes(availableLessons[i])}
-        ></LessonButton>*/
       );
 
       // Add row
