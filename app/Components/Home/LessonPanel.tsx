@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { ActivityIndicator, Button, Card, useTheme } from "react-native-paper";
+import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import {
@@ -56,7 +56,14 @@ const LessonPanel = () => {
             navigation.navigate("Lesson", { params: availableLessons[i] });
           }}
         >
-          <Card>{formatOneLessonName(availableLessons[i])}</Card>
+          <Card
+            mode="outlined"
+            theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+          >
+            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+              {formatOneLessonName(availableLessons[i])}
+            </Text>
+          </Card>
         </TouchableOpacity>
         /*<LessonButton
           key={availableLessons[i]}
