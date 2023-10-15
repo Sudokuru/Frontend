@@ -294,7 +294,7 @@ jobs:
         uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
           lh_directory: ./
-          manifest_path: tmp/artifacts
+          manifest_path: /tmp/artifacts
 
       - run: | 
           echo "" >> $GITHUB_STEP_SUMMARY
