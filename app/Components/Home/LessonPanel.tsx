@@ -19,6 +19,7 @@ import {
   CARD_IMAGE_WIDTH,
   CARD_PADDING,
   CARD_WIDTH,
+  calculateCardsPerRow,
 } from "./Cards";
 
 let lessonImages: ImageURISource[] = [
@@ -32,7 +33,7 @@ let lessonImages: ImageURISource[] = [
   require("./CardImages/POINTING_PAIR.png"),
 ];
 
-const LessonPanel = () => {
+const LessonPanel = (props: any) => {
   const theme = useTheme();
 
   const navigation: any = useNavigation();
@@ -66,6 +67,10 @@ const LessonPanel = () => {
     let NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
+    let columnCount: number = calculateCardsPerRow(
+      props.width,
+      availableLessons.length
+    );
     for (let i = 0; i < availableLessons.length; i++) {
       let img: ImageURISource = lessonImages[i];
       subArray.push(

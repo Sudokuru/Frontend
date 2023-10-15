@@ -96,7 +96,7 @@ const LearnPage = () => {
             </View>
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               {areLessonsLoaded ? (
-                <LessonPanel />
+                <LessonPanel width={windowSize.width} />
               ) : (
                 <ActivityIndicator
                   animating={true}
