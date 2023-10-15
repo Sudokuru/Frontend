@@ -3,6 +3,7 @@ import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
+import { CARD_WIDTH } from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -55,7 +56,6 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  const CARD_WIDTH: number = 300;
   const CARD_HEIGHT: number = 600;
   let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
