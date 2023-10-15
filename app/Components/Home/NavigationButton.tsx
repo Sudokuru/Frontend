@@ -19,7 +19,6 @@ interface navigationButton {
   testID: string;
 }
 
-//change
 const NavigationButton = (props: navigationButton) => {
   const minWindowSize = useNewWindowDimensions();
   const theme = useTheme();
