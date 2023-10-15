@@ -108,7 +108,7 @@ jobs:
         id: Lighthouse
         uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
-          lh_directory: '.'
+          lh_directory: '${{ github.workspace }}'
           manifest_path: ${{ github.workspace }}/tmp/artifacts
 
       - run: | 
@@ -291,8 +291,8 @@ jobs:
         id: Lighthouse
         uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
-          lh_directory: '.'
-          manifest_path: ${{ github.workspace }}/tmp/artifacts
+          lh_directory: '${{ github.workspace }}'
+          manifest_path: /tmp/artifacts
 
       - run: | 
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -333,8 +333,8 @@ jobs:
         id: Lighthouse
         uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
-          lh_directory: '.'
-          manifest_path: ${{ github.workspace }}/tmp/artifacts
+          lh_directory: '${{ github.workspace }}'
+          manifest_path: /tmp/artifacts
 
       - run: | 
           echo "" >> $GITHUB_STEP_SUMMARY
