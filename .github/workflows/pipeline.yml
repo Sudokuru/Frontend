@@ -249,7 +249,7 @@ jobs:
       - name: Upload Lighthouse Reports
         uses: actions/upload-artifact@master
         with:
-          name: Lighthouse reports
+          name: Lighthouse Dev
           path: ${{ github.workspace }}/tmp/artifacts
 
 
