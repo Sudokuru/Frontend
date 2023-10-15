@@ -48,9 +48,7 @@ const LearnPage = () => {
 
   return (
     <ScrollView>
-      <SafeAreaView
-        style={{ width: windowSize.width, height: windowSize.height }}
-      >
+      <SafeAreaView>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
