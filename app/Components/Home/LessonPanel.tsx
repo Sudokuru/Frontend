@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
@@ -14,7 +14,23 @@ import {
   lessonOnlineMode,
 } from "../../Functions/Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
-import { CARD_PADDING, CARD_WIDTH } from "./Cards";
+import {
+  CARD_IMAGE_HEIGHT,
+  CARD_IMAGE_WIDTH,
+  CARD_PADDING,
+  CARD_WIDTH,
+} from "./Cards";
+
+let lessonImages: ImageURISource[] = [
+  require("./CardImages/SUDOKU_101.png"),
+  require("./CardImages/AMEND_NOTES.png"),
+  require("./CardImages/NAKED_SINGLE.png"),
+  require("./CardImages/SIMPLIFY_NOTES.png"),
+  require("./CardImages/NAKED_PAIR.png"),
+  require("./CardImages/HIDDEN_SINGLE.png"),
+  require("./CardImages/HIDDEN_PAIR.png"),
+  require("./CardImages/POINTING_PAIR.png"),
+];
 
 const LessonPanel = () => {
   const theme = useTheme();
@@ -51,6 +67,7 @@ const LessonPanel = () => {
 
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++) {
+      let img: ImageURISource = lessonImages[i];
       subArray.push(
         <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
           <TouchableOpacity
@@ -65,6 +82,15 @@ const LessonPanel = () => {
               <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
                 {formatOneLessonName(availableLessons[i])}
               </Text>
+              <Image
+                source={img}
+                style={{
+                  width: CARD_IMAGE_WIDTH,
+                  height: CARD_IMAGE_HEIGHT,
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                }}
+              />
             </Card>
           </TouchableOpacity>
         </View>

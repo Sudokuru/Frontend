@@ -3,7 +3,12 @@ import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
-import { CARD_PADDING, CARD_WIDTH } from "./Cards";
+import {
+  CARD_IMAGE_HEIGHT,
+  CARD_IMAGE_WIDTH,
+  CARD_PADDING,
+  CARD_WIDTH,
+} from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -56,7 +61,6 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  const CARD_HEIGHT: number = 600;
   let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
   while (
@@ -122,8 +126,8 @@ const DrillPanel = (props: any) => {
             <Image
               source={img}
               style={{
-                width: (CARD_WIDTH * 2) / 3,
-                height: CARD_HEIGHT / 2,
+                width: CARD_IMAGE_WIDTH,
+                height: CARD_IMAGE_HEIGHT,
                 resizeMode: "contain",
                 alignSelf: "center",
               }}
