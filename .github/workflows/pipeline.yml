@@ -75,15 +75,15 @@ jobs:
       - name: Publish Website Preview
         run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
 
-      - name: Post comment with preview link
-        uses: KeisukeYamashita/create-comment@v1
-        with:
-          check-only-first-line: true
-          comment: |
-            Preview App for PR:
-            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-            Preview Website for PR:
-            ${{ env.previewUrl }}
+      # - name: Post comment with preview link
+      #   uses: KeisukeYamashita/create-comment@v1
+      #   with:
+      #     check-only-first-line: true
+      #     comment: |
+      #       Preview App for PR:
+      #       https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+      #       Preview Website for PR:
+      #       ${{ env.previewUrl }}
 
       - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
 
