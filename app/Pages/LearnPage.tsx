@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/core";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -47,10 +47,8 @@ const LearnPage = () => {
   );
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
-        style={{ width: windowSize.width, height: windowSize.height }}
-      >
+    <ScrollView>
+      <SafeAreaView>
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
@@ -96,7 +94,7 @@ const LearnPage = () => {
             </View>
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               {areLessonsLoaded ? (
-                <LessonPanel />
+                <LessonPanel width={windowSize.width} />
               ) : (
                 <ActivityIndicator
                   animating={true}
@@ -131,7 +129,7 @@ const LearnPage = () => {
           overlayStyle={{ backgroundColor: "transparent" }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
 

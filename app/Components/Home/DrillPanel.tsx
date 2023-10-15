@@ -3,6 +3,15 @@ import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
+import {
+  CARD_IMAGE_HEIGHT,
+  CARD_IMAGE_WIDTH,
+  CARD_PADDING,
+  CARD_WIDTH,
+  calculateCardsPerRow,
+  difficulty,
+  getDifficultyColor,
+} from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -18,24 +27,17 @@ let drillStrategies: sudokuStrategyArray = [
 ];
 
 let drillImages: ImageURISource[] = [
-  require("./DrillCardImages/NAKED_SINGLE.png"),
-  require("./DrillCardImages/NAKED_PAIR.png"),
-  require("./DrillCardImages/NAKED_TRIPLET.png"),
-  require("./DrillCardImages/NAKED_QUADRUPLET.png"),
-  require("./DrillCardImages/HIDDEN_SINGLE.png"),
-  require("./DrillCardImages/HIDDEN_PAIR.png"),
-  require("./DrillCardImages/HIDDEN_TRIPLET.png"),
-  require("./DrillCardImages/HIDDEN_QUADRUPLET.png"),
-  require("./DrillCardImages/POINTING_PAIR.png"),
-  require("./DrillCardImages/POINTING_TRIPLET.png"),
+  require("./CardImages/NAKED_SINGLE.png"),
+  require("./CardImages/NAKED_PAIR.png"),
+  require("./CardImages/NAKED_TRIPLET.png"),
+  require("./CardImages/NAKED_QUADRUPLET.png"),
+  require("./CardImages/HIDDEN_SINGLE.png"),
+  require("./CardImages/HIDDEN_PAIR.png"),
+  require("./CardImages/HIDDEN_TRIPLET.png"),
+  require("./CardImages/HIDDEN_QUADRUPLET.png"),
+  require("./CardImages/POINTING_PAIR.png"),
+  require("./CardImages/POINTING_TRIPLET.png"),
 ];
-
-type drillDifficulty =
-  | "Very Easy"
-  | "Easy"
-  | "Intermediate"
-  | "Hard"
-  | "Very Hard";
 
 /**
  * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
@@ -55,48 +57,37 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  const CARD_WIDTH: number = 300;
-  const CARD_HEIGHT: number = 600;
-  let columnCount: number = Math.floor(props.width / (CARD_WIDTH + 100));
-  // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
-  while (
-    columnCount - 1 >=
-    Math.ceil(drillStrategies.length / (columnCount - 1))
-  ) {
-    columnCount--;
-  }
+  let columnCount: number = calculateCardsPerRow(
+    props.width,
+    drillStrategies.length
+  );
   for (let i = 0; i < drillStrategies.length; i++) {
     let img: ImageURISource = drillImages[i];
-    let difficulty: drillDifficulty, difficultyColor: string;
+    let difficulty: difficulty;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
         difficulty = "Very Easy";
-        difficultyColor = "#4CBB17";
         break;
       case "NAKED_PAIR":
         difficulty = "Easy";
-        difficultyColor = "#7CFC00";
         break;
       case "NAKED_TRIPLET":
       case "NAKED_QUADRUPLET":
         difficulty = "Intermediate";
-        difficultyColor = "#FFFF00";
         break;
       case "HIDDEN_SINGLE":
         difficulty = "Hard";
-        difficultyColor = "#FFA500";
         break;
       default:
         difficulty = "Very Hard";
-        difficultyColor = "#FF0000";
         break;
     }
+    let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
         style={{
           width: CARD_WIDTH,
-          paddingHorizontal: 20,
-          paddingVertical: 20,
+          padding: CARD_PADDING,
         }}
       >
         <TouchableOpacity
@@ -123,8 +114,8 @@ const DrillPanel = (props: any) => {
             <Image
               source={img}
               style={{
-                width: (CARD_WIDTH * 2) / 3,
-                height: CARD_HEIGHT / 2,
+                width: CARD_IMAGE_WIDTH,
+                height: CARD_IMAGE_HEIGHT,
                 resizeMode: "contain",
                 alignSelf: "center",
               }}

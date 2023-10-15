@@ -1,8 +1,7 @@
 import React from "react";
-import { View } from "react-native";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import LessonButton from "./LessonButton";
 import { useFocusEffect } from "@react-navigation/core";
 import {
   formatOneLessonName,
@@ -14,9 +13,54 @@ import {
   lessonOfflineMode,
   lessonOnlineMode,
 } from "../../Functions/Api/Lessons";
+import { useNavigation } from "@react-navigation/native";
+import {
+  CARD_IMAGE_HEIGHT,
+  CARD_IMAGE_WIDTH,
+  CARD_PADDING,
+  CARD_WIDTH,
+  calculateCardsPerRow,
+  difficulty,
+  getDifficultyColor,
+} from "./Cards";
 
-const LessonPanel = () => {
+let lessonImages: ImageURISource[] = [
+  require("./CardImages/SUDOKU_101.png"),
+  require("./CardImages/AMEND_NOTES.png"),
+  require("./CardImages/NAKED_SINGLE.png"),
+  require("./CardImages/SIMPLIFY_NOTES.png"),
+  require("./CardImages/NAKED_PAIR.png"),
+  require("./CardImages/HIDDEN_SINGLE.png"),
+  require("./CardImages/HIDDEN_PAIR.png"),
+  require("./CardImages/POINTING_PAIR.png"),
+];
+
+let learnedLessonImages: ImageURISource[] = [
+  require("./CardImages/Learned/SUDOKU_101.png"),
+  require("./CardImages/Learned/AMEND_NOTES.png"),
+  require("./CardImages/Learned/NAKED_SINGLE.png"),
+  require("./CardImages/Learned/SIMPLIFY_NOTES.png"),
+  require("./CardImages/Learned/NAKED_SET.png"),
+  require("./CardImages/Learned/HIDDEN_SINGLE.png"),
+  require("./CardImages/Learned/HIDDEN_SET.png"),
+  require("./CardImages/Learned/POINTING_SET.png"),
+];
+
+let lockedLessonImages: ImageURISource[] = [
+  require("./CardImages/Locked/SUDOKU_101.png"),
+  require("./CardImages/Locked/AMEND_NOTES.png"),
+  require("./CardImages/Locked/NAKED_SINGLE.png"),
+  require("./CardImages/Locked/SIMPLIFY_NOTES.png"),
+  require("./CardImages/Locked/NAKED_SET.png"),
+  require("./CardImages/Locked/HIDDEN_SINGLE.png"),
+  require("./CardImages/Locked/HIDDEN_SET.png"),
+  require("./CardImages/Locked/POINTING_SET.png"),
+];
+
+const LessonPanel = (props: any) => {
   const theme = useTheme();
+
+  const navigation: any = useNavigation();
 
   const { learnedLessons } = React.useContext(PreferencesContext);
 
@@ -47,30 +91,85 @@ const LessonPanel = () => {
     let NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
+    let columnCount: number = calculateCardsPerRow(
+      props.width,
+      availableLessons.length
+    );
     for (let i = 0; i < availableLessons.length; i++) {
+      let img: ImageURISource;
+      if (learnedLessons.includes(availableLessons[i])) {
+        img = learnedLessonImages[i];
+      } else if (lockedLessons.includes(availableLessons[i])) {
+        img = lockedLessonImages[i];
+      } else {
+        img = lessonImages[i];
+      }
+      let difficulty: difficulty;
+      switch (availableLessons[i]) {
+        case "SUDOKU_101":
+        case "AMEND_NOTES":
+        case "NAKED_SINGLE":
+        case "SIMPLIFY_NOTES":
+          difficulty = "Very Easy";
+          break;
+        case "NAKED_SET":
+          difficulty = "Easy";
+          break;
+        case "HIDDEN_SINGLE":
+          difficulty = "Intermediate";
+          break;
+        case "HIDDEN_SET":
+          difficulty = "Hard";
+          break;
+        default:
+          difficulty = "Very Hard";
+          break;
+      }
+      let difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
-        <LessonButton
-          key={availableLessons[i]}
-          backgroundColor={
-            learnedLessons.includes(availableLessons[i]) ||
-            lockedLessons.includes(availableLessons[i])
-              ? "grey"
-              : theme.colors.primary
-          }
-          name={formatOneLessonName(availableLessons[i])}
-          navigation={availableLessons[i]}
-          disabled={lockedLessons.includes(availableLessons[i])}
-        ></LessonButton>
+        <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Lesson", { params: availableLessons[i] });
+            }}
+          >
+            <Card
+              mode="outlined"
+              theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+            >
+              <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+                {formatOneLessonName(availableLessons[i])}
+              </Text>
+              <Text
+                variant="headlineSmall"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: difficultyColor } }}
+              >
+                {difficulty}
+              </Text>
+              <Image
+                source={img}
+                style={{
+                  width: CARD_IMAGE_WIDTH,
+                  height: CARD_IMAGE_HEIGHT,
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                }}
+              />
+            </Card>
+          </TouchableOpacity>
+        </View>
       );
 
-      // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
-      if (
-        (i + 1) % NUM_LESSONS_PER_ROW === 0 ||
-        i === availableLessons.length - 1
-      ) {
+      // Add row
+      if ((i + 1) % columnCount === 0) {
         lessonButtonArray.push(subArray);
         subArray = [];
       }
+    }
+    // Add last row if not evenly divisible
+    if (subArray.length > 0) {
+      lessonButtonArray.push(subArray);
     }
 
     // render each sub-array as a row
