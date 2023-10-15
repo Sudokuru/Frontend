@@ -113,14 +113,15 @@ const LessonPanel = (props: any) => {
         ></LessonButton>*/
       );
 
-      // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
-      if (
-        (i + 1) % NUM_LESSONS_PER_ROW === 0 ||
-        i === availableLessons.length - 1
-      ) {
+      // Add row
+      if ((i + 1) % columnCount === 0) {
         lessonButtonArray.push(subArray);
         subArray = [];
       }
+    }
+    // Add last row if not evenly divisible
+    if (subArray.length > 0) {
+      lessonButtonArray.push(subArray);
     }
 
     // render each sub-array as a row
