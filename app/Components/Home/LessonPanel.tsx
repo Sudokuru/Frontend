@@ -14,6 +14,7 @@ import {
   lessonOnlineMode,
 } from "../../Functions/Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
+import { CARD_PADDING, CARD_WIDTH } from "./Cards";
 
 const LessonPanel = () => {
   const theme = useTheme();
@@ -51,20 +52,22 @@ const LessonPanel = () => {
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++) {
       subArray.push(
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Lesson", { params: availableLessons[i] });
-          }}
-        >
-          <Card
-            mode="outlined"
-            theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+        <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Lesson", { params: availableLessons[i] });
+            }}
           >
-            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
-              {formatOneLessonName(availableLessons[i])}
-            </Text>
-          </Card>
-        </TouchableOpacity>
+            <Card
+              mode="outlined"
+              theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
+            >
+              <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+                {formatOneLessonName(availableLessons[i])}
+              </Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
         /*<LessonButton
           key={availableLessons[i]}
           backgroundColor={
