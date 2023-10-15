@@ -85,6 +85,22 @@ jobs:
             Preview Website for PR:
             ${{ env.previewUrl }}
 
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: ${{ env.previewUrl }}
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Preview
+          path: ${{ github.workspace }}/tmp/artifacts
+
   website_test_dev:
     runs-on: ubuntu-latest
     needs: [ code_scan ]
@@ -238,6 +254,21 @@ jobs:
 
       - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
 
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: https://sudokuru-dev.vercel.app
+          device: all
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Dev
+          path: ${{ github.workspace }}/tmp/artifacts
+
   deploy_website_prod:
     name: Deploy Prod Website
     needs: [ deploy_website_dev, deploy_app_dev ]
@@ -250,3 +281,18 @@ jobs:
       - run: npm ci
 
       - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
+
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: https://sudokuru.vercel.app
+          device: all
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Prod
+          path: ${{ github.workspace }}/tmp/artifacts
