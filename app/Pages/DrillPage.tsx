@@ -16,10 +16,6 @@ const DrillPage = () => {
   const windowSize = useNewWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
-  const [drillsVisible, setDrillsVisible] = useState(true);
-  const showDrillsButton = () => setDrillsVisible(true);
-  const hideDrillsButton = () => setDrillsVisible(false);
-
   const [drillHelpVisible, setDrillHelpVisible] = useState(false);
   const showDrillHelp = () => setDrillHelpVisible(true);
   const hideDrillHelp = () => setDrillHelpVisible(false);
