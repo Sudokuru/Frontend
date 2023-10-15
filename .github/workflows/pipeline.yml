@@ -101,11 +101,20 @@ jobs:
           name: Lighthouse Preview
           path: ${{ github.workspace }}/tmp/artifacts
 
+      - name: Rename JSON report
+        run: mv ${{ github.workspace }}/tmp/artifacts/results.json ${{ github.workspace }}/tmp/artifacts/manifest.json 
+
       - name: Lighthouse Preview Summary
+        id: Lighthouse
         uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
-          lh_directory: ./
+          lh_directory: '.'
           manifest_path: ${{ github.workspace }}/tmp/artifacts
+
+      - run: | 
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Lighthouse Preview Report" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.lighthouse.outputs.comments }}" >> $GITHUB_STEP_SUMMARY
 
   # website_test_dev:
   #   runs-on: ubuntu-latest
