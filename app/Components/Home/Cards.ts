@@ -25,3 +25,21 @@ export type difficulty =
   | "Intermediate"
   | "Hard"
   | "Very Hard";
+
+/**
+ * Given a difficulty returns the corresponding color
+ */
+export function getDifficultyColor(difficulty: difficulty): string {
+  switch (difficulty) {
+    case "Very Easy":
+      return "#4CBB17";
+    case "Easy":
+      return "#7CFC00";
+    case "Intermediate":
+      return "#FFFF00";
+    case "Hard":
+      return "#FFA500";
+    default:
+      return "#FF0000";
+  }
+}

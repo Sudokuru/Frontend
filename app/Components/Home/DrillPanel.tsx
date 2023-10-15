@@ -10,6 +10,7 @@ import {
   CARD_WIDTH,
   calculateCardsPerRow,
   difficulty,
+  getDifficultyColor,
 } from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -62,30 +63,26 @@ const DrillPanel = (props: any) => {
   );
   for (let i = 0; i < drillStrategies.length; i++) {
     let img: ImageURISource = drillImages[i];
-    let difficulty: difficulty, difficultyColor: string;
+    let difficulty: difficulty;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
         difficulty = "Very Easy";
-        difficultyColor = "#4CBB17";
         break;
       case "NAKED_PAIR":
         difficulty = "Easy";
-        difficultyColor = "#7CFC00";
         break;
       case "NAKED_TRIPLET":
       case "NAKED_QUADRUPLET":
         difficulty = "Intermediate";
-        difficultyColor = "#FFFF00";
         break;
       case "HIDDEN_SINGLE":
         difficulty = "Hard";
-        difficultyColor = "#FFA500";
         break;
       default:
         difficulty = "Very Hard";
-        difficultyColor = "#FF0000";
         break;
     }
+    let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
         style={{
