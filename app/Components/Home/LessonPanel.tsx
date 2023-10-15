@@ -1,8 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { ActivityIndicator, Button, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import LessonButton from "./LessonButton";
 import { useFocusEffect } from "@react-navigation/core";
 import {
   formatOneLessonName,
@@ -14,9 +13,12 @@ import {
   lessonOfflineMode,
   lessonOnlineMode,
 } from "../../Functions/Api/Lessons";
+import { useNavigation } from "@react-navigation/native";
 
 const LessonPanel = () => {
   const theme = useTheme();
+
+  const navigation: any = useNavigation();
 
   const { learnedLessons } = React.useContext(PreferencesContext);
 
@@ -49,7 +51,14 @@ const LessonPanel = () => {
     let subArray = [];
     for (let i = 0; i < availableLessons.length; i++) {
       subArray.push(
-        <LessonButton
+        <Button
+          onPress={() => {
+            navigation.navigate("Lesson", { params: availableLessons[i] });
+          }}
+        >
+          {formatOneLessonName(availableLessons[i])}
+        </Button>
+        /*<LessonButton
           key={availableLessons[i]}
           backgroundColor={
             learnedLessons.includes(availableLessons[i]) ||
@@ -60,7 +69,7 @@ const LessonPanel = () => {
           name={formatOneLessonName(availableLessons[i])}
           navigation={availableLessons[i]}
           disabled={lockedLessons.includes(availableLessons[i])}
-        ></LessonButton>
+        ></LessonButton>*/
       );
 
       // push sub-array to main array after every NUM_LESSONS_PER_ROW elements
