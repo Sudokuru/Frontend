@@ -238,14 +238,10 @@ jobs:
 
       - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
 
-      - name: Waiting for 200 from the Vercel Preview
-        uses: patrickedqvist/wait-for-vercel-preview@v1.3.1
-        id: waitFor200
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 60
-      # access preview url
-      - run: echo ${{steps.waitFor200.outputs.url}}
+          urls: 'https://sudokuru-dev.vercel.app,https://www.google.com'
 
   deploy_website_prod:
     name: Deploy Prod Website
