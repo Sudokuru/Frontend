@@ -18,3 +18,10 @@ export function calculateCardsPerRow(width: number, count: number): number {
   }
   return columnCount;
 }
+
+export type difficulty =
+  | "Very Easy"
+  | "Easy"
+  | "Intermediate"
+  | "Hard"
+  | "Very Hard";

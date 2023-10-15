@@ -9,6 +9,7 @@ import {
   CARD_PADDING,
   CARD_WIDTH,
   calculateCardsPerRow,
+  difficulty,
 } from "./Cards";
 
 let drillStrategies: sudokuStrategyArray = [
@@ -37,13 +38,6 @@ let drillImages: ImageURISource[] = [
   require("./CardImages/POINTING_TRIPLET.png"),
 ];
 
-type drillDifficulty =
-  | "Very Easy"
-  | "Easy"
-  | "Intermediate"
-  | "Hard"
-  | "Very Hard";
-
 /**
  * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
  * @param str - the string to convert
@@ -68,7 +62,7 @@ const DrillPanel = (props: any) => {
   );
   for (let i = 0; i < drillStrategies.length; i++) {
     let img: ImageURISource = drillImages[i];
-    let difficulty: drillDifficulty, difficultyColor: string;
+    let difficulty: difficulty, difficultyColor: string;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
         difficulty = "Very Easy";
