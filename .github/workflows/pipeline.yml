@@ -102,7 +102,7 @@ jobs:
           path: ${{ github.workspace }}/tmp/artifacts
 
       - name: Lighthouse Preview Summary
-        uses: iyu88/lighthouse-report-formatter@v1.0.0
+        uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
           lh_directory: ./
           manifest_path: ${{ github.workspace }}/tmp/artifacts
@@ -276,7 +276,7 @@ jobs:
           path: ${{ github.workspace }}/tmp/artifacts
 
       - name: Lighthouse Dev Summary
-        uses: iyu88/lighthouse-report-formatter@v1.0.0
+        uses: iyu88/lighthouse-report-formatter@1.0.0
         with:
           lh_directory: ./
           manifest_path: ${{ github.workspace }}/tmp/artifacts
