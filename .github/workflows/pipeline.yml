@@ -47,43 +47,65 @@ jobs:
   #         npm i prettier@2.8.8
   #         npx prettier --check .
 
-  # app_preview_dev:
+  app_preview_dev:
   #   if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-  #   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
   #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
 
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
 
-  #     - name: 🏗 Setup Expo
-  #       uses: expo/expo-github-action@v7
-  #       with:
-  #         expo-version: latest
-  #         token: ${{ secrets.EXPO_TOKEN }}
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
-  #     - name: 📦 Install dependencies
-  #       run: npm ci && npx expo install expo-updates
+      - name: 📦 Install dependencies
+        run: npm ci && npx expo install expo-updates
 
-  #     - name: 🚀 Publish App preview
-  #       run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+      - name: 🚀 Publish App preview
+        run: USERGAMESTATISTICSBFFURL=${{ secrets.DEV_USERGAMESTATISTICSBFFURL }} USERACTIVEGAMESBFFURL=${{ secrets.DEV_USERACTIVEGAMESBFFURL }} DOMAIN=${{ secrets.DEV_DOMAIN }} CLIENT_ID=${{ secrets.DEV_CLIENT_ID }} AUDIENCE=${{ secrets.DEV_AUDIENCE }} SCOPE=${{ secrets.DEV_SCOPE }} expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
 
-  #     - name: Publish Website Preview
-  #       run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
+      - name: Publish Website Preview
+        run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
 
-  #     - name: Post comment with preview link
-  #       uses: KeisukeYamashita/create-comment@v1
-  #       with:
-  #         check-only-first-line: true
-  #         comment: |
-  #           Preview App for PR:
-  #           https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-  #           Preview Website for PR:
-  #           ${{ env.previewUrl }}
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          check-only-first-line: true
+          comment: |
+            Preview App for PR:
+            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+            Preview Website for PR:
+            ${{ env.previewUrl }}
+
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: ${{ env.previewUrl }}
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Preview
+          path: ${{ github.workspace }}/tmp/artifacts
+
+      - name: Lighthouse Preview Summary
+        uses: iyu88/lighthouse-report-formatter@v1.0.0
+        with:
+          lh_directory: ./
+          manifest_path: ${{ github.workspace }}/tmp/artifacts
 
   # website_test_dev:
   #   runs-on: ubuntu-latest
@@ -245,7 +267,6 @@ jobs:
         with:
           urls: https://sudokuru-dev.vercel.app
           device: all
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
           outputDirectory: ${{ github.workspace }}/tmp/artifacts
 
       - name: Upload Lighthouse Reports
@@ -281,7 +302,6 @@ jobs:
         with:
           urls: https://sudokuru.vercel.app
           device: all
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
           outputDirectory: ${{ github.workspace }}/tmp/artifacts
           fooApiToken: ${{ secrets.FOO_TOKEN }}
 
