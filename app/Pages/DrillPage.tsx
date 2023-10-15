@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
-import LessonButton from "../Components/Home/LessonButton";
 import { rgba } from "polished";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
@@ -72,16 +71,9 @@ const DrillPage = () => {
               </Pressable>
             </View>
             <View style={{ alignItems: "center", alignSelf: "center" }}>
-              {drillsVisible ? (
-                <View style={{ padding: reSize / 4 }}>
-                  <DrillPanel width={windowSize.width} />
-                </View>
-              ) : (
-                <LessonButton
-                  backgroundColor={"grey"}
-                  disabled={true}
-                ></LessonButton>
-              )}
+              <View style={{ padding: reSize / 4 }}>
+                <DrillPanel width={windowSize.width} />
+              </View>
             </View>
           </View>
         </View>
