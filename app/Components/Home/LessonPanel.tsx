@@ -133,10 +133,7 @@ const LessonPanel = (props: any) => {
               navigation.navigate("Lesson", { params: availableLessons[i] });
             }}
           >
-            <Card
-              mode="outlined"
-              theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
-            >
+            <Card mode="outlined">
               <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
                 {formatOneLessonName(availableLessons[i])}
               </Text>
