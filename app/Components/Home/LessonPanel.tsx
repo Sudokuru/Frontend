@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -23,6 +23,7 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
+import Alert from "react-native-awesome-alerts";
 
 let lessonImages: ImageURISource[] = [
   require("./CardImages/SUDOKU_101.png"),
@@ -66,6 +67,10 @@ const LessonPanel = (props: any) => {
 
   const [availableLessons, setAvailableLessons] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+
+  const [lockedWarningVisible, setLockedWarningVisible] = useState(false);
+  const showLockedWarning = () => setLockedWarningVisible(true);
+  const hideLockedWarning = () => setLockedWarningVisible(false);
 
   // setting lesson mode to offline
   let LESSON_MODE = getLessonMode.Offline;
@@ -130,7 +135,11 @@ const LessonPanel = (props: any) => {
         <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Lesson", { params: availableLessons[i] });
+              if (lockedLessons.includes(availableLessons[i])) {
+                showLockedWarning();
+              } else {
+                navigation.navigate("Lesson", { params: availableLessons[i] });
+              }
             }}
           >
             <Card
@@ -187,6 +196,16 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
+        <Alert
+          show={lockedWarningVisible}
+          title="Warning"
+          message={
+            `You have selected a lesson that is locked. \n\n` +
+            `Locked lessons build on knowledge gained from previous lessons. \n\n` +
+            `It is recommended that you complete the previous lessons before attempting this one. \n\n` +
+            `Are you sure you want to continue?`
+          }
+        />
       </View>
     );
   }
