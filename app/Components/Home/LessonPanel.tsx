@@ -24,6 +24,7 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import Alert from "react-native-awesome-alerts";
+import { rgba } from "polished";
 
 let lessonImages: ImageURISource[] = [
   require("./CardImages/SUDOKU_101.png"),
@@ -71,6 +72,7 @@ const LessonPanel = (props: any) => {
   const [lockedWarningVisible, setLockedWarningVisible] = useState(false);
   const showLockedWarning = () => setLockedWarningVisible(true);
   const hideLockedWarning = () => setLockedWarningVisible(false);
+  const [lockedLesson, setLockedLesson] = useState(-1);
 
   // setting lesson mode to offline
   let LESSON_MODE = getLessonMode.Offline;
@@ -136,6 +138,7 @@ const LessonPanel = (props: any) => {
           <TouchableOpacity
             onPress={() => {
               if (lockedLessons.includes(availableLessons[i])) {
+                setLockedLesson(i);
                 showLockedWarning();
               } else {
                 navigation.navigate("Lesson", { params: availableLessons[i] });
@@ -205,6 +208,27 @@ const LessonPanel = (props: any) => {
             `It is recommended that you complete the previous lessons before attempting this one. \n\n` +
             `Are you sure you want to continue?`
           }
+          messageStyle={{ maxWidth: 500 }}
+          alertContainerStyle={{
+            backgroundColor: rgba(theme.colors.background, 0.3),
+          }}
+          showCancelButton={true}
+          showConfirmButton={true}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          cancelText={"No"}
+          confirmText={"Yes"}
+          confirmButtonColor={theme.colors.primary}
+          onCancelPressed={() => {
+            hideLockedWarning();
+          }}
+          onConfirmPressed={() => {
+            hideLockedWarning();
+            navigation.navigate("Lesson", {
+              params: availableLessons[lockedLesson],
+            });
+          }}
+          overlayStyle={{ backgroundColor: "transparent" }}
         />
       </View>
     );
