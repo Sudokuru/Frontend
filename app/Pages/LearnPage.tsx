@@ -108,10 +108,8 @@ const LearnPage = () => {
           show={learnHelpVisible}
           title="Learning Help"
           message={
-            `Select a strategy to learn by clicking on the lesson button that is not greyed out.\n\n` +
-            `Lessons ensure that you will not encounter Sudoku puzzles with strategies you are unfamiliar with.\n\n` +
-            `As you learn, more features of the app will be unlocked!\n\n` +
-            `Lessons can only be completed in a set order, from left to right, top to bottom. \n\n` +
+            `Select a strategy to learn by clicking on a lesson card.\n\n` +
+            `It is recommended you do unlocked lessons first as locked lessons build upon the knowledge gained from prior ones.\n\n` +
             `Strategies you have already learned will be greyed out, but you will still have access to them.`
           }
           messageStyle={{ maxWidth: 500 }}
