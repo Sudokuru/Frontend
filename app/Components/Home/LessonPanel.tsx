@@ -138,7 +138,11 @@ const LessonPanel = (props: any) => {
       }
       let difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
-        <View testID={id} style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
+        <View
+          key={availableLessons[i]}
+          testID={id}
+          style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+        >
           <TouchableOpacity
             onPress={() => {
               if (lockedLessons.includes(availableLessons[i])) {
