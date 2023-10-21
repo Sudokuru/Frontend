@@ -117,4 +117,14 @@ describe("Sudoku lesson page functions", () => {
     cy.contains("div", /^Yes$/).click();
     cy.contains("Naked Set Lesson");
   });
+
+  it("should click on learned lesson card and go to lesson", () => {
+    cy.get("[data-testid=learned0]").click();
+    cy.contains("Sudoku 101 Lesson");
+  });
+
+  it("should click on current lesson card and go to lesson", () => {
+    cy.get("[data-testid=lesson3]").click();
+    cy.contains("Simplify Notes Lesson");
+  });
 });
