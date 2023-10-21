@@ -101,4 +101,20 @@ describe("Sudoku lesson page functions", () => {
       );
     });
   });
+
+  it("should display warning popup when clicking on locked lesson card and go away when clicked no", () => {
+    cy.get("[data-testid=locked4]").click();
+    cy.contains("You have selected a lesson that is locked.");
+    cy.contains("div", /^No$/).click();
+    cy.contains("You have selected a lesson that is locked.").should(
+      "not.exist"
+    );
+  });
+
+  it("should display warning popup when clicking on locked lesson card and go to lesson when clicked yes", () => {
+    cy.get("[data-testid=locked4]").click();
+    cy.contains("You have selected a lesson that is locked.");
+    cy.contains("div", /^Yes$/).click();
+    cy.contains("Naked Set Lesson");
+  });
 });
