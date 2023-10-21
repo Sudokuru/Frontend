@@ -85,6 +85,7 @@ const DrillPanel = (props: any) => {
     let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
+        key={drillStrategies[i]}
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING,
