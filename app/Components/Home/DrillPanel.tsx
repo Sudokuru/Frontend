@@ -85,6 +85,7 @@ const DrillPanel = (props: any) => {
     let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
+        key={drillStrategies[i]}
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING,
@@ -97,10 +98,7 @@ const DrillPanel = (props: any) => {
             });
           }}
         >
-          <Card
-            mode="outlined"
-            theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
-          >
+          <Card mode="outlined">
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Text>

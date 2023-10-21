@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -23,6 +23,8 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
+import Alert from "react-native-awesome-alerts";
+import { rgba } from "polished";
 
 let lessonImages: ImageURISource[] = [
   require("./CardImages/SUDOKU_101.png"),
@@ -67,6 +69,11 @@ const LessonPanel = (props: any) => {
   const [availableLessons, setAvailableLessons] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
+  const [lockedWarningVisible, setLockedWarningVisible] = useState(false);
+  const showLockedWarning = () => setLockedWarningVisible(true);
+  const hideLockedWarning = () => setLockedWarningVisible(false);
+  const [lockedLesson, setLockedLesson] = useState(-1);
+
   // setting lesson mode to offline
   let LESSON_MODE = getLessonMode.Offline;
   let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
@@ -97,12 +104,16 @@ const LessonPanel = (props: any) => {
     );
     for (let i = 0; i < availableLessons.length; i++) {
       let img: ImageURISource;
+      let id: string = i.toString();
       if (learnedLessons.includes(availableLessons[i])) {
         img = learnedLessonImages[i];
+        id = "learned" + id;
       } else if (lockedLessons.includes(availableLessons[i])) {
         img = lockedLessonImages[i];
+        id = "locked" + id;
       } else {
         img = lessonImages[i];
+        id = "lesson" + id;
       }
       let difficulty: difficulty;
       switch (availableLessons[i]) {
@@ -127,20 +138,27 @@ const LessonPanel = (props: any) => {
       }
       let difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
-        <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
+        <View
+          key={availableLessons[i]}
+          testID={id}
+          style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+        >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Lesson", { params: availableLessons[i] });
+              if (lockedLessons.includes(availableLessons[i])) {
+                setLockedLesson(i);
+                showLockedWarning();
+              } else {
+                navigation.navigate("Lesson", { params: availableLessons[i] });
+              }
             }}
           >
-            <Card
-              mode="outlined"
-              theme={{ colors: { surface: "#025E73", outline: "#D9A05B" } }}
-            >
+            <Card mode="outlined">
               <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
                 {formatOneLessonName(availableLessons[i])}
               </Text>
               <Text
+                testID={"difficulty"}
                 variant="headlineSmall"
                 style={{ alignSelf: "center" }}
                 theme={{ colors: { onSurface: difficultyColor } }}
@@ -187,6 +205,37 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
+        <Alert
+          show={lockedWarningVisible}
+          title="Warning"
+          message={
+            `You have selected a lesson that is locked. \n\n` +
+            `Locked lessons build on knowledge gained from previous lessons. \n\n` +
+            `It is recommended that you complete the previous lessons before attempting this one. \n\n` +
+            `Are you sure you want to continue?`
+          }
+          messageStyle={{ maxWidth: 500 }}
+          alertContainerStyle={{
+            backgroundColor: rgba(theme.colors.background, 0.3),
+          }}
+          showCancelButton={true}
+          showConfirmButton={true}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          cancelText={"No"}
+          confirmText={"Yes"}
+          confirmButtonColor={theme.colors.primary}
+          onCancelPressed={() => {
+            hideLockedWarning();
+          }}
+          onConfirmPressed={() => {
+            hideLockedWarning();
+            navigation.navigate("Lesson", {
+              params: availableLessons[lockedLesson],
+            });
+          }}
+          overlayStyle={{ backgroundColor: "transparent" }}
+        />
       </View>
     );
   }

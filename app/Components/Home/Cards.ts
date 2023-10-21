@@ -1,3 +1,11 @@
+import {
+  EASY_COLOR,
+  HARD_COLOR,
+  INTERMEDIATE_COLOR,
+  VERY_EASY_COLOR,
+  VERY_HARD_COLOR,
+} from "../../Styling/HighlightColors";
+
 export const CARD_WIDTH: number = 300;
 const CARD_HEIGHT: number = 600;
 export const CARD_PADDING: number = 20;
@@ -32,14 +40,14 @@ export type difficulty =
 export function getDifficultyColor(difficulty: difficulty): string {
   switch (difficulty) {
     case "Very Easy":
-      return "#4CBB17";
+      return VERY_EASY_COLOR;
     case "Easy":
-      return "#7CFC00";
+      return EASY_COLOR;
     case "Intermediate":
-      return "#FFFF00";
+      return INTERMEDIATE_COLOR;
     case "Hard":
-      return "#FFA500";
+      return HARD_COLOR;
     default:
-      return "#FF0000";
+      return VERY_HARD_COLOR;
   }
 }
