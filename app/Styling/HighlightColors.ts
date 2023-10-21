@@ -10,6 +10,12 @@ export const NOTE_TEXT_COLOR = "#000000";
 export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
 export const HINT_NOT_HIGHILGHTED_COLOR = "#808080";
 
+export const VERY_EASY_COLOR = "#4CBB17";
+export const EASY_COLOR = "#7CFC00";
+export const INTERMEDIATE_COLOR = "#FFFF00";
+export const HARD_COLOR = "#FFA500";
+export const VERY_HARD_COLOR = "#FF0000";
+
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -40,3 +46,9 @@ export const PLACE_NOTE_TEXT_COLOR_RGB = RGB(PLACE_NOTE_TEXT_COLOR);
 export const NOTE_TEXT_COLOR_RGB = RGB(NOTE_TEXT_COLOR);
 export const NOT_HIGHLIGHTED_COLOR_RGB = RGB(NOT_HIGHLIGHTED_COLOR);
 export const HINT_NOT_HIGHLIGHTED_COLOR_RGB = RGB(HINT_NOT_HIGHILGHTED_COLOR);
+
+export const VERY_EASY_COLOR_RGB = RGB(VERY_EASY_COLOR);
+export const EASY_COLOR_RGB = RGB(EASY_COLOR);
+export const INTERMEDIATE_COLOR_RGB = RGB(INTERMEDIATE_COLOR);
+export const HARD_COLOR_RGB = RGB(HARD_COLOR);
+export const VERY_HARD_COLOR_RGB = RGB(VERY_HARD_COLOR);
