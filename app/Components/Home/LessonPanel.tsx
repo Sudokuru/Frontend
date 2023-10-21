@@ -154,6 +154,7 @@ const LessonPanel = (props: any) => {
                 {formatOneLessonName(availableLessons[i])}
               </Text>
               <Text
+                testID={"difficulty"}
                 variant="headlineSmall"
                 style={{ alignSelf: "center" }}
                 theme={{ colors: { onSurface: difficultyColor } }}
