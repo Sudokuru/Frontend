@@ -104,12 +104,16 @@ const LessonPanel = (props: any) => {
     );
     for (let i = 0; i < availableLessons.length; i++) {
       let img: ImageURISource;
+      let id: string = i.toString();
       if (learnedLessons.includes(availableLessons[i])) {
         img = learnedLessonImages[i];
+        id = "learned" + id;
       } else if (lockedLessons.includes(availableLessons[i])) {
         img = lockedLessonImages[i];
+        id = "locked" + id;
       } else {
         img = lessonImages[i];
+        id = "lesson" + id;
       }
       let difficulty: difficulty;
       switch (availableLessons[i]) {
@@ -134,7 +138,7 @@ const LessonPanel = (props: any) => {
       }
       let difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
-        <View style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
+        <View testID={id} style={{ width: CARD_WIDTH, padding: CARD_PADDING }}>
           <TouchableOpacity
             onPress={() => {
               if (lockedLessons.includes(availableLessons[i])) {
