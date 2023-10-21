@@ -19,4 +19,20 @@ describe("Sudoku lesson page functions", () => {
   it("should display the lesson page", () => {
     cy.contains("Learn new strategies");
   });
+
+  it("should display learned lesson cards with checkmark images", () => {
+    for (let i: number = 0; i < 3; i++) {
+      cy.get("[data-testid=learned" + i.toString() + "]");
+    }
+  });
+
+  it("should display current lesson card with regular image", () => {
+    cy.get("[data-testid=lesson3]");
+  });
+
+  it("should display locked lesson cards with lock images", () => {
+    for (let i: number = 4; i < 8; i++) {
+      cy.get("[data-testid=locked" + i.toString() + "]");
+    }
+  });
 });
