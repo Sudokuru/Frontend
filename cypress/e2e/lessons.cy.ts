@@ -127,4 +127,9 @@ describe("Sudoku lesson page functions", () => {
     cy.get("[data-testid=lesson3]").click();
     cy.contains("Simplify Notes Lesson");
   });
+
+  it("should click on help button and display help popup", () => {
+    cy.contains("div", "?").click();
+    cy.contains("Learning Help");
+  });
 });
