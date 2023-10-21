@@ -5,8 +5,11 @@ export const ACTIVE_GAME_TWO =
 
 export const LOCAL_STORAGE_ALL_LEARNED_LESSONS =
   '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE","SIMPLIFY_NOTES","NAKED_SET","HIDDEN_SINGLE","HIDDEN_SET","POINTING_SET"]';
+export const LOCAL_STORAGE_SOME_LEARNED_LESSONS =
+  '["SUDOKU_101","AMEND_NOTES","NAKED_SINGLE"]';
 
 export const PLAY_DRAWER_BUTTON = "[data-testid=PlayButton]";
+export const LEARN_DRAWER_BUTTON = "[data-testid=LearnButton]";
 export const TOGGLE_NOTE_MODE_BUTTON = "[data-testid=toggleNoteModeButton]";
 export const ERASE_BUTTON = "[data-testid=eraseButton]";
 export const SUDOKU_BOARD = "[data-testid=sudokuBoard]";
