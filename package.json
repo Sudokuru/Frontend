@@ -15,7 +15,10 @@
     "prettier": "npx prettier --write .",
     "open:cypress": "npx cypress open",
     "test:cypress": "npx cypress run --config video=false,screenshotOnRunFailure=false",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
@@ -51,6 +54,7 @@
     "@babel/core": "^7.20.0",
     "@cypress/code-coverage": "^3.11.0",
     "@expo/ngrok": "^2.5.0",
+    "@tauri-apps/cli": "^1.5.5",
     "@types/jest": "^29.5.4",
     "@types/react": "^18.0.30",
     "@types/react-native": "^0.70.13",
