@@ -163,7 +163,7 @@ jobs:
   #       run: eas build --non-interactive --platform android --local
   #       env:
   #         EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
-  #     - name: Upload APK Artifact
+  #     - name: Upload binary Artifact
   #       uses: actions/upload-artifact@v3
   #       with:
   #         name: android binary
