@@ -166,14 +166,14 @@ jobs:
   #     - name: Upload APK Artifact
   #       uses: actions/upload-artifact@v3
   #       with:
-  #         name: Android APK
+  #         name: android binary
   #         path: Build/*.apk
 
   app_build_desktop:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [{name: mac, machine: macos-latest}, {name: linux, machine: ubuntu-20.04}, {name: windows, machine: windows-latest}]
     runs-on: ${{ matrix.platform }}
     # needs: [ code_scan ]
     steps:
@@ -185,55 +185,69 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform.machine == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
         run: npm ci
       - uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload ${{ matrix.platform.name }} Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform.name }} binary
+          path: |
+            Frontend/src-tauri/target/release/bundle/*.exe
+            Frontend/src-tauri/target/release/bundle/*.deb
+            Frontend/src-tauri/target/release/bundle/*.app
 
   # deploy_app_dev:
   #   name: Deploy Dev app to Itch.io
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     binary_name: [mac, linux, windows, android]
   #   needs: [ app_build_android, website_test_dev, app_build_desktop ]
   #   if: ${{ github.ref == 'refs/heads/main' }}
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - name: Download APK Artifact
+  #     - name: Download binary Artifact
   #       uses: actions/download-artifact@v3
   #       with:
-  #         name: Android APK
+  #         name: ${{matrix.binary_name}} binary
   #     - name: Install Butler
   #       run: |
   #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
   #         unzip butler.zip
   #         chmod +x butler
   #         ./butler -V
-  #     - name: Update Itch.io Android Alpha App
-  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-android
+  #     - name: Update Itch.io ${{matrix.binary_name}} Alpha App
+  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
   #       env:
   #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
   # deploy_app_prod:
   #   name: Deploy Prod app to Itch.io
+    # strategy:
+  #   fail-fast: false
+  #   matrix:
+  #     binary_name: [mac, linux, windows, android]
   #   needs: [ deploy_website_dev, deploy_app_dev ]
   #   if: ${{ github.ref == 'refs/heads/main' }}
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - name: Download APK Artifact
+  #     - name: Download binary Artifact
   #       uses: actions/download-artifact@v3
   #       with:
-  #         name: Android APK
+  #         name: ${{matrix.binary_name}} binary
   #     - name: Install Butler
   #       run: |
   #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
   #         unzip butler.zip
   #         chmod +x butler
   #         ./butler -V
-  #     - name: Update Itch.io Android Prod App
-  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-android
+  #     - name: Update Itch.io ${{matrix.binary_name}} Prod App
+  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
   #       env:
   #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
