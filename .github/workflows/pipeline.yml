@@ -179,6 +179,7 @@ jobs:
     steps:
       - run: ls
       - uses: actions/checkout@v3
+      - run: ls
       - name: setup node
         uses: actions/setup-node@v3
         with:
