@@ -36,146 +36,146 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # code_scan:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: Prettier Check
-  #       run: |
-  #         npm i prettier@2.8.8
-  #         npx prettier --check .
+  code_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: Prettier Check
+        run: |
+          npm i prettier@2.8.8
+          npx prettier --check .
 
-  # app_preview_dev:
-  #   if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: 🏗 Setup Expo
-  #       uses: expo/expo-github-action@v7
-  #       with:
-  #         expo-version: latest
-  #         token: ${{ secrets.EXPO_TOKEN }}
-  #     - name: 📦 Install dependencies
-  #       run: npm ci && npx expo install expo-updates
-  #     - name: 🚀 Publish App preview
-  #       run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
-  #     - name: Publish Website Preview
-  #       run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
-  #     - name: Post comment with preview link
-  #       uses: KeisukeYamashita/create-comment@v1
-  #       with:
-  #         check-only-first-line: true
-  #         comment: |
-  #           Preview App for PR:
-  #           https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-  #           Preview Website for PR:
-  #           ${{ env.previewUrl }}
-  #     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-  #     - name: Lighthouse
-  #       uses: foo-software/lighthouse-check-action@master
-  #       with:
-  #         urls: ${{ env.previewUrl }}
-  #         device: all
-  #         gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
-  #         outputDirectory: ${{ github.workspace }}/tmp/artifacts
-  #     - name: Upload Lighthouse Reports
-  #       uses: actions/upload-artifact@master
-  #       with:
-  #         name: Lighthouse Preview
-  #         path: ${{ github.workspace }}/tmp/artifacts
+  app_preview_dev:
+    if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: 📦 Install dependencies
+        run: npm ci && npx expo install expo-updates
+      - name: 🚀 Publish App preview
+        run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+      - name: Publish Website Preview
+        run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          check-only-first-line: true
+          comment: |
+            Preview App for PR:
+            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
+            Preview Website for PR:
+            ${{ env.previewUrl }}
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: ${{ env.previewUrl }}
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Preview
+          path: ${{ github.workspace }}/tmp/artifacts
 
-  # website_test_dev:
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: install dependencies
-  #       run: npm i
-  #     - name: Jest run
-  #       run: npm run test:unit
-  #     - name: Test Reporter
-  #       uses: dorny/test-reporter@v1
-  #       if: success() || failure()    
-  #       with:
-  #         name: JEST Tests            
-  #         path: junit.xml    
-  #         reporter: jest-junit
-  #     - name: Cypress run
-  #       uses: cypress-io/github-action@v5
-  #       with:
-  #         start: 'npm run web:dev'
-  #         command: 'npm run test:cypress'
-  #         wait-on: 'http://localhost:19000/'
-  #         wait-on-timeout: 120
-  #     - name: Coveralls
-  #       uses: coverallsapp/github-action@v2
-  #     - name: Upload coverage reports to Codecov
-  #       uses: codecov/codecov-action@v3
-  #       env:
-  #         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  #     - run: npx nyc report --reporter=text > coverage-final.txt
-  #       working-directory: ./coverage
-  #     - uses: fingerprintjs/action-coverage-report-md@v1
-  #       id: coverage
-  #       with:
-  #         textReportPath: './coverage/coverage-final.txt'
-  #         srcBasePath: ''
-  #     - run: | 
-  #         echo "" >> $GITHUB_STEP_SUMMARY
-  #         echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
-  #         echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
-  #     - uses: marocchino/sticky-pull-request-comment@v2
-  #       if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-  #       with:
-  #         message: ${{ steps.coverage.outputs.markdownReport }}
+  website_test_dev:
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: install dependencies
+        run: npm i
+      - name: Jest run
+        run: npm run test:unit
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    
+        with:
+          name: JEST Tests            
+          path: junit.xml    
+          reporter: jest-junit
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          start: 'npm run web:dev'
+          command: 'npm run test:cypress'
+          wait-on: 'http://localhost:19000/'
+          wait-on-timeout: 120
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - run: npx nyc report --reporter=text > coverage-final.txt
+        working-directory: ./coverage
+      - uses: fingerprintjs/action-coverage-report-md@v1
+        id: coverage
+        with:
+          textReportPath: './coverage/coverage-final.txt'
+          srcBasePath: ''
+      - run: | 
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
+        with:
+          message: ${{ steps.coverage.outputs.markdownReport }}
 
-  # app_build_android:
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: 🏗 Setup Expo and EAS
-  #       uses: expo/expo-github-action@v7
-  #       with:
-  #         expo-version: latest
-  #         eas-version: latest
-  #         token: ${{ secrets.EXPO_TOKEN }}
-  #     - name: 📦 Install dependencies
-  #       run: npm ci
-  #     - name: 🚀 Build app
-  #       run: eas build --non-interactive --platform android --local
-  #       env:
-  #         EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
-  #     - name: Upload binary Artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: android binary
-  #         path: Build/*.apk
+  app_build_android:
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: 📦 Install dependencies
+        run: npm ci
+      - name: 🚀 Build app
+        run: eas build --non-interactive --platform android --local
+        env:
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
+      - name: Upload binary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android binary
+          path: Build/*.apk
 
   app_build_desktop:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [windows, windows-latest] ] # [mac, macos-latest], [linux, ubuntu-20.04],
+        platform: [ [mac, macos-latest], [linux, ubuntu-20.04], [windows, windows-latest] ]
     runs-on: ${{ matrix.platform[1] }}
-    # needs: [ code_scan ]
+    needs: [ code_scan ]
     steps:
       - uses: actions/checkout@v3
       - name: setup node
@@ -199,98 +199,98 @@ jobs:
           name: ${{ matrix.platform[0] }} binary
           path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
 
-  # deploy_app_dev:
-  #   name: Deploy Dev app to Itch.io
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     binary_name: [mac, linux, windows, android]
-  #   needs: [ app_build_android, website_test_dev, app_build_desktop ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download binary Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: ${{matrix.binary_name}} binary
-  #     - name: Install Butler
-  #       run: |
-  #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-  #         unzip butler.zip
-  #         chmod +x butler
-  #         ./butler -V
-  #     - name: Update Itch.io ${{matrix.binary_name}} Alpha App
-  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
-  #       env:
-  #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+  deploy_app_dev:
+    name: Deploy Dev app to Itch.io
+    strategy:
+      fail-fast: false
+      matrix:
+        binary_name: [mac, linux, windows, android]
+    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{matrix.binary_name}} binary
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name: Update Itch.io ${{matrix.binary_name}} Alpha App
+        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
-  # deploy_app_prod:
-  #   name: Deploy Prod app to Itch.io
-    # strategy:
-  #   fail-fast: false
-  #   matrix:
-  #     binary_name: [mac, linux, windows, android]
-  #   needs: [ deploy_website_dev, deploy_app_dev ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download binary Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: ${{matrix.binary_name}} binary
-  #     - name: Install Butler
-  #       run: |
-  #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-  #         unzip butler.zip
-  #         chmod +x butler
-  #         ./butler -V
-  #     - name: Update Itch.io ${{matrix.binary_name}} Prod App
-  #       run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
-  #       env:
-  #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+  deploy_app_prod:
+    name: Deploy Prod app to Itch.io
+    strategy:
+    fail-fast: false
+    matrix:
+      binary_name: [mac, linux, windows, android]
+    needs: [ deploy_website_dev, deploy_app_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{matrix.binary_name}} binary
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name: Update Itch.io ${{matrix.binary_name}} Prod App
+        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
-  # deploy_website_dev:
-  #   name: Deploy Dev Website
-  #   needs: [ app_build_android, website_test_dev, app_build_desktop ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - run: npm ci
-  #     - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
-  #     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-  #     - name: Lighthouse
-  #       uses: foo-software/lighthouse-check-action@master
-  #       with:
-  #         urls: https://sudokuru-dev.vercel.app
-  #         device: all
-  #         outputDirectory: ${{ github.workspace }}/tmp/artifacts
-  #     - name: Upload Lighthouse Reports
-  #       uses: actions/upload-artifact@master
-  #       with:
-  #         name: Lighthouse Dev
-  #         path: ${{ github.workspace }}/tmp/artifacts
+  deploy_website_dev:
+    name: Deploy Dev Website
+    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - run: npm ci
+      - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: https://sudokuru-dev.vercel.app
+          device: all
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Dev
+          path: ${{ github.workspace }}/tmp/artifacts
 
-  # deploy_website_prod:
-  #   name: Deploy Prod Website
-  #   needs: [ deploy_website_dev, deploy_app_dev ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - run: npm ci
-  #     - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
-  #     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-  #     - name: Lighthouse
-  #       uses: foo-software/lighthouse-check-action@master
-  #       with:
-  #         urls: https://sudokuru.vercel.app
-  #         device: all
-  #         outputDirectory: ${{ github.workspace }}/tmp/artifacts
-  #     - name: Upload Lighthouse Reports
-  #       uses: actions/upload-artifact@master
-  #       with:
-  #         name: Lighthouse Prod
-  #         path: ${{ github.workspace }}/tmp/artifacts
+  deploy_website_prod:
+    name: Deploy Prod Website
+    needs: [ deploy_website_dev, deploy_app_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - run: npm ci
+      - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: https://sudokuru.vercel.app
+          device: all
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Prod
+          path: ${{ github.workspace }}/tmp/artifacts
