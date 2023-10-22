@@ -173,7 +173,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [mac, macos-latest], [linux, ubuntu-20.04], [windows, windows-latest] ]
+        platform: [ [linux, ubuntu-20.04], [windows, windows-latest] ]
     runs-on: ${{ matrix.platform[1] }}
     needs: [ code_scan ]
     steps:
@@ -204,7 +204,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [mac, linux, windows, android]
+        binary_name: [linux, windows, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -229,7 +229,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [mac, linux, windows, android]
+        binary_name: [linux, windows, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
