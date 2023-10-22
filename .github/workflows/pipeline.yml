@@ -206,7 +206,7 @@ jobs:
       matrix:
         binary_name: [mac, linux, windows, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    # if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
