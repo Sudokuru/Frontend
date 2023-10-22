@@ -227,9 +227,9 @@ jobs:
   deploy_app_prod:
     name: Deploy Prod app to Itch.io
     strategy:
-    fail-fast: false
-    matrix:
-      binary_name: [mac, linux, windows, android]
+      fail-fast: false
+      matrix:
+        binary_name: [mac, linux, windows, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
