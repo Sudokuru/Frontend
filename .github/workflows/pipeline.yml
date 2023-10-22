@@ -177,9 +177,7 @@ jobs:
     runs-on: ${{ matrix.platform[1] }}
     # needs: [ code_scan ]
     steps:
-      - run: ls
       - uses: actions/checkout@v3
-      - run: ls
       - name: setup node
         uses: actions/setup-node@v3
         with:
@@ -199,9 +197,9 @@ jobs:
         with:
           name: ${{ matrix.platform[0] }} binary
           path: |
-            Frontend/src-tauri/target/release/bundle/*.exe
-            Frontend/src-tauri/target/release/bundle/*.deb
-            Frontend/src-tauri/target/release/bundle/*.app
+            src-tauri/target/release/bundle/*.exe
+            src-tauri/target/release/bundle/*.deb
+            src-tauri/target/release/bundle/*.app
 
   # deploy_app_dev:
   #   name: Deploy Dev app to Itch.io
