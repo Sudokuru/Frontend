@@ -174,7 +174,7 @@ jobs:
       fail-fast: false
       matrix:
         platform: [ [mac, macos-latest], [linux, ubuntu-20.04], [windows, windows-latest] ]
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform[1] }}
     # needs: [ code_scan ]
     steps:
       - uses: actions/checkout@v3
