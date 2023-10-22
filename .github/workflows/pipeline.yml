@@ -173,7 +173,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [mac, macos-latest], [linux, ubuntu-20.04], [windows, windows-latest] ]
+        platform: [ [windows, windows-latest] ] # [mac, macos-latest], [linux, ubuntu-20.04],
     runs-on: ${{ matrix.platform[1] }}
     # needs: [ code_scan ]
     steps:
@@ -197,8 +197,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform[0] }} binary
-          path: | 
-            ${{ fromJSON(steps.tauri_build.outputs.artifactPaths) }}
+          path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
 
   # deploy_app_dev:
   #   name: Deploy Dev app to Itch.io
