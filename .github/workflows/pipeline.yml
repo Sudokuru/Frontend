@@ -197,7 +197,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform[0] }} binary
-          path: ${{ fromJSON(steps.tauri_build.outputs.artifactPaths) }}
+          path: | 
+            ${{ fromJSON(steps.tauri_build.outputs.artifactPaths) }}
 
   # deploy_app_dev:
   #   name: Deploy Dev app to Itch.io
