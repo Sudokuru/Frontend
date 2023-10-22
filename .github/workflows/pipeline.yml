@@ -173,7 +173,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [{name: mac, machine: macos-latest}, {name: linux, machine: ubuntu-20.04}, {name: windows, machine: windows-latest}]
+        platform: [ {name: mac, machine: macos-latest}, {name: linux, machine: ubuntu-20.04}, {name: windows, machine: windows-latest} ]
     runs-on: ${{ matrix.platform }}
     # needs: [ code_scan ]
     steps:
