@@ -177,6 +177,7 @@ jobs:
     runs-on: ${{ matrix.platform[1] }}
     # needs: [ code_scan ]
     steps:
+      - run: ls
       - uses: actions/checkout@v3
       - name: setup node
         uses: actions/setup-node@v3
