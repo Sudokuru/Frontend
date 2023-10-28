@@ -7,7 +7,13 @@ import {
   useWindowDimensions,
   Pressable,
 } from "react-native";
-import { Text, useTheme, ActivityIndicator, Button } from "react-native-paper";
+import {
+  Text,
+  useTheme,
+  ActivityIndicator,
+  Button,
+  Card,
+} from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -21,6 +27,7 @@ import {
   lessonOnlineMode,
 } from "../Functions/Api/Lessons";
 import { Statistics } from "../Functions/Api/Statistics";
+import { CARD_PADDING, CARD_WIDTH } from "../Components/Home/Cards";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -113,6 +120,21 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   //Separate view for mobile and web
   const Page = () => {
+    // Create lesson content cards
+    let cards = [];
+    for (let i: number = 0; i < steps.length; i++) {
+      cards.push(
+        <View
+          key={i}
+          testID={i.toString()}
+          style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+        >
+          <Card mode="outlined">
+            <Text>{steps[i][0]}</Text>
+          </Card>
+        </View>
+      );
+    }
     // Wait for page to load the stuff
     if (isLoading) {
       return (
@@ -136,6 +158,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             ) : (
               <></>
             )}
+            {cards}
             <Button onPress={() => clickCheckMark()}>
               Mark Lesson as Complete
             </Button>
