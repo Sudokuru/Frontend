@@ -164,12 +164,11 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             </Pressable>
           </View>
 
-          <View>
-            {cards}
-            <Button onPress={() => clickCheckMark()}>
-              Mark Lesson as Complete
-            </Button>
-          </View>
+          {cards}
+
+          <Button onPress={() => clickCheckMark()}>
+            Mark Lesson as Complete
+          </Button>
         </View>
         <Alert
           show={learnHelpVisible}
