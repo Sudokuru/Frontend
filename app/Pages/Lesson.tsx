@@ -157,6 +157,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           <Button
             onPress={() => clickCheckMark()}
             mode="contained"
+            testID="finishLesson"
             style={{
               marginVertical: "2%",
               marginHorizontal: size.width > 800 ? "30%" : "10%",
