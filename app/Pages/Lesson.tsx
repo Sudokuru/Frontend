@@ -201,7 +201,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             `This is the ` +
             title +
             " lesson page.\n\n" +
-            "Navigate through the lesson by using the left and right arrows.\n\n" +
+            "Navigate through the lesson by scrolling up and down.\n\n" +
             "Each page of the lesson will contain a board as well as a description to help you understand the process for using the " +
             title +
             " strategy"
