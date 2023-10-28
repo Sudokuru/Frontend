@@ -152,90 +152,13 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       );
     }
     //web view
-    else if (Platform.OS === "web") {
+    else {
       return (
         <View style={styles.container1}>
           {cards}
           <Button onPress={() => clickCheckMark()}>
             Mark Lesson as Complete
           </Button>
-        </View>
-      );
-    }
-
-    //mobile view
-    else {
-      return (
-        <View style={styles.container1}>
-          {steps[count][1] != null ? (
-            <Image
-              style={{ width: reSize / 1.3, height: reSize / 1.3 }}
-              source={
-                LESSON_MODE === getLessonMode.Online
-                  ? { uri: steps[count][1] }
-                  : steps[count][1]
-              }
-            />
-          ) : (
-            <></>
-          )}
-
-          <Text> </Text>
-
-          <View style={{ justifyContent: "center", flexDirection: "row" }}>
-            <Pressable
-              style={{ top: reSize / 2, height: reSize / 8, left: reSize / 10 }}
-              disabled={count - 1 == -1}
-              onPress={() => setCount(count - 1)}
-            >
-              <AntDesign
-                color={
-                  count - 1 == -1
-                    ? theme.colors.background
-                    : theme.colors.onBackground
-                }
-                name="leftcircleo"
-                size={reSize / 10}
-              />
-            </Pressable>
-
-            <View style={{ width: reSize / 1.2 }}>
-              {steps[count][0] != null ? (
-                <Text
-                  style={{
-                    color: theme.colors.onBackground,
-                    textAlign: "justify",
-                    fontSize: size.height / 50,
-                  }}
-                >
-                  {steps[count][0]}
-                </Text>
-              ) : (
-                <></>
-              )}
-            </View>
-
-            <Pressable
-              style={{
-                top: reSize / 2,
-                height: reSize / 8,
-                right: reSize / 10,
-              }}
-              onPress={() =>
-                count + 1 == steps.length
-                  ? clickCheckMark()
-                  : setCount(count + 1)
-              }
-            >
-              <AntDesign
-                color={theme.colors.onBackground}
-                name={
-                  count + 1 == steps.length ? "checkcircleo" : "rightcircleo"
-                }
-                size={reSize / 10}
-              />
-            </Pressable>
-          </View>
         </View>
       );
     }
