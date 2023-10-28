@@ -121,16 +121,18 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         style={{ alignSelf: "center", width: "50%", padding: CARD_PADDING }}
       >
         <Card mode="outlined">
-          <Image
-            source={steps[i][1]}
-            style={{
-              width: CARD_WIDTH,
-              height: CARD_WIDTH,
-              resizeMode: "contain",
-              alignSelf: "center",
-            }}
-          />
-          <Text>{steps[i][0]}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={steps[i][1]}
+              style={{
+                width: CARD_WIDTH,
+                height: CARD_WIDTH,
+                resizeMode: "contain",
+                alignSelf: "center",
+              }}
+            />
+            <Text>{steps[i][0]}</Text>
+          </View>
         </Card>
       </View>
     );
