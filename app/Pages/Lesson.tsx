@@ -146,7 +146,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           flexDirection: "row",
         }}
       >
-        <View style={styles.container1}>
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
           <Text
             style={{
               color: theme.colors.primary,
@@ -163,7 +163,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             />
           </Pressable>
 
-          <View style={styles.container1}>
+          <View>
             {cards}
             <Button onPress={() => clickCheckMark()}>
               Mark Lesson as Complete
@@ -196,12 +196,5 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container1: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default Lesson;
