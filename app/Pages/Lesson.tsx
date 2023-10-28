@@ -7,7 +7,7 @@ import {
   useWindowDimensions,
   Pressable,
 } from "react-native";
-import { Text, useTheme, ActivityIndicator } from "react-native-paper";
+import { Text, useTheme, ActivityIndicator, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -177,6 +177,9 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
                 size={reSize / 15}
               />
             </Pressable>
+            <Button onPress={() => clickCheckMark()}>
+              Mark Lesson as Complete
+            </Button>
           </View>
           <Text> </Text>
           <View style={{ width: reSize / 1.5 }}>
