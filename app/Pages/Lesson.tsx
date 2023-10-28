@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  StyleSheet,
   View,
   Image,
   useWindowDimensions,
@@ -9,9 +8,9 @@ import {
 } from "react-native";
 import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import {
@@ -21,11 +20,7 @@ import {
   lessonOnlineMode,
 } from "../Functions/Api/Lessons";
 import { Statistics } from "../Functions/Api/Statistics";
-import {
-  CARD_IMAGE_HEIGHT,
-  CARD_PADDING,
-  CARD_WIDTH,
-} from "../Components/Home/Cards";
+import { CARD_PADDING } from "../Components/Home/Cards";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -36,7 +31,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
 
   const { updateLearnedLessons, learnedLessons } =
     React.useContext(PreferencesContext);
@@ -111,8 +105,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     }
     navigation.navigate("LearnPage");
   };
-
-  const [count, setCount] = useState(0);
 
   // Create lesson content cards
   let cards = [];
