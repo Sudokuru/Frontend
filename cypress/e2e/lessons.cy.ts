@@ -111,11 +111,20 @@ describe("Sudoku lesson page functions", () => {
     );
   });
 
-  it("should display warning popup when clicking on locked lesson card and go to lesson when clicked yes", () => {
+  it("should display warning popup when clicking on locked lesson card, go to lesson when clicked yes, click finish lesson button, and verify card images are updated", () => {
     cy.get("[data-testid=locked4]").click();
     cy.contains("You have selected a lesson that is locked.");
     cy.contains("div", /^Yes$/).click();
     cy.contains("Naked Set Lesson");
+    cy.get("[data-testid=finishLesson]").click();
+    for (let i: number = 0; i < 3; i++) {
+      cy.get("[data-testid=learned" + i.toString() + "]");
+    }
+    cy.get("[data-testid=lesson3]");
+    cy.get("[data-testid=learned4]");
+    for (let i: number = 5; i < 8; i++) {
+      cy.get("[data-testid=locked" + i.toString() + "]");
+    }
   });
 
   it("should click on learned lesson card and go to lesson", () => {
@@ -123,9 +132,17 @@ describe("Sudoku lesson page functions", () => {
     cy.contains("Sudoku 101 Lesson");
   });
 
-  it("should click on current lesson card and go to lesson", () => {
+  it("should click on current lesson card, go to lesson, click finish lesson button, and verify card images are updated", () => {
     cy.get("[data-testid=lesson3]").click();
     cy.contains("Simplify Notes Lesson");
+    cy.get("[data-testid=finishLesson]").click();
+    for (let i: number = 0; i < 4; i++) {
+      cy.get("[data-testid=learned" + i.toString() + "]");
+    }
+    cy.get("[data-testid=lesson4]");
+    for (let i: number = 5; i < 8; i++) {
+      cy.get("[data-testid=locked" + i.toString() + "]");
+    }
   });
 
   it("should click on help button and display help popup", () => {

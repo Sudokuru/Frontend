@@ -12,6 +12,7 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
+import { toTitle } from "../Sudoku Board/sudoku";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -38,19 +39,6 @@ let drillImages: ImageURISource[] = [
   require("./CardImages/POINTING_PAIR.png"),
   require("./CardImages/POINTING_TRIPLET.png"),
 ];
-
-/**
- * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
- * @param str - the string to convert
- * @returns the converted string
- */
-const toTitle = (str: string) => {
-  return str
-    .toLowerCase()
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();

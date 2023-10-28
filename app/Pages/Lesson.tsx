@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  StyleSheet,
   View,
   Image,
-  Platform,
   useWindowDimensions,
   Pressable,
+  ScrollView,
 } from "react-native";
-import { Text, useTheme, ActivityIndicator } from "react-native-paper";
+import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import {
@@ -21,6 +20,8 @@ import {
   lessonOnlineMode,
 } from "../Functions/Api/Lessons";
 import { Statistics } from "../Functions/Api/Statistics";
+import { CARD_PADDING } from "../Components/Home/Cards";
+import { toTitle } from "../Components/Sudoku Board/sudoku";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -31,7 +32,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const navigation: any = useNavigation();
 
   const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
 
   const { updateLearnedLessons, learnedLessons } =
     React.useContext(PreferencesContext);
@@ -41,33 +41,10 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const hideLearnHelp = () => setLearnHelpVisible(false);
 
   const [steps, setSteps] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
 
   const theme = useTheme();
 
-  function getTitle(name: string): string {
-    let lessonName: string;
-    name == "AMEND_NOTES"
-      ? (lessonName = "Amend Notes")
-      : name == "NAKED_SINGLE"
-      ? (lessonName = "Naked Single")
-      : name == "NAKED_SET"
-      ? (lessonName = "Naked Set")
-      : name == "HIDDEN_SINGLE"
-      ? (lessonName = "Hidden Single")
-      : name == "HIDDEN_SET"
-      ? (lessonName = "Hidden Set")
-      : name == "SUDOKU_101"
-      ? (lessonName = "Sudoku 101")
-      : name == "SIMPLIFY_NOTES"
-      ? (lessonName = "Simplify Notes")
-      : name == "POINTING_SET"
-      ? (lessonName = "Pointing Set")
-      : (lessonName = "Null");
-    return lessonName;
-  }
-
-  let title = getTitle(name);
+  let title = toTitle(name);
 
   if (Lessons == null) {
     return;
@@ -85,7 +62,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     React.useCallback(() => {
       Lessons.getSteps(name, getlessonArgs).then((result: any) => {
         setSteps(result);
-        setIsLoading(false);
       });
     }, [])
   );
@@ -109,198 +85,86 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     navigation.navigate("LearnPage");
   };
 
-  const [count, setCount] = useState(0);
-
-  //Separate view for mobile and web
-  const Page = () => {
-    // Wait for page to load the stuff
-    if (isLoading) {
-      return (
-        <ActivityIndicator animating={true} color={theme.colors.primary} />
-      );
-    }
-    //web view
-    else if (Platform.OS === "web") {
-      return (
-        <View style={styles.container1}>
-          <View style={{ justifyContent: "center", flexDirection: "row" }}>
-            <Pressable
-              style={{
-                top: reSize / 4.5,
-                height: reSize / 10,
-                right: reSize / 25,
-              }}
-              disabled={count - 1 == -1}
-              onPress={() => setCount(count - 1)}
-            >
-              <AntDesign
-                color={
-                  count - 1 == -1
-                    ? theme.colors.background
-                    : theme.colors.onBackground
-                }
-                name="leftcircleo"
-                size={reSize / 15}
-              />
-            </Pressable>
-
-            {steps[count][1] != null ? (
-              <Image
-                style={{ width: reSize / 2, height: reSize / 2 }}
-                source={
-                  LESSON_MODE === getLessonMode.Online
-                    ? { uri: steps[count][1] }
-                    : steps[count][1]
-                }
-              />
-            ) : (
-              <></>
-            )}
-
-            <Pressable
-              style={{
-                top: reSize / 4.5,
-                height: reSize / 10,
-                left: reSize / 25,
-              }}
-              onPress={() =>
-                count + 1 == steps.length
-                  ? clickCheckMark()
-                  : setCount(count + 1)
-              }
-            >
-              <AntDesign
-                color={theme.colors.onBackground}
-                name={
-                  count + 1 == steps.length ? "checkcircleo" : "rightcircleo"
-                }
-                size={reSize / 15}
-              />
-            </Pressable>
-          </View>
-          <Text> </Text>
-          <View style={{ width: reSize / 1.5 }}>
-            {steps[count][0] != null ? (
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  textAlign: "justify",
-                  fontSize: size.height / 50,
-                }}
-              >
-                {steps[count][0]}
-              </Text>
-            ) : (
-              <></>
-            )}
-          </View>
-        </View>
-      );
-    }
-
-    //mobile view
-    else {
-      return (
-        <View style={styles.container1}>
-          {steps[count][1] != null ? (
+  // Create lesson content cards
+  let cards = [];
+  for (let i: number = 0; i < steps.length; i++) {
+    cards.push(
+      <View
+        key={i}
+        testID={i.toString()}
+        style={{
+          alignSelf: "center",
+          width: size.width > 800 ? "80%" : "100%",
+          paddingVertical: CARD_PADDING / 2,
+        }}
+      >
+        <Card mode="outlined">
+          <View
+            style={{
+              flexDirection: size.width > 800 ? "row" : "column",
+              alignItems: "center",
+            }}
+          >
             <Image
-              style={{ width: reSize / 1.3, height: reSize / 1.3 }}
-              source={
-                LESSON_MODE === getLessonMode.Online
-                  ? { uri: steps[count][1] }
-                  : steps[count][1]
-              }
-            />
-          ) : (
-            <></>
-          )}
-
-          <Text> </Text>
-
-          <View style={{ justifyContent: "center", flexDirection: "row" }}>
-            <Pressable
-              style={{ top: reSize / 2, height: reSize / 8, left: reSize / 10 }}
-              disabled={count - 1 == -1}
-              onPress={() => setCount(count - 1)}
-            >
-              <AntDesign
-                color={
-                  count - 1 == -1
-                    ? theme.colors.background
-                    : theme.colors.onBackground
-                }
-                name="leftcircleo"
-                size={reSize / 10}
-              />
-            </Pressable>
-
-            <View style={{ width: reSize / 1.2 }}>
-              {steps[count][0] != null ? (
-                <Text
-                  style={{
-                    color: theme.colors.onBackground,
-                    textAlign: "justify",
-                    fontSize: size.height / 50,
-                  }}
-                >
-                  {steps[count][0]}
-                </Text>
-              ) : (
-                <></>
-              )}
-            </View>
-
-            <Pressable
+              source={steps[i][1]}
               style={{
-                top: reSize / 2,
-                height: reSize / 8,
-                right: reSize / 10,
+                width:
+                  size.width > 800
+                    ? size.width * 0.4
+                    : Math.min(600, size.width),
+                height:
+                  size.width > 800
+                    ? size.width * 0.4
+                    : Math.min(600, size.width),
+                resizeMode: "contain",
+                alignSelf: "center",
               }}
-              onPress={() =>
-                count + 1 == steps.length
-                  ? clickCheckMark()
-                  : setCount(count + 1)
-              }
-            >
-              <AntDesign
-                color={theme.colors.onBackground}
-                name={
-                  count + 1 == steps.length ? "checkcircleo" : "rightcircleo"
-                }
-                size={reSize / 10}
-              />
-            </Pressable>
+            />
+            <Text variant="headlineSmall">{steps[i][0]}</Text>
           </View>
-        </View>
-      );
-    }
-  };
+        </Card>
+      </View>
+    );
+  }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ height: "100%", width: "100%" }}>
-        <View>
-          <View style={styles.container1}>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                  fontSize: reSize / 25,
-                  fontWeight: "bold",
-                }}
-              >
-                {title + " Lesson"}
-              </Text>
-              <Pressable onPress={() => showLearnHelp()}>
-                <MaterialCommunityIcons
-                  color={theme.colors.onBackground}
-                  name="help"
-                />
-              </Pressable>
-            </View>
-
-            <Page />
+    <ScrollView>
+      <SafeAreaView
+        style={{
+          height: "100%",
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <View style={{ flexDirection: "column" }}>
+          <View style={{ alignSelf: "center", flexDirection: "row" }}>
+            <Text
+              variant="headlineLarge"
+              style={{ color: theme.colors.primary, fontWeight: "bold" }}
+            >
+              {title + " Lesson"}
+            </Text>
+            <Pressable onPress={() => showLearnHelp()}>
+              <MaterialCommunityIcons
+                color={theme.colors.onBackground}
+                name="help"
+              />
+            </Pressable>
           </View>
+
+          {cards}
+
+          <Button
+            onPress={() => clickCheckMark()}
+            mode="contained"
+            testID="finishLesson"
+            style={{
+              marginVertical: "2%",
+              marginHorizontal: size.width > 800 ? "30%" : "10%",
+            }}
+          >
+            <Text variant="headlineMedium">Finish Lesson</Text>
+          </Button>
         </View>
         <Alert
           show={learnHelpVisible}
@@ -309,7 +173,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             `This is the ` +
             title +
             " lesson page.\n\n" +
-            "Navigate through the lesson by using the left and right arrows.\n\n" +
+            "Navigate through the lesson by scrolling up and down.\n\n" +
             "Each page of the lesson will contain a board as well as a description to help you understand the process for using the " +
             title +
             " strategy"
@@ -325,15 +189,8 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container1: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default Lesson;
