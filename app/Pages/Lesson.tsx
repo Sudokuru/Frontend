@@ -8,13 +8,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import {
-  Text,
-  useTheme,
-  ActivityIndicator,
-  Button,
-  Card,
-} from "react-native-paper";
+import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
@@ -49,7 +43,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const hideLearnHelp = () => setLearnHelpVisible(false);
 
   const [steps, setSteps] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
 
   const theme = useTheme();
 
@@ -93,7 +86,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     React.useCallback(() => {
       Lessons.getSteps(name, getlessonArgs).then((result: any) => {
         setSteps(result);
-        setIsLoading(false);
       });
     }, [])
   );
@@ -145,23 +137,14 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         </View>
       );
     }
-    // Wait for page to load the stuff
-    if (isLoading) {
-      return (
-        <ActivityIndicator animating={true} color={theme.colors.primary} />
-      );
-    }
-    //web view
-    else {
-      return (
-        <View style={styles.container1}>
-          {cards}
-          <Button onPress={() => clickCheckMark()}>
-            Mark Lesson as Complete
-          </Button>
-        </View>
-      );
-    }
+    return (
+      <View style={styles.container1}>
+        {cards}
+        <Button onPress={() => clickCheckMark()}>
+          Mark Lesson as Complete
+        </Button>
+      </View>
+    );
   };
 
   return (
