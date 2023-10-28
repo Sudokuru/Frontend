@@ -118,7 +118,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       <View
         key={i}
         testID={i.toString()}
-        style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+        style={{ alignSelf: "center", width: "50%", padding: CARD_PADDING }}
       >
         <Card mode="outlined">
           <Image
@@ -146,7 +146,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         }}
       >
         <View style={{ flexDirection: "column" }}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ alignSelf: "center", flexDirection: "row" }}>
             <Text
               style={{
                 color: theme.colors.primary,
