@@ -154,18 +154,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     else if (Platform.OS === "web") {
       return (
         <View style={styles.container1}>
-          {steps[count][1] != null ? (
-            <Image
-              style={{ width: reSize / 2, height: reSize / 2 }}
-              source={
-                LESSON_MODE === getLessonMode.Online
-                  ? { uri: steps[count][1] }
-                  : steps[count][1]
-              }
-            />
-          ) : (
-            <></>
-          )}
           {cards}
           <Button onPress={() => clickCheckMark()}>
             Mark Lesson as Complete
