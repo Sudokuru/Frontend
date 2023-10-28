@@ -143,26 +143,26 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           height: "100%",
           width: "100%",
           alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
         }}
       >
-        <View>
-          <Text
-            style={{
-              color: theme.colors.primary,
-              fontSize: reSize / 25,
-              fontWeight: "bold",
-            }}
-          >
-            {title + " Lesson"}
-          </Text>
-          <Pressable onPress={() => showLearnHelp()}>
-            <MaterialCommunityIcons
-              color={theme.colors.onBackground}
-              name="help"
-            />
-          </Pressable>
+        <View style={{ flexDirection: "column" }}>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{
+                color: theme.colors.primary,
+                fontSize: reSize / 25,
+                fontWeight: "bold",
+              }}
+            >
+              {title + " Lesson"}
+            </Text>
+            <Pressable onPress={() => showLearnHelp()}>
+              <MaterialCommunityIcons
+                color={theme.colors.onBackground}
+                name="help"
+              />
+            </Pressable>
+          </View>
 
           <View>
             {cards}
