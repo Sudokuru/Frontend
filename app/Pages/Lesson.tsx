@@ -183,8 +183,15 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
           {cards}
 
-          <Button onPress={() => clickCheckMark()}>
-            Mark Lesson as Complete
+          <Button
+            onPress={() => clickCheckMark()}
+            mode="contained"
+            style={{
+              marginVertical: "2%",
+              marginHorizontal: size.width > 800 ? "30%" : "10%",
+            }}
+          >
+            <Text variant="headlineMedium">Finish Lesson</Text>
           </Button>
         </View>
         <Alert
