@@ -139,7 +139,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
                 alignSelf: "center",
               }}
             />
-            <Text>{steps[i][0]}</Text>
+            <Text variant="headlineSmall">{steps[i][0]}</Text>
           </View>
         </Card>
       </View>
