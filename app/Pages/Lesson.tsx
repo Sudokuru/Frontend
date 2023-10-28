@@ -130,6 +130,15 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
         >
           <Card mode="outlined">
+            <Image
+              source={steps[i][1]}
+              style={{
+                width: CARD_WIDTH,
+                height: CARD_WIDTH,
+                resizeMode: "contain",
+                alignSelf: "center",
+              }}
+            />
             <Text>{steps[i][0]}</Text>
           </Card>
         </View>
