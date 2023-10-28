@@ -142,11 +142,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         style={{
           height: "100%",
           width: "100%",
+          alignItems: "center",
           justifyContent: "center",
           flexDirection: "row",
         }}
       >
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <View>
           <Text
             style={{
               color: theme.colors.primary,
