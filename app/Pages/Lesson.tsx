@@ -6,6 +6,7 @@ import {
   Platform,
   useWindowDimensions,
   Pressable,
+  ScrollView,
 } from "react-native";
 import {
   Text,
@@ -241,7 +242,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   };
 
   return (
-    <SafeAreaProvider>
+    <ScrollView>
       <SafeAreaView style={{ height: "100%", width: "100%" }}>
         <View>
           <View style={styles.container1}>
@@ -289,7 +290,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
 
