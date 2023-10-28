@@ -138,8 +138,13 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
               source={steps[i][1]}
               style={{
                 width:
-                  size.width > 800 ? Math.max(475, size.width / 2) : "100%",
-                height: CARD_IMAGE_HEIGHT * 2,
+                  size.width > 800
+                    ? size.width * 0.4
+                    : Math.min(600, size.width),
+                height:
+                  size.width > 800
+                    ? size.width * 0.4
+                    : Math.min(600, size.width),
                 resizeMode: "contain",
                 alignSelf: "center",
               }}
