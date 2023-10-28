@@ -163,22 +163,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
               Mark Lesson as Complete
             </Button>
           </View>
-          <Text> </Text>
-          <View style={{ width: reSize / 1.5 }}>
-            {steps[count][0] != null ? (
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  textAlign: "justify",
-                  fontSize: size.height / 50,
-                }}
-              >
-                {steps[count][0]}
-              </Text>
-            ) : (
-              <></>
-            )}
-          </View>
         </View>
       );
     }
