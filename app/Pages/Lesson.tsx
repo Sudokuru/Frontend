@@ -118,7 +118,11 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       <View
         key={i}
         testID={i.toString()}
-        style={{ alignSelf: "center", width: "50%", padding: CARD_PADDING }}
+        style={{
+          alignSelf: "center",
+          width: Platform.OS === "web" ? "80%" : "100%",
+          padding: CARD_PADDING,
+        }}
       >
         <Card mode="outlined">
           <View
