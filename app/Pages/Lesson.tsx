@@ -124,26 +124,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       return (
         <View style={styles.container1}>
           <View style={{ justifyContent: "center", flexDirection: "row" }}>
-            <Pressable
-              style={{
-                top: reSize / 4.5,
-                height: reSize / 10,
-                right: reSize / 25,
-              }}
-              disabled={count - 1 == -1}
-              onPress={() => setCount(count - 1)}
-            >
-              <AntDesign
-                color={
-                  count - 1 == -1
-                    ? theme.colors.background
-                    : theme.colors.onBackground
-                }
-                name="leftcircleo"
-                size={reSize / 15}
-              />
-            </Pressable>
-
             {steps[count][1] != null ? (
               <Image
                 style={{ width: reSize / 2, height: reSize / 2 }}
