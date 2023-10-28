@@ -168,11 +168,8 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         <View style={{ flexDirection: "column" }}>
           <View style={{ alignSelf: "center", flexDirection: "row" }}>
             <Text
-              style={{
-                color: theme.colors.primary,
-                fontSize: reSize / 25,
-                fontWeight: "bold",
-              }}
+              variant="headlineLarge"
+              style={{ color: theme.colors.primary, fontWeight: "bold" }}
             >
               {title + " Lesson"}
             </Text>
