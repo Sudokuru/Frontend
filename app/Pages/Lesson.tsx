@@ -128,7 +128,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         }}
       >
         <Card mode="outlined">
-          <View style={{ flexDirection: size.width > 800 ? "row" : "column" }}>
+          <View
+            style={{
+              flexDirection: size.width > 800 ? "row" : "column",
+              alignItems: "center",
+            }}
+          >
             <Image
               source={steps[i][1]}
               style={{
