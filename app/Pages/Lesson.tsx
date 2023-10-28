@@ -22,7 +22,11 @@ import {
   lessonOnlineMode,
 } from "../Functions/Api/Lessons";
 import { Statistics } from "../Functions/Api/Statistics";
-import { CARD_PADDING, CARD_WIDTH } from "../Components/Home/Cards";
+import {
+  CARD_IMAGE_HEIGHT,
+  CARD_PADDING,
+  CARD_WIDTH,
+} from "../Components/Home/Cards";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -131,8 +135,8 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             <Image
               source={steps[i][1]}
               style={{
-                width: CARD_WIDTH,
-                height: CARD_WIDTH,
+                width: Platform.OS === "web" ? "50%" : "100%",
+                height: CARD_IMAGE_HEIGHT * 2,
                 resizeMode: "contain",
                 alignSelf: "center",
               }}
