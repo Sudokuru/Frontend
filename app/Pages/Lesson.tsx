@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Image,
-  Platform,
   useWindowDimensions,
   Pressable,
   ScrollView,
@@ -124,18 +123,17 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
         testID={i.toString()}
         style={{
           alignSelf: "center",
-          width: Platform.OS === "web" ? "80%" : "100%",
+          width: size.width > 800 ? "80%" : "100%",
           paddingVertical: CARD_PADDING / 2,
         }}
       >
         <Card mode="outlined">
-          <View
-            style={{ flexDirection: Platform.OS === "web" ? "row" : "column" }}
-          >
+          <View style={{ flexDirection: size.width > 800 ? "row" : "column" }}>
             <Image
               source={steps[i][1]}
               style={{
-                width: Platform.OS === "web" ? "50%" : "100%",
+                width:
+                  size.width > 800 ? Math.max(475, size.width / 2) : "100%",
                 height: CARD_IMAGE_HEIGHT * 2,
                 resizeMode: "contain",
                 alignSelf: "center",
