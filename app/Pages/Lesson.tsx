@@ -21,6 +21,7 @@ import {
 } from "../Functions/Api/Lessons";
 import { Statistics } from "../Functions/Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
+import { toTitle } from "../Components/Sudoku Board/sudoku";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -43,29 +44,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const theme = useTheme();
 
-  function getTitle(name: string): string {
-    let lessonName: string;
-    name == "AMEND_NOTES"
-      ? (lessonName = "Amend Notes")
-      : name == "NAKED_SINGLE"
-      ? (lessonName = "Naked Single")
-      : name == "NAKED_SET"
-      ? (lessonName = "Naked Set")
-      : name == "HIDDEN_SINGLE"
-      ? (lessonName = "Hidden Single")
-      : name == "HIDDEN_SET"
-      ? (lessonName = "Hidden Set")
-      : name == "SUDOKU_101"
-      ? (lessonName = "Sudoku 101")
-      : name == "SIMPLIFY_NOTES"
-      ? (lessonName = "Simplify Notes")
-      : name == "POINTING_SET"
-      ? (lessonName = "Pointing Set")
-      : (lessonName = "Null");
-    return lessonName;
-  }
-
-  let title = getTitle(name);
+  let title = toTitle(name);
 
   if (Lessons == null) {
     return;
