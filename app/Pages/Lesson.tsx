@@ -156,27 +156,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             ) : (
               <></>
             )}
-
-            <Pressable
-              style={{
-                top: reSize / 4.5,
-                height: reSize / 10,
-                left: reSize / 25,
-              }}
-              onPress={() =>
-                count + 1 == steps.length
-                  ? clickCheckMark()
-                  : setCount(count + 1)
-              }
-            >
-              <AntDesign
-                color={theme.colors.onBackground}
-                name={
-                  count + 1 == steps.length ? "checkcircleo" : "rightcircleo"
-                }
-                size={reSize / 15}
-              />
-            </Pressable>
             <Button onPress={() => clickCheckMark()}>
               Mark Lesson as Complete
             </Button>
