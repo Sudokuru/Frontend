@@ -111,41 +111,30 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const [count, setCount] = useState(0);
 
-  //Separate view for mobile and web
-  const Page = () => {
-    // Create lesson content cards
-    let cards = [];
-    for (let i: number = 0; i < steps.length; i++) {
-      cards.push(
-        <View
-          key={i}
-          testID={i.toString()}
-          style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
-        >
-          <Card mode="outlined">
-            <Image
-              source={steps[i][1]}
-              style={{
-                width: CARD_WIDTH,
-                height: CARD_WIDTH,
-                resizeMode: "contain",
-                alignSelf: "center",
-              }}
-            />
-            <Text>{steps[i][0]}</Text>
-          </Card>
-        </View>
-      );
-    }
-    return (
-      <View style={styles.container1}>
-        {cards}
-        <Button onPress={() => clickCheckMark()}>
-          Mark Lesson as Complete
-        </Button>
+  // Create lesson content cards
+  let cards = [];
+  for (let i: number = 0; i < steps.length; i++) {
+    cards.push(
+      <View
+        key={i}
+        testID={i.toString()}
+        style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+      >
+        <Card mode="outlined">
+          <Image
+            source={steps[i][1]}
+            style={{
+              width: CARD_WIDTH,
+              height: CARD_WIDTH,
+              resizeMode: "contain",
+              alignSelf: "center",
+            }}
+          />
+          <Text>{steps[i][0]}</Text>
+        </Card>
       </View>
     );
-  };
+  }
 
   return (
     <ScrollView>
@@ -170,7 +159,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
               </Pressable>
             </View>
 
-            <Page />
+            <View style={styles.container1}>
+              {cards}
+              <Button onPress={() => clickCheckMark()}>
+                Mark Lesson as Complete
+              </Button>
+            </View>
           </View>
         </View>
         <Alert
