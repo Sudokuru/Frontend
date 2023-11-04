@@ -174,12 +174,15 @@ const DrillPanel = (props: any) => {
           style={{
             alignSelf: "center",
             alignItems: "center",
-            width: 2 * CARD_WIDTH,
+            width:
+              props.width > 800
+                ? props.width * 0.4
+                : Math.min(600, props.width),
           }}
         >
           <Dialog.Title>How Drills Work</Dialog.Title>
           <Dialog.Content>
-            <Text variant="bodyMedium">
+            <Text variant="bodyLarge">
               Drills are like do it yourself hints. Just alter the board to
               match what you think would happen if you applied the hint for the
               given strategy and then click submit to check your work. Can't
@@ -189,7 +192,13 @@ const DrillPanel = (props: any) => {
             <Checkbox.Item
               label="Don't show this again"
               status={checked ? "checked" : "unchecked"}
-              style={{ alignSelf: "center", width: CARD_WIDTH }}
+              style={{
+                alignSelf: "center",
+                width:
+                  props.width > 800
+                    ? props.width * 0.2
+                    : Math.min(300, props.width),
+              }}
               testID="dismissDrillTutorial"
               onPress={() => {
                 async function dismissTutorial() {
