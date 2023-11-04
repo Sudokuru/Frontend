@@ -156,6 +156,7 @@ const DrillPanel = (props: any) => {
       ))}
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>How Drills Work</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Ok</Button>
           </Dialog.Actions>
