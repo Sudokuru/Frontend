@@ -65,5 +65,6 @@ export class Statistics {
   public static async deleteStatistics() {
     await removeData("statistics");
     await removeData("learned_lessons");
+    await removeData("dismissDrillTutorial");
   }
 }
