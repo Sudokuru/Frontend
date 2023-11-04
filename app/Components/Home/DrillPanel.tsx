@@ -192,6 +192,7 @@ const DrillPanel = (props: any) => {
             <Checkbox.Item
               label="Don't show this again"
               status={checked ? "checked" : "unchecked"}
+              mode="android" // iOS doesn't have box around checkbox so best to just tell it to use android
               style={{
                 alignSelf: "center",
                 width:
