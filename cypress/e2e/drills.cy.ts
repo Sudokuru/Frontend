@@ -13,6 +13,7 @@ describe("naked single drills", () => {
       "learned_lessons",
       LOCAL_STORAGE_ALL_LEARNED_LESSONS
     );
+    window.localStorage.setItem("dismissDrillTutorial", "true");
     cy.visit("");
   });
   it("finds naked single in drill and hint is correctly applied", () => {
