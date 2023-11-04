@@ -4,6 +4,7 @@ import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { Button, Dialog, Portal } from "react-native-paper";
 
 const Drill = (props: any) => {
   let strategy = props.route.params
@@ -12,6 +13,12 @@ const Drill = (props: any) => {
 
   strategy = [strategy];
   const navigation: any = useNavigation();
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true); // call this function after verifying don't show this message again hasn't been selected previously
+
+  const hideDialog = () => setVisible(false);
 
   return (
     <SafeAreaProvider>
@@ -27,6 +34,13 @@ const Drill = (props: any) => {
             <StatusBar style="auto" />
           </View>
         </View>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Actions>
+              <Button onPress={hideDialog}>Ok</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
       </SafeAreaView>
     </SafeAreaProvider>
   );
