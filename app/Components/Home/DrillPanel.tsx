@@ -1,7 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
-import { Card, Text } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Dialog,
+  Portal,
+  Text,
+} from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
   CARD_IMAGE_HEIGHT,
@@ -13,6 +20,11 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import { toTitle } from "../Sudoku Board/sudoku";
+import {
+  getKeyJSON,
+  removeData,
+  storeData,
+} from "../../Functions/AsyncStorage/AsyncStorage";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -42,6 +54,22 @@ let drillImages: ImageURISource[] = [
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
+  const [checked, setChecked] = React.useState(false);
+
+  async function showTutorialIfNotDismissed() {
+    await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
+      if (dismiss == undefined) {
+        showDialog();
+      }
+    });
+  }
 
   let drillButtonArray = [];
   let subArray = [];
@@ -81,8 +109,10 @@ const DrillPanel = (props: any) => {
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("DrillGame", {
-              params: drillStrategies[i],
+            showTutorialIfNotDismissed().then(() => {
+              navigation.navigate("DrillGame", {
+                params: drillStrategies[i],
+              });
             });
           }}
         >
@@ -137,6 +167,65 @@ const DrillPanel = (props: any) => {
           {subArray}
         </View>
       ))}
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            width:
+              props.width > 800
+                ? props.width * 0.4
+                : Math.min(600, props.width),
+          }}
+        >
+          <Dialog.Title>How Drills Work</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyLarge">
+              Drills are like do it yourself hints. Just alter the board to
+              match what you think would happen if you applied the hint for the
+              given strategy and then click submit to check your work. Can't
+              figure it out? No worries, just click the hint ? button to get the
+              solution.
+            </Text>
+            <Checkbox.Item
+              label="Don't show this again"
+              status={checked ? "checked" : "unchecked"}
+              mode="android" // iOS doesn't have box around checkbox so best to just tell it to use android
+              style={{
+                alignSelf: "center",
+                width:
+                  props.width > 800
+                    ? props.width * 0.2
+                    : Math.min(300, props.width),
+              }}
+              testID="dismissDrillTutorial"
+              onPress={() => {
+                async function dismissTutorial() {
+                  if (!checked) {
+                    await storeData("dismissDrillTutorial", "true");
+                  } else {
+                    await removeData("dismissDrillTutorial");
+                  }
+                }
+                dismissTutorial().then(() => {
+                  setChecked(!checked);
+                });
+              }}
+            />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button
+              onPress={hideDialog}
+              testID="hideDrillTutorialButton"
+              labelStyle={{ fontSize: 20 }}
+            >
+              Ok
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };

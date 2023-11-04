@@ -22,9 +22,14 @@ export const HINT_RIGHT_ARROW = "[data-testid='hintRightArrow']";
 export const HINT_LEFT_ARROW = "[data-testid='hintLeftArrow']";
 export const HINT_CHECK_MARK = "[data-testid='hintCheckMark']";
 export const DRILL_DRAWER_BUTTON = "[data-testid=DrillButton]";
+export const DISMISS_DRILL_TUTORIAL_CHECKBOX =
+  "[data-testid=dismissDrillTutorial]";
+export const HIDE_DRILL_TUTORIAL_BUTTON =
+  "[data-testid=hideDrillTutorialButton]";
 
 export const VIEW_STATISTICS_PAGE_BUTTON =
   "[data-testid=ViewStatisticsPageButton]";
+export const VIEW_HOME_PAGE_BUTTON = "[data-testid=ViewHomePageButton]";
 
 export const END_GAME_SCORE = "[data-testid=score]";
 export const END_GAME_TIME = "[data-testid=time]";
