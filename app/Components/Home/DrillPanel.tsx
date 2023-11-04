@@ -1,7 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
-import { Button, Card, Dialog, Portal, Text } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Dialog,
+  Portal,
+  Text,
+} from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
   CARD_IMAGE_HEIGHT,
@@ -49,6 +56,8 @@ const DrillPanel = (props: any) => {
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
+
+  const [checked, setChecked] = React.useState(false);
 
   async function showTutorialIfNotDismissed() {
     await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
@@ -173,6 +182,14 @@ const DrillPanel = (props: any) => {
               figure it out? No worries, just click the hint ? button to get the
               solution.
             </Text>
+            <Checkbox.Item
+              label="Don't show this again"
+              status={checked ? "checked" : "unchecked"}
+              style={{ alignSelf: "center", width: CARD_WIDTH }}
+              onPress={() => {
+                setChecked(!checked);
+              }}
+            />
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Ok</Button>
