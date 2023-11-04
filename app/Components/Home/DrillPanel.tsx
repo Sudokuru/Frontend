@@ -215,7 +215,11 @@ const DrillPanel = (props: any) => {
             />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog} testID="hideDrillTutorialButton">
+            <Button
+              onPress={hideDialog}
+              testID="hideDrillTutorialButton"
+              labelStyle={{ fontSize: 20 }}
+            >
               Ok
             </Button>
           </Dialog.Actions>
