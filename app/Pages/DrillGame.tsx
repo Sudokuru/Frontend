@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Dialog, Portal } from "react-native-paper";
+import { useFocusEffect } from "@react-navigation/core";
+import { getKeyJSON } from "../Functions/AsyncStorage/AsyncStorage";
 
 const Drill = (props: any) => {
   let strategy = props.route.params
@@ -16,9 +18,22 @@ const Drill = (props: any) => {
 
   const [visible, setVisible] = React.useState(false);
 
-  const showDialog = () => setVisible(true); // call this function after verifying don't show this message again hasn't been selected previously
+  const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      async function showTutorialIfNotDismissed() {
+        await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
+          if (dismiss == undefined) {
+            showDialog();
+          }
+        });
+      }
+      showTutorialIfNotDismissed();
+    }, [])
+  );
 
   return (
     <SafeAreaProvider>
