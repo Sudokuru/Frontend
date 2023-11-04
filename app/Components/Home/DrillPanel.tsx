@@ -190,6 +190,7 @@ const DrillPanel = (props: any) => {
               label="Don't show this again"
               status={checked ? "checked" : "unchecked"}
               style={{ alignSelf: "center", width: CARD_WIDTH }}
+              testID="dismissDrillTutorial"
               onPress={() => {
                 async function dismissTutorial() {
                   if (!checked) {
@@ -205,7 +206,9 @@ const DrillPanel = (props: any) => {
             />
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Ok</Button>
+            <Button onPress={hideDialog} testID="hideDrillTutorialButton">
+              Ok
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
