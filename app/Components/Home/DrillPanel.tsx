@@ -155,7 +155,15 @@ const DrillPanel = (props: any) => {
         </View>
       ))}
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            width: 2 * CARD_WIDTH,
+          }}
+        >
           <Dialog.Title>How Drills Work</Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Ok</Button>
