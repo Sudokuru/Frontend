@@ -165,6 +165,15 @@ const DrillPanel = (props: any) => {
           }}
         >
           <Dialog.Title>How Drills Work</Dialog.Title>
+          <Dialog.Content>
+            <Text variant="bodyMedium">
+              Drills are like do it yourself hints. Just alter the board to
+              match what you think would happen if you applied the hint for the
+              given strategy and then click submit to check your work. Can't
+              figure it out? No worries, just click the hint ? button to get the
+              solution.
+            </Text>
+          </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Ok</Button>
           </Dialog.Actions>
