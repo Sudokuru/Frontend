@@ -20,7 +20,11 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import { toTitle } from "../Sudoku Board/sudoku";
-import { getKeyJSON } from "../../Functions/AsyncStorage/AsyncStorage";
+import {
+  getKeyJSON,
+  removeData,
+  storeData,
+} from "../../Functions/AsyncStorage/AsyncStorage";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -187,7 +191,16 @@ const DrillPanel = (props: any) => {
               status={checked ? "checked" : "unchecked"}
               style={{ alignSelf: "center", width: CARD_WIDTH }}
               onPress={() => {
-                setChecked(!checked);
+                async function dismissTutorial() {
+                  if (!checked) {
+                    await storeData("dismissDrillTutorial", "true");
+                  } else {
+                    await removeData("dismissDrillTutorial");
+                  }
+                }
+                dismissTutorial().then(() => {
+                  setChecked(!checked);
+                });
               }}
             />
           </Dialog.Content>
