@@ -1,12 +1,9 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Dialog, Portal } from "react-native-paper";
-import { useFocusEffect } from "@react-navigation/core";
-import { getKeyJSON } from "../Functions/AsyncStorage/AsyncStorage";
 
 const Drill = (props: any) => {
   let strategy = props.route.params
@@ -15,25 +12,6 @@ const Drill = (props: any) => {
 
   strategy = [strategy];
   const navigation: any = useNavigation();
-
-  const [visible, setVisible] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
-
-  useFocusEffect(
-    useCallback(() => {
-      async function showTutorialIfNotDismissed() {
-        await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
-          if (dismiss == undefined) {
-            showDialog();
-          }
-        });
-      }
-      showTutorialIfNotDismissed();
-    }, [])
-  );
 
   return (
     <SafeAreaProvider>
@@ -49,13 +27,6 @@ const Drill = (props: any) => {
             <StatusBar style="auto" />
           </View>
         </View>
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Ok</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </SafeAreaView>
     </SafeAreaProvider>
   );

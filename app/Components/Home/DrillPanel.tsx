@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
-import { Card, Text } from "react-native-paper";
+import { Button, Card, Dialog, Portal, Text } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
   CARD_IMAGE_HEIGHT,
@@ -13,6 +13,7 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import { toTitle } from "../Sudoku Board/sudoku";
+import { getKeyJSON } from "../../Functions/AsyncStorage/AsyncStorage";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -42,6 +43,20 @@ let drillImages: ImageURISource[] = [
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
+
+  async function showTutorialIfNotDismissed() {
+    await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
+      if (dismiss == undefined) {
+        showDialog();
+      }
+    });
+  }
 
   let drillButtonArray = [];
   let subArray = [];
@@ -81,8 +96,10 @@ const DrillPanel = (props: any) => {
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("DrillGame", {
-              params: drillStrategies[i],
+            showTutorialIfNotDismissed().then(() => {
+              navigation.navigate("DrillGame", {
+                params: drillStrategies[i],
+              });
             });
           }}
         >
@@ -137,6 +154,13 @@ const DrillPanel = (props: any) => {
           {subArray}
         </View>
       ))}
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Ok</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
