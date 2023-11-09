@@ -213,6 +213,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{matrix.binary_name}} binary
+          path: bundle
       - name: Install Butler
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -220,7 +221,7 @@ jobs:
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Alpha App
-        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
+        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
@@ -238,6 +239,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ${{matrix.binary_name}} binary
+          path: bundle
       - name: Install Butler
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
@@ -245,7 +247,7 @@ jobs:
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Prod App
-        run: ./butler push . ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
+        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
