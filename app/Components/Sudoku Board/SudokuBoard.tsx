@@ -130,10 +130,6 @@ const DrillSubmitButton = (props) => {
           style={{
             alignSelf: "center",
             alignItems: "center",
-            width:
-              props.width > 800
-                ? props.width * 0.4
-                : Math.min(600, props.width),
             backgroundColor: theme.colors.surface,
           }}
           theme={{ colors: { backdrop: "transparent" } }}
