@@ -178,7 +178,9 @@ const DrillPanel = (props: any) => {
               props.width > 800
                 ? props.width * 0.4
                 : Math.min(600, props.width),
+            backgroundColor: "green",
           }}
+          theme={{ colors: { backdrop: "transparent" } }}
         >
           <Dialog.Title>How Drills Work</Dialog.Title>
           <Dialog.Content>
