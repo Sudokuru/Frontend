@@ -57,7 +57,10 @@ describe("naked single drills", () => {
             cy.contains("Submit").click();
           })
           .then(() => {
-            cy.contains("Naked Single").should("exist");
+            cy.get("body").click(0, 0);
+          })
+          .then(() => {
+            cy.get("[data-testid=card]").should("be.visible");
           });
       });
   });
@@ -78,6 +81,7 @@ describe("naked single drills", () => {
     cy.get(HINT_RIGHT_ARROW).click();
     cy.get(HINT_CHECK_MARK).click();
     cy.contains("Submit").click();
+    cy.get("body").click(0, 0);
     // Check the checkbox to not show the tutorial again and do a drill to get back to the drill page
     cy.contains("Naked Single").click();
     cy.get(DISMISS_DRILL_TUTORIAL_CHECKBOX).click();
@@ -86,6 +90,7 @@ describe("naked single drills", () => {
     cy.get(HINT_RIGHT_ARROW).click();
     cy.get(HINT_CHECK_MARK).click();
     cy.contains("Submit").click();
+    cy.get("body").click(0, 0);
     // Start a new drill and verify the tutorial is not shown
     cy.contains("Naked Single").click();
     cy.contains("Submit").click();
