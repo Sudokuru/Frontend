@@ -8,6 +8,7 @@ import {
   Dialog,
   Portal,
   Text,
+  useTheme,
 } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 import {
@@ -54,6 +55,7 @@ let drillImages: ImageURISource[] = [
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
+  const theme = useTheme();
 
   const [visible, setVisible] = React.useState(false);
 
@@ -178,7 +180,7 @@ const DrillPanel = (props: any) => {
               props.width > 800
                 ? props.width * 0.4
                 : Math.min(600, props.width),
-            backgroundColor: "green",
+            backgroundColor: theme.colors.surface,
           }}
           theme={{ colors: { backdrop: "transparent" } }}
         >
