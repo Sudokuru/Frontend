@@ -19,6 +19,7 @@ import {
   Dialog,
   Portal,
   useTheme,
+  Text as PaperText,
 } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
@@ -136,7 +137,9 @@ const DrillSubmitButton = (props) => {
           theme={{ colors: { backdrop: "transparent" } }}
         >
           <Dialog.Content>
-            <Text variant="headlineLarge">Correct!</Text>
+            <PaperText variant="displaySmall" style={{ color: "white" }}>
+              Correct!
+            </PaperText>
           </Dialog.Content>
         </Dialog>
       </Portal>
