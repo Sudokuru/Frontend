@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
@@ -105,6 +105,8 @@ const DrillSubmitButton = (props) => {
 
   const hideDialog = () => setVisible(false);
 
+  const correctLogo = require("../checkmark.png");
+
   return (
     <View>
       <Pressable
@@ -137,6 +139,15 @@ const DrillSubmitButton = (props) => {
           theme={{ colors: { backdrop: "transparent" } }}
         >
           <Dialog.Content>
+            <Image
+              style={{
+                resizeMode: "cover",
+                alignSelf: "center",
+                height: 100,
+                width: 100,
+              }}
+              source={correctLogo}
+            />
             <PaperText variant="displaySmall" style={{ color: "white" }}>
               Correct!
             </PaperText>
