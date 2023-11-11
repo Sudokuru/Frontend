@@ -29,6 +29,7 @@ export const HIDE_DRILL_TUTORIAL_BUTTON =
 
 export const VIEW_STATISTICS_PAGE_BUTTON =
   "[data-testid=ViewStatisticsPageButton]";
+export const VIEW_PROFILE_PAGE_BUTTON = "[data-testid=ViewProfilePageButton]";
 export const VIEW_HOME_PAGE_BUTTON = "[data-testid=ViewHomePageButton]";
 
 export const END_GAME_SCORE = "[data-testid=score]";
@@ -46,6 +47,9 @@ export const STATISTICS_TOTAL_SOLVE_TIME = "[data-testid=totalSolveTime]";
 export const STATISTICS_NUM_HINTS_USED = "[data-testid=numHintsUsed]";
 export const STATISTICS_NUM_WRONG_CELLS_PLAYED =
   "[data-testid=numWrongCellsPlayed]";
+
+export const DARK_THEME_ENABLED_TOGGLE = "[data-testid=DarkThemeEnabled]";
+export const DARK_THEME_DISABLED_TOGGLE = "[data-testid=DarkThemeDisabled]";
 
 export const HOME_LEARN_BUTTON = "[data-testid=HomeLearnButton]";
 export const HOME_DRILL_BUTTON = "[data-testid=HomeDrillButton]";
