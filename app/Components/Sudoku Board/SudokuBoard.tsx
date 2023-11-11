@@ -14,7 +14,12 @@ import {
 } from "./sudoku";
 
 import { useFocusEffect } from "@react-navigation/core";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Dialog,
+  Portal,
+  useTheme,
+} from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
   checkSolution,
@@ -91,17 +96,51 @@ const styles = (cellSize, sizeConst, theme) =>
 const DrillSubmitButton = (props) => {
   const { isDrillSolutionCorrect, navigation } = props;
   const cellSize = getCellSize();
+  const theme = useTheme();
+
+  const [visible, setVisible] = useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
 
   return (
-    <Pressable
-      onPress={() => {
-        if (isDrillSolutionCorrect()) navigation.navigate("DrillPage");
-      }}
-    >
-      <View style={styles(cellSize).submitButtonView}>
-        <Text style={styles(cellSize).submitButtonText}>Submit</Text>
-      </View>
-    </Pressable>
+    <View>
+      <Pressable
+        onPress={() => {
+          if (isDrillSolutionCorrect()) {
+            showDialog();
+          }
+        }}
+      >
+        <View style={styles(cellSize).submitButtonView}>
+          <Text style={styles(cellSize).submitButtonText}>Submit</Text>
+        </View>
+      </Pressable>
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={() => {
+            hideDialog();
+            navigation.navigate("DrillPage");
+          }}
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            width:
+              props.width > 800
+                ? props.width * 0.4
+                : Math.min(600, props.width),
+            backgroundColor: theme.colors.surface,
+          }}
+          theme={{ colors: { backdrop: "transparent" } }}
+        >
+          <Dialog.Content>
+            <Text variant="headlineLarge">Correct!</Text>
+          </Dialog.Content>
+        </Dialog>
+      </Portal>
+    </View>
   );
 };
 
