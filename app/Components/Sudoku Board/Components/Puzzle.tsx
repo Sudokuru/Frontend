@@ -1,15 +1,26 @@
-import { getCellSize } from "../Functions/BoardFunctions";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import PropTypes from "prop-types";
 import React from "react";
 
 const Puzzle = (props: any) => {
   const { board, renderCell } = props;
-  const cellSize = getCellSize();
 
   return (
-    <View style={styles(cellSize).hintAndPuzzleContainer}>
-      <View style={styles().boardContainer}>
+    <View
+      style={{
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        flexDirection: "row",
+      }}
+    >
+      <View
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
         {board
           .get("puzzle")
           .map((row: any, i: any) => (
@@ -22,21 +33,6 @@ const Puzzle = (props: any) => {
     </View>
   );
 };
-
-const styles = (cellSize?: number, themeColor?: any) =>
-  StyleSheet.create({
-    hintAndPuzzleContainer: {
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    boardContainer: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "row",
-      justifyContent: "center",
-    },
-  });
 
 Puzzle.propTypes = {
   board: PropTypes.any,

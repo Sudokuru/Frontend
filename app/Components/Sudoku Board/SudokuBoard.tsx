@@ -156,7 +156,6 @@ HeaderRow.defaultProps = {
   paused: false,
 };
 
-//todo convert this class component into a functional component
 const SudokuBoard = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -835,11 +834,3 @@ const SudokuBoard = (props: any) => {
 };
 
 export default SudokuBoard;
-
-interface SudokuBoardProps {
-  gameType: string;
-  strategies: string[];
-  difficulty?: number;
-  navigation?: any;
-  showGameResults?: any;
-}
