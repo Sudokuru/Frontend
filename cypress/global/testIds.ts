@@ -50,6 +50,17 @@ export const STATISTICS_NUM_WRONG_CELLS_PLAYED =
 
 export const DARK_THEME_ENABLED_TOGGLE = "[data-testid=DarkThemeEnabled]";
 export const DARK_THEME_DISABLED_TOGGLE = "[data-testid=DarkThemeDisabled]";
+export const HIGHLIGHT_IDENTICAL_VALUES_ENABLED =
+  "[data-testid=HighlightIdenticalValuesEnabled]";
+export const HIGHLIGHT_IDENTICAL_VALUES_DISABLED =
+  "[data-testid=HighlightIdenticalValuesDisabled]";
+export const HIGHLIGHT_BOX_ENABLED = "[data-testid=HighlightBoxEnabled]";
+export const HIGHLIGHT_BOX_DISABLED = "[data-testid=HighlightBoxDisabled]";
+export const HIGHLIGHT_ROW_ENABLED = "[data-testid=HighlightRowEnabled]";
+export const HIGHLIGHT_ROW_DISABLED = "[data-testid=HighlightRowDisabled]";
+export const HIGHLIGHT_COLUMN_ENABLED = "[data-testid=HighlightColumnEnabled]";
+export const HIGHLIGHT_COLUMN_DISABLED =
+  "[data-testid=HighlightColumnDisabled]";
 
 export const HOME_LEARN_BUTTON = "[data-testid=HomeLearnButton]";
 export const HOME_DRILL_BUTTON = "[data-testid=HomeDrillButton]";
