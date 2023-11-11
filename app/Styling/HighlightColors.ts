@@ -16,6 +16,11 @@ export const INTERMEDIATE_COLOR = "#FFFF00";
 export const HARD_COLOR = "#FFA500";
 export const VERY_HARD_COLOR = "#FF0000";
 
+export const DARK_BACKGROUND_COLOR = "#025E73";
+export const LIGHT_BACKGROUND_COLOR = "#F2F2F2";
+export const GOLD_COLOR = "#D9A05B";
+export const PURPLE_COLOR = "#025E73";
+
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -52,3 +57,8 @@ export const EASY_COLOR_RGB = RGB(EASY_COLOR);
 export const INTERMEDIATE_COLOR_RGB = RGB(INTERMEDIATE_COLOR);
 export const HARD_COLOR_RGB = RGB(HARD_COLOR);
 export const VERY_HARD_COLOR_RGB = RGB(VERY_HARD_COLOR);
+
+export const DARK_BACKGROUND_COLOR_RGB = RGB(DARK_BACKGROUND_COLOR);
+export const LIGHT_BACKGROUND_COLOR_RGB = RGB(LIGHT_BACKGROUND_COLOR);
+export const GOLD_COLOR_RGB = RGB(GOLD_COLOR);
+export const PURPLE_COLOR_RGB = RGB(PURPLE_COLOR);
