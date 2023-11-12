@@ -5,9 +5,6 @@ import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalD
 interface PuzzleProps {
   renderCell: any;
   sudokuBoard: SudokuBoardProps;
-  rightArrowClicked: any;
-  leftArrowClicked: any;
-  checkMarkClicked: any;
 }
 
 const Puzzle = (props: PuzzleProps) => {

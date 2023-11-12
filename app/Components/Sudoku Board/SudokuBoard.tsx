@@ -667,15 +667,7 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderPuzzle = () => {
-    return (
-      <Puzzle
-        renderCell={renderCell}
-        sudokuBoard={sudokuBoard}
-        rightArrowClicked={rightArrowClicked}
-        leftArrowClicked={leftArrowClicked}
-        checkMarkClicked={checkMarkClicked}
-      />
-    );
+    return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard} />;
   };
 
   const renderNumberControl = () => {
