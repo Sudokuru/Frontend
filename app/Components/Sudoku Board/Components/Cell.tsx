@@ -232,31 +232,39 @@ const Cell = (props: any) => {
 
           // !inHintMode && conflict && {styles(cellSize).conflict},
           // !inHintMode &&
-          //   !conflict &&
-          //   highlightPeers &&
-          //   isPeer &&
-          //   styles(cellSize).peer,
+          !conflict &&
+            highlightPeers &&
+            isPeer && {
+              color: "#000000",
+              backgroundColor: PEER_SELECTED_COLOR,
+            },
+          // !inHintMode &&
+          !conflict &&
+            !highlightPeers &&
+            isHighlightBox &&
+            isBox &&
+            isPeer && {
+              color: "#000000",
+              backgroundColor: PEER_SELECTED_COLOR,
+            },
           // !inHintMode &&
           //   !conflict &&
-          //   !highlightPeers &&
-          //   isHighlightBox &&
-          //   isBox &&
-          //   isPeer &&
-          //   styles(cellSize).peer,
+          !highlightPeers &&
+            isHighlightRow &&
+            isRow &&
+            isPeer && {
+              color: "#000000",
+              backgroundColor: PEER_SELECTED_COLOR,
+            },
           // !inHintMode &&
           //   !conflict &&
-          //   !highlightPeers &&
-          //   isHighlightRow &&
-          //   isRow &&
-          //   isPeer &&
-          //   styles(cellSize).peer,
-          // !inHintMode &&
-          //   !conflict &&
-          //   !highlightPeers &&
-          //   isHighlightColumn &&
-          //   isColumn &&
-          //   isPeer &&
-          //   styles(cellSize).peer,
+          !highlightPeers &&
+            isHighlightColumn &&
+            isColumn &&
+            isPeer && {
+              color: "#000000",
+              backgroundColor: PEER_SELECTED_COLOR,
+            },
           // !inHintMode &&
           //   !conflict &&
           //   sameValue &&
@@ -348,11 +356,6 @@ let fallbackHeight = 30;
 
 const styles = (cellSize?: number, themeColor?: any) =>
   StyleSheet.create({
-    peer: {
-      // styles for cells with isPeer prop
-      color: "#000000",
-      backgroundColor: PEER_SELECTED_COLOR,
-    },
     sameValue: {
       // styles for cells with sameValue prop
       color: "#000000",

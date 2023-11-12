@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { fromJS } from "immutable";
+import { CellLocation } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 
 export function range(n) {
   return Array.from(Array(n).keys());
@@ -17,11 +18,21 @@ export function makeCountObject() {
  * @param b
  * @returns {boolean}
  */
-export function isPeer(a, b) {
-  if (!a || !b) return false;
-  const squareA = Math.floor(a.x / 3) * 3 + Math.floor(a.y / 3);
-  const squareB = Math.floor(b.x / 3) * 3 + Math.floor(b.y / 3);
-  return a.x === b.x || a.y === b.y || squareA === squareB;
+export function isPeer(
+  selectedCellCoordinate: CellLocation,
+  currentCellCoordinate: CellLocation
+) {
+  const squareA =
+    Math.floor(selectedCellCoordinate.r / 3) * 3 +
+    Math.floor(selectedCellCoordinate.c / 3);
+  const squareB =
+    Math.floor(currentCellCoordinate.r / 3) * 3 +
+    Math.floor(currentCellCoordinate.c / 3);
+  return (
+    selectedCellCoordinate.r === currentCellCoordinate.r ||
+    selectedCellCoordinate.c === currentCellCoordinate.c ||
+    squareA === squareB
+  );
 }
 
 export function highlightBox(a, b) {

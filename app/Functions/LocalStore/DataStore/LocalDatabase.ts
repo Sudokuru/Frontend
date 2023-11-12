@@ -78,7 +78,7 @@ interface GameAction {
 
 type ActionType = "note" | "value" | "erase";
 
-interface CellLocation {
+export interface CellLocation {
   r: number;
   c: number;
 }

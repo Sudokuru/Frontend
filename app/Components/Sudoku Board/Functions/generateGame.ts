@@ -15,7 +15,7 @@ export async function generateGame(props: any) {
 
   if (props.gameType == "StartGame") {
     gameData = await Puzzles.startGame(props.difficulty, props.strategies).then(
-      (game: SudokuBoardProps[]) => {
+      (game: SudokuBoardProps) => {
         // If game object is not returned, you get redirected to Main Page
         if (game == null) {
           //navigation.navigate("Home");

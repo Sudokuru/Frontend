@@ -6,12 +6,7 @@ import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
 import { saveGame } from "./Functions/BoardFunctions";
 
-import {
-  highlightBox,
-  highlightColumn,
-  highlightRow,
-  isPeer as areCoordinatePeers,
-} from "./sudoku";
+import { highlightBox, highlightColumn, highlightRow, isPeer } from "./sudoku";
 
 import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -534,9 +529,9 @@ const SudokuBoard = (props: any) => {
       prefilled = true;
     }
 
-    if (!selected) {
+    if (selected != null) {
       (isSelected = true), (conflict = isConflict(r, c));
-      // peer = areCoordinatePeers({ x, y }, board.get("selected"));
+      peer = isPeer(cell, sudokuBoard?.selectedCell);
       // box = highlightBox({ x, y }, board.get("selected"));
       // row = highlightRow({ x, y }, board.get("selected"));
       // column = highlightColumn({ x, y }, board.get("selected"));
