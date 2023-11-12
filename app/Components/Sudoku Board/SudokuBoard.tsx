@@ -261,9 +261,6 @@ const SudokuBoard = (props: any) => {
     updateBoard(newBoard);
   };
 
-  // Need to figure out how this undo feature is going to work...
-  // ! Action history should store what WAS in the square before the move
-  // ! So that it can be returned during a POP
   const undo = () => {
     // Adding previous move back to the board
     const move = sudokuBoard.actionHistory.pop();
