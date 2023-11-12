@@ -34,12 +34,8 @@ const Cell = (props: any) => {
     value,
     onClick,
     isPeer,
-    isBox,
-    isRow,
-    isColumn,
     isSelected,
     sameValue,
-    prefilled,
     // notes,
     conflict,
     c,
@@ -79,15 +75,6 @@ const Cell = (props: any) => {
     false,
     false,
   ];
-
-  const {
-    isHighlightIdenticalValues,
-    isHighlightBox,
-    isHighlightRow,
-    isHighlightColumn,
-  } = React.useContext(PreferencesContext);
-
-  const highlightPeers = isHighlightBox && isHighlightRow && isHighlightColumn;
 
   // if (inHintMode && currentStep > -1) {
   //   let currentHint = hintSteps[currentStep];

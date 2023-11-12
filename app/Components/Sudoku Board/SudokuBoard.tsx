@@ -541,11 +541,6 @@ const SudokuBoard = (props: any) => {
     let row = false;
     let column = false;
     let sameValue = false;
-    let prefilled = false;
-
-    if (cell.type == "given") {
-      prefilled = true;
-    }
 
     if (selected != null) {
       conflict = isConflict(r, c, cell);
@@ -577,13 +572,9 @@ const SudokuBoard = (props: any) => {
         onClick={(r, c) => {
           selectCell(r, c);
         }}
-        prefilled={prefilled}
         sameValue={sameValue}
         isSelected={isSelected}
         isPeer={peer}
-        isBox={box}
-        isRow={row}
-        isColumn={column}
         type={cell.type}
         value={cell.entry}
         conflict={conflict}
