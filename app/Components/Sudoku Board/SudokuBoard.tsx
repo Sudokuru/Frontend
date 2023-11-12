@@ -403,27 +403,7 @@ const SudokuBoard = (props: any) => {
    * If value is present in selected cell, removes value if value is incorrect
    */
   const eraseSelected = () => {
-    let selectedCell = sudokuBoard.selectedCell;
-
-    const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    const currentValue = currentSelectedCell.entry;
-
-    const actualValue =
-      sudokuBoard.puzzleSolution[selectedCell.c][selectedCell.r];
-    if (currentValue) {
-      if (currentValue !== actualValue) {
-        insertValue(0);
-      } else {
-        // User has attempted to remove a correct value
-        return;
-      }
-    } else {
-      let newBoard = board;
-      selectedCell = selectedCell.set("notes", Set());
-      newBoard = newBoard.setIn(["puzzle", x, y], selectedCell);
-
-      updateBoard(newBoard);
-    }
+    insertValue(0);
   };
 
   const insertValue = (inputValue: number) => {
