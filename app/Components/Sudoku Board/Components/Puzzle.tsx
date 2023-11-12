@@ -13,39 +13,23 @@ interface PuzzleProps {
 const Puzzle = (props: PuzzleProps) => {
   const { sudokuBoard, renderCell } = props;
 
-  console.log(sudokuBoard.puzzle);
-
   const renderAllRows = [];
-  for (let i = 0; i < 9; i++) {
+  for (let c = 0; c < 9; c++) {
     const rows = [];
-    for (let j = 0; j < 9; j++) {
-      console.log(i, j, sudokuBoard.puzzle[i][j]);
-      rows.push(renderCell(sudokuBoard.puzzle[i][j], i, j));
+    for (let r = 0; r < 9; r++) {
+      rows.push(renderCell(sudokuBoard.puzzle[c][r], r, c));
     }
     renderAllRows.push(rows);
   }
 
   return (
-    <View
-      style={{
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        flexDirection: "row",
-      }}
-    >
-      <View
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        {renderAllRows.map((rows, index) => (
-          <View key={index}>{rows}</View>
-        ))}
-      </View>
-    </View>
+    <>
+      {renderAllRows.map((rows, index) => (
+        <View style={{ flexDirection: "row" }} key={index}>
+          {rows}
+        </View>
+      ))}
+    </>
   );
 };
 
