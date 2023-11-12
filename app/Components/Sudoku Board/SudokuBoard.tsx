@@ -497,7 +497,15 @@ const SudokuBoard = (props: any) => {
    * @param r row of cell to select
    */
   const selectCell = (r, c) => {
-    setSudokuBoard({ ...sudokuBoard, selectedCell: { r: r, c: c } });
+    if (
+      sudokuBoard?.selectedCell &&
+      sudokuBoard.selectedCell.c === c &&
+      sudokuBoard.selectedCell.r === r
+    ) {
+      setSudokuBoard({ ...sudokuBoard, selectedCell: null });
+    } else {
+      setSudokuBoard({ ...sudokuBoard, selectedCell: { r: r, c: c } });
+    }
   };
 
   const isConflict = (r: number, c: number, cell: CellProps) => {
