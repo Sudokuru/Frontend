@@ -8,7 +8,6 @@ const ActionRow = (props: any) => {
   const {
     isEraseButtonDisabled,
     history,
-    prefilled,
     inNoteMode,
     undo,
     toggleNoteMode,

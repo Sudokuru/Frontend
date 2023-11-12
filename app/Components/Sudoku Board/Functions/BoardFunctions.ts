@@ -21,7 +21,7 @@ export function getBoardSize(): number {
   return getCellSize() * 9;
 }
 
-export const isInputValueCorrect = (solution: number, inputValue: number) => {
+export const isValueCorrect = (solution: number, inputValue: number) => {
   return solution === inputValue;
 };
 

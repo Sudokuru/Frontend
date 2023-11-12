@@ -12,7 +12,7 @@ import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
-  isInputValueCorrect as IsValueCorrect,
+  isValueCorrect,
   formatTime,
   getCausesFromHint,
   getCellNumber,
@@ -175,7 +175,7 @@ const SudokuBoard = (props: any) => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (
-            !IsValueCorrect(
+            !isValueCorrect(
               activeGame[0].puzzleSolution,
               i,
               j,
@@ -428,7 +428,7 @@ const SudokuBoard = (props: any) => {
     // We do not need to take action if current value matches existing value, or if value is correct
     if (
       currentValue === inputValue ||
-      IsValueCorrect(sudokuBoard.puzzleSolution[c][r], currentValue)
+      isValueCorrect(sudokuBoard.puzzleSolution[c][r], currentValue)
     ) {
       return;
     }
@@ -455,7 +455,7 @@ const SudokuBoard = (props: any) => {
     // adding to the numWrongCellsPlayed Tracker
     // if (
     //   props.gameType != "StartDrill" &&
-    //   !IsValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+    //   !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
     // ) {
     //   setSudokuBoard({
     //     ...sudokuBoard,
@@ -712,17 +712,21 @@ const SudokuBoard = (props: any) => {
 
   const renderActions = () => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    let prefilled = false;
-    let isEraseButtonDisabled =
-      prefilled || inHintMode || sudokuBoard.selectedCell == null;
+    let isEraseButtonDisabled = inHintMode || sudokuBoard.selectedCell == null;
     if (currentSelectedCell != null) {
-      prefilled = currentSelectedCell.type === "given";
+      const isGiven = currentSelectedCell.type === "given";
+      const isCellEmpty =
+        currentSelectedCell.type === "value" && currentSelectedCell.entry === 0;
+      const isCellCorrect =
+        currentSelectedCell.type === "value" &&
+        isValueCorrect(
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell.c][
+            sudokuBoard.selectedCell.r
+          ],
+          currentSelectedCell.entry
+        );
       // disable erase button if value === 0 or is given
-      if (
-        currentSelectedCell.type === "given" ||
-        (currentSelectedCell.type === "value" &&
-          currentSelectedCell.entry === 0)
-      ) {
+      if (isGiven || isCellEmpty || isCellCorrect) {
         isEraseButtonDisabled = true;
       }
     }
@@ -733,7 +737,6 @@ const SudokuBoard = (props: any) => {
       <ActionRow
         isEraseButtonDisabled={isEraseButtonDisabled}
         history={sudokuBoard.actionHistory}
-        prefilled={prefilled}
         inNoteMode={inNoteMode}
         undo={undo}
         toggleNoteMode={toggleNoteMode}
