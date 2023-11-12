@@ -12,7 +12,7 @@ import { useFocusEffect } from "@react-navigation/core";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import {
-  isInputValueCorrect,
+  isInputValueCorrect as IsValueCorrect,
   formatTime,
   getCausesFromHint,
   getCellNumber,
@@ -175,7 +175,7 @@ const SudokuBoard = (props: any) => {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (
-            !isInputValueCorrect(
+            !IsValueCorrect(
               activeGame[0].puzzleSolution,
               i,
               j,
@@ -261,15 +261,19 @@ const SudokuBoard = (props: any) => {
     updateBoard(newBoard);
   };
 
+  // Need to figure out how this undo feature is going to work...
   const undo = () => {
+    const move = sudokuBoard.actionHistory.pop();
+
     setSudokuBoard({
       ...sudokuBoard,
-      actionHistory: sudokuBoard.actionHistory.pop(),
+      actionHistory: sudokuBoard.actionHistory,
     });
   };
 
   const toggleNoteMode = () => {
-    setSudokuBoard({ ...sudokuBoard, inNoteMode: !sudokuBoard.inNoteMode });
+    sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
+    setSudokuBoard({ ...sudokuBoard, inNoteMode: sudokuBoard.inNoteMode });
   };
 
   const toggleHintMode = () => {
@@ -406,7 +410,7 @@ const SudokuBoard = (props: any) => {
       sudokuBoard.puzzleSolution[selectedCell.c][selectedCell.r];
     if (currentValue) {
       if (currentValue !== actualValue) {
-        fillValue(0);
+        insertValue(0);
       } else {
         // User has attempted to remove a correct value
         return;
@@ -420,9 +424,11 @@ const SudokuBoard = (props: any) => {
     }
   };
 
-  const fillValue = (inputValue: number) => {
+  const insertValue = (inputValue: number) => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
     const given = currentSelectedCell.type === "given";
+    console.log("ANOTHER TEST 1", sudokuBoard.puzzle);
+    console.log("ACTION HISTORY 1", sudokuBoard.actionHistory);
 
     // We do not need to take action if this is a given value
     if (given) {
@@ -437,38 +443,43 @@ const SudokuBoard = (props: any) => {
     // We do not need to take action if current value matches existing value, or if value is correct
     if (
       currentValue === inputValue ||
-      isInputValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+      IsValueCorrect(sudokuBoard.puzzleSolution[c][r], currentValue)
     ) {
       return;
     }
 
-    updateBoardWithNumber(c, r, inputValue);
+    // updating board entry
+    sudokuBoard.puzzle[c][r].entry = inputValue;
 
     // Adding to the history
-    setSudokuBoard({
-      ...sudokuBoard,
-      actionHistory: sudokuBoard.actionHistory.push({
-        type: "value",
-        cell: { entry: inputValue, type: "value" },
-        cellLocation: { c: c, r: r },
-      }),
+    sudokuBoard.actionHistory.push({
+      type: "value",
+      cell: { entry: inputValue, type: "value" },
+      cellLocation: { c: c, r: r },
     });
 
+    setSudokuBoard({
+      ...sudokuBoard,
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+    });
+
+    console.log("ANOTHER TEST", sudokuBoard.puzzle);
     console.log("ACTION HISTORY: ", sudokuBoard.actionHistory);
 
     // adding to the numWrongCellsPlayed Tracker
-    if (
-      props.gameType != "StartDrill" &&
-      !isInputValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
-    ) {
-      setSudokuBoard({
-        ...sudokuBoard,
-        statistics: {
-          ...sudokuBoard.statistics,
-          numWrongCellsPlayed: sudokuBoard.statistics.numWrongCellsPlayed++,
-        },
-      });
-    }
+    // if (
+    //   props.gameType != "StartDrill" &&
+    //   !IsValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+    // ) {
+    //   setSudokuBoard({
+    //     ...sudokuBoard,
+    //     statistics: {
+    //       ...sudokuBoard.statistics,
+    //       numWrongCellsPlayed: sudokuBoard.statistics.numWrongCellsPlayed++,
+    //     },
+    //   });
+    // }
   };
 
   /**
@@ -505,6 +516,7 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
+    console.log("RENDERING");
     const {
       isHighlightIdenticalValues,
       isHighlightBox,
@@ -512,7 +524,6 @@ const SudokuBoard = (props: any) => {
       isHighlightColumn,
     } = React.useContext(PreferencesContext);
 
-    console.log("RENDERING");
     let selected = sudokuBoard.selectedCell;
     let isSelected = false;
     let conflict = false;
@@ -654,12 +665,13 @@ const SudokuBoard = (props: any) => {
     ];
   };
 
-  const updateBoardWithNumber = (c, r, inputValue) => {
-    setSudokuBoard({
-      ...sudokuBoard,
-      puzzle: (sudokuBoard.puzzle[c][r].entry = inputValue),
-    });
-  };
+  // const updateBoardWithNumber = (c, r, inputValue) => {
+  //   sudokuBoard.puzzle[c][r].entry = inputValue;
+  //   setSudokuBoard({
+  //     ...sudokuBoard,
+  //     puzzle: sudokuBoard.puzzle,
+  //   });
+  // };
 
   const handleKeyDown = (event) => {
     let inHintMode = sudokuBoard.inHintMode;
@@ -674,7 +686,7 @@ const SudokuBoard = (props: any) => {
       if (inNoteMode) {
         addNumberAsNote(parseInt(inputValue, 10));
       } else {
-        fillValue(parseInt(inputValue, 10));
+        insertValue(parseInt(inputValue, 10));
       }
     }
     if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
@@ -687,9 +699,9 @@ const SudokuBoard = (props: any) => {
 
   const renderNumberControl = () => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    const prefilled = false;
+    let prefilled = false;
     if (currentSelectedCell != null) {
-      const prefilled = currentSelectedCell.type === "given";
+      prefilled = currentSelectedCell.type === "given";
     }
     const inNoteMode = sudokuBoard.inNoteMode;
     const inHintMode = sudokuBoard.inHintMode;
@@ -697,7 +709,7 @@ const SudokuBoard = (props: any) => {
       <NumberControl
         prefilled={prefilled}
         inNoteMode={inNoteMode}
-        fillNumber={fillValue}
+        fillNumber={insertValue}
         addNumberAsNote={addNumberAsNote}
         inHintMode={inHintMode}
       />
@@ -706,16 +718,16 @@ const SudokuBoard = (props: any) => {
 
   const renderActions = () => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    const prefilled = false;
+    let prefilled = false;
     if (currentSelectedCell != null) {
-      const prefilled = currentSelectedCell.type === "given";
+      prefilled = currentSelectedCell.type === "given";
     }
     const inNoteMode = sudokuBoard.inNoteMode;
     const inHintMode = sudokuBoard.inHintMode;
 
     return (
       <ActionRow
-        history={history}
+        history={sudokuBoard.actionHistory}
         prefilled={prefilled}
         inNoteMode={inNoteMode}
         undo={undo}

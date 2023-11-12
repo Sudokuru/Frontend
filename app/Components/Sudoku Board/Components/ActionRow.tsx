@@ -37,7 +37,7 @@ const ActionRow = (props: any) => {
       {/* Undo */}
       <Pressable
         onPress={undo}
-        disabled={!history.size || inHintMode}
+        disabled={history.length == 0 || inHintMode}
         testID={"undoButton"}
       >
         <MaterialCommunityIcons
