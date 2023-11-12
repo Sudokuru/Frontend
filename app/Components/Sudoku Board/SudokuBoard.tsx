@@ -40,6 +40,7 @@ import {
   CellProps,
   SudokuBoardProps,
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
+import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 let fallbackHeight = 30;
 
@@ -516,6 +517,13 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
+    const {
+      isHighlightIdenticalValues,
+      isHighlightBox,
+      isHighlightRow,
+      isHighlightColumn,
+    } = React.useContext(PreferencesContext);
+
     console.log("RENDERING");
     let selected = sudokuBoard.selectedCell;
     let isSelected = false;
@@ -532,16 +540,28 @@ const SudokuBoard = (props: any) => {
     }
 
     if (selected != null) {
-      (isSelected = true), (conflict = isConflict(r, c, cell));
-      peer = isPeer(sudokuBoard.selectedCell, { r: r, c: c });
-      // box = highlightBox({ x, y }, board.get("selected"));
-      // row = highlightRow({ x, y }, board.get("selected"));
-      // column = highlightColumn({ x, y }, board.get("selected"));
-      // sameValue = !!(
-      //   selected &&
-      //   selected.get("value") &&
-      //   cell.entry === selected.get("value")
-      // );
+      conflict = isConflict(r, c, cell);
+      isSelected =
+        c === sudokuBoard.selectedCell.c && r === sudokuBoard?.selectedCell.r;
+      box = highlightBox({ r: r, c: c }, sudokuBoard.selectedCell);
+      row = highlightRow({ r: r, c: c }, sudokuBoard.selectedCell);
+      column = highlightColumn({ r: r, c: c }, sudokuBoard.selectedCell);
+      peer =
+        !conflict &&
+        ((box && isHighlightBox) ||
+          (row && isHighlightRow) ||
+          (column && isHighlightColumn));
+
+      let selectedEntry =
+        sudokuBoard.puzzle[sudokuBoard.selectedCell.c][
+          sudokuBoard.selectedCell.r
+        ].entry;
+      let currentEntry = cell.entry;
+      sameValue =
+        !conflict &&
+        isHighlightIdenticalValues &&
+        selectedEntry === currentEntry &&
+        currentEntry != 0;
     }
 
     return (
@@ -550,13 +570,13 @@ const SudokuBoard = (props: any) => {
           selectCell(r, c);
         }}
         prefilled={prefilled}
-        // notes={notes}
         sameValue={sameValue}
         isSelected={isSelected}
         isPeer={peer}
         isBox={box}
         isRow={row}
         isColumn={column}
+        type={cell.type}
         value={cell.entry}
         conflict={conflict}
         eraseSelected={eraseSelected}

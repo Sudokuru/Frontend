@@ -1,8 +1,6 @@
-// @ts-nocheck
-import { fromJS } from "immutable";
 import { CellLocation } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 
-export function range(n) {
+export function range(n: number) {
   return Array.from(Array(n).keys());
 }
 
@@ -22,7 +20,6 @@ export function isPeer(
   selectedCellCoordinate: CellLocation,
   currentCellCoordinate: CellLocation
 ) {
-  console.log(selectedCellCoordinate, currentCellCoordinate, "HAHA");
   const squareA =
     Math.floor(selectedCellCoordinate.r / 3) * 3 +
     Math.floor(selectedCellCoordinate.c / 3);
@@ -36,18 +33,31 @@ export function isPeer(
   );
 }
 
-export function highlightBox(a, b) {
-  const squareA = Math.floor(a.x / 3) * 3 + Math.floor(a.y / 3);
-  const squareB = Math.floor(b.x / 3) * 3 + Math.floor(b.y / 3);
+export function highlightBox(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  const squareA =
+    Math.floor(currentCellCoordinate.c / 3) * 3 +
+    Math.floor(currentCellCoordinate.r / 3);
+  const squareB =
+    Math.floor(selectedCellCoordinate.c / 3) * 3 +
+    Math.floor(selectedCellCoordinate.r / 3);
   return squareA === squareB;
 }
 
-export function highlightRow(a, b) {
-  return a.y === b.y;
+export function highlightRow(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
 
-export function highlightColumn(a, b) {
-  return a.x === b.x;
+export function highlightColumn(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  return currentCellCoordinate.c === selectedCellCoordinate.c;
 }
 
 /**

@@ -227,54 +227,19 @@ const Cell = (props: any) => {
           r === 8 && { borderRightWidth: cellSize ? cellSize * (3 / 40) : 40 },
           c === 8 && { borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40 },
 
-          // Border Highlighting
-          // inHintMode && bgColor && { backgroundColor: bgColor },
-
-          // !inHintMode && conflict && {styles(cellSize).conflict},
-          // !inHintMode &&
-          !conflict &&
-            highlightPeers &&
-            isPeer && {
-              color: "#000000",
-              backgroundColor: PEER_SELECTED_COLOR,
-            },
-          // !inHintMode &&
-          !conflict &&
-            !highlightPeers &&
-            isHighlightBox &&
-            isBox &&
-            isPeer && {
-              color: "#000000",
-              backgroundColor: PEER_SELECTED_COLOR,
-            },
-          // !inHintMode &&
-          //   !conflict &&
-          !highlightPeers &&
-            isHighlightRow &&
-            isRow &&
-            isPeer && {
-              color: "#000000",
-              backgroundColor: PEER_SELECTED_COLOR,
-            },
-          // !inHintMode &&
-          //   !conflict &&
-          !highlightPeers &&
-            isHighlightColumn &&
-            isColumn &&
-            isPeer && {
-              color: "#000000",
-              backgroundColor: PEER_SELECTED_COLOR,
-            },
-          // !inHintMode &&
-          //   !conflict &&
-          //   sameValue &&
-          //   isHighlightIdenticalValues &&
-          //   styles(cellSize).sameValue,
-          // !inHintMode &&
+          isPeer && {
+            color: "#000000",
+            backgroundColor: PEER_SELECTED_COLOR,
+          },
+          sameValue && {
+            color: "#000000",
+            backgroundColor: IDENTICAL_VALUE_COLOR,
+          },
           //   conflict &&
           //   isSelected &&
           //   styles(cellSize).selectedConflict,
-          // !inHintMode && !conflict && isSelected && styles(cellSize).selected,
+          !conflict &&
+            isSelected && { color: "#000000", backgroundColor: SELECTED_COLOR },
         ]}
       >
         {/* {notes ? (
@@ -356,16 +321,6 @@ let fallbackHeight = 30;
 
 const styles = (cellSize?: number, themeColor?: any) =>
   StyleSheet.create({
-    sameValue: {
-      // styles for cells with sameValue prop
-      color: "#000000",
-      backgroundColor: IDENTICAL_VALUE_COLOR,
-    },
-    selected: {
-      // styles for cells with isSelected prop
-      color: "#000000",
-      backgroundColor: SELECTED_COLOR,
-    },
     noteViewParent: {
       flex: 1,
       justifyContent: "center",
