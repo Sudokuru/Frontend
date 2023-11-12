@@ -407,6 +407,9 @@ const SudokuBoard = (props: any) => {
   };
 
   const insertValue = (inputValue: number) => {
+    if (sudokuBoard.selectedCell == null) {
+      return;
+    }
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
     const given = currentSelectedCell.type === "given";
     console.log("ANOTHER TEST 1", sudokuBoard.puzzle);
@@ -718,6 +721,7 @@ const SudokuBoard = (props: any) => {
 
     return (
       <ActionRow
+        isCellSelected={sudokuBoard.selectedCell != null}
         history={sudokuBoard.actionHistory}
         prefilled={prefilled}
         inNoteMode={inNoteMode}
