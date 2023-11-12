@@ -203,7 +203,7 @@ const Cell = (props: any) => {
   return (
     // Sudoku Cells
     <Pressable
-      // onPress={() => onClick(x, y)}
+      onPress={() => onClick(r, c)}
       // disabled={landingMode}
       style={{ outline: "none" }}
     >

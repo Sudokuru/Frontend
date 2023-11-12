@@ -79,8 +79,8 @@ interface GameAction {
 type ActionType = "note" | "value" | "erase";
 
 interface CellLocation {
-  x: number;
-  y: number;
+  r: number;
+  c: number;
 }
 
 interface GameStatistics {

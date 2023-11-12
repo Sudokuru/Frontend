@@ -495,18 +495,21 @@ const SudokuBoard = (props: any) => {
     updateBoard(newBoard);
   };
 
-  const selectCell = (x, y) => {
-    setBoard(board.set("selected", { x, y }));
+  /**
+   *
+   * @param c column of cell to select
+   * @param r row of cell to select
+   */
+  const selectCell = (r, c) => {
+    sudokuBoard.selectedCell = { r: r, c: c };
+    setSudokuBoard(sudokuBoard);
   };
 
-  const isConflict = (i, j) => {
-    const { value } = board.getIn(["puzzle", i, j]).toJSON();
-    if (!value) return false;
-
-    let cellNum = getCellNumber(j, i); // Flipping x and y because of how the solution string is formatted
-    let solutionValue = solution.charAt(cellNum);
-
-    return !(solutionValue == value || value == null);
+  const isConflict = (r, c) => {
+    // Add a check to verify that this is not a note.
+    return !(
+      sudokuBoard.puzzle[c][r].entry === sudokuBoard.puzzleSolution[c][r]
+    );
   };
 
   const boardHasConflict = () => {
@@ -532,8 +535,7 @@ const SudokuBoard = (props: any) => {
     }
 
     if (!selected) {
-      // isSelected = true,
-      // conflict = isConflict(x, y);
+      (isSelected = true), (conflict = isConflict(r, c));
       // peer = areCoordinatePeers({ x, y }, board.get("selected"));
       // box = highlightBox({ x, y }, board.get("selected"));
       // row = highlightRow({ x, y }, board.get("selected"));
@@ -541,12 +543,15 @@ const SudokuBoard = (props: any) => {
       // sameValue = !!(
       //   selected &&
       //   selected.get("value") &&
-      //   value === selected.get("value")
+      //   cell.entry === selected.get("value")
       // );
     }
 
     return (
       <Cell
+        onClick={(r, c) => {
+          selectCell(r, c);
+        }}
         prefilled={prefilled}
         // notes={notes}
         sameValue={sameValue}
