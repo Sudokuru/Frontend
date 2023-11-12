@@ -676,6 +676,10 @@ const SudokuBoard = (props: any) => {
   // };
 
   const handleKeyDown = (event) => {
+    if (sudokuBoard.selectedCell == null) {
+      return;
+    }
+
     let inHintMode = sudokuBoard.inHintMode;
     let inNoteMode = sudokuBoard.inNoteMode;
     const inputValue = event.nativeEvent.key;
