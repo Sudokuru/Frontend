@@ -713,15 +713,25 @@ const SudokuBoard = (props: any) => {
   const renderActions = () => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
     let prefilled = false;
+    let isEraseButtonDisabled =
+      prefilled || inHintMode || sudokuBoard.selectedCell == null;
     if (currentSelectedCell != null) {
       prefilled = currentSelectedCell.type === "given";
+      // disable erase button if value === 0 or is given
+      if (
+        currentSelectedCell.type === "given" ||
+        (currentSelectedCell.type === "value" &&
+          currentSelectedCell.entry === 0)
+      ) {
+        isEraseButtonDisabled = true;
+      }
     }
     const inNoteMode = sudokuBoard.inNoteMode;
     const inHintMode = sudokuBoard.inHintMode;
 
     return (
       <ActionRow
-        isCellSelected={sudokuBoard.selectedCell != null}
+        isEraseButtonDisabled={isEraseButtonDisabled}
         history={sudokuBoard.actionHistory}
         prefilled={prefilled}
         inNoteMode={inNoteMode}

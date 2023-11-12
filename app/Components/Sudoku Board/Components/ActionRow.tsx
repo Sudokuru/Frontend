@@ -6,7 +6,7 @@ import React from "react";
 
 const ActionRow = (props: any) => {
   const {
-    isCellSelected,
+    isEraseButtonDisabled,
     history,
     prefilled,
     inNoteMode,
@@ -72,7 +72,7 @@ const ActionRow = (props: any) => {
       {/* Erase */}
       <Pressable
         onPress={eraseSelected}
-        disabled={prefilled || inHintMode || !isCellSelected}
+        disabled={isEraseButtonDisabled}
         testID={"eraseButton"}
       >
         <MaterialCommunityIcons
