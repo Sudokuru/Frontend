@@ -78,6 +78,8 @@ interface GameAction {
   cell: CellProps;
 }
 
+// todo remove erase, and just use 0 value to signify erase
+// then can remove ActionType as a type needed
 type ActionType = "note" | "value" | "erase";
 
 export interface CellLocation {
