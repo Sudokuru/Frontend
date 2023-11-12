@@ -21,25 +21,8 @@ export function getBoardSize(): number {
   return getCellSize() * 9;
 }
 
-export function updateBoardWithNumber({
-  x,
-  y,
-  number,
-  fill = true,
-  board,
-}: any) {
-  let cell = board.get("puzzle").getIn([x, y]);
-  cell = cell.delete("notes");
-  cell = fill ? cell.set("value", number) : cell.delete("value");
-
-  return board.setIn(["puzzle", x, y], cell);
-}
-
-export const checkSolution = (solution: any, x: any, y: any, value: any) => {
-  let cellNum = getCellNumber(y, x); // Flipping x and y because of how the solution string is formatted
-  let solutionValue = solution.charAt(cellNum);
-
-  return solutionValue == value;
+export const isInputValueCorrect = (solution: number, inputValue: number) => {
+  return solution === inputValue;
 };
 
 export function replaceChar(origString: any, replaceChar: any, index: any) {
