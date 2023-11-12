@@ -227,6 +227,16 @@ const Cell = (props: any) => {
           //   styles(cellSize).selectedConflict,
           !conflict &&
             isSelected && { color: "#000000", backgroundColor: SELECTED_COLOR },
+          conflict &&
+            !isSelected && {
+              color: "#000000",
+              backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
+            },
+          conflict &&
+            isSelected && {
+              color: "#000000",
+              backgroundColor: SELECTED_CONFLICT_COLOR,
+            },
         ]}
       >
         {/* {notes ? (
@@ -271,26 +281,14 @@ const Cell = (props: any) => {
         {/* value && ( */}
         {value != 0 ? (
           <Text
-            style={[
-              {
-                fontFamily: "Inter_400Regular",
-                fontSize: cellSize
-                  ? cellSize * (3 / 4) + 1
-                  : fallbackHeight * (3 / 4) + 1,
-                textAlign: "center",
-                lineHeight: cellSize ? cellSize : fallbackHeight,
-              },
-              conflict &&
-                !isSelected && {
-                  color: "#000000",
-                  backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
-                },
-              conflict &&
-                isSelected && {
-                  color: "#000000",
-                  backgroundColor: SELECTED_CONFLICT_COLOR,
-                },
-            ]}
+            style={{
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize
+                ? cellSize * (3 / 4) + 1
+                : fallbackHeight * (3 / 4) + 1,
+              textAlign: "center",
+              lineHeight: cellSize ? cellSize : fallbackHeight,
+            }}
           >
             {value}
           </Text>
