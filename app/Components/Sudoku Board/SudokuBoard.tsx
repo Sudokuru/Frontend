@@ -675,7 +675,12 @@ const SudokuBoard = (props: any) => {
         insertValue(parseInt(inputValue, 10));
       }
     }
-    if ((inputValue == "Delete" || inputValue == "Backspace") && !inHintMode)
+    if (
+      (inputValue == "Delete" ||
+        inputValue == "Backspace" ||
+        inputValue == "0") &&
+      !inHintMode
+    )
       eraseSelected();
   };
 
