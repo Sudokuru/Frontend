@@ -775,40 +775,35 @@ const SudokuBoard = (props: any) => {
 
   // let inHintMode = board ? board.get("inHintMode") : false;
 
-  if (sudokuBoard == null) {
-    return <View></View>;
-  } else {
-    console.log("HELLO", sudokuBoard);
-    return (
-      <View
-        testID={
-          props.gameType == "Demo"
-            ? "sudokuDemoBoard"
-            : props.gameType == "StartDrill"
-            ? "sudokuDrillBoard"
-            : "sudokuBoard"
-        }
-        onKeyDown={handleKeyDown}
-        styles={{ borderWidth: 1 }}
-      >
-        {/* {sudokuBoard &&
-            !(props.gameType == "Demo") &&
-            !(props.gameType == "StartDrill") &&
-            renderTopBar()} */}
-        {sudokuBoard && renderPuzzle()}
-        {/* {sudokuBoard && (
-            <View style={styles().bottomActions}>
-              {!(props.gameType == "Demo") && renderActions()}
-              {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
-              {props.gameType == "StartDrill" &&
-                !inHintMode &&
-                renderSubmitButton()}
-              {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
-            </View>
-          )} */}
-      </View>
-    );
-  }
+  return (
+    <View
+      testID={
+        props.gameType == "Demo"
+          ? "sudokuDemoBoard"
+          : props.gameType == "StartDrill"
+          ? "sudokuDrillBoard"
+          : "sudokuBoard"
+      }
+      onKeyDown={handleKeyDown}
+      styles={{ borderWidth: 1 }}
+    >
+      {/* {sudokuBoard &&
+          !(props.gameType == "Demo") &&
+          !(props.gameType == "StartDrill") &&
+          renderTopBar()} */}
+      {sudokuBoard && renderPuzzle()}
+      {/* {sudokuBoard && (
+          <View style={styles().bottomActions}>
+            {!(props.gameType == "Demo") && renderActions()}
+            {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
+            {props.gameType == "StartDrill" &&
+              !inHintMode &&
+              renderSubmitButton()}
+            {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
+          </View>
+        )} */}
+    </View>
+  );
 };
 
 export default SudokuBoard;
