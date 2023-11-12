@@ -1,7 +1,10 @@
 import { sudokuStrategyArray } from "sudokuru";
 import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
-import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
+import {
+  SudokuBoardProps,
+  returnLocalGame,
+} from "../LocalStore/DataStore/LocalDatabase";
 import {
   getKeyJSON,
   removeData,
@@ -198,7 +201,7 @@ export class Puzzles {
   public static async startGame(
     difficulty: number,
     strategies: sudokuStrategyArray
-  ): Promise<puzzle[]> {
+  ): Promise<SudokuBoardProps> {
     difficulty = difficulty * 1000;
 
     let concatUrlString = "";

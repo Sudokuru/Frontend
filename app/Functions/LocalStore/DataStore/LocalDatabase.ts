@@ -7,20 +7,19 @@ import { puzzle } from "../../../Types/Puzzle.Types";
  * TODO Return Puzzles based on user difficulty and learned puzzles
  * @returns A puzzle object for the user to play a normal Sudoku Game
  */
-export function returnLocalGame(): puzzle[] {
-  return [
-    NAKED_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ],
+export function returnLocalGame(): SudokuBoardProps {
+  return NAKED_SINGLE_DRILL_GAMES[
+    Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
   ];
 }
 
 export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
-  if (strategy === "NAKED_SINGLE") {
-    return NAKED_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "NAKED_PAIR") {
+  // if (strategy === "NAKED_SINGLE") {
+  //   return NAKED_SINGLE_DRILL_GAMES[
+  //     Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
+  //   ];
+  // }
+  if (strategy === "NAKED_PAIR") {
     return NAKED_PAIR_DRILL_GAMES[
       Math.floor(Math.random() * NAKED_PAIR_DRILL_GAMES.length)
     ];
@@ -60,13 +59,13 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
   return JSON.parse("{}");
 }
 
-interface SudokuBoardProps {
-  // type: GameType;
+export interface SudokuBoardProps {
+  type?: GameType;
   // spend more time understanding current Hint structure, come back to this
   // hint?: Hint;
   selectedCell: CellLocation | null;
   statistics: GameStatistics;
-  puzzle: Cell[][];
+  puzzle: CellProps[][];
   puzzleSolution: Number[][];
   actionHistory?: GameAction[];
 }
@@ -74,7 +73,7 @@ interface SudokuBoardProps {
 interface GameAction {
   type: ActionType;
   cellLocation: CellLocation;
-  cell: Cell;
+  cell: CellProps;
 }
 
 type ActionType = "note" | "value" | "erase";
@@ -95,7 +94,7 @@ interface GameStatistics {
 type GameType = "demo" | "drill" | "puzzle" | "lesson";
 type GameDifficulty = "easy" | "medium" | "hard";
 
-type Cell = CellWithValue | CellWithNotes;
+export type CellProps = CellWithValue | CellWithNotes;
 
 interface CellWithValue {
   type: "value" | "given";
@@ -163,6 +162,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "value",
           entry: 0,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,
@@ -199,6 +200,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "given",
           entry: 1,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,
@@ -235,6 +238,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "value",
           entry: 0,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,
@@ -271,6 +276,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "value",
           entry: 0,
         },
+      ],
+      [
         {
           type: "given",
           entry: 5,
@@ -307,6 +314,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "given",
           entry: 6,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,
@@ -343,6 +352,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "value",
           entry: 0,
         },
+      ],
+      [
         {
           type: "given",
           entry: 2,
@@ -379,6 +390,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "given",
           entry: 5,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,
@@ -415,6 +428,8 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
           type: "value",
           entry: 0,
         },
+      ],
+      [
         {
           type: "value",
           entry: 0,

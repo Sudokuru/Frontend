@@ -11,34 +11,6 @@ export function makeCountObject() {
   return countObj;
 }
 
-export function makeBoard({ puzzle }, initialPuzzle) {
-  const rows = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const columns = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const squares = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const initialPuzzleArray = initialPuzzle
-    .match(/.{1,9}/g)
-    .map((row) => row.split("").map(Number));
-  const result = puzzle.map((row, i) =>
-    row.map((cell, j) => {
-      if (cell) {
-        rows[i][cell] += 1;
-        columns[j][cell] += 1;
-        squares[Math.floor(i / 3) * 3 + Math.floor(j / 3)][cell] += 1;
-      }
-      return {
-        value: puzzle[i][j] > 0 ? puzzle[i][j] : null,
-        prefilled: !!initialPuzzleArray[j][i],
-      };
-    })
-  );
-  return fromJS({
-    puzzle: result,
-    selected: false,
-    inNoteMode: false,
-    inHintMode: false,
-  });
-}
-
 /**
  *
  * @param a

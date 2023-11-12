@@ -41,6 +41,10 @@ import {
   getHintObject,
 } from "./Functions/HintsParsing";
 import Hint from "./Functions/Hint";
+import {
+  CellProps,
+  SudokuBoardProps,
+} from "../../Functions/LocalStore/DataStore/LocalDatabase";
 
 let fallbackHeight = 30;
 
@@ -160,14 +164,16 @@ const SudokuBoard = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // shared states
-  const [board, setBoard] = useState();
-  const [history, setHistory] = useState<any>();
-  const [historyOffSet, setHistoryOffSet] = useState<number>();
-  const [solution, setSolution] = useState();
-  const [activeGame, setActiveGame] = useState();
+  // const [board, setBoard] = useState();
+  // const [history, setHistory] = useState<any>();
+  // const [historyOffSet, setHistoryOffSet] = useState<number>();
+  // const [solution, setSolution] = useState();
+  // const [activeGame, setActiveGame] = useState();
 
-  const setTimer = (timer: number) => useTimer(timer);
-  const [timer, useTimer] = useState<number>(0);
+  // const setTimer = (timer: number) => useTimer(timer);
+  // const [timer, useTimer] = useState<number>(0);
+
+  const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
 
   // drill states
   // These could probably stay as props since these values are constant and not altered.
@@ -212,18 +218,8 @@ const SudokuBoard = (props: any) => {
   };
 
   useEffect(() => {
-    generateGame(props).then((result) => {
-      setBoard(result.board);
-      setHistory(result.history);
-      setHistoryOffSet(result.historyOffSet);
-      setSolution(result.solution);
-      setActiveGame(result.activeGame);
-
-      if (props.gameType == "StartDrill") {
-        setDrillSolutionCells(result.drillSolutionCells);
-        setOriginalBoard(result.originalBoard);
-      }
-
+    generateGame(props).then((game) => {
+      setSudokuBoard(game);
       setIsLoading(false);
     });
   }, []);
@@ -520,55 +516,51 @@ const SudokuBoard = (props: any) => {
     return false;
   };
 
-  const renderCell = (cell, x, y) => {
-    const selected = getSelectedCell();
-    const { value, prefilled, notes } = cell.toJSON();
-    const conflict = isConflict(x, y);
-    const peer = areCoordinatePeers({ x, y }, board.get("selected"));
-    const box = highlightBox({ x, y }, board.get("selected"));
-    const row = highlightRow({ x, y }, board.get("selected"));
-    const column = highlightColumn({ x, y }, board.get("selected"));
-    const sameValue = !!(
-      selected &&
-      selected.get("value") &&
-      value === selected.get("value")
-    );
-    const isSelected = cell === selected;
-    let inHintMode = board.get("inHintMode");
-    let hintSteps = board.get("hintSteps");
-    let currentStep = board.get("currentStep");
+  const renderCell = (cell: CellProps, x: number, y: number) => {
+    let selected = sudokuBoard.selectedCell;
+    let isSelected = false;
+    let conflict = false;
+    let peer = false;
+    let box = false;
+    let row = false;
+    let column = false;
+    let sameValue = false;
+    let prefilled = false;
 
-    let game = null;
-    if (props.gameType != "StartDrill") game = activeGame[0];
+    if (cell.type == "given") {
+      prefilled = true;
+    }
+
+    if (!selected) {
+      // isSelected = true,
+      // conflict = isConflict(x, y);
+      // peer = areCoordinatePeers({ x, y }, board.get("selected"));
+      // box = highlightBox({ x, y }, board.get("selected"));
+      // row = highlightRow({ x, y }, board.get("selected"));
+      // column = highlightColumn({ x, y }, board.get("selected"));
+      // sameValue = !!(
+      //   selected &&
+      //   selected.get("value") &&
+      //   value === selected.get("value")
+      // );
+    }
 
     return (
       <Cell
         prefilled={prefilled}
-        notes={notes}
+        // notes={notes}
         sameValue={sameValue}
         isSelected={isSelected}
         isPeer={peer}
         isBox={box}
         isRow={row}
         isColumn={column}
-        value={value}
-        onClick={(x, y) => {
-          selectCell(x, y);
-        }}
-        key={y}
-        x={x}
-        y={y}
+        value={cell.entry}
         conflict={conflict}
         eraseSelected={eraseSelected}
-        inHintMode={inHintMode}
-        hintSteps={hintSteps}
-        currentStep={currentStep}
-        game={game}
-        showResults={props.showGameResults}
-        gameType={props.gameType}
-        landingMode={props.gameType == "Demo"}
-        drillMode={props.gameType == "StartDrill"}
-        timer={timer}
+        key={x * y}
+        x={x}
+        y={y}
       />
     );
   };
@@ -675,24 +667,13 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderPuzzle = () => {
-    let onFirstStep = false;
-    let onFinalStep = false;
-    if (board.get("hintSteps") != undefined) {
-      let currentStep = board.get("currentStep");
-      let numHintSteps = board.get("hintSteps").length;
-      if (currentStep + 1 == 1) onFirstStep = true;
-      if (currentStep + 1 == numHintSteps) onFinalStep = true;
-    }
     return (
       <Puzzle
-        inHintMode={board.get("inHintMode")}
         renderCell={renderCell}
-        board={board}
+        sudokuBoard={sudokuBoard}
         rightArrowClicked={rightArrowClicked}
         leftArrowClicked={leftArrowClicked}
         checkMarkClicked={checkMarkClicked}
-        onFirstStep={onFirstStep}
-        onFinalStep={onFinalStep}
       />
     );
   };
@@ -800,37 +781,42 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  let inHintMode = board ? board.get("inHintMode") : false;
+  // let inHintMode = board ? board.get("inHintMode") : false;
 
-  return (
-    <View
-      testID={
-        props.gameType == "Demo"
-          ? "sudokuDemoBoard"
-          : props.gameType == "StartDrill"
-          ? "sudokuDrillBoard"
-          : "sudokuBoard"
-      }
-      onKeyDown={handleKeyDown}
-      styles={{ borderWidth: 1 }}
-    >
-      {board &&
-        !(props.gameType == "Demo") &&
-        !(props.gameType == "StartDrill") &&
-        renderTopBar()}
-      {board && renderPuzzle()}
-      {board && (
-        <View style={styles().bottomActions}>
-          {!(props.gameType == "Demo") && renderActions()}
-          {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
-          {props.gameType == "StartDrill" &&
-            !inHintMode &&
-            renderSubmitButton()}
-          {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
-        </View>
-      )}
-    </View>
-  );
+  if (sudokuBoard == null) {
+    return <View></View>;
+  } else {
+    console.log("HELLO", sudokuBoard);
+    return (
+      <View
+        testID={
+          props.gameType == "Demo"
+            ? "sudokuDemoBoard"
+            : props.gameType == "StartDrill"
+            ? "sudokuDrillBoard"
+            : "sudokuBoard"
+        }
+        onKeyDown={handleKeyDown}
+        styles={{ borderWidth: 1 }}
+      >
+        {/* {sudokuBoard &&
+            !(props.gameType == "Demo") &&
+            !(props.gameType == "StartDrill") &&
+            renderTopBar()} */}
+        {sudokuBoard && renderPuzzle()}
+        {/* {sudokuBoard && (
+            <View style={styles().bottomActions}>
+              {!(props.gameType == "Demo") && renderActions()}
+              {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()}
+              {props.gameType == "StartDrill" &&
+                !inHintMode &&
+                renderSubmitButton()}
+              {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
+            </View>
+          )} */}
+      </View>
+    );
+  }
 };
 
 export default SudokuBoard;

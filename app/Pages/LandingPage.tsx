@@ -67,7 +67,7 @@ const LandingPage = () => {
           gap: minWindowSize / 25,
         }}
       >
-        <SudokuBoard gameType={"Demo"} strategies={strategies} />
+        {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
         <View
           style={{
             flexDirection: "row",

@@ -1,9 +1,29 @@
 import { View } from "react-native";
-import PropTypes from "prop-types";
 import React from "react";
+import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
-const Puzzle = (props: any) => {
-  const { board, renderCell } = props;
+interface PuzzleProps {
+  renderCell: any;
+  sudokuBoard: SudokuBoardProps;
+  rightArrowClicked: any;
+  leftArrowClicked: any;
+  checkMarkClicked: any;
+}
+
+const Puzzle = (props: PuzzleProps) => {
+  const { sudokuBoard, renderCell } = props;
+
+  console.log(sudokuBoard.puzzle);
+
+  const renderAllRows = [];
+  for (let i = 0; i < 9; i++) {
+    const rows = [];
+    for (let j = 0; j < 9; j++) {
+      console.log(i, j, sudokuBoard.puzzle[i][j]);
+      rows.push(renderCell(sudokuBoard.puzzle[i][j], i, j));
+    }
+    renderAllRows.push(rows);
+  }
 
   return (
     <View
@@ -21,28 +41,12 @@ const Puzzle = (props: any) => {
           justifyContent: "center",
         }}
       >
-        {board
-          .get("puzzle")
-          .map((row: any, i: any) => (
-            <View key={i}>
-              {row.map((cell: any, j: any) => renderCell(cell, i, j)).toArray()}
-            </View>
-          ))
-          .toArray()}
+        {renderAllRows.map((rows, index) => (
+          <View key={index}>{rows}</View>
+        ))}
       </View>
     </View>
   );
-};
-
-Puzzle.propTypes = {
-  board: PropTypes.any,
-  inHintMode: PropTypes.bool,
-  renderCell: PropTypes.func.isRequired,
-  rightArrowClicked: PropTypes.func.isRequired,
-  leftArrowClicked: PropTypes.func.isRequired,
-  checkMarkClicked: PropTypes.func.isRequired,
-  onFirstStep: PropTypes.bool,
-  onFinalStep: PropTypes.bool,
 };
 
 export default Puzzle;

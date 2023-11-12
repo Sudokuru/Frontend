@@ -8,26 +8,20 @@ import {
   strPuzzleToArray,
 } from "./BoardFunctions";
 import { List } from "immutable";
+import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
 export async function generateGame(props: any) {
   let gameData = null;
 
   if (props.gameType == "StartGame") {
     gameData = await Puzzles.startGame(props.difficulty, props.strategies).then(
-      (game: puzzle[]) => {
+      (game: SudokuBoardProps[]) => {
         // If game object is not returned, you get redirected to Main Page
         if (game == null) {
           //navigation.navigate("Home");
           return;
         }
-        let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-        return {
-          board,
-          history: List.of(board),
-          historyOffSet: 0,
-          solution: game[0].puzzleSolution,
-          activeGame: game,
-        };
+        return game;
       }
     );
   } else if (props.gameType == "ResumeGame") {
