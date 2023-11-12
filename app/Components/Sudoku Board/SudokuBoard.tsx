@@ -720,7 +720,7 @@ const SudokuBoard = (props: any) => {
       sudokuBoard.actionHistory.length == 0 || inHintMode;
     const isNoteModeButtonDisabled = inHintMode;
     if (currentSelectedCell != null) {
-      const isGiven = currentSelectedCell.type === "given";
+      const isCellGiven = currentSelectedCell.type === "given";
       const isCellEmpty =
         currentSelectedCell.type === "value" && currentSelectedCell.entry === 0;
       const isCellCorrect =
@@ -732,7 +732,7 @@ const SudokuBoard = (props: any) => {
           currentSelectedCell.entry
         );
       // disable erase button if value === 0 or is given
-      if (isGiven || isCellEmpty || isCellCorrect) {
+      if (isCellGiven || isCellEmpty || isCellCorrect) {
         isEraseButtonDisabled = true;
       }
     }
