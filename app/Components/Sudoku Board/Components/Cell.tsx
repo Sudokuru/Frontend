@@ -210,16 +210,27 @@ const Cell = (props: any) => {
       <View
         // testID={"cellr" + y + "c" + x + getCellContents()}
         style={[
-          styles(cellSize).cellView,
-          x % 3 === 0 && styles(cellSize).hardLineThicknessLeftWidth,
-          y % 3 === 0 && styles(cellSize).hardLineThicknessTopWidth,
-          x === 8 && styles(cellSize).hardLineThicknessRightWidth,
-          y === 8 && styles(cellSize).hardLineThicknessBottomWidth,
+          {
+            height: cellSize ? cellSize : fallbackHeight,
+            width: cellSize ? cellSize : fallbackHeight,
+            display: "flex",
+            justifyContent: "center",
+            borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
+            backgroundColor: "white",
+          },
+          x % 3 === 0 && {
+            borderLeftWidth: cellSize ? cellSize * (3 / 40) : 40,
+          },
+          y % 3 === 0 && {
+            borderTopWidth: cellSize ? cellSize * (3 / 40) : 40,
+          },
+          x === 8 && { borderRightWidth: cellSize ? cellSize * (3 / 40) : 40 },
+          y === 8 && { borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40 },
 
           // Border Highlighting
           // inHintMode && bgColor && { backgroundColor: bgColor },
 
-          // !inHintMode && conflict && styles(cellSize).conflict,
+          // !inHintMode && conflict && {styles(cellSize).conflict},
           // !inHintMode &&
           //   !conflict &&
           //   highlightPeers &&
@@ -298,16 +309,34 @@ const Cell = (props: any) => {
           </View>
         ) : ( */}
         {/* value && ( */}
-        <Text
-          style={[
-            styles(cellSize, null).cellText,
-            (conflict && styles(cellSize).conflict,
-            conflict && isSelected && styles(cellSize).selectedConflict,
-            prefilled && styles(cellSize).prefilled),
-          ]}
-        >
-          {value}
-        </Text>
+        {value != 0 ? (
+          <Text
+            style={[
+              {
+                fontFamily: "Inter_400Regular",
+                fontSize: cellSize
+                  ? cellSize * (3 / 4) + 1
+                  : fallbackHeight * (3 / 4) + 1,
+                textAlign: "center",
+                lineHeight: cellSize ? cellSize : fallbackHeight,
+              },
+              conflict &&
+                !isSelected && {
+                  color: "#000000",
+                  backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
+                },
+              conflict &&
+                isSelected && {
+                  color: "#000000",
+                  backgroundColor: SELECTED_CONFLICT_COLOR,
+                },
+            ]}
+          >
+            {value}
+          </Text>
+        ) : (
+          <></>
+        )}
         {/* ) */}
         {/* )} */}
       </View>
@@ -319,42 +348,6 @@ let fallbackHeight = 30;
 
 const styles = (cellSize?: number, themeColor?: any) =>
   StyleSheet.create({
-    hardLineThicknessLeftWidth: {
-      borderLeftWidth: cellSize ? cellSize * (3 / 40) : 40,
-    },
-    hardLineThicknessTopWidth: {
-      borderTopWidth: cellSize ? cellSize * (3 / 40) : 40,
-    },
-    hardLineThicknessRightWidth: {
-      borderRightWidth: cellSize ? cellSize * (3 / 40) : 40,
-    },
-    hardLineThicknessBottomWidth: {
-      borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40,
-    },
-    cellView: {
-      height: cellSize ? cellSize : fallbackHeight,
-      width: cellSize ? cellSize : fallbackHeight,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "stretch",
-      borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-      backgroundColor: "white",
-    },
-    cellText: {
-      fontFamily: "Inter_400Regular",
-      fontSize: cellSize
-        ? cellSize * (3 / 4) + 1
-        : fallbackHeight * (3 / 4) + 1,
-      textAlign: "center",
-      alignContent: "stretch",
-      alignItems: "stretch",
-      lineHeight: cellSize ? cellSize : fallbackHeight,
-    },
-    conflict: {
-      // styles for cells with conflict prop
-      color: "#000000",
-      backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
-    },
     peer: {
       // styles for cells with isPeer prop
       color: "#000000",
@@ -370,12 +363,6 @@ const styles = (cellSize?: number, themeColor?: any) =>
       color: "#000000",
       backgroundColor: SELECTED_COLOR,
     },
-    selectedConflict: {
-      // styles for cells with isSelected and conflict props
-      color: "#000000",
-      backgroundColor: SELECTED_CONFLICT_COLOR,
-    },
-    prefilled: {},
     noteViewParent: {
       flex: 1,
       justifyContent: "center",
