@@ -558,7 +558,7 @@ const SudokuBoard = (props: any) => {
         value={cell.entry}
         conflict={conflict}
         eraseSelected={eraseSelected}
-        key={x * y}
+        key={x + ":" + y}
         x={x}
         y={y}
       />

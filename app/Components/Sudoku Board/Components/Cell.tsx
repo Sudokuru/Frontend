@@ -200,6 +200,8 @@ const Cell = (props: any) => {
   //   return contents;
   // };
 
+  console.log(x, y, value, "GREETINGS FELLAS");
+
   return (
     // Sudoku Cells
     <Pressable
