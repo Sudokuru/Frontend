@@ -22,6 +22,7 @@ export function isPeer(
   selectedCellCoordinate: CellLocation,
   currentCellCoordinate: CellLocation
 ) {
+  console.log(selectedCellCoordinate, currentCellCoordinate, "HAHA");
   const squareA =
     Math.floor(selectedCellCoordinate.r / 3) * 3 +
     Math.floor(selectedCellCoordinate.c / 3);

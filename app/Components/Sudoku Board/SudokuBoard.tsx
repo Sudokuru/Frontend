@@ -496,12 +496,13 @@ const SudokuBoard = (props: any) => {
    * @param r row of cell to select
    */
   const selectCell = (r, c) => {
-    sudokuBoard.selectedCell = { r: r, c: c };
-    setSudokuBoard(sudokuBoard);
+    setSudokuBoard({ ...sudokuBoard, selectedCell: { r: r, c: c } });
   };
 
-  const isConflict = (r, c) => {
-    // Add a check to verify that this is not a note.
+  const isConflict = (r: number, c: number, cell: CellProps) => {
+    if (cell.type == "note" || cell.entry == 0) {
+      return false;
+    }
     return !(
       sudokuBoard.puzzle[c][r].entry === sudokuBoard.puzzleSolution[c][r]
     );
@@ -515,6 +516,7 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
+    console.log("RENDERING");
     let selected = sudokuBoard.selectedCell;
     let isSelected = false;
     let conflict = false;
@@ -530,8 +532,8 @@ const SudokuBoard = (props: any) => {
     }
 
     if (selected != null) {
-      (isSelected = true), (conflict = isConflict(r, c));
-      peer = isPeer(cell, sudokuBoard?.selectedCell);
+      (isSelected = true), (conflict = isConflict(r, c, cell));
+      peer = isPeer(sudokuBoard.selectedCell, { r: r, c: c });
       // box = highlightBox({ x, y }, board.get("selected"));
       // row = highlightRow({ x, y }, board.get("selected"));
       // column = highlightColumn({ x, y }, board.get("selected"));
