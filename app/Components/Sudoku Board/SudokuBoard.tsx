@@ -711,8 +711,14 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderActions = () => {
+    const inNoteMode = sudokuBoard.inNoteMode;
+    const inHintMode = sudokuBoard.inHintMode;
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
+
     let isEraseButtonDisabled = inHintMode || sudokuBoard.selectedCell == null;
+    const isUndoButtonDisabled =
+      sudokuBoard.actionHistory.length == 0 || inHintMode;
+    const isNoteModeButtonDisabled = inHintMode;
     if (currentSelectedCell != null) {
       const isGiven = currentSelectedCell.type === "given";
       const isCellEmpty =
@@ -730,13 +736,12 @@ const SudokuBoard = (props: any) => {
         isEraseButtonDisabled = true;
       }
     }
-    const inNoteMode = sudokuBoard.inNoteMode;
-    const inHintMode = sudokuBoard.inHintMode;
 
     return (
       <ActionRow
         isEraseButtonDisabled={isEraseButtonDisabled}
-        history={sudokuBoard.actionHistory}
+        isUndoButtonDisabled={isUndoButtonDisabled}
+        isNoteModeButtonDisabled={isNoteModeButtonDisabled}
         inNoteMode={inNoteMode}
         undo={undo}
         toggleNoteMode={toggleNoteMode}

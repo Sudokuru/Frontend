@@ -7,7 +7,8 @@ import React from "react";
 const ActionRow = (props: any) => {
   const {
     isEraseButtonDisabled,
-    history,
+    isUndoButtonDisabled,
+    isNoteModeButtonDisabled,
     inNoteMode,
     undo,
     toggleNoteMode,
@@ -37,7 +38,7 @@ const ActionRow = (props: any) => {
       {/* Undo */}
       <Pressable
         onPress={undo}
-        disabled={history.length == 0 || inHintMode}
+        disabled={isUndoButtonDisabled}
         testID={"undoButton"}
       >
         <MaterialCommunityIcons
@@ -49,7 +50,7 @@ const ActionRow = (props: any) => {
       {/* Note mode */}
       <Pressable
         onPress={toggleNoteMode}
-        disabled={inHintMode}
+        disabled={isNoteModeButtonDisabled}
         testID={"toggleNoteModeButton"}
       >
         {inNoteMode ? (
