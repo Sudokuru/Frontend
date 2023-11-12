@@ -42,8 +42,8 @@ const Cell = (props: any) => {
     prefilled,
     // notes,
     conflict,
-    x,
-    y,
+    c,
+    r,
     // inHintMode,
     // hintSteps,
     // currentStep,
@@ -218,14 +218,14 @@ const Cell = (props: any) => {
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
             backgroundColor: "white",
           },
-          x % 3 === 0 && {
+          r % 3 === 0 && {
             borderLeftWidth: cellSize ? cellSize * (3 / 40) : 40,
           },
-          y % 3 === 0 && {
+          c % 3 === 0 && {
             borderTopWidth: cellSize ? cellSize * (3 / 40) : 40,
           },
-          x === 8 && { borderRightWidth: cellSize ? cellSize * (3 / 40) : 40 },
-          y === 8 && { borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40 },
+          r === 8 && { borderRightWidth: cellSize ? cellSize * (3 / 40) : 40 },
+          c === 8 && { borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40 },
 
           // Border Highlighting
           // inHintMode && bgColor && { backgroundColor: bgColor },

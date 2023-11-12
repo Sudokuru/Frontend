@@ -516,7 +516,7 @@ const SudokuBoard = (props: any) => {
     return false;
   };
 
-  const renderCell = (cell: CellProps, x: number, y: number) => {
+  const renderCell = (cell: CellProps, r: number, c: number) => {
     let selected = sudokuBoard.selectedCell;
     let isSelected = false;
     let conflict = false;
@@ -558,9 +558,9 @@ const SudokuBoard = (props: any) => {
         value={cell.entry}
         conflict={conflict}
         eraseSelected={eraseSelected}
-        key={x + ":" + y}
-        x={x}
-        y={y}
+        key={r + ":" + c}
+        c={c}
+        r={r}
       />
     );
   };
