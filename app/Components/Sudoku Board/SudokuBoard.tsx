@@ -265,8 +265,10 @@ const SudokuBoard = (props: any) => {
   // ! Action history should store what WAS in the square before the move
   // ! So that it can be returned during a POP
   const undo = () => {
+    // Adding previous move back to the board
     const move = sudokuBoard.actionHistory.pop();
-
+    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].entry =
+      move.cell.entry;
     // remove from move history
     setSudokuBoard({
       ...sudokuBoard,
@@ -454,10 +456,10 @@ const SudokuBoard = (props: any) => {
     // updating board entry
     sudokuBoard.puzzle[c][r].entry = inputValue;
 
-    // Adding to the history
+    // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
       type: "value",
-      cell: { entry: inputValue, type: "value" },
+      cell: { entry: currentValue, type: "value" },
       cellLocation: { c: c, r: r },
     });
 
