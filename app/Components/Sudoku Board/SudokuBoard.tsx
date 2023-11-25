@@ -412,15 +412,15 @@ const SudokuBoard = (props: any) => {
       return;
     }
 
+    // Set new Cell Value
+    setCellEntryValue(inputValue);
+
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
       type: currentType,
       cell: { entry: currentEntry, type: currentType },
       cellLocation: { c: c, r: r },
     });
-
-    // Set new Cell Value
-    setCellEntryValue(inputValue);
 
     setSudokuBoard({
       ...sudokuBoard,

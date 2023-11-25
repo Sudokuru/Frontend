@@ -195,7 +195,7 @@ const Cell = (props: RenderCellProps) => {
     if (type === "note") {
       contents += "notes:";
       for (let i = 1; i <= 9; i++) {
-        if (entry.has(i)) {
+        if (entry.includes(i)) {
           contents += i.toString();
         }
       }
