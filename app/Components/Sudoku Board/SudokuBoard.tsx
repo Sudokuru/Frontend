@@ -214,14 +214,14 @@ const SudokuBoard = (props: any) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (props.gameType == "Demo" && board) {
-      const interval = setInterval(() => {
-        autoHint();
-      }, 2000);
-      return () => clearInterval(interval);
-    }
-  });
+  // useEffect(() => {
+  //   if (props.gameType == "Demo" && board) {
+  //     const interval = setInterval(() => {
+  //       autoHint();
+  //     }, 2000);
+  //     return () => clearInterval(interval);
+  //   }
+  // });
 
   // if we are loading then we return the loading icon
   if (isLoading) return <ActivityIndicator animating={true} color="red" />;
@@ -261,6 +261,13 @@ const SudokuBoard = (props: any) => {
     updateBoard(newBoard);
   };
 
+  /**
+   * Adds the previous move (most recent move stored in action history) to board
+   * Example:
+   * moves: r0c0 insert 5, r1c1 insert 6, r1c1 insert 7
+   * actionHistory: r0c0 = 0, r1c1 = 0, r1c1 = 6
+   * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
+   */
   const undo = () => {
     // Adding previous move back to the board
     const move = sudokuBoard.actionHistory.pop();
@@ -273,145 +280,153 @@ const SudokuBoard = (props: any) => {
     });
   };
 
+  /**
+   * Toggles note mode for the board
+   */
   const toggleNoteMode = () => {
     sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
     setSudokuBoard({ ...sudokuBoard, inNoteMode: sudokuBoard.inNoteMode });
   };
 
-  const toggleHintMode = () => {
-    // Create new board variable to store the temporary hint board state
-    let newBoard = board;
-    // Stores whether or not the board is in hint mode
-    let newHintMode: boolean = !sudokuBoard.inHintMode;
-    newBoard = newBoard.set("inHintMode", newHintMode);
+  // const toggleHintMode = () => {
+  //   // Create new board variable to store the temporary hint board state
+  //   let newBoard = board;
+  //   // Stores whether or not the board is in hint mode
+  //   let newHintMode: boolean = !sudokuBoard.inHintMode;
+  //   newBoard = newBoard.set("inHintMode", newHintMode);
 
-    // Increment global hint value by one
-    if (props.gameType != "StartDrill" && newHintMode) {
-      if (activeGame[0].numHintsUsed == null) {
-        activeGame[0].numHintsUsed = 1;
-      } else {
-        activeGame[0].numHintsUsed++;
-      }
-    }
+  //   // Increment global hint value by one
+  //   if (props.gameType != "StartDrill" && newHintMode) {
+  //     if (activeGame[0].numHintsUsed == null) {
+  //       activeGame[0].numHintsUsed = 1;
+  //     } else {
+  //       activeGame[0].numHintsUsed++;
+  //     }
+  //   }
 
-    // If they are exiting hint mode, update board state by either reverting (if they prematurely exit hint mode) or updating (if they are on the final step)
-    if (!newHintMode) {
-      let hintStepsLength = newBoard.get("hintSteps").length;
-      let currentStep = newBoard.get("currentStep");
+  //   // If they are exiting hint mode, update board state by either reverting (if they prematurely exit hint mode) or updating (if they are on the final step)
+  //   if (!newHintMode) {
+  //     let hintStepsLength = newBoard.get("hintSteps").length;
+  //     let currentStep = newBoard.get("currentStep");
 
-      // if they prematurely exit hint mode, undo the hint
-      if (currentStep < hintStepsLength - 1) {
-        undo();
-      }
+  //     // if they prematurely exit hint mode, undo the hint
+  //     if (currentStep < hintStepsLength - 1) {
+  //       undo();
+  //     }
 
-      newBoard = newBoard.set("currentStep", -1);
-      newBoard = newBoard.set("hintSteps", []);
+  //     newBoard = newBoard.set("currentStep", -1);
+  //     newBoard = newBoard.set("hintSteps", []);
 
-      // if they are on the final step, push the hint operation to the history stack
-      if (currentStep == hintStepsLength - 1) updateBoard(newBoard);
-      else setBoard(newBoard);
-      return;
-    }
+  //     // if they are on the final step, push the hint operation to the history stack
+  //     if (currentStep == hintStepsLength - 1) updateBoard(newBoard);
+  //     else setBoard(newBoard);
+  //     return;
+  //   }
 
-    // If they are entering hint mode, update board state by adding the hint
+  //   // If they are entering hint mode, update board state by adding the hint
 
-    newBoard = newBoard.set("currentStep", 0);
-    let hint = getNextHint(newBoard, solution, props.strategies);
+  //   newBoard = newBoard.set("currentStep", 0);
+  //   let hint = getNextHint(newBoard, solution, props.strategies);
 
-    if (!hint) return;
-    const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
-    for (let i = 0; i < words.length; i++)
-      words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-    let hintStratName = words.join(" ");
-    newBoard = newBoard.set("hintStratName", hintStratName);
-    newBoard = newBoard.set("hintInfo", hint.info);
-    newBoard = newBoard.set("hintAction", hint.action);
+  //   if (!hint) return;
+  //   const words = hint.strategy.toLowerCase().replaceAll("_", " ").split(" ");
+  //   for (let i = 0; i < words.length; i++)
+  //     words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+  //   let hintStratName = words.join(" ");
+  //   newBoard = newBoard.set("hintStratName", hintStratName);
+  //   newBoard = newBoard.set("hintInfo", hint.info);
+  //   newBoard = newBoard.set("hintAction", hint.action);
 
-    let removals = getRemovalsFromHint(board, hint);
+  //   let removals = getRemovalsFromHint(board, hint);
 
-    if (hint.strategy === "AMEND_NOTES") {
-      newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
-    }
+  //   if (hint.strategy === "AMEND_NOTES") {
+  //     newBoard = addEveryRemovalNoteToBoard(newBoard, removals);
+  //   }
 
-    let hintObject: Hint = getHintObject(
-      hint.strategy,
-      getGroupsFromHint(hint),
-      getCausesFromHint(hint),
-      removals,
-      getPlacementsFromHint(hint)
-    );
+  //   let hintObject: Hint = getHintObject(
+  //     hint.strategy,
+  //     getGroupsFromHint(hint),
+  //     getCausesFromHint(hint),
+  //     removals,
+  //     getPlacementsFromHint(hint)
+  //   );
 
-    let hintSteps: any[] = hintObject.getHintSteps();
-    newBoard = newBoard.set("hintSteps", hintSteps);
-    setBoard(newBoard);
-  };
+  //   let hintSteps: any[] = hintObject.getHintSteps();
+  //   newBoard = newBoard.set("hintSteps", hintSteps);
+  //   setBoard(newBoard);
+  // };
 
-  const addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
-    let newBoard = board;
-    newBoard = newBoard.set("currentStep", currentStep);
-    newBoard = updateBoardWithNumber({
-      x,
-      y,
-      number: valueToAdd,
-      fill: true,
-      board: newBoard,
-    });
-    return newBoard;
-  };
+  // const addValueFromPlacement = (x, y, valueToAdd, currentStep) => {
+  //   let newBoard = board;
+  //   newBoard = newBoard.set("currentStep", currentStep);
+  //   newBoard = updateBoardWithNumber({
+  //     x,
+  //     y,
+  //     number: valueToAdd,
+  //     fill: true,
+  //     board: newBoard,
+  //   });
+  //   return newBoard;
+  // };
 
-  const deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
-    let newBoard = board;
-    newBoard = newBoard.set("currentStep", currentStep);
-    newBoard = updateBoardWithNumber({
-      x,
-      y,
-      number: valueToRemove,
-      fill: false,
-      board: newBoard,
-    });
-    newBoard = newBoard.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
-    return newBoard;
-  };
+  // const deleteValueFromPlacement = (x, y, valueToRemove, currentStep) => {
+  //   let newBoard = board;
+  //   newBoard = newBoard.set("currentStep", currentStep);
+  //   newBoard = updateBoardWithNumber({
+  //     x,
+  //     y,
+  //     number: valueToRemove,
+  //     fill: false,
+  //     board: newBoard,
+  //   });
+  //   newBoard = newBoard.setIn(["puzzle", x, y, "notes"], Set.of(valueToRemove));
+  //   return newBoard;
+  // };
 
-  const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
-    let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-    board = board.set("currentStep", currentStep);
-    for (let i = 0; i < notesToAdd.length; i++) {
-      if (!notes.has(notesToAdd[i])) {
-        notes = notes.add(notesToAdd[i]);
-      }
-    }
-    board = board.setIn(["puzzle", x, y, "notes"], notes);
-    return board;
-  };
+  // const addNotesFromRemovals = (x, y, notesToAdd, currentStep, board) => {
+  //   let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
+  //   board = board.set("currentStep", currentStep);
+  //   for (let i = 0; i < notesToAdd.length; i++) {
+  //     if (!notes.has(notesToAdd[i])) {
+  //       notes = notes.add(notesToAdd[i]);
+  //     }
+  //   }
+  //   board = board.setIn(["puzzle", x, y, "notes"], notes);
+  //   return board;
+  // };
 
-  const deleteNotesFromRemovals = (x, y, notesToRemove, currentStep, board) => {
-    board = board.set("currentStep", currentStep);
-    let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-    for (let i = 0; i < notesToRemove.length; i++) {
-      if (notes.has(notesToRemove[i])) {
-        notes = notes.delete(notesToRemove[i]);
-      }
-    }
-    board = board.setIn(["puzzle", x, y, "notes"], notes);
-    return board;
-  };
+  // const deleteNotesFromRemovals = (x, y, notesToRemove, currentStep, board) => {
+  //   board = board.set("currentStep", currentStep);
+  //   let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
+  //   for (let i = 0; i < notesToRemove.length; i++) {
+  //     if (notes.has(notesToRemove[i])) {
+  //       notes = notes.delete(notesToRemove[i]);
+  //     }
+  //   }
+  //   board = board.setIn(["puzzle", x, y, "notes"], notes);
+  //   return board;
+  // };
 
-  /*
+  /**
    * Called when the user hits the 'erase' button
    * If notes are present in selected cell, removes all notes
    * If value is present in selected cell, removes value if value is incorrect
    */
   const eraseSelected = () => {
-    insertValue(0);
+    updateCellEntry(0);
   };
 
-  const insertValue = (inputValue: number) => {
+  /**
+   * Inserts a value into the selected cell
+   * todo make it so that delete key works even in note mode
+   * @param inputValue A number value to be inserted into the selected cell
+   */
+  const updateCellEntry = (inputValue: number) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    const given = currentSelectedCell.type === "given";
+    const given: boolean = currentSelectedCell.type === "given";
     console.log("ANOTHER TEST 1", sudokuBoard.puzzle);
     console.log("ACTION HISTORY 1", sudokuBoard.actionHistory);
 
@@ -420,26 +435,62 @@ const SudokuBoard = (props: any) => {
       return;
     }
 
-    const r = sudokuBoard.selectedCell.r;
-    const c = sudokuBoard.selectedCell.c;
-    const currentValue = currentSelectedCell.entry;
-    console.log("CURRENT VALUE: ", currentValue, "NEW VALUE: ", inputValue);
+    const r: number = sudokuBoard.selectedCell.r;
+    const c: number = sudokuBoard.selectedCell.c;
+    const currentEntry = currentSelectedCell.entry;
+    const currentType = currentSelectedCell.type;
+    console.log("CURRENT VALUE: ", currentEntry, "NEW VALUE: ", inputValue);
 
     // We do not need to take action if current value matches existing value, or if value is correct
     if (
-      currentValue === inputValue ||
-      isValueCorrect(sudokuBoard.puzzleSolution[c][r], currentValue)
+      currentType === "value" &&
+      (currentEntry === inputValue ||
+        isValueCorrect(sudokuBoard.puzzleSolution[c][r], currentEntry))
     ) {
       return;
     }
 
+    // This value will be overridden if we are in note mode
+    let newCellEntry: number | number[] = inputValue;
+
+    console.log(
+      "IN NOTE MODE: ",
+      sudokuBoard.inNoteMode,
+      " CURRENT TYPE: ",
+      currentType,
+      " inputVALUE: ",
+      inputValue
+    );
+
+    // update type and newCellEntry of selected cell
+    if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
+      console.log("HELLO BIG BRAIN");
+      sudokuBoard.puzzle[c][r].type = "note";
+      newCellEntry = [inputValue];
+    }
+    // update type of selected cell
+    else if (!sudokuBoard.inNoteMode && currentType === "note") {
+      sudokuBoard.puzzle[c][r].type = "value";
+    }
+    // set new note value
+    else if (sudokuBoard.inNoteMode) {
+      if (currentEntry.includes(inputValue)) {
+        newCellEntry = currentEntry.filter((word) => word != inputValue);
+      } else {
+        console.log(currentEntry, "BANANA");
+        currentEntry.push(inputValue);
+        newCellEntry = currentEntry;
+        console.log(newCellEntry, "BANANAAPPLE");
+      }
+    }
+
     // updating board entry
-    sudokuBoard.puzzle[c][r].entry = inputValue;
+    sudokuBoard.puzzle[c][r].entry = newCellEntry;
 
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
-      type: "value",
-      cell: { entry: currentValue, type: "value" },
+      type: currentType,
+      cell: { entry: currentEntry, type: currentType },
       cellLocation: { c: c, r: r },
     });
 
@@ -468,13 +519,13 @@ const SudokuBoard = (props: any) => {
   };
 
   /**
-   *
-   * @param c column of cell to select
-   * @param r row of cell to select
+   * Toggles whether or not a cell is selected on click
+   * @param r The row of a given cell 0-8
+   * @param c the column of a given cell 0-8
    */
-  const selectCell = (r: number, c: number) => {
+  const toggleSelectCell = (r: number, c: number) => {
     if (
-      sudokuBoard?.selectedCell &&
+      sudokuBoard.selectedCell &&
       sudokuBoard.selectedCell.c === c &&
       sudokuBoard.selectedCell.r === r
     ) {
@@ -484,7 +535,14 @@ const SudokuBoard = (props: any) => {
     }
   };
 
-  const isConflict = (r: number, c: number, cell: CellProps) => {
+  /**
+   * Determines if a cell in the puzzle has an incorrect value
+   * @param r The row of a given cell 0-8
+   * @param c the column of a given cell 0-8
+   * @param cell The cell object
+   * @returns True if the value in a cell is incorrect, False otherwise
+   */
+  const isConflict: boolean = (r: number, c: number, cell: CellProps) => {
     if (cell.type == "note" || cell.entry == 0) {
       return false;
     }
@@ -493,6 +551,9 @@ const SudokuBoard = (props: any) => {
     );
   };
 
+  /**
+   * Determines if there is an incorrect value in the board
+   */
   const boardHasConflict = () => {
     for (let i = 0; i < 9; i++)
       for (let j = 0; j < 9; j++) if (isConflict(i, j)) return true;
@@ -544,7 +605,7 @@ const SudokuBoard = (props: any) => {
     return (
       <Cell
         onClick={(r: number, c: number) => {
-          selectCell(r, c);
+          toggleSelectCell(r, c);
         }}
         sameValue={sameValue}
         isSelected={isSelected}
@@ -671,12 +732,7 @@ const SudokuBoard = (props: any) => {
       !inHintMode &&
       !(props.gameType == "Demo")
     ) {
-      // check if input is a digit from 1 to 9
-      if (inNoteMode) {
-        addNumberAsNote(parseInt(inputValue, 10));
-      } else {
-        insertValue(parseInt(inputValue, 10));
-      }
+      updateCellEntry(parseInt(inputValue, 10));
     }
     if (
       (inputValue == "Delete" ||
@@ -703,7 +759,7 @@ const SudokuBoard = (props: any) => {
       <NumberControl
         prefilled={prefilled}
         inNoteMode={inNoteMode}
-        fillNumber={insertValue}
+        fillNumber={updateCellEntry}
         addNumberAsNote={addNumberAsNote}
         inHintMode={inHintMode}
       />
