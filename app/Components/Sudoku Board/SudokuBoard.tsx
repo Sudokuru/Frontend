@@ -466,15 +466,6 @@ const SudokuBoard = (props: any) => {
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
 
-    console.log(
-      "IN NOTE MODE: ",
-      sudokuBoard.inNoteMode,
-      " CURRENT TYPE: ",
-      currentType,
-      " inputVALUE: ",
-      inputValue
-    );
-
     // update type and newCellEntry of selected cell
     if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
       sudokuBoard.puzzle[c][r].type = "note";
