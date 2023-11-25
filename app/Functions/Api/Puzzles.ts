@@ -218,7 +218,7 @@ export class Puzzles {
    * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
    * @returns promise of activeGame JSON object
    */
-  public static async getGame(): Promise<activeGame[]> {
+  public static async getGame(): Promise<SudokuBoardProps[]> {
     return await getKeyJSON("active_game");
   }
 
@@ -226,7 +226,7 @@ export class Puzzles {
    * Given a game saves it to AsyncStorage
    * @param game - activeGame JSON object
    */
-  public static async saveGame(game: activeGame) {
+  public static async saveGame(game: SudokuBoardProps) {
     storeData("active_game", JSON.stringify([game]));
   }
 

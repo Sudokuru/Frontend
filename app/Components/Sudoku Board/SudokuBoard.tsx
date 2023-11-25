@@ -41,27 +41,12 @@ import {
   SudokuBoardProps,
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import HeaderRow from "./Components/HeaderRow";
 
 let fallbackHeight = 30;
 
 const styles = (cellSize, sizeConst, theme) =>
   StyleSheet.create({
-    headerControlRow: {
-      alignSelf: "center",
-      width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-      height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexDirection: "row",
-      marginTop: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2),
-    },
-    headerFont: {
-      fontFamily: "Inter_400Regular",
-      fontSize: cellSize
-        ? cellSize * (1 / 3) + 1
-        : fallbackHeight * (1 / 3) + 1,
-      color: theme,
-    },
     submitButtonView: {
       width: cellSize ? cellSize * (50 / 30) : fallbackHeight * (50 / 30),
       height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
@@ -103,67 +88,13 @@ DrillSubmitButton.propTypes = {
   isDrillSolutionCorrect: PropTypes.func.isRequired,
 };
 
-const HeaderRow = (props) => {
-  //  Header w/ timer and pause button
-  const { currentTime, activeGame, timer, setTimer } = props;
-  const cellSize = getCellSize();
-  const navigation = useNavigation();
-
-  const theme = useTheme();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      let interval = null;
-      interval = setInterval(() => {
-        if (currentTime && currentTime >= timer) {
-          setTimer(currentTime + 1);
-        } else {
-          setTimer(timer + 1);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    })
-  );
-
-  const handlePause = () => {
-    saveGame(activeGame, timer);
-    navigation.replace("PlayPage");
-  };
-
-  return (
-    <View style={styles(cellSize).headerControlRow}>
-      <Text
-        style={styles(cellSize, null, theme.colors.onBackground).headerFont}
-      >
-        Time: {formatTime(currentTime > timer ? currentTime : timer)}
-      </Text>
-      <PauseButton handlePause={handlePause} isPaused={false} />
-    </View>
-  );
-};
-
-HeaderRow.propTypes = {
-  paused: PropTypes.bool.isRequired,
-};
-
-HeaderRow.defaultProps = {
-  paused: false,
-};
-
 const SudokuBoard = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
-
-  // shared states
-  // const [board, setBoard] = useState();
-  // const [history, setHistory] = useState<any>();
-  // const [historyOffSet, setHistoryOffSet] = useState<number>();
-  // const [solution, setSolution] = useState();
-  // const [activeGame, setActiveGame] = useState();
 
   // const setTimer = (timer: number) => useTimer(timer);
   // const [timer, useTimer] = useState<number>(0);
 
-  const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
+  const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps | null>(null);
 
   // drill states
   // These could probably stay as props since these values are constant and not altered.
@@ -392,9 +323,8 @@ const SudokuBoard = (props: any) => {
       return;
     }
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
-    const given: boolean = currentSelectedCell.type === "given";
     // We do not need to take action if this is a given value
-    if (given) {
+    if (currentSelectedCell.type === "given") {
       return;
     }
 
@@ -427,6 +357,9 @@ const SudokuBoard = (props: any) => {
       puzzle: sudokuBoard.puzzle,
       actionHistory: sudokuBoard.actionHistory,
     });
+
+    // Saving current game status
+    saveGame(sudokuBoard);
 
     // adding to the numWrongCellsPlayed Tracker
     // if (
@@ -588,12 +521,7 @@ const SudokuBoard = (props: any) => {
 
   const renderTopBar = () => {
     return (
-      <HeaderRow
-        currentTime={activeGame[0].currentTime}
-        activeGame={activeGame[0]}
-        timer={timer}
-        setTimer={setTimer}
-      />
+      <HeaderRow sudokuBoard={sudokuBoard} setSudokuBoard={setSudokuBoard} />
     );
   };
 
@@ -841,10 +769,10 @@ const SudokuBoard = (props: any) => {
       onKeyDown={handleKeyDown}
       styles={{ borderWidth: 1 }}
     >
-      {/* {sudokuBoard &&
+      {sudokuBoard &&
         !(props.gameType == "Demo") &&
         !(props.gameType == "StartDrill") &&
-        renderTopBar()} */}
+        renderTopBar()}
       {sudokuBoard && renderPuzzle()}
       {sudokuBoard && (
         <View

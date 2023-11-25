@@ -3,6 +3,7 @@ import { Set } from "immutable";
 import { getHint as getHint } from "sudokuru";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { gameResults } from "../../../Types/Puzzle.Types";
+import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -299,13 +300,8 @@ export function strPuzzleToArray(str: any) {
   return { puzzle: output };
 }
 
-export async function saveGame(activeGame: any, timer: any) {
-  activeGame.currentTime = timer;
-
+export async function saveGame(activeGame: SudokuBoardProps) {
   Puzzles.saveGame(activeGame).then((res: any) => {
-    if (activeGame.numWrongCellsPlayed == null) {
-      activeGame.numWrongCellsPlayed = 0;
-    }
     if (res) {
       console.log("Game progress was saved successfully!");
     }
