@@ -30,7 +30,7 @@ export async function generateGame(props: any) {
         //navigation.navigate("Home");
         return;
       }
-      return game;
+      return game[0];
     });
   }
   // else if (props.gameType == "StartDrill") {
