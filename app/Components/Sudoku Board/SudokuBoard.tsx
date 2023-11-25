@@ -419,9 +419,8 @@ const SudokuBoard = (props: any) => {
   };
 
   /**
-   * Inserts a value into the selected cell
-   * todo make it so that delete key works even in note mode
-   * @param inputValue A number value to be inserted into the selected cell
+   * Inserts or removes a note or value from a selected cell
+   * @param inputValue User input 0-9
    */
   const updateCellEntry = (inputValue: number) => {
     if (sudokuBoard.selectedCell == null) {
@@ -429,9 +428,6 @@ const SudokuBoard = (props: any) => {
     }
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
     const given: boolean = currentSelectedCell.type === "given";
-    console.log("ANOTHER TEST 1", sudokuBoard.puzzle);
-    console.log("ACTION HISTORY 1", sudokuBoard.actionHistory);
-
     // We do not need to take action if this is a given value
     if (given) {
       return;
@@ -441,7 +437,6 @@ const SudokuBoard = (props: any) => {
     const c: number = sudokuBoard.selectedCell.c;
     const currentEntry = currentSelectedCell.entry;
     const currentType = currentSelectedCell.type;
-    console.log("CURRENT VALUE: ", currentEntry, "NEW VALUE: ", inputValue);
 
     // We do not need to take action if current value matches existing value, or if value is correct
     if (
@@ -452,8 +447,6 @@ const SudokuBoard = (props: any) => {
       return;
     }
 
-    console.log("CURRENT ENTRY STORED IN HISTORY: ", currentEntry);
-
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
       type: currentType,
@@ -461,11 +454,43 @@ const SudokuBoard = (props: any) => {
       cellLocation: { c: c, r: r },
     });
 
-    console.log("ACTION HISTORY: ", sudokuBoard.actionHistory);
+    // Set new Cell Value
+    setCellEntryValue(inputValue);
 
+    setSudokuBoard({
+      ...sudokuBoard,
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+    });
+
+    // adding to the numWrongCellsPlayed Tracker
+    // if (
+    //   props.gameType != "StartDrill" &&
+    //   !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+    // ) {
+    //   setSudokuBoard({
+    //     ...sudokuBoard,
+    //     statistics: {
+    //       ...sudokuBoard.statistics,
+    //       numWrongCellsPlayed: sudokuBoard.statistics.numWrongCellsPlayed++,
+    //     },
+    //   });
+    // }
+  };
+
+  /**
+   * Sub function of @function updateCellEntry
+   * Updates the selected cell updated based on the user input value and what is currently in the cell
+   * @param inputValue User input 0-9
+   */
+  const setCellEntryValue = (inputValue: number) => {
+    const currentSelectedCell: CellProps = getCurrentSelectedCell();
+    const currentType = currentSelectedCell.type;
+    const currentEntry = currentSelectedCell.entry;
+    const r: number = sudokuBoard.selectedCell.r;
+    const c: number = sudokuBoard.selectedCell.c;
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
-
     // update type and newCellEntry of selected cell
     if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
       sudokuBoard.puzzle[c][r].type = "note";
@@ -491,29 +516,6 @@ const SudokuBoard = (props: any) => {
 
     // updating board entry
     sudokuBoard.puzzle[c][r].entry = newCellEntry;
-
-    setSudokuBoard({
-      ...sudokuBoard,
-      puzzle: sudokuBoard.puzzle,
-      actionHistory: sudokuBoard.actionHistory,
-    });
-
-    console.log("ANOTHER TEST", sudokuBoard.puzzle);
-    console.log("ACTION HISTORY: ", sudokuBoard.actionHistory);
-
-    // adding to the numWrongCellsPlayed Tracker
-    // if (
-    //   props.gameType != "StartDrill" &&
-    //   !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
-    // ) {
-    //   setSudokuBoard({
-    //     ...sudokuBoard,
-    //     statistics: {
-    //       ...sudokuBoard.statistics,
-    //       numWrongCellsPlayed: sudokuBoard.statistics.numWrongCellsPlayed++,
-    //     },
-    //   });
-    // }
   };
 
   /**
