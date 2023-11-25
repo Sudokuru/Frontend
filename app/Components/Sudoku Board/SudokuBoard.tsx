@@ -472,7 +472,10 @@ const SudokuBoard = (props: any) => {
       newCellEntry = [inputValue];
     }
     // update type of selected cell
-    else if (!sudokuBoard.inNoteMode && currentType === "note") {
+    else if (
+      (!sudokuBoard.inNoteMode && currentType === "note") ||
+      inputValue === 0
+    ) {
       sudokuBoard.puzzle[c][r].type = "value";
     }
     // set new note value
