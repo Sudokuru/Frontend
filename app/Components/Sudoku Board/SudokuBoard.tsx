@@ -226,41 +226,6 @@ const SudokuBoard = (props: any) => {
   // if we are loading then we return the loading icon
   if (isLoading) return <ActivityIndicator animating={true} color="red" />;
 
-  const getSelectedCell = () => {
-    const selected = board.get("selected");
-    return selected && board.get("puzzle").getIn([selected.x, selected.y]);
-  };
-
-  const addNumberAsNote = (number) => {
-    let newBoard = board;
-    let selectedCell = getSelectedCell();
-    if (!selectedCell) return;
-    const prefilled = selectedCell.get("prefilled");
-    if (prefilled) return;
-    const { x, y } = newBoard.get("selected");
-    const currentValue = selectedCell.get("value");
-    if (currentValue) {
-      newBoard = updateBoardWithNumber({
-        x,
-        y,
-        number: currentValue,
-        fill: false,
-        board: newBoard,
-      });
-    }
-    let notes = selectedCell.get("notes") || Set();
-    let actualValue = solution ? solution[x][y] : -1;
-    if (notes.has(number)) {
-      if (number !== actualValue) notes = notes.delete(number);
-    } else {
-      notes = notes.add(number);
-    }
-    selectedCell = selectedCell.set("notes", notes);
-    selectedCell = selectedCell.delete("value");
-    newBoard = newBoard.setIn(["puzzle", x, y], selectedCell);
-    updateBoard(newBoard);
-  };
-
   /**
    * Adds the previous move (most recent move stored in action history) to board
    * Example:
