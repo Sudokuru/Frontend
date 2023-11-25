@@ -472,7 +472,7 @@ const SudokuBoard = (props: any) => {
    * @param c column of cell to select
    * @param r row of cell to select
    */
-  const selectCell = (r, c) => {
+  const selectCell = (r: number, c: number) => {
     if (
       sudokuBoard?.selectedCell &&
       sudokuBoard.selectedCell.c === c &&
@@ -543,7 +543,7 @@ const SudokuBoard = (props: any) => {
 
     return (
       <Cell
-        onClick={(r, c) => {
+        onClick={(r: number, c: number) => {
           selectCell(r, c);
         }}
         sameValue={sameValue}

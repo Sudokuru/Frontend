@@ -25,18 +25,34 @@ import {
   SELECTED_CONFLICT_COLOR,
   IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
+import {
+  CellProps,
+  CellType,
+} from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
 let puzzleString = "";
 let notesString = "";
 
-const Cell = (props: any) => {
+interface RenderCellProps {
+  value: any; // todo find some way to derive this from type instad of duplicate
+  type: CellType;
+  onClick: any; // todo type of function
+  isPeer: any;
+  isSelected: any;
+  sameValue: any;
+  conflict: any;
+  c: number;
+  r: number;
+}
+
+const Cell = (props: RenderCellProps) => {
   const {
     value,
+    type,
     onClick,
     isPeer,
     isSelected,
     sameValue,
-    // notes,
     conflict,
     c,
     r,
@@ -159,17 +175,20 @@ const Cell = (props: any) => {
   //   }
   // }
 
-  // const getNoteContents = (noteVal: any) => {
-  //   if (notes.has(noteVal)) {
-  //     let styleVal = styles(cellSize).noteText;
-  //     if (isRemovalHighlight[noteVal - 1])
-  //       styleVal = styles(cellSize).removalNoteText;
-  //     else if (isPlacementHighlight[noteVal - 1])
-  //       styleVal = styles(cellSize).placementNoteText;
+  const getNoteContents = (noteIndex: number) => {
+    if (value.includes(noteIndex)) {
+      let styleVal = {
+        fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
+        fontFamily: "Inter_200ExtraLight",
+      };
+      // if (isRemovalHighlight[noteIndex - 1])
+      //   styleVal = styles(cellSize).removalNoteText;
+      // else if (isPlacementHighlight[noteIndex - 1])
+      //   styleVal = styles(cellSize).placementNoteText;
 
-  //     return <Text style={styleVal}>{noteVal}</Text>;
-  //   }
-  // };
+      return <Text style={styleVal}>{noteIndex}</Text>;
+    }
+  };
 
   // const getCellContents = () => {
   //   var contents = "";
@@ -186,6 +205,10 @@ const Cell = (props: any) => {
   //   }
   //   return contents;
   // };
+
+  const getOutsideBorderWidth = () => {
+    return cellSize ? cellSize * (3 / 40) : 40;
+  };
 
   return (
     // Sudoku Cells
@@ -205,15 +228,10 @@ const Cell = (props: any) => {
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
             backgroundColor: "white",
           },
-          r % 3 === 0 && {
-            borderLeftWidth: cellSize ? cellSize * (3 / 40) : 40,
-          },
-          c % 3 === 0 && {
-            borderTopWidth: cellSize ? cellSize * (3 / 40) : 40,
-          },
-          r === 8 && { borderRightWidth: cellSize ? cellSize * (3 / 40) : 40 },
-          c === 8 && { borderBottomWidth: cellSize ? cellSize * (3 / 40) : 40 },
-
+          r % 3 === 0 && { borderLeftWidth: getOutsideBorderWidth() },
+          c % 3 === 0 && { borderTopWidth: getOutsideBorderWidth() },
+          r === 8 && { borderRightWidth: getOutsideBorderWidth() },
+          c === 8 && { borderBottomWidth: getOutsideBorderWidth() },
           isPeer && {
             color: "#000000",
             backgroundColor: PEER_SELECTED_COLOR,
@@ -239,47 +257,48 @@ const Cell = (props: any) => {
             },
         ]}
       >
-        {/* {notes ? (
-          <View style={styles(cellSize).noteViewParent}>
+        {type === "note" ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
             <View style={{ flexDirection: "row" }}>
-              <View>
+              <>
                 <View style={styles(cellSize).noteViewElement} testID={"note1"}>
                   {getNoteContents(1)}
                 </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note4"}>
-                  {getNoteContents(4)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note7"}>
-                  {getNoteContents(7)}
-                </View>
-              </View>
-              <View>
                 <View style={styles(cellSize).noteViewElement} testID={"note2"}>
                   {getNoteContents(2)}
+                </View>
+                <View style={styles(cellSize).noteViewElement} testID={"note3"}>
+                  {getNoteContents(3)}
+                </View>
+              </>
+              <>
+                <View style={styles(cellSize).noteViewElement} testID={"note4"}>
+                  {getNoteContents(4)}
                 </View>
                 <View style={styles(cellSize).noteViewElement} testID={"note5"}>
                   {getNoteContents(5)}
                 </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note8"}>
-                  {getNoteContents(8)}
-                </View>
-              </View>
-              <View>
-                <View style={styles(cellSize).noteViewElement} testID={"note3"}>
-                  {getNoteContents(3)}
-                </View>
                 <View style={styles(cellSize).noteViewElement} testID={"note6"}>
                   {getNoteContents(6)}
+                </View>
+              </>
+              <>
+                <View style={styles(cellSize).noteViewElement} testID={"note7"}>
+                  {getNoteContents(7)}
+                </View>
+                <View style={styles(cellSize).noteViewElement} testID={"note8"}>
+                  {getNoteContents(8)}
                 </View>
                 <View style={styles(cellSize).noteViewElement} testID={"note9"}>
                   {getNoteContents(9)}
                 </View>
-              </View>
+              </>
             </View>
           </View>
-        ) : ( */}
-        {/* value && ( */}
-        {value != 0 ? (
+        ) : // {/* value && ( */}
+        value != 0 ? (
           <Text
             style={{
               fontFamily: "Inter_400Regular",
@@ -295,8 +314,6 @@ const Cell = (props: any) => {
         ) : (
           <></>
         )}
-        {/* ) */}
-        {/* )} */}
       </View>
     </Pressable>
   );
@@ -306,19 +323,10 @@ let fallbackHeight = 30;
 
 const styles = (cellSize?: number, themeColor?: any) =>
   StyleSheet.create({
-    noteViewParent: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-    },
     noteViewElement: {
       width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
       height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
       paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
-    },
-    noteText: {
-      fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-      fontFamily: "Inter_200ExtraLight",
     },
     removalNoteText: {
       fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,

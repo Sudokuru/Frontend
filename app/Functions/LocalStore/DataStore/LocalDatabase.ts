@@ -100,17 +100,17 @@ type GameDifficulty = "easy" | "medium" | "hard";
 
 export type CellProps = CellWithValue | CellWithNotes;
 
-interface CellWithValue {
+export interface CellWithValue {
   type: "value" | "given";
   entry: number;
 }
 
-interface CellWithNotes {
+export interface CellWithNotes {
   type: "note";
   entry: number[];
 }
 
-type CellType = "note" | "value" | "given";
+export type CellType = "note" | "value" | "given";
 
 // This will be exported from Sudokuru package
 interface Hint {
