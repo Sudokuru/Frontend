@@ -655,7 +655,6 @@ const SudokuBoard = (props: any) => {
     const currentSelectedCell: CellProps = getCurrentSelectedCell();
 
     let isEraseButtonDisabled = inHintMode || sudokuBoard.selectedCell == null;
-    console.log(sudokuBoard?.actionHistory);
     const isUndoButtonDisabled =
       sudokuBoard.actionHistory == null ||
       sudokuBoard.actionHistory.length == 0 ||

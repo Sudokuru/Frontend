@@ -8,9 +8,12 @@ import { puzzle } from "../../../Types/Puzzle.Types";
  * @returns A puzzle object for the user to play a normal Sudoku Game
  */
 export function returnLocalGame(): SudokuBoardProps {
-  return NAKED_SINGLE_DRILL_GAMES[
-    Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-  ];
+  const game =
+    NAKED_SINGLE_DRILL_GAMES[
+      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
+    ];
+  // Return a clone here so that this is a clone.
+  return JSON.parse(JSON.stringify(game));
 }
 
 export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
