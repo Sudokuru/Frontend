@@ -119,55 +119,6 @@ const Cell = (props: RenderCellProps) => {
 
   // if (!drillMode && !landingMode) {
   //   // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
-  //   if (getCellNumber(x, y) === 0) {
-  //     puzzleString = "";
-  //     notesString = "";
-  //   }
-
-  //   puzzleString += value ? value : 0;
-
-  //   // Get the set of the notes for the cell, if null, add a 0, otherwise, add a 1 if the number is in the set, otherwise, add a 0.
-  //   if (notes === null) {
-  //     notesString += "000000000";
-  //   } else {
-  //     for (let i = 1; i <= 9; i++) {
-  //       notesString += notes.has(i) ? 1 : 0;
-  //     }
-  //   }
-
-  //   // Check and see if getCellNumber(x, y) is 80, if so, add the puzzleString and notesString strings to the activeGameData.moves array
-  //   if (getCellNumber(x, y) === 80) {
-  //     let flippedPuzzleString =
-  //       "000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-
-  //     // flip the puzzleString so it is correct orientation.
-  //     for (let i = 0; i < puzzleString.length / 9; i++)
-  //       for (let j = 0; j < puzzleString.length / 9; j++)
-  //         flippedPuzzleString = replaceChar(
-  //           flippedPuzzleString,
-  //           puzzleString.charAt(j * 9 + i),
-  //           j + i * 9
-  //         );
-
-  //     // If there's no moves in the moves array, add the current move to the moves array
-  //     if (game.moves.length === 0) {
-  //       game.moves.push({
-  //         puzzleCurrentState: flippedPuzzleString,
-  //         puzzleCurrentNotesState: notesString,
-  //       });
-  //       saveGame(game, timer);
-  //     }
-
-  //     // If there's a difference between the last move and the current move, replace previous move with current move
-  //     else if (
-  //       game.moves[0].puzzleCurrentState !== flippedPuzzleString ||
-  //       game.moves[0].puzzleCurrentNotesState !== notesString
-  //     ) {
-  //       game.moves[0].puzzleCurrentState = flippedPuzzleString;
-  //       game.moves[0].puzzleCurrentNotesState = notesString;
-  //       saveGame(game, timer);
-  //     }
-
   //     // If all cells are filled in with the correct values, we want to finish the game
   //     if (flippedPuzzleString == game.puzzleSolution && gameType != "Demo") {
   //       finishGame(showResults);

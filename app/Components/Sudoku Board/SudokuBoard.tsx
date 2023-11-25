@@ -345,6 +345,14 @@ const SudokuBoard = (props: any) => {
     // Set new Cell Value
     setCellEntryValue(inputValue);
 
+    // Incrementing numWrongCellsPlayed value
+    if (
+      !sudokuBoard.inNoteMode &&
+      !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+    ) {
+      sudokuBoard.statistics.numWrongCellsPlayed++;
+    }
+
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
       type: currentType,
@@ -356,24 +364,11 @@ const SudokuBoard = (props: any) => {
       ...sudokuBoard,
       puzzle: sudokuBoard.puzzle,
       actionHistory: sudokuBoard.actionHistory,
+      statistics: sudokuBoard.statistics,
     });
 
     // Saving current game status
     saveGame(sudokuBoard);
-
-    // adding to the numWrongCellsPlayed Tracker
-    // if (
-    //   props.gameType != "StartDrill" &&
-    //   !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
-    // ) {
-    //   setSudokuBoard({
-    //     ...sudokuBoard,
-    //     statistics: {
-    //       ...sudokuBoard.statistics,
-    //       numWrongCellsPlayed: sudokuBoard.statistics.numWrongCellsPlayed++,
-    //     },
-    //   });
-    // }
   };
 
   /**
@@ -387,6 +382,7 @@ const SudokuBoard = (props: any) => {
     const currentEntry = currentSelectedCell.entry;
     const r: number = sudokuBoard.selectedCell.r;
     const c: number = sudokuBoard.selectedCell.c;
+
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
     // update type and newCellEntry of selected cell
