@@ -259,42 +259,45 @@ const Cell = (props: RenderCellProps) => {
       >
         {type === "note" ? (
           <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
           >
             <View style={{ flexDirection: "row" }}>
-              <>
-                <View style={styles(cellSize).noteViewElement} testID={"note1"}>
-                  {getNoteContents(1)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note2"}>
-                  {getNoteContents(2)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note3"}>
-                  {getNoteContents(3)}
-                </View>
-              </>
-              <>
-                <View style={styles(cellSize).noteViewElement} testID={"note4"}>
-                  {getNoteContents(4)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note5"}>
-                  {getNoteContents(5)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note6"}>
-                  {getNoteContents(6)}
-                </View>
-              </>
-              <>
-                <View style={styles(cellSize).noteViewElement} testID={"note7"}>
-                  {getNoteContents(7)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note8"}>
-                  {getNoteContents(8)}
-                </View>
-                <View style={styles(cellSize).noteViewElement} testID={"note9"}>
-                  {getNoteContents(9)}
-                </View>
-              </>
+              <View style={styles(cellSize).noteViewElement} testID={"note1"}>
+                {getNoteContents(1)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note2"}>
+                {getNoteContents(2)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note3"}>
+                {getNoteContents(3)}
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles(cellSize).noteViewElement} testID={"note4"}>
+                {getNoteContents(4)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note5"}>
+                {getNoteContents(5)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note6"}>
+                {getNoteContents(6)}
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles(cellSize).noteViewElement} testID={"note7"}>
+                {getNoteContents(7)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note8"}>
+                {getNoteContents(8)}
+              </View>
+              <View style={styles(cellSize).noteViewElement} testID={"note9"}>
+                {getNoteContents(9)}
+              </View>
             </View>
           </View>
         ) : // {/* value && ( */}
