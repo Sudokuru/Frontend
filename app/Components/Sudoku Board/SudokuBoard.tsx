@@ -477,7 +477,6 @@ const SudokuBoard = (props: any) => {
 
     // update type and newCellEntry of selected cell
     if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
-      console.log("HELLO BIG BRAIN");
       sudokuBoard.puzzle[c][r].type = "note";
       newCellEntry = [inputValue];
     }
@@ -491,10 +490,8 @@ const SudokuBoard = (props: any) => {
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter((word) => word != inputValue);
       } else {
-        console.log(currentEntryCopy, "BANANA");
         currentEntryCopy.push(inputValue);
         newCellEntry = currentEntryCopy;
-        console.log(newCellEntry, "BANANAAPPLE");
       }
     }
 
