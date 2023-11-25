@@ -271,6 +271,8 @@ const SudokuBoard = (props: any) => {
   const undo = () => {
     // Adding previous move back to the board
     const move = sudokuBoard.actionHistory.pop();
+    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].type =
+      move.cell.type;
     sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].entry =
       move.cell.entry;
     // remove from move history
@@ -450,6 +452,17 @@ const SudokuBoard = (props: any) => {
       return;
     }
 
+    console.log("CURRENT ENTRY STORED IN HISTORY: ", currentEntry);
+
+    // Storing old value in actionHistory
+    sudokuBoard.actionHistory.push({
+      type: currentType,
+      cell: { entry: currentEntry, type: currentType },
+      cellLocation: { c: c, r: r },
+    });
+
+    console.log("ACTION HISTORY: ", sudokuBoard.actionHistory);
+
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
 
@@ -474,25 +487,19 @@ const SudokuBoard = (props: any) => {
     }
     // set new note value
     else if (sudokuBoard.inNoteMode) {
-      if (currentEntry.includes(inputValue)) {
-        newCellEntry = currentEntry.filter((word) => word != inputValue);
+      const currentEntryCopy = structuredClone(currentEntry);
+      if (currentEntryCopy.includes(inputValue)) {
+        newCellEntry = currentEntryCopy.filter((word) => word != inputValue);
       } else {
-        console.log(currentEntry, "BANANA");
-        currentEntry.push(inputValue);
-        newCellEntry = currentEntry;
+        console.log(currentEntryCopy, "BANANA");
+        currentEntryCopy.push(inputValue);
+        newCellEntry = currentEntryCopy;
         console.log(newCellEntry, "BANANAAPPLE");
       }
     }
 
     // updating board entry
     sudokuBoard.puzzle[c][r].entry = newCellEntry;
-
-    // Storing old value in actionHistory
-    sudokuBoard.actionHistory.push({
-      type: currentType,
-      cell: { entry: currentEntry, type: currentType },
-      cellLocation: { c: c, r: r },
-    });
 
     setSudokuBoard({
       ...sudokuBoard,
@@ -711,21 +718,12 @@ const SudokuBoard = (props: any) => {
     ];
   };
 
-  // const updateBoardWithNumber = (c, r, inputValue) => {
-  //   sudokuBoard.puzzle[c][r].entry = inputValue;
-  //   setSudokuBoard({
-  //     ...sudokuBoard,
-  //     puzzle: sudokuBoard.puzzle,
-  //   });
-  // };
-
   const handleKeyDown = (event) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
 
     let inHintMode = sudokuBoard.inHintMode;
-    let inNoteMode = sudokuBoard.inNoteMode;
     const inputValue = event.nativeEvent.key;
     if (
       /^[1-9]$/.test(inputValue) &&
