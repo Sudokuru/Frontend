@@ -40,7 +40,7 @@ const PlayPage = () => {
       // This determines if user has active game and displays resume button conditionally.
       async function grabCurrentGame() {
         await Puzzles.getGame().then((game: SudokuBoardProps[]) => {
-          if (game !== null) {
+          if (game != null) {
             showResumeButton();
           } else {
             hideResumeButton();
