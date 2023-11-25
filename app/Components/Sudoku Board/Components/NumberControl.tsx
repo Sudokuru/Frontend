@@ -1,13 +1,11 @@
 import { useTheme } from "react-native-paper";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { range } from "../sudoku";
-import PropTypes from "prop-types";
 import React from "react";
 import { getCellSize } from "../Functions/BoardFunctions";
 
 const NumberControl = (props: any) => {
-  const { prefilled, inNoteMode, fillNumber, addNumberAsNote, inHintMode } =
-    props;
+  const { prefilled, inNoteMode, updateEntry, inHintMode } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
   return (
@@ -15,7 +13,7 @@ const NumberControl = (props: any) => {
       {range(9).map((i) => {
         const number = i + 1;
         const onClick = () => {
-          inNoteMode ? addNumberAsNote(number) : fillNumber(number);
+          updateEntry(number);
         };
         return (
           // Number Keys
@@ -75,13 +73,5 @@ const styles = (cellSize?: number, themeColor?: any) =>
       color: themeColor,
     },
   });
-
-NumberControl.propTypes = {
-  prefilled: PropTypes.bool.isRequired,
-  inNoteMode: PropTypes.bool.isRequired,
-  fillNumber: PropTypes.func.isRequired,
-  addNumberAsNote: PropTypes.func.isRequired,
-  inHintMode: PropTypes.bool.isRequired,
-};
 
 export default NumberControl;

@@ -487,7 +487,7 @@ const SudokuBoard = (props: any) => {
     }
     // set new note value
     else if (sudokuBoard.inNoteMode) {
-      const currentEntryCopy = structuredClone(currentEntry);
+      const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter((word) => word != inputValue);
       } else {
@@ -757,8 +757,7 @@ const SudokuBoard = (props: any) => {
       <NumberControl
         prefilled={prefilled}
         inNoteMode={inNoteMode}
-        fillNumber={updateCellEntry}
-        addNumberAsNote={addNumberAsNote}
+        updateEntry={updateCellEntry}
         inHintMode={inHintMode}
       />
     );
@@ -872,8 +871,6 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  let inHintMode = sudokuBoard ? sudokuBoard.inHintMode : false;
-
   return (
     <View
       testID={
@@ -901,11 +898,15 @@ const SudokuBoard = (props: any) => {
           }}
         >
           {!(props.gameType == "Demo") && renderActions()}
-          {/* {!(props.gameType == "Demo") && !inHintMode && renderNumberControl()} */}
+          {!(props.gameType == "Demo") &&
+            !sudokuBoard.inHintMode &&
+            renderNumberControl()}
           {props.gameType == "StartDrill" &&
-            !inHintMode &&
+            !sudokuBoard.inHintMode &&
             renderSubmitButton()}
-          {!(props.gameType == "Demo") && inHintMode && renderHintSection()}
+          {!(props.gameType == "Demo") &&
+            sudokuBoard.inHintMode &&
+            renderHintSection()}
         </View>
       )}
     </View>
