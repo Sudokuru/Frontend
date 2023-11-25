@@ -576,7 +576,7 @@ const SudokuBoard = (props: any) => {
         isSelected={isSelected}
         isPeer={peer}
         type={cell.type}
-        value={cell.entry}
+        entry={cell.entry}
         conflict={conflict}
         eraseSelected={eraseSelected}
         key={r + ":" + c}

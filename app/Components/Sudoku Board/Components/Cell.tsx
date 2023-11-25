@@ -34,7 +34,7 @@ let puzzleString = "";
 let notesString = "";
 
 interface RenderCellProps {
-  value: any; // todo find some way to derive this from type instad of duplicate
+  entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
   onClick: any; // todo type of function
   isPeer: any;
@@ -47,7 +47,7 @@ interface RenderCellProps {
 
 const Cell = (props: RenderCellProps) => {
   const {
-    value,
+    entry,
     type,
     onClick,
     isPeer,
@@ -176,7 +176,7 @@ const Cell = (props: RenderCellProps) => {
   // }
 
   const getNoteContents = (noteIndex: number) => {
-    if (value.includes(noteIndex)) {
+    if (entry.includes(noteIndex)) {
       let styleVal = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
@@ -190,21 +190,21 @@ const Cell = (props: RenderCellProps) => {
     }
   };
 
-  // const getCellContents = () => {
-  //   var contents = "";
-  //   if (notes) {
-  //     contents += "notes:";
-  //     for (let i = 1; i <= 9; i++) {
-  //       if (notes.has(i)) {
-  //         contents += i.toString();
-  //       }
-  //     }
-  //   } else if (value) {
-  //     contents += "value:";
-  //     contents += value.toString();
-  //   }
-  //   return contents;
-  // };
+  const getCellContents = () => {
+    var contents = "";
+    if (type === "note") {
+      contents += "notes:";
+      for (let i = 1; i <= 9; i++) {
+        if (entry.has(i)) {
+          contents += i.toString();
+        }
+      }
+    } else {
+      contents += "value:";
+      contents += entry.toString();
+    }
+    return contents;
+  };
 
   const getOutsideBorderWidth = () => {
     return cellSize ? cellSize * (3 / 40) : 40;
@@ -218,7 +218,7 @@ const Cell = (props: RenderCellProps) => {
       style={{ outline: "none" }}
     >
       <View
-        // testID={"cellr" + y + "c" + x + getCellContents()}
+        testID={"cellr" + r + "c" + c + getCellContents()}
         style={[
           {
             height: cellSize ? cellSize : fallbackHeight,
@@ -301,7 +301,7 @@ const Cell = (props: RenderCellProps) => {
             </View>
           </View>
         ) : // {/* value && ( */}
-        value != 0 ? (
+        entry != 0 ? (
           <Text
             style={{
               fontFamily: "Inter_400Regular",
@@ -312,7 +312,7 @@ const Cell = (props: RenderCellProps) => {
               lineHeight: cellSize ? cellSize : fallbackHeight,
             }}
           >
-            {value}
+            {entry}
           </Text>
         ) : (
           <></>
