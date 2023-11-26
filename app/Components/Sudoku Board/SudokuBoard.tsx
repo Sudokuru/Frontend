@@ -15,7 +15,7 @@ import {
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
-import EndGameModal from "./EndGameModal";
+import EndGameModal from "./Components/EndGameModal";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";

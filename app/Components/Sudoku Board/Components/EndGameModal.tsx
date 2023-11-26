@@ -2,8 +2,8 @@ import { View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Statistic from "../Statistics/Statistic";
-import { formatTime } from "./Functions/BoardFunctions";
+import Statistic from "../../Statistics/Statistic";
+import { formatTime } from "../Functions/BoardFunctions";
 
 interface EndGameModalProps {
   time: number;

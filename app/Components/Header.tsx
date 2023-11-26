@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
-import { Image, Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -13,8 +13,8 @@ const Header = () => {
   const { isThemeDark, isCurrentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
-  const DARK_LOGO = require("./goldLogoText.png");
-  const LIGHT_LOGO = require("./darkBlueLogoText.png");
+  const DARK_LOGO = require("../../.assets/goldLogoText.png");
+  const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
 
   let logoUrl = isThemeDark ? DARK_LOGO : LIGHT_LOGO;
 
