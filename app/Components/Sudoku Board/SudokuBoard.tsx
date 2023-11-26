@@ -283,7 +283,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
   const renderCell = (cell: CellProps, r: number, c: number) => {
-    console.log("RENDERING");
     const {
       isHighlightIdenticalValues,
       isHighlightBox,
