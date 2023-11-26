@@ -5,7 +5,7 @@ import {
   GameDifficulty,
   GameDifficultyScore,
   GameStatistics,
-  SudokuBoardProps,
+  SudokuObjectProps,
   returnLocalGame,
 } from "../LocalStore/DataStore/LocalDatabase";
 import {
@@ -201,19 +201,7 @@ export class Puzzles {
    * @param strategies - new game can have subset of these strategies
    * @returns promise of puzzle JSON object
    */
-  public static async startGame(
-    difficulty: number,
-    strategies: sudokuStrategyArray
-  ): Promise<SudokuBoardProps> {
-    difficulty = difficulty * 1000;
-
-    let concatUrlString = "";
-    for (let i = 0; i < strategies.length; i++) {
-      concatUrlString =
-        concatUrlString + "&learnedStrategies[]=" + strategies[i];
-    }
-    // for now just returning a random game
-    // this will be updated to account for difficulty and strategies learned
+  public static async startGame(): Promise<SudokuObjectProps> {
     return returnLocalGame();
   }
 
@@ -221,7 +209,7 @@ export class Puzzles {
    * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
    * @returns promise of activeGame JSON object
    */
-  public static async getGame(): Promise<SudokuBoardProps[]> {
+  public static async getGame(): Promise<SudokuObjectProps[]> {
     return await getKeyJSON("active_game");
   }
 
@@ -229,7 +217,7 @@ export class Puzzles {
    * Given a game saves it to AsyncStorage
    * @param game - activeGame JSON object
    */
-  public static async saveGame(game: SudokuBoardProps) {
+  public static async saveGame(game: SudokuObjectProps) {
     storeData("active_game", JSON.stringify([game]));
   }
 

@@ -2,8 +2,7 @@ import { useWindowDimensions } from "react-native";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import {
   GameDifficultyScore,
-  GameStatistics,
-  SudokuBoardProps,
+  SudokuObjectProps,
 } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 /**
  * This is a temporary place to store functions
@@ -62,7 +61,7 @@ export const formatTime = (inputSeconds: number) => {
   return `${paddedDays}${paddedHours}${paddedMinutes}${paddedSeconds}`;
 };
 
-export async function saveGame(activeGame: SudokuBoardProps) {
+export async function saveGame(activeGame: SudokuObjectProps) {
   Puzzles.saveGame(activeGame).then((res: any) => {
     if (res) {
       console.log("Game progress was saved successfully!");

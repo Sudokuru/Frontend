@@ -1,10 +1,10 @@
 import { View } from "react-native";
 import React from "react";
-import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuObjectProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
 interface PuzzleProps {
   renderCell: any;
-  sudokuBoard: SudokuBoardProps;
+  sudokuBoard: SudokuObjectProps;
 }
 
 const Puzzle = (props: PuzzleProps) => {

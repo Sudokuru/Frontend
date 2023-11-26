@@ -11,7 +11,7 @@ import {
 } from "../Functions/global/WindowDimensions";
 import { Puzzles } from "../Functions/Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
-import { SudokuBoardProps } from "../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuObjectProps } from "../Functions/LocalStore/DataStore/LocalDatabase";
 
 let strategies: sudokuStrategyArray = [
   "AMEND_NOTES",
@@ -39,7 +39,7 @@ const PlayPage = () => {
     React.useCallback(() => {
       // This determines if user has active game and displays resume button conditionally.
       async function grabCurrentGame() {
-        await Puzzles.getGame().then((game: SudokuBoardProps[]) => {
+        await Puzzles.getGame().then((game: SudokuObjectProps[]) => {
           if (game != null) {
             showResumeButton();
           } else {
@@ -114,7 +114,7 @@ const PlayPage = () => {
                   mode="outlined"
                   onPress={() =>
                     navigation.navigate("SudokuPage", {
-                      gameType: "ResumeGame",
+                      action: "ResumeGame",
                     })
                   }
                 >
@@ -128,9 +128,7 @@ const PlayPage = () => {
                 mode="contained"
                 onPress={() => {
                   navigation.navigate("SudokuPage", {
-                    gameType: "StartGame",
-                    difficulty: 100,
-                    strategies: strategies,
+                    action: "StartGame",
                   });
                 }}
               >

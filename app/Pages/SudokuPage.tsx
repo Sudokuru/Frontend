@@ -21,20 +21,13 @@ let strategies: sudokuStrategyArray = [
   "POINTING_TRIPLET",
 ];
 
-const SudokuPage = ({ route, navigation }: any) => {
-  const { gameType } = route.params;
-  const { difficulty } = route.params;
+const SudokuPage = ({ route }: any) => {
+  const { action } = route.params;
 
   return (
     <SafeAreaProvider>
       <SafeAreaView>
-        {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-        <SudokuBoard
-          gameType={gameType}
-          difficulty={difficulty}
-          strategies={strategies}
-          navigation={navigation}
-        />
+        <SudokuBoard action={action} />
         <StatusBar style="auto" />
       </SafeAreaView>
     </SafeAreaProvider>

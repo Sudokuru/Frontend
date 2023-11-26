@@ -1,22 +1,16 @@
 import { Puzzles } from "../../../Functions/Api/Puzzles";
-import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuObjectProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuBoardProps } from "../SudokuBoard";
 
-export async function generateGame(props: any) {
+export async function generateGame(props: SudokuBoardProps) {
   let gameData = null;
 
-  if (props.gameType == "StartGame") {
-    gameData = await Puzzles.startGame(props.difficulty, props.strategies).then(
-      (game: SudokuBoardProps) => {
-        // If game object is not returned, you get redirected to Main Page
-        if (game == null) {
-          //navigation.navigate("Home");
-          return;
-        }
-        return game;
-      }
-    );
-  } else if (props.gameType == "ResumeGame") {
-    gameData = await Puzzles.getGame().then((game: SudokuBoardProps[]) => {
+  if (props.action == "StartGame") {
+    gameData = await Puzzles.startGame().then((game: SudokuObjectProps) => {
+      return game;
+    });
+  } else if (props.action == "ResumeGame") {
+    gameData = await Puzzles.getGame().then((game: SudokuObjectProps[]) => {
       // If game object is not returned, you get redirected to Main Page
       if (game == null) {
         //navigation.navigate("Home");

@@ -7,7 +7,7 @@ import { puzzle } from "../../../Types/Puzzle.Types";
  * TODO Return Puzzles based on user difficulty and learned puzzles
  * @returns A puzzle object for the user to play a normal Sudoku Game
  */
-export function returnLocalGame(): SudokuBoardProps {
+export function returnLocalGame(): SudokuObjectProps {
   const game =
     NAKED_SINGLE_DRILL_GAMES[
       Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
@@ -62,8 +62,8 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
   return JSON.parse("{}");
 }
 
-export interface SudokuBoardProps {
-  type?: GameType;
+export interface SudokuObjectProps {
+  type: GameType;
   // spend more time understanding current Hint structure, come back to this
   // hint?: Hint;
   selectedCell: CellLocation | null;
@@ -97,7 +97,7 @@ export interface GameStatistics {
   numHintsUsed: number;
 }
 
-type GameType = "demo" | "drill" | "puzzle" | "lesson";
+type GameType = "demo" | "drill" | "classic" | "lesson";
 export type GameDifficulty = "easy" | "medium" | "hard";
 export type GameDifficultyScore = 10 | 20 | 30;
 
@@ -128,8 +128,9 @@ interface Hint {
   };
 }
 
-const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
+const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
+    type: "classic",
     selectedCell: null,
     puzzle: [
       [

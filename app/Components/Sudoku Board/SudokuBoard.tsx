@@ -11,13 +11,18 @@ import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
 import {
   CellProps,
-  SudokuBoardProps,
+  SudokuObjectProps,
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./EndGameModal";
-const SudokuBoard = (props: any) => {
-  const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
+
+export interface SudokuBoardProps {
+  action: "StartGame" | "ResumeGame";
+}
+
+const SudokuBoard = (props: SudokuBoardProps) => {
+  const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
