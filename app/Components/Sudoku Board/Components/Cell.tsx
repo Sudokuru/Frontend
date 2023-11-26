@@ -1,37 +1,16 @@
-import {
-  finishGame,
-  getCellNumber,
-  getCellSize,
-  replaceChar,
-  saveGame,
-} from "../Functions/BoardFunctions";
+import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
-import { PreferencesContext } from "../../../Contexts/PreferencesContext";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import PropTypes from "prop-types";
-import { Set } from "immutable";
-import {
-  highlightCauses,
-  highlightGroups,
-  setPlacementHighlights,
-  setRemovalHighlights,
-} from "../Functions/HintsParsing";
 import {
   NOT_SELECTED_CONFLICT_COLOR,
   PEER_SELECTED_COLOR,
-  PLACE_NOTE_TEXT_COLOR,
-  REMOVE_NOTE_TEXT_COLOR,
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
   IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
-import {
-  CellProps,
-  CellType,
-} from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { CellType } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
-let puzzleString = "";
-let notesString = "";
+let fallbackHeight = 30;
 
 interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
@@ -56,75 +35,8 @@ const Cell = (props: RenderCellProps) => {
     conflict,
     c,
     r,
-    // inHintMode,
-    // hintSteps,
-    // currentStep,
-    // game,
-    // showResults,
-    // gameType,
-    // landingMode,
-    // drillMode,
-    // timer,
   } = props;
   const cellSize = getCellSize();
-
-  let bgColor = "#808080";
-  let isRemovalHighlight = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
-  let isPlacementHighlight = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
-
-  // if (inHintMode && currentStep > -1) {
-  //   let currentHint = hintSteps[currentStep];
-
-  //   // Highlight the cell if it is part of the hint
-  //   if (highlightGroups(currentHint, y, x)) {
-  //     bgColor = "white";
-  //   }
-  //   // Highlight the cell if it is part of the cause of the hint
-  //   if (highlightCauses(currentHint, y, x)) {
-  //     // If the hint is a placement, highlight the cell white, otherwise highlight it yellow
-  //     // i.e. if the hint is a naked single, highlight the cell white, otherwise highlight it yellow
-  //     if (currentHint.placements) {
-  //       bgColor = "white";
-  //     } else {
-  //       bgColor = "#F2CA7E";
-  //     }
-  //   }
-  //   // This handles just the styling, note deletion is not possible since the state would change during a render
-  //   // Sets what notes should be highlighted for removal based on hint
-  //   setRemovalHighlights(isRemovalHighlight, currentHint, y, x);
-
-  //   // Sets what notes should be highlighted for placement based on hint
-  //   setPlacementHighlights(isPlacementHighlight, currentHint, y, x);
-  // }
-
-  // if (!drillMode && !landingMode) {
-  //   // Check and see if getCellNumber(x, y) is 0, if so, clear the puzzleString and notesString strings and then add the value of the cell to the puzzleString string, if null, add a 0
-  //     // If all cells are filled in with the correct values, we want to finish the game
-  //     if (flippedPuzzleString == game.puzzleSolution && gameType != "Demo") {
-  //       finishGame(showResults);
-  //     }
-  //   }
-  // }
 
   const getNoteContents = (noteIndex: number) => {
     if (entry.includes(noteIndex)) {
@@ -132,11 +44,6 @@ const Cell = (props: RenderCellProps) => {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
       };
-      // if (isRemovalHighlight[noteIndex - 1])
-      //   styleVal = styles(cellSize).removalNoteText;
-      // else if (isPlacementHighlight[noteIndex - 1])
-      //   styleVal = styles(cellSize).placementNoteText;
-
       return <Text style={styleVal}>{noteIndex}</Text>;
     }
   };
@@ -251,8 +158,7 @@ const Cell = (props: RenderCellProps) => {
               </View>
             </View>
           </View>
-        ) : // {/* value && ( */}
-        entry != 0 ? (
+        ) : entry != 0 ? (
           <Text
             style={{
               fontFamily: "Inter_400Regular",
@@ -273,24 +179,12 @@ const Cell = (props: RenderCellProps) => {
   );
 };
 
-let fallbackHeight = 30;
-
-const styles = (cellSize?: number, themeColor?: any) =>
+const styles = (cellSize?: number) =>
   StyleSheet.create({
     noteViewElement: {
       width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
       height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
       paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
-    },
-    removalNoteText: {
-      fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-      fontFamily: "Inter_300Light",
-      color: REMOVE_NOTE_TEXT_COLOR,
-    },
-    placementNoteText: {
-      fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-      fontFamily: "Inter_300Light",
-      color: PLACE_NOTE_TEXT_COLOR,
     },
   });
 

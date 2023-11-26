@@ -69,13 +69,12 @@ export interface SudokuBoardProps {
   selectedCell: CellLocation | null;
   statistics: GameStatistics;
   puzzle: CellProps[][];
-  puzzleSolution: Number[][];
+  puzzleSolution: number[][];
   actionHistory: GameAction[];
   inNoteMode: boolean;
-  inHintMode: boolean;
 }
 
-interface GameAction {
+export interface GameAction {
   type: ActionType;
   cellLocation: CellLocation;
   cell: CellProps;
@@ -494,7 +493,6 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuBoardProps[] = [
       score: 0,
       time: 0,
     },
-    inHintMode: false,
     inNoteMode: false,
     actionHistory: [],
   },

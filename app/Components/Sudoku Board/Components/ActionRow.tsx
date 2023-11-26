@@ -13,10 +13,6 @@ const ActionRow = (props: any) => {
     undo,
     toggleNoteMode,
     eraseSelected,
-    // toggleHintMode,
-    updateBoardInPlace,
-    inHintMode,
-    boardHasConflict,
   } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
@@ -81,19 +77,6 @@ const ActionRow = (props: any) => {
           size={cellSize / sizeConst}
         />
       </Pressable>
-      {/* Hint */}
-      {/* <Pressable
-        testID={"hintButton"}
-        onPress={
-          !boardHasConflict() ? updateBoardInPlace && toggleHintMode : null
-        }
-      >
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name="help"
-          size={cellSize / sizeConst}
-        />
-      </Pressable> */}
     </View>
   );
 };

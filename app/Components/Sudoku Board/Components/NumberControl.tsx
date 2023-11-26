@@ -1,5 +1,5 @@
 import { useTheme } from "react-native-paper";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { range } from "../sudoku";
 import React from "react";
 import { getCellSize } from "../Functions/BoardFunctions";
@@ -7,7 +7,7 @@ import { getCellSize } from "../Functions/BoardFunctions";
 let fallbackHeight = 30;
 
 const NumberControl = (props: any) => {
-  const { prefilled, updateEntry, inHintMode } = props;
+  const { prefilled, updateEntry } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
   return (
@@ -30,7 +30,7 @@ const NumberControl = (props: any) => {
           <Pressable
             key={number}
             onPress={onClick}
-            disabled={prefilled || inHintMode} // disable also if cell is correct.
+            disabled={prefilled} // disable also if cell is correct.
             style={{
               width: cellSize
                 ? cellSize * (50 / 60)
