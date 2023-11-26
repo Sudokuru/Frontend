@@ -2,7 +2,6 @@ import React from "react";
 import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
