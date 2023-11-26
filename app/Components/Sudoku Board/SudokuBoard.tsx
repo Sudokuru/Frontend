@@ -279,7 +279,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     }
     return !(
-      sudokuBoard.puzzle[c][r].entry === sudokuBoard!.puzzleSolution[c][r]
+      sudokuBoard.puzzle[c][r].entry === sudokuBoard.puzzleSolution[c][r]
     );
   };
   const renderCell = (cell: CellProps, r: number, c: number) => {
@@ -342,7 +342,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderTopBar = () => {
     return (
-      <HeaderRow sudokuBoard={sudokuBoard!} setSudokuBoard={setSudokuBoard} />
+      <HeaderRow sudokuBoard={sudokuBoard} setSudokuBoard={setSudokuBoard} />
     );
   };
 
@@ -373,7 +373,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderPuzzle = () => {
-    return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard!} />;
+    return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard} />;
   };
   const renderNumberControl = () => {
     let currentSelectedCell: CellProps | null = null;

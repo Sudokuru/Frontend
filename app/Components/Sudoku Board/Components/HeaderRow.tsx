@@ -10,7 +10,7 @@ let fallbackHeight = 30;
 
 interface HeaderRowProps {
   sudokuBoard: SudokuObjectProps;
-  setSudokuBoard: React.Dispatch<React.SetStateAction<SudokuObjectProps>>;
+  setSudokuBoard: (sudokuBoard: any) => void;
 }
 
 const HeaderRow = (props: HeaderRowProps) => {
