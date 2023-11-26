@@ -15,7 +15,6 @@ import {
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
-
 const SudokuBoard = (props: any) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
 
@@ -250,7 +249,6 @@ const SudokuBoard = (props: any) => {
       sudokuBoard.puzzle[c][r].entry === sudokuBoard!.puzzleSolution[c][r]
     );
   };
-
   const renderCell = (cell: CellProps, r: number, c: number) => {
     console.log("RENDERING");
     const {
@@ -268,7 +266,6 @@ const SudokuBoard = (props: any) => {
     let row = false;
     let column = false;
     let sameValue = false;
-
     if (selected != null) {
       conflict = isConflict(r, c, cell);
       isSelected = c === selected.c && r === selected.r;
@@ -347,7 +344,6 @@ const SudokuBoard = (props: any) => {
   const renderPuzzle = () => {
     return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard!} />;
   };
-
   const renderNumberControl = () => {
     let currentSelectedCell: CellProps | null = null;
     if (sudokuBoard.selectedCell != null) {
@@ -366,7 +362,6 @@ const SudokuBoard = (props: any) => {
       />
     );
   };
-
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
     let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
@@ -392,7 +387,6 @@ const SudokuBoard = (props: any) => {
         isEraseButtonDisabled = true;
       }
     }
-
     return (
       <ActionRow
         isEraseButtonDisabled={isEraseButtonDisabled}
@@ -405,7 +399,6 @@ const SudokuBoard = (props: any) => {
       />
     );
   };
-
   return (
     <Pressable testID={"sudokuBoard"} onPress={handleKeyDown}>
       {renderTopBar()}
