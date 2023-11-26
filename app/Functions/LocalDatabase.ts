@@ -1,5 +1,5 @@
 import { sudokuStrategy } from "sudokuru";
-import { puzzle } from "../Types/Puzzle.Types";
+import { puzzle } from "../Api/Puzzle.Types";
 
 /**
  * This function returns a normal Sudoku Game.

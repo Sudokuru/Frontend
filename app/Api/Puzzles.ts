@@ -1,6 +1,6 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle, statistics } from "../Types/Puzzle.Types";
-import { activeGame } from "../Types/Puzzle.Types";
+import { gameResults, puzzle, statistics } from "./Puzzle.Types";
+import { activeGame } from "./Puzzle.Types";
 import {
   GameDifficulty,
   GameDifficultyScore,

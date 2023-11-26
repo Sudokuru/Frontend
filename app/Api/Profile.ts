@@ -1,4 +1,4 @@
-import { profile } from "../Types/Puzzle.Types";
+import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 
 export class Profile {
