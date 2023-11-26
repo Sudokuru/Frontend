@@ -36,8 +36,6 @@ const HeaderRow = (props: {
 
   const handlePause = () => {
     saveGame(sudokuBoard);
-    //@ts-ignore
-    //todo fix this
     navigation.replace("PlayPage");
   };
 
