@@ -1,18 +1,14 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
-import { activeGame } from "../../Types/Puzzle.Types";
+import { gameResults, puzzle, statistics } from "../Types/Puzzle.Types";
+import { activeGame } from "../Types/Puzzle.Types";
 import {
   GameDifficulty,
   GameDifficultyScore,
   GameStatistics,
   SudokuObjectProps,
   returnLocalGame,
-} from "../LocalStore/DataStore/LocalDatabase";
-import {
-  getKeyJSON,
-  removeData,
-  storeData,
-} from "../AsyncStorage/AsyncStorage";
+} from "../Functions/LocalDatabase";
+import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import { Statistics } from "./Statistics";
 
 // Random games to be used by getRandomGame for landing page

@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import DrillPanel from "../Components/Home/DrillPanel";
-import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
+import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const DrillPage = () => {
   const navigation: any = useNavigation();

@@ -8,7 +8,7 @@ import {
 import { Surface, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import { useNewWindowDimensions } from "../../Functions/global/WindowDimensions";
+import { useNewWindowDimensions } from "../../Functions/WindowDimensions";
 
 interface navigationButton {
   navigationPage: string;

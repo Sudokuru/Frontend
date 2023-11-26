@@ -1,9 +1,5 @@
-import { statistics } from "../../Types/Puzzle.Types";
-import {
-  getKeyJSON,
-  removeData,
-  storeData,
-} from "../AsyncStorage/AsyncStorage";
+import { statistics } from "../Types/Puzzle.Types";
+import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
 export class Statistics {
   /**

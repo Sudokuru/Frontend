@@ -18,8 +18,8 @@ import {
   getLessonMode,
   lessonOfflineMode,
   lessonOnlineMode,
-} from "../Functions/Api/Lessons";
-import { Statistics } from "../Functions/Api/Statistics";
+} from "../Api/Lessons";
+import { Statistics } from "../Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Components/Sudoku Board/sudoku";
 

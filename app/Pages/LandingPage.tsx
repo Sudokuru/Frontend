@@ -13,7 +13,7 @@ import {
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
-} from "../Functions/global/WindowDimensions";
+} from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
 
 // Example of how to use PressableStates

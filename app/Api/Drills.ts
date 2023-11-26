@@ -1,7 +1,7 @@
 import { calculateNotes, sudokuStrategy, sudokuStrategyArray } from "sudokuru";
-import { puzzle } from "../../Types/Puzzle.Types";
-import { drill } from "../../Types/Puzzle.Types";
-import { returnLocalDrillGame } from "../LocalStore/DataStore/LocalDatabase";
+import { puzzle } from "../Types/Puzzle.Types";
+import { drill } from "../Types/Puzzle.Types";
+import { returnLocalDrillGame } from "../Functions/LocalDatabase";
 
 /**
  * Functions to handle requesting drills

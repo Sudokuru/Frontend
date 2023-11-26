@@ -1,4 +1,4 @@
-import { CellLocation } from "../../Functions/LocalStore/DataStore/LocalDatabase";
+import { CellLocation } from "../../Functions/LocalDatabase";
 
 // todo remove, used in NumberControl.tsx
 export function range(n: number) {

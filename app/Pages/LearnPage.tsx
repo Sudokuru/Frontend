@@ -7,8 +7,8 @@ import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { rgba } from "polished";
-import { Statistics } from "../Functions/Api/Statistics";
-import { useNewWindowDimensions } from "../Functions/global/WindowDimensions";
+import { Statistics } from "../Api/Statistics";
+import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const LearnPage = () => {
   const windowSize = useNewWindowDimensions();

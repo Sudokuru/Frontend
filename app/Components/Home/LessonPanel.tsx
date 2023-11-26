@@ -6,13 +6,13 @@ import { useFocusEffect } from "@react-navigation/core";
 import {
   formatOneLessonName,
   getLockedLessons,
-} from "../../Functions/ContextParsing/learnedLessons";
+} from "../../Functions/learnedLessons";
 import {
   Lessons,
   getLessonMode,
   lessonOfflineMode,
   lessonOnlineMode,
-} from "../../Functions/Api/Lessons";
+} from "../../Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
 import {
   CARD_IMAGE_HEIGHT,

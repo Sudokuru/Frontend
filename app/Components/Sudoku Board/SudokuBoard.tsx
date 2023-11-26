@@ -9,10 +9,7 @@ import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import {
-  CellProps,
-  SudokuObjectProps,
-} from "../../Functions/LocalStore/DataStore/LocalDatabase";
+import { CellProps, SudokuObjectProps } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";

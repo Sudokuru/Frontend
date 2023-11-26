@@ -8,10 +8,10 @@ import { rgba } from "polished";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
-} from "../Functions/global/WindowDimensions";
-import { Puzzles } from "../Functions/Api/Puzzles";
+} from "../Functions/WindowDimensions";
+import { Puzzles } from "../Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
-import { SudokuObjectProps } from "../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuObjectProps } from "../Functions/LocalDatabase";
 
 let strategies: sudokuStrategyArray = [
   "AMEND_NOTES",

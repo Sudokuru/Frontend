@@ -2,7 +2,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import { SudokuObjectProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
 import { getCellSize, saveGame, formatTime } from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
 

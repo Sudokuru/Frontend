@@ -8,7 +8,7 @@ import {
   SELECTED_CONFLICT_COLOR,
   IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
-import { CellType } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import { CellType } from "../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
 

@@ -24,7 +24,7 @@ import {
   getKeyJSON,
   removeData,
   storeData,
-} from "../../Functions/AsyncStorage/AsyncStorage";
+} from "../../Functions/AsyncStorage";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
