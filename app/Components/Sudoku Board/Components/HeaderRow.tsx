@@ -21,14 +21,14 @@ const HeaderRow = (props: {
 
   const theme = useTheme();
 
-  // ! Interesting note, whole board will rerender every second because timer is part of board
-  // ! May be good to externalize timer into its own react state like before.
-
   useFocusEffect(
     React.useCallback(() => {
       let interval = setInterval(() => {
         sudokuBoard.statistics.time = sudokuBoard.statistics.time + 1;
-        setSudokuBoard({ ...sudokuBoard, statistics: sudokuBoard.statistics });
+        setSudokuBoard((prevState: SudokuBoardProps) => ({
+          ...prevState,
+          statistics: sudokuBoard.statistics,
+        }));
       }, 1000);
       return () => clearInterval(interval);
     }, [sudokuBoard.statistics.time])
