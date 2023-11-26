@@ -31,7 +31,7 @@ const HeaderRow = (props: {
         setSudokuBoard({ ...sudokuBoard, statistics: sudokuBoard.statistics });
       }, 1000);
       return () => clearInterval(interval);
-    }, [sudokuBoard])
+    }, [sudokuBoard.statistics.time])
   );
 
   const handlePause = () => {
