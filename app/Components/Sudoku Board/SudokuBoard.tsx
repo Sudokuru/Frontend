@@ -22,7 +22,7 @@ const SudokuBoard = (props: any) => {
 
   useEffect(() => {
     generateGame(props).then((game) => {
-      if (game == null || game == undefined) {
+      if (game == null) {
         return;
       }
       setSudokuBoard(game);
