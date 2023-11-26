@@ -34,6 +34,7 @@ const SudokuBoard = (props: any) => {
     return <ActivityIndicator animating={true} color="red" />;
   }
 
+  // Render EndGame screen when game has ended
   if (gameOver) {
     return (
       <EndGameModal
@@ -71,7 +72,7 @@ const SudokuBoard = (props: any) => {
   };
 
   const toggleNoteMode = () => {
-    sudokuBoard.inNoteMode = sudokuBoard.inNoteMode;
+    sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
     setSudokuBoard({
       ...sudokuBoard,
       inNoteMode: sudokuBoard.inNoteMode,
@@ -150,7 +151,6 @@ const SudokuBoard = (props: any) => {
         sudokuBoard.statistics.time
       );
       sudokuBoard.statistics.score = score;
-      console.log(score);
       setSudokuBoard({
         ...sudokuBoard,
         puzzle: sudokuBoard.puzzle,
@@ -399,7 +399,6 @@ const SudokuBoard = (props: any) => {
     const isUndoButtonDisabled =
       sudokuBoard.actionHistory == null ||
       sudokuBoard.actionHistory.length == 0;
-    const isNoteModeButtonDisabled = false;
     if (currentSelectedCell != null) {
       const isCellGiven = currentSelectedCell.type === "given";
       const isCellEmpty =
@@ -421,7 +420,6 @@ const SudokuBoard = (props: any) => {
       <ActionRow
         isEraseButtonDisabled={isEraseButtonDisabled}
         isUndoButtonDisabled={isUndoButtonDisabled}
-        isNoteModeButtonDisabled={isNoteModeButtonDisabled}
         inNoteMode={inNoteMode}
         undo={undo}
         toggleNoteMode={toggleNoteMode}
@@ -430,9 +428,9 @@ const SudokuBoard = (props: any) => {
     );
   };
   return (
-    <Pressable
+    <View
       testID={"sudokuBoard"}
-      onPress={handleKeyDown}
+      onKeyDown={handleKeyDown}
       style={{
         display: "flex",
         alignItems: "center",
@@ -444,7 +442,7 @@ const SudokuBoard = (props: any) => {
       {renderPuzzle()}
       {renderActions()}
       {renderNumberControl()}
-    </Pressable>
+    </View>
   );
 };
 

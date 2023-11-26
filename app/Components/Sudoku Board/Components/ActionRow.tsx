@@ -8,7 +8,6 @@ const ActionRow = (props: any) => {
   const {
     isEraseButtonDisabled,
     isUndoButtonDisabled,
-    isNoteModeButtonDisabled,
     inNoteMode,
     undo,
     toggleNoteMode,
@@ -46,7 +45,7 @@ const ActionRow = (props: any) => {
       {/* Note mode */}
       <Pressable
         onPress={toggleNoteMode}
-        disabled={isNoteModeButtonDisabled}
+        disabled={false}
         testID={"toggleNoteModeButton"}
       >
         {inNoteMode ? (
