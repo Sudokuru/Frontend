@@ -16,10 +16,10 @@ interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
   onClick: any; // todo type of function
-  isPeer: any;
-  isSelected: any;
-  sameValue: any;
-  conflict: any;
+  isPeer: boolean;
+  isSelected: boolean;
+  sameValue: boolean;
+  conflict: boolean;
   c: number;
   r: number;
 }
@@ -69,12 +69,7 @@ const Cell = (props: RenderCellProps) => {
   };
 
   return (
-    // Sudoku Cells
-    <Pressable
-      onPress={() => onClick(r, c)}
-      // disabled={landingMode}
-      style={{ outline: "none" }}
-    >
+    <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
       <View
         testID={"cellr" + r + "c" + c + getCellContents()}
         style={[
@@ -86,33 +81,27 @@ const Cell = (props: RenderCellProps) => {
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
             backgroundColor: "white",
           },
-          r % 3 === 0 && { borderLeftWidth: getOutsideBorderWidth() },
-          c % 3 === 0 && { borderTopWidth: getOutsideBorderWidth() },
-          r === 8 && { borderRightWidth: getOutsideBorderWidth() },
-          c === 8 && { borderBottomWidth: getOutsideBorderWidth() },
-          isPeer && {
-            color: "#000000",
-            backgroundColor: PEER_SELECTED_COLOR,
-          },
-          sameValue && {
-            color: "#000000",
-            backgroundColor: IDENTICAL_VALUE_COLOR,
-          },
-          //   conflict &&
-          //   isSelected &&
-          //   styles(cellSize).selectedConflict,
-          !conflict &&
-            isSelected && { color: "#000000", backgroundColor: SELECTED_COLOR },
-          conflict &&
-            !isSelected && {
-              color: "#000000",
-              backgroundColor: NOT_SELECTED_CONFLICT_COLOR,
-            },
-          conflict &&
-            isSelected && {
-              color: "#000000",
-              backgroundColor: SELECTED_CONFLICT_COLOR,
-            },
+          r % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
+          c % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
+          r === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
+          c === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
+          isPeer
+            ? {
+                backgroundColor: PEER_SELECTED_COLOR,
+              }
+            : null,
+          sameValue
+            ? {
+                backgroundColor: IDENTICAL_VALUE_COLOR,
+              }
+            : null,
+          !conflict && isSelected ? { backgroundColor: SELECTED_COLOR } : null,
+          conflict && !isSelected
+            ? { backgroundColor: NOT_SELECTED_CONFLICT_COLOR }
+            : null,
+          conflict && isSelected
+            ? { backgroundColor: SELECTED_CONFLICT_COLOR }
+            : null,
         ]}
       >
         {type === "note" ? (

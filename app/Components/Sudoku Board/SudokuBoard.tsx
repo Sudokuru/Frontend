@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import { finishGame, saveGame } from "./Functions/BoardFunctions";
 import { highlightBox, highlightColumn, highlightRow } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
@@ -171,8 +171,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         statistics: sudokuBoard.statistics,
       });
     }
-
-    console.log(sudokuBoard.statistics);
   };
 
   /**
@@ -295,14 +293,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     let selected = sudokuBoard.selectedCell;
     let isSelected = false;
-    let conflict = false;
+    let conflict = isConflict(r, c, cell);
     let peer = false;
     let box = false;
     let row = false;
     let column = false;
     let sameValue = false;
     if (selected != null) {
-      conflict = isConflict(r, c, cell);
       isSelected = c === selected.c && r === selected.r;
       box = highlightBox({ r: r, c: c }, selected);
       row = highlightRow({ r: r, c: c }, selected);
