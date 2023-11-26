@@ -18,7 +18,6 @@ import HeaderRow from "./Components/HeaderRow";
 
 const SudokuBoard = (props: any) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -26,12 +25,11 @@ const SudokuBoard = (props: any) => {
         return;
       }
       setSudokuBoard(game);
-      setIsLoading(false);
     });
   }, []);
 
   // if we are loading then we return the loading icon
-  if (isLoading) {
+  if (sudokuBoard == null) {
     return <ActivityIndicator animating={true} color="red" />;
   }
 
@@ -44,24 +42,27 @@ const SudokuBoard = (props: any) => {
    */
   const undo = () => {
     // Adding previous move back to the board
-    const move = sudokuBoard!.actionHistory.pop();
-    sudokuBoard!.puzzle[move!.cellLocation.c][move!.cellLocation.r].type =
-      move!.cell.type;
-    sudokuBoard!.puzzle[move!.cellLocation.c][move!.cellLocation.r].entry =
-      move!.cell.entry;
+    const move = sudokuBoard.actionHistory.pop();
+    if (move == null) {
+      return;
+    }
+    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].type =
+      move.cell.type;
+    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].entry =
+      move.cell.entry;
     // remove from move history
     setSudokuBoard({
       ...sudokuBoard,
-      actionHistory: sudokuBoard!.actionHistory,
-    } as SudokuBoardProps);
+      actionHistory: sudokuBoard.actionHistory,
+    });
   };
 
   const toggleNoteMode = () => {
-    sudokuBoard!.inNoteMode = !sudokuBoard!.inNoteMode;
+    sudokuBoard.inNoteMode = sudokuBoard.inNoteMode;
     setSudokuBoard({
       ...sudokuBoard,
-      inNoteMode: sudokuBoard!.inNoteMode,
-    } as SudokuBoardProps);
+      inNoteMode: sudokuBoard.inNoteMode,
+    });
   };
 
   /**
@@ -78,17 +79,20 @@ const SudokuBoard = (props: any) => {
    * @param inputValue User input 0-9
    */
   const updateCellEntry = (inputValue: number) => {
-    if (sudokuBoard!.selectedCell == null) {
+    if (sudokuBoard.selectedCell == null) {
       return;
     }
-    const currentSelectedCell: CellProps = getCurrentSelectedCell();
+    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
+    if (currentSelectedCell == null) {
+      return;
+    }
     // We do not need to take action if this is a given value
     if (currentSelectedCell.type === "given") {
       return;
     }
 
-    const r: number = sudokuBoard!.selectedCell.r;
-    const c: number = sudokuBoard!.selectedCell.c;
+    const r: number = sudokuBoard.selectedCell.r;
+    const c: number = sudokuBoard.selectedCell.c;
     const currentEntry = currentSelectedCell.entry;
     const currentType = currentSelectedCell.type;
 
@@ -97,7 +101,7 @@ const SudokuBoard = (props: any) => {
       currentType === "value" &&
       (currentEntry === inputValue ||
         isValueCorrect(
-          sudokuBoard!.puzzleSolution[c][r],
+          sudokuBoard.puzzleSolution[c][r],
           currentEntry as number
         ))
     ) {
@@ -109,14 +113,14 @@ const SudokuBoard = (props: any) => {
 
     // Incrementing numWrongCellsPlayed value
     if (
-      !sudokuBoard!.inNoteMode &&
-      !isValueCorrect(sudokuBoard!.puzzleSolution[c][r], inputValue)
+      !sudokuBoard.inNoteMode &&
+      !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
     ) {
-      sudokuBoard!.statistics.numWrongCellsPlayed++;
+      sudokuBoard.statistics.numWrongCellsPlayed++;
     }
 
     // Storing old value in actionHistory
-    sudokuBoard!.actionHistory.push({
+    sudokuBoard.actionHistory.push({
       type: currentType,
       cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
       cellLocation: { c: c, r: r },
@@ -124,15 +128,15 @@ const SudokuBoard = (props: any) => {
 
     setSudokuBoard({
       ...sudokuBoard,
-      puzzle: sudokuBoard!.puzzle,
-      actionHistory: sudokuBoard!.actionHistory,
-      statistics: sudokuBoard!.statistics,
-    } as SudokuBoardProps);
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+      statistics: sudokuBoard.statistics,
+    });
 
     // Saving current game status
-    saveGame(sudokuBoard!);
+    saveGame(sudokuBoard);
 
-    if (!sudokuBoard!.inNoteMode && isGameSolved()) {
+    if (!sudokuBoard.inNoteMode && isGameSolved()) {
       finishGame(props.showGameResults);
     }
   };
@@ -143,32 +147,34 @@ const SudokuBoard = (props: any) => {
    * @param inputValue User input 0-9
    */
   const setCellEntryValue = (inputValue: number) => {
-    const currentSelectedCell: CellProps = getCurrentSelectedCell();
+    if (sudokuBoard.selectedCell == null) {
+      return;
+    }
+    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
+    if (currentSelectedCell == null) {
+      return;
+    }
     const currentType = currentSelectedCell.type;
     const currentEntry = currentSelectedCell.entry;
-    const r: number = sudokuBoard!.selectedCell!.r;
-    const c: number = sudokuBoard!.selectedCell!.c;
+    const r: number = sudokuBoard.selectedCell.r;
+    const c: number = sudokuBoard.selectedCell.c;
 
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
     // update type and newCellEntry of selected cell
-    if (
-      sudokuBoard!.inNoteMode &&
-      currentType === "value" &&
-      inputValue !== 0
-    ) {
-      sudokuBoard!.puzzle[c][r].type = "note";
+    if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
+      sudokuBoard.puzzle[c][r].type = "note";
       newCellEntry = [inputValue];
     }
     // update type of selected cell
     else if (
-      (!sudokuBoard!.inNoteMode && currentType === "note") ||
+      (!sudokuBoard.inNoteMode && currentType === "note") ||
       inputValue === 0
     ) {
-      sudokuBoard!.puzzle[c][r].type = "value";
+      sudokuBoard.puzzle[c][r].type = "value";
     }
     // set new note value
-    else if (sudokuBoard!.inNoteMode) {
+    else if (sudokuBoard.inNoteMode) {
       const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter(
@@ -181,22 +187,22 @@ const SudokuBoard = (props: any) => {
     }
 
     // updating board entry
-    sudokuBoard!.puzzle[c][r].entry = newCellEntry;
+    sudokuBoard.puzzle[c][r].entry = newCellEntry;
   };
 
   const isGameSolved = (): boolean => {
-    for (let c = 0; c < sudokuBoard!.puzzle.length; c++) {
-      for (let r = 0; r < sudokuBoard!.puzzle[c].length; r++) {
-        if (sudokuBoard!.puzzle[c][r].type === "given") continue;
+    for (let c = 0; c < sudokuBoard.puzzle.length; c++) {
+      for (let r = 0; r < sudokuBoard.puzzle[c].length; r++) {
+        if (sudokuBoard.puzzle[c][r].type === "given") continue;
         if (
-          sudokuBoard!.puzzle[c][r].type === "note" ||
-          sudokuBoard!.puzzle[c][r].entry === 0
+          sudokuBoard.puzzle[c][r].type === "note" ||
+          sudokuBoard.puzzle[c][r].entry === 0
         ) {
           return false;
         }
         const isValueCorrectResult = isValueCorrect(
-          sudokuBoard!.puzzleSolution[c][r],
-          sudokuBoard!.puzzle[c][r].entry as number
+          sudokuBoard.puzzleSolution[c][r],
+          sudokuBoard.puzzle[c][r].entry as number
         );
         if (isValueCorrectResult === false) {
           return false;
@@ -213,19 +219,19 @@ const SudokuBoard = (props: any) => {
    */
   const toggleSelectCell = (r: number, c: number) => {
     if (
-      sudokuBoard!.selectedCell &&
-      sudokuBoard!.selectedCell.c === c &&
-      sudokuBoard!.selectedCell.r === r
+      sudokuBoard.selectedCell &&
+      sudokuBoard.selectedCell.c === c &&
+      sudokuBoard.selectedCell.r === r
     ) {
       setSudokuBoard({
         ...sudokuBoard,
         selectedCell: null,
-      } as SudokuBoardProps);
+      });
     } else {
       setSudokuBoard({
         ...sudokuBoard,
         selectedCell: { r: r, c: c },
-      } as SudokuBoardProps);
+      });
     }
   };
 
@@ -241,7 +247,7 @@ const SudokuBoard = (props: any) => {
       return false;
     }
     return !(
-      sudokuBoard!.puzzle[c][r].entry === sudokuBoard!.puzzleSolution[c][r]
+      sudokuBoard.puzzle[c][r].entry === sudokuBoard!.puzzleSolution[c][r]
     );
   };
 
@@ -254,7 +260,7 @@ const SudokuBoard = (props: any) => {
       isHighlightColumn,
     } = React.useContext(PreferencesContext);
 
-    let selected = sudokuBoard!.selectedCell;
+    let selected = sudokuBoard.selectedCell;
     let isSelected = false;
     let conflict = false;
     let peer = false;
@@ -265,19 +271,20 @@ const SudokuBoard = (props: any) => {
 
     if (selected != null) {
       conflict = isConflict(r, c, cell);
-      isSelected =
-        c === sudokuBoard!.selectedCell!.c &&
-        r === sudokuBoard!.selectedCell!.r;
-      box = highlightBox({ r: r, c: c }, sudokuBoard!.selectedCell!);
-      row = highlightRow({ r: r, c: c }, sudokuBoard!.selectedCell!);
-      column = highlightColumn({ r: r, c: c }, sudokuBoard!.selectedCell!);
+      isSelected = c === selected.c && r === selected.r;
+      box = highlightBox({ r: r, c: c }, selected);
+      row = highlightRow({ r: r, c: c }, selected);
+      column = highlightColumn({ r: r, c: c }, selected);
       peer =
         !conflict &&
         ((box && isHighlightBox) ||
           (row && isHighlightRow) ||
           (column && isHighlightColumn));
 
-      const currentSelectedCell: CellProps = getCurrentSelectedCell();
+      const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
+      if (currentSelectedCell == null) {
+        return;
+      }
       const selectedEntry = currentSelectedCell.entry;
       let currentEntry = cell.entry;
       sameValue =
@@ -311,14 +318,17 @@ const SudokuBoard = (props: any) => {
     );
   };
 
-  const getCurrentSelectedCell = (): CellProps => {
-    return sudokuBoard!.puzzle[sudokuBoard!.selectedCell!.c][
-      sudokuBoard!.selectedCell!.r
+  const getCurrentSelectedCell = (): CellProps | null => {
+    if (sudokuBoard.selectedCell == null) {
+      return null;
+    }
+    return sudokuBoard.puzzle[sudokuBoard.selectedCell.c][
+      sudokuBoard.selectedCell.r
     ];
   };
 
   const handleKeyDown = (event: any) => {
-    if (sudokuBoard!.selectedCell == null) {
+    if (sudokuBoard.selectedCell == null) {
       return;
     }
 
@@ -340,14 +350,14 @@ const SudokuBoard = (props: any) => {
 
   const renderNumberControl = () => {
     let currentSelectedCell: CellProps | null = null;
-    if (sudokuBoard!.selectedCell != null) {
+    if (sudokuBoard.selectedCell != null) {
       currentSelectedCell = getCurrentSelectedCell();
     }
     let prefilled = false;
     if (currentSelectedCell != null) {
       prefilled = currentSelectedCell.type === "given";
     }
-    const inNoteMode = sudokuBoard!.inNoteMode;
+    const inNoteMode = sudokuBoard.inNoteMode;
     return (
       <NumberControl
         prefilled={prefilled}
@@ -358,16 +368,12 @@ const SudokuBoard = (props: any) => {
   };
 
   const renderActions = () => {
-    const inNoteMode = sudokuBoard!.inNoteMode;
-    let currentSelectedCell: CellProps | null = null;
-    if (sudokuBoard!.selectedCell != null) {
-      currentSelectedCell = getCurrentSelectedCell();
-    }
-
-    let isEraseButtonDisabled = sudokuBoard!.selectedCell == null;
+    const inNoteMode = sudokuBoard.inNoteMode;
+    let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
+    let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
     const isUndoButtonDisabled =
-      sudokuBoard!.actionHistory == null ||
-      sudokuBoard!.actionHistory.length == 0;
+      sudokuBoard.actionHistory == null ||
+      sudokuBoard.actionHistory.length == 0;
     const isNoteModeButtonDisabled = false;
     if (currentSelectedCell != null) {
       const isCellGiven = currentSelectedCell.type === "given";
@@ -376,8 +382,8 @@ const SudokuBoard = (props: any) => {
       const isCellCorrect =
         currentSelectedCell.type === "value" &&
         isValueCorrect(
-          sudokuBoard!.puzzleSolution[sudokuBoard!.selectedCell!.c][
-            sudokuBoard!.selectedCell!.r
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.c][
+            sudokuBoard.selectedCell!.r
           ],
           currentSelectedCell.entry
         );
