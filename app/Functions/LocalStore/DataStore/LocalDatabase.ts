@@ -97,7 +97,7 @@ export interface GameStatistics {
   numHintsUsed: number;
 }
 
-type GameType = "demo" | "drill" | "classic" | "lesson";
+export type GameType = "demo" | "drill" | "classic" | "lesson";
 export type GameDifficulty = "easy" | "medium" | "hard";
 export type GameDifficultyScore = 10 | 20 | 30;
 

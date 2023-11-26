@@ -8,11 +8,12 @@ import PauseButton from "./PauseButton";
 
 let fallbackHeight = 30;
 
-const HeaderRow = (props: {
+interface HeaderRowProps {
   sudokuBoard: SudokuObjectProps;
-  setSudokuBoard: any;
-}) => {
-  //  Header w/ timer and pause button
+  setSudokuBoard: React.Dispatch<React.SetStateAction<SudokuObjectProps>>;
+}
+
+const HeaderRow = (props: HeaderRowProps) => {
   const { sudokuBoard, setSudokuBoard } = props;
 
   const currentTime = sudokuBoard.statistics.time;

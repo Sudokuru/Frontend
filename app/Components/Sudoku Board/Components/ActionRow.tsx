@@ -4,7 +4,16 @@ import { Platform, Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 
-const ActionRow = (props: any) => {
+interface ActionRowProps {
+  isEraseButtonDisabled: boolean;
+  isUndoButtonDisabled: boolean;
+  inNoteMode: boolean;
+  undo: () => void;
+  toggleNoteMode: () => void;
+  eraseSelected: () => void;
+}
+
+const ActionRow = (props: ActionRowProps) => {
   const {
     isEraseButtonDisabled,
     isUndoButtonDisabled,

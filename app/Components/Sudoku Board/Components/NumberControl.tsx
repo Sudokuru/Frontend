@@ -8,7 +8,12 @@ let fallbackHeight = 30;
 
 // todo rewrite
 
-const NumberControl = (props: any) => {
+interface NumberControlProps {
+  prefilled: boolean;
+  updateEntry: (inputValue: number) => void;
+}
+
+const NumberControl = (props: NumberControlProps) => {
   const { prefilled, updateEntry } = props;
   const cellSize = getCellSize();
   const theme = useTheme();

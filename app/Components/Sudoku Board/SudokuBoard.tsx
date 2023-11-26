@@ -385,13 +385,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (currentSelectedCell != null) {
       prefilled = currentSelectedCell.type === "given";
     }
-    const inNoteMode = sudokuBoard.inNoteMode;
     return (
-      <NumberControl
-        prefilled={prefilled}
-        inNoteMode={inNoteMode}
-        updateEntry={updateCellEntry}
-      />
+      <NumberControl prefilled={prefilled} updateEntry={updateCellEntry} />
     );
   };
   const renderActions = () => {

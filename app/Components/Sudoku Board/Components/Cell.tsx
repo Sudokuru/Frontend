@@ -15,7 +15,7 @@ let fallbackHeight = 30;
 interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
-  onClick: any; // todo type of function
+  onClick: (r: number, c: number) => void;
   isPeer: boolean;
   isSelected: boolean;
   sameValue: boolean;
