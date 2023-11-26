@@ -430,20 +430,20 @@ const SudokuBoard = (props: any) => {
     );
   };
   return (
-    <Pressable testID={"sudokuBoard"} onPress={handleKeyDown}>
+    <Pressable
+      testID={"sudokuBoard"}
+      onPress={handleKeyDown}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
       {renderTopBar()}
       {renderPuzzle()}
-      <View
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        {renderActions()}
-        {renderNumberControl()}
-      </View>
+      {renderActions()}
+      {renderNumberControl()}
     </Pressable>
   );
 };
