@@ -234,53 +234,29 @@ export class Puzzles {
   }
 
   /**
-   * Given deletes the users active game and returns game results/statistics
-   * @returns promise of gameResults JSON object
+   * Given deletes the users active game and returns game score
+   * @returns promise of game score
    */
-  public static async finishGame(): Promise<GameStatistics> {
-    // retrieve the active game
-    let finishedGame: SudokuBoardProps[] = await getKeyJSON("active_game");
+  public static async finishGame(
+    numHintsUsed: number,
+    numWrongCellsPlayed: number,
+    time: number,
+    score: number
+  ) {
     // remove the game from storage
     await removeData("active_game");
 
-    // retrieve statistics from the game
-    let numWrongCellsPlayed: number =
-      finishedGame[0].statistics.numWrongCellsPlayed;
-    let finalTime: number = finishedGame[0].statistics.time;
-    let difficulty: GameDifficulty = finishedGame[0].statistics.difficulty;
-    let numericalDifficulty: GameDifficultyScore =
-      difficulty === "easy"
-        ? 10
-        : difficulty === "medium"
-        ? 20
-        : difficulty === "hard"
-        ? 30
-        : 10;
-    let numHintsUsed: number = finishedGame[0].statistics.numHintsUsed;
-
-    // calculate score
-    let difficultyScore: number = (numericalDifficulty / 1000) * 30;
-    let hintAndIncorrectCellsScore: number =
-      numWrongCellsPlayed + numHintsUsed > 40
-        ? 0
-        : 40 - numWrongCellsPlayed - numHintsUsed;
-    let timeScore: number = finalTime / 60 > 30 ? 0 : 30 - finalTime / 60;
-    let score: number = Math.round(
-      difficultyScore + hintAndIncorrectCellsScore + timeScore
-    );
-
     // Create or update user's statistics
-
     let statistics: statistics = await Statistics.getStatistics();
 
     statistics.totalScore += score;
     if (
-      finalTime < statistics.fastestSolveTime ||
+      time < statistics.fastestSolveTime ||
       statistics.fastestSolveTime === 0
     ) {
-      statistics.fastestSolveTime = finalTime;
+      statistics.fastestSolveTime = time;
     }
-    statistics.totalSolveTime += finalTime;
+    statistics.totalSolveTime += time;
     statistics.numGamesPlayed += 1;
     statistics.numHintsUsed += numHintsUsed;
     statistics.numWrongCellsPlayed += numWrongCellsPlayed;
@@ -289,15 +265,6 @@ export class Puzzles {
     );
 
     Statistics.saveStatisitics(statistics);
-
-    // return results
-    return {
-      score: score,
-      time: finalTime,
-      numHintsUsed: numHintsUsed,
-      numWrongCellsPlayed: numWrongCellsPlayed,
-      difficulty: difficulty,
-    };
   }
 
   /**

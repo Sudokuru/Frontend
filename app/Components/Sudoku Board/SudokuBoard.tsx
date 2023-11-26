@@ -15,8 +15,10 @@ import {
 } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
+import EndGameModal from "./EndGameModal";
 const SudokuBoard = (props: any) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuBoardProps>();
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -30,6 +32,18 @@ const SudokuBoard = (props: any) => {
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
     return <ActivityIndicator animating={true} color="red" />;
+  }
+
+  if (gameOver) {
+    return (
+      <EndGameModal
+        score={sudokuBoard.statistics.score}
+        time={sudokuBoard.statistics.time}
+        difficulty={sudokuBoard.statistics.difficulty}
+        numHintsUsed={sudokuBoard.statistics.numHintsUsed}
+        numWrongCellsPlayed={sudokuBoard.statistics.numWrongCellsPlayed}
+      />
+    );
   }
 
   /**
@@ -125,19 +139,35 @@ const SudokuBoard = (props: any) => {
       cellLocation: { c: c, r: r },
     });
 
-    setSudokuBoard({
-      ...sudokuBoard,
-      puzzle: sudokuBoard.puzzle,
-      actionHistory: sudokuBoard.actionHistory,
-      statistics: sudokuBoard.statistics,
-    });
-
     // Saving current game status
     saveGame(sudokuBoard);
 
     if (!sudokuBoard.inNoteMode && isGameSolved()) {
-      finishGame(props.showGameResults);
+      const score = finishGame(
+        sudokuBoard.statistics.difficulty,
+        sudokuBoard.statistics.numHintsUsed,
+        sudokuBoard.statistics.numWrongCellsPlayed,
+        sudokuBoard.statistics.time
+      );
+      sudokuBoard.statistics.score = score;
+      console.log(score);
+      setSudokuBoard({
+        ...sudokuBoard,
+        puzzle: sudokuBoard.puzzle,
+        actionHistory: sudokuBoard.actionHistory,
+        statistics: sudokuBoard.statistics,
+      });
+      setGameOver(true);
+    } else {
+      setSudokuBoard({
+        ...sudokuBoard,
+        puzzle: sudokuBoard.puzzle,
+        actionHistory: sudokuBoard.actionHistory,
+        statistics: sudokuBoard.statistics,
+      });
     }
+
+    console.log(sudokuBoard.statistics);
   };
 
   /**

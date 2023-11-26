@@ -1,6 +1,7 @@
 import { useWindowDimensions } from "react-native";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import {
+  GameDifficultyScore,
   GameStatistics,
   SudokuBoardProps,
 } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
@@ -42,13 +43,13 @@ export const formatTime = (inputSeconds: number) => {
     hours > 0
       ? (hours < 10 ? "0" : "") + hours + ":"
       : hours == 0 && days != 0
-      ? "00"
+      ? "00:"
       : "";
   const paddedMinutes =
     minutes > 0
       ? (minutes < 10 ? "0" : "") + minutes + ":"
       : minutes == 0 && hours != 0
-      ? "00"
+      ? "00:"
       : "";
   const paddedSeconds =
     seconds > 0
@@ -69,16 +70,40 @@ export async function saveGame(activeGame: SudokuBoardProps) {
   });
 }
 
-export async function finishGame(showResultsFunction: any) {
-  Puzzles.finishGame().then((res: GameStatistics) => {
-    if (res) {
-      showResultsFunction(
-        res.score,
-        res.time,
-        res.numHintsUsed,
-        res.numWrongCellsPlayed,
-        res.difficulty
-      );
-    }
-  });
+/**
+ * Calculates and returns the score of the game.
+ * Calls Puzzle.finishGame to update Statistics Page and remove localstorage object.
+ * @param difficulty
+ * @param numHintsUsed
+ * @param numWrongCellsPlayed
+ * @param time
+ * @returns
+ */
+export function finishGame(
+  difficulty: string,
+  numHintsUsed: number,
+  numWrongCellsPlayed: number,
+  time: number
+): number {
+  const numericalDifficulty: GameDifficultyScore =
+    difficulty === "easy"
+      ? 10
+      : difficulty === "medium"
+      ? 20
+      : difficulty === "hard"
+      ? 30
+      : 10;
+  // calculate score
+  const difficultyScore: number = (numericalDifficulty / 1000) * 30;
+  const hintAndIncorrectCellsScore: number =
+    numWrongCellsPlayed + numHintsUsed > 40
+      ? 0
+      : 40 - numWrongCellsPlayed - numHintsUsed;
+  const timeScore: number = time / 60 > 30 ? 0 : 30 - time / 60;
+  const score: number = Math.round(
+    difficultyScore + hintAndIncorrectCellsScore + timeScore
+  );
+
+  Puzzles.finishGame(numHintsUsed, numWrongCellsPlayed, time, score);
+  return score;
 }

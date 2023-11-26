@@ -12,8 +12,8 @@ const Statistic = (props: StatisticProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
   return (
-    <View style={{ marginBottom: 10, flexDirection: "row" }}>
-      <Text style={{ fontSize: reSize ? reSize / 22 : 20, color: "#025E73" }}>
+    <View style={{ flexDirection: "row" }}>
+      <Text style={{ fontSize: reSize ? reSize / 20 : 20, color: "#025E73" }}>
         {props.statisticName}
       </Text>
       <Text
