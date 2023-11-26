@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Set } from "immutable";
 import PropTypes from "prop-types";
 import { useNavigation } from "@react-navigation/native";
-import { saveGame } from "./Functions/BoardFunctions";
+import { finishGame, saveGame } from "./Functions/BoardFunctions";
 
 import { highlightBox, highlightColumn, highlightRow, isPeer } from "./sudoku";
 
@@ -178,9 +178,6 @@ const SudokuBoard = (props: any) => {
     });
   };
 
-  /**
-   * Toggles note mode for the board
-   */
   const toggleNoteMode = () => {
     sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
     setSudokuBoard({ ...sudokuBoard, inNoteMode: sudokuBoard.inNoteMode });
@@ -369,6 +366,11 @@ const SudokuBoard = (props: any) => {
 
     // Saving current game status
     saveGame(sudokuBoard);
+
+    if (!sudokuBoard.inNoteMode && isGameSolved()) {
+      console.log("GAME IS SOLVED");
+      finishGame(props.showGameResults);
+    }
   };
 
   /**
@@ -410,6 +412,43 @@ const SudokuBoard = (props: any) => {
 
     // updating board entry
     sudokuBoard.puzzle[c][r].entry = newCellEntry;
+  };
+
+  const isGameSolved: boolean = () => {
+    console.log("HELLO");
+    for (c = 0; c < sudokuBoard.puzzle.length; c++) {
+      for (r = 0; r < sudokuBoard.puzzle[c].length; r++) {
+        console.log(
+          sudokuBoard.puzzle[c][r].entry,
+          sudokuBoard.puzzle[c][r].type
+        );
+        if (sudokuBoard.puzzle[c][r].type === "given") continue;
+        if (
+          sudokuBoard.puzzle[c][r].type === "note" ||
+          sudokuBoard.puzzle[c][r].entry === 0
+        ) {
+          console.log("HELLO");
+          console.log(
+            sudokuBoard.puzzleSolution[c][r],
+            sudokuBoard.puzzle[c][r].entry
+          );
+          return false;
+        }
+        const isValueCorrectResult = isValueCorrect(
+          sudokuBoard.puzzleSolution[c][r],
+          sudokuBoard.puzzle[c][r].entry
+        );
+
+        if (isValueCorrectResult === false) {
+          console.log(
+            sudokuBoard.puzzleSolution[c][r],
+            sudokuBoard.puzzle[c][r].entry
+          );
+          return false;
+        }
+      }
+    }
+    return true;
   };
 
   /**

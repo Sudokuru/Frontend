@@ -90,7 +90,7 @@ export interface CellLocation {
   c: number;
 }
 
-interface GameStatistics {
+export interface GameStatistics {
   difficulty: GameDifficulty;
   time: number;
   score: number;
@@ -99,7 +99,8 @@ interface GameStatistics {
 }
 
 type GameType = "demo" | "drill" | "puzzle" | "lesson";
-type GameDifficulty = "easy" | "medium" | "hard";
+export type GameDifficulty = "easy" | "medium" | "hard";
+export type GameDifficultyScore = 10 | 20 | 30;
 
 export type CellProps = CellWithValue | CellWithNotes;
 

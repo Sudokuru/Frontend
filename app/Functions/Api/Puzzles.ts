@@ -2,6 +2,9 @@ import { sudokuStrategyArray } from "sudokuru";
 import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
 import { activeGame } from "../../Types/Puzzle.Types";
 import {
+  GameDifficulty,
+  GameDifficultyScore,
+  GameStatistics,
   SudokuBoardProps,
   returnLocalGame,
 } from "../LocalStore/DataStore/LocalDatabase";
@@ -234,24 +237,29 @@ export class Puzzles {
    * Given deletes the users active game and returns game results/statistics
    * @returns promise of gameResults JSON object
    */
-  public static async finishGame(): Promise<gameResults> {
+  public static async finishGame(): Promise<GameStatistics> {
     // retrieve the active game
-    let activeGame: activeGame[] = await getKeyJSON("active_game");
+    let finishedGame: SudokuBoardProps[] = await getKeyJSON("active_game");
     // remove the game from storage
     await removeData("active_game");
 
     // retrieve statistics from the game
-    let numWrongCellsPlayed = activeGame[0].numWrongCellsPlayed
-      ? activeGame[0].numWrongCellsPlayed
-      : 0;
-    let finalTime = activeGame[0].currentTime;
-    let difficulty = activeGame[0].difficulty;
-    let numHintsUsed = activeGame[0].numHintsUsed
-      ? activeGame[0].numHintsUsed
-      : 0;
+    let numWrongCellsPlayed: number =
+      finishedGame[0].statistics.numWrongCellsPlayed;
+    let finalTime: number = finishedGame[0].statistics.time;
+    let difficulty: GameDifficulty = finishedGame[0].statistics.difficulty;
+    let numericalDifficulty: GameDifficultyScore =
+      difficulty === "easy"
+        ? 10
+        : difficulty === "medium"
+        ? 20
+        : difficulty === "hard"
+        ? 30
+        : 10;
+    let numHintsUsed: number = finishedGame[0].statistics.numHintsUsed;
 
     // calculate score
-    let difficultyScore: number = (difficulty / 1000) * 30;
+    let difficultyScore: number = (numericalDifficulty / 1000) * 30;
     let hintAndIncorrectCellsScore: number =
       numWrongCellsPlayed + numHintsUsed > 40
         ? 0
@@ -285,7 +293,7 @@ export class Puzzles {
     // return results
     return {
       score: score,
-      solveTime: finalTime,
+      time: finalTime,
       numHintsUsed: numHintsUsed,
       numWrongCellsPlayed: numWrongCellsPlayed,
       difficulty: difficulty,

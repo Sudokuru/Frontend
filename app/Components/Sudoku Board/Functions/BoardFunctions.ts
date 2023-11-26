@@ -3,7 +3,10 @@ import { Set } from "immutable";
 import { getHint as getHint } from "sudokuru";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
 import { gameResults } from "../../../Types/Puzzle.Types";
-import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
+import {
+  GameStatistics,
+  SudokuBoardProps,
+} from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 /*
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -308,12 +311,12 @@ export async function saveGame(activeGame: SudokuBoardProps) {
   });
 }
 
-export async function finishGame(showResults: any) {
-  Puzzles.finishGame().then((res: gameResults) => {
+export async function finishGame(showResultsFunction: any) {
+  Puzzles.finishGame().then((res: GameStatistics) => {
     if (res) {
-      showResults(
+      showResultsFunction(
         res.score,
-        res.solveTime,
+        res.time,
         res.numHintsUsed,
         res.numWrongCellsPlayed,
         res.difficulty
