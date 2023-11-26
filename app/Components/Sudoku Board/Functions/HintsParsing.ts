@@ -1,4 +1,3 @@
-import { Set } from "immutable";
 import Hint from "./Hint";
 import Group from "./Group";
 
@@ -168,34 +167,6 @@ export function addGroupToHint(
   }
   hint.addGroup(hintStepNumber, tempGroup);
   return;
-}
-
-export const addEveryNote = (x: number, y: number, board: Object) => {
-  let notes = board.get("puzzle").getIn([x, y]).get("notes") || Set();
-  for (let i = 1; i <= 9; i++) {
-    if (!notes.has(i)) {
-      notes = notes.add(i);
-    }
-  }
-  board = board.setIn(["puzzle", x, y, "notes"], notes);
-  return board;
-};
-
-/**
- * Given a board and a list of notes being removed, adds notes to the board for every note being removed
- * @param board - board to add notes to
- * @param removals - array of removals to add notes for
- * @returns board with notes added
- */
-export function addEveryRemovalNoteToBoard(board: any, removals: any[]): any {
-  for (let i = 0; i < removals.length; i++) {
-    board = addEveryNote(
-      removals[i].position[0],
-      removals[i].position[1],
-      board
-    );
-  }
-  return board;
 }
 
 /**
