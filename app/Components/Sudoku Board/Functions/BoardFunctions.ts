@@ -1,18 +1,15 @@
 import { useWindowDimensions } from "react-native";
-import { Set } from "immutable";
-import { getHint as getHint } from "sudokuru";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
-import { gameResults } from "../../../Types/Puzzle.Types";
 import {
   GameStatistics,
   SudokuBoardProps,
 } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
-/*
+/**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
  */
 
-/*
+/**
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions of 1 x 1.44444
  */
@@ -30,18 +27,6 @@ export const isValueCorrect = (
   inputValue: number
 ): boolean => {
   return solution === inputValue;
-};
-
-export function replaceChar(origString: any, replaceChar: any, index: any) {
-  let firstPart = origString.substr(0, index);
-  let lastPart = origString.substr(index + 1);
-
-  return firstPart + replaceChar + lastPart;
-}
-
-// function that converts x,y cell coords to a number
-export const getCellNumber = (x: any, y: any) => {
-  return y + x * 9;
 };
 
 // https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds

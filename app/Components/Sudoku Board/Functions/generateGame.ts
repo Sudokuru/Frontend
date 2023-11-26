@@ -1,12 +1,4 @@
-import { activeGame, drill, puzzle } from "../../../Types/Puzzle.Types";
-import { Drills } from "../../../Functions/Api/Drills";
 import { Puzzles } from "../../../Functions/Api/Puzzles";
-import {
-  getDrillSolutionCells,
-  parseApiAndAddNotes,
-  strPuzzleToArray,
-} from "./BoardFunctions";
-import { List } from "immutable";
 import { SudokuBoardProps } from "../../../Functions/LocalStore/DataStore/LocalDatabase";
 
 export async function generateGame(props: any) {
@@ -33,58 +25,5 @@ export async function generateGame(props: any) {
       return game[0];
     });
   }
-  // else if (props.gameType == "StartDrill") {
-  //   let { board, originalBoard, puzzleSolution }: any = await Drills.getGame(
-  //     props.strategies.toString()
-  //   ).then((game: drill) => {
-  //     // null check to verify that game is loaded in.
-  //     if (game == null) {
-  //       //navigation.navigate("Home");
-  //       return;
-  //     }
-  //     let board = makeBoard(
-  //       strPuzzleToArray(game.puzzleCurrentState),
-  //       game.puzzleCurrentState
-  //     );
-  //     board = parseApiAndAddNotes(board, game.puzzleCurrentNotesState, true);
-  //     let originalBoard = makeBoard(
-  //       strPuzzleToArray(game.puzzleCurrentState),
-  //       game.puzzleCurrentState
-  //     );
-  //     originalBoard = parseApiAndAddNotes(
-  //       originalBoard,
-  //       game.puzzleCurrentNotesState,
-  //       true
-  //     );
-  //     let puzzleSolution = game.puzzleSolution;
-  //     return { board, originalBoard, puzzleSolution };
-  //   });
-
-  //   let drillSolutionCells = getDrillSolutionCells(
-  //     board,
-  //     puzzleSolution,
-  //     props.strategies
-  //   );
-
-  //   return {
-  //     board,
-  //     history: List.of(board),
-  //     historyOffSet: 0,
-  //     drillSolutionCells,
-  //     originalBoard,
-  //     solution: puzzleSolution,
-  //   };
-  // } else if (props.gameType == "Demo") {
-  //   let game = Puzzles.getRandomGame();
-  //   let board = makeBoard(strPuzzleToArray(game[0].puzzle), game[0].puzzle);
-  //   return {
-  //     board,
-  //     history: List.of(board),
-  //     historyOffSet: 0,
-  //     solution: game[0].puzzleSolution,
-  //     activeGame: game,
-  //   };
-  // }
-
   return gameData;
 }

@@ -1,13 +1,8 @@
 import { CellLocation } from "../../Functions/LocalStore/DataStore/LocalDatabase";
 
+// todo remove, used in NumberControl.tsx
 export function range(n: number) {
   return Array.from(Array(n).keys());
-}
-
-export function makeCountObject() {
-  const countObj = [];
-  for (let i = 0; i < 10; i += 1) countObj.push(0);
-  return countObj;
 }
 
 /**

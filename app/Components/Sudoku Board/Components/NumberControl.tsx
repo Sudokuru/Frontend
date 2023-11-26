@@ -6,6 +6,8 @@ import { getCellSize } from "../Functions/BoardFunctions";
 
 let fallbackHeight = 30;
 
+// todo rewrite
+
 const NumberControl = (props: any) => {
   const { prefilled, updateEntry } = props;
   const cellSize = getCellSize();
@@ -36,10 +38,7 @@ const NumberControl = (props: any) => {
                 ? cellSize * (50 / 60)
                 : fallbackHeight * (50 / 60),
               height: cellSize ? cellSize : fallbackHeight,
-              // flexDirection: "column",
-              // justifyContent: "center",
               alignItems: "center",
-              // alignContent: "center",
               backgroundColor: theme.colors.primaryContainer,
               borderRadius: cellSize
                 ? cellSize * (10 / 60)

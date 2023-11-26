@@ -188,25 +188,4 @@ const styles = (cellSize?: number) =>
     },
   });
 
-// Cell.propTypes = {
-//   value: PropTypes.number,
-//   onClick: PropTypes.func.isRequired,
-//   isPeer: PropTypes.bool.isRequired,
-//   isSelected: PropTypes.bool.isRequired,
-//   sameValue: PropTypes.bool.isRequired,
-//   prefilled: PropTypes.bool.isRequired,
-//   notes: PropTypes.instanceOf(Set),
-//   conflict: PropTypes.bool.isRequired,
-//   eraseSelected: PropTypes.func.isRequired,
-//   inHintMode: PropTypes.bool,
-//   hintSteps: PropTypes.any,
-//   currentStep: PropTypes.number,
-// };
-
-// Cell.defaultProps = {
-//   notes: null,
-//   value: null,
-//   inHintMode: false,
-// };
-
 export default Cell;
