@@ -20,6 +20,10 @@ export const CARD_IMAGE_HEIGHT: number = CARD_HEIGHT / 2;
  */
 export function calculateCardsPerRow(width: number, count: number): number {
   let columnCount: number = Math.floor(width / (CARD_WIDTH + 100));
+  // If we cannot fix a single card fully per row we just try to best we can anyways
+  if (columnCount === 0) {
+    return 1;
+  }
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
   while (columnCount - 1 >= Math.ceil(count / (columnCount - 1))) {
     columnCount--;
