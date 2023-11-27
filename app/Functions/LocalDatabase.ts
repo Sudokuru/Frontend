@@ -64,6 +64,7 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 
 export interface SudokuObjectProps {
   type: GameType;
+  version: string;
   selectedCell: CellLocation | null;
   statistics: GameStatistics;
   puzzle: CellProps[][];
@@ -129,6 +130,7 @@ interface Hint {
 const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
     type: "classic",
+    version: "1.0.0",
     selectedCell: null,
     puzzle: [
       [
