@@ -64,8 +64,6 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 
 export interface SudokuObjectProps {
   type: GameType;
-  // spend more time understanding current Hint structure, come back to this
-  // hint?: Hint;
   selectedCell: CellLocation | null;
   statistics: GameStatistics;
   puzzle: CellProps[][];
@@ -90,13 +88,14 @@ export interface CellLocation {
 
 export interface GameStatistics {
   difficulty: GameDifficulty;
+  internalDifficulty: number;
   time: number;
   score: number;
   numWrongCellsPlayed: number;
   numHintsUsed: number;
 }
 
-export type GameType = "demo" | "drill" | "classic" | "lesson";
+export type GameType = "demo" | "drill" | "classic";
 export type GameDifficulty = "easy" | "medium" | "hard";
 export type GameDifficultyScore = 10 | 20 | 30;
 
@@ -488,6 +487,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
     ],
     statistics: {
       difficulty: "easy",
+      internalDifficulty: 0,
       numHintsUsed: 0,
       numWrongCellsPlayed: 0,
       score: 0,
