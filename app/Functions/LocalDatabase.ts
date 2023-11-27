@@ -75,7 +75,6 @@ export interface SudokuObjectProps {
 }
 
 export interface GameAction {
-  type: ActionType;
   cellLocation: CellLocation;
   cell: CellProps;
 }

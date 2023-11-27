@@ -137,7 +137,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
-      type: currentType,
       cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
       cellLocation: { c: c, r: r },
     });
