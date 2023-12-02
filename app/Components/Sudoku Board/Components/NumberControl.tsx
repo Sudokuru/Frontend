@@ -9,12 +9,12 @@ let fallbackHeight = 30;
 // todo rewrite
 
 interface NumberControlProps {
-  prefilled: boolean;
+  areNumberButtonsDisabled: boolean;
   updateEntry: (inputValue: number) => void;
 }
 
 const NumberControl = (props: NumberControlProps) => {
-  const { prefilled, updateEntry } = props;
+  const { areNumberButtonsDisabled: prefilled, updateEntry } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
   return (

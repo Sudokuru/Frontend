@@ -375,15 +375,30 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderNumberControl = () => {
     let currentSelectedCell: CellProps | null = null;
+    let isBoardSelected: boolean = true;
     if (sudokuBoard.selectedCell != null) {
       currentSelectedCell = getCurrentSelectedCell();
+    } else {
+      isBoardSelected = false;
     }
-    let prefilled = false;
+    let isGiven = false;
+    let isCellCorrect = false;
     if (currentSelectedCell != null) {
-      prefilled = currentSelectedCell.type === "given";
+      isGiven = currentSelectedCell.type === "given";
+      isCellCorrect =
+        currentSelectedCell.type === "value" &&
+        isValueCorrect(
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.c][
+            sudokuBoard.selectedCell!.r
+          ],
+          currentSelectedCell.entry
+        );
     }
     return (
-      <NumberControl prefilled={prefilled} updateEntry={updateCellEntry} />
+      <NumberControl
+        areNumberButtonsDisabled={isGiven || !isBoardSelected || isCellCorrect}
+        updateEntry={updateCellEntry}
+      />
     );
   };
 
