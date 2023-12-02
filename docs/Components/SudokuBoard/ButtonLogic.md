@@ -1,6 +1,6 @@
 ✅ ❌
 
-# Classic Mode
+# Classic Variant
 
 ## Button Enabled/Disabled logic
 

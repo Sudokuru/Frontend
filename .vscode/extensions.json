@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "eamodio.gitlens",
+    "aaron-bond.better-comments",
+    "naumovs.color-highlight",
+    "expo.vscode-expo-tools",
+    "github.vscode-github-actions",
+    "bierner.markdown-emoji",
+    "bierner.markdown-mermaid"
+  ]
+}

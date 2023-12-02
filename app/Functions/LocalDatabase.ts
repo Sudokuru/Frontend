@@ -63,7 +63,7 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 }
 
 export interface SudokuObjectProps {
-  type: GameType;
+  variant: GameVariant;
   version: string;
   selectedCell: CellLocation | null;
   statistics: GameStatistics;
@@ -80,7 +80,7 @@ export interface GameAction {
 
 // todo remove erase, and just use 0 value to signify erase
 // then can remove ActionType as a type needed
-type ActionType = "note" | "value" | "erase";
+type ActionType = "note" | "value";
 
 export interface CellLocation {
   r: number;
@@ -96,7 +96,7 @@ export interface GameStatistics {
   numHintsUsed: number;
 }
 
-export type GameType = "demo" | "drill" | "classic";
+export type GameVariant = "demo" | "drill" | "classic";
 export type GameDifficulty = "easy" | "medium" | "hard";
 export type GameDifficultyScore = 10 | 20 | 30;
 
@@ -129,7 +129,7 @@ interface Hint {
 
 const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
-    type: "classic",
+    variant: "classic",
     version: "1.0.0",
     selectedCell: null,
     puzzle: [
