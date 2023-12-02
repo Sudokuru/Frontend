@@ -278,6 +278,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       sudokuBoard.puzzle[c][r].entry === sudokuBoard.puzzleSolution[c][r]
     );
   };
+
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const {
       isHighlightIdenticalValues,
@@ -371,6 +372,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const renderPuzzle = () => {
     return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard} />;
   };
+
   const renderNumberControl = () => {
     let currentSelectedCell: CellProps | null = null;
     if (sudokuBoard.selectedCell != null) {
@@ -384,6 +386,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       <NumberControl prefilled={prefilled} updateEntry={updateCellEntry} />
     );
   };
+
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
     let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
@@ -408,6 +411,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         isEraseButtonDisabled = true;
       }
     }
+
     return (
       <ActionRow
         isEraseButtonDisabled={isEraseButtonDisabled}
@@ -419,6 +423,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       />
     );
   };
+
   return (
     <View
       testID={"sudokuBoard"}
