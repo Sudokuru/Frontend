@@ -23,3 +23,10 @@ Buttons that are always enabled
 
 - Toggle Note Mode button
 - Pause Button
+
+## HotKeys
+
+### Mappings from buttons to hotkeys
+
+0 - Erase Button  
+1-9 - NumKeys
