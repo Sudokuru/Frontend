@@ -4,15 +4,16 @@
 
 ```mermaid
 flowchart
-    InsertStart[User Selects Cell]
+    PencilButtonState[Note Button State]
+    InsertStart{{User Selects Cell}}
     InsertValue[User Presses HotKey/Button <br> to insert value into Cell]
     InsertNote[User Presses HotKey/Button <br>to insert note into Cell]
     PushHistory[Board pushes existing cell state <br> to ActionHistory array]
     UpdateCell[Cell is updated with new value]
 
-
-    InsertStart --> InsertValue
-    InsertStart --> InsertNote
+    PencilButtonState --> InsertStart
+    InsertStart --> |If Note button is disabled|InsertValue
+    InsertStart --> |If Note button is enabled|InsertNote
     InsertValue --> |If Insert is Valid|PushHistory
     InsertNote --> |If Insert is Valid|PushHistory
     PushHistory --> UpdateCell
@@ -22,7 +23,7 @@ flowchart
 
 ```mermaid
 flowchart
-    UndoStart[User Enters Undo]
+    UndoStart{{User Enters Undo}}
     UpdateUndoCell[Cell is updated with <br> top value of ActionHistory array]
     RemoveHistory[Top value of ActionHistory array is removed]
 
