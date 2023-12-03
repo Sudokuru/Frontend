@@ -6,49 +6,55 @@ export function range(n: number) {
 }
 
 /**
- *
- * @param a
- * @param b
- * @returns {boolean}
+ * Determines if the current cell and selected cell are in the same box
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if current cell is in the same box as selected cell
  */
-export function isPeer(
-  selectedCellCoordinate: CellLocation,
-  currentCellCoordinate: CellLocation
-) {
-  const squareA =
-    Math.floor(selectedCellCoordinate.r / 3) * 3 +
-    Math.floor(selectedCellCoordinate.c / 3);
-  const squareB =
-    Math.floor(currentCellCoordinate.r / 3) * 3 +
-    Math.floor(currentCellCoordinate.c / 3);
-  return (
-    selectedCellCoordinate.r === currentCellCoordinate.r ||
-    selectedCellCoordinate.c === currentCellCoordinate.c ||
-    squareA === squareB
-  );
-}
-
-export function highlightBox(
+export function isCurrentCellAndSelectedCellInSameBox(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
-  const squareA =
-    Math.floor(currentCellCoordinate.c / 3) * 3 +
-    Math.floor(currentCellCoordinate.r / 3);
-  const squareB =
-    Math.floor(selectedCellCoordinate.c / 3) * 3 +
-    Math.floor(selectedCellCoordinate.r / 3);
-  return squareA === squareB;
+  const currentBoxIndex = generateUniqueBoxIndex(
+    currentCellCoordinate.r,
+    currentCellCoordinate.c
+  );
+  const selectedBoxIndex = generateUniqueBoxIndex(
+    selectedCellCoordinate.r,
+    selectedCellCoordinate.c
+  );
+  return currentBoxIndex === selectedBoxIndex;
 }
 
-export function highlightRow(
+/**
+ * Generates a unique index for a box given the box's row and column
+ * @param row number 0-8 of the cell
+ * @param column number 0-8 of the cell
+ */
+function generateUniqueBoxIndex(row: number, column: number) {
+  Math.floor(column / 3) * 3 + Math.floor(row / 3);
+}
+
+/**
+ * Determines if the current cell and selected cell are in the same row
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if the current cell is in the same row as selected cell
+ */
+export function isCurrentCellAndSelectedCellInSameRow(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
   return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
 
-export function highlightColumn(
+/**
+ * Determines if the current cell and selected cell are in the same column
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if the current cell is in the same column as selected cell
+ */
+export function isCurrentCellAndSelectedCellInSameColumn(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {

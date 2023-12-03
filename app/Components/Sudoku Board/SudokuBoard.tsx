@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { finishGame, saveGame } from "./Functions/BoardFunctions";
-import { highlightBox, highlightColumn, highlightRow } from "./sudoku";
+import {
+  isCurrentCellAndSelectedCellInSameBox,
+  isCurrentCellAndSelectedCellInSameColumn,
+  isCurrentCellAndSelectedCellInSameRow,
+} from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
 import { isValueCorrect } from "./Functions/BoardFunctions";
@@ -297,9 +301,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let sameValue = false;
     if (selected != null) {
       isSelected = c === selected.c && r === selected.r;
-      box = highlightBox({ r: r, c: c }, selected);
-      row = highlightRow({ r: r, c: c }, selected);
-      column = highlightColumn({ r: r, c: c }, selected);
+      box = isCurrentCellAndSelectedCellInSameBox({ r: r, c: c }, selected);
+      row = isCurrentCellAndSelectedCellInSameRow({ r: r, c: c }, selected);
+      column = isCurrentCellAndSelectedCellInSameColumn(
+        { r: r, c: c },
+        selected
+      );
       peer =
         !conflict &&
         ((box && isHighlightBox) ||
