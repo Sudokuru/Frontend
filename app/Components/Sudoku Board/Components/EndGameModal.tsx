@@ -60,7 +60,7 @@ const EndGameModal = (props: EndGameModalProps) => {
           testID="numWrongCellsPlayed"
         />
         <Statistic
-          statisticName="Internal Game Difficulty Score: "
+          statisticName="Difficulty: "
           statisticValue={props.difficulty}
           testID="difficulty"
         />
