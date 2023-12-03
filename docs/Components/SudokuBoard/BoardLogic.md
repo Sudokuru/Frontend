@@ -70,3 +70,27 @@ Users can get a maximum of 30 points. Users get 10 points for an easy puzzle, 20
 This is based on the number of incorrect cells and hints during the game.
 
 Users can get a maximum of 40 points, with every hint asked for or incorrect cell placed decreasing the score by 1.
+
+## End Game Screen
+
+When a game ends, the following information is displayed to the user
+
+- Score
+- Time spent
+- Number of Hints used
+- Mistakes made
+- Difficulty
+
+Here is an example of the JSON object used to save the statistics and display the score.
+
+```json
+{
+  "totalScore": 72,
+  "numGamesPlayed": 1,
+  "fastestSolveTime": 334,
+  "averageSolveTime": 334,
+  "totalSolveTime": 334,
+  "numHintsUsed": 0,
+  "numWrongCellsPlayed": 3
+}
+```
