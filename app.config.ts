@@ -8,7 +8,11 @@ export default {
   platforms: ["ios", "android"],
   orientation: "portrait",
   updates: {
+    url: "https://u.expo.dev/23c4c607-ead6-4786-9a9c-03f57a97dac7",
     fallbackToCacheTimeout: 0,
+  },
+  runtimeVersion: {
+    policy: "appVersion",
   },
   assetBundlePatterns: ["**/*"],
   web: {
