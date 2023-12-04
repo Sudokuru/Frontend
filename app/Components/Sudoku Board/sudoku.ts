@@ -15,11 +15,11 @@ export function isCurrentCellAndSelectedCellInSameBox(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
-  const currentBoxIndex = generateUniqueBoxIndex(
+  const currentBoxIndex = generateBoxIndex(
     currentCellCoordinate.r,
     currentCellCoordinate.c
   );
-  const selectedBoxIndex = generateUniqueBoxIndex(
+  const selectedBoxIndex = generateBoxIndex(
     selectedCellCoordinate.r,
     selectedCellCoordinate.c
   );
@@ -31,8 +31,8 @@ export function isCurrentCellAndSelectedCellInSameBox(
  * @param row number 0-8 of the cell
  * @param column number 0-8 of the cell
  */
-function generateUniqueBoxIndex(row: number, column: number): number {
-  return Math.floor(column / 3) * 3 + Math.floor(row / 3);
+function generateBoxIndex(row: number, column: number): number {
+  return Math.floor(column / 3) + Math.floor(row / 3) * 3;
 }
 
 /**
