@@ -18,6 +18,14 @@ For iOS, scan the QR code with your camera app, for Android you will need to sca
 
 For Web, hit the w key to start up the website at `localhost:19000`
 
+# Run Snyk scans
+
+The command to run a Snyk Open Source scan is `npm run snyk:opensource`
+
+The command to run a Snyk code scan is `npm run snyk:code`
+
+Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
+
 # Run Code Coverage and Jest E2E tests
 
 To enable code coverage, toggle `collectCoverage` to `true` in `jest.config.ts` file. Coverage results are outputed to `jest-coverage` folder.

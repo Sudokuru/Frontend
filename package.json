@@ -19,7 +19,9 @@
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
-    "expo:check": "npx expo install --check"
+    "expo:check": "npx expo install --check",
+    "snyk:opensource": "npx snyk test --all-projects --exclude=.vercel --org=sudokuru",
+    "snyk:code": "npx snyk code test --org=sudokuru"
   },
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
