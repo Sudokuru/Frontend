@@ -451,10 +451,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       testID={"sudokuBoard"}
       onKeyDown={handleKeyDown}
       style={{
-        display: "flex",
         alignItems: "center",
-        justifyContent: "center",
-        flexWrap: "wrap",
+        alignContent: "center",
       }}
     >
       {renderTopBar()}
