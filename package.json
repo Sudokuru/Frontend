@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./app/App.tsx",
   "scripts": {
-    "prepare": "husky install && npm i -g eas-cli && npx expo install expo-updates",
+    "prepare": "husky install",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
