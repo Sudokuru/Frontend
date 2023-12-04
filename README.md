@@ -28,7 +28,7 @@ To make use of EAS update, run following commands:
 
 2. `npx expo install expo-updates`
 
-3. `eas update --branch [branch] --message [message]` or `eas update --auto` (--auto will use git branc hand commit message for branch and message fields)
+3. `eas update --branch [branch] --message [message]` or `eas update --auto` (--auto will get message from latest commit and branch from current branch)
 
 # Run Snyk scans
 

@@ -67,7 +67,7 @@ jobs:
       - name: 🚀 Publish App preview
         uses: expo/expo-github-action/preview@v8
         with:
-          command: eas update --auto
+          command: eas update --branch preview --message ${{ github.event.pull_request.title }}
       - name: Publish Website Preview
         run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
       - name: Post comment with preview link
