@@ -1,5 +1,5 @@
 import { sudokuStrategy } from "sudokuru";
-import { puzzle } from "../../../Types/Puzzle.Types";
+import { puzzle } from "../Api/Puzzle.Types";
 
 /**
  * This function returns a normal Sudoku Game.
@@ -7,20 +7,22 @@ import { puzzle } from "../../../Types/Puzzle.Types";
  * TODO Return Puzzles based on user difficulty and learned puzzles
  * @returns A puzzle object for the user to play a normal Sudoku Game
  */
-export function returnLocalGame(): puzzle[] {
-  return [
+export function returnLocalGame(): SudokuObjectProps {
+  const game =
     NAKED_SINGLE_DRILL_GAMES[
       Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ],
-  ];
+    ];
+  // Return a clone here so that this is a clone.
+  return JSON.parse(JSON.stringify(game));
 }
 
 export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
-  if (strategy === "NAKED_SINGLE") {
-    return NAKED_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "NAKED_PAIR") {
+  // if (strategy === "NAKED_SINGLE") {
+  //   return NAKED_SINGLE_DRILL_GAMES[
+  //     Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
+  //   ];
+  // }
+  if (strategy === "NAKED_PAIR") {
     return NAKED_PAIR_DRILL_GAMES[
       Math.floor(Math.random() * NAKED_PAIR_DRILL_GAMES.length)
     ];
@@ -60,82 +62,517 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
   return JSON.parse("{}");
 }
 
-const NAKED_SINGLE_DRILL_GAMES: puzzle[] = [
+export interface SudokuObjectProps {
+  variant: GameVariant;
+  version: string;
+  selectedCell: CellLocation | null;
+  statistics: GameStatistics;
+  puzzle: CellProps[][];
+  puzzleSolution: number[][];
+  actionHistory: GameAction[];
+  inNoteMode: boolean;
+}
+
+export interface GameAction {
+  cellLocation: CellLocation;
+  cell: CellProps;
+}
+
+// todo remove erase, and just use 0 value to signify erase
+// then can remove ActionType as a type needed
+type ActionType = "note" | "value";
+
+export interface CellLocation {
+  r: number;
+  c: number;
+}
+
+export interface GameStatistics {
+  difficulty: GameDifficulty;
+  internalDifficulty: number;
+  time: number;
+  score: number;
+  numWrongCellsPlayed: number;
+  numHintsUsed: number;
+}
+
+export type GameVariant = "demo" | "drill" | "classic";
+export type GameDifficulty = "easy" | "medium" | "hard";
+export type GameDifficultyScore = 10 | 20 | 30;
+
+export type CellProps = CellWithValue | CellWithNotes;
+
+export interface CellWithValue {
+  type: "value" | "given";
+  entry: number;
+}
+
+export interface CellWithNotes {
+  type: "note";
+  entry: number[];
+}
+
+export type CellType = "note" | "value" | "given";
+
+// This will be exported from Sudokuru package
+interface Hint {
+  hint: {
+    strategy: any;
+    cause: any;
+    groups: any;
+    placements: any;
+    removals: any;
+    info: string;
+    action: string;
+  };
+}
+
+const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
-    puzzle:
-      "003070040006002301089000000000107080517000006000400000271009005095000000000020000",
-    puzzleSolution:
-      "123675948456982371789314562964157283517238496832496157271849635395761824648523719",
-    moves: [
-      {
-        puzzleCurrentState: "",
-        puzzleCurrentNotesState: "",
-      },
+    variant: "classic",
+    version: "1.0.0",
+    selectedCell: null,
+    puzzle: [
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 3,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 7,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 4,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 6,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 2,
+        },
+        {
+          type: "given",
+          entry: 3,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 1,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 8,
+        },
+        {
+          type: "given",
+          entry: 9,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 1,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 7,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 8,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
+      [
+        {
+          type: "given",
+          entry: 5,
+        },
+        {
+          type: "given",
+          entry: 1,
+        },
+        {
+          type: "given",
+          entry: 7,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 6,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 4,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
+      [
+        {
+          type: "given",
+          entry: 2,
+        },
+        {
+          type: "given",
+          entry: 7,
+        },
+        {
+          type: "given",
+          entry: 1,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 9,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 5,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 9,
+        },
+        {
+          type: "given",
+          entry: 5,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
+      [
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "given",
+          entry: 2,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+        {
+          type: "value",
+          entry: 0,
+        },
+      ],
     ],
-    strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_PAIR"],
-    difficulty: 348,
-    drillStrategies: ["NAKED_SINGLE", "POINTING_PAIR", "POINTING_TRIPLET"],
-  },
-  {
-    puzzle:
-      "103000900006000001009300024000006040060007813817005002090000430000009080000020000",
-    puzzleSolution:
-      "123574968456982371789361524932816745564297813817435692291658437375149286648723159",
-    moves: [
-      {
-        puzzleCurrentState: "",
-        puzzleCurrentNotesState: "",
-      },
+    puzzleSolution: [
+      [1, 2, 3, 6, 7, 5, 9, 4, 8],
+      [4, 5, 6, 9, 8, 2, 3, 7, 1],
+      [7, 8, 9, 3, 1, 4, 5, 6, 2],
+      [9, 6, 4, 1, 5, 7, 2, 8, 3],
+      [5, 1, 7, 2, 3, 8, 4, 9, 6],
+      [8, 3, 2, 4, 9, 6, 1, 5, 7],
+      [2, 7, 1, 8, 4, 9, 6, 3, 5],
+      [3, 9, 5, 7, 6, 1, 8, 2, 4],
+      [6, 4, 8, 5, 2, 3, 7, 1, 9],
     ],
-    strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
-    difficulty: 64,
-    drillStrategies: ["NAKED_SINGLE", "POINTING_TRIPLET", "HIDDEN_QUADRUPLET"],
+    statistics: {
+      difficulty: "easy",
+      internalDifficulty: 0,
+      numHintsUsed: 0,
+      numWrongCellsPlayed: 0,
+      score: 0,
+      time: 0,
+    },
+    inNoteMode: false,
+    actionHistory: [],
   },
-  {
-    puzzle:
-      "020700080050091007709304000000500098004010000290000040008060300000180004900000070",
-    puzzleSolution:
-      "123756489456891237789324561317542698864913725295678143578469312632187954941235876",
-    moves: [
-      {
-        puzzleCurrentState: "",
-        puzzleCurrentNotesState: "",
-      },
-    ],
-    strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
-    difficulty: 835,
-    drillStrategies: ["NAKED_SINGLE", "NAKED_QUADRUPLET"],
-  },
-  {
-    puzzle:
-      "003000050450000007000100402910600700060042000000000080000010609001800005070009001",
-    puzzleSolution:
-      "123476958456928317789135462915683724867542193234791586548217639391864275672359841",
-    moves: [
-      {
-        puzzleCurrentState: "",
-        puzzleCurrentNotesState: "",
-      },
-    ],
-    strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
-    difficulty: 112,
-    drillStrategies: ["NAKED_SINGLE", "POINTING_PAIR", "POINTING_TRIPLET"],
-  },
-  {
-    puzzle:
-      "000560070000000080780000300000470053002000000040600209004800000038005700610090000",
-    puzzleSolution:
-      "123568974456739182789214365891472653362951847547683219974826531238145796615397428",
-    moves: [
-      {
-        puzzleCurrentState: "",
-        puzzleCurrentNotesState: "",
-      },
-    ],
-    strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
-    difficulty: 802,
-    drillStrategies: ["NAKED_SINGLE"],
-  },
+  // {
+  //   puzzle:
+  //     "003070040006002301089000000000107080517000006000400000271009005095000000000020000",
+  //   puzzleSolution:
+  //     "123675948456982371789314562964157283517238496832496157271849635395761824648523719",
+  //   moves: [
+  //     {
+  //       puzzleCurrentState: "",
+  //       puzzleCurrentNotesState: "",
+  //     },
+  //   ],
+  //   strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_PAIR"],
+  //   difficulty: 348,
+  //   drillStrategies: ["NAKED_SINGLE", "POINTING_PAIR", "POINTING_TRIPLET"],
+  // },
+  // {
+  //   puzzle:
+  //     "103000900006000001009300024000006040060007813817005002090000430000009080000020000",
+  //   puzzleSolution:
+  //     "123574968456982371789361524932816745564297813817435692291658437375149286648723159",
+  //   moves: [
+  //     {
+  //       puzzleCurrentState: "",
+  //       puzzleCurrentNotesState: "",
+  //     },
+  //   ],
+  //   strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
+  //   difficulty: 64,
+  //   drillStrategies: ["NAKED_SINGLE", "POINTING_TRIPLET", "HIDDEN_QUADRUPLET"],
+  // },
+  // {
+  //   puzzle:
+  //     "020700080050091007709304000000500098004010000290000040008060300000180004900000070",
+  //   puzzleSolution:
+  //     "123756489456891237789324561317542698864913725295678143578469312632187954941235876",
+  //   moves: [
+  //     {
+  //       puzzleCurrentState: "",
+  //       puzzleCurrentNotesState: "",
+  //     },
+  //   ],
+  //   strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
+  //   difficulty: 835,
+  //   drillStrategies: ["NAKED_SINGLE", "NAKED_QUADRUPLET"],
+  // },
+  // {
+  //   puzzle:
+  //     "003000050450000007000100402910600700060042000000000080000010609001800005070009001",
+  //   puzzleSolution:
+  //     "123476958456928317789135462915683724867542193234791586548217639391864275672359841",
+  //   moves: [
+  //     {
+  //       puzzleCurrentState: "",
+  //       puzzleCurrentNotesState: "",
+  //     },
+  //   ],
+  //   strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
+  //   difficulty: 112,
+  //   drillStrategies: ["NAKED_SINGLE", "POINTING_PAIR", "POINTING_TRIPLET"],
+  // },
+  // {
+  //   puzzle:
+  //     "000560070000000080780000300000470053002000000040600209004800000038005700610090000",
+  //   puzzleSolution:
+  //     "123568974456739182789214365891472653362951847547683219974826531238145796615397428",
+  //   moves: [
+  //     {
+  //       puzzleCurrentState: "",
+  //       puzzleCurrentNotesState: "",
+  //     },
+  //   ],
+  //   strategies: ["NAKED_SINGLE", "HIDDEN_SINGLE"],
+  //   difficulty: 802,
+  //   drillStrategies: ["NAKED_SINGLE"],
+  // }
 ];
 
 const NAKED_PAIR_DRILL_GAMES: puzzle[] = [

@@ -1,69 +1,64 @@
-// @ts-nocheck
-import { fromJS } from "immutable";
+import { CellLocation } from "../../Functions/LocalDatabase";
 
-export function range(n) {
+// todo remove, used in NumberControl.tsx
+export function range(n: number) {
   return Array.from(Array(n).keys());
 }
 
-export function makeCountObject() {
-  const countObj = [];
-  for (let i = 0; i < 10; i += 1) countObj.push(0);
-  return countObj;
-}
-
-export function makeBoard({ puzzle }, initialPuzzle) {
-  const rows = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const columns = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const squares = Array.from(Array(9).keys()).map(() => makeCountObject());
-  const initialPuzzleArray = initialPuzzle
-    .match(/.{1,9}/g)
-    .map((row) => row.split("").map(Number));
-  const result = puzzle.map((row, i) =>
-    row.map((cell, j) => {
-      if (cell) {
-        rows[i][cell] += 1;
-        columns[j][cell] += 1;
-        squares[Math.floor(i / 3) * 3 + Math.floor(j / 3)][cell] += 1;
-      }
-      return {
-        value: puzzle[i][j] > 0 ? puzzle[i][j] : null,
-        prefilled: !!initialPuzzleArray[j][i],
-      };
-    })
+/**
+ * Determines if the current cell and selected cell are in the same box
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if current cell is in the same box as selected cell
+ */
+export function isCurrentCellAndSelectedCellInSameBox(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  const currentBoxIndex = generateBoxIndex(
+    currentCellCoordinate.r,
+    currentCellCoordinate.c
   );
-  return fromJS({
-    puzzle: result,
-    selected: false,
-    inNoteMode: false,
-    inHintMode: false,
-  });
+  const selectedBoxIndex = generateBoxIndex(
+    selectedCellCoordinate.r,
+    selectedCellCoordinate.c
+  );
+  return currentBoxIndex === selectedBoxIndex;
 }
 
 /**
- *
- * @param a
- * @param b
- * @returns {boolean}
+ * Generates a unique index for a box given the box's row and column
+ * @param row number 0-8 of the cell
+ * @param column number 0-8 of the cell
  */
-export function isPeer(a, b) {
-  if (!a || !b) return false;
-  const squareA = Math.floor(a.x / 3) * 3 + Math.floor(a.y / 3);
-  const squareB = Math.floor(b.x / 3) * 3 + Math.floor(b.y / 3);
-  return a.x === b.x || a.y === b.y || squareA === squareB;
+function generateBoxIndex(row: number, column: number): number {
+  return Math.floor(column / 3) + Math.floor(row / 3) * 3;
 }
 
-export function highlightBox(a, b) {
-  const squareA = Math.floor(a.x / 3) * 3 + Math.floor(a.y / 3);
-  const squareB = Math.floor(b.x / 3) * 3 + Math.floor(b.y / 3);
-  return squareA === squareB;
+/**
+ * Determines if the current cell and selected cell are in the same row
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if the current cell is in the same row as selected cell
+ */
+export function isCurrentCellAndSelectedCellInSameRow(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
 
-export function highlightRow(a, b) {
-  return a.y === b.y;
-}
-
-export function highlightColumn(a, b) {
-  return a.x === b.x;
+/**
+ * Determines if the current cell and selected cell are in the same column
+ * @param currentCellCoordinate The CellLocation of current cell
+ * @param selectedCellCoordinate The CellLocation of selected cell
+ * @returns boolean that indicates if the current cell is in the same column as selected cell
+ */
+export function isCurrentCellAndSelectedCellInSameColumn(
+  currentCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
+) {
+  return currentCellCoordinate.c === selectedCellCoordinate.c;
 }
 
 /**

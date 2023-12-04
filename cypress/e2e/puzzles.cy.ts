@@ -92,6 +92,9 @@ describe("Sudoku play component functions", () => {
     });
   });
 
+  // todo implement this
+  it.skip("Board Highlighting should render correctly when cell is unselected", () => {});
+
   it("Board Highlighting should render correctly when cell value is entered", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 7)).click().type("1");

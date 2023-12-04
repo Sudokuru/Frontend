@@ -1,5 +1,5 @@
-import { profile } from "../../Types/Puzzle.Types";
-import { getKeyJSON, storeData } from "../AsyncStorage/AsyncStorage";
+import { profile } from "./Puzzle.Types";
+import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 
 export class Profile {
   public static async getProfile(): Promise<profile> {

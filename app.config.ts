@@ -4,7 +4,7 @@ export default {
   scheme: "sudokuru",
   owner: "sudokuru",
   version: "0.0.0",
-  icon: "goldLogoNoText.png",
+  icon: ".assets/goldLogoNoText.png",
   platforms: ["ios", "android"],
   orientation: "portrait",
   updates: {

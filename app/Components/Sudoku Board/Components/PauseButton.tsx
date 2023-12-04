@@ -3,7 +3,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getCellSize } from "../Functions/BoardFunctions";
 import { useTheme } from "react-native-paper";
 
-const PauseButton = ({ handlePause, isPaused }) => {
+interface PauseButtonProps {
+  handlePause: () => void;
+  isPaused: boolean;
+}
+
+const PauseButton = (props: PauseButtonProps) => {
+  const { handlePause, isPaused } = props;
   const cellSize = getCellSize();
   const sizeConst = Platform.OS == "web" ? 1.5 : 1;
   const theme = useTheme();

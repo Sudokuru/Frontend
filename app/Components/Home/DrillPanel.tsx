@@ -24,7 +24,7 @@ import {
   getKeyJSON,
   removeData,
   storeData,
-} from "../../Functions/AsyncStorage/AsyncStorage";
+} from "../../Functions/AsyncStorage";
 
 let drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
@@ -40,16 +40,16 @@ let drillStrategies: sudokuStrategyArray = [
 ];
 
 let drillImages: ImageURISource[] = [
-  require("./CardImages/NAKED_SINGLE.png"),
-  require("./CardImages/NAKED_PAIR.png"),
-  require("./CardImages/NAKED_TRIPLET.png"),
-  require("./CardImages/NAKED_QUADRUPLET.png"),
-  require("./CardImages/HIDDEN_SINGLE.png"),
-  require("./CardImages/HIDDEN_PAIR.png"),
-  require("./CardImages/HIDDEN_TRIPLET.png"),
-  require("./CardImages/HIDDEN_QUADRUPLET.png"),
-  require("./CardImages/POINTING_PAIR.png"),
-  require("./CardImages/POINTING_TRIPLET.png"),
+  require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/NAKED_PAIR.png"),
+  require("./../../../.assets/CardImages/NAKED_TRIPLET.png"),
+  require("./../../../.assets/CardImages/NAKED_QUADRUPLET.png"),
+  require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
+  require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
+  require("./../../../.assets/CardImages/HIDDEN_TRIPLET.png"),
+  require("./../../../.assets/CardImages/HIDDEN_QUADRUPLET.png"),
+  require("./../../../.assets/CardImages/POINTING_PAIR.png"),
+  require("./../../../.assets/CardImages/POINTING_TRIPLET.png"),
 ];
 
 const DrillPanel = (props: any) => {

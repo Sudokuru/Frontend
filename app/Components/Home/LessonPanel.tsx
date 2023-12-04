@@ -6,13 +6,13 @@ import { useFocusEffect } from "@react-navigation/core";
 import {
   formatOneLessonName,
   getLockedLessons,
-} from "../../Functions/ContextParsing/learnedLessons";
+} from "../../Functions/learnedLessons";
 import {
   Lessons,
   getLessonMode,
   lessonOfflineMode,
   lessonOnlineMode,
-} from "../../Functions/Api/Lessons";
+} from "../../Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
 import {
   CARD_IMAGE_HEIGHT,
@@ -27,36 +27,36 @@ import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 
 let lessonImages: ImageURISource[] = [
-  require("./CardImages/SUDOKU_101.png"),
-  require("./CardImages/AMEND_NOTES.png"),
-  require("./CardImages/NAKED_SINGLE.png"),
-  require("./CardImages/SIMPLIFY_NOTES.png"),
-  require("./CardImages/NAKED_PAIR.png"),
-  require("./CardImages/HIDDEN_SINGLE.png"),
-  require("./CardImages/HIDDEN_PAIR.png"),
-  require("./CardImages/POINTING_PAIR.png"),
+  require("../../../.assets/CardImages/SUDOKU_101.png"),
+  require("./../../../.assets/CardImages/AMEND_NOTES.png"),
+  require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/SIMPLIFY_NOTES.png"),
+  require("./../../../.assets/CardImages/NAKED_PAIR.png"),
+  require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
+  require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
+  require("./../../../.assets/CardImages/POINTING_PAIR.png"),
 ];
 
 let learnedLessonImages: ImageURISource[] = [
-  require("./CardImages/Learned/SUDOKU_101.png"),
-  require("./CardImages/Learned/AMEND_NOTES.png"),
-  require("./CardImages/Learned/NAKED_SINGLE.png"),
-  require("./CardImages/Learned/SIMPLIFY_NOTES.png"),
-  require("./CardImages/Learned/NAKED_SET.png"),
-  require("./CardImages/Learned/HIDDEN_SINGLE.png"),
-  require("./CardImages/Learned/HIDDEN_SET.png"),
-  require("./CardImages/Learned/POINTING_SET.png"),
+  require("./../../../.assets/CardImages/Learned/SUDOKU_101.png"),
+  require("./../../../.assets/CardImages/Learned/AMEND_NOTES.png"),
+  require("./../../../.assets/CardImages/Learned/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/Learned/SIMPLIFY_NOTES.png"),
+  require("./../../../.assets/CardImages/Learned/NAKED_SET.png"),
+  require("./../../../.assets/CardImages/Learned/HIDDEN_SINGLE.png"),
+  require("./../../../.assets/CardImages/Learned/HIDDEN_SET.png"),
+  require("./../../../.assets/CardImages/Learned/POINTING_SET.png"),
 ];
 
 let lockedLessonImages: ImageURISource[] = [
-  require("./CardImages/Locked/SUDOKU_101.png"),
-  require("./CardImages/Locked/AMEND_NOTES.png"),
-  require("./CardImages/Locked/NAKED_SINGLE.png"),
-  require("./CardImages/Locked/SIMPLIFY_NOTES.png"),
-  require("./CardImages/Locked/NAKED_SET.png"),
-  require("./CardImages/Locked/HIDDEN_SINGLE.png"),
-  require("./CardImages/Locked/HIDDEN_SET.png"),
-  require("./CardImages/Locked/POINTING_SET.png"),
+  require("./../../../.assets/CardImages/Locked/SUDOKU_101.png"),
+  require("./../../../.assets/CardImages/Locked/AMEND_NOTES.png"),
+  require("./../../../.assets/CardImages/Locked/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/Locked/SIMPLIFY_NOTES.png"),
+  require("./../../../.assets/CardImages/Locked/NAKED_SET.png"),
+  require("./../../../.assets/CardImages/Locked/HIDDEN_SINGLE.png"),
+  require("./../../../.assets/CardImages/Locked/HIDDEN_SET.png"),
+  require("./../../../.assets/CardImages/Locked/POINTING_SET.png"),
 ];
 
 const LessonPanel = (props: any) => {

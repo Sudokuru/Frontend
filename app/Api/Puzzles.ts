@@ -1,12 +1,14 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle, statistics } from "../../Types/Puzzle.Types";
-import { activeGame } from "../../Types/Puzzle.Types";
-import { returnLocalGame } from "../LocalStore/DataStore/LocalDatabase";
+import { gameResults, puzzle, statistics } from "./Puzzle.Types";
+import { activeGame } from "./Puzzle.Types";
 import {
-  getKeyJSON,
-  removeData,
-  storeData,
-} from "../AsyncStorage/AsyncStorage";
+  GameDifficulty,
+  GameDifficultyScore,
+  GameStatistics,
+  SudokuObjectProps,
+  returnLocalGame,
+} from "../Functions/LocalDatabase";
+import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import { Statistics } from "./Statistics";
 
 // Random games to be used by getRandomGame for landing page
@@ -195,19 +197,7 @@ export class Puzzles {
    * @param strategies - new game can have subset of these strategies
    * @returns promise of puzzle JSON object
    */
-  public static async startGame(
-    difficulty: number,
-    strategies: sudokuStrategyArray
-  ): Promise<puzzle[]> {
-    difficulty = difficulty * 1000;
-
-    let concatUrlString = "";
-    for (let i = 0; i < strategies.length; i++) {
-      concatUrlString =
-        concatUrlString + "&learnedStrategies[]=" + strategies[i];
-    }
-    // for now just returning a random game
-    // this will be updated to account for difficulty and strategies learned
+  public static async startGame(): Promise<SudokuObjectProps> {
     return returnLocalGame();
   }
 
@@ -215,7 +205,7 @@ export class Puzzles {
    * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
    * @returns promise of activeGame JSON object
    */
-  public static async getGame(): Promise<activeGame[]> {
+  public static async getGame(): Promise<SudokuObjectProps[]> {
     return await getKeyJSON("active_game");
   }
 
@@ -223,53 +213,34 @@ export class Puzzles {
    * Given a game saves it to AsyncStorage
    * @param game - activeGame JSON object
    */
-  public static async saveGame(game: activeGame) {
+  public static async saveGame(game: SudokuObjectProps) {
     storeData("active_game", JSON.stringify([game]));
   }
 
   /**
-   * Given deletes the users active game and returns game results/statistics
-   * @returns promise of gameResults JSON object
+   * Given deletes the users active game and returns game score
+   * @returns promise of game score
    */
-  public static async finishGame(): Promise<gameResults> {
-    // retrieve the active game
-    let activeGame: activeGame[] = await getKeyJSON("active_game");
+  public static async finishGame(
+    numHintsUsed: number,
+    numWrongCellsPlayed: number,
+    time: number,
+    score: number
+  ) {
     // remove the game from storage
     await removeData("active_game");
 
-    // retrieve statistics from the game
-    let numWrongCellsPlayed = activeGame[0].numWrongCellsPlayed
-      ? activeGame[0].numWrongCellsPlayed
-      : 0;
-    let finalTime = activeGame[0].currentTime;
-    let difficulty = activeGame[0].difficulty;
-    let numHintsUsed = activeGame[0].numHintsUsed
-      ? activeGame[0].numHintsUsed
-      : 0;
-
-    // calculate score
-    let difficultyScore: number = (difficulty / 1000) * 30;
-    let hintAndIncorrectCellsScore: number =
-      numWrongCellsPlayed + numHintsUsed > 40
-        ? 0
-        : 40 - numWrongCellsPlayed - numHintsUsed;
-    let timeScore: number = finalTime / 60 > 30 ? 0 : 30 - finalTime / 60;
-    let score: number = Math.round(
-      difficultyScore + hintAndIncorrectCellsScore + timeScore
-    );
-
     // Create or update user's statistics
-
     let statistics: statistics = await Statistics.getStatistics();
 
     statistics.totalScore += score;
     if (
-      finalTime < statistics.fastestSolveTime ||
+      time < statistics.fastestSolveTime ||
       statistics.fastestSolveTime === 0
     ) {
-      statistics.fastestSolveTime = finalTime;
+      statistics.fastestSolveTime = time;
     }
-    statistics.totalSolveTime += finalTime;
+    statistics.totalSolveTime += time;
     statistics.numGamesPlayed += 1;
     statistics.numHintsUsed += numHintsUsed;
     statistics.numWrongCellsPlayed += numWrongCellsPlayed;
@@ -278,15 +249,6 @@ export class Puzzles {
     );
 
     Statistics.saveStatisitics(statistics);
-
-    // return results
-    return {
-      score: score,
-      solveTime: finalTime,
-      numHintsUsed: numHintsUsed,
-      numWrongCellsPlayed: numWrongCellsPlayed,
-      difficulty: difficulty,
-    };
   }
 
   /**

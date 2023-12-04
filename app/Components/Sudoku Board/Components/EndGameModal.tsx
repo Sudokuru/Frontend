@@ -2,25 +2,23 @@ import { View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Statistic from "../Statistics/Statistic";
+import Statistic from "../../Statistics/Statistic";
+import { formatTime } from "../Functions/BoardFunctions";
 
-const EndGameModal = (props: any) => {
+interface EndGameModalProps {
+  time: number;
+  numHintsUsed: number;
+  numWrongCellsPlayed: number;
+  score: number;
+  difficulty: string;
+}
+
+const EndGameModal = (props: EndGameModalProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const theme = useTheme();
   const navigation: any = useNavigation();
-
-  const formatTime = (seconds: number) => {
-    // Get minutes and remaining seconds
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    // Pad with zeros if needed
-    const paddedMinutes = minutes < 10 ? "0" + minutes : minutes;
-    const paddedSeconds = secs < 10 ? "0" + secs : secs;
-    // Return formatted string
-    return `${paddedMinutes}:${paddedSeconds}`;
-  };
 
   return (
     <View
@@ -62,7 +60,7 @@ const EndGameModal = (props: any) => {
           testID="numWrongCellsPlayed"
         />
         <Statistic
-          statisticName="Internal Game Difficulty Score: "
+          statisticName="Difficulty: "
           statisticValue={props.difficulty}
           testID="difficulty"
         />
@@ -71,6 +69,7 @@ const EndGameModal = (props: any) => {
         mode="contained"
         testID="StartNewGameButton"
         onPress={() => navigation.navigate("PlayPage")}
+        style={{ marginTop: 20 }}
       >
         Play New Game
       </Button>

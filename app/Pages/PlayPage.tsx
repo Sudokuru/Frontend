@@ -8,9 +8,10 @@ import { rgba } from "polished";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
-} from "../Functions/global/WindowDimensions";
-import { Puzzles } from "../Functions/Api/Puzzles";
+} from "../Functions/WindowDimensions";
+import { Puzzles } from "../Api/Puzzles";
 import { sudokuStrategyArray } from "sudokuru";
+import { SudokuObjectProps } from "../Functions/LocalDatabase";
 
 let strategies: sudokuStrategyArray = [
   "AMEND_NOTES",
@@ -38,8 +39,8 @@ const PlayPage = () => {
     React.useCallback(() => {
       // This determines if user has active game and displays resume button conditionally.
       async function grabCurrentGame() {
-        await Puzzles.getGame().then((game: any) => {
-          if (game !== null && game[0].moves.length > 0) {
+        await Puzzles.getGame().then((game: SudokuObjectProps[]) => {
+          if (game != null) {
             showResumeButton();
           } else {
             hideResumeButton();
@@ -113,7 +114,7 @@ const PlayPage = () => {
                   mode="outlined"
                   onPress={() =>
                     navigation.navigate("SudokuPage", {
-                      gameType: "ResumeGame",
+                      action: "ResumeGame",
                     })
                   }
                 >
@@ -127,9 +128,7 @@ const PlayPage = () => {
                 mode="contained"
                 onPress={() => {
                   navigation.navigate("SudokuPage", {
-                    gameType: "StartGame",
-                    difficulty: 100,
-                    strategies: strategies,
+                    action: "StartGame",
                   });
                 }}
               >

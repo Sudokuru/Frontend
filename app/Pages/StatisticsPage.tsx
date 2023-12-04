@@ -11,7 +11,7 @@ import TotalStatistics, {
 } from "../Components/Statistics/TotalStatistics";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { Statistics } from "../Functions/Api/Statistics";
+import { Statistics } from "../Api/Statistics";
 
 const StatisticsPage = () => {
   const theme = useTheme();

@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -11,13 +10,11 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
-import { sudokuStrategyArray } from "sudokuru";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
-} from "../Functions/global/WindowDimensions";
+} from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
-import { useHeaderHeight } from "@react-navigation/elements";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -26,22 +23,9 @@ const LandingPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
-  const PLAY_SUDOKU_LOGO = require("./playSudokuLogo.png");
-  const START_LESSONS_LOGO = require("./startLessonsLogo.png");
-  const START_DRILLS_LOGO = require("./startDrillsLogo.png");
-
-  let strategies: sudokuStrategyArray = [
-    "AMEND_NOTES",
-    "SIMPLIFY_NOTES",
-    "NAKED_SINGLE",
-    "NAKED_PAIR",
-    "NAKED_TRIPLET",
-    "NAKED_QUADRUPLET",
-    "HIDDEN_SINGLE",
-    "HIDDEN_PAIR",
-    "HIDDEN_TRIPLET",
-    "HIDDEN_QUADRUPLET",
-  ];
+  const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
+  const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
+  const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
 
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -67,7 +51,7 @@ const LandingPage = () => {
           gap: minWindowSize / 25,
         }}
       >
-        <SudokuBoard gameType={"Demo"} strategies={strategies} />
+        {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
         <View
           style={{
             flexDirection: "row",

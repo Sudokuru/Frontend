@@ -19,11 +19,11 @@ const Drill = (props: any) => {
         <View style={homeScreenStyles.home}>
           <View style={styles.statisticsTitle}>
             {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            <SudokuBoard
+            {/* <SudokuBoard
               gameType={"StartDrill"}
               strategies={strategy}
               navigation={navigation}
-            />
+            /> */}
             <StatusBar style="auto" />
           </View>
         </View>

@@ -1,52 +1,37 @@
-import { getCellSize } from "../Functions/BoardFunctions";
-import { StyleSheet, View } from "react-native";
-import PropTypes from "prop-types";
+import { View } from "react-native";
 import React from "react";
+import { CellProps, SudokuObjectProps } from "../../../Functions/LocalDatabase";
 
-const Puzzle = (props: any) => {
-  const { board, renderCell } = props;
-  const cellSize = getCellSize();
+interface PuzzleProps {
+  renderCell: (
+    cell: CellProps,
+    r: number,
+    c: number
+  ) => JSX.Element | undefined;
+  sudokuBoard: SudokuObjectProps;
+}
+
+const Puzzle = (props: PuzzleProps) => {
+  const { sudokuBoard, renderCell } = props;
+
+  const renderAllRows = [];
+  for (let c = 0; c < 9; c++) {
+    const rows = [];
+    for (let r = 0; r < 9; r++) {
+      rows.push(renderCell(sudokuBoard.puzzle[c][r], r, c));
+    }
+    renderAllRows.push(rows);
+  }
 
   return (
-    <View style={styles(cellSize).hintAndPuzzleContainer}>
-      <View style={styles().boardContainer}>
-        {board
-          .get("puzzle")
-          .map((row: any, i: any) => (
-            <View key={i}>
-              {row.map((cell: any, j: any) => renderCell(cell, i, j)).toArray()}
-            </View>
-          ))
-          .toArray()}
-      </View>
-    </View>
+    <>
+      {renderAllRows.map((rows, index) => (
+        <View style={{ flexDirection: "row" }} key={index}>
+          {rows}
+        </View>
+      ))}
+    </>
   );
-};
-
-const styles = (cellSize?: number, themeColor?: any) =>
-  StyleSheet.create({
-    hintAndPuzzleContainer: {
-      justifyContent: "space-evenly",
-      alignItems: "center",
-      flexDirection: "row",
-    },
-    boardContainer: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "row",
-      justifyContent: "center",
-    },
-  });
-
-Puzzle.propTypes = {
-  board: PropTypes.any,
-  inHintMode: PropTypes.bool,
-  renderCell: PropTypes.func.isRequired,
-  rightArrowClicked: PropTypes.func.isRequired,
-  leftArrowClicked: PropTypes.func.isRequired,
-  checkMarkClicked: PropTypes.func.isRequired,
-  onFirstStep: PropTypes.bool,
-  onFinalStep: PropTypes.bool,
 };
 
 export default Puzzle;

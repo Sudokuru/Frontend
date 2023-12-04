@@ -1,5 +1,5 @@
 import React from "react";
-import { Profile } from "../Functions/Api/Profile";
+import { Profile } from "../Api/Profile";
 import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
