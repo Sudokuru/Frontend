@@ -65,8 +65,6 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci && npx expo install expo-updates
       - name: 🚀 Publish App preview
-        run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
-      - name: 🚀 Publish App preview
         uses: expo/expo-github-action/preview@v8
         with:
           command: eas update --auto
