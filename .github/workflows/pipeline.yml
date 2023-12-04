@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: 16.x
       - name: 🏗 Setup Expo
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
@@ -66,6 +66,10 @@ jobs:
         run: npm ci && npx expo install expo-updates
       - name: 🚀 Publish App preview
         run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+      - name: 🚀 Publish App preview
+        uses: expo/expo-github-action/preview@v8
+        with:
+          command: eas update --auto
       - name: Publish Website Preview
         run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
       - name: Post comment with preview link
@@ -152,7 +156,7 @@ jobs:
         with:
           node-version: 16.x
       - name: 🏗 Setup Expo and EAS
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           eas-version: latest

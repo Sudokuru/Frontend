@@ -18,6 +18,18 @@ For iOS, scan the QR code with your camera app, for Android you will need to sca
 
 For Web, hit the w key to start up the website at `localhost:19000`
 
+# EAS Update
+
+[EAS Update Description](https://docs.expo.dev/eas-update/how-it-works/)
+
+To make use of EAS update, run following commands:
+
+1. `npm i -g eas-cli`
+
+2. `npx expo install expo-updates`
+
+3. `eas update --branch [branch] --message [message]` or `eas update --auto` (--auto will use git branc hand commit message for branch and message fields)
+
 # Run Snyk scans
 
 The command to run a Snyk Open Source scan is `npm run snyk:opensource`
