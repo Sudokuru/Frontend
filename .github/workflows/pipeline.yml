@@ -58,14 +58,16 @@ jobs:
         with:
           node-version: 16.x
       - name: 🏗 Setup Expo
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
-          expo-version: latest
+          eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci && npx expo install expo-updates
+        run: npm ci
       - name: 🚀 Publish App preview
-        run: expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+        uses: expo/expo-github-action/preview@v8
+        with:
+          command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
       - name: Publish Website Preview
         run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
       - name: Post comment with preview link
@@ -73,9 +75,7 @@ jobs:
         with:
           check-only-first-line: true
           comment: |
-            Preview App for PR:
-            https://expo.dev/@sudokuru/sudokuru?serviceType=classic&distribution=expo-go&release-channel=pr-${{ github.event.number }}
-            Preview Website for PR:
+            Preview Website for PR: 
             ${{ env.previewUrl }}
       - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
       - name: Lighthouse
@@ -152,7 +152,7 @@ jobs:
         with:
           node-version: 16.x
       - name: 🏗 Setup Expo and EAS
-        uses: expo/expo-github-action@v7
+        uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           eas-version: latest
