@@ -98,6 +98,11 @@ describe("Sudoku play component functions", () => {
   it("Board Highlighting should render correctly when cell value is entered", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(CELL(7, 7)).click().type("1");
+      cy.get(CELL(7, 7)).click().type("1");
+      cy.get(CELL(7, 7)).click().type("1");
+      cy.get(CELL(7, 7)).click().type("1");
+      cy.get(CELL(7, 7)).click().type("1");
+      cy.get(CELL(7, 7)).click().type("1");
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (

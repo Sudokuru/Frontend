@@ -81,10 +81,10 @@ const Cell = (props: RenderCellProps) => {
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
             backgroundColor: "white",
           },
-          r % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
-          c % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
-          r === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
-          c === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
+          c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
+          r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
+          c === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
+          r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
           isPeer
             ? {
                 backgroundColor: PEER_SELECTED_COLOR,
