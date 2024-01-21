@@ -250,7 +250,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param c the column of a given cell 0-8
    */
   const toggleSelectCell = (r: number, c: number) => {
-    console.log(r, "ROW", c, "COLUMN");
     if (
       sudokuBoard.selectedCell &&
       sudokuBoard.selectedCell.c === c &&

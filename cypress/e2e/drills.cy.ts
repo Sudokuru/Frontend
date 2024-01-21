@@ -20,6 +20,7 @@ describe("naked single drills", () => {
     window.localStorage.setItem("dismissDrillTutorial", "true");
     cy.visit("");
   });
+
   it("finds naked single in drill and hint is correctly applied", () => {
     cy.Start_Naked_Single_Drill();
     let singleCount: number = 0,
@@ -61,6 +62,7 @@ describe("naked single drills", () => {
           });
       });
   });
+
   it("deletes statistics and verifies popup checking and unchecking works", () => {
     // Delete statistics so that the tutorial can be seen
     cy.get(VIEW_STATISTICS_PAGE_BUTTON).click();
