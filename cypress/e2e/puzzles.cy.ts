@@ -97,7 +97,7 @@ describe("Sudoku play component functions", () => {
 
   it("Board Highlighting should render correctly when cell value is entered", () => {
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 7)).click().type("1").type("1");
+      cy.get(CELL(7, 7)).trigger("click").type("1");
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (
@@ -139,7 +139,7 @@ describe("Sudoku play component functions", () => {
         "' value",
       () => {
         cy.get(SUDOKU_BOARD).within(() => {
-          cy.get(CELL(7, 7)).click().type(i.toString()).type(i.toString());
+          cy.get(CELL(7, 7)).trigger("click").type(i.toString());
           cy.get(CELL_WITH_VALUE(7, 7, i)).should("exist");
         });
       }
@@ -169,7 +169,7 @@ describe("Sudoku play component functions", () => {
       () => {
         cy.get(SUDOKU_BOARD).within(() => {
           cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
-          cy.get(CELL(7, 7)).click().type(i.toString()).type(i.toString());
+          cy.get(CELL(7, 7)).trigger("click").type(i.toString());
           cy.get(CELL_WITH_NOTES(7, 7, i.toString())).should("exist");
         });
       }
@@ -197,7 +197,7 @@ describe("Sudoku play component functions", () => {
   // todo behavior of app has changed, this test should be fixed
   it.skip("Board Highlighting should render correctly when undo button is entered", () => {
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 7)).click().type("1").type("1");
+      cy.get(CELL(7, 7)).trigger("click").type("1");
       cy.get(UNDO_BUTTON).click();
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
@@ -217,7 +217,7 @@ describe("Sudoku play component functions", () => {
 
   it("Undo button should remove value entered on previous move from keypad", () => {
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 7)).click().type("1").type("1");
+      cy.get(CELL(7, 7)).trigger("click").type("1");
       cy.get(CELL_WITH_VALUE(7, 7, 1)).should("exist");
       cy.get(UNDO_BUTTON).click();
       cy.get(CELL(7, 7)).children().should("not.exist");
@@ -256,7 +256,7 @@ describe("Sudoku play component functions", () => {
 
   it("Undo button should replace value overridden on previous move with keypad", () => {
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("2").type("2");
+      cy.get(CELL(7, 6)).trigger("click").type("2");
       cy.get(CELL_WITH_VALUE(7, 6, 2)).should("exist");
       cy.get(UNDO_BUTTON).click();
       cy.get(CELL_WITH_VALUE(7, 6, 1)).should("exist");
@@ -276,7 +276,7 @@ describe("Sudoku play component functions", () => {
   it("Undo button should remove note entered on previous move with keypad", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
-      cy.get(CELL(7, 7)).click().type("1").type("1");
+      cy.get(CELL(7, 7)).trigger("click").type("1");
       cy.get(CELL_WITH_NOTES(7, 7, "1")).should("exist");
       cy.get(UNDO_BUTTON).click();
       cy.get(CELL_WITH_NOTES(7, 7, "1")).should("not.exist");
@@ -297,7 +297,7 @@ describe("Sudoku play component functions", () => {
   it("Undo button should replace note removed on previous move with keypad", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
-      cy.get(CELL(7, 8)).click().type("5").type("5");
+      cy.get(CELL(7, 8)).trigger("click").type("5");
       cy.get(CELL_WITH_NOTES(7, 8, "4")).should("exist");
       cy.get(UNDO_BUTTON).click();
       cy.get(CELL_WITH_NOTES(7, 8, "45")).should("exist");
@@ -352,12 +352,12 @@ describe("Sudoku play component functions", () => {
       cy.get(CELL(7, 6)).click();
       cy.get(ERASE_BUTTON).click();
       cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
-      cy.get(CELL(7, 6)).click().type("12").type("12");
+      cy.get(CELL(7, 6)).trigger("click").type("12");
       cy.get(CELL(7, 6)).click();
       cy.get(NUMBER_BUTTON(3)).click();
       cy.get(CELL_WITH_NOTES(7, 6, "123")).should("exist");
       cy.get(TOGGLE_NOTE_MODE_BUTTON).click();
-      cy.get(CELL(7, 6)).click().type("8").type("8");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
       cy.get(CELL_WITH_VALUE(7, 6, 8)).should("exist");
       cy.get(CELL(7, 7)).click().get(NUMBER_BUTTON(2)).click();
       cy.get(CELL_WITH_VALUE(7, 7, 2)).should("exist");
@@ -382,9 +382,9 @@ describe("Sudoku play component functions", () => {
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("8").type("8");
-      cy.get(CELL(7, 7)).click().type("2").type("2");
-      cy.get(CELL(7, 8)).click().type("4").type("4");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
+      cy.get(CELL(7, 7)).trigger("click").type("2");
+      cy.get(CELL(7, 8)).trigger("click").type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.contains("Start Puzzle");
@@ -395,9 +395,9 @@ describe("Sudoku play component functions", () => {
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("8").type("8");
-      cy.get(CELL(7, 7)).click().type("2").type("2");
-      cy.get(CELL(7, 8)).click().type("4").type("4");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
+      cy.get(CELL(7, 7)).trigger("click").type("2");
+      cy.get(CELL(7, 8)).trigger("click").type("4");
     });
     cy.get(END_GAME_SCORE).should("have.text", "34");
     cy.get(END_GAME_TIME).should("contain.text", "06:1");
@@ -411,9 +411,9 @@ describe("Sudoku play component functions", () => {
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("8").type("8");
-      cy.get(CELL(7, 7)).click().type("2").type("2");
-      cy.get(CELL(7, 8)).click().type("4").type("4");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
+      cy.get(CELL(7, 7)).trigger("click").type("2");
+      cy.get(CELL(7, 8)).trigger("click").type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.get(VIEW_STATISTICS_PAGE_BUTTON).filter(":visible").click();
@@ -444,9 +444,9 @@ describe("Sudoku play component functions", () => {
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("8").type("8");
-      cy.get(CELL(7, 7)).click().type("2").type("2");
-      cy.get(CELL(7, 8)).click().type("4").type("4");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
+      cy.get(CELL(7, 7)).trigger("click").type("2");
+      cy.get(CELL(7, 8)).trigger("click").type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.visit("", {
@@ -460,9 +460,9 @@ describe("Sudoku play component functions", () => {
     // maybe because it finishes with time = 0, this may be an edge case failure
     cy.wait(1000);
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(7, 6)).click().type("8").type("8");
-      cy.get(CELL(7, 7)).click().type("2").type("2");
-      cy.get(CELL(7, 8)).click().type("4").type("4");
+      cy.get(CELL(7, 6)).trigger("click").type("8");
+      cy.get(CELL(7, 7)).trigger("click").type("2");
+      cy.get(CELL(7, 8)).trigger("click").type("4");
     });
     cy.get(START_NEW_GAME_BUTTON).click();
     cy.get(VIEW_STATISTICS_PAGE_BUTTON).filter(":visible").click();
