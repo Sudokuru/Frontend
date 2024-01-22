@@ -117,7 +117,7 @@ jobs:
         with:
           start: 'npm run web:dev'
           command: 'npm run test:cypress'
-          wait-on: 'http://localhost:19000/'
+          wait-on: 'http://localhost:8081/'
           wait-on-timeout: 120
       - name: Coveralls
         uses: coverallsapp/github-action@v2

@@ -66,9 +66,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (move == null) {
       return;
     }
-    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].type =
+    sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].type =
       move.cell.type;
-    sudokuBoard.puzzle[move.cellLocation.c][move.cellLocation.r].entry =
+    sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].entry =
       move.cell.entry;
     // remove from move history
     setSudokuBoard({
@@ -121,7 +121,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       currentType === "value" &&
       (currentEntry === inputValue ||
         isValueCorrect(
-          sudokuBoard.puzzleSolution[c][r],
+          sudokuBoard.puzzleSolution[r][c],
           currentEntry as number
         ))
     ) {
@@ -134,7 +134,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     // Incrementing numWrongCellsPlayed value
     if (
       !sudokuBoard.inNoteMode &&
-      !isValueCorrect(sudokuBoard.puzzleSolution[c][r], inputValue)
+      !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
     ) {
       sudokuBoard.statistics.numWrongCellsPlayed++;
     }
@@ -195,7 +195,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let newCellEntry: number | number[] = inputValue;
     // update type and newCellEntry of selected cell
     if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
-      sudokuBoard.puzzle[c][r].type = "note";
+      sudokuBoard.puzzle[r][c].type = "note";
       newCellEntry = [inputValue];
     }
     // update type of selected cell
@@ -203,7 +203,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       (!sudokuBoard.inNoteMode && currentType === "note") ||
       inputValue === 0
     ) {
-      sudokuBoard.puzzle[c][r].type = "value";
+      sudokuBoard.puzzle[r][c].type = "value";
     }
     // set new note value
     else if (sudokuBoard.inNoteMode) {
@@ -219,22 +219,22 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     // updating board entry
-    sudokuBoard.puzzle[c][r].entry = newCellEntry;
+    sudokuBoard.puzzle[r][c].entry = newCellEntry;
   };
 
   const isGameSolved = (): boolean => {
-    for (let c = 0; c < sudokuBoard.puzzle.length; c++) {
-      for (let r = 0; r < sudokuBoard.puzzle[c].length; r++) {
-        if (sudokuBoard.puzzle[c][r].type === "given") continue;
+    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
+      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+        if (sudokuBoard.puzzle[r][c].type === "given") continue;
         if (
-          sudokuBoard.puzzle[c][r].type === "note" ||
-          sudokuBoard.puzzle[c][r].entry === 0
+          sudokuBoard.puzzle[r][c].type === "note" ||
+          sudokuBoard.puzzle[r][c].entry === 0
         ) {
           return false;
         }
         const isValueCorrectResult = isValueCorrect(
-          sudokuBoard.puzzleSolution[c][r],
-          sudokuBoard.puzzle[c][r].entry as number
+          sudokuBoard.puzzleSolution[r][c],
+          sudokuBoard.puzzle[r][c].entry as number
         );
         if (isValueCorrectResult === false) {
           return false;
@@ -279,11 +279,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     }
     return !(
-      sudokuBoard.puzzle[c][r].entry === sudokuBoard.puzzleSolution[c][r]
+      sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]
     );
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
+    // row and column values are incorrect here.
+    // console.log("RENDER CELL", c, "COLUMN", r, "ROW", cell)
     const {
       isHighlightIdenticalValues,
       isHighlightBox,
@@ -354,8 +356,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell == null) {
       return null;
     }
-    return sudokuBoard.puzzle[sudokuBoard.selectedCell.c][
-      sudokuBoard.selectedCell.r
+    return sudokuBoard.puzzle[sudokuBoard.selectedCell.r][
+      sudokuBoard.selectedCell.c
     ];
   };
 
@@ -395,8 +397,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       isCellCorrect =
         currentSelectedCell.type === "value" &&
         isValueCorrect(
-          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.c][
-            sudokuBoard.selectedCell!.r
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
+            sudokuBoard.selectedCell!.c
           ],
           currentSelectedCell.entry
         );
@@ -423,8 +425,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const isCellCorrect =
         currentSelectedCell.type === "value" &&
         isValueCorrect(
-          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.c][
-            sudokuBoard.selectedCell!.r
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
+            sudokuBoard.selectedCell!.c
           ],
           currentSelectedCell.entry
         );

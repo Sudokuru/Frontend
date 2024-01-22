@@ -15,10 +15,10 @@ const Puzzle = (props: PuzzleProps) => {
   const { sudokuBoard, renderCell } = props;
 
   const renderAllRows = [];
-  for (let c = 0; c < 9; c++) {
+  for (let r = 0; r < 9; r++) {
     const rows = [];
-    for (let r = 0; r < 9; r++) {
-      rows.push(renderCell(sudokuBoard.puzzle[c][r], r, c));
+    for (let c = 0; c < 9; c++) {
+      rows.push(renderCell(sudokuBoard.puzzle[r][c], r, c));
     }
     renderAllRows.push(rows);
   }
