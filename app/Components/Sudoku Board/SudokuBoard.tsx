@@ -102,10 +102,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
-    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-    if (currentSelectedCell == null) {
-      return;
-    }
+    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
     // We do not need to take action if this is a given value
     if (currentSelectedCell.type === "given") {
       return;
@@ -184,10 +181,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
-    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-    if (currentSelectedCell == null) {
-      return;
-    }
+    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
     const currentType = currentSelectedCell.type;
     const currentEntry = currentSelectedCell.entry;
     const r: number = sudokuBoard.selectedCell.r;
@@ -317,10 +311,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           (row && isHighlightRow) ||
           (column && isHighlightColumn));
 
-      const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-      if (currentSelectedCell == null) {
-        return;
-      }
+      const currentSelectedCell = getCurrentSelectedCell() as CellProps;
       const selectedEntry = currentSelectedCell.entry;
       let currentEntry = cell.entry;
       sameValue =
