@@ -90,15 +90,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * If notes are present in selected cell, removes all notes
    * If value is present in selected cell, removes value if value is incorrect
    */
-  const eraseSelected = () => {
-    updateCellEntry(0);
+  const eraseSelected = (save: boolean) => {
+    updateCellEntry(0, save);
   };
 
   /**
    * Inserts or removes a note or value from a selected cell
    * @param inputValue User input 0-9
    */
-  const updateCellEntry = (inputValue: number) => {
+  const updateCellEntry = (inputValue: number, save: boolean) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
@@ -146,7 +146,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
 
     // Saving current game status
-    saveGame(sudokuBoard);
+    if (save) {
+      saveGame(sudokuBoard);
+    }
 
     if (!sudokuBoard.inNoteMode && isGameSolved()) {
       const score = finishGame(
@@ -368,14 +370,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
-      updateCellEntry(parseInt(inputValue, 10));
+      updateCellEntry(parseInt(inputValue, 10), true);
     }
     if (
       inputValue == "Delete" ||
       inputValue == "Backspace" ||
       inputValue == "0"
     )
-      eraseSelected();
+      eraseSelected(true);
   };
 
   const renderPuzzle = () => {

@@ -10,7 +10,7 @@ let fallbackHeight = 30;
 
 interface NumberControlProps {
   areNumberButtonsDisabled: boolean;
-  updateEntry: (inputValue: number) => void;
+  updateEntry: (inputValue: number, save: boolean) => void;
 }
 
 const NumberControl = (props: NumberControlProps) => {
@@ -30,7 +30,7 @@ const NumberControl = (props: NumberControlProps) => {
       {range(9).map((i) => {
         const number = i + 1;
         const onClick = () => {
-          updateEntry(number);
+          updateEntry(number, true);
         };
         return (
           // Number Keys
