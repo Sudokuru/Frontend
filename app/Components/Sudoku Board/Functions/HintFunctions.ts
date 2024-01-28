@@ -1,4 +1,5 @@
 import { getHint } from "sudokuru";
+import { CellProps } from "../../../Functions/LocalDatabase";
 
 export const getSudokuHint = () => {
   getHint();
@@ -21,4 +22,22 @@ const convertPuzzleSolutionToSudokuruFormat = (
   return convertedPuzzleSolution;
 };
 
-const convertPuzzleStateToSudokuruFormat = () => {};
+/**
+ * Conversion function to be used for retrieving hints from Sudokuru package.
+ * Sudokuru package uses two string[][] objects for representing notes and values.
+ * @param puzzle Sudoku puzzle notes and values in Frontend format
+ * @returns
+ */
+const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
+  const convertedPuzzleValues = [];
+  const convertedPuzzleNotes = [];
+  for (let r = 0; r < puzzle.length; r++) {
+    for (let c = 0; c < puzzle[r].length; c++) {
+      let notes = [];
+      let values = [];
+      if (puzzle[r][c].type === "note") {
+      } else {
+      }
+    }
+  }
+};

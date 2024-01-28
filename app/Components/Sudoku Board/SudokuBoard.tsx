@@ -279,6 +279,29 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
+  /**
+   * todo Note that this function likely won't be needed in future when incorrectHint is implemented.
+   * Determines if there are any incorrect values in the board
+   * @returns True if there are no correct values in board, False otherwise
+   */
+  const doesBoardHaveConflict = (): boolean => {
+    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
+      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+        if (sudokuBoard.puzzle[r][c].type === "given") continue;
+        if (
+          sudokuBoard.puzzle[r][c].type === "note" ||
+          sudokuBoard.puzzle[r][c].entry === 0
+        )
+          continue;
+        const isValueCorrect = isConflict(r, c, sudokuBoard.puzzle[r][c]);
+        if (isValueCorrect === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
   const renderCell = (cell: CellProps, r: number, c: number) => {
     // row and column values are incorrect here.
     // console.log("RENDER CELL", c, "COLUMN", r, "ROW", cell)
@@ -406,6 +429,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
+    const boardHasConflict = doesBoardHaveConflict();
     let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
     let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
     const isUndoButtonDisabled =
@@ -437,6 +461,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
+        boardHasConflict={boardHasConflict}
       />
     );
   };
