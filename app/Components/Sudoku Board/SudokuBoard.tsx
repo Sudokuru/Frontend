@@ -17,6 +17,7 @@ import { CellProps, SudokuObjectProps } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
+import { getSudokuHint } from "./Functions/HintFunctions";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -75,6 +76,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       ...sudokuBoard,
       actionHistory: sudokuBoard.actionHistory,
     });
+  };
+
+  const hint = () => {
+    getSudokuHint(sudokuBoard.puzzle, sudokuBoard.puzzleSolution);
   };
 
   const toggleNoteMode = () => {
@@ -461,6 +466,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
+        hint={hint}
         boardHasConflict={boardHasConflict}
       />
     );
