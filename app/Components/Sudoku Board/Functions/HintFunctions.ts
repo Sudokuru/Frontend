@@ -44,14 +44,13 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
   const convertedPuzzleNotes: string[][] = [];
   for (let r = 0; r < puzzle.length; r++) {
     convertedPuzzleValues.push([]);
-    convertedPuzzleNotes.push([]);
     for (let c = 0; c < puzzle[r].length; c++) {
-      let notes: string = "";
+      convertedPuzzleNotes.push([]);
       let value: string = "0";
       if (puzzle[r][c].type === "note") {
         const entry = puzzle[r][c].entry as number[];
         for (let n = 0; n < entry.length; n++) {
-          notes = notes + entry[n].toString();
+          convertedPuzzleNotes[r].push(entry[n].toString());
         }
       } else {
         const entry = puzzle[r][c].entry as number;
@@ -59,7 +58,6 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
       }
 
       convertedPuzzleValues[r].push(value);
-      convertedPuzzleNotes[r].push(notes);
     }
   }
   return {
