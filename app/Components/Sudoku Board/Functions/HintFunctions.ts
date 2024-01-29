@@ -10,7 +10,7 @@ export const getSudokuHint = (puzzle: CellProps[][], solution: number[][]) => {
   const hint = getHint(
     puzzleState.puzzleValues,
     puzzleState.puzzleNotes,
-    [],
+    undefined,
     puzzleSolution
   );
   console.log("DEBUG", hint);
