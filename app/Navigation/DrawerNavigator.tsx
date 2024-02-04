@@ -10,6 +10,7 @@ import NavigationSideBar from "../Components/NavigationSideBar";
 import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator";
 import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
 import { useTheme } from "react-native-paper";
+import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +41,7 @@ const DrawerNavigator = () => {
       <Drawer.Screen name="Play" component={PlayStackNavigator} />
       <Drawer.Screen name="Statistics" component={StatisticsStackNavigator} />
       <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
+      <Drawer.Screen name="Contact" component={ContactStackNavigator} />
     </Drawer.Navigator>
   );
 };

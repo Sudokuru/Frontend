@@ -26,6 +26,7 @@ export const DISMISS_DRILL_TUTORIAL_CHECKBOX =
   "[data-testid=dismissDrillTutorial]";
 export const HIDE_DRILL_TUTORIAL_BUTTON =
   "[data-testid=hideDrillTutorialButton]";
+export const CONTACT_DRAWER_BUTTON = "[data-testid=ContactButton]";
 
 export const VIEW_STATISTICS_PAGE_BUTTON =
   "[data-testid=ViewStatisticsPageButton]";
