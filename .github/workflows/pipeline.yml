@@ -264,7 +264,7 @@ jobs:
       - run: npm i -d wrangler
       - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
         working-directory: node_modules/wrangler/wrangler-dist
-      - run: diff cli.js cliv2.js
+      - run: diff cli.js cliv2.js || true
         working-directory: node_modules/wrangler/wrangler-dist
       - run: mv -f cliv2.js cli.js
         working-directory: node_modules/wrangler/wrangler-dist
