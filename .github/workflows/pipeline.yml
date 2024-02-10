@@ -253,8 +253,8 @@ jobs:
 
   deploy_website_dev:
     name: Deploy Dev Website
-    # needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    # if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
