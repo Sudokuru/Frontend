@@ -260,6 +260,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      - run: npm run build:metro-web
       - name: Cloudflare Deployment
         uses: cloudflare/pages-action@v1
         with:
