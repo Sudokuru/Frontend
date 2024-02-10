@@ -262,11 +262,12 @@ jobs:
       - run: npm ci
       # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
       - run: npm i -d wrangler
-      - run: |
-          cd node_modules/wrangler/wrangler-dist
-          sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
-          diff cli.js cliv2.js
-          mv cliv2.js cli.js
+      - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
+        working-directory: node_modules/wrangler/wrangler-dist
+      - run: diff cli.js cliv2.js
+        working-directory: node_modules/wrangler/wrangler-dist
+      - run: mv cliv2.js cli.js
+        working-directory: node_modules/wrangler/wrangler-dist
       - run: npm run build:metro-web
       - name: Cloudflare Deployment
         uses: cloudflare/pages-action@v1
