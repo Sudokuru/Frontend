@@ -266,7 +266,7 @@ jobs:
         working-directory: node_modules/wrangler/wrangler-dist
       - run: diff cli.js cliv2.js
         working-directory: node_modules/wrangler/wrangler-dist
-      - run: mv cliv2.js cli.js
+      - run: mv -f cliv2.js cli.js
         working-directory: node_modules/wrangler/wrangler-dist
       - run: npm run build:metro-web
       - name: Cloudflare Deployment
