@@ -36,220 +36,220 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # code_scan:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: Prettier Check
-  #       run: |
-  #         npm i prettier@2.8.8
-  #         npx prettier --check .
+  code_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: Prettier Check
+        run: |
+          npm i prettier@2.8.8
+          npx prettier --check .
 
-  # app_preview_dev:
-  #   if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: 🏗 Setup Expo
-  #       uses: expo/expo-github-action@v8
-  #       with:
-  #         eas-version: latest
-  #         token: ${{ secrets.EXPO_TOKEN }}
-  #     - name: 📦 Install dependencies
-  #       run: npm ci
-  #     - name: 🚀 Publish App preview
-  #       uses: expo/expo-github-action/preview@v8
-  #       with:
-  #         command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
-  #     - name: Publish Website Preview
-  #       run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
-  #     - name: Post comment with preview link
-  #       uses: KeisukeYamashita/create-comment@v1
-  #       with:
-  #         check-only-first-line: true
-  #         comment: |
-  #           Preview Website for PR: 
-  #           ${{ env.previewUrl }}
-  #     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-  #     - name: Lighthouse
-  #       uses: foo-software/lighthouse-check-action@master
-  #       with:
-  #         urls: ${{ env.previewUrl }}
-  #         device: all
-  #         gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
-  #         outputDirectory: ${{ github.workspace }}/tmp/artifacts
-  #     - name: Upload Lighthouse Reports
-  #       uses: actions/upload-artifact@master
-  #       with:
-  #         name: Lighthouse Preview
-  #         path: ${{ github.workspace }}/tmp/artifacts
+  app_preview_dev:
+    if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: 📦 Install dependencies
+        run: npm ci
+      - name: 🚀 Publish App preview
+        uses: expo/expo-github-action/preview@v8
+        with:
+          command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
+      - name: Publish Website Preview
+        run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
+      - name: Post comment with preview link
+        uses: KeisukeYamashita/create-comment@v1
+        with:
+          check-only-first-line: true
+          comment: |
+            Preview Website for PR: 
+            ${{ env.previewUrl }}
+      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          urls: ${{ env.previewUrl }}
+          device: all
+          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+          outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      - name: Upload Lighthouse Reports
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse Preview
+          path: ${{ github.workspace }}/tmp/artifacts
 
-  # website_test_dev:
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: install dependencies
-  #       run: npm i
-  #     - name: Jest run
-  #       run: npm run test:unit
-  #     - name: Test Reporter
-  #       uses: dorny/test-reporter@v1
-  #       if: success() || failure()    
-  #       with:
-  #         name: JEST Tests            
-  #         path: junit.xml    
-  #         reporter: jest-junit
-  #     - name: Cypress run
-  #       uses: cypress-io/github-action@v5
-  #       with:
-  #         start: 'npm run web:dev'
-  #         command: 'npm run test:cypress'
-  #         wait-on: 'http://localhost:8081/'
-  #         wait-on-timeout: 120
-  #     - name: Coveralls
-  #       uses: coverallsapp/github-action@v2
-  #     - name: Upload coverage reports to Codecov
-  #       uses: codecov/codecov-action@v3
-  #       env:
-  #         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-  #     - run: npx nyc report --reporter=text > coverage-final.txt
-  #       working-directory: ./coverage
-  #     - uses: fingerprintjs/action-coverage-report-md@v1
-  #       id: coverage
-  #       with:
-  #         textReportPath: './coverage/coverage-final.txt'
-  #         srcBasePath: ''
-  #     - run: | 
-  #         echo "" >> $GITHUB_STEP_SUMMARY
-  #         echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
-  #         echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
-  #     - uses: marocchino/sticky-pull-request-comment@v2
-  #       if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-  #       with:
-  #         message: ${{ steps.coverage.outputs.markdownReport }}
+  website_test_dev:
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: install dependencies
+        run: npm i
+      - name: Jest run
+        run: npm run test:unit
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    
+        with:
+          name: JEST Tests            
+          path: junit.xml    
+          reporter: jest-junit
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          start: 'npm run web:dev'
+          command: 'npm run test:cypress'
+          wait-on: 'http://localhost:8081/'
+          wait-on-timeout: 120
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - run: npx nyc report --reporter=text > coverage-final.txt
+        working-directory: ./coverage
+      - uses: fingerprintjs/action-coverage-report-md@v1
+        id: coverage
+        with:
+          textReportPath: './coverage/coverage-final.txt'
+          srcBasePath: ''
+      - run: | 
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
+        with:
+          message: ${{ steps.coverage.outputs.markdownReport }}
 
-  # app_build_android:
-  #   runs-on: ubuntu-latest
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - name: 🏗 Setup repo
-  #       uses: actions/checkout@v3
-  #     - name: 🏗 Setup Node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #     - name: 🏗 Setup Expo and EAS
-  #       uses: expo/expo-github-action@v8
-  #       with:
-  #         expo-version: latest
-  #         eas-version: latest
-  #         token: ${{ secrets.EXPO_TOKEN }}
-  #     - name: 📦 Install dependencies
-  #       run: npm ci
-  #     - name: 🚀 Build app
-  #       run: eas build --non-interactive --platform android --local
-  #       env:
-  #         EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
-  #     - name: Upload binary Artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: android binary
-  #         path: Build/*.apk
+  app_build_android:
+    runs-on: ubuntu-latest
+    needs: [ code_scan ]
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: 🏗 Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: 📦 Install dependencies
+        run: npm ci
+      - name: 🚀 Build app
+        run: eas build --non-interactive --platform android --local
+        env:
+          EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
+      - name: Upload binary Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: android binary
+          path: Build/*.apk
 
-  # app_build_desktop:
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       platform: [ [linux, ubuntu-20.04], [windows, windows-latest] ]
-  #   runs-on: ${{ matrix.platform[1] }}
-  #   needs: [ code_scan ]
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: setup node
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16
-  #     - name: install Rust stable
-  #       uses: dtolnay/rust-toolchain@stable
-  #     - name: install ubuntu dependencies
-  #       if: matrix.platform[1] == 'ubuntu-20.04'
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-  #     - name: install frontend dependencies
-  #       run: npm ci
-  #     - uses: tauri-apps/tauri-action@v0
-  #       id: tauri_build
-  #     - name: Upload ${{ matrix.platform[0] }} Artifact
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: ${{ matrix.platform[0] }} binary
-  #         path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
+  app_build_desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ [linux, ubuntu-20.04], [windows, windows-latest] ]
+    runs-on: ${{ matrix.platform[1] }}
+    needs: [ code_scan ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: install ubuntu dependencies
+        if: matrix.platform[1] == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: install frontend dependencies
+        run: npm ci
+      - uses: tauri-apps/tauri-action@v0
+        id: tauri_build
+      - name: Upload ${{ matrix.platform[0] }} Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform[0] }} binary
+          path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
 
-  # deploy_app_dev:
-  #   name: Deploy Dev app to Itch.io
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       binary_name: [linux, windows, android]
-  #   needs: [ app_build_android, website_test_dev, app_build_desktop ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download binary Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: ${{matrix.binary_name}} binary
-  #         path: bundle
-  #     - name: Install Butler
-  #       run: |
-  #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-  #         unzip butler.zip
-  #         chmod +x butler
-  #         ./butler -V
-  #     - name: Update Itch.io ${{matrix.binary_name}} Alpha App
-  #       run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
-  #       env:
-  #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+  deploy_app_dev:
+    name: Deploy Dev app to Itch.io
+    strategy:
+      fail-fast: false
+      matrix:
+        binary_name: [linux, windows, android]
+    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{matrix.binary_name}} binary
+          path: bundle
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name: Update Itch.io ${{matrix.binary_name}} Alpha App
+        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
-  # deploy_app_prod:
-  #   name: Deploy Prod app to Itch.io
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       binary_name: [linux, windows, android]
-  #   needs: [ deploy_website_dev, deploy_app_dev ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Download binary Artifact
-  #       uses: actions/download-artifact@v3
-  #       with:
-  #         name: ${{matrix.binary_name}} binary
-  #         path: bundle
-  #     - name: Install Butler
-  #       run: |
-  #         curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-  #         unzip butler.zip
-  #         chmod +x butler
-  #         ./butler -V
-  #     - name: Update Itch.io ${{matrix.binary_name}} Prod App
-  #       run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
-  #       env:
-  #         BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+  deploy_app_prod:
+    name: Deploy Prod app to Itch.io
+    strategy:
+      fail-fast: false
+      matrix:
+        binary_name: [linux, windows, android]
+    needs: [ deploy_website_dev, deploy_app_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download binary Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{matrix.binary_name}} binary
+          path: bundle
+      - name: Install Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name: Update Itch.io ${{matrix.binary_name}} Prod App
+        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
+        env:
+          BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
 
   deploy_website_dev:
     name: Deploy Dev Website
@@ -260,6 +260,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      # Vercel Deployment
+      - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
+      # Cloudflare Deployment
       # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
       - run: npm i -d wrangler
       - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
@@ -276,38 +279,56 @@ jobs:
           accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
           projectName: sudokuru-dev
           directory: dist
-      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      - name: Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        with:
-          urls: https://sudokuru-dev.vercel.app
-          device: all
-          outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      - name: Upload Lighthouse Reports
-        uses: actions/upload-artifact@master
-        with:
-          name: Lighthouse Dev
-          path: ${{ github.workspace }}/tmp/artifacts
+      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      # - name: Lighthouse
+      #   uses: foo-software/lighthouse-check-action@master
+      #   with:
+      #     urls: https://sudokuru-dev.vercel.app
+      #     device: all
+      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      # - name: Upload Lighthouse Reports
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: Lighthouse Dev
+      #     path: ${{ github.workspace }}/tmp/artifacts
 
-  # deploy_website_prod:
-  #   name: Deploy Prod Website
-  #   needs: [ deploy_website_dev, deploy_app_dev ]
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - run: npm ci
-  #     - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
-  #     - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-  #     - name: Lighthouse
-  #       uses: foo-software/lighthouse-check-action@master
-  #       with:
-  #         urls: https://sudokuru.vercel.app
-  #         device: all
-  #         outputDirectory: ${{ github.workspace }}/tmp/artifacts
-  #     - name: Upload Lighthouse Reports
-  #       uses: actions/upload-artifact@master
-  #       with:
-  #         name: Lighthouse Prod
-  #         path: ${{ github.workspace }}/tmp/artifacts
+  deploy_website_prod:
+    name: Deploy Prod Website
+    needs: [ deploy_website_dev, deploy_app_dev ]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - run: npm ci
+      # Vercel Deployment
+      - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
+      # Cloudflare Deployment
+      # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
+      - run: npm i -d wrangler
+      - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
+        working-directory: node_modules/wrangler/wrangler-dist
+      - run: diff cli.js cliv2.js || true
+        working-directory: node_modules/wrangler/wrangler-dist
+      - run: mv -f cliv2.js cli.js
+        working-directory: node_modules/wrangler/wrangler-dist
+      - run: npm run build:metro-web
+      - name: Cloudflare Deployment
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{secrets.CLOUDFLARE_API_TOKEN}}
+          accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
+          projectName: sudokuru
+          directory: dist
+      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
+      # - name: Lighthouse
+      #   uses: foo-software/lighthouse-check-action@master
+      #   with:
+      #     urls: https://sudokuru.vercel.app
+      #     device: all
+      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
+      # - name: Upload Lighthouse Reports
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: Lighthouse Prod
+      #     path: ${{ github.workspace }}/tmp/artifacts
