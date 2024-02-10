@@ -261,8 +261,8 @@ jobs:
         uses: actions/checkout@v3
       - run: npm ci
       # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
-      - run: | 
-          npm i -d wrangler
+      - run: npm i -d wrangler
+      - run: |
           cd node_modules/wrangler/wrangler-dist
           sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
           diff cli.js cliv2.js
