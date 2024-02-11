@@ -3,6 +3,8 @@
 node_modules/
 coverage/
 jest-coverage/
+reports
+tunnel.log
 .nyc_output/
 junit.xml
 .expo/
