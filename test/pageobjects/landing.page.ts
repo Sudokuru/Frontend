@@ -9,15 +9,15 @@ class LandingPage extends Page {
    * define selectors using getter methods
    */
   public get homeLearnButton() {
-    return $("#HomeLearnButton");
+    return $("//*[@data-testid='HomeLearnButton']");
   }
 
   public get homeDrillButton() {
-    return $("#HomeDrillButton");
+    return $("//*[@data-testid='HomeDrillButton']");
   }
 
   public get homePlayButton() {
-    return $("#HomePlayButton");
+    return $("//*[@data-testid='HomePlayButton']");
   }
 }
 

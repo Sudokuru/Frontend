@@ -1,4 +1,6 @@
 import type { Options } from "@wdio/types";
+import { browser } from "@wdio/globals";
+
 export const config: Options.Testrunner = {
   //
   // ====================
@@ -142,7 +144,20 @@ export const config: Options.Testrunner = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ["spec", "junit", "html-nice"],
+  reporters: [
+    "concise",
+    "spec",
+    [
+      "junit",
+      {
+        outputDir: "./reports/junit-reports",
+        outputFileFormat: function (options) {
+          // optional
+          return `results-${options.cid}.${options.capabilities}.xml`;
+        },
+      },
+    ],
+  ],
 
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
@@ -203,8 +218,8 @@ export const config: Options.Testrunner = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  //   before: function (capabilities, specs) {
+  //   },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name
@@ -245,8 +260,13 @@ export const config: Options.Testrunner = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  // },
+  afterTest: async function (
+    test,
+    context,
+    { error, result, duration, passed, retries }
+  ) {
+    await browser.saveScreenshot("./reports/" + test.title + ".png");
+  },
 
   /**
    * Hook that gets executed after the suite has ended
