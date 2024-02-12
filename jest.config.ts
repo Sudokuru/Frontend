@@ -2,6 +2,7 @@ import type { Config } from "jest";
 
 const config: Config = {
   preset: "jest-expo",
+  testPathIgnorePatterns: ["/node_modules/", "/e2e/"],
   reporters: [
     "default",
     "github-actions",
