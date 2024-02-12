@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
 
 export class HomePage {
@@ -14,22 +14,11 @@ export class HomePage {
     this.playSudoku = page.getByTestId("HomePlayButton").locator("img");
   }
 
-  async clickStartLessonsButton() {
-    await this.startLessons.click();
-  }
-
-  async clickStartDrillsButton() {
-    await this.startDrills.click();
-  }
-
-  async clickPlaySudokuButton() {
-    await this.playSudoku.click();
-  }
-
   async headerRendersCorrectly() {
     const headerComponent = new HeaderComponent(this.page);
-    await headerComponent.homeButtonIsNotInViewport();
-    await headerComponent.profileButtonIsInViewport();
-    await headerComponent.statisticsButtonIsInViewport();
+    await expect(headerComponent.drawer).toBeInViewport({ ratio: 1 });
+    await expect(headerComponent.home).not.toBeInViewport({ ratio: 1 });
+    await expect(headerComponent.profile).toBeInViewport({ ratio: 1 });
+    await expect(headerComponent.statistics).toBeInViewport({ ratio: 1 });
   }
 }
