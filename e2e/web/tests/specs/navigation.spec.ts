@@ -5,16 +5,16 @@ import { test } from "../fixture";
 test.describe("home page navigation", () => {
   test("start lessons button", async ({ page }) => {
     const homePage = new HomePage(page);
-    homePage.clickStartLessonsButton();
+    await homePage.clickStartLessonsButton();
   });
 
   test("start drills button", async ({ page }) => {
     const homePage = new HomePage(page);
-    homePage.clickStartDrillsButton();
+    await homePage.clickStartDrillsButton();
   });
 
   test("play sudoku button", async ({ page }) => {
     const homePage = new HomePage(page);
-    homePage.clickPlaySudokuButton();
+    await homePage.clickPlaySudokuButton();
   });
 });
