@@ -4,8 +4,8 @@ export default {
   scheme: "sudokuru",
   owner: "sudokuru",
   version: "0.0.0",
+  platform: ["ios", "android", "web"],
   icon: ".assets/goldLogoNoText.png",
-  platforms: ["ios", "android"],
   orientation: "portrait",
   updates: {
     url: "https://u.expo.dev/23c4c607-ead6-4786-9a9c-03f57a97dac7",
