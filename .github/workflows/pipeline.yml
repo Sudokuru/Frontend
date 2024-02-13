@@ -142,6 +142,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
       - name: 🏗 Setup Expo and EAS
         uses: expo/expo-github-action@v8
         with:
