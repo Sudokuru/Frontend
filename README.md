@@ -38,13 +38,6 @@ The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
 
-# Run Code Coverage and Jest E2E tests
-
-To enable code coverage, toggle `collectCoverage` to `true` in `jest.config.ts` file. Coverage results are outputed to `jest-coverage` folder.
-
-Run `npm run test:unit`
-This will run all jest tests and output to the `junit.xml` file and to console.
-
 # Run Code Coverage and Cypress E2E tests
 
 Run `npm run web:dev`  
