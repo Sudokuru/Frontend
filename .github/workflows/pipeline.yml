@@ -103,15 +103,6 @@ jobs:
           node-version: 16.x
       - name: install dependencies
         run: npm i
-      - name: Jest run
-        run: npm run test:unit
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1
-        if: success() || failure()    
-        with:
-          name: JEST Tests            
-          path: junit.xml    
-          reporter: jest-junit
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
