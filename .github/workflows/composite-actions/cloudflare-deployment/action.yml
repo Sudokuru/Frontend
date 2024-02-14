@@ -4,6 +4,12 @@ inputs:
   project-name:
     description: Name of Cloudflare project to deploy to
     required: true
+  account-id:
+    description: Cloudflare account id
+    required: true
+  api-token:
+    description: Cloudflare API token
+    required: true
 outputs:
   url:
     description: URL of deployed Cloudflare site
@@ -14,18 +20,23 @@ runs:
   steps:
     # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
     - run: npm i -d wrangler
+      shell: bash
     - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
       working-directory: node_modules/wrangler/wrangler-dist
+      shell: bash
     - run: diff cli.js cliv2.js || true
       working-directory: node_modules/wrangler/wrangler-dist
+      shell: bash
     - run: mv -f cliv2.js cli.js
       working-directory: node_modules/wrangler/wrangler-dist
+      shell: bash
     - run: npm run build:metro-web
+      shell: bash
     - name: Cloudflare Deployment
       id: deployment
       uses: cloudflare/pages-action@v1
       with:
-        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        apiToken: ${{ inputs.api-token }}
+        accountId: ${{ inputs.account-id }}
         projectName: ${{ inputs.project-name }}
         directory: dist
