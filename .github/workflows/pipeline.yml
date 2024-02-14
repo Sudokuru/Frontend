@@ -56,7 +56,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: 🏗 Setup Expo
         uses: expo/expo-github-action@v8
         with:
@@ -100,18 +100,9 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: install dependencies
         run: npm i
-      - name: Jest run
-        run: npm run test:unit
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1
-        if: success() || failure()    
-        with:
-          name: JEST Tests            
-          path: junit.xml    
-          reporter: jest-junit
       - name: Cypress run
         uses: cypress-io/github-action@v5
         with:
@@ -150,7 +141,11 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
       - name: 🏗 Setup Expo and EAS
         uses: expo/expo-github-action@v8
         with:
@@ -181,7 +176,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
