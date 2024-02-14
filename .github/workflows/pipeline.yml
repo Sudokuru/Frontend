@@ -68,28 +68,20 @@ jobs:
         uses: expo/expo-github-action/preview@v8
         with:
           command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
-      - name: Publish Website Preview
-        run: echo "previewUrl=$(npx vercel --yes --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}})" >> $GITHUB_ENV
+      - name: Cloudflare dev preview deployment
+        id: deployment
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment
+        with:
+          project-name: sudokuru-dev
+          account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - name: Post comment with preview link
         uses: KeisukeYamashita/create-comment@v1
         with:
           check-only-first-line: true
           comment: |
             Preview Website for PR: 
-            ${{ env.previewUrl }}
-      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      - name: Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        with:
-          urls: ${{ env.previewUrl }}
-          device: all
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
-          outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      - name: Upload Lighthouse Reports
-        uses: actions/upload-artifact@master
-        with:
-          name: Lighthouse Preview
-          path: ${{ github.workspace }}/tmp/artifacts
+            ${{ steps.deployment.outputs.url }}
 
   website_test_dev:
     runs-on: ubuntu-latest
@@ -116,21 +108,6 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - run: npx nyc report --reporter=text > coverage-final.txt
-        working-directory: ./coverage
-      - uses: fingerprintjs/action-coverage-report-md@v1
-        id: coverage
-        with:
-          textReportPath: './coverage/coverage-final.txt'
-          srcBasePath: ''
-      - run: | 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
-      - uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        with:
-          message: ${{ steps.coverage.outputs.markdownReport }}
 
   app_build_android:
     runs-on: ubuntu-latest
@@ -255,37 +232,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
-      # Vercel Deployment
-      - run: npx vercel --yes --prod --name sudokuru-dev --token ${{secrets.VERCEL_TOKEN}}
-      # Cloudflare Deployment
-      # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
-      - run: npm i -d wrangler
-      - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: diff cli.js cliv2.js || true
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: mv -f cliv2.js cli.js
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: npm run build:metro-web
-      - name: Cloudflare Deployment
-        uses: cloudflare/pages-action@v1
+      - name: Cloudflare dev preview deployment
+        id: deployment
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
-          apiToken: ${{secrets.CLOUDFLARE_API_TOKEN}}
-          accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
-          projectName: sudokuru-dev
-          directory: dist
-      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      # - name: Lighthouse
-      #   uses: foo-software/lighthouse-check-action@master
-      #   with:
-      #     urls: https://sudokuru-dev.vercel.app
-      #     device: all
-      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      # - name: Upload Lighthouse Reports
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: Lighthouse Dev
-      #     path: ${{ github.workspace }}/tmp/artifacts
+          project-name: sudokuru-dev
+          account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   deploy_website_prod:
     name: Deploy Prod Website
@@ -296,34 +249,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
-      # Vercel Deployment
-      - run: npx vercel --yes --prod --name sudokuru --token ${{secrets.VERCEL_TOKEN}}
-      # Cloudflare Deployment
-      # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
-      - run: npm i -d wrangler
-      - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: diff cli.js cliv2.js || true
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: mv -f cliv2.js cli.js
-        working-directory: node_modules/wrangler/wrangler-dist
-      - run: npm run build:metro-web
-      - name: Cloudflare Deployment
-        uses: cloudflare/pages-action@v1
+      - name: Cloudflare dev preview deployment
+        id: deployment
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
-          apiToken: ${{secrets.CLOUDFLARE_API_TOKEN}}
-          accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
-          projectName: sudokuru
-          directory: dist
-      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      # - name: Lighthouse
-      #   uses: foo-software/lighthouse-check-action@master
-      #   with:
-      #     urls: https://sudokuru.vercel.app
-      #     device: all
-      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      # - name: Upload Lighthouse Reports
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: Lighthouse Prod
-      #     path: ${{ github.workspace }}/tmp/artifacts
+          project-name: sudokuru
+          account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}

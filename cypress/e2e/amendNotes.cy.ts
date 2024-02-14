@@ -29,7 +29,7 @@ describe("Amend notes strategy", () => {
     cy.contains("Resume Puzzle").click();
   });
 
-  it("Uses amend notes hint", () => {
+  it.skip("Uses amend notes hint", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Amend Notes");

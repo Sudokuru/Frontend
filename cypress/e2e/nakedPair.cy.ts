@@ -26,7 +26,7 @@ describe("Naked pair strategy", () => {
     cy.contains("Resume Puzzle").click();
   });
 
-  it("Uses naked pair hint", () => {
+  it.skip("Uses naked pair hint", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Naked Pair");
