@@ -88,7 +88,7 @@ describe("Profile Tests", () => {
     cy.get(PLAY_DRAWER_BUTTON).click();
 
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(0, 0)).click();
+      cy.get(CELL(0, 0)).trigger("click");
       cy.Cell_Should_Have_Color(1, 8, IDENTICAL_VALUE_COLOR_RGB);
       cy.Cell_Should_Have_Color(7, 1, IDENTICAL_VALUE_COLOR_RGB);
       cy.Cell_Should_Have_Color(2, 3, IDENTICAL_VALUE_COLOR_RGB);
@@ -127,7 +127,7 @@ describe("Profile Tests", () => {
     cy.get(PLAY_DRAWER_BUTTON).click();
 
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(1, 1)).click();
+      cy.get(CELL(1, 1)).trigger("click");
       cy.Board_Should_Have_Color_Except_For_Groups(
         1,
         1,
@@ -168,7 +168,7 @@ describe("Profile Tests", () => {
     cy.get(PLAY_DRAWER_BUTTON).click();
 
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(1, 1)).click();
+      cy.get(CELL(1, 1)).trigger("click");
       cy.Board_Should_Have_Color_Except_For_Groups(
         1,
         1,
@@ -209,7 +209,7 @@ describe("Profile Tests", () => {
     cy.get(PLAY_DRAWER_BUTTON).click();
 
     cy.get(SUDOKU_BOARD).within(() => {
-      cy.get(CELL(1, 1)).click();
+      cy.get(CELL(1, 1)).trigger("click");
       cy.Board_Should_Have_Color_Except_For_Groups(
         1,
         1,
