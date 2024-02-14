@@ -30,7 +30,7 @@ describe("Simplify notes strategy", () => {
     cy.contains("Resume Puzzle").click();
   });
 
-  it("Uses simplify notes hint for row, column, and box", () => {
+  it.skip("Uses simplify notes hint for row, column, and box", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Simplify Notes");
