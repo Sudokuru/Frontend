@@ -70,7 +70,7 @@ jobs:
           command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
       - name: Cloudflare dev preview deployment
         id: deployment
-        uses: ./composite-actions/cloudflare-deployment.yml
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment.yml
         with:
           project-name: sudokuru-dev
       - name: Post comment with preview link
@@ -247,7 +247,7 @@ jobs:
       - run: npm ci
       - name: Cloudflare dev preview deployment
         id: deployment
-        uses: ./composite-actions/cloudflare-deployment.yml
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment.yml
         with:
           project-name: sudokuru-dev
 
@@ -262,6 +262,6 @@ jobs:
       - run: npm ci
       - name: Cloudflare dev preview deployment
         id: deployment
-        uses: ./composite-actions/cloudflare-deployment.yml
+        uses: ./.github/workflows/composite-actions/cloudflare-deployment.yml
         with:
           project-name: sudokuru
