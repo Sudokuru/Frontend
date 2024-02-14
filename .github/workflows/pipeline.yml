@@ -77,19 +77,6 @@ jobs:
           comment: |
             Preview Website for PR: 
             ${{ env.previewUrl }}
-      - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      - name: Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        with:
-          urls: ${{ env.previewUrl }}
-          device: all
-          gitHubAccessToken: ${{ secrets.GITHUB_TOKEN }}
-          outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      - name: Upload Lighthouse Reports
-        uses: actions/upload-artifact@master
-        with:
-          name: Lighthouse Preview
-          path: ${{ github.workspace }}/tmp/artifacts
 
   website_test_dev:
     runs-on: ubuntu-latest
@@ -274,18 +261,6 @@ jobs:
           accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
           projectName: sudokuru-dev
           directory: dist
-      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      # - name: Lighthouse
-      #   uses: foo-software/lighthouse-check-action@master
-      #   with:
-      #     urls: https://sudokuru-dev.vercel.app
-      #     device: all
-      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      # - name: Upload Lighthouse Reports
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: Lighthouse Dev
-      #     path: ${{ github.workspace }}/tmp/artifacts
 
   deploy_website_prod:
     name: Deploy Prod Website
@@ -315,15 +290,3 @@ jobs:
           accountId: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
           projectName: sudokuru
           directory: dist
-      # - run: mkdir -p ${{ github.workspace }}/tmp/artifacts
-      # - name: Lighthouse
-      #   uses: foo-software/lighthouse-check-action@master
-      #   with:
-      #     urls: https://sudokuru.vercel.app
-      #     device: all
-      #     outputDirectory: ${{ github.workspace }}/tmp/artifacts
-      # - name: Upload Lighthouse Reports
-      #   uses: actions/upload-artifact@master
-      #   with:
-      #     name: Lighthouse Prod
-      #     path: ${{ github.workspace }}/tmp/artifacts
