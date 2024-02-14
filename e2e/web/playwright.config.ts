@@ -49,10 +49,10 @@ export default defineConfig({
       timeout: 600000,
       use: {
         ...devices["Desktop Chrome"],
-        launchOptions: {
-          headless: false,
-          args: ["--no-incognito"],
-        },
+        // launchOptions: {
+        //   headless: false,
+        //   args: ["--no-incognito"],
+        // },
       },
     },
     {
