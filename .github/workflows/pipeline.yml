@@ -108,21 +108,6 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - run: npx nyc report --reporter=text > coverage-final.txt
-        working-directory: ./coverage
-      - uses: fingerprintjs/action-coverage-report-md@v1
-        id: coverage
-        with:
-          textReportPath: './coverage/coverage-final.txt'
-          srcBasePath: ''
-      - run: | 
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Code Coverage" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.coverage.outputs.markdownReport }}" >> $GITHUB_STEP_SUMMARY
-      - uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        with:
-          message: ${{ steps.coverage.outputs.markdownReport }}
 
   app_build_android:
     runs-on: ubuntu-latest
