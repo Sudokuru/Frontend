@@ -27,14 +27,16 @@ const ContactPage = () => {
             onValueChange={setValue}
             buttons={[
               {
-                value: "walk",
+                value: "feature",
+                icon: "lightbulb-on",
                 label: "Feature Request",
               },
               {
-                value: "train",
+                value: "bug",
+                icon: "bug",
                 label: "Bug Report",
               },
-              { value: "drive", label: "Other" },
+              { value: "other", icon: "note-text", label: "Other" },
             ]}
           />
         </View>
