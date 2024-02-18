@@ -20,6 +20,21 @@ const ContactPage = () => {
   const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
 
+  const submit = async () => {
+    var feedbackType = "Other";
+    if (value === "feature") {
+      feedbackType = "Feature Request";
+    } else if (value === "bug") {
+      feedbackType = "Bug Report";
+    }
+    const submission = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ feedbackType: feedbackType, feedbackText: text }),
+    };
+    console.log(submission);
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView>
@@ -90,7 +105,9 @@ const ContactPage = () => {
                 }}
               />
               <Button
-                onPress={() => {}}
+                onPress={() => {
+                  submit();
+                }}
                 disabled={disabled}
                 mode="contained"
                 style={{
