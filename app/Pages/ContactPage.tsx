@@ -16,7 +16,7 @@ const ContactPage = () => {
   const size = useWindowDimensions();
   const [value, setValue] = React.useState("");
   const [text, setText] = React.useState("");
-  const [label, setLabel] = React.useState("");
+  const [label, setLabel] = React.useState("0/1000");
   const [disabled, setDisabled] = React.useState(true);
 
   return (
