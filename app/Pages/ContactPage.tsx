@@ -1,9 +1,11 @@
+import React from "react";
 import { View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { SegmentedButtons, Text, useTheme } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const ContactPage = () => {
   const theme = useTheme();
+  const [value, setValue] = React.useState("");
 
   return (
     <SafeAreaProvider>
@@ -19,6 +21,22 @@ const ContactPage = () => {
           >
             Contact Us
           </Text>
+          <Text variant="headlineSmall">Why are you contacting us today?</Text>
+          <SegmentedButtons
+            value={value}
+            onValueChange={setValue}
+            buttons={[
+              {
+                value: "walk",
+                label: "Feature Request",
+              },
+              {
+                value: "train",
+                label: "Bug Report",
+              },
+              { value: "drive", label: "Other" },
+            ]}
+          />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
