@@ -1,11 +1,17 @@
 import React from "react";
 import { View } from "react-native";
-import { SegmentedButtons, Text, useTheme } from "react-native-paper";
+import {
+  SegmentedButtons,
+  Text,
+  TextInput,
+  useTheme,
+} from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const ContactPage = () => {
   const theme = useTheme();
   const [value, setValue] = React.useState("");
+  const [text, setText] = React.useState("");
 
   return (
     <SafeAreaProvider>
@@ -39,6 +45,11 @@ const ContactPage = () => {
               },
               { value: "other", icon: "note-text", label: "Other" },
             ]}
+          />
+          <TextInput
+            label="Message"
+            value={text}
+            onChangeText={(text) => setText(text)}
           />
         </View>
       </SafeAreaView>
