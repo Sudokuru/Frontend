@@ -70,7 +70,6 @@ const ContactPage = () => {
               <TextInput
                 label={label}
                 value={text}
-                disabled={disabled}
                 style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
@@ -81,6 +80,7 @@ const ContactPage = () => {
               />
               <Button
                 onPress={() => {}}
+                disabled={disabled}
                 mode="contained"
                 style={{
                   marginVertical: "2%",
