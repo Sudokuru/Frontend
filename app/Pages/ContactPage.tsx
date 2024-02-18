@@ -1,15 +1,18 @@
 import React from "react";
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import {
+  Card,
   SegmentedButtons,
   Text,
   TextInput,
   useTheme,
 } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { CARD_PADDING } from "../Components/Home/Cards";
 
 const ContactPage = () => {
   const theme = useTheme();
+  const size = useWindowDimensions();
   const [value, setValue] = React.useState("");
   const [text, setText] = React.useState("");
 
@@ -27,11 +30,20 @@ const ContactPage = () => {
           >
             Contact Us
           </Text>
+        </View>
+        <Card
+          mode="outlined"
+          style={{
+            alignSelf: "center",
+            width: size.width > 800 ? "80%" : "100%",
+            paddingVertical: CARD_PADDING / 2,
+          }}
+        >
           <Text variant="headlineSmall">Why are you contacting us today?</Text>
           <SegmentedButtons
             value={value}
             onValueChange={setValue}
-            style={{ width: "220%" }}
+            style={{ width: "100%" }}
             buttons={[
               {
                 value: "feature",
@@ -53,7 +65,7 @@ const ContactPage = () => {
             textColor="black"
             onChangeText={(text) => setText(text)}
           />
-        </View>
+        </Card>
       </SafeAreaView>
     </SafeAreaProvider>
   );
