@@ -49,6 +49,8 @@ const ContactPage = () => {
           <TextInput
             label="Message"
             value={text}
+            style={{ backgroundColor: "white" }}
+            textColor="black"
             onChangeText={(text) => setText(text)}
           />
         </View>
