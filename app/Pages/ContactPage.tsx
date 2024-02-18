@@ -27,12 +27,15 @@ const ContactPage = () => {
     } else if (value === "bug") {
       feedbackType = "Bug Report";
     }
+
     const submission = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ feedbackType: feedbackType, feedbackText: text }),
+      body: "{}",
     };
-    console.log(submission);
+
+    const url = `https://script.google.com/macros/s/AKfycbzclUldypFOsRj9hdp1AmDugHG_QOZQhWGE_ryL61eP7Au63XmaocCklO226b7CPM_Fcg/exec?feedbackType=${feedbackType}&feedbackText=${text}`;
+    console.log(url);
   };
 
   return (
