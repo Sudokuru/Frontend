@@ -1,6 +1,7 @@
 import React from "react";
 import { View, useWindowDimensions } from "react-native";
 import {
+  Button,
   Card,
   SegmentedButtons,
   Text,
@@ -73,6 +74,16 @@ const ContactPage = () => {
                   setLabel(text.substring(0, 1000).length + "/1000");
                 }}
               />
+              <Button
+                onPress={() => {}}
+                mode="contained"
+                style={{
+                  marginVertical: "2%",
+                  marginHorizontal: size.width > 800 ? "35%" : "12%",
+                }}
+              >
+                <Text variant="headlineSmall">Submit Feedback</Text>
+              </Button>
             </View>
           </Card>
         </View>
