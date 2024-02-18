@@ -18,6 +18,7 @@ const ContactPage = () => {
   const [text, setText] = React.useState("");
   const [label, setLabel] = React.useState("0/1000");
   const [disabled, setDisabled] = React.useState(true);
+  const [placeholder, setPlaceholder] = React.useState("");
 
   return (
     <SafeAreaProvider>
@@ -51,6 +52,15 @@ const ContactPage = () => {
                 onValueChange={(value) => {
                   setValue(value);
                   setDisabled(false);
+                  if (value === "feature") {
+                    setPlaceholder(
+                      "What feature would you like to see added or improved upon?"
+                    );
+                  } else if (value === "bug") {
+                    setPlaceholder("What bug did you encounter?");
+                  } else {
+                    setPlaceholder("What would you like to tell us?");
+                  }
                 }}
                 style={{ width: "100%", paddingVertical: CARD_PADDING }}
                 buttons={[
@@ -70,6 +80,7 @@ const ContactPage = () => {
               <TextInput
                 label={label}
                 value={text}
+                placeholder={placeholder}
                 style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
