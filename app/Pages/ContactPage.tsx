@@ -15,6 +15,7 @@ const ContactPage = () => {
   const size = useWindowDimensions();
   const [value, setValue] = React.useState("");
   const [text, setText] = React.useState("");
+  const [label, setLabel] = React.useState("");
 
   return (
     <SafeAreaProvider>
@@ -62,11 +63,14 @@ const ContactPage = () => {
                 ]}
               />
               <TextInput
-                label="Message"
+                label={label}
                 value={text}
                 style={{ backgroundColor: "white" }}
                 textColor="black"
-                onChangeText={(text) => setText(text)}
+                onChangeText={(text) => {
+                  setText(text);
+                  setLabel(text.length + "/1000");
+                }}
               />
             </View>
           </Card>
