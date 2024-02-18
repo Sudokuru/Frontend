@@ -10,15 +10,21 @@ import {
 } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { CARD_IMAGE_HEIGHT, CARD_PADDING } from "../Components/Home/Cards";
+import Alert from "react-native-awesome-alerts";
+import { rgba } from "polished";
+import { useNavigation } from "@react-navigation/native";
 
 const ContactPage = () => {
   const theme = useTheme();
+  const navigation: any = useNavigation();
   const size = useWindowDimensions();
   const [value, setValue] = React.useState("");
   const [text, setText] = React.useState("");
   const [label, setLabel] = React.useState("0/1000");
   const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
+  const [thankYouVisible, setThankYouVisible] = React.useState(false);
+  const [buttonText, setButtonText] = React.useState("Submit Feedback");
 
   const submit = async () => {
     var feedbackType = "Other";
@@ -39,6 +45,7 @@ const ContactPage = () => {
 
     try {
       await fetch(url, submission);
+      setThankYouVisible(true);
     } catch (error) {
       console.error(error);
     }
@@ -115,6 +122,8 @@ const ContactPage = () => {
               />
               <Button
                 onPress={() => {
+                  setDisabled(true);
+                  setButtonText("Submitting...");
                   submit();
                 }}
                 disabled={disabled}
@@ -124,11 +133,38 @@ const ContactPage = () => {
                   marginHorizontal: size.width > 800 ? "35%" : "12%",
                 }}
               >
-                <Text variant="headlineSmall">Submit Feedback</Text>
+                <Text variant="headlineSmall">{buttonText}</Text>
               </Button>
             </View>
           </Card>
         </View>
+        <Alert
+          show={thankYouVisible}
+          title="Thank You!"
+          message={
+            `Your feedback has been submitted.\n\n` +
+            `We appreciate the time you took to help us improve our app.\n\n` +
+            `Your feeback will be taken into consideration.`
+          }
+          messageStyle={{ maxWidth: 500 }}
+          showConfirmButton={true}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          confirmText={"OK"}
+          confirmButtonColor={theme.colors.primary}
+          onConfirmPressed={() => {
+            setThankYouVisible(false);
+            setButtonText("Submit Feedback");
+            setValue("");
+            setText("");
+            setLabel("0/1000");
+            navigation.navigate("LandingPage");
+          }}
+          overlayStyle={{ backgroundColor: "transparent" }}
+          alertContainerStyle={{
+            backgroundColor: rgba(theme.colors.background, 0.3),
+          }}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   );
