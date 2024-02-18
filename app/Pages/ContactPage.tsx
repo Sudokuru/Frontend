@@ -28,14 +28,20 @@ const ContactPage = () => {
       feedbackType = "Bug Report";
     }
 
-    const submission = {
+    const submission: RequestInit = {
+      redirect: "follow" as RequestRedirect,
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: "{}",
     };
 
     const url = `https://script.google.com/macros/s/AKfycbzclUldypFOsRj9hdp1AmDugHG_QOZQhWGE_ryL61eP7Au63XmaocCklO226b7CPM_Fcg/exec?feedbackType=${feedbackType}&feedbackText=${text}`;
-    console.log(url);
+
+    try {
+      await fetch(url, submission);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
