@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { CARD_PADDING } from "../Components/Home/Cards";
+import { CARD_IMAGE_HEIGHT, CARD_PADDING } from "../Components/Home/Cards";
 
 const ContactPage = () => {
   const theme = useTheme();
@@ -65,7 +65,7 @@ const ContactPage = () => {
               <TextInput
                 label={label}
                 value={text}
-                style={{ backgroundColor: "white" }}
+                style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
                 onChangeText={(text) => {
