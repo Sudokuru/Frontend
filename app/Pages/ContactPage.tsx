@@ -31,41 +31,44 @@ const ContactPage = () => {
             Contact Us
           </Text>
         </View>
-        <Card
-          mode="outlined"
+        <View
           style={{
             alignSelf: "center",
             width: size.width > 800 ? "80%" : "100%",
             paddingVertical: CARD_PADDING / 2,
           }}
         >
-          <Text variant="headlineSmall">Why are you contacting us today?</Text>
-          <SegmentedButtons
-            value={value}
-            onValueChange={setValue}
-            style={{ width: "100%" }}
-            buttons={[
-              {
-                value: "feature",
-                icon: "lightbulb-on",
-                label: "Feature Request",
-              },
-              {
-                value: "bug",
-                icon: "bug",
-                label: "Bug Report",
-              },
-              { value: "other", icon: "note-text", label: "Other" },
-            ]}
-          />
-          <TextInput
-            label="Message"
-            value={text}
-            style={{ backgroundColor: "white" }}
-            textColor="black"
-            onChangeText={(text) => setText(text)}
-          />
-        </Card>
+          <Card mode="outlined">
+            <Text variant="headlineSmall">
+              Why are you contacting us today?
+            </Text>
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ width: "100%" }}
+              buttons={[
+                {
+                  value: "feature",
+                  icon: "lightbulb-on",
+                  label: "Feature Request",
+                },
+                {
+                  value: "bug",
+                  icon: "bug",
+                  label: "Bug Report",
+                },
+                { value: "other", icon: "note-text", label: "Other" },
+              ]}
+            />
+            <TextInput
+              label="Message"
+              value={text}
+              style={{ backgroundColor: "white" }}
+              textColor="black"
+              onChangeText={(text) => setText(text)}
+            />
+          </Card>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
