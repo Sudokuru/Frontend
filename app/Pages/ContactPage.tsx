@@ -17,6 +17,7 @@ const ContactPage = () => {
   const [value, setValue] = React.useState("");
   const [text, setText] = React.useState("");
   const [label, setLabel] = React.useState("");
+  const [disabled, setDisabled] = React.useState(true);
 
   return (
     <SafeAreaProvider>
@@ -47,7 +48,10 @@ const ContactPage = () => {
               </Text>
               <SegmentedButtons
                 value={value}
-                onValueChange={setValue}
+                onValueChange={(value) => {
+                  setValue(value);
+                  setDisabled(false);
+                }}
                 style={{ width: "100%", paddingVertical: CARD_PADDING }}
                 buttons={[
                   {
@@ -66,6 +70,7 @@ const ContactPage = () => {
               <TextInput
                 label={label}
                 value={text}
+                disabled={disabled}
                 style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
