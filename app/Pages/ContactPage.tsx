@@ -67,6 +67,7 @@ const ContactPage = () => {
                 value={text}
                 style={{ backgroundColor: "white" }}
                 textColor="black"
+                multiline={true}
                 onChangeText={(text) => {
                   setText(text.substring(0, 1000));
                   setLabel(text.substring(0, 1000).length + "/1000");
