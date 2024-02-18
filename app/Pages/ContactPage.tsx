@@ -68,8 +68,8 @@ const ContactPage = () => {
                 style={{ backgroundColor: "white" }}
                 textColor="black"
                 onChangeText={(text) => {
-                  setText(text);
-                  setLabel(text.length + "/1000");
+                  setText(text.substring(0, 1000));
+                  setLabel(text.substring(0, 1000).length + "/1000");
                 }}
               />
             </View>
