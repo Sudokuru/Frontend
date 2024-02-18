@@ -52,12 +52,12 @@ const ContactPage = () => {
                   {
                     value: "feature",
                     icon: "lightbulb-on",
-                    label: "Feature Request",
+                    label: "Feature",
                   },
                   {
                     value: "bug",
                     icon: "bug",
-                    label: "Bug Report",
+                    label: "Bug",
                   },
                   { value: "other", icon: "note-text", label: "Other" },
                 ]}
