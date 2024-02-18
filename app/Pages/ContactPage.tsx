@@ -39,34 +39,36 @@ const ContactPage = () => {
           }}
         >
           <Card mode="outlined">
-            <Text variant="headlineSmall">
-              Why are you contacting us today?
-            </Text>
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ width: "100%" }}
-              buttons={[
-                {
-                  value: "feature",
-                  icon: "lightbulb-on",
-                  label: "Feature Request",
-                },
-                {
-                  value: "bug",
-                  icon: "bug",
-                  label: "Bug Report",
-                },
-                { value: "other", icon: "note-text", label: "Other" },
-              ]}
-            />
-            <TextInput
-              label="Message"
-              value={text}
-              style={{ backgroundColor: "white" }}
-              textColor="black"
-              onChangeText={(text) => setText(text)}
-            />
+            <View style={{ flexDirection: "column", padding: CARD_PADDING }}>
+              <Text variant="headlineSmall">
+                Why are you contacting us today?
+              </Text>
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ width: "100%", paddingVertical: CARD_PADDING }}
+                buttons={[
+                  {
+                    value: "feature",
+                    icon: "lightbulb-on",
+                    label: "Feature Request",
+                  },
+                  {
+                    value: "bug",
+                    icon: "bug",
+                    label: "Bug Report",
+                  },
+                  { value: "other", icon: "note-text", label: "Other" },
+                ]}
+              />
+              <TextInput
+                label="Message"
+                value={text}
+                style={{ backgroundColor: "white" }}
+                textColor="black"
+                onChangeText={(text) => setText(text)}
+              />
+            </View>
           </Card>
         </View>
       </SafeAreaView>
