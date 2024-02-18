@@ -24,7 +24,7 @@ const ContactPage = () => {
   const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
-  const [buttonText, setButtonText] = React.useState("Submit Feedback");
+  const [buttonText, setButtonText] = React.useState("Submit Feedback*");
 
   const submit = async () => {
     var feedbackType = "Other";
@@ -135,6 +135,10 @@ const ContactPage = () => {
               >
                 <Text variant="headlineSmall">{buttonText}</Text>
               </Button>
+              <Text variant="titleMedium">
+                *Please help us respect your privacy by not including any
+                personally identifiable information in your feedback.
+              </Text>
             </View>
           </Card>
         </View>
@@ -154,7 +158,7 @@ const ContactPage = () => {
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
             setThankYouVisible(false);
-            setButtonText("Submit Feedback");
+            setButtonText("Submit Feedback*");
             setValue("");
             setText("");
             setLabel("0/1000");
