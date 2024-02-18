@@ -25,6 +25,7 @@ const ContactPage = () => {
           <SegmentedButtons
             value={value}
             onValueChange={setValue}
+            style={{ width: "220%" }}
             buttons={[
               {
                 value: "feature",
