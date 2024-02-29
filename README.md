@@ -38,6 +38,20 @@ The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
 
+# Run Playwright E2E Tests
+
+## Setup
+
+- run `npx playwright install` to install playwright dependencies
+- create a `.env` file in `e2e/web` directory for local development based on values in `.env.example`
+
+## Run Tests
+
+- make sure that the website is running locally (or change baseURL to match where you want to test)
+- run `npm run playwright:ui` to run tests using playwright ui
+- run `npm run playwright:test` to run tests using playwright cli
+- run `npm run playwright:report` to view playwright report
+
 # Run Code Coverage and Cypress E2E tests
 
 Run `npm run web:dev`  

@@ -4,6 +4,9 @@
   "main": "./app/App.tsx",
   "scripts": {
     "prepare": "husky install",
+    "playwright:test": "npx playwright test",
+    "playwright:ui": "cd e2e/web && npx playwright test --ui",
+    "playwright:report": "cd e2e/web && npx playwright show-report playwright-report",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
@@ -50,7 +53,11 @@
     "sudokuru": "2.1.0"
   },
   "devDependencies": {
+    "dotenv-safe": "^9.0.0",
     "@babel/core": "^7.20.0",
+    "@playwright/test": "^1.41.2",
+    "@types/dotenv-safe": "^8.1.5",
+    "@types/node": "^20.11.17",
     "@cypress/code-coverage": "^3.11.0",
     "@expo/metro-config": "^0.17.4",
     "@tauri-apps/cli": "^1.5.5",
