@@ -5,8 +5,8 @@
   "scripts": {
     "prepare": "husky install",
     "playwright:test": "npx playwright test",
-    "playwright:ui": "cd e2e/web && npx playwright test --ui",
-    "playwright:report": "cd e2e/web && npx playwright show-report playwright-report",
+    "playwright:ui": "npx playwright test --ui",
+    "playwright:report": "npx playwright show-report playwright-report",
     "start": "expo start --clear",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",

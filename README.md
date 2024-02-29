@@ -43,7 +43,7 @@ Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudo
 ## Setup
 
 - run `npx playwright install` to install playwright dependencies
-- create a `.env` file in `e2e/web` directory for local development based on values in `.env.example`
+- create a `.env` file in for local development based on values in `.env.example`
 
 ## Run Tests
 
