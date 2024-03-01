@@ -64,6 +64,15 @@ After running tests, `.nyc_output` and `coverage` folders are generated. The cov
 More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
 The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
 
+# Build Android APK Locally
+
+1. Follow the [guide here](https://docs.expo.dev/guides/local-app-development/#prerequisites)
+2. SDK path for Android can be found by following below steps:  
+   Android Studio > Tools > SDK Manager
+   ![android sdk path](docs/img/android-sdk-location.png)  
+   Use this value as `ANDROID_HOME` environment variable
+3. Output directory for apk file is `android\app\build\outputs\apk\debug\app-debug.apk`
+
 # Deployments
 
 ### Preview Branch
