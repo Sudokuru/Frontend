@@ -9,7 +9,7 @@ export class StatisticsPage {
     this.title = page.getByText("Total Game Statistics");
   }
 
-  async profilePageIsRendered() {
+  async statisticsPageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
 }
