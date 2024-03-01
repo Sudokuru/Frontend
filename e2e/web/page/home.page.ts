@@ -14,6 +14,12 @@ export class HomePage {
     this.playSudoku = page.getByTestId("HomePlayButton").locator("img");
   }
 
+  async homePageIsRendered() {
+    await expect(this.startLessons).toBeInViewport({ ratio: 1 });
+    await expect(this.startDrills).toBeInViewport({ ratio: 1 });
+    await expect(this.playSudoku).toBeInViewport({ ratio: 1 });
+  }
+
   async headerRendersCorrectly() {
     const headerComponent = new HeaderComponent(this.page);
     await expect(headerComponent.drawer).toBeInViewport({ ratio: 1 });

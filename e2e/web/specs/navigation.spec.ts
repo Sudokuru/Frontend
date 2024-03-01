@@ -2,6 +2,7 @@ import { HomePage } from "./../page/home.page";
 import { expect } from "@playwright/test";
 import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
+import { DrillPage } from "./../page/drill.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {
@@ -12,6 +13,8 @@ test.describe("home page", () => {
   test("start drills button", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.startDrills.click();
+    const drillPage = new DrillPage(page);
+    await drillPage.drillPageIsRendered();
   });
 
   test("play sudoku button", async ({ page }) => {
@@ -26,13 +29,35 @@ test.describe("home page", () => {
 
   test("statistics button", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
-    await headerComponent.profile.click();
+    await headerComponent.statistics.click();
   });
 
   test("profile button", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
-    await headerComponent.statistics.click();
+    await headerComponent.profile.click();
   });
-});
 
-test.describe("play page navigation", () => {});
+  test("sidebar close button", async ({ page }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerClose.click();
+    const homePage = new HomePage(page);
+    await homePage.homePageIsRendered();
+  });
+
+  test("sidebar home button", async ({ page }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerHome.click();
+    const homePage = new HomePage(page);
+    await homePage.homePageIsRendered();
+  });
+
+  test("sidebar learn button", async ({ page }) => {});
+
+  test("sidebar drill button", async ({ page }) => {});
+
+  test("sidebar play button", async ({ page }) => {});
+
+  test("sidebar contact button", async ({ page }) => {});
+});
