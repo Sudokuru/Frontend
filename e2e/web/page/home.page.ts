@@ -9,9 +9,9 @@ export class HomePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.startLessons = page.getByTestId("HomeLearnButton").locator("img");
-    this.startDrills = page.getByTestId("HomeDrillButton").locator("img");
-    this.playSudoku = page.getByTestId("HomePlayButton").locator("img");
+    this.startLessons = page.getByTestId("HomeLearnButton");
+    this.startDrills = page.getByTestId("HomeDrillButton");
+    this.playSudoku = page.getByTestId("HomePlayButton");
   }
 
   async homePageIsRendered() {
