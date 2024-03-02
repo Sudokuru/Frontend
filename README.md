@@ -83,7 +83,10 @@ windows:
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
 
-2. error: https://discuss.appium.io/t/error-wdio-appium-service-appium-exited-before-timeout/40704
+Interesting info.
+
+- error: https://discuss.appium.io/t/error-wdio-appium-service-appium-exited-before-timeout/40704
+- https://webdriver.io/docs/devtools-service/#installation
 
 # Build iOS Simulator
 
