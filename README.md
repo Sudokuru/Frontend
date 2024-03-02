@@ -83,6 +83,8 @@ windows:
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
 
+2. error: https://discuss.appium.io/t/error-wdio-appium-service-appium-exited-before-timeout/40704
+
 # Build iOS Simulator
 
 This makes the claim that we can build the app without needing an apple developer account.  
