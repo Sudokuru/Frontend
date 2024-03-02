@@ -73,6 +73,16 @@ The best way to view coverage results locally is to open the `coverage/lcov-repo
    Use this value as `ANDROID_HOME` environment variable
 3. Output directory for apk file is `android\app\build\outputs\apk\debug\app-debug.apk`
 
+# Android Simulator
+
+appium with webdriver doesn't shut down port after execution:
+solution is to remove port:
+windows:
+`netstat -aon | findstr ":4723" | findstr "LISTENING"`
+`Taskkill /F /PID <pid>`
+
+1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
+
 # Build iOS Simulator
 
 This makes the claim that we can build the app without needing an apple developer account.  
