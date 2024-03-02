@@ -75,10 +75,10 @@ The best way to view coverage results locally is to open the `coverage/lcov-repo
 
 # Android Simulator
 
-appium with webdriver doesn't shut down port after execution:
-solution is to remove port:
-windows:
-`netstat -aon | findstr ":4723" | findstr "LISTENING"`
+appium with webdriver doesn't shut down port after execution:  
+solution is to remove port:  
+windows:  
+`netstat -aon | findstr ":4723" | findstr "LISTENING"`  
 `Taskkill /F /PID <pid>`
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
