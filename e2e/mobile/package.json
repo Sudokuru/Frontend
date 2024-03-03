@@ -9,12 +9,14 @@
     "@wdio/spec-reporter": "^8.32.2",
     "appium": "^2.5.1",
     "appium-uiautomator2-driver": "^3.0.1",
+    "patch-package": "^8.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "wdio-html-nice-reporter": "^8.1.6",
     "wdio-video-reporter": "^5.1.4"
   },
   "scripts": {
+    "postinstall": "patch-package",
     "wdio": "wdio run ./wdio.conf.ts",
     "wdio:android:expo": "wdio run ./wdio.android.expo.conf.ts",
     "wdio:android:emulator:expo": "wdio run ./wdio.android.emulator.expo.conf.ts",
