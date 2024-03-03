@@ -7,7 +7,10 @@ export class PlayPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("Play a Sudoku game");
+    // last because you may visit the page multiple times and
+    // you want to make sure you are getting the visible one so
+    // you can check if it is in the viewport for isRendered
+    this.title = page.getByText("Play a Sudoku game").last();
     this.start = page.getByText("Start Puzzle");
   }
 
