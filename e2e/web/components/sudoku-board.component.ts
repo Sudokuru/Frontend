@@ -34,14 +34,19 @@ export class SudokuBoardComponent {
     }
 
     for (let r = 0; r < this.numRows; r++) {
+      this.cell.push([]);
       for (let c = 0; c < this.numColumns; c++) {
         const subLocator: string = "r" + r + "c" + c;
-        //this.cell[r][c] = page.getByTestId(new RegExp(`^cell${subLocator}`));
+        this.cell[r][c] = page.getByTestId(new RegExp(`^cell${subLocator}`));
       }
     }
   }
 
   async sudokuBoardIsRendered() {
     await expect(this.timer).toBeInViewport({ ratio: 1 });
+  }
+
+  async cellHasColor(row: number, column: number, color: string) {
+    await expect(this.cell[row][column]).toHaveCSS("background-color", color);
   }
 }
