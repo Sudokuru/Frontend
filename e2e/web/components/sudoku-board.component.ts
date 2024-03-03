@@ -34,7 +34,7 @@ export class SudokuBoardComponent {
     for (let r = 0; r < this.numRows; r++) {
       for (let c = 0; c < this.numColumns; c++) {
         const subLocator: string = "r" + r + "c" + c;
-        this.cell[r][c] = page.getByTestId(new RegExp(`^cell${subLocator}`));
+        //this.cell[r][c] = page.getByTestId(new RegExp(`^cell${subLocator}`));
       }
     }
   }
