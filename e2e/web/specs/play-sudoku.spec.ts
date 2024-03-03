@@ -106,3 +106,17 @@ resumeGame.describe("typing", () => {
     );
   }
 });
+
+resumeGame.describe("numpad", () => {
+  for (let i = 1; i <= 9; i++) {
+    resumeGame(
+      `clicking numpad ${i} should fill cell with correct number`,
+      async ({ page }) => {
+        const sudokuBoard = new SudokuBoardComponent(page);
+        await sudokuBoard.cell[7][7].click();
+        await sudokuBoard.numPad[i - 1].click();
+        await sudokuBoard.cellHasValue(7, 7, i.toString());
+      }
+    );
+  }
+});

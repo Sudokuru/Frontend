@@ -34,7 +34,7 @@ export class SudokuBoardComponent {
     this.erase = page.getByTestId("eraseButton");
 
     for (let i = 0; i < this.numNumPads; i++) {
-      this.numPad[i] = page.getByTestId("numberControl" + i);
+      this.numPad[i] = page.getByTestId("numberControl" + (i + 1));
     }
 
     for (let r = 0; r < this.numRows; r++) {
