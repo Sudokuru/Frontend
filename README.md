@@ -78,15 +78,21 @@ The best way to view coverage results locally is to open the `coverage/lcov-repo
 appium with webdriver doesn't shut down port after execution:  
 solution is to remove port:  
 windows:  
-`netstat -aon | findstr ":4723" | findstr "LISTENING"`  
+`netstat -aon | findstr ":4724" | findstr "LISTENING"`  
 `Taskkill /F /PID <pid>`
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
+
+2. Appium Inspector: https://github.com/appium/appium-inspector/releases
 
 Interesting info.
 
 - error: https://discuss.appium.io/t/error-wdio-appium-service-appium-exited-before-timeout/40704
 - https://webdriver.io/docs/devtools-service/#installation
+
+- https://medium.com/tauk-blog/building-and-testing-native-mobile-apps-with-react-native-and-webdriverio-part-2-f1f595ebe6d0
+
+- helpful guide to get appPackage and appActivity: https://www.automationtestinghub.com/apppackage-and-appactivity-name/
 
 # Build iOS Simulator
 

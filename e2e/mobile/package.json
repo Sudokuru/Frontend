@@ -17,6 +17,7 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.ts",
+    "wdio:android:expo": "wdio run ./wdio.android.expo.conf.ts",
     "android:doctor": "npx appium driver doctor uiautomator2"
   }
 }

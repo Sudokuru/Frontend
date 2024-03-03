@@ -61,10 +61,11 @@ export const config: Options.Testrunner = {
     {
       // capabilities for local Appium web tests on an Android Emulator
       platformName: "Android",
-      browserName: "Chrome",
       "appium:deviceName": "emulator-5554",
       "appium:platformVersion": "9",
       "appium:automationName": "UiAutomator2",
+      "appium:appPackage": "host.exp.exponent",
+      "appium:appActivity": "host.exp.exponent.experience.HomeActivity",
     },
   ],
 
@@ -102,7 +103,7 @@ export const config: Options.Testrunner = {
   // baseUrl: 'http://localhost:8080',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 10000,
+  waitforTimeout: 240000,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
