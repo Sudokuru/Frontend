@@ -49,7 +49,6 @@ resumeGame.describe("board highlighting", () => {
           }
         }
       }
-      await sudokuBoard.cell[7][7].click(); // without this cannot see for loop expect snapshots in ui
     }
   );
 
