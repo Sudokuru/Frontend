@@ -73,6 +73,17 @@ The best way to view coverage results locally is to open the `coverage/lcov-repo
    Use this value as `ANDROID_HOME` environment variable
 3. Output directory for apk file is `android\app\build\outputs\apk\debug\app-debug.apk`
 
+# Android testing with real android device
+
+Turn on developer mode for android device.  
+Enable USB tethering for android device.  
+Run adb devices command to get `DEVICE_NAME`.  
+`PLATFORM_VERSION` can be found from the device.
+
+May be a way to do it over wifi as well:  
+https://qaautomationworld.blogspot.com/2014/06/appium-executing-test-throgh-wi-fi-on-real-devies.html  
+https://stackoverflow.com/questions/42992965/how-to-connect-to-your-device-from-terminal-using-adb-commands
+
 # Android Simulator
 
 appium with webdriver doesn't shut down port after execution:  

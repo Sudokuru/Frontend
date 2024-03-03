@@ -1,15 +1,4 @@
 import type { Options } from "@wdio/types";
-import { config as dotenvconfig } from "dotenv-safe";
-
-dotenvconfig();
-// https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
-declare const process: {
-  env: {
-    DEVICE_NAME: string;
-    PLATFORM_VERSION: string;
-  };
-};
-
 export const config: Options.Testrunner = {
   //
   // ====================
@@ -72,8 +61,8 @@ export const config: Options.Testrunner = {
     {
       // capabilities for local Appium web tests on an Android Emulator
       platformName: "Android",
-      "appium:deviceName": process.env.DEVICE_NAME,
-      "appium:platformVersion": process.env.PLATFORM_VERSION,
+      "appium:deviceName": "emulator-5554",
+      "appium:platformVersion": "9",
       "appium:automationName": "UiAutomator2",
       "appium:appPackage": "host.exp.exponent",
       "appium:appActivity": "host.exp.exponent.experience.HomeActivity",
@@ -114,7 +103,7 @@ export const config: Options.Testrunner = {
   // baseUrl: 'http://localhost:8080',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 60000,
+  waitforTimeout: 240000,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response

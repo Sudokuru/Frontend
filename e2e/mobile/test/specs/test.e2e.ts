@@ -42,7 +42,12 @@ describe("My Login application", () => {
     button = await $(
       '//android.view.ViewGroup[@resource-id="HomeLearnButton"]'
     );
-    await button.waitForDisplayed({ timeout: 240000 });
+    await button.waitForDisplayed();
+
+    // Shake the device to remove the expo info box thing
+    // error hasn't been implemented yet?
+    // await driver.shake();
+
     await button.click();
 
     selector =
