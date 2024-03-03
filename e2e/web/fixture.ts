@@ -2,6 +2,7 @@ import { Page, test as base } from "@playwright/test";
 import { HomePage } from "./page/home.page";
 import { PlayPage } from "./page/play.page";
 import { SudokuPage } from "./page/sudoku.page";
+import { SudokuBoardComponent } from "./components/sudoku-board.component";
 
 // Declare the types of your fixtures.
 type MyFixtures = {
@@ -30,8 +31,8 @@ export const resumeGame = base.extend<MyFixtures>({
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuPage = new SudokuPage(page);
-    await sudokuPage.sudokuPageIsRendered();
+    const sudokuBoard = new SudokuBoardComponent(page);
+    await sudokuBoard.sudokuBoardIsRendered();
     await use(page);
   },
 });

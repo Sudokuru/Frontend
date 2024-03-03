@@ -1,10 +1,11 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class SudokuBoardComponent {
   readonly numNumPads: number;
   readonly numRows: number;
   readonly numColumns: number;
 
+  readonly timer: Locator;
   readonly pause: Locator;
   readonly undo: Locator;
   readonly note: Locator;
@@ -22,6 +23,7 @@ export class SudokuBoardComponent {
     this.numRows = numRows ? numRows : 9;
     this.numColumns = numColumns ? numColumns : 9;
 
+    this.timer = page.getByText("Time: ");
     this.pause = page.getByTestId("PauseButton");
     this.undo = page.getByTestId("undoButton");
     this.note = page.getByTestId("toggleNoteModeButton");
@@ -37,5 +39,9 @@ export class SudokuBoardComponent {
         //this.cell[r][c] = page.getByTestId(new RegExp(`^cell${subLocator}`));
       }
     }
+  }
+
+  async sudokuBoardIsRendered() {
+    await expect(this.timer).toBeInViewport({ ratio: 1 });
   }
 }
