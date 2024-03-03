@@ -21,5 +21,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["test", "wdio.conf.ts"]
+  "include": [
+    "test",
+    "wdio.conf.ts",
+    "wdio.android.expo.conf.ts",
+    "wdio.android.emulator.expo.conf.ts"
+  ]
 }

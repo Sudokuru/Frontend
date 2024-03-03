@@ -14,7 +14,6 @@ export const config: Options.Testrunner = {
     },
   },
 
-  port: 4724,
   //
   // ==================
   // Specify Test Files
@@ -57,16 +56,7 @@ export const config: Options.Testrunner = {
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
   // https://saucelabs.com/platform/platform-configurator
   //
-  capabilities: [
-    {
-      // capabilities for local Appium web tests on an Android Emulator
-      platformName: "Android",
-      browserName: "Chrome",
-      "appium:deviceName": "emulator-5554",
-      "appium:platformVersion": "9",
-      "appium:automationName": "UiAutomator2",
-    },
-  ],
+  capabilities: [],
 
   //
   // ===================
@@ -115,18 +105,7 @@ export const config: Options.Testrunner = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: [
-    [
-      "appium",
-      {
-        command: "appium",
-        args: {
-          sessionOverride: true,
-          port: 4724,
-        },
-      },
-    ],
-  ],
+  services: [],
 
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -151,7 +130,6 @@ export const config: Options.Testrunner = {
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
     "spec",
-    "dot",
     [
       "video",
       {
@@ -159,6 +137,7 @@ export const config: Options.Testrunner = {
         videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
         outputDir: "./reports/html-reports/",
         screenshotIntervalSecs: 5,
+        excludedActions: ["delete", "deleteSession", "deleteSession()"],
       },
     ],
     [
