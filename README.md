@@ -98,7 +98,20 @@ windows:
 
 Interesting info.
 
+Appium Error:
+
 - error: https://discuss.appium.io/t/error-wdio-appium-service-appium-exited-before-timeout/40704
+- https://stackoverflow.com/questions/76173741/appium-exited-before-timeout-error-on-every-second-execution-in-wdio
+- https://stackoverflow.com/questions/77966534/error-wdio-appium-service-appium-exited-before-timeout
+
+Somewhat related:
+
+- https://github.com/webdriverio/appium-boilerplate/issues/98
+
+We are able to resolve this error by running Appium server seperatly and not using `@wdio/appium-service` package.
+
+---
+
 - https://webdriver.io/docs/devtools-service/#installation
 
 - https://medium.com/tauk-blog/building-and-testing-native-mobile-apps-with-react-native-and-webdriverio-part-2-f1f595ebe6d0
