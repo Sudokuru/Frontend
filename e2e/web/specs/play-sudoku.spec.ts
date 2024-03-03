@@ -92,3 +92,17 @@ resumeGame.describe("board highlighting", () => {
     }
   );
 });
+
+resumeGame.describe("typing", () => {
+  for (let i = 1; i <= 9; i++) {
+    resumeGame(
+      `typing ${i} should fill cell with correct number`,
+      async ({ page }) => {
+        const sudokuBoard = new SudokuBoardComponent(page);
+        await sudokuBoard.cell[7][7].click();
+        await sudokuBoard.cell[7][7].press(i.toString());
+        await sudokuBoard.cellHasValue(7, 7, i.toString());
+      }
+    );
+  }
+});

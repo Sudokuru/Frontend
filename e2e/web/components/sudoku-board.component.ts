@@ -1,6 +1,8 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 export class SudokuBoardComponent {
+  readonly page: Page;
+
   readonly numNumPads: number;
   readonly numRows: number;
   readonly numColumns: number;
@@ -19,6 +21,8 @@ export class SudokuBoardComponent {
     numRows?: number,
     numColumns?: number
   ) {
+    this.page = page;
+
     this.numNumPads = numNumPads ? numNumPads : 9;
     this.numRows = numRows ? numRows : 9;
     this.numColumns = numColumns ? numColumns : 9;
@@ -48,5 +52,11 @@ export class SudokuBoardComponent {
 
   async cellHasColor(row: number, column: number, color: string) {
     await expect(this.cell[row][column]).toHaveCSS("background-color", color);
+  }
+
+  async cellHasValue(row: number, column: number, value: string) {
+    await expect(
+      this.page.getByTestId(`cellr${row}c${column}value:${value}`)
+    ).toBeInViewport({ ratio: 1 });
   }
 }
