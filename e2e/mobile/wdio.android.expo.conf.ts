@@ -87,7 +87,7 @@ export const config: Options.Testrunner = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: "silent",
   //
   // Set specific log levels per logger
   // loggers:
@@ -164,7 +164,6 @@ export const config: Options.Testrunner = {
   // see also: https://webdriver.io/docs/dot-reporter
   reporters: [
     "spec",
-    "dot",
     [
       "video",
       {
