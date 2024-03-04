@@ -247,4 +247,30 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 7, "0");
     }
   );
+
+  resumeGame(
+    "Undo button should replace note removed on previous move with keypad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.note.click();
+      await sudokuBoard.cell[7][8].press("5");
+      await sudokuBoard.cellHasNotes(7, 8, "4");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasNotes(7, 8, "45");
+    }
+  );
+
+  resumeGame(
+    "Undo button should replace note removed on previous move with numpad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.note.click();
+      await sudokuBoard.numPad[4].click();
+      await sudokuBoard.cellHasNotes(7, 8, "4");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasNotes(7, 8, "45");
+    }
+  );
 });
