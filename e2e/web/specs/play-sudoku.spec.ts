@@ -234,4 +234,17 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 7, "0");
     }
   );
+
+  resumeGame(
+    "Undo button should remove note entered on previous move with numpad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.note.click();
+      await sudokuBoard.numPad[0].click();
+      await sudokuBoard.cellHasNotes(7, 7, "1");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasValue(7, 7, "0");
+    }
+  );
 });
