@@ -105,6 +105,19 @@ resumeGame.describe("typing", () => {
       }
     );
   }
+
+  for (let i = 1; i <= 9; i++) {
+    resumeGame(
+      `typing ${i} should fill cell with correct nnote`,
+      async ({ page }) => {
+        const sudokuBoard = new SudokuBoardComponent(page);
+        await sudokuBoard.cell[7][7].click();
+        await sudokuBoard.note.click();
+        await sudokuBoard.cell[7][7].press(i.toString());
+        await sudokuBoard.cellHasNotes(7, 7, i.toString());
+      }
+    );
+  }
 });
 
 resumeGame.describe("numpad", () => {
@@ -116,6 +129,19 @@ resumeGame.describe("numpad", () => {
         await sudokuBoard.cell[7][7].click();
         await sudokuBoard.numPad[i - 1].click();
         await sudokuBoard.cellHasValue(7, 7, i.toString());
+      }
+    );
+  }
+
+  for (let i = 1; i <= 9; i++) {
+    resumeGame(
+      `clicking numpad ${i} should fill cell with correct note`,
+      async ({ page }) => {
+        const sudokuBoard = new SudokuBoardComponent(page);
+        await sudokuBoard.cell[7][7].click();
+        await sudokuBoard.note.click();
+        await sudokuBoard.numPad[i - 1].click();
+        await sudokuBoard.cellHasNotes(7, 7, i.toString());
       }
     );
   }

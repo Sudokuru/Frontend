@@ -59,4 +59,10 @@ export class SudokuBoardComponent {
       this.page.getByTestId(`cellr${row}c${column}value:${value}`)
     ).toBeInViewport({ ratio: 1 });
   }
+
+  async cellHasNotes(row: number, column: number, notes: string) {
+    await expect(
+      this.page.getByTestId(`cellr${row}c${column}notes:${notes}`)
+    ).toBeInViewport({ ratio: 1 });
+  }
 }
