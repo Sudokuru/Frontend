@@ -11,7 +11,7 @@ import {
   SELECTED_CONFLICT_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
 
-resumeGame.describe("special sudoku buttons", () => {
+resumeGame.describe("pause", () => {
   resumeGame("pause button", async ({ page }) => {
     const sudokuBoard = new SudokuBoardComponent(page);
     await sudokuBoard.pause.click();
