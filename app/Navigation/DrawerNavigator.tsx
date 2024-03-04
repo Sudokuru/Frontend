@@ -21,7 +21,9 @@ const DrawerNavigator = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: theme.colors.background }}
+      >
         <Drawer.Navigator
           drawerContent={({ navigation }) => {
             return <NavigationSideBar navigation={navigation} />;
