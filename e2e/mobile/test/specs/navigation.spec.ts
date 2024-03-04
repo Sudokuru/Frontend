@@ -1,6 +1,8 @@
 import HomePage from "../page/home.page.ts";
 import { expect } from "@wdio/globals";
 import ExpoPage from "../page/expo.page.ts";
+import LearnPage from "../page/learn.page.ts";
+import HeaderComponent from "../components/header.component.ts";
 
 describe("navigation routing", () => {
   beforeEach(async () => {
@@ -9,12 +11,17 @@ describe("navigation routing", () => {
   });
 
   it("can go everywhere in the app", async () => {
-    await HomePage.startLessons.click();
+    // The test is currently not working because safeareaview is not working
+    // Can't hit button because phone icons are in the way
+    await (await HeaderComponent.drawer).click();
+    await HeaderComponent.drawerIsRendered();
+    await HeaderComponent.drawerClose.click();
 
-    const selector =
-      'new UiSelector().text("Learn new strategies").className("android.widget.TextView")';
-    let title = await $(`android=${selector}`);
-    await title.waitForDisplayed();
-    // await button.waitForClickable();
+    await HomePage.startLessons.click();
+    await expect(await LearnPage.title).toBeDisplayed();
+
+    await HeaderComponent.drawer.click();
+    await HeaderComponent.drawerHome.click();
+    await HomePage.homePageIsRendered();
   });
 });
