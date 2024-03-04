@@ -283,3 +283,32 @@ resumeGame.describe("undo", () => {
     }
   );
 });
+
+resumeGame.describe("erase", () => {
+  resumeGame(
+    "Erase button should be disabled if a cell with a given is selected",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cellHasValue(0, 2, "3");
+      await sudokuBoard.cell[0][2].click();
+      await sudokuBoard.eraseButtonIsDisabled();
+    }
+  );
+
+  resumeGame(
+    "Erase button should be disabled if a cell with a correct value is selected",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cellHasValue(0, 0, "1");
+      await sudokuBoard.cell[0][0].click();
+      await sudokuBoard.eraseButtonIsDisabled();
+    }
+  );
+
+  resumeGame("Erasing an incorrect value should succeed", async ({ page }) => {
+    const sudokuBoard = new SudokuBoardComponent(page);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.erase.click();
+    await sudokuBoard.cellHasValue(7, 6, "0");
+  });
+});

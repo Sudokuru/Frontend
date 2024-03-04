@@ -65,4 +65,8 @@ export class SudokuBoardComponent {
       this.page.getByTestId(`cellr${row}c${column}notes:${notes}`)
     ).toBeInViewport({ ratio: 1 });
   }
+
+  async eraseButtonIsDisabled() {
+    await expect(this.erase).toHaveCSS("pointer-events", "none");
+  }
 }
