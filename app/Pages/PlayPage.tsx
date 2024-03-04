@@ -2,7 +2,6 @@ import React from "react";
 import { View, Pressable } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import {
@@ -60,107 +59,103 @@ const PlayPage = () => {
   const hideResumeButton = () => setResumeVisible(false);
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
-        style={{ width: windowSize.width, height: windowSize.height }}
-      >
-        <View style={{ flexDirection: "row" }}>
+    <View style={{ width: windowSize.width, height: windowSize.height }}>
+      <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "column",
+            flexGrow: 1,
+          }}
+        >
           <View
             style={{
-              flexDirection: "column",
-              flexGrow: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
             }}
           >
-            <View
+            <Text
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                alignSelf: "center",
+                color: theme.colors.primary,
+                fontSize: 50,
+                lineHeight: 50,
+                fontWeight: "bold",
               }}
+            >
+              Play{" "}
+              <Text style={{ color: theme.colors.onBackground }}>
+                a Sudoku game
+              </Text>
+            </Text>
+            <Pressable
+              onPress={() => showPlayHelp()}
+              style={{ alignSelf: "flex-start" }}
             >
               <Text
                 style={{
-                  color: theme.colors.primary,
-                  fontSize: 50,
-                  lineHeight: 50,
+                  color: theme.colors.onBackground,
+                  lineHeight: 16,
+                  fontSize: 18,
                   fontWeight: "bold",
                 }}
               >
-                Play{" "}
-                <Text style={{ color: theme.colors.onBackground }}>
-                  a Sudoku game
-                </Text>
+                ?
               </Text>
-              <Pressable
-                onPress={() => showPlayHelp()}
-                style={{ alignSelf: "flex-start" }}
-              >
-                <Text
-                  style={{
-                    color: theme.colors.onBackground,
-                    lineHeight: 16,
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                >
-                  ?
-                </Text>
-              </Pressable>
-            </View>
-            <View style={{ alignItems: "center", alignSelf: "center" }}>
-              {resumeVisible ? (
-                <Button
-                  style={{ margin: newSize / 4 }}
-                  mode="outlined"
-                  onPress={() =>
-                    navigation.navigate("SudokuPage", {
-                      action: "ResumeGame",
-                    })
-                  }
-                >
-                  Resume Puzzle
-                </Button>
-              ) : (
-                <></>
-              )}
+            </Pressable>
+          </View>
+          <View style={{ alignItems: "center", alignSelf: "center" }}>
+            {resumeVisible ? (
               <Button
                 style={{ margin: newSize / 4 }}
-                mode="contained"
-                onPress={() => {
+                mode="outlined"
+                onPress={() =>
                   navigation.navigate("SudokuPage", {
-                    action: "StartGame",
-                  });
-                }}
+                    action: "ResumeGame",
+                  })
+                }
               >
-                Start Puzzle
+                Resume Puzzle
               </Button>
-            </View>
+            ) : (
+              <></>
+            )}
+            <Button
+              style={{ margin: newSize / 4 }}
+              mode="contained"
+              onPress={() => {
+                navigation.navigate("SudokuPage", {
+                  action: "StartGame",
+                });
+              }}
+            >
+              Start Puzzle
+            </Button>
           </View>
         </View>
-        <Alert
-          show={playHelpVisible}
-          title="Play Help"
-          message={
-            `To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\n` +
-            `You will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.` +
-            `If you have a game currently in progress, you can resume the game by clicking the "Resume Puzzle" button`
-          }
-          messageStyle={{ maxWidth: 500 }}
-          alertContainerStyle={{
-            backgroundColor: rgba(theme.colors.background, 0.3),
-          }}
-          showConfirmButton={true}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          confirmText={"OK"}
-          confirmButtonColor={theme.colors.primary}
-          onConfirmPressed={() => {
-            hidePlayHelp();
-          }}
-          overlayStyle={{ backgroundColor: "transparent" }}
-        />
-      </SafeAreaView>
-    </SafeAreaProvider>
+      </View>
+      <Alert
+        show={playHelpVisible}
+        title="Play Help"
+        message={
+          `To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\n` +
+          `You will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.` +
+          `If you have a game currently in progress, you can resume the game by clicking the "Resume Puzzle" button`
+        }
+        messageStyle={{ maxWidth: 500 }}
+        alertContainerStyle={{
+          backgroundColor: rgba(theme.colors.background, 0.3),
+        }}
+        showConfirmButton={true}
+        closeOnTouchOutside={false}
+        closeOnHardwareBackPress={false}
+        confirmText={"OK"}
+        confirmButtonColor={theme.colors.primary}
+        onConfirmPressed={() => {
+          hidePlayHelp();
+        }}
+        overlayStyle={{ backgroundColor: "transparent" }}
+      />
+    </View>
   );
 };
 

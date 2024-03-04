@@ -11,8 +11,6 @@ describe("navigation routing", () => {
   });
 
   it("can go everywhere in the app", async () => {
-    // The test is currently not working because safeareaview is not working
-    // Can't hit button because phone icons are in the way
     await (await HeaderComponent.drawer).click();
     await HeaderComponent.drawerIsRendered();
     await HeaderComponent.drawerClose.click();

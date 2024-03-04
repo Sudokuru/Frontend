@@ -11,6 +11,7 @@ import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator
 import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
 import { useTheme } from "react-native-paper";
 import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const Drawer = createDrawerNavigator();
 
@@ -19,30 +20,37 @@ const DrawerNavigator = () => {
   const theme = useTheme();
 
   return (
-    <Drawer.Navigator
-      drawerContent={({ navigation }) => {
-        return <NavigationSideBar navigation={navigation} />;
-      }}
-      screenOptions={{
-        drawerStyle: {
-          width: 210,
-          backgroundColor: theme.colors.background,
-          overflow: "hidden", //white space was being caused during some resizes
-        },
-        headerShown: true,
-        header: ({ navigation, route, options }) => {
-          return <Header />;
-        },
-      }}
-    >
-      <Drawer.Screen name="Landing" component={LandingStackNavigator} />
-      <Drawer.Screen name="Learn" component={LearnStackNavigator} />
-      <Drawer.Screen name="Drill" component={DrillStackNavigator} />
-      <Drawer.Screen name="Play" component={PlayStackNavigator} />
-      <Drawer.Screen name="Statistics" component={StatisticsStackNavigator} />
-      <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
-      <Drawer.Screen name="Contact" component={ContactStackNavigator} />
-    </Drawer.Navigator>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <Drawer.Navigator
+          drawerContent={({ navigation }) => {
+            return <NavigationSideBar navigation={navigation} />;
+          }}
+          screenOptions={{
+            drawerStyle: {
+              width: 210,
+              backgroundColor: theme.colors.background,
+              overflow: "hidden", //white space was being caused during some resizes
+            },
+            headerShown: true,
+            header: ({ navigation, route, options }) => {
+              return <Header />;
+            },
+          }}
+        >
+          <Drawer.Screen name="Landing" component={LandingStackNavigator} />
+          <Drawer.Screen name="Learn" component={LearnStackNavigator} />
+          <Drawer.Screen name="Drill" component={DrillStackNavigator} />
+          <Drawer.Screen name="Play" component={PlayStackNavigator} />
+          <Drawer.Screen
+            name="Statistics"
+            component={StatisticsStackNavigator}
+          />
+          <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
+          <Drawer.Screen name="Contact" component={ContactStackNavigator} />
+        </Drawer.Navigator>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
