@@ -161,4 +161,16 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 7, "0");
     }
   );
+
+  resumeGame(
+    "Undo button should remove value entered on previous move from numpad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.numPad[0].click();
+      await sudokuBoard.cellHasValue(7, 7, "1");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasValue(7, 7, "0");
+    }
+  );
 });
