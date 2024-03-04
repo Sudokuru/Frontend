@@ -312,3 +312,9 @@ resumeGame.describe("erase", () => {
     await sudokuBoard.cellHasValue(7, 6, "0");
   });
 });
+
+// TODO add test: Should solve game with multiple action types
+// TODO add test: Completing a game and clicking 'Start New Game' should take you to the play game page
+// TODO add test: Completing a game should display correct game results
+// TODO add test: Completing a game should display correct statistics
+// TODO add test: Completing multiple games should display correct statistics
