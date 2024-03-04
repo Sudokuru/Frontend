@@ -148,3 +148,17 @@ resumeGame.describe("numpad", () => {
     );
   }
 });
+
+resumeGame.describe("undo", () => {
+  resumeGame(
+    "Undo button should remove value entered on previous move from keypad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.cell[7][7].press("1");
+      await sudokuBoard.cellHasValue(7, 7, "1");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasValue(7, 7, "0");
+    }
+  );
+});
