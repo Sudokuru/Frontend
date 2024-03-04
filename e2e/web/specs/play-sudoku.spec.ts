@@ -93,6 +93,15 @@ resumeGame.describe("board highlighting", () => {
   );
 
   // TODO: Add test: Board Highlighting should render correctly when undo button is entered
+
+  resumeGame(
+    "Selecting invalid cell should update highlighting of cell correctly",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.cellHasColor(7, 6, SELECTED_CONFLICT_COLOR_RGB);
+    }
+  );
 });
 
 resumeGame.describe("typing", () => {
