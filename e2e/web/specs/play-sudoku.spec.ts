@@ -209,4 +209,16 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 6, "1");
     }
   );
+
+  resumeGame(
+    "Undo button should replace value overridden on previous move with numpad",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.numPad[1].click();
+      await sudokuBoard.cellHasValue(7, 6, "2");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasValue(7, 6, "1");
+    }
+  );
 });
