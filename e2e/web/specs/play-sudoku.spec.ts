@@ -185,4 +185,16 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 6, "1");
     }
   );
+
+  resumeGame(
+    "Undo button should replace notes erased on previous move from erase button",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.erase.click();
+      await sudokuBoard.cellHasValue(7, 8, "0");
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasNotes(7, 8, "45");
+    }
+  );
 });
