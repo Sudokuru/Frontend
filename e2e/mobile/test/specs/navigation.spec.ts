@@ -1,6 +1,6 @@
-import HomePage from "../pageobjects/home.page.ts";
+import HomePage from "../page/home.page.ts";
 import { expect } from "@wdio/globals";
-import ExpoPage from "../pageobjects/expo.page.ts";
+import ExpoPage from "../page/expo.page.ts";
 
 describe("navigation routing", () => {
   beforeEach(async () => {
@@ -8,7 +8,7 @@ describe("navigation routing", () => {
     await HomePage.homePageIsRendered();
   });
 
-  it("can navigate to learn page", async () => {
+  it("can go everywhere in the app", async () => {
     await HomePage.startLessons.click();
 
     const selector =
