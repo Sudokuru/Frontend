@@ -91,6 +91,8 @@ resumeGame.describe("board highlighting", () => {
       }
     }
   );
+
+  // TODO: Add test: Board Highlighting should render correctly when undo button is entered
 });
 
 resumeGame.describe("typing", () => {
