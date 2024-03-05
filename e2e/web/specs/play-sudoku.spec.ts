@@ -31,21 +31,37 @@ resumeGame.describe("board highlighting", () => {
       for (let row = 0; row < 9; row++) {
         for (let column = 0; column < 9; column++) {
           if (row === 7 && column === 6) {
-            sudokuBoard.cellHasColor(
+            await sudokuBoard.cellHasColor(
               row,
               column,
               NOT_SELECTED_CONFLICT_COLOR_RGB
             );
           } else if (row === 7 && column === 7) {
-            sudokuBoard.cellHasColor(row, column, SELECTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(row, column, SELECTED_COLOR_RGB);
           } else if (row === 7) {
-            sudokuBoard.cellHasColor(row, column, PEER_SELECTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              PEER_SELECTED_COLOR_RGB
+            );
           } else if (column === 7 && row !== 7) {
-            sudokuBoard.cellHasColor(row, column, PEER_SELECTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              PEER_SELECTED_COLOR_RGB
+            );
           } else if (row > 5 && column > 5) {
-            sudokuBoard.cellHasColor(row, column, PEER_SELECTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              PEER_SELECTED_COLOR_RGB
+            );
           } else {
-            sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              NOT_HIGHLIGHTED_COLOR_RGB
+            );
           }
         }
       }
@@ -73,19 +89,35 @@ resumeGame.describe("board highlighting", () => {
             (row === 7 && column === 5) ||
             (row === 8 && column === 7)
           ) {
-            sudokuBoard.cellHasColor(row, column, IDENTICAL_VALUE_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              IDENTICAL_VALUE_COLOR_RGB
+            );
           } else if (row === 7 && column === 6) {
-            sudokuBoard.cellHasColor(
+            await sudokuBoard.cellHasColor(
               row,
               column,
               NOT_SELECTED_CONFLICT_COLOR_RGB
             );
           } else if (row === 7 && column === 7) {
-            sudokuBoard.cellHasColor(row, column, SELECTED_CONFLICT_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              SELECTED_CONFLICT_COLOR_RGB
+            );
           } else if (row === 7 || column == 7 || (row > 5 && column > 5)) {
-            sudokuBoard.cellHasColor(row, column, PEER_SELECTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              PEER_SELECTED_COLOR_RGB
+            );
           } else {
-            sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
+            await sudokuBoard.cellHasColor(
+              row,
+              column,
+              NOT_HIGHLIGHTED_COLOR_RGB
+            );
           }
         }
       }
