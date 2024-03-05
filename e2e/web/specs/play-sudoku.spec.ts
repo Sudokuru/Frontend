@@ -151,7 +151,7 @@ resumeGame.describe("typing", () => {
 
   for (let i = 1; i <= 9; i++) {
     resumeGame(
-      `typing ${i} should fill cell with correct nnote`,
+      `typing ${i} should fill cell with correct note`,
       async ({ page }) => {
         const sudokuBoard = new SudokuBoardComponent(page);
         await sudokuBoard.cell[7][7].click();
