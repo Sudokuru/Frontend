@@ -60,6 +60,16 @@ const NavigationSideBar = (props: any) => {
           navigation.navigate("Play");
         }}
       />
+      <Drawer.Item
+        icon={"email"}
+        testID="ContactButton"
+        label="Contact"
+        active={isCurrentPage === "Contact"}
+        onPress={() => {
+          updateCurrentPage("Contact");
+          navigation.navigate("Contact");
+        }}
+      />
     </Drawer.Section>
   );
 };

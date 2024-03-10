@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build:metro-web",
     "beforeDevCommand": "npm run web",
-    "devPath": "http://localhost:19000",
+    "devPath": "http://localhost:8081",
     "distDir": "../dist"
   },
   "package": {

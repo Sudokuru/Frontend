@@ -38,12 +38,19 @@ The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
 
-# Run Code Coverage and Jest E2E tests
+# Run Playwright E2E Tests
 
-To enable code coverage, toggle `collectCoverage` to `true` in `jest.config.ts` file. Coverage results are outputed to `jest-coverage` folder.
+## Setup
 
-Run `npm run test:unit`
-This will run all jest tests and output to the `junit.xml` file and to console.
+- run `npx playwright install` to install playwright dependencies
+- create a `.env` file in for local development based on values in `.env.example`
+
+## Run Tests
+
+- make sure that the website is running locally (or change baseURL to match where you want to test)
+- run `npm run playwright:ui` to run tests using playwright ui
+- run `npm run playwright:test` to run tests using playwright cli
+- run `npm run playwright:report` to view playwright report
 
 # Run Code Coverage and Cypress E2E tests
 

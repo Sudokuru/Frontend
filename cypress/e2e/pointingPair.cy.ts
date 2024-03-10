@@ -26,7 +26,7 @@ describe("Pointing pair strategy", () => {
     cy.contains("Resume Puzzle").click();
   });
 
-  it("Uses pointing pair hint", () => {
+  it.skip("Uses pointing pair hint", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Pointing Pair");

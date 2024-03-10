@@ -17,6 +17,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# playwright
+/test-results/
+/playwright-report/
+
 # macOS
 .DS_Store
 

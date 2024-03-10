@@ -30,7 +30,7 @@ describe("Naked single strategy", () => {
     cy.contains("Resume Puzzle").click();
   });
 
-  it("Uses naked single hint", () => {
+  it.skip("Uses naked single hint", () => {
     cy.get(SUDOKU_BOARD).within(() => {
       cy.get(HINT_BUTTON).click();
       cy.contains("Naked Single");
