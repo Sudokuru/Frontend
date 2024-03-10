@@ -34,6 +34,15 @@ const Hint = (hintProps: HintProps) => {
         </Text>
       );
       break;
+    case 3:
+      hintContent = (
+        <Text style={{ textAlign: "center" }}>
+          {formatOneLessonName(hint.strategy)}
+          {"\n"}
+          {"The hint is located in this region"}
+        </Text>
+      );
+      break;
     default:
       hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
   }
