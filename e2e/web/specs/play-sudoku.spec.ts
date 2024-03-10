@@ -428,6 +428,9 @@ resumeGame.describe("complete game", () => {
         statistics.page.getByText("Average Solve Time: 06:1")
       ).toBeInViewport({ ratio: 1 });
       await expect(
+        statistics.page.getByText("Total Solve Time: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
         statistics.page.getByText("Total Hints Used: 0")
       ).toBeInViewport({ ratio: 1 });
       await expect(
