@@ -34,9 +34,25 @@ export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
 }
 
+interface HintProps {
+  stage: number;
+  hint: Hint;
+}
+interface Hint {
+  strategy: any;
+  cause: any;
+  groups: any;
+  placements: any;
+  removals: any;
+  info: string;
+  action: string;
+}
+
 const SudokuBoard = (props: SudokuBoardProps) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
+
+  const [sudokuHint, setSudokuHint] = useState<HintProps>();
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -89,8 +105,23 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
   };
 
-  const hint = () => {
-    getSudokuHint(sudokuBoard.puzzle, sudokuBoard.puzzleSolution);
+  const getHint = () => {
+    // unselect board
+    if (sudokuBoard.selectedCell != null) {
+      setSudokuBoard({
+        ...sudokuBoard,
+        selectedCell: null,
+      });
+    }
+    const returnedHint = getSudokuHint(
+      sudokuBoard.puzzle,
+      sudokuBoard.puzzleSolution
+    );
+
+    setSudokuHint({
+      stage: 1,
+      hint: returnedHint as unknown as Hint,
+    });
   };
 
   const toggleNoteMode = () => {
@@ -494,7 +525,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
-        hint={hint}
+        getHint={getHint}
         boardHasConflict={boardHasConflict}
       />
     );

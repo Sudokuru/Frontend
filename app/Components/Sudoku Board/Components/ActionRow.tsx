@@ -11,7 +11,7 @@ interface ActionRowProps {
   undo: () => void;
   toggleNoteMode: () => void;
   eraseSelected: (save: boolean) => void;
-  hint: () => void;
+  getHint: () => void;
   boardHasConflict: boolean;
 }
 
@@ -23,7 +23,7 @@ const ActionRow = (props: ActionRowProps) => {
     undo,
     toggleNoteMode,
     eraseSelected,
-    hint,
+    getHint,
     boardHasConflict,
   } = props;
   const cellSize = getCellSize();
@@ -84,7 +84,7 @@ const ActionRow = (props: ActionRowProps) => {
       <Pressable
         testID={"hintButton"}
         disabled={boardHasConflict}
-        onPress={hint}
+        onPress={getHint}
       >
         <MaterialCommunityIcons
           color={theme.colors.onBackground}

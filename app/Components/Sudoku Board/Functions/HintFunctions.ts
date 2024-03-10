@@ -14,6 +14,7 @@ export const getSudokuHint = (puzzle: CellProps[][], solution: number[][]) => {
     puzzleSolution
   );
   console.log("DEBUG", hint);
+  return hint;
 };
 
 /**
