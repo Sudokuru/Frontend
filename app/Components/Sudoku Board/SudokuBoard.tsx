@@ -18,6 +18,13 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
 import { getSudokuHint } from "./Functions/HintFunctions";
+import {
+  IDENTICAL_VALUE_COLOR,
+  NOT_SELECTED_CONFLICT_COLOR,
+  PEER_SELECTED_COLOR,
+  SELECTED_COLOR,
+  SELECTED_CONFLICT_COLOR,
+} from "../../Styling/HighlightColors";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -316,21 +323,24 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       isHighlightColumn,
     } = React.useContext(PreferencesContext);
 
-    let selected = sudokuBoard.selectedCell;
+    const selectedCell = sudokuBoard.selectedCell;
     let isSelected = false;
     let conflict = isConflict(r, c, cell);
     let peer = false;
-    let box = false;
-    let row = false;
-    let column = false;
     let sameValue = false;
-    if (selected != null) {
-      isSelected = c === selected.c && r === selected.r;
-      box = isCurrentCellAndSelectedCellInSameBox({ r: r, c: c }, selected);
-      row = isCurrentCellAndSelectedCellInSameRow({ r: r, c: c }, selected);
-      column = isCurrentCellAndSelectedCellInSameColumn(
+    if (selectedCell != null) {
+      isSelected = c === selectedCell.c && r === selectedCell.r;
+      const box = isCurrentCellAndSelectedCellInSameBox(
         { r: r, c: c },
-        selected
+        selectedCell
+      );
+      const row = isCurrentCellAndSelectedCellInSameRow(
+        { r: r, c: c },
+        selectedCell
+      );
+      const column = isCurrentCellAndSelectedCellInSameColumn(
+        { r: r, c: c },
+        selectedCell
       );
       peer =
         !conflict &&
@@ -347,18 +357,29 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         selectedEntry === currentEntry &&
         currentEntry != 0;
     }
+    let cellBackgroundColor;
+    if (peer) {
+      cellBackgroundColor = PEER_SELECTED_COLOR;
+    } else if (sameValue) {
+      cellBackgroundColor = IDENTICAL_VALUE_COLOR;
+    } else if (conflict && !isSelected) {
+      cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
+    } else if (conflict && isSelected) {
+      cellBackgroundColor = SELECTED_CONFLICT_COLOR;
+    } else if (isSelected) {
+      cellBackgroundColor = SELECTED_COLOR;
+    } else {
+      cellBackgroundColor = "white";
+    }
 
     return (
       <Cell
         onClick={(r: number, c: number) => {
           toggleSelectCell(r, c);
         }}
-        sameValue={sameValue}
-        isSelected={isSelected}
-        isPeer={peer}
+        backgroundColor={cellBackgroundColor}
         type={cell.type}
         entry={cell.entry}
-        conflict={conflict}
         key={r + ":" + c}
         c={c}
         r={r}

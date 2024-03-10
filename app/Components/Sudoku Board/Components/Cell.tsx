@@ -1,13 +1,6 @@
 import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import {
-  NOT_SELECTED_CONFLICT_COLOR,
-  PEER_SELECTED_COLOR,
-  SELECTED_COLOR,
-  SELECTED_CONFLICT_COLOR,
-  IDENTICAL_VALUE_COLOR,
-} from "../../../Styling/HighlightColors";
 import { CellType } from "../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
@@ -16,26 +9,13 @@ interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
   onClick: (r: number, c: number) => void;
-  isPeer: boolean;
-  isSelected: boolean;
-  sameValue: boolean;
-  conflict: boolean;
+  backgroundColor: string;
   c: number;
   r: number;
 }
 
 const Cell = (props: RenderCellProps) => {
-  const {
-    entry,
-    type,
-    onClick,
-    isPeer,
-    isSelected,
-    sameValue,
-    conflict,
-    c,
-    r,
-  } = props;
+  const { entry, type, onClick, backgroundColor, c, r } = props;
   const cellSize = getCellSize();
 
   const getNoteContents = (noteIndex: number) => {
@@ -68,22 +48,6 @@ const Cell = (props: RenderCellProps) => {
     return cellSize ? cellSize * (3 / 40) : 40;
   };
 
-  const getCellBackgroundColor = () => {
-    if (isPeer) {
-      return PEER_SELECTED_COLOR;
-    } else if (sameValue) {
-      return IDENTICAL_VALUE_COLOR;
-    } else if (conflict && !isSelected) {
-      return NOT_SELECTED_CONFLICT_COLOR;
-    } else if (conflict && isSelected) {
-      return SELECTED_CONFLICT_COLOR;
-    } else if (isSelected) {
-      return SELECTED_COLOR;
-    } else {
-      return "white";
-    }
-  };
-
   return (
     <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
       <View
@@ -95,7 +59,7 @@ const Cell = (props: RenderCellProps) => {
             display: "flex",
             justifyContent: "center",
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-            backgroundColor: getCellBackgroundColor(),
+            backgroundColor: backgroundColor,
           },
           c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
           r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
