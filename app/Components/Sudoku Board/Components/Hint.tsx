@@ -24,14 +24,16 @@ const Hint = (hintProps: HintProps) => {
   switch (stage) {
     case 1:
       hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
+      break;
     case 2:
       hintContent = (
-        <Text>
+        <Text style={{ textAlign: "center" }}>
           {formatOneLessonName(hint.strategy)}
           {"\n"}
-          {hint.cause}
+          {hint.info}
         </Text>
       );
+      break;
     default:
       hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
   }
@@ -49,27 +51,12 @@ const Hint = (hintProps: HintProps) => {
   }
 
   return (
-    <View
-      style={{
-        width: cellSize ? cellSize * 8 : fallbackHeight * 8,
-        height: cellSize ? cellSize : fallbackHeight,
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexDirection: "column",
-        marginBottom: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
-      }}
-    >
-      {hintContent}
+    <View>
       <View
         style={{
-          width: cellSize ? cellSize * 8 : fallbackHeight * 8,
-          height: cellSize ? cellSize : fallbackHeight,
-          justifyContent: "space-evenly",
-          alignItems: "center",
           flexDirection: "row",
-          marginBottom: cellSize
-            ? cellSize * (1 / 4)
-            : fallbackHeight * (1 / 4),
+          width: cellSize ? cellSize * 8 : fallbackHeight * 8,
+          justifyContent: "space-evenly",
         }}
       >
         <Pressable onPress={() => incrementStage(-1)} testID={leftButtonTestId}>
@@ -86,6 +73,19 @@ const Hint = (hintProps: HintProps) => {
             size={cellSize / sizeConst}
           />
         </Pressable>
+      </View>
+      <View
+        style={{
+          width: cellSize ? cellSize * 8 : fallbackHeight * 8,
+          height: cellSize ? cellSize : fallbackHeight,
+          alignItems: "center",
+          flexDirection: "column",
+          marginBottom: cellSize
+            ? cellSize * (1 / 4)
+            : fallbackHeight * (1 / 4),
+        }}
+      >
+        {hintContent}
       </View>
     </View>
   );
