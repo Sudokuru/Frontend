@@ -29,16 +29,18 @@ import {
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
 } from "../../Styling/HighlightColors";
+import Hint from "./Components/Hint";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
 }
 
-interface HintProps {
+export interface HintObjectProps {
   stage: number;
+  maxStage: number;
   hint: Hint;
 }
-interface Hint {
+export interface Hint {
   strategy: any;
   cause: any;
   groups: any;
@@ -52,7 +54,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
 
-  const [sudokuHint, setSudokuHint] = useState<HintProps>();
+  const [sudokuHint, setSudokuHint] = useState<HintObjectProps>();
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -121,6 +123,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     setSudokuHint({
       stage: 1,
       hint: returnedHint as unknown as Hint,
+      maxStage: 5,
     });
   };
 
@@ -463,6 +466,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderNumberControl = () => {
+    if (sudokuHint) {
+      return;
+    }
     let currentSelectedCell: CellProps | null = null;
     let isBoardSelected: boolean = true;
     if (sudokuBoard.selectedCell != null) {
@@ -492,6 +498,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderActions = () => {
+    if (sudokuHint) {
+      return;
+    }
     const inNoteMode = sudokuBoard.inNoteMode;
     const boardHasConflict = doesBoardHaveConflict();
     let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
@@ -531,6 +540,49 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
+  const renderHint = () => {
+    if (!sudokuHint) {
+      return;
+    }
+
+    return (
+      <Hint
+        hint={sudokuHint.hint}
+        stage={sudokuHint.stage}
+        maxStage={sudokuHint.maxStage}
+        incrementStage={updateHintStage}
+      />
+    );
+  };
+
+  /**
+   * Increments the hint stage depending on user actions
+   * @param stageOffset A number (-1) or (1) that represents how to alter hint stage
+   * @returns void
+   */
+  const updateHintStage = (stageOffset: number) => {
+    if (stageOffset != -1 && stageOffset != 1) {
+      return;
+    }
+    if (!sudokuHint) {
+      return;
+    }
+
+    switch (sudokuHint.stage + stageOffset) {
+      case 0:
+        setSudokuHint(undefined);
+        break;
+      case sudokuHint.maxStage + 1:
+        setSudokuHint(undefined);
+        break;
+      default:
+        setSudokuHint({
+          ...sudokuHint,
+          stage: sudokuHint.stage + stageOffset,
+        });
+    }
+  };
+
   return (
     <View
       testID={"sudokuBoard"}
@@ -544,6 +596,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       {renderPuzzle()}
       {renderActions()}
       {renderNumberControl()}
+      {renderHint()}
     </View>
   );
 };
