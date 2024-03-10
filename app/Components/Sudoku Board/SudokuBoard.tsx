@@ -324,10 +324,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         ? false
         : c === selectedCell.c && r === selectedCell.r;
     const conflict = isConflict(r, c, cell);
-    const peer = isSelected
-      ? false
-      : isCurrentCellPeer(r, c, selectedCell as CellLocation);
-    const sameValue = isSelected ? false : doesCurrentCellHaveSameValue(cell);
+    const peer = selectedCell
+      ? isCurrentCellPeer(r, c, selectedCell as CellLocation)
+      : false;
+    const sameValue = selectedCell ? doesCurrentCellHaveSameValue(cell) : false;
 
     let cellBackgroundColor;
     if (conflict && !isSelected) {
