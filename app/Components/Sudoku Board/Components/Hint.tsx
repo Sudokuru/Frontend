@@ -55,25 +55,38 @@ const Hint = (hintProps: HintProps) => {
         height: cellSize ? cellSize : fallbackHeight,
         justifyContent: "space-between",
         alignItems: "center",
-        flexDirection: "row",
+        flexDirection: "column",
         marginBottom: cellSize ? cellSize * (1 / 4) : fallbackHeight * (1 / 4),
       }}
     >
-      <Pressable onPress={() => incrementStage(-1)} testID={leftButtonTestId}>
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name={leftButtonIcon}
-          size={cellSize / sizeConst}
-        />
-      </Pressable>
       {hintContent}
-      <Pressable onPress={() => incrementStage(1)} testID={rightButtonTestId}>
-        <MaterialCommunityIcons
-          color={theme.colors.onBackground}
-          name={rightButtonIcon}
-          size={cellSize / sizeConst}
-        />
-      </Pressable>
+      <View
+        style={{
+          width: cellSize ? cellSize * 8 : fallbackHeight * 8,
+          height: cellSize ? cellSize : fallbackHeight,
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          flexDirection: "row",
+          marginBottom: cellSize
+            ? cellSize * (1 / 4)
+            : fallbackHeight * (1 / 4),
+        }}
+      >
+        <Pressable onPress={() => incrementStage(-1)} testID={leftButtonTestId}>
+          <MaterialCommunityIcons
+            color={theme.colors.onBackground}
+            name={leftButtonIcon}
+            size={cellSize / sizeConst}
+          />
+        </Pressable>
+        <Pressable onPress={() => incrementStage(1)} testID={rightButtonTestId}>
+          <MaterialCommunityIcons
+            color={theme.colors.onBackground}
+            name={rightButtonIcon}
+            size={cellSize / sizeConst}
+          />
+        </Pressable>
+      </View>
     </View>
   );
 };
