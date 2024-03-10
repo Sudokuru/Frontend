@@ -51,7 +51,7 @@ const Hint = (hintProps: HintProps) => {
   }
 
   return (
-    <View>
+    <>
       <View
         style={{
           flexDirection: "row",
@@ -87,7 +87,7 @@ const Hint = (hintProps: HintProps) => {
       >
         {hintContent}
       </View>
-    </View>
+    </>
   );
 };
 
