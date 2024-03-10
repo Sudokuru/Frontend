@@ -68,6 +68,22 @@ const Cell = (props: RenderCellProps) => {
     return cellSize ? cellSize * (3 / 40) : 40;
   };
 
+  const getCellBackgroundColor = () => {
+    if (isPeer) {
+      return PEER_SELECTED_COLOR;
+    } else if (sameValue) {
+      return IDENTICAL_VALUE_COLOR;
+    } else if (conflict && !isSelected) {
+      return NOT_SELECTED_CONFLICT_COLOR;
+    } else if (conflict && isSelected) {
+      return SELECTED_CONFLICT_COLOR;
+    } else if (isSelected) {
+      return SELECTED_COLOR;
+    } else {
+      return "white";
+    }
+  };
+
   return (
     <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
       <View
@@ -79,29 +95,12 @@ const Cell = (props: RenderCellProps) => {
             display: "flex",
             justifyContent: "center",
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-            backgroundColor: "white",
+            backgroundColor: getCellBackgroundColor(),
           },
           c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
           r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
           c === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
           r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
-          isPeer
-            ? {
-                backgroundColor: PEER_SELECTED_COLOR,
-              }
-            : null,
-          sameValue
-            ? {
-                backgroundColor: IDENTICAL_VALUE_COLOR,
-              }
-            : null,
-          !conflict && isSelected ? { backgroundColor: SELECTED_COLOR } : null,
-          conflict && !isSelected
-            ? { backgroundColor: NOT_SELECTED_CONFLICT_COLOR }
-            : null,
-          conflict && isSelected
-            ? { backgroundColor: SELECTED_CONFLICT_COLOR }
-            : null,
         ]}
       >
         {type === "note" ? (

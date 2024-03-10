@@ -285,7 +285,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * todo Note that this function likely won't be needed in future when incorrectHint is implemented.
    * Determines if there are any incorrect values in the board
    * @returns True if there are no correct values in board, False otherwise
    */
