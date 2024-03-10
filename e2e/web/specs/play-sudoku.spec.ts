@@ -347,7 +347,6 @@ resumeGame.describe("erase", () => {
 });
 
 // TODO add test: Should solve game with multiple action types
-// TODO add test: Completing a game should display correct game results
 // TODO add test: Completing a game should display correct statistics
 // TODO add test: Completing multiple games should display correct statistics
 
@@ -367,6 +366,35 @@ resumeGame.describe("complete game", () => {
       await endGameModal.newGame.click();
       const playPage = new PlayPage(page);
       await playPage.playPageIsRendered();
+    }
+  );
+
+  resumeGame(
+    "Completing a game should display correct game results",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.cell[7][6].press("8");
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.numPad[2 - 1].click();
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.cell[7][8].press("4");
+      const endGameModal = new EndGameModalComponent(page);
+      await expect(endGameModal.page.getByText("Score: 34")).toBeInViewport({
+        ratio: 1,
+      });
+      await expect(
+        endGameModal.page.getByText("Time Spent: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Number of Hints Used: 0")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Mistakes Made: 235")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Difficulty: easy")
+      ).toBeInViewport({ ratio: 1 });
     }
   );
 });
