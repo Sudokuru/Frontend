@@ -10,7 +10,7 @@ interface ActionRowProps {
   inNoteMode: boolean;
   undo: () => void;
   toggleNoteMode: () => void;
-  eraseSelected: (save: boolean) => void;
+  eraseSelected: () => void;
   getHint: () => void;
   boardHasConflict: boolean;
 }
@@ -71,7 +71,7 @@ const ActionRow = (props: ActionRowProps) => {
       </Pressable>
       {/* Erase */}
       <Pressable
-        onPress={() => eraseSelected(true)}
+        onPress={eraseSelected}
         disabled={isEraseButtonDisabled}
         testID={"eraseButton"}
       >
