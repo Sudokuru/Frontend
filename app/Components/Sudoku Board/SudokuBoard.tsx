@@ -307,10 +307,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       cellBackgroundColor = SELECTED_CONFLICT_COLOR;
     } else if (sameValue) {
       cellBackgroundColor = IDENTICAL_VALUE_COLOR;
-    } else if (peer) {
-      cellBackgroundColor = PEER_SELECTED_COLOR;
     } else if (isSelected) {
       cellBackgroundColor = SELECTED_COLOR;
+    } else if (peer) {
+      cellBackgroundColor = PEER_SELECTED_COLOR;
     } else {
       cellBackgroundColor = "white";
     }
