@@ -13,10 +13,21 @@ import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import { generateGame } from "./Functions/generateGame";
 import Puzzle from "./Components/Puzzle";
-import { CellProps, SudokuObjectProps } from "../../Functions/LocalDatabase";
+import {
+  CellLocation,
+  CellProps,
+  SudokuObjectProps,
+} from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
+import {
+  IDENTICAL_VALUE_COLOR,
+  NOT_SELECTED_CONFLICT_COLOR,
+  PEER_SELECTED_COLOR,
+  SELECTED_COLOR,
+  SELECTED_CONFLICT_COLOR,
+} from "../../Styling/HighlightColors";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -102,10 +113,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
-    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-    if (currentSelectedCell == null) {
-      return;
-    }
+    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
     // We do not need to take action if this is a given value
     if (currentSelectedCell.type === "given") {
       return;
@@ -182,10 +190,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell == null) {
       return;
     }
-    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-    if (currentSelectedCell == null) {
-      return;
-    }
+    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
     const currentType = currentSelectedCell.type;
     const currentEntry = currentSelectedCell.entry;
     const r: number = sudokuBoard.selectedCell.r;
@@ -284,48 +289,30 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
-    // row and column values are incorrect here.
-    // console.log("RENDER CELL", c, "COLUMN", r, "ROW", cell)
-    const {
-      isHighlightIdenticalValues,
-      isHighlightBox,
-      isHighlightRow,
-      isHighlightColumn,
-    } = React.useContext(PreferencesContext);
+    const selectedCell = sudokuBoard.selectedCell;
+    const isSelected =
+      selectedCell == null
+        ? false
+        : c === selectedCell.c && r === selectedCell.r;
+    const conflict = isConflict(r, c, cell);
+    const peer = selectedCell
+      ? isCurrentCellPeer(r, c, selectedCell as CellLocation)
+      : false;
+    const sameValue = selectedCell ? doesCurrentCellHaveSameValue(cell) : false;
 
-    let selected = sudokuBoard.selectedCell;
-    let isSelected = false;
-    let conflict = isConflict(r, c, cell);
-    let peer = false;
-    let box = false;
-    let row = false;
-    let column = false;
-    let sameValue = false;
-    if (selected != null) {
-      isSelected = c === selected.c && r === selected.r;
-      box = isCurrentCellAndSelectedCellInSameBox({ r: r, c: c }, selected);
-      row = isCurrentCellAndSelectedCellInSameRow({ r: r, c: c }, selected);
-      column = isCurrentCellAndSelectedCellInSameColumn(
-        { r: r, c: c },
-        selected
-      );
-      peer =
-        !conflict &&
-        ((box && isHighlightBox) ||
-          (row && isHighlightRow) ||
-          (column && isHighlightColumn));
-
-      const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-      if (currentSelectedCell == null) {
-        return;
-      }
-      const selectedEntry = currentSelectedCell.entry;
-      let currentEntry = cell.entry;
-      sameValue =
-        !conflict &&
-        isHighlightIdenticalValues &&
-        selectedEntry === currentEntry &&
-        currentEntry != 0;
+    let cellBackgroundColor;
+    if (conflict && !isSelected) {
+      cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
+    } else if (conflict && isSelected) {
+      cellBackgroundColor = SELECTED_CONFLICT_COLOR;
+    } else if (sameValue) {
+      cellBackgroundColor = IDENTICAL_VALUE_COLOR;
+    } else if (peer) {
+      cellBackgroundColor = PEER_SELECTED_COLOR;
+    } else if (isSelected) {
+      cellBackgroundColor = SELECTED_COLOR;
+    } else {
+      cellBackgroundColor = "white";
     }
 
     return (
@@ -333,16 +320,51 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         onClick={(r: number, c: number) => {
           toggleSelectCell(r, c);
         }}
-        sameValue={sameValue}
-        isSelected={isSelected}
-        isPeer={peer}
+        backgroundColor={cellBackgroundColor}
         type={cell.type}
         entry={cell.entry}
-        conflict={conflict}
         key={r + ":" + c}
         c={c}
         r={r}
       />
+    );
+  };
+
+  const doesCurrentCellHaveSameValue = (cell: CellProps) => {
+    const { isHighlightIdenticalValues } = React.useContext(PreferencesContext);
+    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
+    const selectedEntry = currentSelectedCell.entry;
+    let currentEntry = cell.entry;
+    return (
+      isHighlightIdenticalValues &&
+      selectedEntry === currentEntry &&
+      currentEntry != 0
+    );
+  };
+
+  const isCurrentCellPeer = (
+    r: number,
+    c: number,
+    selectedCell: CellLocation
+  ) => {
+    const { isHighlightBox, isHighlightRow, isHighlightColumn } =
+      React.useContext(PreferencesContext);
+    const box = isCurrentCellAndSelectedCellInSameBox(
+      { r: r, c: c },
+      selectedCell
+    );
+    const row = isCurrentCellAndSelectedCellInSameRow(
+      { r: r, c: c },
+      selectedCell
+    );
+    const column = isCurrentCellAndSelectedCellInSameColumn(
+      { r: r, c: c },
+      selectedCell
+    );
+    return (
+      (box && isHighlightBox) ||
+      (row && isHighlightRow) ||
+      (column && isHighlightColumn)
     );
   };
 
