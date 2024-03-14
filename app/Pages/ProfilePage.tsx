@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const {
     learnedLessons,
     toggleTheme,
-    isThemeDark,
+    darkThemeSetting,
     toggleHighlightIdenticalValues,
     isHighlightIdenticalValues,
     isHighlightBox,
@@ -76,10 +76,12 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isThemeDark}
+                    value={darkThemeSetting}
                     onValueChange={toggleTheme}
                     testID={
-                      isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"
+                      darkThemeSetting
+                        ? "DarkThemeEnabled"
+                        : "DarkThemeDisabled"
                     }
                     style={{ alignSelf: "center", flexDirection: "column" }}
                   />

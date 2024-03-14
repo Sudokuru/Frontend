@@ -6,7 +6,7 @@ import {
 } from "../Styling/ThemeColors";
 
 const InitializeContext = () => {
-  const [isThemeDark, setIsThemeDark] = React.useState(true);
+  const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
   const [isCurrentPage, setCurrentPage] = React.useState("Landing");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [isHighlightIdenticalValues, setHighlightIdenticalValues] =
@@ -18,7 +18,7 @@ const InitializeContext = () => {
   // set initial values of theme
   React.useEffect(() => {
     Profile.getProfile().then((data) => {
-      setIsThemeDark(data.theme);
+      setDarkThemeSetting(data.theme);
       setHighlightIdenticalValues(data.highlightIdenticalValues);
       setHighlightBox(data.highlightBox);
       setHighlightRow(data.highlightRow);
@@ -26,12 +26,12 @@ const InitializeContext = () => {
     });
   }, []);
 
-  const theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
+  const theme = darkThemeSetting ? CombinedDarkTheme : CombinedDefaultTheme;
 
   const toggleTheme = React.useCallback(() => {
     Profile.setProfileValue("theme");
-    return setIsThemeDark(!isThemeDark);
-  }, [isThemeDark]);
+    return setDarkThemeSetting(!darkThemeSetting);
+  }, [darkThemeSetting]);
 
   const updateCurrentPage = React.useCallback(
     (props: any) => {
@@ -70,7 +70,7 @@ const InitializeContext = () => {
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
-      isThemeDark,
+      darkThemeSetting,
       updateCurrentPage,
       isCurrentPage,
       updateLearnedLessons,
@@ -86,7 +86,7 @@ const InitializeContext = () => {
     }),
     [
       toggleTheme,
-      isThemeDark,
+      darkThemeSetting,
       updateCurrentPage,
       isCurrentPage,
       updateLearnedLessons,

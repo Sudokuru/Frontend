@@ -10,13 +10,13 @@ import { IconButton } from "react-native-paper";
 const Header = () => {
   const navigation: any = useNavigation();
 
-  const { isThemeDark, isCurrentPage, updateCurrentPage } =
+  const { darkThemeSetting, isCurrentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
 
-  let logoUrl = isThemeDark ? DARK_LOGO : LIGHT_LOGO;
+  let logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
 
   return (
     <View

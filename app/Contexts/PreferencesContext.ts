@@ -2,17 +2,17 @@ import React from "react";
 
 export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
-  isThemeDark: false,
+  darkThemeSetting: false,
   updateCurrentPage: (props: any) => {},
-  isCurrentPage: "Landing",
+  isCurrentPage: "Landing", // currentPage
   updateLearnedLessons: (props: any) => {},
   learnedLessons: [""],
   toggleHighlightIdenticalValues: () => {},
-  isHighlightIdenticalValues: true,
+  isHighlightIdenticalValues: true, // highlightIdenticalValuesSetting
   toggleHighlightBox: () => {},
-  isHighlightBox: true,
+  isHighlightBox: true, // highlightBoxSetting
   toggleHighlightRow: () => {},
-  isHighlightRow: true,
+  isHighlightRow: true, // highlightRowSetting
   toggleHighlightColumn: () => {},
-  isHighlightColumn: true,
+  isHighlightColumn: true, // highlightColumnSetting
 });

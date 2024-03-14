@@ -6,7 +6,7 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 const PreferencesToggles = () => {
   const {
     toggleTheme,
-    isThemeDark,
+    darkThemeSetting,
     toggleHighlightIdenticalValues,
     isHighlightIdenticalValues,
     isHighlightBox,
@@ -22,9 +22,9 @@ const PreferencesToggles = () => {
       <Text>Theme</Text>
       <Switch
         color={"#025E73"}
-        value={isThemeDark}
+        value={darkThemeSetting}
         onValueChange={toggleTheme}
-        testID={isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"}
+        testID={darkThemeSetting ? "DarkThemeEnabled" : "DarkThemeDisabled"}
       />
       <Text>Highlight Peers</Text>
       <Switch
