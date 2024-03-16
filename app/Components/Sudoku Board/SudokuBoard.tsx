@@ -336,19 +336,20 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns true if the provided cell's value is equal to the selected cell's value
    */
   const cellHasSelectedValue = (cell: CellProps): boolean => {
-    const { isHighlightIdenticalValues } = React.useContext(PreferencesContext);
+    const { highlightIdenticalValuesSetting } =
+      React.useContext(PreferencesContext);
     const currentSelectedCell = getCurrentSelectedCell() as CellProps;
     const selectedEntry = currentSelectedCell.entry;
     let currentEntry = cell.entry;
     return (
-      isHighlightIdenticalValues &&
+      highlightIdenticalValuesSetting &&
       selectedEntry === currentEntry &&
       currentEntry != 0
     );
   };
 
   const cellIsPeer = (r: number, c: number, selectedCell: CellLocation) => {
-    const { isHighlightBox, isHighlightRow, isHighlightColumn } =
+    const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
       React.useContext(PreferencesContext);
     const box = isCurrentCellAndSelectedCellInSameBox(
       { r: r, c: c },
@@ -363,9 +364,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       selectedCell
     );
     return (
-      (box && isHighlightBox) ||
-      (row && isHighlightRow) ||
-      (column && isHighlightColumn)
+      (box && highlightBoxSetting) ||
+      (row && highlightRowSetting) ||
+      (column && highlightColumnSetting)
     );
   };
 

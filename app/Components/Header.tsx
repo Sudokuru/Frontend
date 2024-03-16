@@ -10,7 +10,7 @@ import { IconButton } from "react-native-paper";
 const Header = () => {
   const navigation: any = useNavigation();
 
-  const { darkThemeSetting, isCurrentPage, updateCurrentPage } =
+  const { darkThemeSetting, currentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
@@ -36,7 +36,7 @@ const Header = () => {
          * If we are on the Landing page, Logo will not navigate to the Landing page
          * If we are on any other page, Logo will navigate to the Landing page
          */
-        isCurrentPage == "Landing" ? (
+        currentPage == "Landing" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -70,16 +70,16 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
-        {isCurrentPage == "No" ? (
+        {currentPage == "No" ? (
           <></>
-        ) : isCurrentPage == "Statistics" ? (
+        ) : currentPage == "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {isCurrentPage == "No" ? (
+        {currentPage == "No" ? (
           <></>
-        ) : isCurrentPage == "Profile" ? (
+        ) : currentPage == "Profile" ? (
           <HomeButton />
         ) : (
           <ProfileButton />

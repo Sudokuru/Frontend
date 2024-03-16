@@ -7,13 +7,13 @@ import {
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
-  const [isCurrentPage, setCurrentPage] = React.useState("Landing");
+  const [currentPage, setCurrentPage] = React.useState("Landing");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
-  const [isHighlightIdenticalValues, setHighlightIdenticalValues] =
+  const [highlightIdenticalValuesSetting, setHighlightIdenticalValues] =
     React.useState(true);
-  const [isHighlightBox, setHighlightBox] = React.useState(true);
-  const [isHighlightRow, setHighlightRow] = React.useState(true);
-  const [isHighlightColumn, setHighlightColumn] = React.useState(true);
+  const [highlightBoxSetting, setHighlightBox] = React.useState(true);
+  const [highlightRowSetting, setHighlightRow] = React.useState(true);
+  const [highlightColumnSetting, setHighlightColumn] = React.useState(true);
 
   // set initial values of theme
   React.useEffect(() => {
@@ -37,7 +37,7 @@ const InitializeContext = () => {
     (props: any) => {
       return setCurrentPage(props);
     },
-    [isCurrentPage]
+    [currentPage]
   );
 
   const updateLearnedLessons = React.useCallback(
@@ -49,56 +49,56 @@ const InitializeContext = () => {
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
     Profile.setProfileValue("highlightIdenticalValues");
-    return setHighlightIdenticalValues(!isHighlightIdenticalValues);
-  }, [isHighlightIdenticalValues]);
+    return setHighlightIdenticalValues(!highlightIdenticalValuesSetting);
+  }, [highlightIdenticalValuesSetting]);
 
   const toggleHighlightBox = React.useCallback(() => {
     Profile.setProfileValue("highlightBox");
-    return setHighlightBox(!isHighlightBox);
-  }, [isHighlightBox]);
+    return setHighlightBox(!highlightBoxSetting);
+  }, [highlightBoxSetting]);
 
   const toggleHighlightRow = React.useCallback(() => {
     Profile.setProfileValue("highlightRow");
-    return setHighlightRow(!isHighlightRow);
-  }, [isHighlightRow]);
+    return setHighlightRow(!highlightRowSetting);
+  }, [highlightRowSetting]);
 
   const toggleHighlightColumn = React.useCallback(() => {
     Profile.setProfileValue("highlightColumn");
-    return setHighlightColumn(!isHighlightColumn);
-  }, [isHighlightColumn]);
+    return setHighlightColumn(!highlightColumnSetting);
+  }, [highlightColumnSetting]);
 
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
       darkThemeSetting,
       updateCurrentPage,
-      isCurrentPage,
+      currentPage,
       updateLearnedLessons,
       learnedLessons,
       toggleHighlightIdenticalValues,
-      isHighlightIdenticalValues,
+      highlightIdenticalValuesSetting,
       toggleHighlightBox,
-      isHighlightBox,
+      highlightBoxSetting,
       toggleHighlightRow,
-      isHighlightRow,
+      highlightRowSetting,
       toggleHighlightColumn,
-      isHighlightColumn,
+      highlightColumnSetting,
     }),
     [
       toggleTheme,
       darkThemeSetting,
       updateCurrentPage,
-      isCurrentPage,
+      currentPage,
       updateLearnedLessons,
       learnedLessons,
       toggleHighlightIdenticalValues,
-      isHighlightIdenticalValues,
+      highlightIdenticalValuesSetting,
       toggleHighlightBox,
-      isHighlightBox,
+      highlightBoxSetting,
       toggleHighlightRow,
-      isHighlightRow,
+      highlightRowSetting,
       toggleHighlightColumn,
-      isHighlightColumn,
+      highlightColumnSetting,
     ]
   );
 

@@ -16,13 +16,13 @@ const ProfilePage = () => {
     toggleTheme,
     darkThemeSetting,
     toggleHighlightIdenticalValues,
-    isHighlightIdenticalValues,
-    isHighlightBox,
+    highlightIdenticalValuesSetting,
+    highlightBoxSetting,
     toggleHighlightBox,
     toggleHighlightColumn,
-    isHighlightColumn,
+    highlightColumnSetting,
     toggleHighlightRow,
-    isHighlightRow,
+    highlightRowSetting,
   } = React.useContext(PreferencesContext);
 
   return (
@@ -100,10 +100,10 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightIdenticalValues}
+                    value={highlightIdenticalValuesSetting}
                     onValueChange={toggleHighlightIdenticalValues}
                     testID={
-                      isHighlightIdenticalValues
+                      highlightIdenticalValuesSetting
                         ? "HighlightIdenticalValuesEnabled"
                         : "HighlightIdenticalValuesDisabled"
                     }
@@ -124,10 +124,10 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightBox}
+                    value={highlightBoxSetting}
                     onValueChange={toggleHighlightBox}
                     testID={
-                      isHighlightBox
+                      highlightBoxSetting
                         ? "HighlightBoxEnabled"
                         : "HighlightBoxDisabled"
                     }
@@ -148,10 +148,10 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightRow}
+                    value={highlightRowSetting}
                     onValueChange={toggleHighlightRow}
                     testID={
-                      isHighlightRow
+                      highlightRowSetting
                         ? "HighlightRowEnabled"
                         : "HighlightRowDisabled"
                     }
@@ -172,10 +172,10 @@ const ProfilePage = () => {
                 >
                   <Switch
                     color={"#025E73"}
-                    value={isHighlightColumn}
+                    value={highlightColumnSetting}
                     onValueChange={toggleHighlightColumn}
                     testID={
-                      isHighlightColumn
+                      highlightColumnSetting
                         ? "HighlightColumnEnabled"
                         : "HighlightColumnDisabled"
                     }

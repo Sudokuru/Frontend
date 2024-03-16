@@ -4,15 +4,15 @@ export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
   darkThemeSetting: false,
   updateCurrentPage: (props: any) => {},
-  isCurrentPage: "Landing", // currentPage
+  currentPage: "Landing",
   updateLearnedLessons: (props: any) => {},
   learnedLessons: [""],
   toggleHighlightIdenticalValues: () => {},
-  isHighlightIdenticalValues: true, // highlightIdenticalValuesSetting
+  highlightIdenticalValuesSetting: true,
   toggleHighlightBox: () => {},
-  isHighlightBox: true, // highlightBoxSetting
+  highlightBoxSetting: true,
   toggleHighlightRow: () => {},
-  isHighlightRow: true, // highlightRowSetting
+  highlightRowSetting: true,
   toggleHighlightColumn: () => {},
-  isHighlightColumn: true, // highlightColumnSetting
+  highlightColumnSetting: true,
 });
