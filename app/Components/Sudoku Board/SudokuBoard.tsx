@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { finishGame, saveGame } from "./Functions/BoardFunctions";
 import {
-  isCurrentCellAndSelectedCellInSameBox,
-  isCurrentCellAndSelectedCellInSameColumn,
-  isCurrentCellAndSelectedCellInSameRow,
+  areCellsInSameBox,
+  areCellsInSameColumn,
+  areCellsInSameRow,
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
@@ -279,7 +279,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param cell The cell object
    * @returns True if the value in a cell is incorrect, False otherwise
    */
-  const isConflict = (r: number, c: number, cell: CellProps): boolean => {
+  const doesCellHaveConflict = (
+    r: number,
+    c: number,
+    cell: CellProps
+  ): boolean => {
     if (cell.type == "note" || cell.entry == 0) {
       return false;
     }
@@ -289,31 +293,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
-    const selectedCell = sudokuBoard.selectedCell;
-    const isSelected =
-      selectedCell == null
-        ? false
-        : c === selectedCell.c && r === selectedCell.r;
-    const conflict = isConflict(r, c, cell);
-    const peer = selectedCell
-      ? cellIsPeer(r, c, selectedCell as CellLocation)
-      : false;
-    const sameValue = selectedCell ? cellHasSelectedValue(cell) : false;
-
-    let cellBackgroundColor;
-    if (conflict && !isSelected) {
-      cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
-    } else if (conflict && isSelected) {
-      cellBackgroundColor = SELECTED_CONFLICT_COLOR;
-    } else if (isSelected) {
-      cellBackgroundColor = SELECTED_COLOR;
-    } else if (sameValue) {
-      cellBackgroundColor = IDENTICAL_VALUE_COLOR;
-    } else if (peer) {
-      cellBackgroundColor = PEER_SELECTED_COLOR;
-    } else {
-      cellBackgroundColor = "white";
-    }
+    const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
 
     return (
       <Cell
@@ -331,11 +311,68 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
+   * Determines the background color of a cell based on the user's settings, the game state, the cell coordinates, and other factors
+   * @param cell The provided cell
+   * @param r The row coordinate of the provided cell
+   * @param c The column coordinate of the provided cell
+   * @returns A hex string that determines the background color of the cell
+   */
+  const getCellBackgroundColor = (
+    cell: CellProps,
+    r: number,
+    c: number
+  ): string => {
+    const selectedCell = sudokuBoard.selectedCell;
+    const selected: boolean = isCellSelected(r, c, selectedCell);
+    const conflict: boolean = doesCellHaveConflict(r, c, cell);
+    const peer: boolean = isCellPeer(r, c, selectedCell);
+    const identicalValue: boolean = doesCellHaveIdenticalValue(cell);
+
+    let cellBackgroundColor;
+    if (conflict && !selected) {
+      cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
+    } else if (conflict && selected) {
+      cellBackgroundColor = SELECTED_CONFLICT_COLOR;
+    } else if (selected) {
+      cellBackgroundColor = SELECTED_COLOR;
+    } else if (identicalValue) {
+      cellBackgroundColor = IDENTICAL_VALUE_COLOR;
+    } else if (peer) {
+      cellBackgroundColor = PEER_SELECTED_COLOR;
+    } else {
+      cellBackgroundColor = "white";
+    }
+    return cellBackgroundColor;
+  };
+
+  /**
+   * Determines if the coordinates provided match with the selected cell
+   * @param r The row coordinate of a cell
+   * @param c The column coordinate of a cell
+   * @param selectedCell The selected cell
+   * @returns false if selectedCell is null or does not match the coordinates provided
+   */
+  const isCellSelected = (
+    r: number,
+    c: number,
+    selectedCell: CellLocation | null
+  ): boolean => {
+    if (selectedCell == null) {
+      return false;
+    } else {
+      return c === selectedCell.c && r === selectedCell.r;
+    }
+  };
+
+  /**
    * Determines if the provided cell has the same value as the selected cell
    * @param cell The provided cell
    * @returns true if the provided cell's value is equal to the selected cell's value
    */
-  const cellHasSelectedValue = (cell: CellProps): boolean => {
+  const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
+    if (sudokuBoard.selectedCell == null) {
+      return false;
+    }
     const { highlightIdenticalValuesSetting } =
       React.useContext(PreferencesContext);
     const currentSelectedCell = getCurrentSelectedCell() as CellProps;
@@ -348,21 +385,27 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
-  const cellIsPeer = (r: number, c: number, selectedCell: CellLocation) => {
+  /**
+   * Determines if the provided coordinates are a peer of the selected cell
+   * Definition of peer can be found here: http://sudopedia.enjoysudoku.com/Peer.html
+   * @param r The row coordinate of a cell
+   * @param c The column coordinate of a cell
+   * @param selectedCell The selected cell
+   * @returns false if not a peer or selectedCell is null, otherwise returns true
+   */
+  const isCellPeer = (
+    r: number,
+    c: number,
+    selectedCell: CellLocation | null
+  ): boolean => {
+    if (selectedCell == null) {
+      return false;
+    }
     const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
       React.useContext(PreferencesContext);
-    const box = isCurrentCellAndSelectedCellInSameBox(
-      { r: r, c: c },
-      selectedCell
-    );
-    const row = isCurrentCellAndSelectedCellInSameRow(
-      { r: r, c: c },
-      selectedCell
-    );
-    const column = isCurrentCellAndSelectedCellInSameColumn(
-      { r: r, c: c },
-      selectedCell
-    );
+    const box = areCellsInSameBox({ r: r, c: c }, selectedCell);
+    const row = areCellsInSameRow({ r: r, c: c }, selectedCell);
+    const column = areCellsInSameColumn({ r: r, c: c }, selectedCell);
     return (
       (box && highlightBoxSetting) ||
       (row && highlightRowSetting) ||
