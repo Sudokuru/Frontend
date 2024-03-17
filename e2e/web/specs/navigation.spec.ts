@@ -64,11 +64,11 @@ test.describe("home page", () => {
     await homePage.homePageIsRendered();
   });
 
-  test("sidebar learn button", async ({ page }) => {});
+  // test("sidebar learn button", async ({ page }) => {});
 
-  test("sidebar drill button", async ({ page }) => {});
+  // test("sidebar drill button", async ({ page }) => {});
 
-  test("sidebar play button", async ({ page }) => {});
+  // test("sidebar play button", async ({ page }) => {});
 
-  test("sidebar contact button", async ({ page }) => {});
+  // test("sidebar contact button", async ({ page }) => {});
 });

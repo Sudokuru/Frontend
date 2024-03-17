@@ -7,6 +7,7 @@ import { PlayPage } from "./page/play.page";
 // Declare the types of your fixtures.
 type MyFixtures = {
   page: Page;
+  resumeGame: Page;
 };
 
 // Extend base test by providing "todoPage" and "settingsPage".
@@ -16,11 +17,8 @@ export const test = base.extend<MyFixtures>({
     await page.goto("");
     await use(page);
   },
-});
-
-// Loads a game from local storage and navigates to resume the game.
-export const resumeGame = base.extend<MyFixtures>({
-  page: async ({ page }, use) => {
+  // Loads a game from local storage and navigates to resume the game.
+  resumeGame: async ({ page }, use) => {
     await page.goto("");
     await page.evaluate(() => {
       const ACTIVE_GAME =
