@@ -11,17 +11,17 @@ export function range(n: number) {
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if current cell is in the same box as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameBox(
+export function areCellsInSameBox(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   const currentBoxIndex = generateBoxIndex(
     currentCellCoordinate.r,
-    currentCellCoordinate.c
+    currentCellCoordinate.c,
   );
   const selectedBoxIndex = generateBoxIndex(
     selectedCellCoordinate.r,
-    selectedCellCoordinate.c
+    selectedCellCoordinate.c,
   );
   return currentBoxIndex === selectedBoxIndex;
 }
@@ -41,9 +41,9 @@ function generateBoxIndex(row: number, column: number): number {
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if the current cell is in the same row as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameRow(
+export function areCellsInSameRow(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
@@ -54,9 +54,9 @@ export function isCurrentCellAndSelectedCellInSameRow(
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if the current cell is in the same column as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameColumn(
+export function areCellsInSameColumn(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }

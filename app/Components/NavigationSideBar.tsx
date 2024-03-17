@@ -6,7 +6,7 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 const NavigationSideBar = (props: any) => {
   const navigation: any = useNavigation();
 
-  const { isCurrentPage, updateCurrentPage } =
+  const { currentPage, updateCurrentPage } =
     React.useContext(PreferencesContext);
 
   return (
@@ -24,7 +24,7 @@ const NavigationSideBar = (props: any) => {
         icon={"home"}
         testID="HomeButton"
         label="Home"
-        active={isCurrentPage === "Landing"}
+        active={currentPage === "Landing"}
         onPress={() => {
           updateCurrentPage("Landing");
           navigation.navigate("Landing");
@@ -34,7 +34,7 @@ const NavigationSideBar = (props: any) => {
         icon={"book-open-page-variant"}
         testID="LearnButton"
         label="Learn"
-        active={isCurrentPage === "Learn"}
+        active={currentPage === "Learn"}
         onPress={() => {
           updateCurrentPage("Learn");
           navigation.navigate("Learn");
@@ -44,7 +44,7 @@ const NavigationSideBar = (props: any) => {
         icon={"whistle"}
         testID="DrillButton"
         label="Drill"
-        active={isCurrentPage === "Drill"}
+        active={currentPage === "Drill"}
         onPress={() => {
           updateCurrentPage("Drill");
           navigation.navigate("Drill");
@@ -54,7 +54,7 @@ const NavigationSideBar = (props: any) => {
         icon={"play"}
         testID="PlayButton"
         label="Play"
-        active={isCurrentPage === "Play"}
+        active={currentPage === "Play"}
         onPress={() => {
           updateCurrentPage("Play");
           navigation.navigate("Play");
@@ -64,7 +64,7 @@ const NavigationSideBar = (props: any) => {
         icon={"email"}
         testID="ContactButton"
         label="Contact"
-        active={isCurrentPage === "Contact"}
+        active={currentPage === "Contact"}
         onPress={() => {
           updateCurrentPage("Contact");
           navigation.navigate("Contact");
