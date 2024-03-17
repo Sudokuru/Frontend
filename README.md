@@ -75,6 +75,8 @@ The best way to view coverage results locally is to open the `coverage/lcov-repo
 
 # Android testing with real android device
 
+This project used [appium-boilerplate](https://github.com/webdriverio/appium-boilerplate/) as reference.
+
 Turn on developer mode for android device.  
 Enable USB tethering for android device.  
 Run adb devices command to get `DEVICE_NAME`.  
@@ -84,7 +86,20 @@ May be a way to do it over wifi as well:
 https://qaautomationworld.blogspot.com/2014/06/appium-executing-test-throgh-wi-fi-on-real-devies.html  
 https://stackoverflow.com/questions/42992965/how-to-connect-to-your-device-from-terminal-using-adb-commands
 
-Run `npm run android` command in the root directory to start the app locally if testing with expo. Otherwise build the apk file (not yet setup).
+---
+
+Android Expo Method: Run `npm run android` command in the root directory to start the app locally if testing with expo.
+
+Android Method: Build the apk file. Ensure that you have android sdk and java 17 setup from earlier.
+
+1. Create a debug app with command `npx expo run:android`. More info can be [found here](https://docs.expo.dev/more/expo-cli/#compiling)
+2. Create a final build of the android app. Can only be done on mac / linux. Command is `npx eas build --platform android --local`.
+
+Update the SDK variable in `.env` to match path to sdk file.
+
+If you used step 1 from earlier, you will also need to download the SDK for Sudokuru app on the phone/device, either from itch.io or from a pipeline build. Find some way to get the correct version on the device. The reason for this is that the sdk generated in step 1 is not good enough to run on its own, so it is only used for appium to identify which app to open on the device. Step 2 method shouldn't need to do this.
+
+---
 
 Run `appium:start` command in `e2e/mobile` directory. Before running the command ensure that `ANDROID_HOME` variable is set correctly.
 
@@ -106,7 +121,11 @@ More information can be found in these guides:
 - https://www.browserstack.com/guide/locators-in-appium
 - https://webdriver.io/docs/selectors/#mobile-selectors
 
-Run the test cases using the desired profile. For now `android expo` is the only working profile, so run the `wdio:android:expo` command to start the tests.
+Run the test cases using the desired profile.
+Current working profiles:
+
+- `wdio:android:expo`
+- `npm run wdio:android:apk`
 
 ##
 

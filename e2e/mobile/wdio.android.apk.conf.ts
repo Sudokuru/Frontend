@@ -65,8 +65,7 @@ export const config: Options.Testrunner = {
       "appium:deviceName": process.env.DEVICE_NAME,
       "appium:platformVersion": process.env.PLATFORM_VERSION,
       "appium:automationName": "UiAutomator2",
-      "appium:appPackage": "host.exp.exponent",
-      "appium:appActivity": "host.exp.exponent.experience.HomeActivity",
+      "appium:app": process.env.APK,
     },
   ],
 };

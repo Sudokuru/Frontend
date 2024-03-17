@@ -20,6 +20,7 @@
     "appium:start": "npx appium --port 4724",
     "wdio": "wdio run ./wdio.conf.ts",
     "wdio:android:expo": "wdio run ./wdio.android.expo.conf.ts",
+    "wdio:android:apk": "wdio run ./wdio.android.apk.conf.ts",
     "wdio:android:emulator:expo": "wdio run ./wdio.android.emulator.expo.conf.ts",
     "android:doctor": "npx appium driver doctor uiautomator2"
   },
