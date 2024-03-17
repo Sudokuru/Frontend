@@ -25,10 +25,10 @@ const SudokuPage = ({ route }: any) => {
   const { action } = route.params;
 
   return (
-    <View>
+    <>
       <SudokuBoard action={action} />
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 };
 
