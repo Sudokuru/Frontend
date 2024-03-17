@@ -10,6 +10,9 @@ import {
   SELECTED_COLOR_RGB,
   SELECTED_CONFLICT_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
+import { EndGameModalComponent } from "../components/end-game-modal.component";
+import { HeaderComponent } from "../components/header.component";
+import { StatisticsPage } from "../page/statistics.page";
 
 resumeGame.describe("pause", () => {
   resumeGame("pause button", async ({ page }) => {
@@ -346,7 +349,93 @@ resumeGame.describe("erase", () => {
 });
 
 // TODO add test: Should solve game with multiple action types
-// TODO add test: Completing a game and clicking 'Start New Game' should take you to the play game page
-// TODO add test: Completing a game should display correct game results
-// TODO add test: Completing a game should display correct statistics
 // TODO add test: Completing multiple games should display correct statistics
+
+resumeGame.describe("complete game", () => {
+  resumeGame(
+    "Completing a game and clicking 'Start New Game' should take you to the play game page",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.cell[7][6].press("8");
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.numPad[2 - 1].click();
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.cell[7][8].press("4");
+      const endGameModal = new EndGameModalComponent(page);
+      await endGameModal.endGameModalIsRendered();
+      await endGameModal.newGame.click();
+      const playPage = new PlayPage(page);
+      await playPage.playPageIsRendered();
+    }
+  );
+
+  resumeGame(
+    "Completing a game should display correct game results",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.cell[7][6].press("8");
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.numPad[2 - 1].click();
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.cell[7][8].press("4");
+      const endGameModal = new EndGameModalComponent(page);
+      await expect(endGameModal.page.getByText("Score: 34")).toBeInViewport({
+        ratio: 1,
+      });
+      await expect(
+        endGameModal.page.getByText("Time Spent: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Number of Hints Used: 0")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Mistakes Made: 235")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        endGameModal.page.getByText("Difficulty: easy")
+      ).toBeInViewport({ ratio: 1 });
+    }
+  );
+
+  resumeGame(
+    "Completing a game should display correct statistics",
+    async ({ page }) => {
+      const sudokuBoard = new SudokuBoardComponent(page);
+      await sudokuBoard.cell[7][6].click();
+      await sudokuBoard.cell[7][6].press("8");
+      await sudokuBoard.cell[7][7].click();
+      await sudokuBoard.numPad[2 - 1].click();
+      await sudokuBoard.cell[7][8].click();
+      await sudokuBoard.cell[7][8].press("4");
+      const endGameModal = new EndGameModalComponent(page);
+      await endGameModal.newGame.click();
+      const header = new HeaderComponent(page);
+      await header.statistics.last().click(); // todo: stop using last (fix infinite stack)
+      const statistics = new StatisticsPage(page);
+      await statistics.statisticsPageIsRendered();
+      await expect(statistics.page.getByText("Total Score: 34")).toBeInViewport(
+        { ratio: 1 }
+      );
+      await expect(statistics.page.getByText("Games Played: 1")).toBeInViewport(
+        { ratio: 1 }
+      );
+      await expect(
+        statistics.page.getByText("Fastest Solve Time: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        statistics.page.getByText("Average Solve Time: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        statistics.page.getByText("Total Solve Time: 06:1")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        statistics.page.getByText("Total Hints Used: 0")
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        statistics.page.getByText("Total Mistakes Made: 235")
+      ).toBeInViewport({ ratio: 1 });
+    }
+  );
+});
