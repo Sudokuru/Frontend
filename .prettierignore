@@ -1,3 +1,4 @@
+# extends from .gitignore
 .github/
 License.md
 src-tauri/

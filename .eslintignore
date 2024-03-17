@@ -31,3 +31,6 @@ web-build/
 .DS_Store
 
 .vercel
+
+# eslint specific
+package.json
