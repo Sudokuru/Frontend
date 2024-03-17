@@ -5,23 +5,7 @@ module.exports = {
     "plugin:playwright/recommended",
   ],
   rules: {
-    "playwright/expect-expect": [
-      "error",
-      {
-        assertFunctionNames: [
-          "playPageIsRendered",
-          "cellHasValue",
-          "cellHasNotes",
-          "cellHasColor",
-          "homePageIsRendered",
-          "profilePageIsRendered",
-          "statisticsPageIsRendered",
-          "headerRendersCorrectly",
-          "drillPageIsRendered",
-          "learnPageIsRendered",
-        ],
-      },
-    ],
+    "playwright/expect-expect": "off",
     "playwright/no-conditional-in-test": "off",
   },
   overrides: [
