@@ -47,10 +47,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const title = toTitle(name);
 
-  if (Lessons == null) {
-    return;
-  }
-
   // setting lesson mode to offline
   const LESSON_MODE = getLessonMode.Offline;
   const getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
@@ -61,11 +57,18 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   // This useFocusEffect stores the steps in state when page is loaded in.
   useFocusEffect(
     React.useCallback(() => {
+      if (Lessons == null) {
+        return;
+      }
       Lessons.getSteps(name, getlessonArgs).then((result: any) => {
         setSteps(result);
       });
     }, []),
   );
+
+  if (Lessons == null) {
+    return;
+  }
 
   async function saveUserLearnedLessons(learnedLessons: string[]) {
     await Statistics.saveLearnedLessons(learnedLessons).then((res: any) => {

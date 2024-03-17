@@ -1,4 +1,4 @@
-import { calculateNotes, sudokuStrategy, sudokuStrategyArray } from "sudokuru";
+import { calculateNotes, sudokuStrategy } from "sudokuru";
 
 import { puzzle, drill } from "./Puzzle.Types";
 import { returnLocalDrillGame } from "../Functions/LocalDatabase";

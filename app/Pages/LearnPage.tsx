@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
 import Alert from "react-native-awesome-alerts";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Statistics } from "../Api/Statistics";
 import LessonPanel from "../Components/Home/LessonPanel";
@@ -32,7 +32,7 @@ const LearnPage = () => {
         await Statistics.getLearnedLessons().then((lessons: any) => {
           if (lessons !== null) {
             // prevent the infinite loop
-            if (learnedLessons != lessons && !areLessonsLoaded) {
+            if (learnedLessons !== lessons && !areLessonsLoaded) {
               updateLearnedLessons(lessons);
             }
 

@@ -32,6 +32,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   useEffect(() => {
     generateGame(props).then((game) => {
+      // eslint-disable-next-line eqeqeq
       if (game == null) {
         return;
       }
@@ -214,7 +215,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter(
-          (note: number) => note != inputValue,
+          (note: number) => note !== inputValue,
         );
       } else {
         currentEntryCopy.push(inputValue);
@@ -279,7 +280,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns True if the value in a cell is incorrect, False otherwise
    */
   const isConflict = (r: number, c: number, cell: CellProps): boolean => {
-    if (cell.type == "note" || cell.entry == 0) {
+    if (cell.type === "note" || cell.entry === 0) {
       return false;
     }
     return !(
@@ -326,7 +327,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         !conflict &&
         isHighlightIdenticalValues &&
         selectedEntry === currentEntry &&
-        currentEntry != 0;
+        currentEntry !== 0;
     }
 
     return (
@@ -372,9 +373,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       updateCellEntry(parseInt(inputValue, 10));
     }
     if (
-      inputValue == "Delete" ||
-      inputValue == "Backspace" ||
-      inputValue == "0"
+      inputValue === "Delete" ||
+      inputValue === "Backspace" ||
+      inputValue === "0"
     )
       eraseSelected();
   };
@@ -418,7 +419,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
     const isUndoButtonDisabled =
       sudokuBoard.actionHistory == null ||
-      sudokuBoard.actionHistory.length == 0;
+      sudokuBoard.actionHistory.length === 0;
     if (currentSelectedCell != null) {
       const isCellGiven = currentSelectedCell.type === "given";
       const isCellEmpty =

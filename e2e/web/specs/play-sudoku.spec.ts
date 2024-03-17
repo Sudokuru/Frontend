@@ -110,7 +110,7 @@ resumeGame.describe("board highlighting", () => {
               column,
               SELECTED_CONFLICT_COLOR_RGB,
             );
-          } else if (row === 7 || column == 7 || (row > 5 && column > 5)) {
+          } else if (row === 7 || column === 7 || (row > 5 && column > 5)) {
             await sudokuBoard.cellHasColor(
               row,
               column,

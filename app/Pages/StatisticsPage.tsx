@@ -1,8 +1,7 @@
 import { useFocusEffect } from "@react-navigation/core";
-import { useNavigation } from "@react-navigation/native";
 import { rgba } from "polished";
 import React from "react";
-import { ScrollView, View, useWindowDimensions } from "react-native";
+import { ScrollView, View } from "react-native";
 import Alert from "react-native-awesome-alerts";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -15,13 +14,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const StatisticsPage = () => {
   const theme = useTheme();
-  const navigation: any = useNavigation();
 
-  const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
-
-  const { updateLearnedLessons, learnedLessons } =
-    React.useContext(PreferencesContext);
+  const { updateLearnedLessons } = React.useContext(PreferencesContext);
 
   const [isLoading, setLoading] = React.useState<boolean>(true);
   const [totalStatistics, setTotalStatistics] = React.useState<StatisticsProps>(

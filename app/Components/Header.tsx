@@ -37,7 +37,7 @@ const Header = () => {
          * If we are on the Landing page, Logo will not navigate to the Landing page
          * If we are on any other page, Logo will navigate to the Landing page
          */
-        isCurrentPage == "Landing" ? (
+        isCurrentPage === "Landing" ? (
           <Image
             style={{
               resizeMode: "cover",
@@ -71,16 +71,16 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
-        {isCurrentPage == "No" ? (
+        {isCurrentPage === "No" ? (
           <></>
-        ) : isCurrentPage == "Statistics" ? (
+        ) : isCurrentPage === "Statistics" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
-        {isCurrentPage == "No" ? (
+        {isCurrentPage === "No" ? (
           <></>
-        ) : isCurrentPage == "Profile" ? (
+        ) : isCurrentPage === "Profile" ? (
           <HomeButton />
         ) : (
           <ProfileButton />

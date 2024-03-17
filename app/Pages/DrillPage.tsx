@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { rgba } from "polished";
 import React, { useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
@@ -10,8 +9,6 @@ import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const DrillPage = () => {
-  const navigation: any = useNavigation();
-
   const theme = useTheme();
 
   const windowSize = useNewWindowDimensions();

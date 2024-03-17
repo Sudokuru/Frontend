@@ -26,7 +26,7 @@ const ActionRow = (props: ActionRowProps) => {
   const cellSize = getCellSize();
   const theme = useTheme();
 
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   const fallbackHeight = 30;
 
   return (

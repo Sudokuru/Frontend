@@ -1,6 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import * as React from "react";
-import { useWindowDimensions } from "react-native";
 import { useTheme } from "react-native-paper";
 
 import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
@@ -16,7 +15,6 @@ import NavigationSideBar from "../Components/NavigationSideBar";
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  const size = useWindowDimensions();
   const theme = useTheme();
 
   return (

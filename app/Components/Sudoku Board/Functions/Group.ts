@@ -9,7 +9,9 @@ export default class Group {
   private mode: string;
 
   constructor() {
-    this.row = this.col = this.box = -1;
+    this.row = -1;
+    this.col = -1;
+    this.box = -1;
     this.values = [];
     this.mode = "";
   }
@@ -80,13 +82,13 @@ export default class Group {
    */
   public getGroup(): any {
     const group: any = [];
-    if (this.row != -1) {
+    if (this.row !== -1) {
       group.push({ type: "row", index: this.row });
     }
-    if (this.col != -1) {
+    if (this.col !== -1) {
       group.push({ type: "col", index: this.col });
     }
-    if (this.box != -1) {
+    if (this.box !== -1) {
       group.push({ type: "box", index: this.box });
     }
     return group;

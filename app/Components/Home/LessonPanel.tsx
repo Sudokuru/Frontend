@@ -96,7 +96,6 @@ const LessonPanel = (props: any) => {
     // dynamically render in lesson buttons based on criteria
     const lessonButtonArray = [];
     const lockedLessons = getLockedLessons(learnedLessons, availableLessons);
-    const NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
     const columnCount: number = calculateCardsPerRow(

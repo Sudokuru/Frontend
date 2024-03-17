@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { IconButton, useTheme } from "react-native-paper";
+import { IconButton } from "react-native-paper";
 
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 

@@ -5,7 +5,7 @@ import { View, Pressable } from "react-native";
 import Alert from "react-native-awesome-alerts";
 import { Text, useTheme, Button } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { sudokuStrategyArray } from "sudokuru";
+// import { sudokuStrategyArray } from "sudokuru";
 
 import { Puzzles } from "../Api/Puzzles";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
@@ -14,18 +14,18 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 
-const strategies: sudokuStrategyArray = [
-  "AMEND_NOTES",
-  "SIMPLIFY_NOTES",
-  "NAKED_SINGLE",
-  "NAKED_PAIR",
-  "NAKED_TRIPLET",
-  "NAKED_QUADRUPLET",
-  "HIDDEN_SINGLE",
-  "HIDDEN_PAIR",
-  "HIDDEN_TRIPLET",
-  "HIDDEN_QUADRUPLET",
-];
+// const strategies: sudokuStrategyArray = [
+//   "AMEND_NOTES",
+//   "SIMPLIFY_NOTES",
+//   "NAKED_SINGLE",
+//   "NAKED_PAIR",
+//   "NAKED_TRIPLET",
+//   "NAKED_QUADRUPLET",
+//   "HIDDEN_SINGLE",
+//   "HIDDEN_PAIR",
+//   "HIDDEN_TRIPLET",
+//   "HIDDEN_QUADRUPLET",
+// ];
 
 const PlayPage = () => {
   const navigation: any = useNavigation();

@@ -27,9 +27,9 @@ function highlightGroup(
   col: number,
   box: number,
 ): boolean {
-  if (groupType == "row" && index == row) return true;
-  if (groupType == "col" && index == col) return true;
-  if (groupType == "box" && index == box) return true;
+  if (groupType === "row" && index === row) return true;
+  if (groupType === "col" && index === col) return true;
+  if (groupType === "box" && index === box) return true;
   return false;
 }
 
@@ -80,7 +80,7 @@ export function highlightCauses(
     for (let i = 0; i < currentHint.causes.length; i++) {
       const currentCause_x = currentHint.causes[i][0];
       const currentCause_y = currentHint.causes[i][1];
-      if (currentCause_x == col && currentCause_y == row) {
+      if (currentCause_x === col && currentCause_y === row) {
         return true;
       }
     }
@@ -106,8 +106,8 @@ export function setRemovalHighlights(
       const currentRemoval = currentHint.removals[i];
       const currentRemoval_x = currentRemoval.position[0];
       const currentRemoval_y = currentRemoval.position[1];
-      if (currentRemoval_x == col && currentRemoval_y == row) {
-        if (currentRemoval.mode == "highlight") {
+      if (currentRemoval_x === col && currentRemoval_y === row) {
+        if (currentRemoval.mode === "highlight") {
           for (let j = 0; j < currentRemoval.values.length; j++) {
             isRemovalHighlight[currentRemoval.values[j] - 1] = true;
           }
@@ -134,8 +134,8 @@ export function setPlacementHighlights(
     const currentPlacement = currentHint.placements;
     const currentPlacement_x = currentPlacement.position[0];
     const currentPlacement_y = currentPlacement.position[1];
-    if (currentPlacement_x == col && currentPlacement_y == row) {
-      if (currentPlacement.mode == "highlight") {
+    if (currentPlacement_x === col && currentPlacement_y === row) {
+      if (currentPlacement.mode === "highlight") {
         isPlacementHighlight[currentPlacement.value - 1] = true;
       }
     }

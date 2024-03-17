@@ -12,7 +12,7 @@ interface PauseButtonProps {
 const PauseButton = (props: PauseButtonProps) => {
   const { handlePause, isPaused } = props;
   const cellSize = getCellSize();
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   const theme = useTheme();
 
   return (

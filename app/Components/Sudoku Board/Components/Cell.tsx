@@ -148,7 +148,7 @@ const Cell = (props: RenderCellProps) => {
               </View>
             </View>
           </View>
-        ) : entry != 0 ? (
+        ) : entry !== 0 ? (
           <Text
             style={{
               fontFamily: "Inter_400Regular",

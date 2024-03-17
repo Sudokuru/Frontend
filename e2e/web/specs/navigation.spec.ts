@@ -1,5 +1,3 @@
-import { expect } from "@playwright/test";
-
 import { DrillPage } from "./../page/drill.page";
 import { HomePage } from "./../page/home.page";
 import { LearnPage } from "./../page/learn.page";

@@ -1,15 +1,7 @@
-import { sudokuStrategyArray } from "sudokuru";
-
-import { gameResults, puzzle, statistics, activeGame } from "./Puzzle.Types";
+import { puzzle, statistics } from "./Puzzle.Types";
 import { Statistics } from "./Statistics";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
-import {
-  GameDifficulty,
-  GameDifficultyScore,
-  GameStatistics,
-  SudokuObjectProps,
-  returnLocalGame,
-} from "../Functions/LocalDatabase";
+import { SudokuObjectProps, returnLocalGame } from "../Functions/LocalDatabase";
 
 // Random games to be used by getRandomGame for landing page
 const DEMO_RANDOM_GAMES: puzzle[][] = [

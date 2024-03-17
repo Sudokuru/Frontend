@@ -120,7 +120,7 @@ describe("Sudoku play component functions", () => {
             );
           } else if (row === 7 && column === 7) {
             cy.Cell_Should_Have_Color(row, column, SELECTED_CONFLICT_COLOR_RGB);
-          } else if (row === 7 || column == 7 || (row > 5 && column > 5)) {
+          } else if (row === 7 || column === 7 || (row > 5 && column > 5)) {
             cy.Cell_Should_Have_Color(row, column, PEER_SELECTED_COLOR_RGB);
           } else {
             cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);

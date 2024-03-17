@@ -1,5 +1,3 @@
-import { sudokuStrategy } from "sudokuru";
-
 export interface lessonOfflineMode {
   mode: getLessonMode.Offline;
 }

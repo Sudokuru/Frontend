@@ -8,6 +8,7 @@ export class Statistics {
    */
   public static async getLearnedLessons(): Promise<JSON> {
     const value = await getKeyJSON("learned_lessons");
+    // eslint-disable-next-line eqeqeq
     if (value == undefined) {
       return JSON.parse(JSON.stringify(["NONE"]));
     } else {

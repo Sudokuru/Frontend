@@ -81,7 +81,7 @@ export interface GameAction {
 
 // todo remove erase, and just use 0 value to signify erase
 // then can remove ActionType as a type needed
-type ActionType = "note" | "value";
+// type ActionType = "note" | "value";
 
 export interface CellLocation {
   r: number;
@@ -116,17 +116,17 @@ export interface CellWithNotes {
 export type CellType = "note" | "value" | "given";
 
 // This will be exported from Sudokuru package
-interface Hint {
-  hint: {
-    strategy: any;
-    cause: any;
-    groups: any;
-    placements: any;
-    removals: any;
-    info: string;
-    action: string;
-  };
-}
+// interface Hint {
+//   hint: {
+//     strategy: any;
+//     cause: any;
+//     groups: any;
+//     placements: any;
+//     removals: any;
+//     info: string;
+//     action: string;
+//   };
+// }
 
 const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {

@@ -21,6 +21,7 @@ import "./commands";
 // require('./commands')
 
 // Ignore all uncaught exceptions, this is temporary
+// eslint-disable-next-line node/handle-callback-err
 Cypress.on("uncaught:exception", (err, runnable) => {
   // returning false here prevents Cypress from
   // failing the test

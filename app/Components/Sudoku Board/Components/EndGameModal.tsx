@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, useWindowDimensions } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 
 import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
@@ -17,7 +17,6 @@ const EndGameModal = (props: EndGameModalProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
-  const theme = useTheme();
   const navigation: any = useNavigation();
 
   return (

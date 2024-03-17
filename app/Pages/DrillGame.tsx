@@ -1,18 +1,18 @@
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+// import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 
 const Drill = (props: any) => {
-  let strategy = props.route.params
-    ? props.route.params.params
-    : "no props.route.params in DrillPage";
+  // let strategy = props.route.params
+  //   ? props.route.params.params
+  //   : "no props.route.params in DrillPage";
 
-  strategy = [strategy];
-  const navigation: any = useNavigation();
+  // strategy = [strategy];
+  // const navigation: any = useNavigation();
 
   return (
     <SafeAreaProvider>

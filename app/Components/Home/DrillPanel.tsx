@@ -66,6 +66,7 @@ const DrillPanel = (props: any) => {
 
   async function showTutorialIfNotDismissed() {
     await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
+      // eslint-disable-next-line eqeqeq
       if (dismiss == undefined) {
         showDialog();
       }
