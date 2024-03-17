@@ -28,7 +28,8 @@
   },
   "lint-staged": {
     "**/*": [
-      "npx prettier --write --ignore-unknown"
+      "npx prettier --write --ignore-unknown",
+      "npm run eslint"
     ]
   },
   "dependencies": {
