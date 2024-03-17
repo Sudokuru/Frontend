@@ -1,7 +1,8 @@
 import { Page, test as base } from "@playwright/test";
+
+import { SudokuBoardComponent } from "./components/sudoku-board.component";
 import { HomePage } from "./page/home.page";
 import { PlayPage } from "./page/play.page";
-import { SudokuBoardComponent } from "./components/sudoku-board.component";
 
 // Declare the types of your fixtures.
 type MyFixtures = {

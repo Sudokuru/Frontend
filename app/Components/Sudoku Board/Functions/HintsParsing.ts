@@ -1,5 +1,5 @@
-import Hint from "./Hint";
 import Group from "./Group";
+import Hint from "./Hint";
 
 /**
  * Given the x and y coordinates of a cell, returns the index of the box the cell is in
@@ -76,10 +76,10 @@ export function highlightCauses(
   row: number,
   col: number,
 ): boolean {
-  if (currentHint && currentHint.causes) {
+  if (currentHint?.causes) {
     for (let i = 0; i < currentHint.causes.length; i++) {
-      let currentCause_x = currentHint.causes[i][0];
-      let currentCause_y = currentHint.causes[i][1];
+      const currentCause_x = currentHint.causes[i][0];
+      const currentCause_y = currentHint.causes[i][1];
       if (currentCause_x == col && currentCause_y == row) {
         return true;
       }
@@ -103,9 +103,9 @@ export function setRemovalHighlights(
 ): void {
   if (currentHint.removals) {
     for (let i = 0; i < currentHint.removals.length; i++) {
-      let currentRemoval = currentHint.removals[i];
-      let currentRemoval_x = currentRemoval.position[0];
-      let currentRemoval_y = currentRemoval.position[1];
+      const currentRemoval = currentHint.removals[i];
+      const currentRemoval_x = currentRemoval.position[0];
+      const currentRemoval_y = currentRemoval.position[1];
       if (currentRemoval_x == col && currentRemoval_y == row) {
         if (currentRemoval.mode == "highlight") {
           for (let j = 0; j < currentRemoval.values.length; j++) {
@@ -115,7 +115,6 @@ export function setRemovalHighlights(
       }
     }
   }
-  return;
 }
 
 /**
@@ -132,16 +131,15 @@ export function setPlacementHighlights(
   col: any,
 ): void {
   if (currentHint.placements) {
-    let currentPlacement = currentHint.placements;
-    let currentPlacement_x = currentPlacement.position[0];
-    let currentPlacement_y = currentPlacement.position[1];
+    const currentPlacement = currentHint.placements;
+    const currentPlacement_x = currentPlacement.position[0];
+    const currentPlacement_y = currentPlacement.position[1];
     if (currentPlacement_x == col && currentPlacement_y == row) {
       if (currentPlacement.mode == "highlight") {
         isPlacementHighlight[currentPlacement.value - 1] = true;
       }
     }
   }
-  return;
 }
 
 /**
@@ -155,7 +153,7 @@ export function addGroupToHint(
   hintStepNumber: number,
   group: any[],
 ): void {
-  let tempGroup: Group = new Group();
+  const tempGroup: Group = new Group();
   for (let i: number = 0; i < group.length; i++) {
     if (group[i].type === "row") {
       tempGroup.setRow(group[i].index);
@@ -166,7 +164,6 @@ export function addGroupToHint(
     }
   }
   hint.addGroup(hintStepNumber, tempGroup);
-  return;
 }
 
 /**
@@ -223,10 +220,10 @@ export function getHintObject(
   removals: any[],
   placement: any,
 ): Hint {
-  let steps: number = getStepCount(strategy);
-  let removalModes: string[] = getRemovalModes(strategy);
-  let placementModes: string[] = getPlacementModes(strategy);
-  let hint: Hint = new Hint(steps);
+  const steps: number = getStepCount(strategy);
+  const removalModes: string[] = getRemovalModes(strategy);
+  const placementModes: string[] = getPlacementModes(strategy);
+  const hint: Hint = new Hint(steps);
   for (let step: number = 0; step < steps; step++) {
     addGroupToHint(hint, step, groups);
     hint.addCauses(step, causes);

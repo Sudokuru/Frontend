@@ -1,7 +1,8 @@
 import React from "react";
 import { useWindowDimensions, View, ScrollView } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Switch, Text, useTheme } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
 
@@ -75,7 +76,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Switch
-                    color={"#025E73"}
+                    color="#025E73"
                     value={isThemeDark}
                     onValueChange={toggleTheme}
                     testID={
@@ -97,7 +98,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Switch
-                    color={"#025E73"}
+                    color="#025E73"
                     value={isHighlightIdenticalValues}
                     onValueChange={toggleHighlightIdenticalValues}
                     testID={
@@ -121,7 +122,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Switch
-                    color={"#025E73"}
+                    color="#025E73"
                     value={isHighlightBox}
                     onValueChange={toggleHighlightBox}
                     testID={
@@ -145,7 +146,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Switch
-                    color={"#025E73"}
+                    color="#025E73"
                     value={isHighlightRow}
                     onValueChange={toggleHighlightRow}
                     testID={
@@ -169,7 +170,7 @@ const ProfilePage = () => {
                   }}
                 >
                   <Switch
-                    color={"#025E73"}
+                    color="#025E73"
                     value={isHighlightColumn}
                     onValueChange={toggleHighlightColumn}
                     testID={

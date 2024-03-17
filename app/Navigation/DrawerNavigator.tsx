@@ -1,16 +1,17 @@
-import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import * as React from "react";
+import { useWindowDimensions } from "react-native";
+import { useTheme } from "react-native-paper";
+
+import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
+import DrillStackNavigator from "./StackNavigators/DrillStackNavigator";
 import LandingStackNavigator from "./StackNavigators/LandingStackNavigator";
 import LearnStackNavigator from "./StackNavigators/LearnStackNavigator";
-import DrillStackNavigator from "./StackNavigators/DrillStackNavigator";
 import PlayStackNavigator from "./StackNavigators/PlayStackNavigator";
-import Header from "../Components/Header";
-import { useWindowDimensions } from "react-native";
-import NavigationSideBar from "../Components/NavigationSideBar";
-import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator";
 import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
-import { useTheme } from "react-native-paper";
-import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
+import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator";
+import Header from "../Components/Header";
+import NavigationSideBar from "../Components/NavigationSideBar";
 
 const Drawer = createDrawerNavigator();
 

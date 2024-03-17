@@ -3,9 +3,9 @@ import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 
 export class Profile {
   public static async getProfile(): Promise<profile> {
-    let value = await getKeyJSON("profile");
+    const value = await getKeyJSON("profile");
     if (value == null) {
-      let profile: profile = {
+      const profile: profile = {
         theme: true,
         highlightBox: true,
         highlightColumn: true,
@@ -23,7 +23,7 @@ export class Profile {
   }
 
   public static async setProfileValue(profileValue: string) {
-    let value: profile = await this.getProfile();
+    const value: profile = await this.getProfile();
     if (profileValue === "theme") {
       value.theme = !value.theme;
     } else if (profileValue === "highlightBox") {

@@ -79,7 +79,7 @@ export default class Group {
    * Returns the legacy SudokuBoard format of the group
    */
   public getGroup(): any {
-    let group: any = [];
+    const group: any = [];
     if (this.row != -1) {
       group.push({ type: "row", index: this.row });
     }
@@ -102,7 +102,7 @@ export default class Group {
   /**
    * Returns the legacy SudokuBoard format for removals
    */
-  public getRemoval(): Object {
+  public getRemoval(): object {
     return {
       mode: this.mode,
       position: [this.row, this.col],
@@ -113,7 +113,7 @@ export default class Group {
   /**
    * Returns the legacy SudokuBoard format for placements
    */
-  public getPlacement(): Object {
+  public getPlacement(): object {
     return {
       mode: this.mode,
       position: [this.row, this.col],

@@ -1,9 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
-import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 
 const Drill = (props: any) => {
   let strategy = props.route.params

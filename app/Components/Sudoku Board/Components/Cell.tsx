@@ -1,6 +1,7 @@
-import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+
+import { CellType } from "../../../Functions/LocalDatabase";
 import {
   NOT_SELECTED_CONFLICT_COLOR,
   PEER_SELECTED_COLOR,
@@ -8,9 +9,9 @@ import {
   SELECTED_CONFLICT_COLOR,
   IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
-import { CellType } from "../../../Functions/LocalDatabase";
+import { getCellSize } from "../Functions/BoardFunctions";
 
-let fallbackHeight = 30;
+const fallbackHeight = 30;
 
 interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
@@ -40,7 +41,7 @@ const Cell = (props: RenderCellProps) => {
 
   const getNoteContents = (noteIndex: number) => {
     if (entry.includes(noteIndex)) {
-      let styleVal = {
+      const styleVal = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
       };
@@ -49,7 +50,7 @@ const Cell = (props: RenderCellProps) => {
   };
 
   const getCellContents = () => {
-    var contents = "";
+    let contents = "";
     if (type === "note") {
       contents += "notes:";
       for (let i = 1; i <= 9; i++) {
@@ -114,35 +115,35 @@ const Cell = (props: RenderCellProps) => {
             }}
           >
             <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note1"}>
+              <View style={styles(cellSize).noteViewElement} testID="note1">
                 {getNoteContents(1)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note2"}>
+              <View style={styles(cellSize).noteViewElement} testID="note2">
                 {getNoteContents(2)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note3"}>
+              <View style={styles(cellSize).noteViewElement} testID="note3">
                 {getNoteContents(3)}
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note4"}>
+              <View style={styles(cellSize).noteViewElement} testID="note4">
                 {getNoteContents(4)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note5"}>
+              <View style={styles(cellSize).noteViewElement} testID="note5">
                 {getNoteContents(5)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note6"}>
+              <View style={styles(cellSize).noteViewElement} testID="note6">
                 {getNoteContents(6)}
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note7"}>
+              <View style={styles(cellSize).noteViewElement} testID="note7">
                 {getNoteContents(7)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note8"}>
+              <View style={styles(cellSize).noteViewElement} testID="note8">
                 {getNoteContents(8)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note9"}>
+              <View style={styles(cellSize).noteViewElement} testID="note9">
                 {getNoteContents(9)}
               </View>
             </View>

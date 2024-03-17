@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { finishGame, saveGame } from "./Functions/BoardFunctions";
+import { ActivityIndicator } from "react-native-paper";
+
+import ActionRow from "./Components/ActionRow";
+import Cell from "./Components/Cell";
+import EndGameModal from "./Components/EndGameModal";
+import HeaderRow from "./Components/HeaderRow";
+import NumberControl from "./Components/NumberControl";
+import Puzzle from "./Components/Puzzle";
+import {
+  finishGame,
+  saveGame,
+  isValueCorrect,
+} from "./Functions/BoardFunctions";
+import { generateGame } from "./Functions/generateGame";
 import {
   isCurrentCellAndSelectedCellInSameBox,
   isCurrentCellAndSelectedCellInSameColumn,
   isCurrentCellAndSelectedCellInSameRow,
 } from "./sudoku";
-import { ActivityIndicator } from "react-native-paper";
-import NumberControl from "./Components/NumberControl";
-import { isValueCorrect } from "./Functions/BoardFunctions";
-import Cell from "./Components/Cell";
-import ActionRow from "./Components/ActionRow";
-import { generateGame } from "./Functions/generateGame";
-import Puzzle from "./Components/Puzzle";
-import { CellProps, SudokuObjectProps } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import HeaderRow from "./Components/HeaderRow";
-import EndGameModal from "./Components/EndGameModal";
+import { CellProps, SudokuObjectProps } from "../../Functions/LocalDatabase";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -37,7 +41,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
-    return <ActivityIndicator animating={true} color="red" />;
+    return <ActivityIndicator animating color="red" />;
   }
 
   // Render EndGame screen when game has ended
@@ -142,7 +146,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push({
       cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
-      cellLocation: { c: c, r: r },
+      cellLocation: { c, r },
     });
 
     // Saving current game status
@@ -262,7 +266,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else {
       setSudokuBoard({
         ...sudokuBoard,
-        selectedCell: { r: r, c: c },
+        selectedCell: { r, c },
       });
     }
   };
@@ -293,9 +297,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       isHighlightColumn,
     } = React.useContext(PreferencesContext);
 
-    let selected = sudokuBoard.selectedCell;
+    const selected = sudokuBoard.selectedCell;
     let isSelected = false;
-    let conflict = isConflict(r, c, cell);
+    const conflict = isConflict(r, c, cell);
     let peer = false;
     let box = false;
     let row = false;
@@ -303,12 +307,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let sameValue = false;
     if (selected != null) {
       isSelected = c === selected.c && r === selected.r;
-      box = isCurrentCellAndSelectedCellInSameBox({ r: r, c: c }, selected);
-      row = isCurrentCellAndSelectedCellInSameRow({ r: r, c: c }, selected);
-      column = isCurrentCellAndSelectedCellInSameColumn(
-        { r: r, c: c },
-        selected,
-      );
+      box = isCurrentCellAndSelectedCellInSameBox({ r, c }, selected);
+      row = isCurrentCellAndSelectedCellInSameRow({ r, c }, selected);
+      column = isCurrentCellAndSelectedCellInSameColumn({ r, c }, selected);
       peer =
         !conflict &&
         ((box && isHighlightBox) ||
@@ -320,7 +321,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         return;
       }
       const selectedEntry = currentSelectedCell.entry;
-      let currentEntry = cell.entry;
+      const currentEntry = cell.entry;
       sameValue =
         !conflict &&
         isHighlightIdenticalValues &&
@@ -413,7 +414,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
-    let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
+    const currentSelectedCell: CellProps | null = getCurrentSelectedCell();
     let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
     const isUndoButtonDisabled =
       sudokuBoard.actionHistory == null ||
@@ -450,7 +451,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   return (
     <View
-      testID={"sudokuBoard"}
+      testID="sudokuBoard"
       onKeyDown={handleKeyDown}
       style={{
         alignItems: "center",

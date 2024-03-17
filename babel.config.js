@@ -1,7 +1,7 @@
 module.exports = function (api) {
   api.cache(true);
 
-  let plugins = [];
+  const plugins = [];
 
   if (process.env["ENV"] === "development") {
     plugins.push("istanbul");
@@ -9,6 +9,6 @@ module.exports = function (api) {
 
   return {
     presets: ["babel-preset-expo"],
-    plugins: plugins,
+    plugins,
   };
 };

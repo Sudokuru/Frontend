@@ -7,7 +7,7 @@ export class Statistics {
    * @returns promise of puzzle JSON object
    */
   public static async getLearnedLessons(): Promise<JSON> {
-    let value = await getKeyJSON("learned_lessons");
+    const value = await getKeyJSON("learned_lessons");
     if (value == undefined) {
       return JSON.parse(JSON.stringify(["NONE"]));
     } else {
@@ -22,7 +22,7 @@ export class Statistics {
   public static async saveLearnedLessons(learnedLessons: string[]) {
     // Removing NONE placeholder value if user has learned a lesson
     if (learnedLessons.includes("NONE") && learnedLessons.length > 1) {
-      let index = learnedLessons.indexOf("NONE");
+      const index = learnedLessons.indexOf("NONE");
       if (index !== -1) {
         learnedLessons.splice(index, 1);
       }
@@ -34,9 +34,9 @@ export class Statistics {
    * returns all statistics objects for given user
    */
   public static async getStatistics(): Promise<statistics> {
-    let value = await getKeyJSON("statistics");
+    const value = await getKeyJSON("statistics");
     if (value == null) {
-      let statistics: statistics = {
+      const statistics: statistics = {
         totalScore: 0,
         numGamesPlayed: 0,
         fastestSolveTime: 0,

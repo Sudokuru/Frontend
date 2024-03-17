@@ -1,12 +1,13 @@
-import React from "react";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
+import React from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { sudokuStrategyArray } from "sudokuru";
 
+import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
-let strategies: sudokuStrategyArray = [
+const strategies: sudokuStrategyArray = [
   "AMEND_NOTES",
   "SIMPLIFY_NOTES",
   "NAKED_SINGLE",

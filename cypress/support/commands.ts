@@ -5,7 +5,6 @@ import {
   PLACE_NOTE_TEXT_COLOR_RGB,
   REMOVE_NOTE_TEXT_COLOR_RGB,
 } from "../../app/Styling/HighlightColors";
-
 import {
   CELL_WITH_NOTES,
   DRILL_DRAWER_BUTTON,
@@ -19,7 +18,7 @@ Cypress.Commands.add("Start_Naked_Single_Drill", () => {
 });
 
 Cypress.Commands.add("Get_Cell_IDs", (boardType) => {
-  let cellIds: string[][] = new Array(9);
+  const cellIds: string[][] = new Array(9);
   for (let i = 0; i < 9; i++) {
     cellIds[i] = new Array(9);
   }
@@ -44,7 +43,7 @@ Cypress.Commands.add("Get_Cell_Notes", (cellId) => {
   if (!cellId.includes("notes:")) {
     return cy.wrap(null);
   }
-  let notesIndex = cellId.indexOf("notes:");
+  const notesIndex = cellId.indexOf("notes:");
   return cy.wrap(cellId.substring(notesIndex + 6));
 });
 

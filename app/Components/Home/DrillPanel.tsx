@@ -10,6 +10,7 @@ import {
   Text,
 } from "react-native-paper";
 import { sudokuStrategyArray } from "sudokuru";
+
 import {
   CARD_IMAGE_HEIGHT,
   CARD_IMAGE_WIDTH,
@@ -19,14 +20,14 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import { toTitle } from "../Sudoku Board/sudoku";
 import {
   getKeyJSON,
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
+import { toTitle } from "../Sudoku Board/sudoku";
 
-let drillStrategies: sudokuStrategyArray = [
+const drillStrategies: sudokuStrategyArray = [
   "NAKED_SINGLE",
   "NAKED_PAIR",
   "NAKED_TRIPLET",
@@ -39,7 +40,7 @@ let drillStrategies: sudokuStrategyArray = [
   "POINTING_TRIPLET",
 ];
 
-let drillImages: ImageURISource[] = [
+const drillImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
   require("./../../../.assets/CardImages/NAKED_PAIR.png"),
   require("./../../../.assets/CardImages/NAKED_TRIPLET.png"),
@@ -71,14 +72,14 @@ const DrillPanel = (props: any) => {
     });
   }
 
-  let drillButtonArray = [];
+  const drillButtonArray = [];
   let subArray = [];
-  let columnCount: number = calculateCardsPerRow(
+  const columnCount: number = calculateCardsPerRow(
     props.width,
     drillStrategies.length,
   );
   for (let i = 0; i < drillStrategies.length; i++) {
-    let img: ImageURISource = drillImages[i];
+    const img: ImageURISource = drillImages[i];
     let difficulty: difficulty;
     switch (drillStrategies[i]) {
       case "NAKED_SINGLE":
@@ -98,7 +99,7 @@ const DrillPanel = (props: any) => {
         difficulty = "Very Hard";
         break;
     }
-    let difficultyColor: string = getDifficultyColor(difficulty);
+    const difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
         key={drillStrategies[i]}

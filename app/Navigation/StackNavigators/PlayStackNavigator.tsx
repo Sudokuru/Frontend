@@ -1,5 +1,6 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+
 import PlayPage from "../../Pages/PlayPage";
 import SudokuPage from "../../Pages/SudokuPage";
 

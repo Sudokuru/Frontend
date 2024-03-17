@@ -1,5 +1,6 @@
-import { View } from "react-native";
 import React from "react";
+import { View } from "react-native";
+
 import { CellProps, SudokuObjectProps } from "../../../Functions/LocalDatabase";
 
 interface PuzzleProps {

@@ -1,6 +1,6 @@
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { Text, useTheme } from "react-native-paper";
-import { useWindowDimensions } from "react-native";
+
 import Statistic from "./Statistic";
 import { formatTime } from "../Sudoku Board/Functions/BoardFunctions";
 

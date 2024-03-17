@@ -1,6 +1,7 @@
-import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { IconButton } from "react-native-paper";
+
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 const ProfileButton = () => {
@@ -10,7 +11,7 @@ const ProfileButton = () => {
   return (
     <IconButton
       icon="account-details"
-      testID={"ViewProfilePageButton"}
+      testID="ViewProfilePageButton"
       size={20}
       onPress={() => {
         updateCurrentPage("Profile");

@@ -1,5 +1,5 @@
-import { ScaledSize, useWindowDimensions } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
+import { ScaledSize, useWindowDimensions } from "react-native";
 
 export const useMinWindowDimensions = (): number => {
   const size = useWindowDimensions();

@@ -1,5 +1,6 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+
 import ContactPage from "../../Pages/ContactPage";
 
 const Stack = createStackNavigator();

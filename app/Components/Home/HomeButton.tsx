@@ -1,6 +1,7 @@
-import { IconButton, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { IconButton, useTheme } from "react-native-paper";
+
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 const HomeButton = () => {
@@ -10,7 +11,7 @@ const HomeButton = () => {
   return (
     <IconButton
       icon="home"
-      testID={"ViewHomePageButton"}
+      testID="ViewHomePageButton"
       size={20}
       onPress={() => {
         updateCurrentPage("Landing");

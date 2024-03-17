@@ -1,6 +1,6 @@
 import React from "react";
-import { Text } from "react-native-paper";
 import { View, useWindowDimensions } from "react-native";
+import { Text } from "react-native-paper";
 
 export interface StatisticProps {
   statisticName: string;

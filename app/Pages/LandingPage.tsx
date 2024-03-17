@@ -1,6 +1,3 @@
-import React from "react";
-import { View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -10,11 +7,15 @@ import {
   Inter_700Bold,
   useFonts,
 } from "@expo-google-fonts/inter";
+import React from "react";
+import { View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+import NavigationButton from "../Components/Home/NavigationButton";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
-import NavigationButton from "../Components/Home/NavigationButton";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -27,7 +28,7 @@ const LandingPage = () => {
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
   const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
 
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
     Inter_300Light,

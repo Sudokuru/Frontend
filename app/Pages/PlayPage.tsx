@@ -1,19 +1,20 @@
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { rgba } from "polished";
 import React from "react";
 import { View, Pressable } from "react-native";
-import { Text, useTheme, Button } from "react-native-paper";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
-import { rgba } from "polished";
+import { Text, useTheme, Button } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { sudokuStrategyArray } from "sudokuru";
+
+import { Puzzles } from "../Api/Puzzles";
+import { SudokuObjectProps } from "../Functions/LocalDatabase";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
-import { Puzzles } from "../Api/Puzzles";
-import { sudokuStrategyArray } from "sudokuru";
-import { SudokuObjectProps } from "../Functions/LocalDatabase";
 
-let strategies: sudokuStrategyArray = [
+const strategies: sudokuStrategyArray = [
   "AMEND_NOTES",
   "SIMPLIFY_NOTES",
   "NAKED_SINGLE",
@@ -149,10 +150,10 @@ const PlayPage = () => {
           alertContainerStyle={{
             backgroundColor: rgba(theme.colors.background, 0.3),
           }}
-          showConfirmButton={true}
+          showConfirmButton
           closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
-          confirmText={"OK"}
+          confirmText="OK"
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
             hidePlayHelp();

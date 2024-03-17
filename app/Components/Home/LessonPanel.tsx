@@ -1,19 +1,11 @@
+import { useFocusEffect } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
+import { rgba } from "polished";
 import React, { useState } from "react";
 import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
+import Alert from "react-native-awesome-alerts";
 import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
-import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import { useFocusEffect } from "@react-navigation/core";
-import {
-  formatOneLessonName,
-  getLockedLessons,
-} from "../../Functions/learnedLessons";
-import {
-  Lessons,
-  getLessonMode,
-  lessonOfflineMode,
-  lessonOnlineMode,
-} from "../../Api/Lessons";
-import { useNavigation } from "@react-navigation/native";
+
 import {
   CARD_IMAGE_HEIGHT,
   CARD_IMAGE_WIDTH,
@@ -23,10 +15,19 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import Alert from "react-native-awesome-alerts";
-import { rgba } from "polished";
+import {
+  Lessons,
+  getLessonMode,
+  lessonOfflineMode,
+  lessonOnlineMode,
+} from "../../Api/Lessons";
+import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import {
+  formatOneLessonName,
+  getLockedLessons,
+} from "../../Functions/learnedLessons";
 
-let lessonImages: ImageURISource[] = [
+const lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/AMEND_NOTES.png"),
   require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
@@ -37,7 +38,7 @@ let lessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/POINTING_PAIR.png"),
 ];
 
-let learnedLessonImages: ImageURISource[] = [
+const learnedLessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/Learned/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/Learned/AMEND_NOTES.png"),
   require("./../../../.assets/CardImages/Learned/NAKED_SINGLE.png"),
@@ -48,7 +49,7 @@ let learnedLessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/Learned/POINTING_SET.png"),
 ];
 
-let lockedLessonImages: ImageURISource[] = [
+const lockedLessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/Locked/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/Locked/AMEND_NOTES.png"),
   require("./../../../.assets/CardImages/Locked/NAKED_SINGLE.png"),
@@ -75,8 +76,8 @@ const LessonPanel = (props: any) => {
   const [lockedLesson, setLockedLesson] = useState(-1);
 
   // setting lesson mode to offline
-  let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+  const LESSON_MODE = getLessonMode.Offline;
+  const getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
     mode: LESSON_MODE,
   };
 
@@ -90,15 +91,15 @@ const LessonPanel = (props: any) => {
   );
 
   if (isLoading) {
-    return <ActivityIndicator animating={true} color={theme.colors.primary} />;
+    return <ActivityIndicator animating color={theme.colors.primary} />;
   } else {
     // dynamically render in lesson buttons based on criteria
-    let lessonButtonArray = [];
-    let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
-    let NUM_LESSONS_PER_ROW = 2;
+    const lessonButtonArray = [];
+    const lockedLessons = getLockedLessons(learnedLessons, availableLessons);
+    const NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
-    let columnCount: number = calculateCardsPerRow(
+    const columnCount: number = calculateCardsPerRow(
       props.width,
       availableLessons.length,
     );
@@ -136,7 +137,7 @@ const LessonPanel = (props: any) => {
           difficulty = "Very Hard";
           break;
       }
-      let difficultyColor: string = getDifficultyColor(difficulty);
+      const difficultyColor: string = getDifficultyColor(difficulty);
       subArray.push(
         <View
           key={availableLessons[i]}
@@ -158,7 +159,7 @@ const LessonPanel = (props: any) => {
                 {formatOneLessonName(availableLessons[i])}
               </Text>
               <Text
-                testID={"difficulty"}
+                testID="difficulty"
                 variant="headlineSmall"
                 style={{ alignSelf: "center" }}
                 theme={{ colors: { onSurface: difficultyColor } }}
@@ -218,12 +219,12 @@ const LessonPanel = (props: any) => {
           alertContainerStyle={{
             backgroundColor: rgba(theme.colors.background, 0.3),
           }}
-          showCancelButton={true}
-          showConfirmButton={true}
+          showCancelButton
+          showConfirmButton
           closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
-          cancelText={"No"}
-          confirmText={"Yes"}
+          cancelText="No"
+          confirmText="Yes"
           confirmButtonColor={theme.colors.primary}
           onCancelPressed={() => {
             hideLockedWarning();

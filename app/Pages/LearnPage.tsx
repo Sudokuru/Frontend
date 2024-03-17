@@ -1,13 +1,14 @@
+import { useFocusEffect } from "@react-navigation/core";
+import { rgba } from "polished";
 import React, { useCallback, useContext, useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
-import { Text, useTheme, ActivityIndicator } from "react-native-paper";
-import { useFocusEffect } from "@react-navigation/core";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
-import { PreferencesContext } from "../Contexts/PreferencesContext";
-import LessonPanel from "../Components/Home/LessonPanel";
-import { rgba } from "polished";
+import { Text, useTheme, ActivityIndicator } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 import { Statistics } from "../Api/Statistics";
+import LessonPanel from "../Components/Home/LessonPanel";
+import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const LearnPage = () => {
@@ -96,10 +97,7 @@ const LearnPage = () => {
               {areLessonsLoaded ? (
                 <LessonPanel width={windowSize.width} />
               ) : (
-                <ActivityIndicator
-                  animating={true}
-                  color={theme.colors.primary}
-                />
+                <ActivityIndicator animating color={theme.colors.primary} />
               )}
             </View>
           </View>
@@ -116,10 +114,10 @@ const LearnPage = () => {
           alertContainerStyle={{
             backgroundColor: rgba(theme.colors.background, 0.3),
           }}
-          showConfirmButton={true}
+          showConfirmButton
           closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
-          confirmText={"OK"}
+          confirmText="OK"
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
             hideLearnHelp();

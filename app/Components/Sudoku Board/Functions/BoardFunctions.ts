@@ -1,4 +1,5 @@
 import { useWindowDimensions } from "react-native";
+
 import { Puzzles } from "../../../Api/Puzzles";
 import {
   GameDifficulty,

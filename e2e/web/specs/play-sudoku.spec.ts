@@ -1,7 +1,5 @@
-import { resumeGame } from "../fixture";
 import { expect } from "@playwright/test";
-import { PlayPage } from "../page/play.page";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
+
 import {
   IDENTICAL_VALUE_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
@@ -12,6 +10,9 @@ import {
 } from "../../../app/Styling/HighlightColors";
 import { EndGameModalComponent } from "../components/end-game-modal.component";
 import { HeaderComponent } from "../components/header.component";
+import { SudokuBoardComponent } from "../components/sudoku-board.component";
+import { resumeGame } from "../fixture";
+import { PlayPage } from "../page/play.page";
 import { StatisticsPage } from "../page/statistics.page";
 
 resumeGame.describe("pause", () => {

@@ -1,6 +1,7 @@
-import { IconButton } from "react-native-paper";
-import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { IconButton } from "react-native-paper";
+
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
 const StatisticsButton = () => {
@@ -10,7 +11,7 @@ const StatisticsButton = () => {
   return (
     <IconButton
       icon="chart-line"
-      testID={"ViewStatisticsPageButton"}
+      testID="ViewStatisticsPageButton"
       size={20}
       onPress={() => {
         updateCurrentPage("Statistics");

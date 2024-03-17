@@ -1,6 +1,7 @@
-import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
 import { Drawer } from "react-native-paper";
+
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const NavigationSideBar = (props: any) => {
@@ -12,7 +13,7 @@ const NavigationSideBar = (props: any) => {
   return (
     <Drawer.Section showDivider={false}>
       <Drawer.Item
-        icon={"menu"}
+        icon="menu"
         testID="CloseDrawerNavigation"
         label="Close"
         active={false}
@@ -21,7 +22,7 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
-        icon={"home"}
+        icon="home"
         testID="HomeButton"
         label="Home"
         active={isCurrentPage === "Landing"}
@@ -31,7 +32,7 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
-        icon={"book-open-page-variant"}
+        icon="book-open-page-variant"
         testID="LearnButton"
         label="Learn"
         active={isCurrentPage === "Learn"}
@@ -41,7 +42,7 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
-        icon={"whistle"}
+        icon="whistle"
         testID="DrillButton"
         label="Drill"
         active={isCurrentPage === "Drill"}
@@ -51,7 +52,7 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
-        icon={"play"}
+        icon="play"
         testID="PlayButton"
         label="Play"
         active={isCurrentPage === "Play"}
@@ -61,7 +62,7 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
-        icon={"email"}
+        icon="email"
         testID="ContactButton"
         label="Contact"
         active={isCurrentPage === "Contact"}

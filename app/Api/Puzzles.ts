@@ -1,6 +1,8 @@
 import { sudokuStrategyArray } from "sudokuru";
-import { gameResults, puzzle, statistics } from "./Puzzle.Types";
-import { activeGame } from "./Puzzle.Types";
+
+import { gameResults, puzzle, statistics, activeGame } from "./Puzzle.Types";
+import { Statistics } from "./Statistics";
+import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import {
   GameDifficulty,
   GameDifficultyScore,
@@ -8,8 +10,6 @@ import {
   SudokuObjectProps,
   returnLocalGame,
 } from "../Functions/LocalDatabase";
-import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
-import { Statistics } from "./Statistics";
 
 // Random games to be used by getRandomGame for landing page
 const DEMO_RANDOM_GAMES: puzzle[][] = [
@@ -231,7 +231,7 @@ export class Puzzles {
     await removeData("active_game");
 
     // Create or update user's statistics
-    let statistics: statistics = await Statistics.getStatistics();
+    const statistics: statistics = await Statistics.getStatistics();
 
     statistics.totalScore += score;
     if (

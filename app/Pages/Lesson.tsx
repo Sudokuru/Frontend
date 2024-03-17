@@ -1,3 +1,6 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   View,
@@ -6,13 +9,10 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
-import { Text, useTheme, Button, Card } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
+import { Text, useTheme, Button, Card } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "@react-navigation/core";
-import { PreferencesContext } from "../Contexts/PreferencesContext";
+
 import {
   Lessons,
   getLessonMode,
@@ -22,10 +22,11 @@ import {
 import { Statistics } from "../Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Components/Sudoku Board/sudoku";
+import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
-  let name = props.route.params
+  const name = props.route.params
     ? props.route.params.params
     : "no props.route.params in LessonPage";
 
@@ -44,15 +45,15 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const theme = useTheme();
 
-  let title = toTitle(name);
+  const title = toTitle(name);
 
   if (Lessons == null) {
     return;
   }
 
   // setting lesson mode to offline
-  let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+  const LESSON_MODE = getLessonMode.Offline;
+  const getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
     mode: LESSON_MODE,
   };
 
@@ -86,7 +87,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   };
 
   // Create lesson content cards
-  let cards = [];
+  const cards = [];
   for (let i: number = 0; i < steps.length; i++) {
     cards.push(
       <View
@@ -179,10 +180,10 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             " strategy"
           }
           messageStyle={{ maxWidth: 500 }}
-          showConfirmButton={true}
+          showConfirmButton
           closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
-          confirmText={"OK"}
+          confirmText="OK"
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
             hideLearnHelp();

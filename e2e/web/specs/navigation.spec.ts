@@ -1,12 +1,13 @@
-import { LearnPage } from "./../page/learn.page";
-import { HomePage } from "./../page/home.page";
 import { expect } from "@playwright/test";
-import { test } from "../fixture";
-import { HeaderComponent } from "../components/header.component";
+
 import { DrillPage } from "./../page/drill.page";
+import { HomePage } from "./../page/home.page";
+import { LearnPage } from "./../page/learn.page";
 import { PlayPage } from "./../page/play.page";
-import { StatisticsPage } from "../page/statistics.page";
+import { HeaderComponent } from "../components/header.component";
+import { test } from "../fixture";
 import { ProfilePage } from "../page/profile.page";
+import { StatisticsPage } from "../page/statistics.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {

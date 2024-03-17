@@ -1,7 +1,8 @@
-import { Pressable, Platform } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getCellSize } from "../Functions/BoardFunctions";
+import { Pressable, Platform } from "react-native";
 import { useTheme } from "react-native-paper";
+
+import { getCellSize } from "../Functions/BoardFunctions";
 
 interface PauseButtonProps {
   handlePause: () => void;

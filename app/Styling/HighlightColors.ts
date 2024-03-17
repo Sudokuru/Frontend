@@ -23,7 +23,7 @@ export const PURPLE_COLOR = "#025E73";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
         r: parseInt(result[1], 16),

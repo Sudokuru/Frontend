@@ -19,7 +19,7 @@ export const storeData = async (key: string, value: any) => {
  */
 export const getKeyString = async (key: string) => {
   try {
-    let value = await AsyncStorage.getItem(key);
+    const value = await AsyncStorage.getItem(key);
     if (value !== null) {
       return value;
     }
@@ -34,7 +34,7 @@ export const getKeyString = async (key: string) => {
  */
 export const getKeyJSON = async (key: string) => {
   try {
-    let value = await AsyncStorage.getItem(key);
+    const value = await AsyncStorage.getItem(key);
     if (value !== null) {
       return JSON.parse(value);
     }

@@ -1,7 +1,8 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import DrillPage from "../../Pages/DrillPage";
+import React from "react";
+
 import DrillGame from "../../Pages/DrillGame";
+import DrillPage from "../../Pages/DrillPage";
 
 const Stack = createStackNavigator();
 
