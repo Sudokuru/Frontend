@@ -3,7 +3,7 @@ import React from "react";
 import { Platform, Pressable, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 
 interface ActionRowProps {
   isEraseButtonDisabled: boolean;
@@ -23,7 +23,7 @@ const ActionRow = (props: ActionRowProps) => {
     toggleNoteMode,
     eraseSelected,
   } = props;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const theme = useTheme();
 
   const sizeConst = Platform.OS === "web" ? 1.5 : 1;

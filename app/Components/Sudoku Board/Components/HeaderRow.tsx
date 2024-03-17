@@ -5,7 +5,7 @@ import { useTheme, Text } from "react-native-paper";
 
 import PauseButton from "./PauseButton";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
-import { getCellSize, saveGame, formatTime } from "../Functions/BoardFunctions";
+import { useCellSize, saveGame, formatTime } from "../Functions/BoardFunctions";
 
 const fallbackHeight = 30;
 
@@ -18,7 +18,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const { sudokuBoard, setSudokuBoard } = props;
 
   const currentTime = sudokuBoard.statistics.time;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const navigation = useNavigation();
 
   const theme = useTheme();

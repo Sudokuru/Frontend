@@ -9,7 +9,7 @@ import {
   SELECTED_CONFLICT_COLOR,
   IDENTICAL_VALUE_COLOR,
 } from "../../../Styling/HighlightColors";
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 
 const fallbackHeight = 30;
 
@@ -37,7 +37,7 @@ const Cell = (props: RenderCellProps) => {
     c,
     r,
   } = props;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
 
   const getNoteContents = (noteIndex: number) => {
     if (entry.includes(noteIndex)) {
