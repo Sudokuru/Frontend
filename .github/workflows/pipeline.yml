@@ -41,10 +41,12 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
+      - name: install dependencies
+        run: npm i
       - name: Prettier Check
-        run: |
-          npm i prettier@2.8.8
-          npx prettier --check .
+        run: npx prettier --check .
+      - name: eslint check
+        run: npx eslint .
 
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
