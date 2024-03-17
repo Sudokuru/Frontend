@@ -8,6 +8,11 @@
       "distribution": "internal",
       "channel": "development"
     },
+    "test": {
+      "ios": {
+        "simulator": true
+      }
+    },
     "preview": {
       "distribution": "internal",
       "channel": "preview",

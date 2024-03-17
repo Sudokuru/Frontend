@@ -130,7 +130,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       (currentEntry === inputValue ||
         isValueCorrect(
           sudokuBoard.puzzleSolution[r][c],
-          currentEntry as number
+          currentEntry as number,
         ))
     ) {
       return;
@@ -161,7 +161,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
         sudokuBoard.statistics.numWrongCellsPlayed,
-        sudokuBoard.statistics.time
+        sudokuBoard.statistics.time,
       );
       sudokuBoard.statistics.score = score;
       setSudokuBoard({
@@ -215,7 +215,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter(
-          (note: number) => note != inputValue
+          (note: number) => note != inputValue,
         );
       } else {
         currentEntryCopy.push(inputValue);
@@ -239,7 +239,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
         const isValueCorrectResult = isValueCorrect(
           sudokuBoard.puzzleSolution[r][c],
-          sudokuBoard.puzzle[r][c].entry as number
+          sudokuBoard.puzzle[r][c].entry as number,
         );
         if (isValueCorrectResult === false) {
           return false;
@@ -282,7 +282,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const doesCellHaveConflict = (
     r: number,
     c: number,
-    cell: CellProps
+    cell: CellProps,
   ): boolean => {
     if (cell.type == "note" || cell.entry == 0) {
       return false;
@@ -320,7 +320,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const getCellBackgroundColor = (
     cell: CellProps,
     r: number,
-    c: number
+    c: number,
   ): string => {
     const selectedCell = sudokuBoard.selectedCell;
     const selected: boolean = isCellSelected(r, c, selectedCell);
@@ -355,7 +355,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const isCellSelected = (
     r: number,
     c: number,
-    selectedCell: CellLocation | null
+    selectedCell: CellLocation | null,
   ): boolean => {
     if (selectedCell == null) {
       return false;
@@ -396,7 +396,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const isCellPeer = (
     r: number,
     c: number,
-    selectedCell: CellLocation | null
+    selectedCell: CellLocation | null,
   ): boolean => {
     if (selectedCell == null) {
       return false;
@@ -467,7 +467,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
             sudokuBoard.selectedCell!.c
           ],
-          currentSelectedCell.entry
+          currentSelectedCell.entry,
         );
     }
     return (
@@ -495,7 +495,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
             sudokuBoard.selectedCell!.c
           ],
-          currentSelectedCell.entry
+          currentSelectedCell.entry,
         );
       // disable erase button if value === 0 or is given
       if (isCellGiven || isCellEmpty || isCellCorrect) {

@@ -10,7 +10,6 @@ import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import {
@@ -129,7 +128,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   return (
     <ScrollView>
-      <SafeAreaView
+      <View
         style={{
           height: "100%",
           width: "100%",
@@ -188,7 +187,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             hideLearnHelp();
           }}
         />
-      </SafeAreaView>
+      </View>
     </ScrollView>
   );
 };

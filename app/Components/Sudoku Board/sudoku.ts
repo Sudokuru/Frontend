@@ -13,15 +13,15 @@ export function range(n: number) {
  */
 export function areCellsInSameBox(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   const currentBoxIndex = generateBoxIndex(
     currentCellCoordinate.r,
-    currentCellCoordinate.c
+    currentCellCoordinate.c,
   );
   const selectedBoxIndex = generateBoxIndex(
     selectedCellCoordinate.r,
-    selectedCellCoordinate.c
+    selectedCellCoordinate.c,
   );
   return currentBoxIndex === selectedBoxIndex;
 }
@@ -43,7 +43,7 @@ function generateBoxIndex(row: number, column: number): number {
  */
 export function areCellsInSameRow(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
@@ -56,7 +56,7 @@ export function areCellsInSameRow(
  */
 export function areCellsInSameColumn(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }

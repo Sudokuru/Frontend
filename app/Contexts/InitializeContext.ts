@@ -37,14 +37,14 @@ const InitializeContext = () => {
     (props: any) => {
       return setCurrentPage(props);
     },
-    [currentPage]
+    [currentPage],
   );
 
   const updateLearnedLessons = React.useCallback(
     (props: any) => {
       return setLearnedLessons(props);
     },
-    [learnedLessons]
+    [learnedLessons],
   );
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
@@ -99,7 +99,7 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
-    ]
+    ],
   );
 
   return {
