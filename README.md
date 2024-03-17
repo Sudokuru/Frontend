@@ -84,7 +84,31 @@ May be a way to do it over wifi as well:
 https://qaautomationworld.blogspot.com/2014/06/appium-executing-test-throgh-wi-fi-on-real-devies.html  
 https://stackoverflow.com/questions/42992965/how-to-connect-to-your-device-from-terminal-using-adb-commands
 
-# Android Simulator
+Run `npm run start` command in the root directory to start the app locally if testing with expo. Otherwise build the apk file (not yet setup).
+
+Run `appium:start` command in `e2e/mobile` directory. Before running the command ensure that `ANDROID_HOME` variable is set correctly.
+
+Run the [Appium Inspector](https://github.com/appium/appium-inspector/releases) and connect to the appium instance. The capabilitiy builder can be filled out by using values from the wdio config files.
+
+The Appium Inspector is the easiest way to find UI selectors for writing test cases. The preferred selector types are as follows:
+
+1. ID
+2. Accessibility ID
+3. Class Name
+4. XPath
+
+For elements that we have control over, we should be able to use Accessibility id. This would allow our test identifiers to be cross-platform between iOS and Android. XPath should be avoided when possible with appium due to stability issues, but sometimes it cannot be avoided.
+
+More information can be found in these guides:
+
+- https://www.browserstack.com/guide/locators-in-appium
+- https://webdriver.io/docs/selectors/#mobile-selectors
+
+Run the test cases using the desired profile. For now `android expo` is the only working profile, so run the `wdio:android:expo` command to start the tests.
+
+##
+
+# Android Simulator (todo not ready yet)
 
 appium with webdriver doesn't shut down port after execution:  
 solution is to remove port:  
@@ -93,8 +117,6 @@ windows:
 `Taskkill /F /PID <pid>`
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq
-
-2. Appium Inspector: https://github.com/appium/appium-inspector/releases
 
 Interesting info.
 
