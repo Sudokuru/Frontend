@@ -10,6 +10,7 @@ import StatisticsPage from "../page/statistics.page.ts";
 import HeaderComponent from "../components/header.component.ts";
 
 describe("navigation routing", () => {
+  // for tests running through Expo Go we need to run additional steps before each test
   beforeEach(async () => {
     if (isExpoTest()) {
       await ExpoPage.openApp();
