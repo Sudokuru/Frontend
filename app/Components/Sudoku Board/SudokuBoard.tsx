@@ -40,6 +40,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
   }, []);
 
+  const {
+    isHighlightIdenticalValues,
+    isHighlightBox,
+    isHighlightRow,
+    isHighlightColumn,
+  } = React.useContext(PreferencesContext);
+
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
     return <ActivityIndicator animating color="red" />;
@@ -291,12 +298,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const renderCell = (cell: CellProps, r: number, c: number) => {
     // row and column values are incorrect here.
     // console.log("RENDER CELL", c, "COLUMN", r, "ROW", cell)
-    const {
-      isHighlightIdenticalValues,
-      isHighlightBox,
-      isHighlightRow,
-      isHighlightColumn,
-    } = React.useContext(PreferencesContext);
 
     const selected = sudokuBoard.selectedCell;
     let isSelected = false;
