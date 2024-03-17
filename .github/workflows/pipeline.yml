@@ -46,7 +46,7 @@ jobs:
       - name: Prettier Check
         run: npx prettier --check .
       - name: eslint check
-        run: npx eslint .
+        run: npx eslint . --max-warnings=0
 
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
