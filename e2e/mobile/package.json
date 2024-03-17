@@ -17,7 +17,7 @@
   },
   "scripts": {
     "postinstall": "patch-package",
-    "appium:start": "npx appium --port 4724",
+    "appium:start": "npx appium --port 4723",
     "wdio": "wdio run ./wdio.conf.ts",
     "wdio:android:expo": "wdio run ./wdio.android.expo.conf.ts",
     "wdio:android:apk": "wdio run ./wdio.android.apk.conf.ts",

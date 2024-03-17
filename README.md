@@ -134,7 +134,7 @@ Current working profiles:
 appium with webdriver doesn't shut down port after execution:  
 solution is to remove port:  
 windows:  
-`netstat -aon | findstr ":4724" | findstr "LISTENING"`  
+`netstat -aon | findstr ":4723" | findstr "LISTENING"`  
 `Taskkill /F /PID <pid>`
 
 1. https://github.com/webdriverio/appium-boilerplate/blob/main/docs/FAQ.md#faq

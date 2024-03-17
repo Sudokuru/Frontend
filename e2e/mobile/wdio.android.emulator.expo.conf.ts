@@ -48,7 +48,7 @@ export const config: Options.Testrunner = {
     {
       // capabilities for local Appium web tests on an Android Emulator
       platformName: "Android",
-      port: 4724,
+      port: 4723,
       "appium:deviceName": "emulator-5554",
       "appium:platformVersion": "9",
       "appium:automationName": "UiAutomator2",
