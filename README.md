@@ -84,9 +84,11 @@ May be a way to do it over wifi as well:
 https://qaautomationworld.blogspot.com/2014/06/appium-executing-test-throgh-wi-fi-on-real-devies.html  
 https://stackoverflow.com/questions/42992965/how-to-connect-to-your-device-from-terminal-using-adb-commands
 
-Run `npm run start` command in the root directory to start the app locally if testing with expo. Otherwise build the apk file (not yet setup).
+Run `npm run android` command in the root directory to start the app locally if testing with expo. Otherwise build the apk file (not yet setup).
 
 Run `appium:start` command in `e2e/mobile` directory. Before running the command ensure that `ANDROID_HOME` variable is set correctly.
+
+Set the appropriate `.env` variables based on the `.env.config` file.
 
 Run the [Appium Inspector](https://github.com/appium/appium-inspector/releases) and connect to the appium instance. The capabilitiy builder can be filled out by using values from the wdio config files.
 
