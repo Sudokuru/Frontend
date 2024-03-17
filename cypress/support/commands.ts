@@ -52,7 +52,7 @@ Cypress.Commands.add("Cell_Should_Have_Color", (row, column, color) => {
   cy.get("[data-testid^=cellr" + row + "c" + column + "]").should(
     "have.css",
     "background-color",
-    color
+    color,
   );
 });
 
@@ -70,7 +70,7 @@ Cypress.Commands.add(
         }
       }
     }
-  }
+  },
 );
 
 Cypress.Commands.add("Get_Box_Index_From_Cell_Coords", (row, column) => {
@@ -105,7 +105,7 @@ Cypress.Commands.add(
         cy.Cell_Should_Have_Color(row, col, selected ? colorA : colorB);
       }
     }
-  }
+  },
 );
 
 Cypress.Commands.add(
@@ -116,9 +116,9 @@ Cypress.Commands.add(
       index,
       selectedIndexes,
       HINT_SELECTED_COLOR_RGB,
-      NOT_HIGHLIGHTED_COLOR_RGB
+      NOT_HIGHLIGHTED_COLOR_RGB,
     );
-  }
+  },
 );
 
 Cypress.Commands.add(
@@ -138,5 +138,5 @@ Cypress.Commands.add(
           .should("have.css", "color", color);
       }
     });
-  }
+  },
 );

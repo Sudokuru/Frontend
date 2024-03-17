@@ -225,7 +225,7 @@ export class Puzzles {
     numHintsUsed: number,
     numWrongCellsPlayed: number,
     time: number,
-    score: number
+    score: number,
   ) {
     // remove the game from storage
     await removeData("active_game");
@@ -245,7 +245,7 @@ export class Puzzles {
     statistics.numHintsUsed += numHintsUsed;
     statistics.numWrongCellsPlayed += numWrongCellsPlayed;
     statistics.averageSolveTime = Math.round(
-      statistics.totalSolveTime / statistics.numGamesPlayed
+      statistics.totalSolveTime / statistics.numGamesPlayed,
     );
 
     Statistics.saveStatisitics(statistics);

@@ -86,7 +86,7 @@ const LessonPanel = (props: any) => {
         setAvailableLessons(result);
         setIsLoading(false);
       });
-    }, [])
+    }, []),
   );
 
   if (isLoading) {
@@ -100,7 +100,7 @@ const LessonPanel = (props: any) => {
     let subArray = [];
     let columnCount: number = calculateCardsPerRow(
       props.width,
-      availableLessons.length
+      availableLessons.length,
     );
     for (let i = 0; i < availableLessons.length; i++) {
       let img: ImageURISource;
@@ -176,7 +176,7 @@ const LessonPanel = (props: any) => {
               />
             </Card>
           </TouchableOpacity>
-        </View>
+        </View>,
       );
 
       // Add row

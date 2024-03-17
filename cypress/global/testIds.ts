@@ -78,7 +78,7 @@ export function CELL(row: number, column: number): string {
 export function CELL_WITH_VALUE(
   row: number,
   column: number,
-  value: number
+  value: number,
 ): string {
   return "[data-testid=cellr" + row + "c" + column + "value\\:" + value + "]";
 }
@@ -86,7 +86,7 @@ export function CELL_WITH_VALUE(
 export function CELL_WITH_NOTES(
   row: number,
   column: number,
-  notes: string
+  notes: string,
 ): string {
   return "[data-testid=cellr" + row + "c" + column + "notes\\:" + notes + "]";
 }

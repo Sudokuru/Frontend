@@ -33,7 +33,7 @@ const StatisticsPage = () => {
       numHintsUsed: 0,
       numWrongCellsPlayed: 0,
       totalSolveTime: 0,
-    }
+    },
   );
 
   const [warningVisible, setWarningVisible] = React.useState(false);
@@ -60,7 +60,7 @@ const StatisticsPage = () => {
   useFocusEffect(
     React.useCallback(() => {
       getUserStatistics();
-    }, [])
+    }, []),
   );
 
   if (isLoading) {

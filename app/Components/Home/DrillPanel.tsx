@@ -75,7 +75,7 @@ const DrillPanel = (props: any) => {
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
     props.width,
-    drillStrategies.length
+    drillStrategies.length,
   );
   for (let i = 0; i < drillStrategies.length; i++) {
     let img: ImageURISource = drillImages[i];
@@ -138,7 +138,7 @@ const DrillPanel = (props: any) => {
             />
           </Card>
         </TouchableOpacity>
-      </View>
+      </View>,
     );
 
     // Add row

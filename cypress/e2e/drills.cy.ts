@@ -15,7 +15,7 @@ describe("naked single drills", () => {
   beforeEach(() => {
     window.localStorage.setItem(
       "learned_lessons",
-      LOCAL_STORAGE_ALL_LEARNED_LESSONS
+      LOCAL_STORAGE_ALL_LEARNED_LESSONS,
     );
     window.localStorage.setItem("dismissDrillTutorial", "true");
     cy.visit("");

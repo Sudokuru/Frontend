@@ -34,7 +34,7 @@ declare global {
       Cell_Should_Have_Color(
         row: number,
         column: number,
-        color: string
+        color: string,
       ): Chainable<JQuery<HTMLElement>>;
 
       /**
@@ -49,7 +49,7 @@ declare global {
         row: number,
         column: number,
         box: number,
-        color: string
+        color: string,
       ): Chainable<JQuery<HTMLElement>>;
 
       /**
@@ -61,7 +61,7 @@ declare global {
        */
       Get_Box_Index_From_Cell_Coords(
         row: number,
-        column: number
+        column: number,
       ): Chainable<number>;
 
       /**
@@ -78,7 +78,7 @@ declare global {
         index: number,
         selectedIndexes: number[],
         colorA: string,
-        colorB: string
+        colorB: string,
       ): Chainable<JQuery<HTMLElement>>;
 
       /**
@@ -91,7 +91,7 @@ declare global {
       Group_Should_Only_Have_Indexes_Selected(
         groupType: number,
         index: number,
-        selectedIndexes: number[]
+        selectedIndexes: number[],
       ): Chainable<JQuery<HTMLElement>>;
 
       /**
@@ -108,7 +108,7 @@ declare global {
         column: number,
         notes: string,
         noteRemoveColored: string,
-        notePlaceColored: string
+        notePlaceColored: string,
       ): Chainable<JQuery<HTMLElement>>;
     }
   }

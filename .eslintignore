@@ -9,6 +9,7 @@ junit.xml
 .husky/
 .github/
 License.md
+src-tauri/
 
 .expo/
 dist/

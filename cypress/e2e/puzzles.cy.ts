@@ -49,7 +49,7 @@ describe("Sudoku play component functions", () => {
   beforeEach(() => {
     window.localStorage.setItem(
       "learned_lessons",
-      LOCAL_STORAGE_ALL_LEARNED_LESSONS
+      LOCAL_STORAGE_ALL_LEARNED_LESSONS,
     );
     window.localStorage.setItem("active_game", ACTIVE_GAME);
     cy.visit("");
@@ -74,7 +74,7 @@ describe("Sudoku play component functions", () => {
             cy.Cell_Should_Have_Color(
               row,
               column,
-              NOT_SELECTED_CONFLICT_COLOR_RGB
+              NOT_SELECTED_CONFLICT_COLOR_RGB,
             );
           } else if (row === 7 && column === 7) {
             cy.Cell_Should_Have_Color(row, column, SELECTED_COLOR_RGB);
@@ -116,7 +116,7 @@ describe("Sudoku play component functions", () => {
             cy.Cell_Should_Have_Color(
               row,
               column,
-              NOT_SELECTED_CONFLICT_COLOR_RGB
+              NOT_SELECTED_CONFLICT_COLOR_RGB,
             );
           } else if (row === 7 && column === 7) {
             cy.Cell_Should_Have_Color(row, column, SELECTED_CONFLICT_COLOR_RGB);
@@ -142,7 +142,7 @@ describe("Sudoku play component functions", () => {
           cy.get(CELL(7, 7)).trigger("click").type(i.toString());
           cy.get(CELL_WITH_VALUE(7, 7, i)).should("exist");
         });
-      }
+      },
     );
   }
 
@@ -159,7 +159,7 @@ describe("Sudoku play component functions", () => {
           cy.get(NUMBER_BUTTON(i)).click();
           cy.get(CELL_WITH_VALUE(7, 7, i)).should("exist");
         });
-      }
+      },
     );
   }
 
@@ -172,7 +172,7 @@ describe("Sudoku play component functions", () => {
           cy.get(CELL(7, 7)).trigger("click").type(i.toString());
           cy.get(CELL_WITH_NOTES(7, 7, i.toString())).should("exist");
         });
-      }
+      },
     );
   }
 
@@ -190,7 +190,7 @@ describe("Sudoku play component functions", () => {
           cy.get(NUMBER_BUTTON(i)).click();
           cy.get(CELL_WITH_NOTES(7, 7, i.toString())).should("exist");
         });
-      }
+      },
     );
   }
 
@@ -205,7 +205,7 @@ describe("Sudoku play component functions", () => {
             cy.Cell_Should_Have_Color(
               row,
               column,
-              NOT_SELECTED_CONFLICT_COLOR_RGB
+              NOT_SELECTED_CONFLICT_COLOR_RGB,
             );
           } else {
             cy.Cell_Should_Have_Color(row, column, NOT_HIGHLIGHTED_COLOR_RGB);

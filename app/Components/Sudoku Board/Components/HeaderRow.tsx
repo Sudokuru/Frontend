@@ -32,7 +32,7 @@ const HeaderRow = (props: HeaderRowProps) => {
         }));
       }, 1000);
       return () => clearInterval(interval);
-    }, [sudokuBoard.statistics.time])
+    }, [sudokuBoard.statistics.time]),
   );
 
   const handlePause = () => {

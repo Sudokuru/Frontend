@@ -19,7 +19,7 @@ export class SudokuBoardComponent {
     page: Page,
     numNumPads?: number,
     numRows?: number,
-    numColumns?: number
+    numColumns?: number,
   ) {
     this.page = page;
 
@@ -56,13 +56,13 @@ export class SudokuBoardComponent {
 
   async cellHasValue(row: number, column: number, value: string) {
     await expect(
-      this.page.getByTestId(`cellr${row}c${column}value:${value}`)
+      this.page.getByTestId(`cellr${row}c${column}value:${value}`),
     ).toBeInViewport({ ratio: 1 });
   }
 
   async cellHasNotes(row: number, column: number, notes: string) {
     await expect(
-      this.page.getByTestId(`cellr${row}c${column}notes:${notes}`)
+      this.page.getByTestId(`cellr${row}c${column}notes:${notes}`),
     ).toBeInViewport({ ratio: 1 });
   }
 

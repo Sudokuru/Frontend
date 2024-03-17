@@ -16,7 +16,7 @@ describe("Sudoku lesson page functions", () => {
   beforeEach(() => {
     window.localStorage.setItem(
       "learned_lessons",
-      LOCAL_STORAGE_SOME_LEARNED_LESSONS
+      LOCAL_STORAGE_SOME_LEARNED_LESSONS,
     );
     cy.visit("");
     cy.get(OPEN_DRAWER_NAVIGATION).click();
@@ -51,7 +51,7 @@ describe("Sudoku lesson page functions", () => {
         cy.get("[data-testid=difficulty]").should(
           "have.css",
           "color",
-          VERY_EASY_COLOR_RGB
+          VERY_EASY_COLOR_RGB,
         );
       });
     }
@@ -61,7 +61,7 @@ describe("Sudoku lesson page functions", () => {
       cy.get("[data-testid=difficulty]").should(
         "have.css",
         "color",
-        VERY_EASY_COLOR_RGB
+        VERY_EASY_COLOR_RGB,
       );
     });
     // Easy Locked Card
@@ -70,7 +70,7 @@ describe("Sudoku lesson page functions", () => {
       cy.get("[data-testid=difficulty]").should(
         "have.css",
         "color",
-        EASY_COLOR_RGB
+        EASY_COLOR_RGB,
       );
     });
     // Intermediate Locked Card
@@ -79,7 +79,7 @@ describe("Sudoku lesson page functions", () => {
       cy.get("[data-testid=difficulty]").should(
         "have.css",
         "color",
-        INTERMEDIATE_COLOR_RGB
+        INTERMEDIATE_COLOR_RGB,
       );
     });
     // Hard Locked Card
@@ -88,7 +88,7 @@ describe("Sudoku lesson page functions", () => {
       cy.get("[data-testid=difficulty]").should(
         "have.css",
         "color",
-        HARD_COLOR_RGB
+        HARD_COLOR_RGB,
       );
     });
     // Very Hard Locked Card
@@ -97,7 +97,7 @@ describe("Sudoku lesson page functions", () => {
       cy.get("[data-testid=difficulty]").should(
         "have.css",
         "color",
-        VERY_HARD_COLOR_RGB
+        VERY_HARD_COLOR_RGB,
       );
     });
   });
@@ -107,7 +107,7 @@ describe("Sudoku lesson page functions", () => {
     cy.contains("You have selected a lesson that is locked.");
     cy.contains("div", /^No$/).click();
     cy.contains("You have selected a lesson that is locked.").should(
-      "not.exist"
+      "not.exist",
     );
   });
 

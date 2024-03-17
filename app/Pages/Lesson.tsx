@@ -63,7 +63,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       Lessons.getSteps(name, getlessonArgs).then((result: any) => {
         setSteps(result);
       });
-    }, [])
+    }, []),
   );
 
   async function saveUserLearnedLessons(learnedLessons: string[]) {
@@ -123,7 +123,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             <Text variant="headlineSmall">{steps[i][0]}</Text>
           </View>
         </Card>
-      </View>
+      </View>,
     );
   }
 

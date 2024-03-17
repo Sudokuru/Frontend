@@ -43,7 +43,7 @@ const LearnPage = () => {
         });
       }
       getUserLearnedLessons();
-    }, [learnedLessons])
+    }, [learnedLessons]),
   );
 
   return (

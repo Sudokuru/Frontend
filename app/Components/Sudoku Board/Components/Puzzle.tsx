@@ -6,7 +6,7 @@ interface PuzzleProps {
   renderCell: (
     cell: CellProps,
     r: number,
-    c: number
+    c: number,
   ) => JSX.Element | undefined;
   sudokuBoard: SudokuObjectProps;
 }

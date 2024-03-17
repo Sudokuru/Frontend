@@ -48,7 +48,7 @@ const PlayPage = () => {
         });
       }
       grabCurrentGame();
-    }, [])
+    }, []),
   );
 
   const [playHelpVisible, setPlayHelpVisible] = React.useState(false);

@@ -25,7 +25,7 @@ function highlightGroup(
   index: number,
   row: number,
   col: number,
-  box: number
+  box: number,
 ): boolean {
   if (groupType == "row" && index == row) return true;
   if (groupType == "col" && index == col) return true;
@@ -42,7 +42,7 @@ function highlightGroup(
 export function highlightGroups(
   currentHint: any,
   row: number,
-  col: number
+  col: number,
 ): boolean {
   if (currentHint.groups) {
     // group highlighting
@@ -54,7 +54,7 @@ export function highlightGroups(
           currentHint.groups[i].index,
           row,
           col,
-          getBoxIndexFromXY(col, row)
+          getBoxIndexFromXY(col, row),
         )
       ) {
         return true;
@@ -74,7 +74,7 @@ export function highlightGroups(
 export function highlightCauses(
   currentHint: any,
   row: number,
-  col: number
+  col: number,
 ): boolean {
   if (currentHint && currentHint.causes) {
     for (let i = 0; i < currentHint.causes.length; i++) {
@@ -99,7 +99,7 @@ export function setRemovalHighlights(
   isRemovalHighlight: boolean[],
   currentHint: any,
   row: number,
-  col: number
+  col: number,
 ): void {
   if (currentHint.removals) {
     for (let i = 0; i < currentHint.removals.length; i++) {
@@ -129,7 +129,7 @@ export function setPlacementHighlights(
   isPlacementHighlight: boolean[],
   currentHint: any,
   row: any,
-  col: any
+  col: any,
 ): void {
   if (currentHint.placements) {
     let currentPlacement = currentHint.placements;
@@ -153,7 +153,7 @@ export function setPlacementHighlights(
 export function addGroupToHint(
   hint: Hint,
   hintStepNumber: number,
-  group: any[]
+  group: any[],
 ): void {
   let tempGroup: Group = new Group();
   for (let i: number = 0; i < group.length; i++) {
@@ -221,7 +221,7 @@ export function getHintObject(
   groups: any[],
   causes: number[][],
   removals: any[],
-  placement: any
+  placement: any,
 ): Hint {
   let steps: number = getStepCount(strategy);
   let removalModes: string[] = getRemovalModes(strategy);
@@ -235,14 +235,14 @@ export function getHintObject(
         step,
         removals[removal].position,
         removals[removal].values,
-        removalModes[step]
+        removalModes[step],
       );
     }
     if (placement.length > 0) {
       hint.addPlacement(
         placement[0].position,
         placement[0].value,
-        placementModes[step]
+        placementModes[step],
       );
     }
   }

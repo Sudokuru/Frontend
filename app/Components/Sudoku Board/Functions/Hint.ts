@@ -61,7 +61,7 @@ export default class Hint {
     step: number,
     position: number[],
     values: number[],
-    mode: string
+    mode: string,
   ): void {
     let tempGroup: Group = new Group();
     tempGroup.setRow(position[0]);
@@ -141,7 +141,7 @@ export default class Hint {
           removal++
         ) {
           hintSteps[step].removals.push(
-            this.removals[step][removal].getRemoval()
+            this.removals[step][removal].getRemoval(),
           );
         }
       }

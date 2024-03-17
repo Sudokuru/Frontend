@@ -29,7 +29,7 @@ describe("Profile Tests", () => {
   beforeEach(() => {
     window.localStorage.setItem(
       "active_game",
-      '[{"variant":"classic","version":"1.0.0","selectedCell":null,"puzzle":[[{"type":"value","entry":1},{"type":"value","entry":2},{"type":"given","entry":3},{"type":"value","entry":4},{"type":"given","entry":5},{"type":"value","entry":8},{"type":"value","entry":9},{"type":"given","entry":7},{"type":"value","entry":6}],[{"type":"value","entry":4},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":9},{"type":"given","entry":7},{"type":"given","entry":8},{"type":"value","entry":2},{"type":"given","entry":1}],[{"type":"value","entry":7},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"value","entry":1},{"type":"value","entry":6},{"type":"value","entry":2},{"type":"value","entry":4},{"type":"value","entry":5},{"type":"value","entry":3}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":8},{"type":"value","entry":0},{"type":"value","entry":1},{"type":"given","entry":6},{"type":"value","entry":0}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":5},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":7},{"type":"value","entry":9},{"type":"given","entry":8}],[{"type":"value","entry":0},{"type":"value","entry":9},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":4},{"type":"value","entry":0}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"given","entry":5},{"type":"value","entry":2},{"type":"value","entry":0},{"type":"given","entry":9}],[{"type":"value","entry":5},{"type":"given","entry":1},{"type":"given","entry":2},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":6},{"type":"value","entry":0},{"type":"value","entry":7}],[{"type":"value","entry":9},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":5},{"type":"value","entry":0},{"type":"value","entry":4}]],"puzzleSolution":[[1,2,3,4,5,8,9,7,6],[4,5,6,3,9,7,8,2,1],[7,8,9,1,6,2,4,5,3],[2,3,7,9,8,4,1,6,5],[6,4,1,5,2,3,7,9,8],[8,9,5,6,7,1,3,4,2],[3,6,4,7,1,5,2,8,9],[5,1,2,8,4,9,6,3,7],[9,7,8,2,3,6,5,1,4]],"statistics":{"difficulty":"easy","internalDifficulty":348,"numHintsUsed":0,"numWrongCellsPlayed":235,"score":0,"time":374},"inNoteMode":false,"actionHistory":[]}]'
+      '[{"variant":"classic","version":"1.0.0","selectedCell":null,"puzzle":[[{"type":"value","entry":1},{"type":"value","entry":2},{"type":"given","entry":3},{"type":"value","entry":4},{"type":"given","entry":5},{"type":"value","entry":8},{"type":"value","entry":9},{"type":"given","entry":7},{"type":"value","entry":6}],[{"type":"value","entry":4},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":9},{"type":"given","entry":7},{"type":"given","entry":8},{"type":"value","entry":2},{"type":"given","entry":1}],[{"type":"value","entry":7},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"value","entry":1},{"type":"value","entry":6},{"type":"value","entry":2},{"type":"value","entry":4},{"type":"value","entry":5},{"type":"value","entry":3}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":8},{"type":"value","entry":0},{"type":"value","entry":1},{"type":"given","entry":6},{"type":"value","entry":0}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":5},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":7},{"type":"value","entry":9},{"type":"given","entry":8}],[{"type":"value","entry":0},{"type":"value","entry":9},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":3},{"type":"value","entry":4},{"type":"value","entry":0}],[{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"given","entry":5},{"type":"value","entry":2},{"type":"value","entry":0},{"type":"given","entry":9}],[{"type":"value","entry":5},{"type":"given","entry":1},{"type":"given","entry":2},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":6},{"type":"value","entry":0},{"type":"value","entry":7}],[{"type":"value","entry":9},{"type":"value","entry":7},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":5},{"type":"value","entry":0},{"type":"value","entry":4}]],"puzzleSolution":[[1,2,3,4,5,8,9,7,6],[4,5,6,3,9,7,8,2,1],[7,8,9,1,6,2,4,5,3],[2,3,7,9,8,4,1,6,5],[6,4,1,5,2,3,7,9,8],[8,9,5,6,7,1,3,4,2],[3,6,4,7,1,5,2,8,9],[5,1,2,8,4,9,6,3,7],[9,7,8,2,3,6,5,1,4]],"statistics":{"difficulty":"easy","internalDifficulty":348,"numHintsUsed":0,"numWrongCellsPlayed":235,"score":0,"time":374},"inNoteMode":false,"actionHistory":[]}]',
     );
     cy.visit("");
     cy.get(VIEW_PROFILE_PAGE_BUTTON).click();
@@ -114,7 +114,7 @@ describe("Profile Tests", () => {
         1,
         1,
         -1,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
       cy.Cell_Should_Have_Color(0, 0, NOT_HIGHLIGHTED_COLOR_RGB);
     });
@@ -132,7 +132,7 @@ describe("Profile Tests", () => {
         1,
         1,
         0,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
       cy.Cell_Should_Have_Color(0, 0, PEER_SELECTED_COLOR_RGB);
     });
@@ -156,7 +156,7 @@ describe("Profile Tests", () => {
         -1,
         1,
         0,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
     });
 
@@ -173,7 +173,7 @@ describe("Profile Tests", () => {
         1,
         1,
         0,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
       cy.Cell_Should_Have_Color(1, 3, PEER_SELECTED_COLOR_RGB);
     });
@@ -197,7 +197,7 @@ describe("Profile Tests", () => {
         1,
         -1,
         0,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
     });
 
@@ -214,7 +214,7 @@ describe("Profile Tests", () => {
         1,
         1,
         0,
-        NOT_HIGHLIGHTED_COLOR_RGB
+        NOT_HIGHLIGHTED_COLOR_RGB,
       );
       cy.Cell_Should_Have_Color(3, 1, PEER_SELECTED_COLOR_RGB);
     });

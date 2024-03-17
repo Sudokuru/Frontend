@@ -37,7 +37,7 @@ resumeGame.describe("board highlighting", () => {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              NOT_SELECTED_CONFLICT_COLOR_RGB
+              NOT_SELECTED_CONFLICT_COLOR_RGB,
             );
           } else if (row === 7 && column === 7) {
             await sudokuBoard.cellHasColor(row, column, SELECTED_COLOR_RGB);
@@ -45,30 +45,30 @@ resumeGame.describe("board highlighting", () => {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              PEER_SELECTED_COLOR_RGB
+              PEER_SELECTED_COLOR_RGB,
             );
           } else if (column === 7 && row !== 7) {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              PEER_SELECTED_COLOR_RGB
+              PEER_SELECTED_COLOR_RGB,
             );
           } else if (row > 5 && column > 5) {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              PEER_SELECTED_COLOR_RGB
+              PEER_SELECTED_COLOR_RGB,
             );
           } else {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              NOT_HIGHLIGHTED_COLOR_RGB
+              NOT_HIGHLIGHTED_COLOR_RGB,
             );
           }
         }
       }
-    }
+    },
   );
 
   // TODO: Add test: Board Highlighting should render correctly when cell is unselected
@@ -95,36 +95,36 @@ resumeGame.describe("board highlighting", () => {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              IDENTICAL_VALUE_COLOR_RGB
+              IDENTICAL_VALUE_COLOR_RGB,
             );
           } else if (row === 7 && column === 6) {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              NOT_SELECTED_CONFLICT_COLOR_RGB
+              NOT_SELECTED_CONFLICT_COLOR_RGB,
             );
           } else if (row === 7 && column === 7) {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              SELECTED_CONFLICT_COLOR_RGB
+              SELECTED_CONFLICT_COLOR_RGB,
             );
           } else if (row === 7 || column == 7 || (row > 5 && column > 5)) {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              PEER_SELECTED_COLOR_RGB
+              PEER_SELECTED_COLOR_RGB,
             );
           } else {
             await sudokuBoard.cellHasColor(
               row,
               column,
-              NOT_HIGHLIGHTED_COLOR_RGB
+              NOT_HIGHLIGHTED_COLOR_RGB,
             );
           }
         }
       }
-    }
+    },
   );
 
   // TODO: Add test: Board Highlighting should render correctly when undo button is entered
@@ -135,7 +135,7 @@ resumeGame.describe("board highlighting", () => {
       const sudokuBoard = new SudokuBoardComponent(page);
       await sudokuBoard.cell[7][6].click();
       await sudokuBoard.cellHasColor(7, 6, SELECTED_CONFLICT_COLOR_RGB);
-    }
+    },
   );
 });
 
@@ -148,7 +148,7 @@ resumeGame.describe("typing", () => {
         await sudokuBoard.cell[7][7].click();
         await sudokuBoard.cell[7][7].press(i.toString());
         await sudokuBoard.cellHasValue(7, 7, i.toString());
-      }
+      },
     );
   }
 
@@ -161,7 +161,7 @@ resumeGame.describe("typing", () => {
         await sudokuBoard.note.click();
         await sudokuBoard.cell[7][7].press(i.toString());
         await sudokuBoard.cellHasNotes(7, 7, i.toString());
-      }
+      },
     );
   }
 });
@@ -175,7 +175,7 @@ resumeGame.describe("numpad", () => {
         await sudokuBoard.cell[7][7].click();
         await sudokuBoard.numPad[i - 1].click();
         await sudokuBoard.cellHasValue(7, 7, i.toString());
-      }
+      },
     );
   }
 
@@ -188,7 +188,7 @@ resumeGame.describe("numpad", () => {
         await sudokuBoard.note.click();
         await sudokuBoard.numPad[i - 1].click();
         await sudokuBoard.cellHasNotes(7, 7, i.toString());
-      }
+      },
     );
   }
 });
@@ -203,7 +203,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 7, "1");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 7, "0");
-    }
+    },
   );
 
   resumeGame(
@@ -215,7 +215,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 7, "1");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 7, "0");
-    }
+    },
   );
 
   resumeGame(
@@ -227,7 +227,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 6, "0");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 6, "1");
-    }
+    },
   );
 
   resumeGame(
@@ -239,7 +239,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 8, "0");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasNotes(7, 8, "45");
-    }
+    },
   );
 
   resumeGame(
@@ -251,7 +251,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 6, "2");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 6, "1");
-    }
+    },
   );
 
   resumeGame(
@@ -263,7 +263,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasValue(7, 6, "2");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 6, "1");
-    }
+    },
   );
 
   resumeGame(
@@ -276,7 +276,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasNotes(7, 7, "1");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 7, "0");
-    }
+    },
   );
 
   resumeGame(
@@ -289,7 +289,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasNotes(7, 7, "1");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasValue(7, 7, "0");
-    }
+    },
   );
 
   resumeGame(
@@ -302,7 +302,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasNotes(7, 8, "4");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasNotes(7, 8, "45");
-    }
+    },
   );
 
   resumeGame(
@@ -315,7 +315,7 @@ resumeGame.describe("undo", () => {
       await sudokuBoard.cellHasNotes(7, 8, "4");
       await sudokuBoard.undo.click();
       await sudokuBoard.cellHasNotes(7, 8, "45");
-    }
+    },
   );
 });
 
@@ -327,7 +327,7 @@ resumeGame.describe("erase", () => {
       await sudokuBoard.cellHasValue(0, 2, "3");
       await sudokuBoard.cell[0][2].click();
       await sudokuBoard.eraseButtonIsDisabled();
-    }
+    },
   );
 
   resumeGame(
@@ -337,7 +337,7 @@ resumeGame.describe("erase", () => {
       await sudokuBoard.cellHasValue(0, 0, "1");
       await sudokuBoard.cell[0][0].click();
       await sudokuBoard.eraseButtonIsDisabled();
-    }
+    },
   );
 
   resumeGame("Erasing an incorrect value should succeed", async ({ page }) => {
@@ -367,7 +367,7 @@ resumeGame.describe("complete game", () => {
       await endGameModal.newGame.click();
       const playPage = new PlayPage(page);
       await playPage.playPageIsRendered();
-    }
+    },
   );
 
   resumeGame(
@@ -385,18 +385,18 @@ resumeGame.describe("complete game", () => {
         ratio: 1,
       });
       await expect(
-        endGameModal.page.getByText("Time Spent: 06:1")
+        endGameModal.page.getByText("Time Spent: 06:1"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        endGameModal.page.getByText("Number of Hints Used: 0")
+        endGameModal.page.getByText("Number of Hints Used: 0"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        endGameModal.page.getByText("Mistakes Made: 235")
+        endGameModal.page.getByText("Mistakes Made: 235"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        endGameModal.page.getByText("Difficulty: easy")
+        endGameModal.page.getByText("Difficulty: easy"),
       ).toBeInViewport({ ratio: 1 });
-    }
+    },
   );
 
   resumeGame(
@@ -416,26 +416,26 @@ resumeGame.describe("complete game", () => {
       const statistics = new StatisticsPage(page);
       await statistics.statisticsPageIsRendered();
       await expect(statistics.page.getByText("Total Score: 34")).toBeInViewport(
-        { ratio: 1 }
+        { ratio: 1 },
       );
       await expect(statistics.page.getByText("Games Played: 1")).toBeInViewport(
-        { ratio: 1 }
+        { ratio: 1 },
       );
       await expect(
-        statistics.page.getByText("Fastest Solve Time: 06:1")
+        statistics.page.getByText("Fastest Solve Time: 06:1"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        statistics.page.getByText("Average Solve Time: 06:1")
+        statistics.page.getByText("Average Solve Time: 06:1"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        statistics.page.getByText("Total Solve Time: 06:1")
+        statistics.page.getByText("Total Solve Time: 06:1"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        statistics.page.getByText("Total Hints Used: 0")
+        statistics.page.getByText("Total Hints Used: 0"),
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        statistics.page.getByText("Total Mistakes Made: 235")
+        statistics.page.getByText("Total Mistakes Made: 235"),
       ).toBeInViewport({ ratio: 1 });
-    }
+    },
   );
 });
