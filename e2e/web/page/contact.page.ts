@@ -12,4 +12,8 @@ export class ContactPage {
   async contactPageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
+
+  async submitFeedbackButtonIsDisabled() {
+    await expect(this.submitFeedback).toBeDisabled();
+  }
 }
