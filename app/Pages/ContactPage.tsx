@@ -119,6 +119,7 @@ const ContactPage = () => {
                   setText(text.substring(0, 1000));
                   setLabel(text.substring(0, 1000).length + "/1000");
                 }}
+                testID={"FeedbackTextInput"}
               />
               <Button
                 onPress={() => {
