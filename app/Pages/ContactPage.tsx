@@ -132,6 +132,7 @@ const ContactPage = () => {
                   marginVertical: "2%",
                   marginHorizontal: size.width > 800 ? "35%" : "12%",
                 }}
+                testID={"SubmitFeedbackButton"}
               >
                 <Text variant="headlineSmall">{buttonText}</Text>
               </Button>
