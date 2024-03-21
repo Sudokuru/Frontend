@@ -1,13 +1,6 @@
 import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import {
-  NOT_SELECTED_CONFLICT_COLOR,
-  PEER_SELECTED_COLOR,
-  SELECTED_COLOR,
-  SELECTED_CONFLICT_COLOR,
-  IDENTICAL_VALUE_COLOR,
-} from "../../../Styling/HighlightColors";
 import { CellType } from "../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
@@ -16,26 +9,13 @@ interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
   onClick: (r: number, c: number) => void;
-  isPeer: boolean;
-  isSelected: boolean;
-  sameValue: boolean;
-  conflict: boolean;
+  backgroundColor: string;
   c: number;
   r: number;
 }
 
 const Cell = (props: RenderCellProps) => {
-  const {
-    entry,
-    type,
-    onClick,
-    isPeer,
-    isSelected,
-    sameValue,
-    conflict,
-    c,
-    r,
-  } = props;
+  const { entry, type, onClick, backgroundColor, c, r } = props;
   const cellSize = getCellSize();
 
   const getNoteContents = (noteIndex: number) => {
@@ -79,29 +59,12 @@ const Cell = (props: RenderCellProps) => {
             display: "flex",
             justifyContent: "center",
             borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-            backgroundColor: "white",
+            backgroundColor: backgroundColor,
           },
           c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
           r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
           c === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
           r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
-          isPeer
-            ? {
-                backgroundColor: PEER_SELECTED_COLOR,
-              }
-            : null,
-          sameValue
-            ? {
-                backgroundColor: IDENTICAL_VALUE_COLOR,
-              }
-            : null,
-          !conflict && isSelected ? { backgroundColor: SELECTED_COLOR } : null,
-          conflict && !isSelected
-            ? { backgroundColor: NOT_SELECTED_CONFLICT_COLOR }
-            : null,
-          conflict && isSelected
-            ? { backgroundColor: SELECTED_CONFLICT_COLOR }
-            : null,
         ]}
       >
         {type === "note" ? (

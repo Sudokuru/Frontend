@@ -28,6 +28,8 @@ const ActionRow = (props: ActionRowProps) => {
   const sizeConst = Platform.OS == "web" ? 1.5 : 1;
   let fallbackHeight = 30;
 
+  const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
+
   return (
     <View
       style={{
@@ -57,21 +59,11 @@ const ActionRow = (props: ActionRowProps) => {
         disabled={false}
         testID={"toggleNoteModeButton"}
       >
-        {inNoteMode ? (
-          // note mode on
-          <MaterialCommunityIcons
-            color={theme.colors.onBackground}
-            name="pencil-outline"
-            size={cellSize / sizeConst}
-          />
-        ) : (
-          // note mode off
-          <MaterialCommunityIcons
-            color={theme.colors.onBackground}
-            name="pencil-off-outline"
-            size={cellSize / sizeConst}
-          />
-        )}
+        <MaterialCommunityIcons
+          color={theme.colors.onBackground}
+          name={noteIcon}
+          size={cellSize / sizeConst}
+        />
       </Pressable>
       {/* Erase */}
       <Pressable
