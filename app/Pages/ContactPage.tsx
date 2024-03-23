@@ -187,7 +187,7 @@ const ContactPage = () => {
           message={
             `Your feedback has been submitted.\n\n` +
             `We appreciate the time you took to help us improve our app.\n\n` +
-            `Your feeback will be taken into consideration.`
+            `Your feedback will be taken into consideration.`
           }
           messageStyle={{ maxWidth: 500 }}
           showConfirmButton={true}
