@@ -18,7 +18,7 @@ const ContactPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
-  const [disabled, setDisabled] = React.useState(true);
+  //const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buttonText, setButtonText] = React.useState("Submit Feedback*");
@@ -102,7 +102,7 @@ const ContactPage = () => {
                 onValueChange={(value) => {
                   setContactPage({ ...contactPage, value: value });
                   if (contactPage.text.length > 0) {
-                    setDisabled(false);
+                    setContactPage({ ...contactPage, buttonDisabled: false });
                   }
                   if (value === "feature") {
                     setPlaceholder(
@@ -143,20 +143,20 @@ const ContactPage = () => {
                     label: text.substring(0, 1000).length + "/1000",
                   });
                   if (text.length > 0 && contactPage.value !== "") {
-                    setDisabled(false);
+                    setContactPage({ ...contactPage, buttonDisabled: false });
                   } else {
-                    setDisabled(true);
+                    setContactPage({ ...contactPage, buttonDisabled: true });
                   }
                 }}
                 testID={"FeedbackTextInput"}
               />
               <Button
                 onPress={() => {
-                  setDisabled(true);
+                  setContactPage({ ...contactPage, buttonDisabled: true });
                   setButtonText("Submitting...");
                   submit();
                 }}
-                disabled={disabled}
+                disabled={contactPage.buttonDisabled}
                 mode="contained"
                 style={{
                   marginVertical: "2%",
@@ -219,7 +219,7 @@ const ContactPage = () => {
           onConfirmPressed={() => {
             setErrorVisible(false);
             setButtonText("Submit Feedback*");
-            setDisabled(false);
+            setContactPage({ ...contactPage, buttonDisabled: false });
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
