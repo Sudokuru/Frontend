@@ -32,7 +32,7 @@ const ContactPage = () => {
   }
   const [contactPage, setContactPage] = React.useState<contactPageState>({
     buttonDisabled: true,
-    buttonText: "Submit Feedback*",
+    buttonText: "Submit*",
     label: "0/1000",
     text: "",
     placeholder: "",
@@ -204,7 +204,7 @@ const ContactPage = () => {
               text: "",
               label: "0/1000",
               thankYouVisible: false,
-              buttonText: "Submit Feedback*",
+              buttonText: "Submit*",
             });
             updateCurrentPage("Landing");
             navigation.navigate("Landing");
@@ -231,7 +231,7 @@ const ContactPage = () => {
             setContactPage({
               ...contactPage,
               buttonDisabled: false,
-              buttonText: "Submit Feedback*",
+              buttonText: "Submit*",
               errorVisible: false,
             });
           }}
