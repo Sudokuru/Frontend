@@ -40,4 +40,14 @@ export class ContactPage {
       ratio: 1,
     });
   }
+
+  async thankYouIsVisible() {
+    await expect(this.page.getByText("Thank You!")).toBeInViewport({
+      ratio: 1,
+    });
+  }
+
+  async closeAlert() {
+    await this.page.getByText("OK").last().click();
+  }
 }

@@ -30,11 +30,8 @@ contactUs.describe("contact page", () => {
         .url()
         .includes("feedbackType=Feature%20Request&feedbackText=Ban%20Cheaters!")
     ).toBeTruthy();
-    // todo: assert response status
-    await expect(contactPage.page.getByText("Thank You!")).toBeInViewport({
-      ratio: 1,
-    });
-    await contactPage.page.getByText("OK").last().click();
+    await contactPage.thankYouIsVisible();
+    await contactPage.closeAlert();
     const homePage = new HomePage(page);
     await homePage.homePageIsRendered();
   });
