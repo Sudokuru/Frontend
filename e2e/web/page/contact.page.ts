@@ -34,4 +34,10 @@ export class ContactPage {
   async inputCounterIsZero() {
     await this.inputCounterIsX(0);
   }
+
+  async buttonIsSubmitting() {
+    await expect(this.page.getByText("Submitting...")).toBeInViewport({
+      ratio: 1,
+    });
+  }
 }

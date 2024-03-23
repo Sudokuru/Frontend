@@ -23,9 +23,7 @@ contactUs.describe("contact page", () => {
       });
     });
     await contactPage.submitFeedback.click();
-    await expect(contactPage.page.getByText("Submitting...")).toBeInViewport({
-      ratio: 1,
-    });
+    await contactPage.buttonIsSubmitting();
     const capturedRequest = (await postRequestPromise) as Request;
     expect(
       capturedRequest
