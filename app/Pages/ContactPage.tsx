@@ -88,7 +88,9 @@ const ContactPage = () => {
                 value={value}
                 onValueChange={(value) => {
                   setValue(value);
-                  setDisabled(false);
+                  if (text.length > 0) {
+                    setDisabled(false);
+                  }
                   if (value === "feature") {
                     setPlaceholder(
                       "What feature would you like to see added or improved upon?"
@@ -124,6 +126,11 @@ const ContactPage = () => {
                 onChangeText={(text) => {
                   setText(text.substring(0, 1000));
                   setLabel(text.substring(0, 1000).length + "/1000");
+                  if (text.length > 0 && value !== "") {
+                    setDisabled(false);
+                  } else {
+                    setDisabled(true);
+                  }
                 }}
                 testID={"FeedbackTextInput"}
               />

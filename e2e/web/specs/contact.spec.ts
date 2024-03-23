@@ -50,11 +50,11 @@ contactUs.describe("contact page", () => {
     const contactPage = new ContactPage(page);
     await contactPage.submitFeedbackButtonIsDisabled();
     await contactPage.inputCounterIsZero();
-    await contactPage.feedback.click();
-    await contactPage.feedback.fill("");
-    await contactPage.inputCounterIsX("".length);
-    await contactPage.submitFeedbackButtonIsDisabled();
     await contactPage.page.getByText("Feature").click();
+    await contactPage.submitFeedbackButtonIsDisabled();
+    await contactPage.feedback.click();
+    await contactPage.feedback.fill(" ");
+    await contactPage.inputCounterIsX(" ".length);
     await contactPage.submitFeedbackButtonIsEnabled();
     let postRequestPromise = new Promise((resolve) => {
       page.on("request", (request) => {
