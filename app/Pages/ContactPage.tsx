@@ -204,7 +204,7 @@ const ContactPage = () => {
               thankYouVisible: false,
               buttonText: "Submit Feedback*",
             });
-            navigation.navigate("LandingPage");
+            navigation.goBack();
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
