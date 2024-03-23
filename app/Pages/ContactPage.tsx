@@ -18,20 +18,33 @@ const ContactPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
-  const [value, setValue] = React.useState("");
-  const [text, setText] = React.useState("");
-  const [label, setLabel] = React.useState("0/1000");
   const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buttonText, setButtonText] = React.useState("Submit Feedback*");
   const [errorVisible, setErrorVisible] = React.useState(false);
+  interface contactPageState {
+    value: string;
+    text: string;
+    label: string;
+    placeholder: string;
+    buttonText: string;
+    buttonDisabled: boolean;
+  }
+  const [contactPage, setContactPage] = React.useState<contactPageState>({
+    buttonDisabled: true,
+    buttonText: "Submit Feedback*",
+    label: "0/1000",
+    text: "",
+    placeholder: "",
+    value: "",
+  });
 
   const submit = async () => {
     var feedbackType = "Other";
-    if (value === "feature") {
+    if (contactPage.value === "feature") {
       feedbackType = "Feature Request";
-    } else if (value === "bug") {
+    } else if (contactPage.value === "bug") {
       feedbackType = "Bug Report";
     }
 
@@ -42,7 +55,7 @@ const ContactPage = () => {
       body: "{}",
     };
 
-    const url = `https://script.google.com/macros/s/AKfycbzclUldypFOsRj9hdp1AmDugHG_QOZQhWGE_ryL61eP7Au63XmaocCklO226b7CPM_Fcg/exec?feedbackType=${feedbackType}&feedbackText=${text}`;
+    const url = `https://script.google.com/macros/s/AKfycbzclUldypFOsRj9hdp1AmDugHG_QOZQhWGE_ryL61eP7Au63XmaocCklO226b7CPM_Fcg/exec?feedbackType=${feedbackType}&feedbackText=${contactPage.text}`;
 
     try {
       const response = await fetch(url, submission);
@@ -85,10 +98,10 @@ const ContactPage = () => {
                 Why are you contacting us today?
               </Text>
               <SegmentedButtons
-                value={value}
+                value={contactPage.value}
                 onValueChange={(value) => {
-                  setValue(value);
-                  if (text.length > 0) {
+                  setContactPage({ ...contactPage, value: value });
+                  if (contactPage.text.length > 0) {
                     setDisabled(false);
                   }
                   if (value === "feature") {
@@ -117,16 +130,19 @@ const ContactPage = () => {
                 ]}
               />
               <TextInput
-                label={label}
-                value={text}
+                label={contactPage.label}
+                value={contactPage.text}
                 placeholder={placeholder}
                 style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
                 onChangeText={(text) => {
-                  setText(text.substring(0, 1000));
-                  setLabel(text.substring(0, 1000).length + "/1000");
-                  if (text.length > 0 && value !== "") {
+                  setContactPage({
+                    ...contactPage,
+                    text: text.substring(0, 1000),
+                    label: text.substring(0, 1000).length + "/1000",
+                  });
+                  if (text.length > 0 && contactPage.value !== "") {
                     setDisabled(false);
                   } else {
                     setDisabled(true);
@@ -174,9 +190,12 @@ const ContactPage = () => {
           onConfirmPressed={() => {
             setThankYouVisible(false);
             setButtonText("Submit Feedback*");
-            setValue("");
-            setText("");
-            setLabel("0/1000");
+            setContactPage({
+              ...contactPage,
+              value: "",
+              text: "",
+              label: "0/1000",
+            });
             navigation.navigate("LandingPage");
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
