@@ -1,5 +1,5 @@
 import React from "react";
-import { View, useWindowDimensions } from "react-native";
+import { ScrollView, View, useWindowDimensions } from "react-native";
 import {
   Button,
   Card,
@@ -8,7 +8,7 @@ import {
   TextInput,
   useTheme,
 } from "react-native-paper";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { CARD_IMAGE_HEIGHT, CARD_PADDING } from "../Components/Home/Cards";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
@@ -58,7 +58,7 @@ const ContactPage = () => {
   };
 
   return (
-    <SafeAreaProvider>
+    <ScrollView>
       <SafeAreaView>
         <View style={{ alignItems: "center", alignSelf: "center" }}>
           <Text
@@ -208,7 +208,7 @@ const ContactPage = () => {
           }}
         />
       </SafeAreaView>
-    </SafeAreaProvider>
+    </ScrollView>
   );
 };
 
