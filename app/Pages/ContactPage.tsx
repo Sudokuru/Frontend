@@ -18,10 +18,6 @@ const ContactPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
-  const [placeholder, setPlaceholder] = React.useState("");
-  const [thankYouVisible, setThankYouVisible] = React.useState(false);
-  const [buttonText, setButtonText] = React.useState("Submit Feedback*");
-  const [errorVisible, setErrorVisible] = React.useState(false);
   interface contactPageState {
     value: string;
     text: string;
@@ -29,6 +25,8 @@ const ContactPage = () => {
     placeholder: string;
     buttonText: string;
     buttonDisabled: boolean;
+    thankYouVisible: boolean;
+    errorVisible: boolean;
   }
   const [contactPage, setContactPage] = React.useState<contactPageState>({
     buttonDisabled: true,
@@ -37,6 +35,8 @@ const ContactPage = () => {
     text: "",
     placeholder: "",
     value: "",
+    thankYouVisible: false,
+    errorVisible: false,
   });
 
   const submit = async () => {
@@ -60,12 +60,12 @@ const ContactPage = () => {
       const response = await fetch(url, submission);
       const body = await response.json();
       if (body.status === 200) {
-        setThankYouVisible(true);
+        setContactPage({ ...contactPage, thankYouVisible: true });
       } else {
         throw new Error();
       }
     } catch (error) {
-      setErrorVisible(true);
+      setContactPage({ ...contactPage, errorVisible: true });
     }
   };
 
@@ -100,23 +100,24 @@ const ContactPage = () => {
                 value={contactPage.value}
                 onValueChange={(value) => {
                   let disableButton: boolean = true;
+                  let placeholder: string = "";
                   if (contactPage.text.length > 0) {
                     disableButton = false;
+                  }
+                  if (value === "feature") {
+                    placeholder =
+                      "What feature would you like to see added or improved upon?";
+                  } else if (value === "bug") {
+                    placeholder = "What bug did you encounter?";
+                  } else {
+                    placeholder = "What would you like to tell us?";
                   }
                   setContactPage({
                     ...contactPage,
                     value: value,
                     buttonDisabled: disableButton,
+                    placeholder: placeholder,
                   });
-                  if (value === "feature") {
-                    setPlaceholder(
-                      "What feature would you like to see added or improved upon?"
-                    );
-                  } else if (value === "bug") {
-                    setPlaceholder("What bug did you encounter?");
-                  } else {
-                    setPlaceholder("What would you like to tell us?");
-                  }
                 }}
                 style={{ width: "100%", paddingVertical: CARD_PADDING }}
                 buttons={[
@@ -136,7 +137,7 @@ const ContactPage = () => {
               <TextInput
                 label={contactPage.label}
                 value={contactPage.text}
-                placeholder={placeholder}
+                placeholder={contactPage.placeholder}
                 style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
                 textColor="black"
                 multiline={true}
@@ -156,8 +157,11 @@ const ContactPage = () => {
               />
               <Button
                 onPress={() => {
-                  setContactPage({ ...contactPage, buttonDisabled: true });
-                  setButtonText("Submitting...");
+                  setContactPage({
+                    ...contactPage,
+                    buttonDisabled: true,
+                    buttonText: "Submitting...",
+                  });
                   submit();
                 }}
                 disabled={contactPage.buttonDisabled}
@@ -168,7 +172,7 @@ const ContactPage = () => {
                 }}
                 testID={"SubmitFeedbackButton"}
               >
-                <Text variant="headlineSmall">{buttonText}</Text>
+                <Text variant="headlineSmall">{contactPage.buttonText}</Text>
               </Button>
               <Text variant="titleMedium">
                 *Please help us respect your privacy by not including any
@@ -178,7 +182,7 @@ const ContactPage = () => {
           </Card>
         </View>
         <Alert
-          show={thankYouVisible}
+          show={contactPage.thankYouVisible}
           title="Thank You!"
           message={
             `Your feedback has been submitted.\n\n` +
@@ -192,13 +196,13 @@ const ContactPage = () => {
           confirmText={"OK"}
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
-            setThankYouVisible(false);
-            setButtonText("Submit Feedback*");
             setContactPage({
               ...contactPage,
               value: "",
               text: "",
               label: "0/1000",
+              thankYouVisible: false,
+              buttonText: "Submit Feedback*",
             });
             navigation.navigate("LandingPage");
           }}
@@ -208,7 +212,7 @@ const ContactPage = () => {
           }}
         />
         <Alert
-          show={errorVisible}
+          show={contactPage.errorVisible}
           title="Error"
           message={
             `There was an error submitting your feedback.\n\n` +
@@ -221,9 +225,12 @@ const ContactPage = () => {
           confirmText={"OK"}
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
-            setErrorVisible(false);
-            setButtonText("Submit Feedback*");
-            setContactPage({ ...contactPage, buttonDisabled: false });
+            setContactPage({
+              ...contactPage,
+              buttonDisabled: false,
+              buttonText: "Submit Feedback*",
+              errorVisible: false,
+            });
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
