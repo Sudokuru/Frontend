@@ -25,6 +25,7 @@ const ContactPage = () => {
   const [placeholder, setPlaceholder] = React.useState("");
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buttonText, setButtonText] = React.useState("Submit Feedback*");
+  const [errorVisible, setErrorVisible] = React.useState(false);
 
   const submit = async () => {
     var feedbackType = "Other";
@@ -44,10 +45,14 @@ const ContactPage = () => {
     const url = `https://script.google.com/macros/s/AKfycbzclUldypFOsRj9hdp1AmDugHG_QOZQhWGE_ryL61eP7Au63XmaocCklO226b7CPM_Fcg/exec?feedbackType=${feedbackType}&feedbackText=${text}`;
 
     try {
-      await fetch(url, submission);
-      setThankYouVisible(true);
+      const response = await fetch(url, submission);
+      if (response.ok) {
+        setThankYouVisible(true);
+      } else {
+        throw new Error();
+      }
     } catch (error) {
-      console.error(error);
+      setErrorVisible(true);
     }
   };
 
@@ -165,6 +170,27 @@ const ContactPage = () => {
             setText("");
             setLabel("0/1000");
             navigation.navigate("LandingPage");
+          }}
+          overlayStyle={{ backgroundColor: "transparent" }}
+          alertContainerStyle={{
+            backgroundColor: rgba(theme.colors.background, 0.3),
+          }}
+        />
+        <Alert
+          show={errorVisible}
+          title="Error"
+          message={
+            `There was an error submitting your feedback.\n\n` +
+            `Please try again later.`
+          }
+          messageStyle={{ maxWidth: 500 }}
+          showConfirmButton={true}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          confirmText={"OK"}
+          confirmButtonColor={theme.colors.primary}
+          onConfirmPressed={() => {
+            setErrorVisible(false);
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
