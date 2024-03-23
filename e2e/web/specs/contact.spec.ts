@@ -8,14 +8,10 @@ contactUs.describe("contact page", () => {
   contactUs("feature request", async ({ page }) => {
     const contactPage = new ContactPage(page);
     await contactPage.submitFeedbackButtonIsDisabled();
-    await expect(contactPage.page.getByText("0/1000").last()).toBeInViewport({
-      ratio: 1,
-    });
+    await contactPage.inputCounterIsZero();
     await contactPage.feedback.click();
     await contactPage.feedback.fill("Ban Cheaters!");
-    await expect(contactPage.page.getByText("13/1000").last()).toBeInViewport({
-      ratio: 1,
-    });
+    await contactPage.inputCounterIsX("Ban Cheaters!".length);
     await contactPage.submitFeedbackButtonIsDisabled();
     await contactPage.page.getByText("Feature").click();
     await contactPage.submitFeedbackButtonIsEnabled();

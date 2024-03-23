@@ -24,4 +24,14 @@ export class ContactPage {
   async submitFeedbackButtonIsEnabled() {
     await expect(this.submitFeedback).toBeEnabled();
   }
+
+  async inputCounterIsX(x: number) {
+    await expect(this.page.getByText(`${x}/1000`).last()).toBeInViewport({
+      ratio: 1,
+    });
+  }
+
+  async inputCounterIsZero() {
+    await this.inputCounterIsX(0);
+  }
 }
