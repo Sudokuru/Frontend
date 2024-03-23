@@ -46,7 +46,8 @@ const ContactPage = () => {
 
     try {
       const response = await fetch(url, submission);
-      if (response.ok) {
+      const body = await response.json();
+      if (body.status === 200) {
         setThankYouVisible(true);
       } else {
         throw new Error();
