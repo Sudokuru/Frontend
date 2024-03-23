@@ -45,4 +45,34 @@ contactUs.describe("contact page", () => {
       await homePage.homePageIsRendered();
     });
   }
+
+  contactUs("Error", async ({ page }) => {
+    const contactPage = new ContactPage(page);
+    await contactPage.submitFeedbackButtonIsDisabled();
+    await contactPage.inputCounterIsZero();
+    await contactPage.feedback.click();
+    await contactPage.feedback.fill("");
+    await contactPage.inputCounterIsX("".length);
+    await contactPage.submitFeedbackButtonIsDisabled();
+    await contactPage.page.getByText("Feature").click();
+    await contactPage.submitFeedbackButtonIsEnabled();
+    let postRequestPromise = new Promise((resolve) => {
+      page.on("request", (request) => {
+        if (request.url().includes("https://script.google.com/")) {
+          resolve(request); // Resolve the promise when the matching request happens
+        }
+      });
+    });
+    await contactPage.submitFeedback.click();
+    await contactPage.buttonIsSubmitting();
+    const capturedRequest = (await postRequestPromise) as Request;
+    expect(
+      capturedRequest
+        .url()
+        .includes("feedbackType=Feature%20Request&feedbackText=")
+    ).toBeTruthy();
+    await contactPage.errorIsVisible();
+    await contactPage.closeAlert();
+    await contactPage.errorIsNotVisible();
+  });
 });

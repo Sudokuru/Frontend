@@ -47,6 +47,16 @@ export class ContactPage {
     });
   }
 
+  async errorIsVisible() {
+    await expect(this.page.getByText("There was an error")).toBeInViewport({
+      ratio: 1,
+    });
+  }
+
+  async errorIsNotVisible() {
+    await expect(this.page.getByText("There was an error")).not.toBeVisible();
+  }
+
   async closeAlert() {
     await this.page.getByText("OK").last().click();
   }

@@ -186,12 +186,13 @@ const ContactPage = () => {
           }
           messageStyle={{ maxWidth: 500 }}
           showConfirmButton={true}
-          closeOnTouchOutside={true}
+          closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
           confirmText={"OK"}
           confirmButtonColor={theme.colors.primary}
           onConfirmPressed={() => {
             setErrorVisible(false);
+            setButtonText("Submit Feedback*");
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
