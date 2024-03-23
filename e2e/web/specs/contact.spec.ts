@@ -74,5 +74,6 @@ contactUs.describe("contact page", () => {
     await contactPage.errorIsVisible();
     await contactPage.closeAlert();
     await contactPage.errorIsNotVisible();
+    await contactPage.submitFeedbackButtonIsEnabled();
   });
 });

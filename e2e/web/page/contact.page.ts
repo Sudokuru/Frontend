@@ -39,6 +39,7 @@ export class ContactPage {
     await expect(this.page.getByText("Submitting...")).toBeInViewport({
       ratio: 1,
     });
+    await this.submitFeedbackButtonIsDisabled();
   }
 
   async thankYouIsVisible() {

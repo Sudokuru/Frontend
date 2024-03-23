@@ -193,6 +193,7 @@ const ContactPage = () => {
           onConfirmPressed={() => {
             setErrorVisible(false);
             setButtonText("Submit Feedback*");
+            setDisabled(false);
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
