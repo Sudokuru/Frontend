@@ -18,7 +18,6 @@ const ContactPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
   const size = useWindowDimensions();
-  //const [disabled, setDisabled] = React.useState(true);
   const [placeholder, setPlaceholder] = React.useState("");
   const [thankYouVisible, setThankYouVisible] = React.useState(false);
   const [buttonText, setButtonText] = React.useState("Submit Feedback*");
@@ -100,10 +99,15 @@ const ContactPage = () => {
               <SegmentedButtons
                 value={contactPage.value}
                 onValueChange={(value) => {
-                  setContactPage({ ...contactPage, value: value });
+                  let disableButton: boolean = true;
                   if (contactPage.text.length > 0) {
-                    setContactPage({ ...contactPage, buttonDisabled: false });
+                    disableButton = false;
                   }
+                  setContactPage({
+                    ...contactPage,
+                    value: value,
+                    buttonDisabled: disableButton,
+                  });
                   if (value === "feature") {
                     setPlaceholder(
                       "What feature would you like to see added or improved upon?"
@@ -137,16 +141,16 @@ const ContactPage = () => {
                 textColor="black"
                 multiline={true}
                 onChangeText={(text) => {
+                  let disableButton: boolean = true;
+                  if (text.length > 0 && contactPage.value !== "") {
+                    disableButton = false;
+                  }
                   setContactPage({
                     ...contactPage,
                     text: text.substring(0, 1000),
                     label: text.substring(0, 1000).length + "/1000",
+                    buttonDisabled: disableButton,
                   });
-                  if (text.length > 0 && contactPage.value !== "") {
-                    setContactPage({ ...contactPage, buttonDisabled: false });
-                  } else {
-                    setContactPage({ ...contactPage, buttonDisabled: true });
-                  }
                 }}
                 testID={"FeedbackTextInput"}
               />
