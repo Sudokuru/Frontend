@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/core";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
