@@ -170,7 +170,7 @@ const ContactPage = () => {
                 mode="contained"
                 style={{
                   marginVertical: "2%",
-                  marginHorizontal: size.width > 800 ? "35%" : "12%",
+                  marginHorizontal: size.width > 800 ? "30%" : "10%",
                 }}
                 testID={"SubmitFeedbackButton"}
               >
