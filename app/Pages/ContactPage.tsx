@@ -13,10 +13,12 @@ import { CARD_IMAGE_HEIGHT, CARD_PADDING } from "../Components/Home/Cards";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { useNavigation } from "@react-navigation/native";
+import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const ContactPage = () => {
   const theme = useTheme();
   const navigation: any = useNavigation();
+  const { updateCurrentPage } = React.useContext(PreferencesContext);
   const size = useWindowDimensions();
   interface contactPageState {
     value: string;
@@ -204,7 +206,8 @@ const ContactPage = () => {
               thankYouVisible: false,
               buttonText: "Submit Feedback*",
             });
-            navigation.goBack();
+            updateCurrentPage("Landing");
+            navigation.navigate("Landing");
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
           alertContainerStyle={{
