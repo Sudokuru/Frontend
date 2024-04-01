@@ -6,15 +6,15 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 const PreferencesToggles = () => {
   const {
     toggleTheme,
-    isThemeDark,
+    darkThemeSetting,
     toggleHighlightIdenticalValues,
-    isHighlightIdenticalValues,
-    isHighlightBox,
+    highlightIdenticalValuesSetting,
+    highlightBoxSetting,
     toggleHighlightBox,
     toggleHighlightColumn,
-    isHighlightColumn,
+    highlightColumnSetting,
     toggleHighlightRow,
-    isHighlightRow,
+    highlightRowSetting,
   } = React.useContext(PreferencesContext);
 
   return (
@@ -22,17 +22,17 @@ const PreferencesToggles = () => {
       <Text>Theme</Text>
       <Switch
         color={"#025E73"}
-        value={isThemeDark}
+        value={darkThemeSetting}
         onValueChange={toggleTheme}
-        testID={isThemeDark ? "DarkThemeEnabled" : "DarkThemeDisabled"}
+        testID={darkThemeSetting ? "DarkThemeEnabled" : "DarkThemeDisabled"}
       />
       <Text>Highlight Peers</Text>
       <Switch
         color={"#025E73"}
-        value={isHighlightIdenticalValues}
+        value={highlightIdenticalValuesSetting}
         onValueChange={toggleHighlightIdenticalValues}
         testID={
-          isHighlightIdenticalValues
+          highlightIdenticalValuesSetting
             ? "HighlightPeersEnabled"
             : "HighlightPeersDisabled"
         }
@@ -40,24 +40,28 @@ const PreferencesToggles = () => {
       <Text>Highlight Box</Text>
       <Switch
         color={"#025E73"}
-        value={isHighlightBox}
+        value={highlightBoxSetting}
         onValueChange={toggleHighlightBox}
-        testID={isHighlightBox ? "HighlightBoxEnabled" : "HighlightBoxDisabled"}
+        testID={
+          highlightBoxSetting ? "HighlightBoxEnabled" : "HighlightBoxDisabled"
+        }
       />
       <Text>Highlight Row</Text>
       <Switch
         color={"#025E73"}
-        value={isHighlightRow}
+        value={highlightRowSetting}
         onValueChange={toggleHighlightRow}
-        testID={isHighlightRow ? "HighlightRowEnabled" : "HighlightRowDisabled"}
+        testID={
+          highlightRowSetting ? "HighlightRowEnabled" : "HighlightRowDisabled"
+        }
       />
       <Text>Highlight Column</Text>
       <Switch
         color={"#025E73"}
-        value={isHighlightColumn}
+        value={highlightColumnSetting}
         onValueChange={toggleHighlightColumn}
         testID={
-          isHighlightColumn
+          highlightColumnSetting
             ? "HighlightColumnEnabled"
             : "HighlightColumnDisabled"
         }

@@ -7,6 +7,7 @@ import { DrillPage } from "./../page/drill.page";
 import { PlayPage } from "./../page/play.page";
 import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
+import { ContactPage } from "../page/contact.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {
@@ -71,5 +72,11 @@ test.describe("home page", () => {
 
   test("sidebar play button", async ({ page }) => {});
 
-  test("sidebar contact button", async ({ page }) => {});
+  test("sidebar contact button", async ({ page }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerContact.click();
+    const contactPage = new ContactPage(page);
+    await contactPage.contactPageIsRendered();
+  });
 });

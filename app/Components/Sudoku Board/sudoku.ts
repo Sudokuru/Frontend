@@ -11,7 +11,7 @@ export function range(n: number) {
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if current cell is in the same box as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameBox(
+export function areCellsInSameBox(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
@@ -41,7 +41,7 @@ function generateBoxIndex(row: number, column: number): number {
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if the current cell is in the same row as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameRow(
+export function areCellsInSameRow(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
@@ -54,7 +54,7 @@ export function isCurrentCellAndSelectedCellInSameRow(
  * @param selectedCellCoordinate The CellLocation of selected cell
  * @returns boolean that indicates if the current cell is in the same column as selected cell
  */
-export function isCurrentCellAndSelectedCellInSameColumn(
+export function areCellsInSameColumn(
   currentCellCoordinate: CellLocation,
   selectedCellCoordinate: CellLocation
 ) {
