@@ -364,7 +364,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const isBoardDisabled = () => {
-    if (sudokuBoard != null) {
+    if (sudokuHint != null) {
       return true;
     } else {
       return false;
