@@ -297,6 +297,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param c the column of a given cell 0-8
    */
   const toggleSelectCell = (r: number, c: number) => {
+    if (isBoardDisabled()) {
+      return;
+    }
     if (
       sudokuBoard.selectedCell &&
       sudokuBoard.selectedCell.c === c &&
@@ -360,11 +363,22 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return false;
   };
 
+  const isBoardDisabled = () => {
+    if (sudokuBoard != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
 
+    const disable: boolean = isBoardDisabled();
+
     return (
       <Cell
+        disable={disable}
         onClick={(r: number, c: number) => {
           toggleSelectCell(r, c);
         }}
@@ -453,7 +467,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     let hintFocused = false;
     for (let i = 0; i < sudokuHint.hint.groups.length; i++) {
-      console.log("DEBUGGING", sudokuHint.hint.groups[i], i);
       if (
         sudokuHint.hint.groups[i][0] === 0 &&
         sudokuHint.hint.groups[i][1] === r

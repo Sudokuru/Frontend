@@ -6,6 +6,7 @@ import { CellType } from "../../../Functions/LocalDatabase";
 let fallbackHeight = 30;
 
 interface RenderCellProps {
+  disable: boolean;
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
   onClick: (r: number, c: number) => void;
@@ -15,7 +16,7 @@ interface RenderCellProps {
 }
 
 const Cell = (props: RenderCellProps) => {
-  const { entry, type, onClick, backgroundColor, c, r } = props;
+  const { disable, entry, type, onClick, backgroundColor, c, r } = props;
   const cellSize = getCellSize();
 
   const getNoteContents = (noteIndex: number) => {
@@ -49,7 +50,11 @@ const Cell = (props: RenderCellProps) => {
   };
 
   return (
-    <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
+    <Pressable
+      onPress={() => onClick(r, c)}
+      style={{ outline: "none" }}
+      disabled={disable}
+    >
       <View
         testID={"cellr" + r + "c" + c + getCellContents()}
         style={[
