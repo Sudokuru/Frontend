@@ -718,18 +718,35 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         });
     }
 
-    // Insert notes from AmendNotes hint
-    if (sudokuHint.hint.strategy === "AMEND_NOTES" && sudokuHint.stage === 4) {
+    // todo figure out why this is removing values :(
+    if (sudokuHint.hint.strategy === "AMEND_NOTES" && sudokuHint.stage >= 4) {
       for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
         const r = sudokuHint.hint.removals[i][0];
         const c = sudokuHint.hint.removals[i][1];
         sudokuHint.hint.removals[i].splice(0, 2);
 
         const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let insertNotes = [];
-        for (let j = 0; j < allNotes.length; j++) {
-          if (!sudokuHint.hint.removals[i].includes(allNotes[j])) {
-            insertNotes.push(allNotes[j]);
+        let newNotes: number[] = [];
+        // Insert missing notes due to AMEND_NOTES hint
+        if (sudokuHint.stage === 4) {
+          for (let j = 0; j < allNotes.length; j++) {
+            if (!sudokuHint.hint.removals[i].includes(allNotes[j])) {
+              newNotes.push(allNotes[j]);
+            }
+          }
+        }
+        // Remove unnecessary notes due to AMEND_NOTES hint
+        // todo this might be simplify notes logic?
+        else if (
+          sudokuHint.stage === 5 &&
+          sudokuBoard.puzzle[r][c].type == "note"
+        ) {
+          const entry = sudokuBoard.puzzle[r][c].entry as number[];
+          for (let j = 0; j < sudokuHint.hint.removals[i]; j++) {
+            if (entry.includes(sudokuHint.hint.removals[i][j])) {
+              const index = newNotes.indexOf(sudokuHint.hint.removals[i][j]);
+              newNotes.splice(index, 1);
+            }
           }
         }
 
@@ -744,7 +761,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         });
 
         sudokuBoard.puzzle[r][c].type = "note";
-        sudokuBoard.puzzle[r][c].entry = insertNotes;
+        sudokuBoard.puzzle[r][c].entry = newNotes;
       }
 
       setSudokuBoard({
