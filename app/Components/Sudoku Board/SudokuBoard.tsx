@@ -736,7 +736,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           }
         }
         // Remove unnecessary notes due to AMEND_NOTES hint
-        // todo this might be simplify notes logic?
+        // todo this might be shared with simplify notes logic?
         else if (
           sudokuHint.stage === 5 &&
           sudokuBoard.puzzle[r][c].type == "note"
