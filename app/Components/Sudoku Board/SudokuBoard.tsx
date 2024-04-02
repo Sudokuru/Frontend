@@ -704,6 +704,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         setSudokuHint(undefined);
         break;
       default:
+        // undo logic only for AMEND_NOTES insertions
+        if (
+          stageOffset === -1 &&
+          sudokuHint.stage === 4 &&
+          sudokuHint.hint.strategy === "AMEND_NOTES"
+        ) {
+          undo();
+        }
         setSudokuHint({
           ...sudokuHint,
           stage: sudokuHint.stage + stageOffset,

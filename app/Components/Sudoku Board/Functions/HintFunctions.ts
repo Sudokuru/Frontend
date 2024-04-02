@@ -51,7 +51,7 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
       if (puzzle[r][c].type === "note") {
         const entry = puzzle[r][c].entry as number[];
         for (let n = 0; n < entry.length; n++) {
-          convertedPuzzleNotes[r].push(entry[n].toString());
+          convertedPuzzleNotes[c + r * puzzle.length].push(entry[n].toString());
         }
       } else {
         const entry = puzzle[r][c].entry as number;
