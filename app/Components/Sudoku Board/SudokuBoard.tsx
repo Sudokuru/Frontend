@@ -374,6 +374,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
     const disable: boolean = isBoardDisabled();
+    const noteColor: string = "black";
 
     return (
       <Cell
@@ -382,6 +383,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           toggleSelectCell(r, c);
         }}
         backgroundColor={cellBackgroundColor}
+        noteColor={noteColor}
         type={cell.type}
         entry={cell.entry}
         key={r + ":" + c}
@@ -706,6 +708,42 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           ...sudokuHint,
           stage: sudokuHint.stage + stageOffset,
         });
+    }
+
+    // Insert notes from AmendNotes hint
+    if (sudokuHint.hint.strategy === "AMEND_NOTES" && sudokuHint.stage === 4) {
+      for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
+        const r = sudokuHint.hint.removals[i][0];
+        const c = sudokuHint.hint.removals[i][1];
+        sudokuHint.hint.removals[i].splice(0, 2);
+
+        const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let insertNotes = [];
+        for (let j = 0; j < allNotes.length; j++) {
+          if (!sudokuHint.hint.removals[i].includes(allNotes[j])) {
+            insertNotes.push(allNotes[j]);
+          }
+        }
+
+        // Storing old value in actionHistory
+        // todo This is duplicated code, find some way to condense
+        sudokuBoard.actionHistory.push({
+          cell: {
+            entry: sudokuBoard.puzzle[r][c].entry,
+            type: sudokuBoard.puzzle[r][c].type,
+          } as CellProps, // annoying typescript casting workaround
+          cellLocation: { c: c, r: r },
+        });
+
+        sudokuBoard.puzzle[r][c].type = "note";
+        sudokuBoard.puzzle[r][c].entry = insertNotes;
+      }
+
+      setSudokuBoard({
+        ...sudokuBoard,
+        puzzle: sudokuBoard.puzzle,
+        actionHistory: sudokuBoard.actionHistory,
+      });
     }
   };
 

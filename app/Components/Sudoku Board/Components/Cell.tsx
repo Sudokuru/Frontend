@@ -11,6 +11,7 @@ interface RenderCellProps {
   type: CellType;
   onClick: (r: number, c: number) => void;
   backgroundColor: string;
+  noteColor: string;
   c: number;
   r: number;
 }
@@ -19,11 +20,12 @@ const Cell = (props: RenderCellProps) => {
   const { disable, entry, type, onClick, backgroundColor, c, r } = props;
   const cellSize = getCellSize();
 
-  const getNoteContents = (noteIndex: number) => {
+  const getNoteContents = (noteIndex: number, noteColor: string) => {
     if (entry.includes(noteIndex)) {
-      let styleVal = {
+      const styleVal = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
+        color: noteColor,
       };
       return <Text style={styleVal}>{noteIndex}</Text>;
     }

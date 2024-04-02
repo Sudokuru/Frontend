@@ -20,7 +20,6 @@ const Hint = (hintProps: HintProps) => {
   let fallbackHeight = 30;
 
   let hintContent: React.JSX.Element;
-  console.log(stage);
   switch (stage) {
     case 1:
       hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
