@@ -373,7 +373,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
-
     const disable: boolean = isBoardDisabled();
 
     return (
