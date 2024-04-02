@@ -5,6 +5,7 @@ import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
+  generateBoxIndex,
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
@@ -23,6 +24,8 @@ import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
 import { getSudokuHint } from "./Functions/HintFunctions";
 import {
+  HINT_NOT_HIGHILGHTED_COLOR,
+  HINT_SELECTED_COLOR,
   IDENTICAL_VALUE_COLOR,
   NOT_SELECTED_CONFLICT_COLOR,
   PEER_SELECTED_COLOR,
@@ -344,7 +347,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzle[r][c].entry === 0
         )
           continue;
-        const isValueCorrect = isConflict(r, c, sudokuBoard.puzzle[r][c]);
+        const isValueCorrect = doesCellHaveConflict(
+          r,
+          c,
+          sudokuBoard.puzzle[r][c]
+        );
         if (isValueCorrect === true) {
           return true;
         }
@@ -403,7 +410,69 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else {
       cellBackgroundColor = "white";
     }
+
+    if (sudokuHint) {
+      const hintCause = isCellAHintCause(r, c);
+      const hintFocus = isCellAHintFocus(r, c);
+
+      if (hintCause) {
+        cellBackgroundColor = HINT_SELECTED_COLOR;
+      } else if (!hintFocus) {
+        cellBackgroundColor = HINT_NOT_HIGHILGHTED_COLOR;
+      }
+    }
+
     return cellBackgroundColor;
+  };
+
+  const isCellAHintCause = (r: number, c: number): boolean => {
+    if (!sudokuHint) {
+      return false;
+    }
+
+    for (let i = 0; i < sudokuHint.hint.cause.length; i++) {
+      if (
+        sudokuHint.hint.cause[i][0] === r &&
+        sudokuHint.hint.cause[i][1] == c &&
+        sudokuHint.stage >= 4
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const isCellAHintFocus = (r: number, c: number): boolean => {
+    if (!sudokuHint) {
+      return false;
+    }
+
+    if (sudokuHint.stage < 3) {
+      return true;
+    }
+
+    let hintFocused = false;
+    for (let i = 0; i < sudokuHint.hint.groups.length; i++) {
+      console.log("DEBUGGING", sudokuHint.hint.groups[i], i);
+      if (
+        sudokuHint.hint.groups[i][0] === 0 &&
+        sudokuHint.hint.groups[i][1] === r
+      ) {
+        hintFocused = true;
+      } else if (
+        sudokuHint.hint.groups[i][0] === 1 &&
+        sudokuHint.hint.groups[i][1] === c
+      ) {
+        hintFocused = true;
+      } else if (
+        sudokuHint.hint.groups[i][0] === 2 &&
+        generateBoxIndex(r, c) === sudokuHint.hint.groups[i][1]
+      ) {
+        hintFocused = true;
+      }
+    }
+
+    return hintFocused;
   };
 
   /**
