@@ -699,10 +699,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     switch (sudokuHint.stage + stageOffset) {
       case 0:
         setSudokuHint(undefined);
-        break;
+        return;
       case sudokuHint.maxStage + 1:
         setSudokuHint(undefined);
-        break;
+        return;
       default:
         // undo logic only for AMEND_NOTES insertions
         if (
@@ -718,33 +718,48 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         });
     }
 
+    const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
+
     // todo figure out why this is removing values :(
-    if (sudokuHint.hint.strategy === "AMEND_NOTES" && sudokuHint.stage >= 4) {
+    if (
+      sudokuHint.hint.strategy === "AMEND_NOTES" &&
+      (currentStage === 4 || currentStage === 5)
+    ) {
       for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
         const r = sudokuHint.hint.removals[i][0];
         const c = sudokuHint.hint.removals[i][1];
-        sudokuHint.hint.removals[i].splice(0, 2);
+        const removals = [...sudokuHint.hint.removals[i]]; // deep clone to prevent sudokuHint state update
+        removals.splice(0, 2);
+
+        let notesWereUpdated = false;
 
         const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         let newNotes: number[] = [];
+        if (sudokuBoard.puzzle[r][c].type == "note") {
+          newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+        }
         // Insert missing notes due to AMEND_NOTES hint
-        if (sudokuHint.stage === 4) {
+        if (currentStage === 4) {
           for (let j = 0; j < allNotes.length; j++) {
-            if (!sudokuHint.hint.removals[i].includes(allNotes[j])) {
+            if (
+              !removals.includes(allNotes[j]) &&
+              !newNotes.includes(allNotes[j])
+            ) {
               newNotes.push(allNotes[j]);
+              notesWereUpdated = true;
             }
           }
         }
         // Remove unnecessary notes due to AMEND_NOTES hint
         // todo this might be shared with simplify notes logic?
         else if (
-          sudokuHint.stage === 5 &&
+          currentStage === 5 &&
           sudokuBoard.puzzle[r][c].type == "note"
         ) {
-          const entry = sudokuBoard.puzzle[r][c].entry as number[];
-          for (let j = 0; j < sudokuHint.hint.removals[i]; j++) {
-            if (entry.includes(sudokuHint.hint.removals[i][j])) {
-              const index = newNotes.indexOf(sudokuHint.hint.removals[i][j]);
+          newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+          for (let j = 0; j < removals.length; j++) {
+            if (newNotes.includes(removals[j])) {
+              const index = newNotes.indexOf(removals[j]);
               newNotes.splice(index, 1);
             }
           }
@@ -752,23 +767,24 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
         // Storing old value in actionHistory
         // todo This is duplicated code, find some way to condense
-        sudokuBoard.actionHistory.push({
-          cell: {
-            entry: sudokuBoard.puzzle[r][c].entry,
-            type: sudokuBoard.puzzle[r][c].type,
-          } as CellProps, // annoying typescript casting workaround
-          cellLocation: { c: c, r: r },
-        });
+        if (notesWereUpdated) {
+          sudokuBoard.actionHistory.push({
+            cell: {
+              entry: sudokuBoard.puzzle[r][c].entry,
+              type: sudokuBoard.puzzle[r][c].type,
+            } as CellProps, // annoying typescript casting workaround
+            cellLocation: { c: c, r: r },
+          });
+          sudokuBoard.puzzle[r][c].type = "note";
+          sudokuBoard.puzzle[r][c].entry = newNotes;
 
-        sudokuBoard.puzzle[r][c].type = "note";
-        sudokuBoard.puzzle[r][c].entry = newNotes;
+          setSudokuBoard({
+            ...sudokuBoard,
+            puzzle: sudokuBoard.puzzle,
+            actionHistory: sudokuBoard.actionHistory,
+          });
+        }
       }
-
-      setSudokuBoard({
-        ...sudokuBoard,
-        puzzle: sudokuBoard.puzzle,
-        actionHistory: sudokuBoard.actionHistory,
-      });
     }
   };
 
