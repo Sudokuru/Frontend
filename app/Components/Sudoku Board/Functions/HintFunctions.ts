@@ -2,18 +2,14 @@ import { getHint } from "sudokuru";
 import { CellProps } from "../../../Functions/LocalDatabase";
 
 export const getSudokuHint = (puzzle: CellProps[][], solution: number[][]) => {
-  console.log("HELLO");
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
   const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
-  console.log("DEBUG", puzzleState);
-  console.log("DEBUG", puzzleSolution);
   const hint = getHint(
     puzzleState.puzzleValues,
     puzzleState.puzzleNotes,
     undefined,
     puzzleSolution
   );
-  console.log("DEBUG", hint);
   return hint;
 };
 

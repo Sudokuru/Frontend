@@ -778,12 +778,75 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzle[r][c].type = "note";
           sudokuBoard.puzzle[r][c].entry = newNotes;
 
+          saveGame(sudokuBoard);
+
           setSudokuBoard({
             ...sudokuBoard,
             puzzle: sudokuBoard.puzzle,
             actionHistory: sudokuBoard.actionHistory,
           });
         }
+      }
+    } else if (
+      sudokuHint.hint.strategy === "NAKED_SINGLE" &&
+      currentStage === 5
+    ) {
+      for (let i = 0; i < sudokuHint.hint.placements.length; i++) {
+        const r = sudokuHint.hint.placements[i][0];
+        const c = sudokuHint.hint.placements[i][1];
+        const placements = [...sudokuHint.hint.placements[i]]; // deep clone to prevent sudokuHint state update
+        placements.splice(0, 2);
+
+        sudokuBoard.actionHistory.push({
+          cell: {
+            entry: sudokuBoard.puzzle[r][c].entry,
+            type: sudokuBoard.puzzle[r][c].type,
+          } as CellProps, // annoying typescript casting workaround
+          cellLocation: { c: c, r: r },
+        });
+        sudokuBoard.puzzle[r][c].type = "value";
+        sudokuBoard.puzzle[r][c].entry = placements[0];
+
+        saveGame(sudokuBoard);
+
+        setSudokuBoard({
+          ...sudokuBoard,
+          puzzle: sudokuBoard.puzzle,
+          actionHistory: sudokuBoard.actionHistory,
+        });
+      }
+    } else if (currentStage === 5) {
+      for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
+        const r = sudokuHint.hint.removals[i][0];
+        const c = sudokuHint.hint.removals[i][1];
+        const removals = [...sudokuHint.hint.removals[i]]; // deep clone to prevent sudokuHint state update
+        removals.splice(0, 2);
+
+        let newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+        for (let j = 0; j < removals.length; j++) {
+          if (newNotes.includes(removals[j])) {
+            const index = newNotes.indexOf(removals[j]);
+            newNotes.splice(index, 1);
+          }
+        }
+
+        sudokuBoard.actionHistory.push({
+          cell: {
+            entry: sudokuBoard.puzzle[r][c].entry,
+            type: sudokuBoard.puzzle[r][c].type,
+          } as CellProps, // annoying typescript casting workaround
+          cellLocation: { c: c, r: r },
+        });
+        sudokuBoard.puzzle[r][c].type = "note";
+        sudokuBoard.puzzle[r][c].entry = newNotes;
+
+        saveGame(sudokuBoard);
+
+        setSudokuBoard({
+          ...sudokuBoard,
+          puzzle: sudokuBoard.puzzle,
+          actionHistory: sudokuBoard.actionHistory,
+        });
       }
     }
   };
