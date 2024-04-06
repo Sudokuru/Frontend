@@ -123,17 +123,30 @@ const PlayPage = () => {
               ) : (
                 <></>
               )}
-              <Button
-                style={{ margin: newSize / 4 }}
-                mode="contained"
-                onPress={() => {
-                  navigation.navigate("SudokuPage", {
-                    action: "StartGame",
-                  });
-                }}
-              >
-                Start Puzzle
-              </Button>
+              <View style={{ flexDirection: "row" }}>
+                <Button
+                  style={{ margin: newSize / 4 }}
+                  mode="contained"
+                  onPress={() => {
+                    navigation.navigate("SudokuPage", {
+                      action: "StartGame",
+                    });
+                  }}
+                >
+                  Start Puzzle
+                </Button>
+                {/* <Button
+                  style={{ margin: newSize / 4 }}
+                  mode="contained"
+                  onPress={() => {
+                    navigation.navigate("SudokuPage", {
+                      action: "StartGame",
+                    });
+                  }}
+                >
+                  Start Puzzle
+                </Button> */}
+              </View>
             </View>
           </View>
         </View>
