@@ -125,43 +125,48 @@ const PlayPage = () => {
               ) : (
                 <></>
               )}
-              <View style={{ flexDirection: "row" }}>
-                <Button
-                  style={{ margin: newSize / 4 }}
-                  mode="contained"
-                  onPress={() => {
-                    navigation.navigate("SudokuPage", {
-                      action: "StartGame",
-                      difficulty: value,
-                    });
-                  }}
-                >
-                  Start Puzzle
-                </Button>
-                <SegmentedButtons
-                  value={value}
-                  onValueChange={setValue}
-                  style={{ margin: newSize / 4 }}
-                  buttons={[
-                    {
-                      value: "novice",
-                      label: "novice",
-                    },
-                    {
-                      value: "trainee",
-                      label: "trainee",
-                    },
-                    {
-                      value: "amateur",
-                      label: "amateur",
-                    },
-                    {
-                      value: "layman",
-                      label: "layman",
-                    },
-                  ]}
-                />
-              </View>
+              <Button
+                style={{ margin: newSize / 4 }}
+                mode="contained"
+                onPress={() => {
+                  navigation.navigate("SudokuPage", {
+                    action: "StartGame",
+                    difficulty: value,
+                  });
+                }}
+              >
+                Start Puzzle
+              </Button>
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ margin: newSize / 4, width: 200 }}
+                buttons={[
+                  {
+                    value: "novice",
+                    label: "novice",
+                  },
+                  {
+                    value: "trainee",
+                    label: "trainee",
+                  },
+                ]}
+              />
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ margin: newSize / 4, width: 200 }}
+                buttons={[
+                  {
+                    value: "amateur",
+                    label: "amateur",
+                  },
+                  {
+                    value: "layman",
+                    label: "layman",
+                  },
+                ]}
+              />
             </View>
           </View>
         </View>
