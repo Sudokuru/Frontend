@@ -1,5 +1,7 @@
+import { difficulty } from "./../Components/Home/Cards";
 import { statistics } from "./Puzzle.Types";
 import {
+  GameDifficulty,
   SudokuObjectProps,
   returnGameOfDifficulty,
 } from "../Functions/LocalDatabase";
@@ -16,8 +18,12 @@ export class Puzzles {
    * @param strategies - new game can have subset of these strategies
    * @returns promise of puzzle JSON object
    */
-  public static async startGame(): Promise<SudokuObjectProps> {
-    return returnGameOfDifficulty("dev");
+  public static async startGame(
+    difficulty: GameDifficulty
+  ): Promise<SudokuObjectProps> {
+    return returnGameOfDifficulty(difficulty);
+    // !uncomment below for dev testing
+    // return returnGameOfDifficulty("dev");
   }
 
   /**

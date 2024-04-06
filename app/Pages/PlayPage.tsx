@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Pressable } from "react-native";
-import { Text, useTheme, Button } from "react-native-paper";
+import { Text, useTheme, Button, SegmentedButtons } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Alert from "react-native-awesome-alerts";
@@ -34,6 +34,8 @@ const PlayPage = () => {
   const newSize = minWindowSize / 25;
 
   const theme = useTheme();
+
+  const [value, setValue] = React.useState("novice");
 
   useFocusEffect(
     React.useCallback(() => {
@@ -130,22 +132,35 @@ const PlayPage = () => {
                   onPress={() => {
                     navigation.navigate("SudokuPage", {
                       action: "StartGame",
+                      difficulty: value,
                     });
                   }}
                 >
                   Start Puzzle
                 </Button>
-                {/* <Button
+                <SegmentedButtons
+                  value={value}
+                  onValueChange={setValue}
                   style={{ margin: newSize / 4 }}
-                  mode="contained"
-                  onPress={() => {
-                    navigation.navigate("SudokuPage", {
-                      action: "StartGame",
-                    });
-                  }}
-                >
-                  Start Puzzle
-                </Button> */}
+                  buttons={[
+                    {
+                      value: "novice",
+                      label: "novice",
+                    },
+                    {
+                      value: "trainee",
+                      label: "trainee",
+                    },
+                    {
+                      value: "amateur",
+                      label: "amateur",
+                    },
+                    {
+                      value: "layman",
+                      label: "layman",
+                    },
+                  ]}
+                />
               </View>
             </View>
           </View>

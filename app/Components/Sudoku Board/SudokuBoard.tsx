@@ -32,7 +32,7 @@ import {
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
-  difficulty?: GameDifficulty;
+  difficulty: GameDifficulty;
 }
 
 const SudokuBoard = (props: SudokuBoardProps) => {
