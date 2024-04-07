@@ -330,7 +330,7 @@ test.describe("complete game", () => {
     const endGameModal = new EndGameModalComponent(resumeGame);
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
-    const playPage = new PlayPage(page);
+    const playPage = new PlayPage(resumeGame);
     await playPage.playPageIsRendered();
   });
 

@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
+import path from "path";
 
 config();
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
@@ -31,6 +32,34 @@ export default defineConfig({
     ["list"],
     ["html"],
     ["junit", { outputFile: "playwright-report/results.xml" }],
+    [
+      "@bgotink/playwright-coverage",
+      /** @type {import('@bgotink/playwright-coverage').CoverageReporterOptions} */ {
+        // Path to the root files should be resolved from, most likely your repository root
+        sourceRoot: __dirname,
+        exclude: ["node_modules/**"],
+        // Directory in which to write coverage reports
+        resultDir: path.join(__dirname, "playwright-coverage"),
+        // Configure the reports to generate.
+        // The value is an array of istanbul reports, with optional configuration attached.
+        reports: [
+          ["html"],
+          [
+            "lcovonly",
+            {
+              file: "coverage.lcov",
+            },
+          ],
+          // Log a coverage summary at the end of the test run
+          [
+            "text-summary",
+            {
+              file: null,
+            },
+          ],
+        ],
+      },
+    ],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
