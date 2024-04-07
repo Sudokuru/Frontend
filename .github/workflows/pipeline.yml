@@ -102,11 +102,8 @@ jobs:
             npm i
             npm run web
           wait-on: http://localhost:8081
-          tail: true
-          log-output-resume: stderr
           wait-for: 5m
-          log-output: stderr,stdout
-          log-output-if: 'failure'
+          log-output-if: true
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Playwright run
