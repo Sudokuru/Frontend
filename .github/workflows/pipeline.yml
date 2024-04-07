@@ -106,17 +106,26 @@ jobs:
         run: npx playwright install --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: playwright-report/results.xml
       - name: Upload code coverage
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: CodeCoverageReport
           path: playwright-coverage/index.html
       - name: Coveralls
+        if: always()
         uses: coverallsapp/github-action@v2
       - name: Upload coverage reports to Codecov
+        if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
 
   app_build_android:
     runs-on: ubuntu-latest
