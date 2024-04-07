@@ -1,4 +1,4 @@
-import { contactUs } from "../fixture";
+import { test } from "../fixture";
 import { ContactPage } from "../page/contact.page";
 import { expect } from "@playwright/test";
 import { HomePage } from "../page/home.page";
@@ -10,10 +10,10 @@ const contactTypes = [
   ["Other", "Other"],
 ];
 
-contactUs.describe("contact page", () => {
+test.describe("contact page", () => {
   for (const [value, feedbackType] of contactTypes) {
-    contactUs(value, async ({ page }) => {
-      const contactPage = new ContactPage(page);
+    test(value, async ({ contact }) => {
+      const contactPage = new ContactPage(contact);
       await contactPage.submitFeedbackButtonIsDisabled();
       await contactPage.inputCounterIsZero();
       await contactPage.feedback.click();
@@ -23,7 +23,7 @@ contactUs.describe("contact page", () => {
       await contactPage.page.getByText(value).click();
       await contactPage.submitFeedbackButtonIsEnabled();
       let postRequestPromise = new Promise((resolve) => {
-        page.on("request", (request) => {
+        contact.on("request", (request) => {
           if (request.url().includes("https://script.google.com/")) {
             resolve(request); // Resolve the promise when the matching request happens
           }
@@ -41,13 +41,13 @@ contactUs.describe("contact page", () => {
       ).toBeTruthy();
       await contactPage.thankYouIsVisible();
       await contactPage.closeAlert();
-      const homePage = new HomePage(page);
+      const homePage = new HomePage(contact);
       await homePage.homePageIsRendered();
     });
   }
 
-  contactUs("Error", async ({ page }) => {
-    const contactPage = new ContactPage(page);
+  test("Error", async ({ contact }) => {
+    const contactPage = new ContactPage(contact);
     await contactPage.submitFeedbackButtonIsDisabled();
     await contactPage.inputCounterIsZero();
     await contactPage.page.getByText("Feature").click();
@@ -57,7 +57,7 @@ contactUs.describe("contact page", () => {
     await contactPage.inputCounterIsX(" ".length);
     await contactPage.submitFeedbackButtonIsEnabled();
     let postRequestPromise = new Promise((resolve) => {
-      page.on("request", (request) => {
+      contact.on("request", (request) => {
         if (request.url().includes("https://script.google.com/")) {
           resolve(request); // Resolve the promise when the matching request happens
         }
