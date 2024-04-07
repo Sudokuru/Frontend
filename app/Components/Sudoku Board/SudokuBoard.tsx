@@ -438,13 +438,24 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntry(parseInt(inputValue, 10));
-    }
-    if (
+    } else if (
       inputValue == "Delete" ||
       inputValue == "Backspace" ||
       inputValue == "0"
-    )
+    ) {
       eraseSelected();
+    } else if (sudokuBoard.selectedCell) {
+      if (inputValue == "ArrowLeft" || inputValue == "Left") {
+        let newCol = sudokuBoard.selectedCell.c - 1;
+        if (newCol < 0) {
+          newCol = sudokuBoard.puzzle.length - 1;
+        }
+        setSudokuBoard({
+          ...sudokuBoard,
+          selectedCell: { r: sudokuBoard.selectedCell.r, c: newCol },
+        });
+      }
+    }
   };
 
   const renderPuzzle = () => {
