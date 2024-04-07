@@ -116,7 +116,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: CodeCoverageReport
-          path: playwright-coverage/index.html
+          path: playwright-coverage/*
       - name: Coveralls
         if: always()
         uses: coverallsapp/github-action@v2
