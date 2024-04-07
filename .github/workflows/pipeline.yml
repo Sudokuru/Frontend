@@ -98,9 +98,7 @@ jobs:
       - uses: JarvusInnovations/background-action@v1
         name: Bootstrap System Under Test (SUT)
         with:
-          run: | 
-            npm i &
-            npm run web &
+          run: npm run web &
           wait-on: http://localhost:8081
           wait-for: 5m
           log-output-if: true
