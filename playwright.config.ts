@@ -37,7 +37,9 @@ export default defineConfig({
       /** @type {import('@bgotink/playwright-coverage').CoverageReporterOptions} */ {
         // Path to the root files should be resolved from, most likely your repository root
         sourceRoot: __dirname,
-        exclude: ["node_modules/**"],
+        // This comment was very helpful for getting working syntax for exclude
+        // https://github.com/bgotink/playwright-coverage/issues/3#issuecomment-963923625
+        exclude: ["**/node_modules/**", "**/.assets/**", "**/.expo/**"],
         // Directory in which to write coverage reports
         resultDir: path.join(__dirname, "playwright-coverage"),
         // Configure the reports to generate.
