@@ -71,8 +71,8 @@ const HeaderRow = (props: HeaderRowProps) => {
           style={{
             fontFamily: "Inter_400Regular",
             fontSize: cellSize
-              ? cellSize * (1 / 3.1) + 1
-              : fallbackHeight * (1 / 3.1) + 1,
+              ? cellSize * (1 / 3.5) + 1
+              : fallbackHeight * (1 / 3.5) + 1,
             color: theme.colors.onBackground,
           }}
         >
