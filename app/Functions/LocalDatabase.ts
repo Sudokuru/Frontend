@@ -22,24 +22,29 @@ export const returnGameOfDifficulty = (
       difficulty = "novice";
       break;
     case "novice":
-      puzzle =
-        NOVICE_PUZZLES[Math.floor(Math.random() * NOVICE_PUZZLES.length)];
+      puzzle = retrieveRandomPuzzle(NOVICE_PUZZLES);
       break;
     case "trainee":
-      puzzle =
-        TRAINEE_PUZZLES[Math.floor(Math.random() * TRAINEE_PUZZLES.length)];
+      puzzle = retrieveRandomPuzzle(TRAINEE_PUZZLES);
       break;
     case "amateur":
-      puzzle =
-        AMATEUR_PUZZLES[Math.floor(Math.random() * AMATEUR_PUZZLES.length)];
+      puzzle = retrieveRandomPuzzle(AMATEUR_PUZZLES);
       break;
     case "layman":
-      puzzle =
-        LAYMAN_PUZZLES[Math.floor(Math.random() * LAYMAN_PUZZLES.length)];
+      puzzle = retrieveRandomPuzzle(LAYMAN_PUZZLES);
       break;
   }
 
   return convertPuzzleToSudokuObject(puzzle, difficulty);
+};
+
+/**
+ * Returns a random puzzle from an array of puzzles
+ * @param PUZZLES An array of puzzles
+ * @returns a random puzzle from an array of puzzles
+ */
+const retrieveRandomPuzzle = (PUZZLES: Puzzle[]): Puzzle => {
+  return PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
 };
 
 export interface Puzzle {
