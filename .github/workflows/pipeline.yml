@@ -109,6 +109,11 @@ jobs:
         run: npx playwright install --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
+      - name: Upload code coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCoverageReport
+          path: playwright-coverage/index.html
       - name: Coveralls
         uses: coverallsapp/github-action@v2
       - name: Upload coverage reports to Codecov
