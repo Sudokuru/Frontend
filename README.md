@@ -18,6 +18,12 @@ For iOS, scan the QR code with your camera app, for Android you will need to sca
 
 For Web, hit the w key to start up the website at `localhost:19000`
 
+# Only use single puzzle for debugging
+
+In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
+Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
+The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default it returns the first `novice` puzzle.
+
 # EAS Update
 
 [EAS Update Description](https://docs.expo.dev/eas-update/how-it-works/)

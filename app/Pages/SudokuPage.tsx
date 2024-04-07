@@ -23,11 +23,12 @@ let strategies: sudokuStrategyArray = [
 
 const SudokuPage = ({ route }: any) => {
   const { action } = route.params;
+  const { difficulty } = route.params;
 
   return (
     <SafeAreaProvider>
       <SafeAreaView>
-        <SudokuBoard action={action} />
+        <SudokuBoard action={action} difficulty={difficulty} />
         <StatusBar style="auto" />
       </SafeAreaView>
     </SafeAreaProvider>

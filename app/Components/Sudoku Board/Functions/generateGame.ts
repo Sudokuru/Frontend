@@ -6,9 +6,11 @@ export async function generateGame(props: SudokuBoardProps) {
   let gameData = null;
 
   if (props.action == "StartGame") {
-    gameData = await Puzzles.startGame().then((game: SudokuObjectProps) => {
-      return game;
-    });
+    gameData = await Puzzles.startGame(props.difficulty).then(
+      (game: SudokuObjectProps) => {
+        return game;
+      }
+    );
   } else if (props.action == "ResumeGame") {
     gameData = await Puzzles.getGame().then((game: SudokuObjectProps[]) => {
       // If game object is not returned, you get redirected to Main Page

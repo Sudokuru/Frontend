@@ -394,7 +394,7 @@ resumeGame.describe("complete game", () => {
         endGameModal.page.getByText("Mistakes Made: 235")
       ).toBeInViewport({ ratio: 1 });
       await expect(
-        endGameModal.page.getByText("Difficulty: easy")
+        endGameModal.page.getByText("Difficulty: novice")
       ).toBeInViewport({ ratio: 1 });
     }
   );

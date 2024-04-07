@@ -130,11 +130,11 @@ function calculateGameScore(
 function calculateDifficultyScore(
   difficulty: GameDifficulty
 ): GameDifficultyScore {
-  if (difficulty === "easy") {
+  if (difficulty === "novice") {
     return 10;
-  } else if (difficulty === "medium") {
+  } else if (difficulty === "trainee" || difficulty === "amateur") {
     return 20;
-  } else if (difficulty === "hard") {
+  } else if (difficulty === "layman") {
     return 30;
   } else {
     return 10;
