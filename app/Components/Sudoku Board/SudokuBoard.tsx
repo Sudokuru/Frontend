@@ -17,6 +17,7 @@ import Puzzle from "./Components/Puzzle";
 import {
   CellLocation,
   CellProps,
+  GameDifficulty,
   SudokuObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -36,6 +37,7 @@ import Hint from "./Components/Hint";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
+  difficulty: GameDifficulty;
 }
 
 export interface HintObjectProps {

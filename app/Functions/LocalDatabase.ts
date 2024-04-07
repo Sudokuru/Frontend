@@ -1,20 +1,104 @@
 import { sudokuStrategy } from "sudokuru";
 import { puzzle } from "../Api/Puzzle.Types";
 
+import { AMATEUR_PUZZLES } from "../Data/puzzles/amateur_puzzles";
+import { LAYMAN_PUZZLES } from "../Data/puzzles/layman_puzzles";
+import { NOVICE_PUZZLES } from "../Data/puzzles/novice_puzzles";
+import { TRAINEE_PUZZLES } from "../Data/puzzles/trainee_puzzles";
+
 /**
- * This function returns a normal Sudoku Game.
- * Temporarily only returning Naked Single Drill games as a POC
- * TODO Return Puzzles based on user difficulty and learned puzzles
- * @returns A puzzle object for the user to play a normal Sudoku Game
+ * This function takes in the requested difficulty and returns a puzzle matching the difficulty.
+ * @param difficulty The difficulty classification of the puzzle. (string)
+ * @returns A puzzle object that is readable by the Sudoku component.
  */
-export function returnLocalGame(): SudokuObjectProps {
-  const game =
-    NAKED_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ];
+export const returnGameOfDifficulty = (
+  difficulty: GameDifficulty | "dev"
+): SudokuObjectProps => {
+  let puzzle;
+  switch (difficulty) {
+    // "dev" difficulty is a custom difficulty that always returns the same puzzle.
+    case "dev":
+      puzzle = NOVICE_PUZZLES[0];
+      difficulty = "novice";
+      break;
+    case "novice":
+      puzzle = retrieveRandomPuzzle(NOVICE_PUZZLES);
+      break;
+    case "trainee":
+      puzzle = retrieveRandomPuzzle(TRAINEE_PUZZLES);
+      break;
+    case "amateur":
+      puzzle = retrieveRandomPuzzle(AMATEUR_PUZZLES);
+      break;
+    case "layman":
+      puzzle = retrieveRandomPuzzle(LAYMAN_PUZZLES);
+      break;
+  }
+
+  return convertPuzzleToSudokuObject(puzzle, difficulty);
+};
+
+/**
+ * Returns a random puzzle from an array of puzzles
+ * @param PUZZLES An array of puzzles
+ * @returns a random puzzle from an array of puzzles
+ */
+const retrieveRandomPuzzle = (PUZZLES: Puzzle[]): Puzzle => {
+  return PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
+};
+
+export interface Puzzle {
+  p: string; // initial puzzle string
+  s: string; // solution string
+  d: number; // difficulty
+}
+
+/**
+ * This function takes in a Puzzle object and returns a SudokuObjectProps object.
+ * @param puzzle Puzzle object
+ */
+export const convertPuzzleToSudokuObject = (
+  puzzle: Puzzle,
+  difficulty: GameDifficulty
+): SudokuObjectProps => {
+  let game: SudokuObjectProps = {
+    variant: "classic",
+    version: "1.0.0",
+    selectedCell: null,
+    puzzle: [],
+    puzzleSolution: [],
+    statistics: {
+      difficulty: difficulty,
+      internalDifficulty: puzzle.d,
+      numHintsUsed: 0,
+      numWrongCellsPlayed: 0,
+      score: 0,
+      time: 0,
+    },
+    inNoteMode: false,
+    actionHistory: [],
+  };
+
+  for (let i = 0; i < 9; i++) {
+    game.puzzle.push([]);
+    game.puzzleSolution.push([]);
+    for (let j = 0; j < 9; j++) {
+      let charValuePuzzle = puzzle.p.charAt(i * 9 + j);
+      let numValuePuzzle = Number(charValuePuzzle);
+      if (numValuePuzzle === 0) {
+        game.puzzle[i][j] = { type: "value", entry: 0 };
+      } else {
+        game.puzzle[i][j] = { type: "given", entry: numValuePuzzle };
+      }
+
+      let charValueSolution = puzzle.s.charAt(i * 9 + j);
+      let numValueSolution = Number(charValueSolution);
+      game.puzzleSolution[i][j] = numValueSolution;
+    }
+  }
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
-}
+};
 
 export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
   // if (strategy === "NAKED_SINGLE") {
@@ -97,7 +181,7 @@ export interface GameStatistics {
 }
 
 export type GameVariant = "demo" | "drill" | "classic";
-export type GameDifficulty = "easy" | "medium" | "hard";
+export type GameDifficulty = "novice" | "trainee" | "amateur" | "layman";
 export type GameDifficultyScore = 10 | 20 | 30;
 
 export type CellProps = CellWithValue | CellWithNotes;
@@ -488,7 +572,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
       [6, 4, 8, 5, 2, 3, 7, 1, 9],
     ],
     statistics: {
-      difficulty: "easy",
+      difficulty: "novice",
       internalDifficulty: 0,
       numHintsUsed: 0,
       numWrongCellsPlayed: 0,
