@@ -445,16 +445,55 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     ) {
       eraseSelected();
     } else if (sudokuBoard.selectedCell) {
-      if (inputValue == "ArrowLeft" || inputValue == "Left") {
-        let newCol = sudokuBoard.selectedCell.c - 1;
+      let newCol = sudokuBoard.selectedCell.c;
+      let newRow = sudokuBoard.selectedCell.r;
+      if (
+        inputValue == "ArrowLeft" ||
+        inputValue == "Left" ||
+        inputValue == "a" ||
+        inputValue == "A"
+      ) {
+        newCol--;
         if (newCol < 0) {
           newCol = sudokuBoard.puzzle.length - 1;
         }
-        setSudokuBoard({
-          ...sudokuBoard,
-          selectedCell: { r: sudokuBoard.selectedCell.r, c: newCol },
-        });
+      } else if (
+        inputValue == "ArrowRight" ||
+        inputValue == "Right" ||
+        inputValue == "d" ||
+        inputValue == "D"
+      ) {
+        newCol++;
+        if (newCol >= sudokuBoard.puzzle.length) {
+          newCol = 0;
+        }
+      } else if (
+        inputValue == "ArrowUp" ||
+        inputValue == "Up" ||
+        inputValue == "w" ||
+        inputValue == "W"
+      ) {
+        newRow--;
+        if (newRow < 0) {
+          newRow = sudokuBoard.puzzle.length - 1;
+        }
+      } else if (
+        inputValue == "ArrowDown" ||
+        inputValue == "Down" ||
+        inputValue == "s" ||
+        inputValue == "S"
+      ) {
+        newRow++;
+        if (newRow >= sudokuBoard.puzzle.length) {
+          newRow = 0;
+        }
+      } else {
+        return;
       }
+      setSudokuBoard({
+        ...sudokuBoard,
+        selectedCell: { r: newRow, c: newCol },
+      });
     }
   };
 
