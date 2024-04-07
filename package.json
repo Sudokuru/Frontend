@@ -5,6 +5,7 @@
   "scripts": {
     "prepare": "husky install",
     "playwright:test": "npx playwright test",
+    "playwright:test:chrome": "npx playwright test --project=chromium",
     "playwright:ui": "npx playwright test --ui",
     "playwright:report": "npx playwright show-report playwright-report",
     "start": "expo start --clear",

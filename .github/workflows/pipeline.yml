@@ -95,13 +95,18 @@ jobs:
           node-version: 18.x
       - name: install dependencies
         run: npm i
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
+      - uses: JarvusInnovations/background-action@v1
+        name: Bootstrap System Under Test (SUT)
         with:
-          start: 'npm run web:dev'
-          command: 'npm run test:cypress'
-          wait-on: 'http://localhost:8081/'
-          wait-on-timeout: 120
+          run: npm run web
+          wait-on: http://localhost:8081
+          tail: true
+          log-output-resume: stderr
+          wait-for: 5m
+          log-output: stderr,stdout
+          log-output-if: failure
+      - name: Playwright run
+        run: npm run playwright:test:chrome
       - name: Coveralls
         uses: coverallsapp/github-action@v2
       - name: Upload coverage reports to Codecov
