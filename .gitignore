@@ -20,6 +20,7 @@ web-build/
 # playwright
 /test-results/
 /playwright-report/
+/playwright-coverage/
 
 # macOS
 .DS_Store

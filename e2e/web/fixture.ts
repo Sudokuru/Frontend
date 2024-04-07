@@ -5,23 +5,26 @@ import { SudokuBoardComponent } from "./components/sudoku-board.component";
 import { HeaderComponent } from "./components/header.component";
 import { ContactPage } from "./page/contact.page";
 
+import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
+
 // Declare the types of your fixtures.
 type MyFixtures = {
   page: Page;
+  resumeGame: Page;
+  contact: Page;
 };
+
+const newBase = mixinCoverage(base);
 
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
-export const test = base.extend<MyFixtures>({
+export const test = newBase.extend<MyFixtures>({
   page: async ({ page }, use) => {
     await page.goto("");
     await use(page);
   },
-});
-
-// Loads a game from local storage and navigates to resume the game.
-export const resumeGame = base.extend<MyFixtures>({
-  page: async ({ page }, use) => {
+  // Loads a game from local storage and navigates to resume the game.
+  resumeGame: async ({ page }, use) => {
     await page.goto("");
     await page.evaluate(() => {
       const ACTIVE_GAME =
@@ -36,11 +39,8 @@ export const resumeGame = base.extend<MyFixtures>({
     await sudokuBoard.sudokuBoardIsRendered();
     await use(page);
   },
-});
-
-// Navigates to the contact page.
-export const contactUs = base.extend<MyFixtures>({
-  page: async ({ page }, use) => {
+  // Navigates to the contact page.
+  contact: async ({ page }, use) => {
     await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
