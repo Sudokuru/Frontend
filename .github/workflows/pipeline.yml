@@ -104,7 +104,7 @@ jobs:
           log-output-resume: stderr
           wait-for: 5m
           log-output: stderr,stdout
-          log-output-if: failure
+          log-output-if: 'failure'
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Playwright run
