@@ -101,6 +101,7 @@ jobs:
           run: | 
             npm i
             npm run web
+            echo "Running site!"
           wait-on: http://localhost:8081
           wait-for: 5m
           log-output-if: true
