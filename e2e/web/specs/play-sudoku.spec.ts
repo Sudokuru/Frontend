@@ -171,7 +171,7 @@ test.describe("numpad", () => {
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[7][7].click();
-      await sudokuBoard.note.click();
+      await sudokuBoard.page.keyboard.press("t");
       await sudokuBoard.numPad[i - 1].click();
       await sudokuBoard.cellHasNotes(7, 7, i.toString());
     });
@@ -250,7 +250,7 @@ test.describe("undo", () => {
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.note.click();
+    await sudokuBoard.page.keyboard.press("T");
     await sudokuBoard.cell[7][7].press("1");
     await sudokuBoard.cellHasNotes(7, 7, "1");
     await sudokuBoard.undo.click();
@@ -262,7 +262,7 @@ test.describe("undo", () => {
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.note.click();
+    await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.numPad[0].click();
     await sudokuBoard.cellHasNotes(7, 7, "1");
     await sudokuBoard.undo.click();
@@ -274,7 +274,7 @@ test.describe("undo", () => {
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][8].click();
-    await sudokuBoard.note.click();
+    await sudokuBoard.page.keyboard.press("N");
     await sudokuBoard.cell[7][8].press("5");
     await sudokuBoard.cellHasNotes(7, 8, "4");
     await sudokuBoard.undo.click();

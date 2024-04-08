@@ -453,6 +453,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else if (inputValue == "p" || inputValue == "P") {
       saveGame(sudokuBoard);
       navigation.goBack();
+    } else if (
+      inputValue == "t" ||
+      inputValue == "T" ||
+      inputValue == "n" ||
+      inputValue == "N"
+    ) {
+      toggleNoteMode();
     } else if (sudokuBoard.selectedCell) {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
