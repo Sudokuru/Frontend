@@ -415,4 +415,43 @@ test.describe("navigate board", () => {
       await sudokuBoard.cellHasColor(0, 0, SELECTED_COLOR_RGB);
     }
   });
+
+  test("Navigate right to left", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][8].click();
+    const keys = ["ArrowLeft", "a", "A"];
+    for (const key of keys) {
+      for (let col = 8; col >= 0; col--) {
+        await sudokuBoard.cellHasColor(0, col, SELECTED_COLOR_RGB);
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cellHasColor(0, 8, SELECTED_COLOR_RGB);
+    }
+  });
+
+  test("Navigate top to bottom", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    const keys = ["ArrowDown", "s", "S"];
+    for (const key of keys) {
+      for (let row = 0; row < 9; row++) {
+        await sudokuBoard.cellHasColor(row, 0, SELECTED_COLOR_RGB);
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cellHasColor(0, 0, SELECTED_COLOR_RGB);
+    }
+  });
+
+  test("Navigate bottom to top", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[8][0].click();
+    const keys = ["ArrowUp", "w", "W"];
+    for (const key of keys) {
+      for (let row = 8; row >= 0; row--) {
+        await sudokuBoard.cellHasColor(row, 0, SELECTED_COLOR_RGB);
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cellHasColor(8, 0, SELECTED_COLOR_RGB);
+    }
+  });
 });
