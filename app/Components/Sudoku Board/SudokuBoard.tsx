@@ -448,37 +448,25 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
       if (inputValue == "ArrowLeft" || inputValue == "a" || inputValue == "A") {
-        newCol--;
-        if (newCol < 0) {
-          newCol = sudokuBoard.puzzle.length - 1;
-        }
+        newCol = mathimaticalMod(--newCol, sudokuBoard.puzzle.length);
       } else if (
         inputValue == "ArrowRight" ||
         inputValue == "d" ||
         inputValue == "D"
       ) {
-        newCol++;
-        if (newCol >= sudokuBoard.puzzle.length) {
-          newCol = 0;
-        }
+        newCol = mathimaticalMod(++newCol, sudokuBoard.puzzle.length);
       } else if (
         inputValue == "ArrowUp" ||
         inputValue == "w" ||
         inputValue == "W"
       ) {
-        newRow--;
-        if (newRow < 0) {
-          newRow = sudokuBoard.puzzle.length - 1;
-        }
+        newRow = mathimaticalMod(--newRow, sudokuBoard.puzzle.length);
       } else if (
         inputValue == "ArrowDown" ||
         inputValue == "s" ||
         inputValue == "S"
       ) {
-        newRow++;
-        if (newRow >= sudokuBoard.puzzle.length) {
-          newRow = 0;
-        }
+        newRow = mathimaticalMod(++newRow, sudokuBoard.puzzle.length);
       } else {
         return;
       }
@@ -487,6 +475,17 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         selectedCell: { r: newRow, c: newCol },
       });
     }
+  };
+
+  /**
+   * Javascript mod function does not preform mathimatical modulo operation
+   * See article for details https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
+   * @param a The dividend
+   * @param n The divisor
+   * @returns The result of the mod operation
+   */
+  const mathimaticalMod = (a: number, n: number) => {
+    return ((a % n) + n) % n;
   };
 
   const renderPuzzle = () => {
