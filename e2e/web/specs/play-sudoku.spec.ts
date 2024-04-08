@@ -310,6 +310,14 @@ test.describe("erase", () => {
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.erase.click();
     await sudokuBoard.cellHasValue(7, 6, "0");
+    // Use keyboard shortcuts to erase the value
+    const keys = ["Delete", "Backspace", "0", "e", "E"];
+    for (const key of keys) {
+      await sudokuBoard.undo.click();
+      await sudokuBoard.cellHasValue(7, 6, "1");
+      await sudokuBoard.cell[7][6].press(key);
+      await sudokuBoard.cellHasValue(7, 6, "0");
+    }
   });
 });
 

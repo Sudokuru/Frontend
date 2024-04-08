@@ -441,7 +441,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else if (
       inputValue == "Delete" ||
       inputValue == "Backspace" ||
-      inputValue == "0"
+      inputValue == "0" ||
+      inputValue == "e" ||
+      inputValue == "E" // e and E are for erase
     ) {
       eraseSelected();
     } else if (sudokuBoard.selectedCell) {
