@@ -178,7 +178,7 @@ test.describe("undo", () => {
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][7].press("1");
     await sudokuBoard.cellHasValue(7, 7, "1");
-    await sudokuBoard.undo.click();
+    await sudokuBoard.page.keyboard.press("u");
     await sudokuBoard.cellHasValue(7, 7, "0");
   });
 
@@ -189,7 +189,7 @@ test.describe("undo", () => {
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.numPad[0].click();
     await sudokuBoard.cellHasValue(7, 7, "1");
-    await sudokuBoard.undo.click();
+    await sudokuBoard.page.keyboard.press("U");
     await sudokuBoard.cellHasValue(7, 7, "0");
   });
 

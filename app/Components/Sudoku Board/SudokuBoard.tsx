@@ -446,6 +446,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       inputValue == "E" // e and E are for erase
     ) {
       eraseSelected();
+    } else if (inputValue == "u" || inputValue == "U") {
+      undo();
     } else if (sudokuBoard.selectedCell) {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
