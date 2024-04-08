@@ -29,6 +29,7 @@ import {
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
 } from "../../Styling/HighlightColors";
+import { useNavigation } from "@react-navigation/native";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -38,6 +39,7 @@ export interface SudokuBoardProps {
 const SudokuBoard = (props: SudokuBoardProps) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -448,6 +450,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       eraseSelected();
     } else if (inputValue == "u" || inputValue == "U") {
       undo();
+    } else if (inputValue == "p" || inputValue == "P") {
+      saveGame(sudokuBoard);
+      navigation.goBack();
     } else if (sudokuBoard.selectedCell) {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;

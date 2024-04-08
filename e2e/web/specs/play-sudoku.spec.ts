@@ -15,12 +15,20 @@ import { HeaderComponent } from "../components/header.component";
 import { StatisticsPage } from "../page/statistics.page";
 
 test.describe("pause", () => {
-  test("pause button", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await sudokuBoard.pause.click();
-    const playPage = new PlayPage(resumeGame);
-    await playPage.playPageIsRendered();
-  });
+  const keys = ["button", "p", "P"];
+  for (const key of keys) {
+    test("pause button: " + key, async ({ resumeGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      await sudokuBoard.cell[0][0].click();
+      if (key === "button") {
+        await sudokuBoard.pause.click();
+      } else {
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      const playPage = new PlayPage(resumeGame);
+      await playPage.playPageIsRendered();
+    });
+  }
 });
 
 test.describe("board highlighting", () => {
