@@ -447,19 +447,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else if (sudokuBoard.selectedCell) {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
-      if (
-        inputValue == "ArrowLeft" ||
-        inputValue == "Left" ||
-        inputValue == "a" ||
-        inputValue == "A"
-      ) {
+      if (inputValue == "ArrowLeft" || inputValue == "a" || inputValue == "A") {
         newCol--;
         if (newCol < 0) {
           newCol = sudokuBoard.puzzle.length - 1;
         }
       } else if (
         inputValue == "ArrowRight" ||
-        inputValue == "Right" ||
         inputValue == "d" ||
         inputValue == "D"
       ) {
@@ -469,7 +463,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
       } else if (
         inputValue == "ArrowUp" ||
-        inputValue == "Up" ||
         inputValue == "w" ||
         inputValue == "W"
       ) {
@@ -479,7 +472,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
       } else if (
         inputValue == "ArrowDown" ||
-        inputValue == "Down" ||
         inputValue == "s" ||
         inputValue == "S"
       ) {
