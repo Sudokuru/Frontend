@@ -401,3 +401,18 @@ test.describe("complete game", () => {
     ).toBeInViewport({ ratio: 1 });
   });
 });
+
+test.describe("navigate board", () => {
+  test("Navigate left to right", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    const keys = ["ArrowRight", "d", "D"];
+    for (const key of keys) {
+      for (let col = 0; col < 9; col++) {
+        await sudokuBoard.cellHasColor(0, col, SELECTED_COLOR_RGB);
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cellHasColor(0, 0, SELECTED_COLOR_RGB);
+    }
+  });
+});
