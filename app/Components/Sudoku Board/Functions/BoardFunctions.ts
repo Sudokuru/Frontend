@@ -176,3 +176,16 @@ function calculateTimeScore(time: number): number {
     return 30 - minutes;
   }
 }
+
+/**
+ * Saves the game and navigates back a screen
+ * @param sudokuBoard The current state of the game
+ * @param navigation The navigation object
+ */
+export const handlePause = (
+  sudokuBoard: SudokuObjectProps,
+  navigation: any
+) => {
+  saveGame(sudokuBoard);
+  navigation.goBack();
+};

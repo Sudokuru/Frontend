@@ -3,7 +3,12 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
-import { getCellSize, saveGame, formatTime } from "../Functions/BoardFunctions";
+import {
+  getCellSize,
+  saveGame,
+  formatTime,
+  handlePause,
+} from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
 
 let fallbackHeight = 30;
@@ -35,11 +40,6 @@ const HeaderRow = (props: HeaderRowProps) => {
       return () => clearInterval(interval);
     }, [sudokuBoard.statistics.time])
   );
-
-  const handlePause = () => {
-    saveGame(sudokuBoard);
-    navigation.goBack();
-  };
 
   return (
     <View
@@ -80,7 +80,10 @@ const HeaderRow = (props: HeaderRowProps) => {
         </Text>
       </View>
       <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>
-        <PauseButton handlePause={handlePause} isPaused={false} />
+        <PauseButton
+          handlePause={() => handlePause(sudokuBoard, navigation)}
+          isPaused={false}
+        />
       </View>
     </View>
   );
