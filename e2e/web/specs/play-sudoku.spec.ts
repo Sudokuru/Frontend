@@ -313,7 +313,9 @@ test.describe("erase", () => {
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
-  test("Erasing an incorrect value should succeed", async ({ resumeGame }) => {
+  test("Erasing an incorrect value should succeed for button and all keyboard shortcuts", async ({
+    resumeGame,
+  }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.erase.click();
