@@ -182,10 +182,7 @@ function calculateTimeScore(time: number): number {
  * @param sudokuBoard The current state of the game
  * @param navigation The navigation object
  */
-export const handlePause = (
-  sudokuBoard: SudokuObjectProps,
-  navigation: any
-) => {
+export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
   saveGame(sudokuBoard);
   navigation.goBack();
-};
+}
