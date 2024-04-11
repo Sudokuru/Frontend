@@ -464,28 +464,29 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else if (sudokuBoard.selectedCell) {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
-      if (inputValue == "ArrowLeft" || inputValue == "a" || inputValue == "A") {
-        newCol = wrapDigit(newCol - 1);
-      } else if (
-        inputValue == "ArrowRight" ||
-        inputValue == "d" ||
-        inputValue == "D"
-      ) {
-        newCol = wrapDigit(newCol + 1);
-      } else if (
-        inputValue == "ArrowUp" ||
-        inputValue == "w" ||
-        inputValue == "W"
-      ) {
-        newRow = wrapDigit(newRow - 1);
-      } else if (
-        inputValue == "ArrowDown" ||
-        inputValue == "s" ||
-        inputValue == "S"
-      ) {
-        newRow = wrapDigit(newRow + 1);
-      } else {
-        return;
+      switch (inputValue) {
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          newCol = wrapDigit(newCol - 1);
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          newCol = wrapDigit(newCol + 1);
+          break;
+        case "ArrowUp":
+        case "w":
+        case "W":
+          newRow = wrapDigit(newRow - 1);
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          newRow = wrapDigit(newRow + 1);
+          break;
+        default:
+          return;
       }
       setSudokuBoard({
         ...sudokuBoard,
