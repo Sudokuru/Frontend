@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { finishGame, saveGame } from "./Functions/BoardFunctions";
+import { finishGame, handlePause, saveGame } from "./Functions/BoardFunctions";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -452,8 +452,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else if (inputValue == "u" || inputValue == "U") {
       undo();
     } else if (inputValue == "p" || inputValue == "P") {
-      saveGame(sudokuBoard);
-      navigation.goBack();
+      handlePause(sudokuBoard, navigation);
     } else if (
       inputValue == "t" ||
       inputValue == "T" ||
