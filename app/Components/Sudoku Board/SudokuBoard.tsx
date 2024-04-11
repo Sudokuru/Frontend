@@ -5,6 +5,7 @@ import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
+  wrapDigit,
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
@@ -464,37 +465,25 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
       if (inputValue == "ArrowLeft" || inputValue == "a" || inputValue == "A") {
-        newCol--;
-        if (newCol < 0) {
-          newCol = sudokuBoard.puzzle.length - 1;
-        }
+        newCol = wrapDigit(newCol - 1);
       } else if (
         inputValue == "ArrowRight" ||
         inputValue == "d" ||
         inputValue == "D"
       ) {
-        newCol++;
-        if (newCol >= sudokuBoard.puzzle.length) {
-          newCol = 0;
-        }
+        newCol = wrapDigit(newCol + 1);
       } else if (
         inputValue == "ArrowUp" ||
         inputValue == "w" ||
         inputValue == "W"
       ) {
-        newRow--;
-        if (newRow < 0) {
-          newRow = sudokuBoard.puzzle.length - 1;
-        }
+        newRow = wrapDigit(newRow - 1);
       } else if (
         inputValue == "ArrowDown" ||
         inputValue == "s" ||
         inputValue == "S"
       ) {
-        newRow++;
-        if (newRow >= sudokuBoard.puzzle.length) {
-          newRow = 0;
-        }
+        newRow = wrapDigit(newRow + 1);
       } else {
         return;
       }
