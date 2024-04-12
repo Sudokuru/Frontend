@@ -73,16 +73,27 @@ test.describe("numpad", () => {
 });
 
 test.describe("undo", () => {
-  test("Undo button should remove value entered on previous move from keypad with button", async ({
-    resumeGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.cell[7][7].press("1");
-    await sudokuBoard.cellHasValue(7, 7, "1");
-    await sudokuBoard.page.keyboard.press("u");
-    await sudokuBoard.cellHasValue(7, 7, "0");
-  });
+  const keys = ["button", "u", "U"];
+  for (const key of keys) {
+    let capital = key === "U" ? "capital " : "";
+    test(
+      "Undo button should remove value entered on previous move from keypad with: " +
+        capital +
+        key,
+      async ({ resumeGame }) => {
+        const sudokuBoard = new SudokuBoardComponent(resumeGame);
+        await sudokuBoard.cell[7][7].click();
+        await sudokuBoard.cell[7][7].press("1");
+        await sudokuBoard.cellHasValue(7, 7, "1");
+        if (key === "button") {
+          await sudokuBoard.undo.click();
+        } else {
+          await sudokuBoard.page.keyboard.press(key);
+        }
+        await sudokuBoard.cellHasValue(7, 7, "0");
+      }
+    );
+  }
 
   test("Undo button should remove value entered on previous move from numpad", async ({
     resumeGame,
