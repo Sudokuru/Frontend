@@ -282,7 +282,8 @@ test.describe("navigate board", () => {
 test.describe("toggle notes", () => {
   const keys = ["button", "n", "N", "t", "T"];
   for (const key of keys) {
-    test(`toggle notes: ${key}`, async ({ resumeGame }) => {
+    let capital = key === "N" || key === "T" ? "capital " : "";
+    test("toggle notes: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[7][7].click();
       if (key === "button") {
