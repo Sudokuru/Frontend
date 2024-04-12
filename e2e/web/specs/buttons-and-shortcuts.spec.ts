@@ -277,3 +277,28 @@ test.describe("navigate board", () => {
     }
   });
 });
+
+test.describe("toggle notes", () => {
+  const keys = ["button", "n", "N", "t", "T"];
+  for (const key of keys) {
+    test(`toggle notes: ${key}`, async ({ resumeGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      await sudokuBoard.cell[7][7].click();
+      if (key === "button") {
+        await sudokuBoard.note.click();
+      } else {
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cellHasValue(7, 7, "0");
+      await sudokuBoard.page.keyboard.press("1");
+      await sudokuBoard.cellHasNotes(7, 7, "1");
+      if (key === "button") {
+        await sudokuBoard.note.click();
+      } else {
+        await sudokuBoard.page.keyboard.press(key);
+      }
+      await sudokuBoard.cell[7][7].press("2");
+      await sudokuBoard.cellHasValue(7, 7, "2");
+    });
+  }
+});
