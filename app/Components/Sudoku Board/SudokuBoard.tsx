@@ -485,6 +485,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns The result of the mod operation
    */
   const mathimaticalMod = (a: number, n: number) => {
+    console.log(a, n);
     return ((a % n) + n) % n;
   };
 
