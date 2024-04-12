@@ -7,7 +7,8 @@ import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
   for (const key of keys) {
-    test("pause button: " + key, async ({ resumeGame }) => {
+    let capital = key === "P" ? "capital " : "";
+    test("pause button: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[0][0].click();
       if (key === "button") {
@@ -72,7 +73,7 @@ test.describe("numpad", () => {
 });
 
 test.describe("undo", () => {
-  test("Undo button should remove value entered on previous move from keypad", async ({
+  test("Undo button should remove value entered on previous move from keypad with button", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
