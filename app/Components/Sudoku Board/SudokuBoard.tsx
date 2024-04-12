@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { finishGame, saveGame } from "./Functions/BoardFunctions";
+import { finishGame, handlePause, saveGame } from "./Functions/BoardFunctions";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
+  wrapDigit,
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
@@ -29,6 +30,7 @@ import {
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
 } from "../../Styling/HighlightColors";
+import { useNavigation } from "@react-navigation/native";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -38,6 +40,7 @@ export interface SudokuBoardProps {
 const SudokuBoard = (props: SudokuBoardProps) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -438,13 +441,57 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntry(parseInt(inputValue, 10));
-    }
-    if (
+    } else if (
       inputValue == "Delete" ||
       inputValue == "Backspace" ||
-      inputValue == "0"
-    )
+      inputValue == "0" ||
+      inputValue == "e" ||
+      inputValue == "E" // e and E are for erase
+    ) {
       eraseSelected();
+    } else if (inputValue == "u" || inputValue == "U") {
+      undo();
+    } else if (inputValue == "p" || inputValue == "P") {
+      handlePause(sudokuBoard, navigation);
+    } else if (
+      inputValue == "t" ||
+      inputValue == "T" ||
+      inputValue == "n" ||
+      inputValue == "N"
+    ) {
+      toggleNoteMode();
+    } else if (sudokuBoard.selectedCell) {
+      let newCol = sudokuBoard.selectedCell.c;
+      let newRow = sudokuBoard.selectedCell.r;
+      switch (inputValue) {
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          newCol = wrapDigit(newCol - 1);
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          newCol = wrapDigit(newCol + 1);
+          break;
+        case "ArrowUp":
+        case "w":
+        case "W":
+          newRow = wrapDigit(newRow - 1);
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          newRow = wrapDigit(newRow + 1);
+          break;
+        default:
+          return;
+      }
+      setSudokuBoard({
+        ...sudokuBoard,
+        selectedCell: { r: newRow, c: newCol },
+      });
+    }
   };
 
   const renderPuzzle = () => {
