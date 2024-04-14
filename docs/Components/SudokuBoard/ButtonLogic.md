@@ -37,3 +37,4 @@ Buttons that are always enabled
 t, T, n, N - Toggle notes
 u, U - Undo
 p, P - Pause
+h, H - Hint
