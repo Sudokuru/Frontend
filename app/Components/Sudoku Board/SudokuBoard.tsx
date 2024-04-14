@@ -379,7 +379,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
     const disable: boolean = isBoardDisabled();
-    const noteColor: string = "black";
+    const noteColor: string[] = getCellNotesColor();
+    const backgroundNotesColor: string[] = getCellBackgroundNotesColor();
 
     return (
       <Cell
@@ -389,6 +390,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }}
         backgroundColor={cellBackgroundColor}
         noteColor={noteColor}
+        backgroundNoteColor={backgroundNotesColor}
         type={cell.type}
         entry={cell.entry}
         key={r + ":" + c}
@@ -396,6 +398,34 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         r={r}
       />
     );
+  };
+
+  const getCellNotesColor = () => {
+    return [
+      "black",
+      "black",
+      "black",
+      "black",
+      "black",
+      "black",
+      "black",
+      "black",
+      "black",
+    ];
+  };
+
+  const getCellBackgroundNotesColor = () => {
+    return [
+      "white",
+      "white",
+      "white",
+      "white",
+      "white",
+      "white",
+      "white",
+      "white",
+      "white",
+    ];
   };
 
   /**
