@@ -31,5 +31,9 @@ Buttons that are always enabled
 
 ### Mappings from buttons to hotkeys
 
-0 - Erase Button  
+0, DELETE, BACKSPACE, e, E - Erase Button
 1-9 - NumKeys
+∧, <, ∨, >, w, W, a, A, s, S, d, D - Board Cell Navigation
+t, T, n, N - Toggle notes
+u, U - Undo
+p, P - Pause
