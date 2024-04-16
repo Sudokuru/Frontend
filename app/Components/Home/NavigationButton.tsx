@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Pressable,
-  Image,
-  ImageURISource,
-  useWindowDimensions,
-} from "react-native";
+import { Pressable, Image, ImageURISource } from "react-native";
 import { Surface, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -28,9 +23,6 @@ const NavigationButton = (props: navigationButton) => {
 
   const WIDTH_FACTOR: number = props.widthFactor ? props.widthFactor : 4.5;
   const HEIGHT_FACTOR: number = props.heightFactor ? props.heightFactor : 9;
-  const HOVER_SIZE_FACTOR: number = props.hoverSizeFactor
-    ? props.hoverSizeFactor
-    : 1.1;
 
   const WIDTH: number = minWindowSize.width / WIDTH_FACTOR;
   const HEIGHT: number = minWindowSize.height / HEIGHT_FACTOR;
@@ -46,9 +38,11 @@ const NavigationButton = (props: navigationButton) => {
         return (
           <Surface
             style={{
-              width: hovered ? WIDTH * HOVER_SIZE_FACTOR : WIDTH,
-              height: hovered ? HEIGHT * HOVER_SIZE_FACTOR : HEIGHT,
-              borderColor: theme.colors.onSurfaceVariant,
+              width: WIDTH,
+              height: HEIGHT,
+              borderColor: hovered
+                ? theme.colors.onSurfaceVariant
+                : theme.colors.background,
               borderWidth: 4,
             }}
             testID={props.testID}
