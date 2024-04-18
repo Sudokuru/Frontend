@@ -6,6 +6,7 @@ import { HeaderComponent } from "./components/header.component";
 import { ContactPage } from "./page/contact.page";
 
 import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
+import { ACTIVE_GAME } from "./data";
 
 // Declare the types of your fixtures.
 type MyFixtures = {

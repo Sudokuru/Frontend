@@ -7,11 +7,17 @@ export class SudokuBoardComponent {
   readonly numRows: number;
   readonly numColumns: number;
 
+  readonly sudokuBoard: Locator;
+
   readonly timer: Locator;
   readonly pause: Locator;
   readonly undo: Locator;
   readonly note: Locator;
   readonly erase: Locator;
+  readonly hint: Locator;
+  readonly hintExit: Locator;
+  readonly hintFinish: Locator;
+  readonly hintArrowRight: Locator;
   readonly numPad: Locator[] = [];
   readonly cell: Locator[][] = [];
 
@@ -27,11 +33,17 @@ export class SudokuBoardComponent {
     this.numRows = numRows ? numRows : 9;
     this.numColumns = numColumns ? numColumns : 9;
 
+    this.sudokuBoard = page.getByTestId("sudokuBoard");
+
     this.timer = page.getByText("Time: ");
     this.pause = page.getByTestId("PauseButton");
     this.undo = page.getByTestId("undoButton");
     this.note = page.getByTestId("toggleNoteModeButton");
     this.erase = page.getByTestId("eraseButton");
+    this.hint = page.getByTestId("hintButton");
+    this.hintExit = page.getByTestId("hintExit");
+    this.hintFinish = page.getByTestId("hintFinish");
+    this.hintArrowRight = page.getByTestId("hintArrowRight");
 
     for (let i = 0; i < this.numNumPads; i++) {
       this.numPad[i] = page.getByTestId("numberControl" + (i + 1));
@@ -48,6 +60,10 @@ export class SudokuBoardComponent {
 
   async sudokuBoardIsRendered() {
     await expect(this.timer).toBeInViewport({ ratio: 1 });
+  }
+
+  async sudokuBoardHasText(text: string | RegExp) {
+    await expect(this.sudokuBoard).toHaveText(text);
   }
 
   async cellHasColor(row: number, column: number, color: string) {
