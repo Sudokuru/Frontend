@@ -82,6 +82,22 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
+  // todo rethink how this would work
+  async isSudokuBoardHighlightedCorrectly(
+    conditions: { r: number; c: number; color: string }[]
+  ) {
+    for (let row = 0; row < this.numRows; row++) {
+      for (let column = 0; column < this.numColumns; column++) {
+        for (let i = 0; i < conditions.length; i++) {
+          if (row === conditions[i].r && column === conditions[i].c) {
+            await this.cellHasColor(row, column, conditions[i].color);
+            break;
+          }
+        }
+      }
+    }
+  }
+
   async eraseButtonIsDisabled() {
     await expect(this.erase).toHaveCSS("pointer-events", "none");
   }
