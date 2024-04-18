@@ -776,6 +776,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
+    console.log(sudokuHint.stage + stageOffset);
+
     switch (sudokuHint.stage + stageOffset) {
       case 0:
         setSudokuHint(undefined);
@@ -784,12 +786,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         setSudokuHint(undefined);
         return;
       default:
-        // undo logic only for AMEND_NOTES insertions
         if (
           stageOffset === -1 &&
           sudokuHint.stage === 4 &&
           sudokuHint.hint.strategy === "AMEND_NOTES"
         ) {
+          undo();
+        } else if (stageOffset === -1 && sudokuHint.stage === 5) {
+          console.log(sudokuBoard.actionHistory);
           undo();
         }
         setSudokuHint({
@@ -902,7 +906,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         const removals = [...sudokuHint.hint.removals[i]]; // deep clone to prevent sudokuHint state update
         removals.splice(0, 2);
 
-        let newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+        let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
         for (let j = 0; j < removals.length; j++) {
           if (newNotes.includes(removals[j])) {
             const index = newNotes.indexOf(removals[j]);
@@ -917,17 +921,17 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           } as CellProps, // annoying typescript casting workaround
           cellLocation: { c: c, r: r },
         });
+
         sudokuBoard.puzzle[r][c].type = "note";
         sudokuBoard.puzzle[r][c].entry = newNotes;
-
-        saveGame(sudokuBoard);
-
-        setSudokuBoard({
-          ...sudokuBoard,
-          puzzle: sudokuBoard.puzzle,
-          actionHistory: sudokuBoard.actionHistory,
-        });
       }
+      saveGame(sudokuBoard);
+
+      setSudokuBoard({
+        ...sudokuBoard,
+        puzzle: sudokuBoard.puzzle,
+        actionHistory: sudokuBoard.actionHistory,
+      });
     }
   };
 
