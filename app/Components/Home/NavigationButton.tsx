@@ -10,7 +10,6 @@ interface navigationButton {
   image: ImageURISource;
   widthFactor?: number;
   heightFactor?: number;
-  hoverSizeFactor?: number;
   testID: string;
 }
 
@@ -41,8 +40,8 @@ const NavigationButton = (props: navigationButton) => {
               width: WIDTH,
               height: HEIGHT,
               borderColor: hovered
-                ? theme.colors.onSurfaceVariant
-                : theme.colors.background,
+                ? theme.colors.outline
+                : theme.colors.onSurface,
               borderWidth: 4,
             }}
             testID={props.testID}
