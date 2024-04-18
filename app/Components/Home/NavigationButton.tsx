@@ -42,7 +42,7 @@ const NavigationButton = (props: navigationButton) => {
               borderColor: hovered
                 ? theme.colors.outline
                 : theme.colors.onSurface,
-              borderWidth: hovered ? 3 : 1,
+              borderWidth: hovered ? 3 : 2,
             }}
             testID={props.testID}
           >
