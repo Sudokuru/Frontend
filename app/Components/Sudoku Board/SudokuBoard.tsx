@@ -793,7 +793,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         ) {
           undo();
         } else if (stageOffset === -1 && sudokuHint.stage === 5) {
-          console.log(sudokuBoard.actionHistory);
           undo();
         }
         setSudokuHint({
