@@ -1,15 +1,42 @@
 import { getHint } from "sudokuru";
 import { CellProps } from "../../../Functions/LocalDatabase";
+import { Hint } from "../SudokuBoard";
+import { generateBoxIndex } from "../sudoku";
 
-export const getSudokuHint = (puzzle: CellProps[][], solution: number[][]) => {
+export const getSudokuHint = (
+  puzzle: CellProps[][],
+  solution: number[][]
+): Hint => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
   const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
-  const hint = getHint(
+  let hint = getHint(
     puzzleState.puzzleValues,
     puzzleState.puzzleNotes,
     undefined,
     puzzleSolution
-  );
+  ) as unknown as Hint;
+  hint = hintInjections(hint);
+  return hint;
+};
+
+/**
+ * This function takes in the hint object and overrides / injects values
+ * The Frontend uses groups to indicate regions of interest of a hint, whereas sudokuru package uses groups
+ * to store what groups cause a strategy to occur. NAKED_SINGLE is not caused by any groups, but Frontend wants to highlight the box
+ * todo I would make the arguement that this should be moved to sudokuru package, but for now we have it here
+ * @param hint Hint object returned from sudokuru package
+ * @returns Updated Hint object
+ */
+export const hintInjections = (hint: Hint) => {
+  if (hint.strategy == "NAKED_SINGLE") {
+    for (let i = 0; i < hint.cause.length; i++) {
+      hint.groups.push([
+        2,
+        generateBoxIndex(hint.cause[i][0], hint.cause[i][1]),
+      ]);
+    }
+    console.log(hint.groups);
+  }
   return hint;
 };
 

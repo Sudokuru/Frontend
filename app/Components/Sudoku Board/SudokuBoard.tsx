@@ -130,7 +130,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     setSudokuHint({
       stage: 1,
-      hint: returnedHint as unknown as Hint,
+      hint: returnedHint,
       maxStage: 5,
     });
   };
@@ -803,7 +803,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
 
-    // todo figure out why this is removing values :(
     if (
       sudokuHint.hint.strategy === "AMEND_NOTES" &&
       (currentStage === 4 || currentStage === 5)
