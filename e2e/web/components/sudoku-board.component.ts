@@ -62,8 +62,8 @@ export class SudokuBoardComponent {
     await expect(this.timer).toBeInViewport({ ratio: 1 });
   }
 
-  async sudokuBoardHasText(text: string | RegExp) {
-    await expect(this.sudokuBoard).toHaveText(text);
+  async sudokuBoardContainsText(text: string | RegExp) {
+    await expect(this.sudokuBoard).toContainText(text);
   }
 
   async cellHasColor(row: number, column: number, color: string) {
