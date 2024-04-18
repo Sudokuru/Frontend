@@ -94,5 +94,9 @@ test.describe("board hints", () => {
     ]);
 
     await sudokuBoard.cellHasValue(0, 0, "1");
+
+    // testing undo works at end of hint
+    await sudokuBoard.undo.click();
+    await sudokuBoard.cellHasNotes(0, 0, "1");
   });
 });
