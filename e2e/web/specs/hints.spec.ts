@@ -20,79 +20,56 @@ test.describe("board hints", () => {
     );
     await sudokuBoard.hintArrowRight.click();
 
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        if (row <= 2 && column <= 2) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        } else {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            HINT_NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        }
-      }
-    }
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row <= 2 && column <= 2,
+        color: NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => true,
+        color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+    ]);
 
     await sudokuBoard.sudokuBoardContainsText(
       "The hint is located in this region"
     );
     await sudokuBoard.hintArrowRight.click();
 
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        if (row === 0 && column === 0) {
-          await sudokuBoard.cellHasColor(row, column, HINT_SELECTED_COLOR_RGB);
-        } else if (row <= 2 && column <= 2) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        } else {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            HINT_NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        }
-      }
-    }
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 0 && column === 0,
+        color: HINT_SELECTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row <= 2 && column <= 2,
+        color: NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => true,
+        color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+    ]);
 
     await sudokuBoard.hintArrowRight.click();
 
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        if (row === 0 && column === 0) {
-          await sudokuBoard.cellHasColor(row, column, HINT_SELECTED_COLOR_RGB);
-        } else if (row <= 2 && column <= 2) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        } else {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            HINT_NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        }
-      }
-    }
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row <= 2 && column <= 2,
+        color: NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => true,
+        color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+    ]);
 
     await sudokuBoard.cellHasValue(0, 0, "1");
     await sudokuBoard.hintFinish.click();
 
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        await sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB);
-      }
-    }
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
 
     await sudokuBoard.cellHasValue(0, 0, "1");
   });

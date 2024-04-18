@@ -82,14 +82,16 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
-  // todo rethink how this would work
   async isSudokuBoardHighlightedCorrectly(
-    conditions: { r: number; c: number; color: string }[]
+    conditions: {
+      condition: (row: number, column: number) => boolean;
+      color: string;
+    }[]
   ) {
     for (let row = 0; row < this.numRows; row++) {
       for (let column = 0; column < this.numColumns; column++) {
         for (let i = 0; i < conditions.length; i++) {
-          if (row === conditions[i].r && column === conditions[i].c) {
+          if (conditions[i].condition(row, column)) {
             await this.cellHasColor(row, column, conditions[i].color);
             break;
           }
