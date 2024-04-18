@@ -21,7 +21,7 @@ test.describe("board hints", () => {
   // todo test hidden single
 
   test.use({ gameToResume: NAKED_SINGLE_GAME });
-  test("NAKED_SINGLE functions", async ({ resumeGame }) => {
+  test("NAKED_SINGLE", async ({ resumeGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.hint.click();
 
