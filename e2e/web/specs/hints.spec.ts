@@ -21,7 +21,6 @@ test.describe("board hints", () => {
   // todo test hidden single
 
   test.use({ gameToResume: NAKED_SINGLE_GAME });
-  // todo test undo functionality inside hint
   test("NAKED_SINGLE functions", async ({ resumeGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.hint.click();
@@ -81,6 +80,12 @@ test.describe("board hints", () => {
         color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
       },
     ]);
+
+    // testing undo logic
+    await sudokuBoard.hintArrowLeft.click();
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.hintArrowRight.click();
+    await sudokuBoard.cellHasValue(0, 0, "1");
 
     await sudokuBoard.hintFinish.click();
 

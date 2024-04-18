@@ -18,6 +18,7 @@ export class SudokuBoardComponent {
   readonly hintExit: Locator;
   readonly hintFinish: Locator;
   readonly hintArrowRight: Locator;
+  readonly hintArrowLeft: Locator;
   readonly numPad: Locator[] = [];
   readonly cell: Locator[][] = [];
 
@@ -44,6 +45,7 @@ export class SudokuBoardComponent {
     this.hintExit = page.getByTestId("hintExit");
     this.hintFinish = page.getByTestId("hintFinish");
     this.hintArrowRight = page.getByTestId("hintArrowRight");
+    this.hintArrowLeft = page.getByTestId("hintArrowLeft");
 
     for (let i = 0; i < this.numNumPads; i++) {
       this.numPad[i] = page.getByTestId("numberControl" + (i + 1));
