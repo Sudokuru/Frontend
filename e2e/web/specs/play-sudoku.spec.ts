@@ -53,9 +53,10 @@ test.describe("board highlighting", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][7].press("1");
-    for (let row = 0; row < 9; row++) {
-      for (let column = 0; column < 9; column++) {
-        if (
+
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) =>
           (row === 0 && column === 0) ||
           (row === 1 && column === 8) ||
           (row === 2 && column === 4) ||
@@ -64,36 +65,24 @@ test.describe("board highlighting", () => {
           (row === 5 && column === 6) ||
           (row === 6 && column === 2) ||
           (row === 7 && column === 5) ||
-          (row === 8 && column === 7)
-        ) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            IDENTICAL_VALUE_COLOR_RGB
-          );
-        } else if (row === 7 && column === 6) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            NOT_SELECTED_CONFLICT_COLOR_RGB
-          );
-        } else if (row === 7 && column === 7) {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            SELECTED_CONFLICT_COLOR_RGB
-          );
-        } else if (row === 7 || column == 7 || (row > 5 && column > 5)) {
-          await sudokuBoard.cellHasColor(row, column, PEER_SELECTED_COLOR_RGB);
-        } else {
-          await sudokuBoard.cellHasColor(
-            row,
-            column,
-            NOT_HIGHLIGHTED_COLOR_RGB
-          );
-        }
-      }
-    }
+          (row === 8 && column === 7),
+        color: IDENTICAL_VALUE_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 7 && column === 7,
+        color: SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row === 7 || column == 7 || (row > 5 && column > 5),
+        color: PEER_SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
   });
 
   // TODO: Add test: Board Highlighting should render correctly when undo button is entered
