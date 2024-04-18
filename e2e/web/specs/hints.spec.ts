@@ -8,6 +8,18 @@ import {
 } from "../../../app/Styling/HighlightColors";
 
 test.describe("board hints", () => {
+  // todo test that board is unselected when entering hint mode
+
+  // todo test that board cannot be selected when entering hint mode
+
+  // todo test hotkeys for hint mode
+
+  // todo test all variants amend notes - empty cell, cell with incorrect values, cell with correct values, cell with incorrect and correct values
+
+  // todo test all variants simplify notes - row, column, box
+
+  // todo test hidden single
+
   test.use({ gameToResume: NAKED_SINGLE_GAME });
   // todo test undo functionality inside hint
   test("NAKED_SINGLE functions", async ({ resumeGame }) => {
