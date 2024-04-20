@@ -481,12 +481,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     }
 
-    if (
-      sudokuHint.hint.cause[0][0] === r &&
-      sudokuHint.hint.cause[0][1] == c &&
-      sudokuHint.stage >= 4
-    ) {
-      return true;
+    for (let i = 0; i < sudokuHint.hint.cause.length; i++) {
+      if (
+        sudokuHint.hint.cause[i][0] === r &&
+        sudokuHint.hint.cause[i][1] == c &&
+        sudokuHint.stage >= 4
+      ) {
+        return true;
+      }
     }
     return false;
   };
@@ -501,21 +503,23 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     let hintFocused = false;
-    if (
-      sudokuHint.hint.groups[0][0] === 0 &&
-      sudokuHint.hint.groups[0][1] === r
-    ) {
-      hintFocused = true;
-    } else if (
-      sudokuHint.hint.groups[0][0] === 1 &&
-      sudokuHint.hint.groups[0][1] === c
-    ) {
-      hintFocused = true;
-    } else if (
-      sudokuHint.hint.groups[0][0] === 2 &&
-      generateBoxIndex(r, c) === sudokuHint.hint.groups[0][1]
-    ) {
-      hintFocused = true;
+    for (let i = 0; i < sudokuHint.hint.groups.length; i++) {
+      if (
+        sudokuHint.hint.groups[i][0] === 0 &&
+        sudokuHint.hint.groups[i][1] === r
+      ) {
+        hintFocused = true;
+      } else if (
+        sudokuHint.hint.groups[i][0] === 1 &&
+        sudokuHint.hint.groups[i][1] === c
+      ) {
+        hintFocused = true;
+      } else if (
+        sudokuHint.hint.groups[i][0] === 2 &&
+        generateBoxIndex(r, c) === sudokuHint.hint.groups[i][1]
+      ) {
+        hintFocused = true;
+      }
     }
 
     return hintFocused;
