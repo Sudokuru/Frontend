@@ -481,14 +481,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     }
 
-    for (let i = 0; i < sudokuHint.hint.cause.length; i++) {
-      if (
-        sudokuHint.hint.cause[i][0] === r &&
-        sudokuHint.hint.cause[i][1] == c &&
-        sudokuHint.stage >= 4
-      ) {
-        return true;
-      }
+    if (
+      sudokuHint.hint.cause[0][0] === r &&
+      sudokuHint.hint.cause[0][1] == c &&
+      sudokuHint.stage >= 4
+    ) {
+      return true;
     }
     return false;
   };
@@ -503,23 +501,21 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     let hintFocused = false;
-    for (let i = 0; i < sudokuHint.hint.groups.length; i++) {
-      if (
-        sudokuHint.hint.groups[i][0] === 0 &&
-        sudokuHint.hint.groups[i][1] === r
-      ) {
-        hintFocused = true;
-      } else if (
-        sudokuHint.hint.groups[i][0] === 1 &&
-        sudokuHint.hint.groups[i][1] === c
-      ) {
-        hintFocused = true;
-      } else if (
-        sudokuHint.hint.groups[i][0] === 2 &&
-        generateBoxIndex(r, c) === sudokuHint.hint.groups[i][1]
-      ) {
-        hintFocused = true;
-      }
+    if (
+      sudokuHint.hint.groups[0][0] === 0 &&
+      sudokuHint.hint.groups[0][1] === r
+    ) {
+      hintFocused = true;
+    } else if (
+      sudokuHint.hint.groups[0][0] === 1 &&
+      sudokuHint.hint.groups[0][1] === c
+    ) {
+      hintFocused = true;
+    } else if (
+      sudokuHint.hint.groups[0][0] === 2 &&
+      generateBoxIndex(r, c) === sudokuHint.hint.groups[0][1]
+    ) {
+      hintFocused = true;
     }
 
     return hintFocused;
@@ -807,78 +803,45 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       sudokuHint.hint.strategy === "AMEND_NOTES" &&
       (currentStage === 4 || currentStage === 5)
     ) {
-      for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
-        const r = sudokuHint.hint.removals[i][0];
-        const c = sudokuHint.hint.removals[i][1];
-        const removals = [...sudokuHint.hint.removals[i]]; // deep clone to prevent sudokuHint state update
-        removals.splice(0, 2);
+      const r = sudokuHint.hint.removals[0][0];
+      const c = sudokuHint.hint.removals[0][1];
+      const removals = [...sudokuHint.hint.removals[0]]; // deep clone to prevent sudokuHint state update
+      removals.splice(0, 2);
 
-        let notesWereUpdated = false;
+      let notesWereUpdated = false;
 
-        const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        let newNotes: number[] = [];
-        if (sudokuBoard.puzzle[r][c].type == "note") {
-          newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
-        }
-        // Insert missing notes due to AMEND_NOTES hint
-        if (currentStage === 4) {
-          for (let j = 0; j < allNotes.length; j++) {
-            if (
-              !removals.includes(allNotes[j]) &&
-              !newNotes.includes(allNotes[j])
-            ) {
-              newNotes.push(allNotes[j]);
-              notesWereUpdated = true;
-            }
+      const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let newNotes: number[] = [];
+      if (sudokuBoard.puzzle[r][c].type == "note") {
+        newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+      }
+      // Insert missing notes due to AMEND_NOTES hint
+      if (currentStage === 4) {
+        for (let j = 0; j < allNotes.length; j++) {
+          if (
+            !removals.includes(allNotes[j]) &&
+            !newNotes.includes(allNotes[j])
+          ) {
+            newNotes.push(allNotes[j]);
+            notesWereUpdated = true;
           }
-        }
-        // Remove unnecessary notes due to AMEND_NOTES hint
-        // todo this might be shared with simplify notes logic?
-        else if (
-          currentStage === 5 &&
-          sudokuBoard.puzzle[r][c].type == "note"
-        ) {
-          newNotes = sudokuBoard.puzzle[r][c].entry as number[];
-          for (let j = 0; j < removals.length; j++) {
-            if (newNotes.includes(removals[j])) {
-              const index = newNotes.indexOf(removals[j]);
-              newNotes.splice(index, 1);
-            }
-          }
-        }
-
-        // Storing old value in actionHistory
-        // todo This is duplicated code, find some way to condense
-        if (notesWereUpdated) {
-          sudokuBoard.actionHistory.push({
-            cell: {
-              entry: sudokuBoard.puzzle[r][c].entry,
-              type: sudokuBoard.puzzle[r][c].type,
-            } as CellProps, // annoying typescript casting workaround
-            cellLocation: { c: c, r: r },
-          });
-          sudokuBoard.puzzle[r][c].type = "note";
-          sudokuBoard.puzzle[r][c].entry = newNotes;
-
-          saveGame(sudokuBoard);
-
-          setSudokuBoard({
-            ...sudokuBoard,
-            puzzle: sudokuBoard.puzzle,
-            actionHistory: sudokuBoard.actionHistory,
-          });
         }
       }
-    } else if (
-      sudokuHint.hint.strategy === "NAKED_SINGLE" &&
-      currentStage === 5
-    ) {
-      for (let i = 0; i < sudokuHint.hint.placements.length; i++) {
-        const r = sudokuHint.hint.placements[i][0];
-        const c = sudokuHint.hint.placements[i][1];
-        const placements = [...sudokuHint.hint.placements[i]]; // deep clone to prevent sudokuHint state update
-        placements.splice(0, 2);
+      // Remove unnecessary notes due to AMEND_NOTES hint
+      // todo this might be shared with simplify notes logic?
+      else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type == "note") {
+        newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+        for (let j = 0; j < removals.length; j++) {
+          if (newNotes.includes(removals[j])) {
+            const index = newNotes.indexOf(removals[j]);
+            newNotes.splice(index, 1);
+          }
+        }
+      }
 
+      // Storing old value in actionHistory
+      // todo This is duplicated code, find some way to condense
+      if (notesWereUpdated) {
         sudokuBoard.actionHistory.push({
           cell: {
             entry: sudokuBoard.puzzle[r][c].entry,
@@ -886,8 +849,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           } as CellProps, // annoying typescript casting workaround
           cellLocation: { c: c, r: r },
         });
-        sudokuBoard.puzzle[r][c].type = "value";
-        sudokuBoard.puzzle[r][c].entry = placements[0];
+        sudokuBoard.puzzle[r][c].type = "note";
+        sudokuBoard.puzzle[r][c].entry = newNotes;
 
         saveGame(sudokuBoard);
 
@@ -897,32 +860,25 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           actionHistory: sudokuBoard.actionHistory,
         });
       }
-    } else if (currentStage === 5) {
-      for (let i = 0; i < sudokuHint.hint.removals.length; i++) {
-        const r = sudokuHint.hint.removals[i][0];
-        const c = sudokuHint.hint.removals[i][1];
-        const removals = [...sudokuHint.hint.removals[i]]; // deep clone to prevent sudokuHint state update
-        removals.splice(0, 2);
+    } else if (
+      sudokuHint.hint.strategy === "NAKED_SINGLE" &&
+      currentStage === 5
+    ) {
+      const r = sudokuHint.hint.placements[0][0];
+      const c = sudokuHint.hint.placements[0][1];
+      const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
+      placements.splice(0, 2);
 
-        let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
-        for (let j = 0; j < removals.length; j++) {
-          if (newNotes.includes(removals[j])) {
-            const index = newNotes.indexOf(removals[j]);
-            newNotes.splice(index, 1);
-          }
-        }
+      sudokuBoard.actionHistory.push({
+        cell: {
+          entry: sudokuBoard.puzzle[r][c].entry,
+          type: sudokuBoard.puzzle[r][c].type,
+        } as CellProps, // annoying typescript casting workaround
+        cellLocation: { c: c, r: r },
+      });
+      sudokuBoard.puzzle[r][c].type = "value";
+      sudokuBoard.puzzle[r][c].entry = placements[0];
 
-        sudokuBoard.actionHistory.push({
-          cell: {
-            entry: sudokuBoard.puzzle[r][c].entry,
-            type: sudokuBoard.puzzle[r][c].type,
-          } as CellProps, // annoying typescript casting workaround
-          cellLocation: { c: c, r: r },
-        });
-
-        sudokuBoard.puzzle[r][c].type = "note";
-        sudokuBoard.puzzle[r][c].entry = newNotes;
-      }
       saveGame(sudokuBoard);
 
       setSudokuBoard({
@@ -930,7 +886,38 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         puzzle: sudokuBoard.puzzle,
         actionHistory: sudokuBoard.actionHistory,
       });
+    } else if (currentStage === 5) {
+      const r = sudokuHint.hint.removals[0][0];
+      const c = sudokuHint.hint.removals[0][1];
+      const removals = [...sudokuHint.hint.removals[0]]; // deep clone to prevent sudokuHint state update
+      removals.splice(0, 2);
+
+      let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+      for (let j = 0; j < removals.length; j++) {
+        if (newNotes.includes(removals[j])) {
+          const index = newNotes.indexOf(removals[j]);
+          newNotes.splice(index, 1);
+        }
+      }
+
+      sudokuBoard.actionHistory.push({
+        cell: {
+          entry: sudokuBoard.puzzle[r][c].entry,
+          type: sudokuBoard.puzzle[r][c].type,
+        } as CellProps, // annoying typescript casting workaround
+        cellLocation: { c: c, r: r },
+      });
+
+      sudokuBoard.puzzle[r][c].type = "note";
+      sudokuBoard.puzzle[r][c].entry = newNotes;
     }
+    saveGame(sudokuBoard);
+
+    setSudokuBoard({
+      ...sudokuBoard,
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+    });
   };
 
   return (
