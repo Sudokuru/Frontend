@@ -7,7 +7,7 @@ import {
   NOT_HIGHLIGHTED_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
 
-test.describe("board hints", () => {
+test.describe("board AMEND_NOTES", () => {
   // todo test that board is unselected when entering hint mode
 
   // todo test that board cannot be selected when entering hint mode
@@ -21,7 +21,25 @@ test.describe("board hints", () => {
   // todo test hidden single
 
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
-  test("AMEND_NOTES with empty cell", async ({ resumeGame }) => {
+
+  test("with empty cell", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return (row <= 2 && column <= 2) || row === 0 || column === 0;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 0 && column === 2) ||
+        (row === 0 && column === 4) ||
+        (row === 0 && column === 7) ||
+        (row === 1 && column === 2) ||
+        (row === 2 && column === 1) ||
+        (row === 2 && column === 2) ||
+        (row === 4 && column === 0) ||
+        (row === 6 && column === 0)
+      );
+    };
+
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.hint.click();
 
@@ -34,7 +52,7 @@ test.describe("board hints", () => {
 
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
-        condition: (row, column) => row <= 2 && column <= 2,
+        condition: (row, column) => notHighlightedColor(row, column),
         color: NOT_HIGHLIGHTED_COLOR_RGB,
       },
       {
@@ -50,29 +68,11 @@ test.describe("board hints", () => {
 
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
-        condition: (row, column) => row === 0 && column === 0,
+        condition: (row, column) => hintSelectedColor(row, column),
         color: HINT_SELECTED_COLOR_RGB,
       },
       {
-        condition: (row, column) => row <= 2 && column <= 2,
-        color: NOT_HIGHLIGHTED_COLOR_RGB,
-      },
-      {
-        condition: (row, column) => true,
-        color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
-      },
-    ]);
-
-    await sudokuBoard.hintArrowRight.click();
-    await sudokuBoard.cellHasValue(0, 0, "1");
-
-    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
-      {
-        condition: (row, column) => row === 0 && column === 0,
-        color: HINT_SELECTED_COLOR_RGB,
-      },
-      {
-        condition: (row, column) => row <= 2 && column <= 2,
+        condition: (row, column) => notHighlightedColor(row, column),
         color: NOT_HIGHLIGHTED_COLOR_RGB,
       },
       {
@@ -83,9 +83,27 @@ test.describe("board hints", () => {
 
     // testing undo logic
     await sudokuBoard.hintArrowLeft.click();
-    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.cellHasValue(0, 0, "0");
     await sudokuBoard.hintArrowRight.click();
-    await sudokuBoard.cellHasValue(0, 0, "1");
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+
+    await sudokuBoard.hintArrowRight.click();
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => hintSelectedColor(row, column),
+        color: HINT_SELECTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => notHighlightedColor(row, column),
+        color: NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => true,
+        color: HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+    ]);
 
     await sudokuBoard.hintFinish.click();
 
@@ -93,11 +111,11 @@ test.describe("board hints", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await sudokuBoard.cellHasValue(0, 0, "1");
+    await sudokuBoard.cellHasNotes(0, 0, "1");
 
     // testing undo works at end of hint
     await sudokuBoard.undo.click();
-    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.cellHasValue(0, 0, "0");
   });
 
   test("AMEND_NOTES with correct notes", async ({ resumeGame }) => {});
@@ -107,7 +125,9 @@ test.describe("board hints", () => {
   test("AMEND_NOTES with correct and incorrect notes", async ({
     resumeGame,
   }) => {});
+});
 
+test.describe("board NAKED_SINGLE", () => {
   test.use({ gameToResume: NAKED_SINGLE_GAME });
   test("NAKED_SINGLE", async ({ resumeGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -152,7 +172,7 @@ test.describe("board hints", () => {
     ]);
 
     await sudokuBoard.hintArrowRight.click();
-    await sudokuBoard.cellHasValue(0, 0, "1");
+    await sudokuBoard.cellHasNotes(0, 0, "1");
 
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
