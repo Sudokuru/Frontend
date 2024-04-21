@@ -162,13 +162,25 @@ test.describe("board AMEND_NOTES", () => {
   });
 });
 
+/**
+ * This is a helper function for Amend Notes testing.
+ * This tests highlighting at relevant stages, hint undo and 'redo' functionality, and cell content of the hint stages.
+ * @param sudokuBoard The playwright sudoku board page object.
+ * @param row This is the row (0-8) of the target cell of the hint.
+ * @param column This is the column (0-8) of the target cell of the hint.
+ * @param hintSelectedColor This is a function provided to determine which cells should be highlighted as causes.
+ * @param notHighlightedColor This is a function provided to determine what cells should be left unshaded as groups to focus on during the hint.
+ * @param initialCellState This is a string provided for the current content of the target cell.
+ * @param stageFourCellNotes This is a string provided for the content of the target cell for stage four.
+ * @param stageFiveCellNotes This is a string provided for the content of the target cell for stage five.
+ */
 const amendNotesBaseTest = async (
   sudokuBoard: SudokuBoardComponent,
   row: number,
   column: number,
   hintSelectedColor: (row: number, column: number) => boolean,
   notHighlightedColor: (row: number, column: number) => boolean,
-  initialCellNotes: string,
+  initialCellState: string,
   stageFourCellNotes: string,
   stageFiveCellNotes: string
 ) => {
@@ -214,10 +226,10 @@ const amendNotesBaseTest = async (
 
   // testing undo logic
   await sudokuBoard.hintArrowLeft.click();
-  if (initialCellNotes === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellNotes);
+  if (initialCellState === "0") {
+    await sudokuBoard.cellHasValue(row, column, initialCellState);
   } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellNotes);
+    await sudokuBoard.cellHasNotes(row, column, initialCellState);
   }
   await sudokuBoard.hintArrowRight.click();
   await sudokuBoard.cellHasNotes(row, column, stageFourCellNotes);
@@ -228,10 +240,10 @@ const amendNotesBaseTest = async (
   await sudokuBoard.hintArrowLeft.click();
   await sudokuBoard.cellHasNotes(row, column, stageFourCellNotes);
   await sudokuBoard.hintArrowLeft.click();
-  if (initialCellNotes === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellNotes);
+  if (initialCellState === "0") {
+    await sudokuBoard.cellHasValue(row, column, initialCellState);
   } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellNotes);
+    await sudokuBoard.cellHasNotes(row, column, initialCellState);
   }
 
   await sudokuBoard.hintArrowRight.click();
@@ -265,10 +277,10 @@ const amendNotesBaseTest = async (
 
   // testing undo works at end of hint
   await sudokuBoard.undo.click();
-  if (initialCellNotes === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellNotes);
+  if (initialCellState === "0") {
+    await sudokuBoard.cellHasValue(row, column, initialCellState);
   } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellNotes);
+    await sudokuBoard.cellHasNotes(row, column, initialCellState);
   }
 };
 
