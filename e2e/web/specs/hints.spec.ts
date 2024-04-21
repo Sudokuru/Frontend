@@ -170,9 +170,9 @@ test.describe("board AMEND_NOTES", () => {
  * @param column This is the column (0-8) of the target cell of the hint.
  * @param hintSelectedColor This is a function provided to determine which cells should be highlighted as causes.
  * @param notHighlightedColor This is a function provided to determine what cells should be left unshaded as groups to focus on during the hint.
- * @param initialCellState This is a string provided for the current content of the target cell.
- * @param stageFourCellNotes This is a string provided for the content of the target cell for stage four.
- * @param stageFiveCellNotes This is a string provided for the content of the target cell for stage five.
+ * @param initialCellState This is an object containing the cell content and cell content type for initial cell state.
+ * @param stageFourCellNotes This is an object containing the cell content and cell content type for the target cell for hint stage four.
+ * @param stageFiveCellNotes This is an object containing the cell content and cell content type for the target cell for hint stage five.
  */
 const amendNotesBaseTest = async (
   sudokuBoard: SudokuBoardComponent,
@@ -362,7 +362,7 @@ test.describe("board NAKED_SINGLE", () => {
     ]);
 
     await sudokuBoard.hintArrowRight.click();
-    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.cellHasValue(0, 0, "1");
 
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
