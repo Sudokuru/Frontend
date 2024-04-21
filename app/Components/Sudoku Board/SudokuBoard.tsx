@@ -434,11 +434,30 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const handleKeyDown = (event: any) => {
+    const inputValue = event.nativeEvent.key;
+
+    if (inputValue == "u" || inputValue == "U") {
+      const isUndoButtonDisabled =
+        sudokuBoard.actionHistory == null ||
+        sudokuBoard.actionHistory.length == 0;
+      if (!isUndoButtonDisabled) {
+        undo();
+      }
+    } else if (inputValue == "p" || inputValue == "P") {
+      handlePause(sudokuBoard, navigation);
+    } else if (
+      inputValue == "t" ||
+      inputValue == "T" ||
+      inputValue == "n" ||
+      inputValue == "N"
+    ) {
+      toggleNoteMode();
+    }
+
     if (sudokuBoard.selectedCell == null) {
       return;
     }
 
-    const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntry(parseInt(inputValue, 10));
     } else if (
@@ -449,18 +468,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       inputValue == "E" // e and E are for erase
     ) {
       eraseSelected();
-    } else if (inputValue == "u" || inputValue == "U") {
-      undo();
-    } else if (inputValue == "p" || inputValue == "P") {
-      handlePause(sudokuBoard, navigation);
-    } else if (
-      inputValue == "t" ||
-      inputValue == "T" ||
-      inputValue == "n" ||
-      inputValue == "N"
-    ) {
-      toggleNoteMode();
-    } else if (sudokuBoard.selectedCell) {
+    } else {
       let newCol = sudokuBoard.selectedCell.c;
       let newRow = sudokuBoard.selectedCell.r;
       switch (inputValue) {
