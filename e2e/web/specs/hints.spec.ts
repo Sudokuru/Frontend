@@ -5,7 +5,13 @@ import {
   AMEND_NOTES_CORRECT_CELL_GAME,
   AMEND_NOTES_EMPTY_CELL_GAME,
   AMEND_NOTES_INCORRECT_CELL_GAME,
+  HIDDEN_SINGLE_COLUMN_GAME,
+  HIDDEN_SINGLE_ROW_GAME,
+  NAKED_PAIR_BOX_GAME,
   NAKED_SINGLE_GAME,
+  SIMPLIFY_NOTES_BOX_GAME,
+  SIMPLIFY_NOTES_COLUMN_GAME,
+  SIMPLIFY_NOTES_ROW_GAME,
 } from "../data";
 import {
   HINT_NOT_HIGHLIGHTED_COLOR_RGB,
@@ -20,10 +26,6 @@ import { toTitle } from "../../../app/Components/Sudoku Board/sudoku";
 // todo test that board cannot be selected when entering hint mode
 
 // todo test hotkeys for hint mode
-
-// todo test all variants simplify notes - row, column, box
-
-// todo test hidden single
 
 test.describe("board AMEND_NOTES", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -168,6 +170,87 @@ test.describe("board AMEND_NOTES", () => {
   });
 });
 
+test.describe("board SIMPLIFY_NOTES", () => {
+  test.use({ gameToResume: SIMPLIFY_NOTES_ROW_GAME });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row === 0;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return row === 0 && column === 0;
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "SIMPLIFY_NOTES",
+      0,
+      5,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "1568" },
+      { contentType: "notes", content: "1568" },
+      { contentType: "notes", content: "568" }
+    );
+  });
+});
+
+test.describe("board SIMPLIFY_NOTES", () => {
+  test.use({ gameToResume: SIMPLIFY_NOTES_COLUMN_GAME });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 0;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return row === 0 && column === 0;
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "SIMPLIFY_NOTES",
+      2,
+      0,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "147" },
+      { contentType: "notes", content: "147" },
+      { contentType: "notes", content: "47" }
+    );
+  });
+});
+
+test.describe("board SIMPLIFY_NOTES", () => {
+  test.use({ gameToResume: SIMPLIFY_NOTES_BOX_GAME });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row > 2 && row <= 5 && column >= 6;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return row === 4 && column === 6;
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "SIMPLIFY_NOTES",
+      3,
+      8,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "2349" },
+      { contentType: "notes", content: "2349" },
+      { contentType: "notes", content: "239" }
+    );
+  });
+});
+
 test.describe("board NAKED_SINGLE", () => {
   test.use({ gameToResume: NAKED_SINGLE_GAME });
   test("NAKED_SINGLE", async ({ resumeGame }) => {
@@ -194,6 +277,103 @@ test.describe("board NAKED_SINGLE", () => {
     );
   });
 });
+
+test.describe("board NAKED_PAIR", () => {
+  test.use({ gameToResume: NAKED_PAIR_BOX_GAME });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row <= 2 && column > 2 && column < 6;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 1 && column === 3) || (row === 1 && column === 4);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "NAKED_PAIR",
+      0,
+      3,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "5689" },
+      { contentType: "notes", content: "5689" },
+      { contentType: "notes", content: "56" }
+    );
+  });
+});
+
+// todo write tests for NAKED_PAIR row and column variant
+
+test.describe("board HIDDEN_SINGLE", () => {
+  test.use({ gameToResume: HIDDEN_SINGLE_ROW_GAME });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row === 4;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 4 && column === 3) ||
+        (row === 4 && column === 4) ||
+        (row === 4 && column === 5) ||
+        (row === 4 && column === 7)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "HIDDEN_SINGLE",
+      4,
+      6,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "249" },
+      { contentType: "notes", content: "249" },
+      { contentType: "notes", content: "4" }
+    );
+  });
+});
+
+test.describe("board HIDDEN_SINGLE", () => {
+  test.use({ gameToResume: HIDDEN_SINGLE_COLUMN_GAME });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 3;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 0 && column === 3) ||
+        (row === 1 && column === 3) ||
+        (row === 2 && column === 3) ||
+        (row === 6 && column === 3) ||
+        (row === 7 && column === 3) ||
+        (row === 8 && column === 3)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await hintBaseTest(
+      sudokuBoard,
+      "HIDDEN_SINGLE",
+      4,
+      3,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "2389" },
+      { contentType: "notes", content: "2389" },
+      { contentType: "notes", content: "2" }
+    );
+  });
+});
+
+// todo write test for hidden single box variant (need to find example)
 
 /**
  * This is a helper function for Hint testing.
@@ -365,8 +545,14 @@ const getHintMessageForStage = (stage: number, hintType: sudokuStrategy) => {
   } else if (stage === 2) {
     if (hintType === "AMEND_NOTES") {
       return "Amend notes are when you reset a cell's notes to contain every nonconflicting number";
+    } else if (hintType === "SIMPLIFY_NOTES") {
+      return "You can simplify notes using values already placed in cells at the start of the game";
     } else if (hintType === "NAKED_SINGLE") {
       return "Naked singles are when you only have one number left as a possibility in a cell";
+    } else if (hintType === "NAKED_PAIR") {
+      return "Naked pairs are when you only have the same two numbers left as a possibility in two cells in the same row, column, or box";
+    } else if (hintType === "HIDDEN_SINGLE") {
+      return "Hidden singles are when you only have one cell left still containing a specific value in a row, column, or box";
     } else {
       return "Could not find Hint Message";
     }
