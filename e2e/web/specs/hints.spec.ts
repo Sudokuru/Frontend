@@ -52,9 +52,9 @@ test.describe("board AMEND_NOTES", () => {
       0,
       hintSelectedColor,
       notHighlightedColor,
-      "0",
-      "1",
-      "1"
+      { contentType: "value", content: "0" },
+      { contentType: "notes", content: "1" },
+      { contentType: "notes", content: "1" }
     );
   });
 });
@@ -85,9 +85,9 @@ test.describe("board AMEND_NOTES", () => {
       5,
       hintSelectedColor,
       notHighlightedColor,
-      "27",
-      "125678",
-      "1568"
+      { contentType: "notes", content: "27" },
+      { contentType: "notes", content: "125678" },
+      { contentType: "notes", content: "1568" }
     );
   });
 });
@@ -119,9 +119,9 @@ test.describe("board AMEND_NOTES", () => {
       6,
       hintSelectedColor,
       notHighlightedColor,
-      "25",
-      "25689",
-      "25689"
+      { contentType: "notes", content: "25" },
+      { contentType: "notes", content: "25689" },
+      { contentType: "notes", content: "25689" }
     );
   });
 });
@@ -155,9 +155,9 @@ test.describe("board AMEND_NOTES", () => {
       8,
       hintSelectedColor,
       notHighlightedColor,
-      "124",
-      "12489",
-      "289"
+      { contentType: "notes", content: "124" },
+      { contentType: "notes", content: "12489" },
+      { contentType: "notes", content: "289" }
     );
   });
 });
@@ -180,9 +180,9 @@ const amendNotesBaseTest = async (
   column: number,
   hintSelectedColor: (row: number, column: number) => boolean,
   notHighlightedColor: (row: number, column: number) => boolean,
-  initialCellState: string,
-  stageFourCellNotes: string,
-  stageFiveCellNotes: string
+  initialCellState: { contentType: "notes" | "value"; content: string },
+  stageFourCellNotes: { contentType: "notes" | "value"; content: string },
+  stageFiveCellNotes: { contentType: "notes" | "value"; content: string }
 ) => {
   await sudokuBoard.hint.click();
 
@@ -226,31 +226,58 @@ const amendNotesBaseTest = async (
 
   // testing undo logic
   await sudokuBoard.hintArrowLeft.click();
-  if (initialCellState === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellState);
-  } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellState);
-  }
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    initialCellState.content,
+    initialCellState.contentType
+  );
   await sudokuBoard.hintArrowRight.click();
-  await sudokuBoard.cellHasNotes(row, column, stageFourCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFourCellNotes.content,
+    stageFourCellNotes.contentType
+  );
 
   await sudokuBoard.hintArrowRight.click();
-  await sudokuBoard.cellHasNotes(row, column, stageFiveCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFiveCellNotes.content,
+    stageFiveCellNotes.contentType
+  );
 
   await sudokuBoard.hintArrowLeft.click();
-  await sudokuBoard.cellHasNotes(row, column, stageFourCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFourCellNotes.content,
+    stageFourCellNotes.contentType
+  );
   await sudokuBoard.hintArrowLeft.click();
-  if (initialCellState === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellState);
-  } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellState);
-  }
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    initialCellState.content,
+    initialCellState.contentType
+  );
 
   await sudokuBoard.hintArrowRight.click();
-  await sudokuBoard.cellHasNotes(row, column, stageFourCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFourCellNotes.content,
+    stageFourCellNotes.contentType
+  );
 
   await sudokuBoard.hintArrowRight.click();
-  await sudokuBoard.cellHasNotes(row, column, stageFiveCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFiveCellNotes.content,
+    stageFiveCellNotes.contentType
+  );
 
   await sudokuBoard.isSudokuBoardHighlightedCorrectly([
     {
@@ -273,15 +300,21 @@ const amendNotesBaseTest = async (
     { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
   ]);
 
-  await sudokuBoard.cellHasNotes(row, column, stageFiveCellNotes);
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    stageFiveCellNotes.content,
+    stageFiveCellNotes.contentType
+  );
 
   // testing undo works at end of hint
   await sudokuBoard.undo.click();
-  if (initialCellState === "0") {
-    await sudokuBoard.cellHasValue(row, column, initialCellState);
-  } else {
-    await sudokuBoard.cellHasNotes(row, column, initialCellState);
-  }
+  await sudokuBoard.cellHasContent(
+    row,
+    column,
+    initialCellState.content,
+    initialCellState.contentType
+  );
 };
 
 test.describe("board NAKED_SINGLE", () => {

@@ -84,6 +84,17 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
+  async cellHasContent(
+    row: number,
+    column: number,
+    content: string,
+    contentType: "notes" | "value"
+  ) {
+    await expect(
+      this.page.getByTestId(`cellr${row}c${column}${contentType}:${content}`)
+    ).toBeInViewport({ ratio: 1 });
+  }
+
   async isSudokuBoardHighlightedCorrectly(
     conditions: {
       condition: (row: number, column: number) => boolean;
