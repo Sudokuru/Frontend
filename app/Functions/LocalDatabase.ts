@@ -64,7 +64,7 @@ export const convertPuzzleToSudokuObject = (
   let game: SudokuObjectProps = {
     variant: "classic",
     version: "1.0.0",
-    selectedCell: null,
+    selectedCell: [],
     puzzle: [],
     puzzleSolution: [],
     statistics: {
@@ -149,7 +149,7 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 export interface SudokuObjectProps {
   variant: GameVariant;
   version: string;
-  selectedCell: CellLocation | null;
+  selectedCell: CellLocation[];
   statistics: GameStatistics;
   puzzle: CellProps[][];
   puzzleSolution: number[][];
