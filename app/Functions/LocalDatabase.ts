@@ -153,7 +153,7 @@ export interface SudokuObjectProps {
   statistics: GameStatistics;
   puzzle: CellProps[][];
   puzzleSolution: number[][];
-  actionHistory: GameAction[];
+  actionHistory: GameAction[][];
   inNoteMode: boolean;
 }
 
