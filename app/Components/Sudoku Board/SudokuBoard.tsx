@@ -572,8 +572,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
-  console.log("HELLO FRIENDS");
-
   return (
     <View
       testID={"sudokuBoard"}
