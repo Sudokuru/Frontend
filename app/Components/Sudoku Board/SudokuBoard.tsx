@@ -572,9 +572,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
+  console.log("HELLO FRIENDS");
+
   return (
     <View
       testID={"sudokuBoard"}
+      //@ts-ignore react-native-web types not supported: https://github.com/necolas/react-native-web/issues/1684
       onKeyDown={handleKeyDown}
       style={{
         alignItems: "center",
