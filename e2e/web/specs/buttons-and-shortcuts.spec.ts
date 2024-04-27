@@ -10,6 +10,7 @@ test.describe("pause", () => {
     let capital = key === "P" ? "capital " : "";
     test("pause button: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      await sudokuBoard.cell[0][0].click();
       if (key === "button") {
         await sudokuBoard.pause.click();
       } else {
@@ -84,7 +85,6 @@ test.describe("undo", () => {
         await sudokuBoard.cell[7][7].click();
         await sudokuBoard.cell[7][7].press("1");
         await sudokuBoard.cellHasValue(7, 7, "1");
-        await sudokuBoard.cell[7][7].click();
         if (key === "button") {
           await sudokuBoard.undo.click();
         } else {
@@ -296,6 +296,7 @@ test.describe("toggle notes", () => {
     let capital = key === "N" || key === "T" ? "capital " : "";
     test("toggle notes: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      await sudokuBoard.cell[7][7].click();
       if (key === "button") {
         await sudokuBoard.note.click();
       } else {
