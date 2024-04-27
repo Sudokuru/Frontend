@@ -17,6 +17,7 @@ import Puzzle from "./Components/Puzzle";
 import {
   CellLocation,
   CellProps,
+  CellType,
   GameAction,
   GameDifficulty,
   SudokuObjectProps,
@@ -54,7 +55,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const [shiftHeld, setShiftHeld] = useState(false);
 
-  function downHandler({ key }) {
+  function downHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(true);
     }
@@ -65,7 +66,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
   }
 
-  function upHandler({ key }) {
+  function upHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(false);
     }
@@ -231,10 +232,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    */
   const setCellEntryValue = (
     inputValue: number,
-    currentType,
-    currentEntry,
-    r,
-    c
+    currentType: CellType,
+    currentEntry: number | number[],
+    r: number,
+    c: number
   ) => {
     if (sudokuBoard.selectedCell == null) {
       return;
