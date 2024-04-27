@@ -303,7 +303,6 @@ test.describe("toggle notes", () => {
         await sudokuBoard.page.keyboard.press(key);
       }
       await sudokuBoard.cellHasValue(7, 7, "0");
-      await sudokuBoard.cell[7][7].click();
       await sudokuBoard.page.keyboard.press("1");
       await sudokuBoard.cellHasNotes(7, 7, "1");
       if (key === "button") {
