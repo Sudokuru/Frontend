@@ -54,10 +54,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   }, []);
 
   const [shiftHeld, setShiftHeld] = useState(false);
+  const [controlHeld, setControlHeld] = useState(false);
 
   function downHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(true);
+    }
+    if (key === "Control") {
+      setControlHeld(true);
     }
     // todo use window listeners for all hotkeys instead of onKeyDown
     // https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
@@ -69,6 +73,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   function upHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(false);
+    }
+    if (key === "Control") {
+      setControlHeld(false);
     }
   }
 
@@ -155,7 +162,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let cellsHaveUpdates: boolean = false;
 
     const currentSelectedCells = getSelectedCells() as CellProps[];
-    console.log(currentSelectedCells);
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
       if (currentSelectedCells[i].type === "given") {
@@ -186,7 +192,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
 
       // Set new Cell Value
-      console.log("NEW VALUE: ", inputValue, currentType, currentEntry, r, c);
       setCellEntryValue(inputValue, currentType, currentEntry, r, c);
 
       newActionHistory.push({
@@ -194,8 +199,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         cellLocation: { c: c, r: r },
       });
     }
-
-    console.log(cellsHaveUpdates);
 
     // selected values are all correct values or givens
     if (!cellsHaveUpdates) {
@@ -310,6 +313,19 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const toggleSelectCell = (r: number, c: number) => {
     if (sudokuBoard.selectedCell.length === 0) {
       sudokuBoard.selectedCell.push({ r: r, c: c });
+    } else if (!shiftHeld && !controlHeld) {
+      let pushNewSelectedCell = true;
+      if (
+        sudokuBoard.selectedCell.length === 1 &&
+        sudokuBoard.selectedCell[0].c === c &&
+        sudokuBoard.selectedCell[0].r === r
+      ) {
+        pushNewSelectedCell = false;
+      }
+      sudokuBoard.selectedCell = [];
+      if (pushNewSelectedCell) {
+        sudokuBoard.selectedCell.push({ r: r, c: c });
+      }
     } else {
       let addSelectedCell = true;
       for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
@@ -318,17 +334,43 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.selectedCell[i].r === r
         ) {
           addSelectedCell = false;
-          if (!shiftHeld) {
-            sudokuBoard.selectedCell = [];
-          }
           sudokuBoard.selectedCell.splice(i, 1);
         }
       }
       if (addSelectedCell) {
-        if (!shiftHeld) {
-          sudokuBoard.selectedCell = [];
-        }
         sudokuBoard.selectedCell.push({ r: r, c: c });
+        // if there was 1 cell selected and using shift select, we select box based on the two selected points
+        if (shiftHeld && sudokuBoard.selectedCell.length === 2) {
+          let rowMultFactor = 1;
+          let columnMultFactor = 1;
+          if (sudokuBoard.selectedCell[0].r > sudokuBoard.selectedCell[1].r) {
+            rowMultFactor = -1;
+          }
+          if (sudokuBoard.selectedCell[0].c > sudokuBoard.selectedCell[1].c) {
+            columnMultFactor = -1;
+          }
+          const rowDifference = Math.abs(
+            sudokuBoard.selectedCell[0].r - sudokuBoard.selectedCell[1].r
+          );
+          const columnDifference = Math.abs(
+            sudokuBoard.selectedCell[0].c - sudokuBoard.selectedCell[1].c
+          );
+
+          for (let i = 0; i <= rowDifference; i++) {
+            for (let j = 0; j <= columnDifference; j++) {
+              if (
+                (i === rowDifference && j === columnDifference) ||
+                (i === 0 && j === 0)
+              ) {
+                continue;
+              }
+              sudokuBoard.selectedCell.push({
+                r: sudokuBoard.selectedCell[0].r + i * rowMultFactor,
+                c: sudokuBoard.selectedCell[0].c + j * columnMultFactor,
+              });
+            }
+          }
+        }
       }
     }
 
