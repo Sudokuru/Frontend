@@ -441,8 +441,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const handleKeyDown = (event: any) => {
     const inputValue = event.nativeEvent.key;
 
-    console.log(inputValue);
-
     switch (inputValue) {
       case "u":
       case "U":
