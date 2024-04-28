@@ -441,6 +441,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const handleKeyDown = (event: any) => {
     const inputValue = event.nativeEvent.key;
 
+    console.log(inputValue);
+
     switch (inputValue) {
       case "u":
       case "U":
@@ -460,6 +462,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       case "n":
       case "N":
         toggleNoteMode();
+        return;
       default:
         break;
     }
@@ -468,12 +471,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
+    if (/^[1-9]$/.test(inputValue)) {
+      updateCellEntry(parseInt(inputValue, 10));
+      return;
+    }
+
     let newCol = sudokuBoard.selectedCell.c;
     let newRow = sudokuBoard.selectedCell.r;
     switch (inputValue) {
-      case /^[1-9]$/.test(inputValue):
-        updateCellEntry(parseInt(inputValue, 10));
-        return;
       case "Delete":
       case "Backspace":
       case "0":
