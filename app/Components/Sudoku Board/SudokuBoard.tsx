@@ -152,12 +152,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     let newActionHistory: GameAction[] = [];
+    let cellsHaveUpdates: boolean = false;
 
     const currentSelectedCells = getSelectedCells() as CellProps[];
+    console.log(currentSelectedCells);
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
       if (currentSelectedCells[i].type === "given") {
-        return;
+        continue;
       }
 
       const r: number = sudokuBoard.selectedCell[i].r;
@@ -165,17 +167,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const currentEntry = currentSelectedCells[i].entry;
       const currentType = currentSelectedCells[i].type;
 
-      // We do not need to take action if current value matches existing value, or if value is correct
+      // We do not need to take action if value is correct
       if (
         currentType === "value" &&
-        (currentEntry === inputValue ||
-          isValueCorrect(
-            sudokuBoard.puzzleSolution[r][c],
-            currentEntry as number
-          ))
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], currentEntry as number)
       ) {
-        return;
+        continue;
       }
+
+      cellsHaveUpdates = true;
 
       // Incrementing numWrongCellsPlayed value
       if (
@@ -186,12 +186,20 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
 
       // Set new Cell Value
+      console.log("NEW VALUE: ", inputValue, currentType, currentEntry, r, c);
       setCellEntryValue(inputValue, currentType, currentEntry, r, c);
 
       newActionHistory.push({
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
         cellLocation: { c: c, r: r },
       });
+    }
+
+    console.log(cellsHaveUpdates);
+
+    // selected values are all correct values or givens
+    if (!cellsHaveUpdates) {
+      return;
     }
 
     // Storing old value in actionHistory
@@ -434,7 +442,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns true if the provided cell's value is equal to any of the selected cells
    */
   const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
-    if (sudokuBoard.selectedCell.length === 0) {
+    // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
+    if (sudokuBoard.selectedCell.length !== 1) {
       return false;
     }
     const { highlightIdenticalValuesSetting } =
@@ -466,7 +475,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     c: number,
     selectedCell: CellLocation[]
   ): boolean => {
-    if (selectedCell.length === 0) {
+    // disable highlighting peers if no cells selected or more than 1 cell is selected.
+    if (selectedCell.length !== 1) {
       return false;
     }
     const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
@@ -592,29 +602,36 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else {
       isBoardSelected = false;
     }
-    let isGiven = false;
-    let isCellCorrect = false;
+    let disableNumberButtons = true;
     if (currentSelectedCells != null) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
-        if (currentSelectedCells[i].type === "given") {
-          isGiven = true;
+        if (currentSelectedCells[i].type !== "given") {
+          disableNumberButtons = false;
         }
         if (
           currentSelectedCells[i].type === "value" &&
-          isValueCorrect(
+          !isValueCorrect(
             sudokuBoard.puzzleSolution[sudokuBoard.selectedCell[i].r][
               sudokuBoard.selectedCell[i].c
             ],
             currentSelectedCells[i].entry as number
           )
         ) {
-          isCellCorrect = true;
+          disableNumberButtons = false;
         }
       }
     }
+    // disable number buttons if more than one cell is selected and we are not in note mode
+    if (
+      currentSelectedCells != null &&
+      currentSelectedCells.length > 1 &&
+      !sudokuBoard.inNoteMode
+    ) {
+      disableNumberButtons = true;
+    }
     return (
       <NumberControl
-        areNumberButtonsDisabled={isGiven || !isBoardSelected || isCellCorrect}
+        areNumberButtonsDisabled={disableNumberButtons || !isBoardSelected}
         updateEntry={updateCellEntry}
       />
     );
