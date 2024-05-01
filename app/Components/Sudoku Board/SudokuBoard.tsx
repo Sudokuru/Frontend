@@ -568,68 +568,89 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return selectedCells;
   };
 
+  /**
+   * When a user presses a key down, do the desired action
+   * @param event onKeyDown event for react-native-web documented here: https://necolas.github.io/react-native-web/docs/interactions/#keyboardevent-props-api
+   * @returns void
+   */
   const handleKeyDown = (event: any) => {
+    const inputValue = event.nativeEvent.key;
+
+    switch (inputValue) {
+      case "u":
+      case "U":
+        const isUndoButtonDisabled =
+          sudokuBoard.actionHistory == null ||
+          sudokuBoard.actionHistory.length == 0;
+        if (!isUndoButtonDisabled) {
+          undo();
+        }
+        return;
+      case "p":
+      case "P":
+        handlePause(sudokuBoard, navigation);
+        return;
+      case "t":
+      case "T":
+      case "n":
+      case "N":
+        toggleNoteMode();
+        return;
+      default:
+        break;
+    }
+
     if (sudokuBoard.selectedCell.length === 0) {
       return;
     }
 
-    const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntry(parseInt(inputValue, 10));
-    } else if (
-      inputValue == "Delete" ||
-      inputValue == "Backspace" ||
-      inputValue == "0" ||
-      inputValue == "e" ||
-      inputValue == "E" // e and E are for erase
-    ) {
-      eraseSelected();
-    } else if (inputValue == "u" || inputValue == "U") {
-      undo();
-    } else if (inputValue == "p" || inputValue == "P") {
-      handlePause(sudokuBoard, navigation);
-    } else if (
-      inputValue == "t" ||
-      inputValue == "T" ||
-      inputValue == "n" ||
-      inputValue == "N"
-    ) {
-      toggleNoteMode();
-    } else if (sudokuBoard.selectedCell.length > 0) {
-      for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
-        let newCol = sudokuBoard.selectedCell[i].c;
-        let newRow = sudokuBoard.selectedCell[i].r;
-        switch (inputValue) {
-          case "ArrowLeft":
-          case "a":
-          case "A":
-            newCol = wrapDigit(newCol - 1);
-            break;
-          case "ArrowRight":
-          case "d":
-          case "D":
-            newCol = wrapDigit(newCol + 1);
-            break;
-          case "ArrowUp":
-          case "w":
-          case "W":
-            newRow = wrapDigit(newRow - 1);
-            break;
-          case "ArrowDown":
-          case "s":
-          case "S":
-            newRow = wrapDigit(newRow + 1);
-            break;
-          default:
-            return;
-        }
-        sudokuBoard.selectedCell[i] = { r: newRow, c: newCol };
-      }
-      setSudokuBoard({
-        ...sudokuBoard,
-        selectedCell: sudokuBoard.selectedCell,
-      });
+      return;
     }
+
+    for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
+      let newCol = sudokuBoard.selectedCell[i].c;
+      let newRow = sudokuBoard.selectedCell[i].r;
+      switch (inputValue) {
+        case "Delete":
+        case "Backspace":
+        case "0":
+        case "e":
+        case "E":
+          eraseSelected();
+          break;
+        // below cases do not return to allow for update of selected cell
+        // todo create function for updating selectedCell for below cases to call
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          newCol = wrapDigit(newCol - 1);
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          newCol = wrapDigit(newCol + 1);
+          break;
+        case "ArrowUp":
+        case "w":
+        case "W":
+          newRow = wrapDigit(newRow - 1);
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          newRow = wrapDigit(newRow + 1);
+          break;
+        default:
+          return;
+      }
+      sudokuBoard.selectedCell[i] = { r: newRow, c: newCol };
+    }
+    setSudokuBoard({
+      ...sudokuBoard,
+      selectedCell: sudokuBoard.selectedCell,
+    });
   };
 
   const renderPuzzle = () => {
@@ -723,6 +744,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   return (
     <View
       testID={"sudokuBoard"}
+      //@ts-ignore react-native-web types not supported: https://github.com/necolas/react-native-web/issues/1684
       onKeyDown={handleKeyDown}
       style={{
         alignItems: "center",
