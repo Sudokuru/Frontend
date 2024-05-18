@@ -37,7 +37,7 @@
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
-    "expo": "^50.0.6",
+    "expo": "^51.0.8",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.10",
     "polished": "^4.2.2",
