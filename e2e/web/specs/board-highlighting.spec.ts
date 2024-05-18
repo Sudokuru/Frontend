@@ -270,3 +270,44 @@ test.describe("board highlighting", () => {
     ]);
   });
 });
+
+test.describe("board multiselect highlighting", () => {
+  test("should select area when using shift key", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[2][2].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row <= 2 && column <= 2,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+  });
+
+  test("Should select multiple cells when using control key", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down("Control");
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][1].click();
+    await sudokuBoard.cell[0][2].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 0 && column <= 2,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+  });
+});
