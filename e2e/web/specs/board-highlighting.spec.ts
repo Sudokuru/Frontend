@@ -53,6 +53,10 @@ test.describe("board highlighting", () => {
     await sudokuBoard.cell[7][7].click();
 
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
   });
