@@ -507,37 +507,28 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Definition of peer can be found here: http://sudopedia.enjoysudoku.com/Peer.html
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
-   * @param selectedCell The selected cell
+   * @param selectedCells The selected cell
    * @returns false if not a peer or selectedCell is null, otherwise returns true
    */
   const areCellsPeers = (
     r: number,
     c: number,
-    selectedCell: CellLocation[]
+    selectedCells: CellLocation[]
   ): boolean => {
     // disable highlighting peers if no cells selected or more than 1 cell is selected.
-    if (selectedCell.length !== 1) {
+    if (selectedCells.length !== 1) {
       return false;
     }
+
+    const selectedCell = selectedCells[0];
+
     const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
       React.useContext(PreferencesContext);
-    let sameBox = false;
-    let sameRow = false;
-    let sameColumn = false;
-    for (let i = 0; i < selectedCell.length; i++) {
-      const box = areCellsInSameBox({ r: r, c: c }, selectedCell[i]);
-      const row = areCellsInSameRow({ r: r, c: c }, selectedCell[i]);
-      const column = areCellsInSameColumn({ r: r, c: c }, selectedCell[i]);
-      if (box) {
-        sameBox = true;
-      }
-      if (row) {
-        sameRow = true;
-      }
-      if (column) {
-        sameColumn = true;
-      }
-    }
+
+    const sameBox = areCellsInSameBox({ r: r, c: c }, selectedCell);
+    const sameRow = areCellsInSameRow({ r: r, c: c }, selectedCell);
+    const sameColumn = areCellsInSameColumn({ r: r, c: c }, selectedCell);
+
     return (
       (sameBox && highlightBoxSetting) ||
       (sameRow && highlightRowSetting) ||
