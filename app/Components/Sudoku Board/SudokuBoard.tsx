@@ -246,7 +246,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     r: number,
     c: number
   ) => {
-    if (sudokuBoard.selectedCell == null) {
+    if (sudokuBoard.selectedCell.length === 0) {
       return;
     }
 
@@ -456,7 +456,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
    * @param selectedCell The selected cell
-   * @returns false if selectedCell is null or does not match the coordinates provided
+   * @returns false if selectedCell is empty or does not match the coordinates provided
    */
   const isCellSelected = (
     r: number,
@@ -508,7 +508,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
    * @param selectedCells The selected cell
-   * @returns false if not a peer or selectedCell is null, otherwise returns true
+   * @returns false if not a peer or selectedCell is empty, otherwise returns true
    */
   const areCellsPeers = (
     r: number,
@@ -542,9 +542,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
-  const getSelectedCells = (): CellProps[] | null => {
+  const getSelectedCells = (): CellProps[] => {
     if (sudokuBoard.selectedCell.length === 0) {
-      return null;
+      return [];
     }
     let selectedCells: CellProps[] = [];
     for (const selectedCell of sudokuBoard.selectedCell) {
@@ -564,9 +564,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     switch (inputValue) {
       case "u":
       case "U":
-        const isUndoButtonDisabled =
-          sudokuBoard.actionHistory == null ||
-          sudokuBoard.actionHistory.length == 0;
+        const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
         if (!isUndoButtonDisabled) {
           undo();
         }
@@ -643,14 +641,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderNumberControl = () => {
-    let currentSelectedCells: CellProps[] | null = null;
+    let currentSelectedCells: CellProps[] = [];
     let disableNumberButtons = true;
 
     if (sudokuBoard.selectedCell.length > 0) {
       currentSelectedCells = getSelectedCells();
     }
 
-    if (currentSelectedCells != null) {
+    if (currentSelectedCells.length != 0) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         if (currentSelectedCells[i].type !== "given") {
           disableNumberButtons = false;
@@ -669,7 +667,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
     // disable number buttons if more than one cell is selected and we are not in note mode
     if (
-      currentSelectedCells != null &&
+      currentSelectedCells.length != 0 &&
       currentSelectedCells.length > 1 &&
       !sudokuBoard.inNoteMode
     ) {
@@ -685,12 +683,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
-    let currentSelectedCells: CellProps[] | null = getSelectedCells();
-    let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
-    const isUndoButtonDisabled =
-      sudokuBoard.actionHistory == null ||
-      sudokuBoard.actionHistory.length == 0;
-    if (currentSelectedCells != null) {
+    let currentSelectedCells: CellProps[] = getSelectedCells();
+    let isEraseButtonDisabled = sudokuBoard.selectedCell.length === 0;
+    const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
+    if (currentSelectedCells.length != 0) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         const isCellGiven = currentSelectedCells[i].type === "given";
         const isCellEmpty =

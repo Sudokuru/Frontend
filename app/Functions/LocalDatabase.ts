@@ -215,7 +215,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
     variant: "classic",
     version: "1.0.0",
-    selectedCell: null,
+    selectedCell: [],
     puzzle: [
       [
         {
