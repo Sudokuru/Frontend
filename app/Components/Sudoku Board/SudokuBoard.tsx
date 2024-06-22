@@ -654,8 +654,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         if (currentSelectedCells[i].type !== "given") {
           disableNumberButtons = false;
-        }
-        if (
+        } else if (
           currentSelectedCells[i].type === "value" &&
           !isValueCorrect(
             sudokuBoard.puzzleSolution[sudokuBoard.selectedCell[i].r][
