@@ -547,12 +547,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return null;
     }
     let selectedCells: CellProps[] = [];
-    for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
-      selectedCells.push(
-        sudokuBoard.puzzle[sudokuBoard.selectedCell[i].r][
-          sudokuBoard.selectedCell[i].c
-        ]
-      );
+    for (const selectedCell of sudokuBoard.selectedCell) {
+      selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
     }
     return selectedCells;
   };
