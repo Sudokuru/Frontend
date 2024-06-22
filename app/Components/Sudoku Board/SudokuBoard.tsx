@@ -644,13 +644,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderNumberControl = () => {
     let currentSelectedCells: CellProps[] | null = null;
-    let isBoardSelected: boolean = true;
+    let disableNumberButtons = true;
+
     if (sudokuBoard.selectedCell.length > 0) {
       currentSelectedCells = getSelectedCells();
-    } else {
-      isBoardSelected = false;
     }
-    let disableNumberButtons = true;
+
     if (currentSelectedCells != null) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         if (currentSelectedCells[i].type !== "given") {
@@ -679,7 +678,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
     return (
       <NumberControl
-        areNumberButtonsDisabled={disableNumberButtons || !isBoardSelected}
+        areNumberButtonsDisabled={disableNumberButtons}
         updateEntry={updateCellEntry}
       />
     );
