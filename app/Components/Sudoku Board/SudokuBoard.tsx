@@ -112,16 +112,16 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
    */
   const undo = () => {
-    // Adding previous move back to the board
-    const move = sudokuBoard.actionHistory.pop();
-    if (!move || move.length === 0) {
+    // Adding previous moves back to the board
+    const moves = sudokuBoard.actionHistory.pop();
+    if (!moves || moves.length === 0) {
       return;
     }
-    for (let i = 0; i < move.length; i++) {
-      sudokuBoard.puzzle[move[i].cellLocation.r][move[i].cellLocation.c].type =
-        move[i].cell.type;
-      sudokuBoard.puzzle[move[i].cellLocation.r][move[i].cellLocation.c].entry =
-        move[i].cell.entry;
+    for (const move of moves) {
+      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].type =
+        move.cell.type;
+      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].entry =
+        move.cell.entry;
     }
     // remove from move history
     setSudokuBoard({
