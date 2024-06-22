@@ -59,13 +59,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   function downHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(true);
-    }
-    if (key === "Control") {
+    } else if (key === "Control") {
       setControlHeld(true);
     }
     // todo use window listeners for all hotkeys instead of onKeyDown
     // https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
-    if (key === "n") {
+    else if (key === "n") {
       toggleNoteMode();
     }
   }
@@ -73,8 +72,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   function upHandler({ key }: any) {
     if (key === "Shift") {
       setShiftHeld(false);
-    }
-    if (key === "Control") {
+    } else if (key === "Control") {
       setControlHeld(false);
     }
   }
