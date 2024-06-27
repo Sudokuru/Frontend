@@ -488,15 +488,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
     const { highlightIdenticalValuesSetting } =
       React.useContext(PreferencesContext);
-    const currentSelectedCells = getSelectedCells() as CellProps[];
-    let currentEntry = cell.entry;
-    let identicalValue = false;
-    for (let i = 0; i < currentSelectedCells.length; i++) {
-      const selectedEntry = currentSelectedCells[i].entry;
-      if (selectedEntry === currentEntry) {
-        identicalValue = true;
-      }
-    }
+    const currentSelectedCell = getSelectedCells() as CellProps[];
+    const currentEntry = cell.entry;
+    const selectedEntry = currentSelectedCell[0].entry;
+    const identicalValue = selectedEntry === currentEntry;
+
     return (
       highlightIdenticalValuesSetting && identicalValue && currentEntry != 0
     );
