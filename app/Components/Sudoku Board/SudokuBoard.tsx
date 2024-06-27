@@ -477,9 +477,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines if the provided cell has the same value as the selected cell(s)
+   * Determines if the provided cell has the same value as the selected cell
    * @param cell The provided cell
-   * @returns true if the provided cell's value is equal to any of the selected cells
+   * @returns true if the provided cell's value is equal to the selected cell
    */
   const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
     // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
