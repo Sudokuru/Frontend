@@ -310,4 +310,55 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
   });
+
+  test("Should select and unselect cells correctly when using control key", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down("Control");
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][1].click();
+    await sudokuBoard.cell[0][2].click();
+    await sudokuBoard.cell[0][2].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 0 && column <= 1,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+    await sudokuBoard.cell[0][1].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 0 && column === 0,
+        color: SELECTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row === 0 || column === 0 || (row <= 2 && column <= 2),
+        color: PEER_SELECTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          (row === 1 && column === 8) ||
+          (row === 2 && column === 4) ||
+          (row === 3 && column === 3) ||
+          (row === 4 && column === 1) ||
+          (row === 5 && column === 6) ||
+          (row === 6 && column === 2) ||
+          (row === 7 && column === 5) ||
+          (row === 8 && column === 7),
+        color: IDENTICAL_VALUE_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+  });
 });

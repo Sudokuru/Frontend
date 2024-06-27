@@ -315,3 +315,15 @@ test.describe("toggle notes", () => {
     });
   }
 });
+
+test.describe("typing with multiple cells selected", () => {
+  test("inserting notes should succeed", () => {});
+
+  test("inserting values should fail", () => {});
+});
+
+test.describe("numpad with multiple cells selected", () => {
+  test("inserting notes should succeed", () => {});
+
+  test("numpad disabled when not in note mode", () => {});
+});
