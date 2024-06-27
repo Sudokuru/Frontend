@@ -3,6 +3,7 @@ import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
 import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
+import { NEW_EMPTY_GAME } from "../data";
 
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
@@ -317,13 +318,100 @@ test.describe("toggle notes", () => {
 });
 
 test.describe("typing with multiple cells selected", () => {
-  test("inserting notes should succeed", () => {});
+  test.use({ gameToResume: NEW_EMPTY_GAME });
 
-  test("inserting values should fail", () => {});
+  test("inserting notes should succeed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.cellHasValue(3, 6, "0");
+    await sudokuBoard.cellHasNotes(3, 7, "1");
+    await sudokuBoard.cellHasNotes(3, 8, "1");
+    await sudokuBoard.cellHasNotes(4, 6, "1");
+    await sudokuBoard.cellHasNotes(4, 7, "1");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
+
+  test.use({ gameToResume: NEW_EMPTY_GAME });
+
+  test("inserting values should fail", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.page.keyboard.press("n");
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.cellHasNotes(3, 6, "1");
+    await sudokuBoard.cellHasValue(3, 7, "0");
+    await sudokuBoard.cellHasValue(3, 8, "0");
+    await sudokuBoard.cellHasValue(4, 6, "0");
+    await sudokuBoard.cellHasValue(4, 7, "0");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
 });
 
 test.describe("numpad with multiple cells selected", () => {
-  test("inserting notes should succeed", () => {});
+  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test("inserting notes should succeed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
 
-  test("numpad disabled when not in note mode", () => {});
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.numPad[0].click();
+
+    await sudokuBoard.cellHasValue(3, 6, "0");
+    await sudokuBoard.cellHasNotes(3, 7, "1");
+    await sudokuBoard.cellHasNotes(3, 8, "1");
+    await sudokuBoard.cellHasNotes(4, 6, "1");
+    await sudokuBoard.cellHasNotes(4, 7, "1");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
+
+  test("numpad disabled when not in note mode", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.page.keyboard.press("n");
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.numPad[0].click();
+
+    await sudokuBoard.cellHasNotes(3, 6, "1");
+    await sudokuBoard.cellHasValue(3, 7, "0");
+    await sudokuBoard.cellHasValue(3, 8, "0");
+    await sudokuBoard.cellHasValue(4, 6, "0");
+    await sudokuBoard.cellHasValue(4, 7, "0");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
 });
