@@ -431,7 +431,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const selectedCell = sudokuBoard.selectedCell;
     const selected: boolean = isCellSelected(r, c, selectedCell);
     const conflict: boolean = doesCellHaveConflict(r, c, cell);
-    const peer: boolean = areCellsPeers(r, c, selectedCell);
+    const peer: boolean = isCellPeer(r, c, selectedCell);
     const identicalValue: boolean = doesCellHaveIdenticalValue(cell);
 
     let cellBackgroundColor;
@@ -504,9 +504,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
    * @param selectedCells The selected cell
-   * @returns false if not a peer or selectedCell is empty, otherwise returns true
+   * @returns false if not a peer or selectedCell is empty, or if there is more than one selected cell, otherwise returns true
    */
-  const areCellsPeers = (
+  const isCellPeer = (
     r: number,
     c: number,
     selectedCells: CellLocation[]
