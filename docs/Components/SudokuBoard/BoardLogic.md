@@ -63,7 +63,7 @@ Users can get a maximum of 30 points. Users get 0 points if their game takes 30 
 
 This is based on the difficulty of the puzzle.
 
-Users can get a maximum of 90 points. Users get 10 points for an novice puzzle, 20 points for a amateur puzzle, 30 points for a layman puzzle, and so on.
+Users can get a maximum of 90 points. Users get 10 points for a novice puzzle, 20 points for an amateur puzzle, 30 points for a layman puzzle, and so on.
 
 ### Incorrect cells and hints score
 
