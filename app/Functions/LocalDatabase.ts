@@ -1,10 +1,5 @@
 import { sudokuStrategy } from "sudokuru";
 import { puzzle } from "../Api/Puzzle.Types";
-
-import { AMATEUR_PUZZLES } from "../Data/puzzles/amateur_puzzles";
-import { LAYMAN_PUZZLES } from "../Data/puzzles/layman_puzzles";
-import { NOVICE_PUZZLES } from "../Data/puzzles/novice_puzzles";
-import { TRAINEE_PUZZLES } from "../Data/puzzles/trainee_puzzles";
 import { GameDifficulty } from "../Components/Sudoku Board/Functions/Difficulty";
 
 export interface Puzzle {
