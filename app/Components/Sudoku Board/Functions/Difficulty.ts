@@ -1,6 +1,11 @@
 import { AMATEUR_PUZZLES } from "../../../Data/puzzles/amateur_puzzles";
+import { GRANDMASTER_PUZZLES } from "../../../Data/puzzles/grandmaster_puzzles";
 import { LAYMAN_PUZZLES } from "../../../Data/puzzles/layman_puzzles";
+import { MASTER_PUZZLES } from "../../../Data/puzzles/master_puzzles";
 import { NOVICE_PUZZLES } from "../../../Data/puzzles/novice_puzzles";
+import { PROFESSIONAL_PUZZLES } from "../../../Data/puzzles/professional_puzzles";
+import { PROTEGE_PUZZLES } from "../../../Data/puzzles/protege_puzzles";
+import { PUNDIT_PUZZLES } from "../../../Data/puzzles/pundit_puzzles";
 import { TRAINEE_PUZZLES } from "../../../Data/puzzles/trainee_puzzles";
 import {
   convertPuzzleToSudokuObject,
@@ -137,14 +142,29 @@ export const returnGameOfDifficulty = (
     case "novice":
       puzzle = retrieveRandomPuzzle(NOVICE_PUZZLES);
       break;
-    case "trainee":
-      puzzle = retrieveRandomPuzzle(TRAINEE_PUZZLES);
-      break;
     case "amateur":
       puzzle = retrieveRandomPuzzle(AMATEUR_PUZZLES);
       break;
     case "layman":
       puzzle = retrieveRandomPuzzle(LAYMAN_PUZZLES);
+      break;
+    case "trainee":
+      puzzle = retrieveRandomPuzzle(TRAINEE_PUZZLES);
+      break;
+    case "protege":
+      puzzle = retrieveRandomPuzzle(PROTEGE_PUZZLES);
+      break;
+    case "professional":
+      puzzle = retrieveRandomPuzzle(PROFESSIONAL_PUZZLES);
+      break;
+    case "pundit":
+      puzzle = retrieveRandomPuzzle(PUNDIT_PUZZLES);
+      break;
+    case "master":
+      puzzle = retrieveRandomPuzzle(MASTER_PUZZLES);
+      break;
+    case "grandmaster":
+      puzzle = retrieveRandomPuzzle(GRANDMASTER_PUZZLES);
       break;
   }
 
