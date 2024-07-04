@@ -127,46 +127,47 @@ const retrieveRandomPuzzle = (PUZZLES: Puzzle[]): Puzzle => {
 /**
  * This function takes in the requested difficulty and returns a puzzle matching the difficulty.
  * @param difficulty The difficulty classification of the puzzle. (string)
+ * @returns A Puzzle object
+ */
+export const returnPuzzleOfDifficulty = (
+  difficulty: GameDifficulty | "dev"
+): Puzzle => {
+  switch (difficulty) {
+    // "dev" difficulty is a custom difficulty that always returns the same puzzle.
+    case "dev":
+      return NOVICE_PUZZLES[0];
+    case "novice":
+      return retrieveRandomPuzzle(NOVICE_PUZZLES);
+    case "amateur":
+      return retrieveRandomPuzzle(AMATEUR_PUZZLES);
+    case "layman":
+      return retrieveRandomPuzzle(LAYMAN_PUZZLES);
+    case "trainee":
+      return retrieveRandomPuzzle(TRAINEE_PUZZLES);
+    case "protege":
+      return retrieveRandomPuzzle(PROTEGE_PUZZLES);
+    case "professional":
+      return retrieveRandomPuzzle(PROFESSIONAL_PUZZLES);
+    case "pundit":
+      return retrieveRandomPuzzle(PUNDIT_PUZZLES);
+    case "master":
+      return retrieveRandomPuzzle(MASTER_PUZZLES);
+    case "grandmaster":
+      return retrieveRandomPuzzle(GRANDMASTER_PUZZLES);
+  }
+};
+
+/**
+ * This function takes in the requested difficulty and returns a puzzle matching the difficulty.
+ * @param difficulty The difficulty classification of the puzzle. (string)
  * @returns A puzzle object that is readable by the Sudoku component.
  */
 export const returnGameOfDifficulty = (
   difficulty: GameDifficulty | "dev"
 ): SudokuObjectProps => {
-  let puzzle;
-  switch (difficulty) {
-    // "dev" difficulty is a custom difficulty that always returns the same puzzle.
-    case "dev":
-      puzzle = NOVICE_PUZZLES[0];
-      difficulty = "novice";
-      break;
-    case "novice":
-      puzzle = retrieveRandomPuzzle(NOVICE_PUZZLES);
-      break;
-    case "amateur":
-      puzzle = retrieveRandomPuzzle(AMATEUR_PUZZLES);
-      break;
-    case "layman":
-      puzzle = retrieveRandomPuzzle(LAYMAN_PUZZLES);
-      break;
-    case "trainee":
-      puzzle = retrieveRandomPuzzle(TRAINEE_PUZZLES);
-      break;
-    case "protege":
-      puzzle = retrieveRandomPuzzle(PROTEGE_PUZZLES);
-      break;
-    case "professional":
-      puzzle = retrieveRandomPuzzle(PROFESSIONAL_PUZZLES);
-      break;
-    case "pundit":
-      puzzle = retrieveRandomPuzzle(PUNDIT_PUZZLES);
-      break;
-    case "master":
-      puzzle = retrieveRandomPuzzle(MASTER_PUZZLES);
-      break;
-    case "grandmaster":
-      puzzle = retrieveRandomPuzzle(GRANDMASTER_PUZZLES);
-      break;
+  let puzzles = returnPuzzleOfDifficulty(difficulty);
+  if (difficulty === "dev") {
+    difficulty = "novice";
   }
-
-  return convertPuzzleToSudokuObject(puzzle, difficulty);
+  return convertPuzzleToSudokuObject(puzzles, difficulty);
 };
