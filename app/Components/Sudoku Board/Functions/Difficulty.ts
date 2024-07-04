@@ -165,7 +165,7 @@ export const returnPuzzleOfDifficulty = (
 export const returnGameOfDifficulty = (
   difficulty: GameDifficulty | "dev"
 ): SudokuObjectProps => {
-  let puzzles = returnPuzzleOfDifficulty(difficulty);
+  const puzzles = returnPuzzleOfDifficulty(difficulty);
   if (difficulty === "dev") {
     difficulty = "novice";
   }
