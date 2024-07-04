@@ -18,7 +18,7 @@ export type GameDifficulty =
   | "pundit"
   | "master"
   | "grandmaster";
-export type GameDifficultyScore = 10 | 20 | 30;
+export type GameDifficultyScore = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90;
 
 /**
  * Calculates the difficulty score
@@ -28,14 +28,25 @@ export type GameDifficultyScore = 10 | 20 | 30;
 function calculateDifficultyScore(
   difficulty: GameDifficulty
 ): GameDifficultyScore {
-  if (difficulty === "novice") {
-    return 10;
-  } else if (difficulty === "trainee" || difficulty === "amateur") {
-    return 20;
-  } else if (difficulty === "layman") {
-    return 30;
-  } else {
-    return 10;
+  switch (difficulty) {
+    case "novice":
+      return 10;
+    case "amateur":
+      return 20;
+    case "layman":
+      return 30;
+    case "trainee":
+      return 40;
+    case "protege":
+      return 50;
+    case "professional":
+      return 60;
+    case "pundit":
+      return 70;
+    case "master":
+      return 80;
+    case "grandmaster":
+      return 90;
   }
 }
 
