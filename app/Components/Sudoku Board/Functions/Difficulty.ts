@@ -28,7 +28,7 @@ export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 /**
  * Calculates the difficulty score
  * @param difficulty A string representing the difficulty of the puzzle
- * @returns A number representing the difficulty score from the puzzle, which represents 30% of the total score
+ * @returns A number representing the difficulty score from the puzzle
  */
 function calculateDifficultyScore(
   difficulty: GameDifficulty
@@ -60,7 +60,7 @@ function calculateDifficultyScore(
  * Every hint and incorrect cell subtracts 5 point from 30, with a minimum score of 0 and a maximum score of 30
  * @param numWrongCellsPlayed a number representing the number of wrong cells played
  * @param numHintsUsed a number representing the number of hints used
- * @returns A number representing the hint and incorrect cell score, which represents 30% of the total score
+ * @returns A number representing the hint and incorrect cell score
  */
 function calculateHintAndIncorrectCellScore(
   numWrongCellsPlayed: number,
