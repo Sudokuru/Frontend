@@ -80,7 +80,7 @@ function calculateHintAndIncorrectCellScore(
  * If the game takes 30 minutes or longer, we return a score of 0
  * Otherwise, we return a score of 30 minus how many minutes the game took.
  * @param time The total time of the game
- * @returns A number representing the time score, which is 30% of the score
+ * @returns A number representing the time score
  */
 function calculateTimeScore(time: number): number {
   const minutes = Math.floor(time / 60);
