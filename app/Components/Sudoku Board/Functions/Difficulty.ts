@@ -23,7 +23,7 @@ export type GameDifficulty =
   | "pundit"
   | "master"
   | "grandmaster";
-export type GameDifficultyScore = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90;
+export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 
 /**
  * Calculates the difficulty score
@@ -35,43 +35,43 @@ function calculateDifficultyScore(
 ): GameDifficultyScore {
   switch (difficulty) {
     case "novice":
-      return 10;
+      return 0;
     case "amateur":
-      return 20;
+      return 5;
     case "layman":
-      return 30;
+      return 10;
     case "trainee":
-      return 40;
+      return 15;
     case "protege":
-      return 50;
+      return 20;
     case "professional":
-      return 60;
+      return 25;
     case "pundit":
-      return 70;
+      return 30;
     case "master":
-      return 80;
+      return 35;
     case "grandmaster":
-      return 90;
+      return 40;
   }
 }
 
 /**
  * Calculates the hint and incorrect cell score
- * Every hint and incorrect cell subtracts 1 point from 40, with a minimum score of 0 and a maximum score of 40
+ * Every hint and incorrect cell subtracts 5 point from 30, with a minimum score of 0 and a maximum score of 30
  * @param numWrongCellsPlayed a number representing the number of wrong cells played
  * @param numHintsUsed a number representing the number of hints used
- * @returns A number representing the hint and incorrect cell score, which represents 40% of the total score
+ * @returns A number representing the hint and incorrect cell score, which represents 30% of the total score
  */
 function calculateHintAndIncorrectCellScore(
   numWrongCellsPlayed: number,
   numHintsUsed: number
 ): number {
   // hints and incorrect cell placements are weighted equally
-  const totalScrewups = numWrongCellsPlayed + numHintsUsed;
-  if (totalScrewups > 40) {
+  const totalScrewups = (numWrongCellsPlayed + numHintsUsed) * 5;
+  if (totalScrewups > 30) {
     return 0;
   } else {
-    return 40 - totalScrewups;
+    return 30 - totalScrewups;
   }
 }
 
