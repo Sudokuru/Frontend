@@ -1,10 +1,7 @@
 import { useWindowDimensions } from "react-native";
 import { Puzzles } from "../../../Api/Puzzles";
-import {
-  GameDifficulty,
-  SudokuObjectProps,
-} from "../../../Functions/LocalDatabase";
-import { calculateGameScore } from "./Difficulty";
+import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
+import { calculateGameScore, GameDifficulty } from "./Difficulty";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
