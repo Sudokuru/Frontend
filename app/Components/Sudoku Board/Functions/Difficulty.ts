@@ -8,7 +8,16 @@ import {
   SudokuObjectProps,
 } from "../../../Functions/LocalDatabase";
 
-export type GameDifficulty = "novice" | "trainee" | "amateur" | "layman";
+export type GameDifficulty =
+  | "novice"
+  | "amateur"
+  | "layman"
+  | "trainee"
+  | "protege"
+  | "professional"
+  | "pundit"
+  | "master"
+  | "grandmaster";
 export type GameDifficultyScore = 10 | 20 | 30;
 
 /**
