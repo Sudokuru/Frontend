@@ -16,8 +16,7 @@ Below are the difficulties for Classic variant, from easiest to most challenging
 - master
 - grandmaster
 
-Currently the puzzles associated with these difficulties may not be accurate.
-We will continue to iterate and improve the difficulty algorithms to have more accurate classifications.
+Currently we have 500 of each puzzle stored in app/Data/puzzles.
 
 ## Drill Variant
 
