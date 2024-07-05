@@ -38,7 +38,7 @@ test.describe("complete game", () => {
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
     const endGameModal = new EndGameModalComponent(resumeGame);
-    await expect(endGameModal.page.getByText("Score: 34")).toBeInViewport({
+    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
       ratio: 1,
     });
     await expect(
@@ -71,7 +71,7 @@ test.describe("complete game", () => {
     await header.statistics.last().click(); // todo: stop using last (fix infinite stack)
     const statistics = new StatisticsPage(resumeGame);
     await statistics.statisticsPageIsRendered();
-    await expect(statistics.page.getByText("Total Score: 34")).toBeInViewport({
+    await expect(statistics.page.getByText("Total Score: 24")).toBeInViewport({
       ratio: 1,
     });
     await expect(statistics.page.getByText("Games Played: 1")).toBeInViewport({

@@ -147,6 +147,21 @@ const PlayPage = () => {
                     label: "novice",
                   },
                   {
+                    value: "amateur",
+                    label: "amateur",
+                  },
+                ]}
+              />
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ margin: newSize / 4, width: 200 }}
+                buttons={[
+                  {
+                    value: "layman",
+                    label: "layman",
+                  },
+                  {
                     value: "trainee",
                     label: "trainee",
                   },
@@ -158,13 +173,39 @@ const PlayPage = () => {
                 style={{ margin: newSize / 4, width: 200 }}
                 buttons={[
                   {
-                    value: "amateur",
-                    label: "amateur",
+                    value: "protege",
+                    label: "protege",
                   },
                   {
-                    value: "layman",
-                    label: "layman",
+                    value: "professional",
+                    label: "professional",
                   },
+                ]}
+              />
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ margin: newSize / 4, width: 200 }}
+                buttons={[
+                  {
+                    value: "pundit",
+                    label: "pundit",
+                  },
+                  {
+                    value: "master",
+                    label: "master",
+                  },
+                ]}
+              />
+              <SegmentedButtons
+                value={value}
+                onValueChange={setValue}
+                style={{ margin: newSize / 4, width: 200 }}
+                buttons={[
+                  {
+                    value: "grandmaster",
+                    label: "grandmaster",
+                  }, // note: could add random difficulty especially if end design requires even number
                 ]}
               />
             </View>
