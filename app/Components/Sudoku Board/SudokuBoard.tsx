@@ -123,7 +123,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
-    let newActionHistory: GameAction[] = [];
+    const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates: boolean = false;
 
     const currentSelectedCells = getSelectedCells() as CellProps[];
@@ -544,7 +544,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuBoard.selectedCell.length === 0) {
       return [];
     }
-    let selectedCells: CellProps[] = [];
+    const selectedCells: CellProps[] = [];
     for (const selectedCell of sudokuBoard.selectedCell) {
       selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
     }
@@ -694,7 +694,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
-    let currentSelectedCells: CellProps[] = getSelectedCells();
+    const currentSelectedCells: CellProps[] = getSelectedCells();
     let isEraseButtonDisabled = sudokuBoard.selectedCell.length === 0;
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
     if (currentSelectedCells.length != 0) {
