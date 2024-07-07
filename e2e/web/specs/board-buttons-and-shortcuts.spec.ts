@@ -198,6 +198,26 @@ test.describe("undo", () => {
     await sudokuBoard.undo.click();
     await sudokuBoard.cellHasNotes(7, 8, "45");
   });
+
+  test("Undo button should function with a note move spanning multiple cells", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down("Control");
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.cell[7][8].click();
+
+    await sudokuBoard.page.keyboard.press("N");
+    await sudokuBoard.numPad[7].click();
+
+    await sudokuBoard.cellHasNotes(7, 7, "8");
+    await sudokuBoard.cellHasNotes(7, 8, "458");
+
+    await sudokuBoard.undo.click();
+
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+  });
 });
 
 test.describe("erase", () => {
