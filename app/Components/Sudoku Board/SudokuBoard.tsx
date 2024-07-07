@@ -319,7 +319,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    */
   const toggleSelectCellWithDefaultRules = (r: number, c: number) => {
     let addCell = true;
-    for (let cell of sudokuBoard.selectedCell) {
+    for (const cell of sudokuBoard.selectedCell) {
       if (cell.c === c && cell.r === r) {
         addCell = false;
       }
