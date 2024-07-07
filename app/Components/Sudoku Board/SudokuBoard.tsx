@@ -160,6 +160,16 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let cellsHaveUpdates: boolean = false;
 
     const currentSelectedCells = getSelectedCells() as CellProps[];
+
+    // We do not take action if more than one cell is selected and we are not in note mode
+    if (
+      currentSelectedCells.length !== 0 &&
+      currentSelectedCells.length > 1 &&
+      !sudokuBoard.inNoteMode
+    ) {
+      return;
+    }
+
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
       if (currentSelectedCells[i].type === "given") {
@@ -657,15 +667,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     if (currentSelectedCells.length != 0) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
-        if (currentSelectedCells[i].type !== "given") {
-          disableNumberButtons = false;
-        } else if (
-          currentSelectedCells[i].type === "value" &&
-          !isValueCorrect(
-            sudokuBoard.puzzleSolution[sudokuBoard.selectedCell[i].r][
-              sudokuBoard.selectedCell[i].c
-            ],
-            currentSelectedCells[i].entry as number
+        // if there is at least one cell that can be updated, we enable number buttons
+        if (
+          !disableCellUpdates(
+            currentSelectedCells[i],
+            sudokuBoard.selectedCell[i].r,
+            sudokuBoard.selectedCell[i].c
           )
         ) {
           disableNumberButtons = false;
@@ -686,6 +693,26 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         updateEntry={updateCellEntry}
       />
     );
+  };
+
+  /**
+   *
+   * @param cell A cell of the sudoku board
+   * @param r The row of the cell
+   * @param c The column of the cell
+   * @returns Returns whether the given cell should allow updates or not.
+   */
+  const disableCellUpdates = (cell: CellProps, r: number, c: number) => {
+    if (cell.type === "given") {
+      return true;
+    } else if (
+      cell.type === "value" &&
+      !isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry as number)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderActions = () => {
