@@ -328,71 +328,86 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const toggleSelectCell = (r: number, c: number) => {
     if (sudokuBoard.selectedCell.length === 0) {
       sudokuBoard.selectedCell.push({ r: r, c: c });
-    } else if (!shiftHeld && !controlHeld) {
-      let pushNewSelectedCell = true;
-      if (
-        sudokuBoard.selectedCell.length === 1 &&
-        sudokuBoard.selectedCell[0].c === c &&
-        sudokuBoard.selectedCell[0].r === r
-      ) {
-        pushNewSelectedCell = false;
-      }
-      sudokuBoard.selectedCell = [];
-      if (pushNewSelectedCell) {
-        sudokuBoard.selectedCell.push({ r: r, c: c });
-      }
+    } else if (controlHeld) {
+      toggleSelectCellWithControlRules(r, c);
+    } else if (shiftHeld) {
+      toggleSelectCellWithShiftRules(r, c);
     } else {
-      let addSelectedCell = true;
-      for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
-        if (
-          sudokuBoard.selectedCell[i].c === c &&
-          sudokuBoard.selectedCell[i].r === r
-        ) {
-          addSelectedCell = false;
-          sudokuBoard.selectedCell.splice(i, 1);
-        }
-      }
-      if (addSelectedCell) {
-        sudokuBoard.selectedCell.push({ r: r, c: c });
-        // if there was 1 cell selected and using shift select, we select box based on the two selected points
-        if (shiftHeld && sudokuBoard.selectedCell.length === 2) {
-          let rowMultFactor = 1;
-          let columnMultFactor = 1;
-          if (sudokuBoard.selectedCell[0].r > sudokuBoard.selectedCell[1].r) {
-            rowMultFactor = -1;
-          }
-          if (sudokuBoard.selectedCell[0].c > sudokuBoard.selectedCell[1].c) {
-            columnMultFactor = -1;
-          }
-          const rowDifference = Math.abs(
-            sudokuBoard.selectedCell[0].r - sudokuBoard.selectedCell[1].r
-          );
-          const columnDifference = Math.abs(
-            sudokuBoard.selectedCell[0].c - sudokuBoard.selectedCell[1].c
-          );
-
-          for (let i = 0; i <= rowDifference; i++) {
-            for (let j = 0; j <= columnDifference; j++) {
-              if (
-                (i === rowDifference && j === columnDifference) ||
-                (i === 0 && j === 0)
-              ) {
-                continue;
-              }
-              sudokuBoard.selectedCell.push({
-                r: sudokuBoard.selectedCell[0].r + i * rowMultFactor,
-                c: sudokuBoard.selectedCell[0].c + j * columnMultFactor,
-              });
-            }
-          }
-        }
-      }
+      toggleSelectCellWithDefaultRules(r, c);
     }
 
     setSudokuBoard({
       ...sudokuBoard,
       selectedCell: sudokuBoard.selectedCell,
     });
+  };
+
+  /**
+   * Determines what deselect / select actions should take place.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithDefaultRules = (r: number, c: number) => {
+    let addCell = true;
+    for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
+      if (
+        sudokuBoard.selectedCell[i].c === c &&
+        sudokuBoard.selectedCell[i].r === r
+      ) {
+        addCell = false;
+      }
+    }
+    sudokuBoard.selectedCell = [];
+    if (addCell) {
+      sudokuBoard.selectedCell.push({ r: r, c: c });
+    }
+  };
+
+  /**
+   * Determines what deselect / select actions should take place when control key is held down.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithControlRules = (r: number, c: number) => {
+    let addCell = true;
+    for (let i = 0; i < sudokuBoard.selectedCell.length; i++) {
+      if (
+        sudokuBoard.selectedCell[i].c === c &&
+        sudokuBoard.selectedCell[i].r === r
+      ) {
+        addCell = false;
+        sudokuBoard.selectedCell.splice(i, 1);
+      }
+    }
+    if (addCell) {
+      sudokuBoard.selectedCell.push({ r: r, c: c });
+    }
+  };
+
+  /**
+   * Determines what deselect / select actions should take place when shift key is held down.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithShiftRules = (r: number, c: number) => {
+    const pointOneRow = sudokuBoard.selectedCell[0].r;
+    const pointOneColumn = sudokuBoard.selectedCell[0].c;
+
+    const selectionRowLength = r - pointOneRow;
+    const selectionColumnLength = c - pointOneColumn;
+
+    const newSelectedCells = [];
+    for (let i = 0; i <= Math.abs(selectionRowLength); i++) {
+      for (let j = 0; j <= Math.abs(selectionColumnLength); j++) {
+        newSelectedCells.push({
+          r: sudokuBoard.selectedCell[0].r + i * Math.sign(selectionRowLength),
+          c:
+            sudokuBoard.selectedCell[0].c +
+            j * Math.sign(selectionColumnLength),
+        });
+      }
+    }
+    sudokuBoard.selectedCell = newSelectedCells;
   };
 
   /**
