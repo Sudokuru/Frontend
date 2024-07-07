@@ -650,7 +650,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         // if there is at least one cell that can be updated, we enable number buttons
         if (
-          !disableCellUpdates(
+          !areCellUpdatesDisabled(
             currentSelectedCells[i],
             sudokuBoard.selectedCell[i].r,
             sudokuBoard.selectedCell[i].c
@@ -679,7 +679,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param c The column of the cell
    * @returns Returns whether the given cell should allow updates or not.
    */
-  const disableCellUpdates = (cell: CellProps, r: number, c: number) => {
+  const areCellUpdatesDisabled = (cell: CellProps, r: number, c: number) => {
     if (cell.type === "given") {
       return true;
     } else if (
