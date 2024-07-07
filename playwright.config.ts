@@ -15,6 +15,17 @@ declare const process: {
 const CI = Number(process.env.CI);
 const WORKERS = Number(process.env.WORKERS);
 
+// determines how many playwright parallel workers there should be
+const workerValue = (CI: number, WORKERS: number) => {
+  if (WORKERS) {
+    return WORKERS;
+  } else if (CI) {
+    return 1;
+  } else {
+    return undefined;
+  }
+};
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -28,7 +39,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: WORKERS ? WORKERS : CI ? 1 : undefined,
+  workers: workerValue(CI, WORKERS),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],
