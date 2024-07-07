@@ -126,7 +126,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates: boolean = false;
 
-    const currentSelectedCells = getSelectedCells() as CellProps[];
+    const currentSelectedCells = getSelectedCells();
 
     // We do not take action if more than one cell is selected and we are not in note mode
     if (currentSelectedCells.length > 1 && !sudokuBoard.inNoteMode) {
@@ -490,7 +490,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
     const { highlightIdenticalValuesSetting } =
       React.useContext(PreferencesContext);
-    const currentSelectedCell = getSelectedCells() as CellProps[];
+    const currentSelectedCell = getSelectedCells();
     const currentEntry = cell.entry;
     const selectedEntry = currentSelectedCell[0].entry;
     const identicalValue = selectedEntry === currentEntry;
