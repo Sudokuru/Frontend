@@ -8,16 +8,16 @@ import { ContactPage } from "./page/contact.page";
 import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
 import { ALMOST_FINISHED_GAME } from "./data";
 
-// Declare the types of your fixtures.
-type MyFixtures = {
+// Declare the interfaces of your fixtures.
+interface MyFixtures {
   page: Page;
   resumeGame: Page;
   contact: Page;
-};
+}
 
-type MyOptions = {
+interface MyOptions {
   gameToResume?: string;
-};
+}
 
 const newBase = mixinCoverage(base);
 
