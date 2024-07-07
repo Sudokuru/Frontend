@@ -562,8 +562,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     switch (inputValue) {
       case "u":
       case "U":
-        const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
-        if (!isUndoButtonDisabled) {
+        if (sudokuBoard.actionHistory.length !== 0) {
           undo();
         }
         return;
