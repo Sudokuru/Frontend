@@ -294,6 +294,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * https://github.com/necolas/react-native-web/issues/1684
    * @param r The row of a given cell 0-8
    * @param c the column of a given cell 0-8
+   * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
    */
   const toggleSelectCell = (r: number, c: number, event: any) => {
     if (sudokuBoard.selectedCell.length === 0) {
