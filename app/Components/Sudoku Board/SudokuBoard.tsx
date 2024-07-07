@@ -466,8 +466,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     } else {
       let isCellSelected = false;
-      for (let i = 0; i < selectedCell.length; i++) {
-        if (c === selectedCell[i].c && r === selectedCell[i].r) {
+      for (const cell of selectedCell) {
+        if (c === cell.c && r === cell.r) {
           isCellSelected = true;
         }
       }
