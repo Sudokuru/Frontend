@@ -684,7 +684,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return true;
     } else if (
       cell.type === "value" &&
-      isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry as number)
+      isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry)
     ) {
       return true;
     } else {
