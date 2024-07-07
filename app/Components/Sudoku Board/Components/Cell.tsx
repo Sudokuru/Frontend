@@ -8,7 +8,7 @@ let fallbackHeight = 30;
 interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
-  onClick: (r: number, c: number) => void;
+  onClick: (r: number, c: number, event: any) => void;
   backgroundColor: string;
   c: number;
   r: number;
@@ -49,7 +49,10 @@ const Cell = (props: RenderCellProps) => {
   };
 
   return (
-    <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
+    <Pressable
+      onPress={(event: any) => onClick(r, c, event)}
+      style={{ outline: "none" }}
+    >
       <View
         testID={"cellr" + r + "c" + c + getCellContents()}
         style={[

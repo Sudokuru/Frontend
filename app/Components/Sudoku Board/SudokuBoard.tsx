@@ -19,7 +19,6 @@ import {
   CellProps,
   CellType,
   GameAction,
-  GameDifficulty,
   SudokuObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -33,6 +32,7 @@ import {
   SELECTED_CONFLICT_COLOR,
 } from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
+import { GameDifficulty } from "./Functions/Difficulty";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -51,39 +51,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
       setSudokuBoard(game);
     });
-  }, []);
-
-  const [shiftHeld, setShiftHeld] = useState(false);
-  const [controlHeld, setControlHeld] = useState(false);
-
-  function downHandler({ key }: any) {
-    if (key === "Shift") {
-      setShiftHeld(true);
-    } else if (key === "Control") {
-      setControlHeld(true);
-    }
-    // todo use window listeners for all hotkeys instead of onKeyDown
-    // https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
-    else if (key === "n") {
-      toggleNoteMode();
-    }
-  }
-
-  function upHandler({ key }: any) {
-    if (key === "Shift") {
-      setShiftHeld(false);
-    } else if (key === "Control") {
-      setControlHeld(false);
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener("keydown", downHandler);
-    window.addEventListener("keyup", upHandler);
-    return () => {
-      window.removeEventListener("keydown", downHandler);
-      window.removeEventListener("keyup", upHandler);
-    };
   }, []);
 
   // if we are loading then we return the loading icon
@@ -322,15 +289,18 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   /**
    * Toggles whether or not a cell is selected on click
+   * event.ctrlKey and event.shiftKey are from React Native Web, which does not export types that we can use
+   * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
+   * https://github.com/necolas/react-native-web/issues/1684
    * @param r The row of a given cell 0-8
    * @param c the column of a given cell 0-8
    */
-  const toggleSelectCell = (r: number, c: number) => {
+  const toggleSelectCell = (r: number, c: number, event: any) => {
     if (sudokuBoard.selectedCell.length === 0) {
       sudokuBoard.selectedCell.push({ r: r, c: c });
-    } else if (controlHeld) {
+    } else if (event.ctrlKey) {
       toggleSelectCellWithControlRules(r, c);
-    } else if (shiftHeld) {
+    } else if (event.shiftKey) {
       toggleSelectCellWithShiftRules(r, c);
     } else {
       toggleSelectCellWithDefaultRules(r, c);
@@ -435,8 +405,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     return (
       <Cell
-        onClick={(r: number, c: number) => {
-          toggleSelectCell(r, c);
+        onClick={(r: number, c: number, event: any) => {
+          toggleSelectCell(r, c, event);
         }}
         backgroundColor={cellBackgroundColor}
         type={cell.type}
