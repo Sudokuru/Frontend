@@ -252,17 +252,28 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
-    // update type and newCellEntry of selected cell
-    if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
-      sudokuBoard.puzzle[r][c].type = "note";
-      newCellEntry = [inputValue];
-    }
     // update type of selected cell
-    else if (
+    if (
       (!sudokuBoard.inNoteMode && currentType === "note") ||
       inputValue === 0
     ) {
       sudokuBoard.puzzle[r][c].type = "value";
+    }
+    // update type and newCellEntry of selected cell
+    else if (sudokuBoard.inNoteMode && currentType === "value") {
+      sudokuBoard.puzzle[r][c].type = "note";
+      newCellEntry = [inputValue];
+    }
+    // handling case where there is one note remaining
+    // and that is removed via note press
+    else if (
+      sudokuBoard.inNoteMode &&
+      currentType === "note" &&
+      (currentEntry as number[]).length === 1 &&
+      (currentEntry as number[])[0] === inputValue
+    ) {
+      sudokuBoard.puzzle[r][c].type = "value";
+      newCellEntry = 0;
     }
     // set new note value
     else if (sudokuBoard.inNoteMode) {
