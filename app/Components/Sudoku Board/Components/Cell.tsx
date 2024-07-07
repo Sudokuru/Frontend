@@ -50,7 +50,9 @@ const Cell = (props: RenderCellProps) => {
 
   return (
     <Pressable
-      onPress={(event: any) => onClick(r, c, event)}
+      onPress={(event: any) => {
+        onClick(r, c, event);
+      }}
       style={{ outline: "none" }}
     >
       <View
