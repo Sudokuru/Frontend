@@ -7,11 +7,13 @@ config();
 declare const process: {
   env: {
     CI: string;
+    WORKERS: string;
   };
 };
 
 // Converting environment variable into number for easy boolean comparisons
 const CI = Number(process.env.CI);
+const WORKERS = Number(process.env.WORKERS);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -26,7 +28,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: CI ? 1 : undefined,
+  workers: WORKERS ? WORKERS : CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],
