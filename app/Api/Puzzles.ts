@@ -1,12 +1,12 @@
 import { difficulty } from "./../Components/Home/Cards";
 import { statistics } from "./Puzzle.Types";
-import {
-  GameDifficulty,
-  SudokuObjectProps,
-  returnGameOfDifficulty,
-} from "../Functions/LocalDatabase";
+import { SudokuObjectProps } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import { Statistics } from "./Statistics";
+import {
+  GameDifficulty,
+  returnGameOfDifficulty,
+} from "../Components/Sudoku Board/Functions/Difficulty";
 
 /**
  * Functions to handle puzzle related operations
