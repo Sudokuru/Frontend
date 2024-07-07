@@ -361,4 +361,117 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
   });
+
+  test("Should handle complex highlighting situation", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[5][5].click();
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 7 && column <= 7 && row >= 5 && column >= 5,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 7 && column <= 6 && row >= 5 && column >= 5,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+
+    await sudokuBoard.cell[7][5].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 7 && column <= 5 && row >= 5 && column >= 5,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+
+    await sudokuBoard.cell[2][2].click();
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 5 && column <= 5 && row >= 2 && column >= 2,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+
+    await resumeGame.keyboard.up("Shift");
+
+    await resumeGame.keyboard.down("Control");
+
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][8].click();
+    await sudokuBoard.cell[4][4].click();
+    await sudokuBoard.cell[3][3].click();
+
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) => row === 0 && (column === 0 || column === 8),
+        color: SELECTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          (row === 4 && column === 4) || (row === 3 && column === 3),
+        color: NOT_HIGHLIGHTED_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 5 && column <= 5 && row >= 2 && column >= 2,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+
+    await resumeGame.keyboard.up("Control");
+
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[2][7].click();
+
+    await sudokuBoard.isSudokuBoardHighlightedCorrectly([
+      {
+        condition: (row, column) => row === 7 && column === 6,
+        color: NOT_SELECTED_CONFLICT_COLOR_RGB,
+      },
+      {
+        condition: (row, column) =>
+          row <= 5 && column <= 7 && row >= 2 && column >= 5,
+        color: SELECTED_COLOR_RGB,
+      },
+      { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
+    ]);
+  });
 });
