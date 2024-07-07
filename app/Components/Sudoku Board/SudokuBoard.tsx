@@ -124,7 +124,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     const newActionHistory: GameAction[] = [];
-    let cellsHaveUpdates: boolean = false;
+    let cellsHaveUpdates = false;
 
     const currentSelectedCells = getSelectedCells();
 
