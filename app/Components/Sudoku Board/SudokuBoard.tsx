@@ -162,11 +162,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const currentSelectedCells = getSelectedCells() as CellProps[];
 
     // We do not take action if more than one cell is selected and we are not in note mode
-    if (
-      currentSelectedCells.length !== 0 &&
-      currentSelectedCells.length > 1 &&
-      !sudokuBoard.inNoteMode
-    ) {
+    if (currentSelectedCells.length > 1 && !sudokuBoard.inNoteMode) {
       return;
     }
 
@@ -659,7 +655,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderNumberControl = () => {
     let currentSelectedCells: CellProps[] = [];
-    let disableNumberButtons = true;
+    let enableNumberButtons = false;
 
     if (sudokuBoard.selectedCell.length > 0) {
       currentSelectedCells = getSelectedCells();
@@ -675,21 +671,17 @@ const SudokuBoard = (props: SudokuBoardProps) => {
             sudokuBoard.selectedCell[i].c
           )
         ) {
-          disableNumberButtons = false;
+          enableNumberButtons = true;
         }
       }
-    }
-    // disable number buttons if more than one cell is selected and we are not in note mode
-    if (
-      currentSelectedCells.length != 0 &&
-      currentSelectedCells.length > 1 &&
-      !sudokuBoard.inNoteMode
-    ) {
-      disableNumberButtons = true;
+      // disable number buttons if we are in value mode an multiple cells are selected
+      if (currentSelectedCells.length > 1 && !sudokuBoard.inNoteMode) {
+        enableNumberButtons = false;
+      }
     }
     return (
       <NumberControl
-        areNumberButtonsDisabled={disableNumberButtons}
+        areNumberButtonsDisabled={!enableNumberButtons}
         updateEntry={updateCellEntry}
       />
     );
@@ -707,7 +699,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return true;
     } else if (
       cell.type === "value" &&
-      !isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry as number)
+      isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry as number)
     ) {
       return true;
     } else {
