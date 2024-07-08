@@ -184,6 +184,8 @@ jobs:
         run: npm ci
       - uses: tauri-apps/tauri-action@v0
         id: tauri_build
+        with:
+          tauriScript: npm run tauri:run
       - name: Upload ${{ matrix.platform[0] }} Artifact
         uses: actions/upload-artifact@v3
         with:
