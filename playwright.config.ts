@@ -39,8 +39,9 @@ export default defineConfig({
         outputFile: "./test-results/report.html",
         coverage: {
           entryFilter: () => true,
+          // exclude the generated javascript files that are storing puzzle data
           sourceFilter: (sourcePath: string) =>
-            sourcePath.search(/app\/.+/) !== -1,
+            sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
           lcov: true,
         },
       },
