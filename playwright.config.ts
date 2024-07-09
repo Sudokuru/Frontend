@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
-import path from "path";
 
 config();
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
@@ -37,12 +36,14 @@ export default defineConfig({
       {
         name: "Sudokuru Report",
         outputFile: "./test-results/report.html",
+        // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
         coverage: {
           entryFilter: () => true,
           // exclude the generated javascript files that are storing puzzle data
           sourceFilter: (sourcePath: string) =>
             sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
           lcov: true,
+          reports: ["v8", "console-summary", "html"],
         },
       },
     ],

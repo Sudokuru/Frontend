@@ -32,7 +32,7 @@ export async function collectV8CodeCoverageAsync(
   }
 
   const page = options.page;
-  let startCoveragePromises: Promise<void>[] = [];
+  const startCoveragePromises: Promise<void>[] = [];
   // When collecting code coverage make sure the 'resetOnNavigation' is set to false.
   // Otherwise, if the test contains page navigations then only the coverage for the
   // last page navigation is recorded.
@@ -52,7 +52,7 @@ export async function collectV8CodeCoverageAsync(
   await Promise.all(startCoveragePromises);
   await options.use();
 
-  let stopCoveragePromises: Promise<any>[] = [];
+  const stopCoveragePromises: Promise<any>[] = [];
   if (options.enableJsCoverage) {
     const stopJsCoveragePromise = page.coverage.stopJSCoverage();
     stopCoveragePromises.push(stopJsCoveragePromise);
