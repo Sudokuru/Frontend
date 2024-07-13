@@ -123,6 +123,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
+    // we can return if we are attempting to insert multiple values
+    if (
+      inputValue !== 0 &&
+      !sudokuBoard.inNoteMode &&
+      sudokuBoard.selectedCells.length > 1
+    ) {
+      return;
+    }
+
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
