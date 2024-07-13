@@ -123,15 +123,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
+    console.log("UPDATING CELL ENTRY: ", inputValue);
+
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
     const currentSelectedCells = getSelectedCells();
-
-    // We do not take action if more than one cell is selected and we are not in note mode
-    if (currentSelectedCells.length > 1 && !sudokuBoard.inNoteMode) {
-      return;
-    }
 
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
@@ -587,17 +584,20 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
+    switch (inputValue) {
+      case "Delete":
+      case "Backspace":
+      case "0":
+      case "e":
+      case "E":
+        eraseSelected();
+        break;
+    }
+
     for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
       let newCol = sudokuBoard.selectedCells[i].c;
       let newRow = sudokuBoard.selectedCells[i].r;
       switch (inputValue) {
-        case "Delete":
-        case "Backspace":
-        case "0":
-        case "e":
-        case "E":
-          eraseSelected();
-          break;
         // below cases do not return to allow for update of selected cell
         // todo create function for updating selectedCell for below cases to call
         case "ArrowLeft":
