@@ -33,7 +33,7 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   // Loads a game from local storage and navigates to resume the game.
   resumeGame: async ({ page, gameToResume }, use) => {
     await page.goto("");
-    await page.evaluate((gameToResume) => {
+    await page.evaluate((gameToResume: string) => {
       window.localStorage.setItem("active_game", gameToResume);
     }, gameToResume as string);
     const homePage = new HomePage(page);
