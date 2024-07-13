@@ -218,6 +218,28 @@ test.describe("undo", () => {
     await sudokuBoard.cellHasValue(7, 7, "0");
     await sudokuBoard.cellHasNotes(7, 8, "45");
   });
+
+  test("Undo button should function with an erase move spanning multiple cells", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[6][6].click();
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[8][8].click();
+    await resumeGame.keyboard.up("Shift");
+
+    await sudokuBoard.erase.click();
+
+    await sudokuBoard.cellHasValue(7, 6, "0");
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasValue(7, 8, "0");
+
+    await sudokuBoard.undo.click();
+
+    await sudokuBoard.cellHasValue(7, 6, "1");
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+  });
 });
 
 test.describe("erase", () => {
