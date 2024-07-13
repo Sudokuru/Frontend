@@ -123,8 +123,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
-    console.log("UPDATING CELL ENTRY: ", inputValue);
-
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
@@ -691,34 +689,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const renderActions = () => {
     const inNoteMode = sudokuBoard.inNoteMode;
-    const currentSelectedCells: CellProps[] = getSelectedCells();
-    let isEraseButtonDisabled = sudokuBoard.selectedCells.length === 0;
+    const eraseButtonDisabled = isEraseButtonDisabled();
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
-    if (currentSelectedCells.length != 0) {
-      for (let i = 0; i < currentSelectedCells.length; i++) {
-        const isCellGiven = currentSelectedCells[i].type === "given";
-        const isCellEmpty =
-          currentSelectedCells[i].type === "value" &&
-          currentSelectedCells[i].entry === 0;
-        const isCellCorrect =
-          currentSelectedCells[i].type === "value" &&
-          isValueCorrect(
-            sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
-              sudokuBoard.selectedCells[i].c
-            ],
-            currentSelectedCells[i].entry as number
-          );
-        // disable erase button if value === 0 or is given
-        if (isCellGiven || isCellEmpty || isCellCorrect) {
-          isEraseButtonDisabled = true;
-          break;
-        }
-      }
-    }
 
     return (
       <ActionRow
-        isEraseButtonDisabled={isEraseButtonDisabled}
+        isEraseButtonDisabled={eraseButtonDisabled}
         isUndoButtonDisabled={isUndoButtonDisabled}
         inNoteMode={inNoteMode}
         undo={undo}
@@ -726,6 +702,36 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         eraseSelected={eraseSelected}
       />
     );
+  };
+
+  /**
+   * Considering the state of the selected cells, we determine if the erase button should be disabled.
+   * @returns True or False depending on if the erase button should be disabled.
+   */
+  const isEraseButtonDisabled = () => {
+    const currentSelectedCells: CellProps[] = getSelectedCells();
+    if (sudokuBoard.selectedCells.length === 0) {
+      return true;
+    }
+    for (let i = 0; i < currentSelectedCells.length; i++) {
+      const isCellGiven = currentSelectedCells[i].type === "given";
+      const isCellEmpty =
+        currentSelectedCells[i].type === "value" &&
+        currentSelectedCells[i].entry === 0;
+      const isCellCorrect =
+        currentSelectedCells[i].type === "value" &&
+        isValueCorrect(
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
+            sudokuBoard.selectedCells[i].c
+          ],
+          currentSelectedCells[i].entry as number
+        );
+      // disable erase button if value === 0 or is given
+      if (!isCellGiven && !isCellEmpty && !isCellCorrect) {
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
