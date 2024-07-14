@@ -10,21 +10,7 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 import { Puzzles } from "../Api/Puzzles";
-import { sudokuStrategyArray } from "sudokuru";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
-
-let strategies: sudokuStrategyArray = [
-  "AMEND_NOTES",
-  "SIMPLIFY_NOTES",
-  "NAKED_SINGLE",
-  "NAKED_PAIR",
-  "NAKED_TRIPLET",
-  "NAKED_QUADRUPLET",
-  "HIDDEN_SINGLE",
-  "HIDDEN_PAIR",
-  "HIDDEN_TRIPLET",
-  "HIDDEN_QUADRUPLET",
-];
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
