@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 

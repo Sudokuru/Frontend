@@ -1,5 +1,5 @@
 import React from "react";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { sudokuStrategyArray } from "sudokuru";
 import { View } from "react-native";

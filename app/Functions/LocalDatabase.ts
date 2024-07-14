@@ -1,6 +1,6 @@
 import { sudokuStrategy } from "sudokuru";
 import { puzzle } from "../Api/Puzzle.Types";
-import { GameDifficulty } from "../Components/Sudoku Board/Functions/Difficulty";
+import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
 
 export interface Puzzle {
   p: string; // initial puzzle string

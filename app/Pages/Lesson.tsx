@@ -20,7 +20,7 @@ import {
 } from "../Api/Lessons";
 import { Statistics } from "../Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
-import { toTitle } from "../Components/Sudoku Board/sudoku";
+import { toTitle } from "../Components/SudokuBoard/sudoku";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
