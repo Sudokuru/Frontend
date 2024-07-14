@@ -1,5 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
 import {
+  calculateCardsPerRow,
   CARD_PADDING,
   CARD_WIDTH,
   difficulty,
@@ -21,7 +22,12 @@ let difficulties: string[] = [
 ];
 
 const DifficultyPanel = (props: any) => {
-  let cards = [];
+  let difficultyButtonArray = [];
+  let subArray = [];
+  let columnCount: number = calculateCardsPerRow(
+    props.width,
+    difficulties.length
+  );
   for (let i = 0; i < difficulties.length; i++) {
     let difficulty: string = difficulties[i];
     let description: difficulty;
@@ -46,7 +52,7 @@ const DifficultyPanel = (props: any) => {
         break;
     }
     let difficultyColor: string = getDifficultyColor(description);
-    cards.push(
+    subArray.push(
       <View
         key={difficulty}
         testID={difficulty}
@@ -69,7 +75,35 @@ const DifficultyPanel = (props: any) => {
         </TouchableOpacity>
       </View>
     );
+
+    // Add row
+    if ((i + 1) % columnCount === 0) {
+      difficultyButtonArray.push(subArray);
+      subArray = [];
+    }
   }
+  // Add last row if not evenly divisible
+  if (subArray.length > 0) {
+    difficultyButtonArray.push(subArray);
+  }
+
+  // render each sub-array as a row
+  return (
+    <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
+      {difficultyButtonArray.map((subArray, index) => (
+        <View
+          style={{
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+          key={index}
+        >
+          {subArray}
+        </View>
+      ))}
+    </View>
+  );
 };
 
 export default DifficultyPanel;
