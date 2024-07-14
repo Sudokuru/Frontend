@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Pressable } from "react-native";
-import { Text, useTheme, Button } from "react-native-paper";
+import { Text, useTheme, Button, SegmentedButtons } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
@@ -33,6 +33,8 @@ const PlayPage = () => {
   const newSize = minWindowSize / 25;
 
   const theme = useTheme();
+
+  const [value, setValue] = React.useState("novice");
 
   useFocusEffect(
     React.useCallback(() => {
@@ -125,11 +127,83 @@ const PlayPage = () => {
               onPress={() => {
                 navigation.navigate("SudokuPage", {
                   action: "StartGame",
+                  difficulty: value,
                 });
               }}
             >
               Start Puzzle
             </Button>
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ margin: newSize / 4, width: 200 }}
+              buttons={[
+                {
+                  value: "novice",
+                  label: "novice",
+                },
+                {
+                  value: "amateur",
+                  label: "amateur",
+                },
+              ]}
+            />
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ margin: newSize / 4, width: 200 }}
+              buttons={[
+                {
+                  value: "layman",
+                  label: "layman",
+                },
+                {
+                  value: "trainee",
+                  label: "trainee",
+                },
+              ]}
+            />
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ margin: newSize / 4, width: 200 }}
+              buttons={[
+                {
+                  value: "protege",
+                  label: "protege",
+                },
+                {
+                  value: "professional",
+                  label: "professional",
+                },
+              ]}
+            />
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ margin: newSize / 4, width: 200 }}
+              buttons={[
+                {
+                  value: "pundit",
+                  label: "pundit",
+                },
+                {
+                  value: "master",
+                  label: "master",
+                },
+              ]}
+            />
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ margin: newSize / 4, width: 200 }}
+              buttons={[
+                {
+                  value: "grandmaster",
+                  label: "grandmaster",
+                }, // note: could add random difficulty especially if end design requires even number
+              ]}
+            />
           </View>
         </View>
       </View>

@@ -7,6 +7,7 @@ on:
       - ".github/**"
       - "docs/**"
       - "cypress/**"
+      - "e2e/**"
       - "**/*.test.ts"
       - "README.md"
       - "License.md"
@@ -14,6 +15,7 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
       - "cypress.config.ts"
+      - "playwright.config.ts"
     branches:
       - main
   pull_request:
@@ -25,7 +27,6 @@ on:
       - ".gitignore"
       - ".prettierignore"
       - ".prettierrc.json"
-      - "cypress.config.ts"
     branches:
       - main
 
@@ -36,6 +37,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
   code_scan:
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +78,7 @@ jobs:
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -85,7 +114,7 @@ jobs:
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -95,23 +124,41 @@ jobs:
           node-version: 18.x
       - name: install dependencies
         run: npm i
-      - name: Cypress run
-        uses: cypress-io/github-action@v5
+      - uses: JarvusInnovations/background-action@v1
+        name: Bootstrap System Under Test (SUT)
         with:
-          start: 'npm run web:dev'
-          command: 'npm run test:cypress'
-          wait-on: 'http://localhost:8081/'
-          wait-on-timeout: 120
+          run: npm run web &
+          wait-on: http://localhost:8081
+          wait-for: 5m
+          log-output-if: true
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Playwright run
+        run: npm run playwright:test:chrome
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: playwright-report/results.xml
+      - name: Upload code coverage
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCoverageReport
+          path: playwright-coverage/*
       - name: Coveralls
+        if: always()
         uses: coverallsapp/github-action@v2
       - name: Upload coverage reports to Codecov
+        if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
 
   app_build_android:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3

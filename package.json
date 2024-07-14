@@ -5,6 +5,7 @@
   "scripts": {
     "prepare": "husky install",
     "playwright:test": "npx playwright test",
+    "playwright:test:chrome": "npx playwright test --project=chromium",
     "playwright:ui": "npx playwright test --ui",
     "playwright:report": "npx playwright show-report playwright-report",
     "start": "expo start --clear",
@@ -54,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@bgotink/playwright-coverage": "^0.2.2",
     "@cypress/code-coverage": "^3.11.0",
     "@expo/metro-config": "^0.17.4",
     "@playwright/test": "^1.41.2",

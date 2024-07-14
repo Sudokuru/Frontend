@@ -13,15 +13,15 @@ export function range(n: number) {
  */
 export function areCellsInSameBox(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
 ) {
   const currentBoxIndex = generateBoxIndex(
     currentCellCoordinate.r,
-    currentCellCoordinate.c,
+    currentCellCoordinate.c
   );
   const selectedBoxIndex = generateBoxIndex(
     selectedCellCoordinate.r,
-    selectedCellCoordinate.c,
+    selectedCellCoordinate.c
   );
   return currentBoxIndex === selectedBoxIndex;
 }
@@ -43,7 +43,7 @@ function generateBoxIndex(row: number, column: number): number {
  */
 export function areCellsInSameRow(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
 ) {
   return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
@@ -56,7 +56,7 @@ export function areCellsInSameRow(
  */
 export function areCellsInSameColumn(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation,
+  selectedCellCoordinate: CellLocation
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }
@@ -73,3 +73,27 @@ export const toTitle = (str: string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+/**
+ * Wraps a number around a range so if the number is outside the range, it wraps around to the other side
+ * @param number - the number to wrap
+ * @param lowerBound - the lower bound of the range
+ * @param upperBound - the upper bound of the range
+ * @returns the number wrapped around the range
+ */
+export function wrapNumber(
+  number: number,
+  lowerBound: number,
+  upperBound: number
+): number {
+  const range: number = upperBound - lowerBound + 1; // Calculate the total range
+  return ((number + range) % range) + lowerBound; // Wrap around using modulo
+}
+
+/**
+ * Wraps the digit around the range of 0-8
+ * @param digit - the digit to wrap
+ */
+export function wrapDigit(digit: number): number {
+  return wrapNumber(digit, 0, 8);
+}

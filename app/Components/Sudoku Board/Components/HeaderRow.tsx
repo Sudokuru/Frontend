@@ -3,7 +3,12 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
-import { getCellSize, saveGame, formatTime } from "../Functions/BoardFunctions";
+import {
+  getCellSize,
+  saveGame,
+  formatTime,
+  handlePause,
+} from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
 
 let fallbackHeight = 30;
@@ -15,6 +20,7 @@ interface HeaderRowProps {
 
 const HeaderRow = (props: HeaderRowProps) => {
   const { sudokuBoard, setSudokuBoard } = props;
+  const difficulty = sudokuBoard.statistics.difficulty;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = getCellSize();
@@ -35,11 +41,6 @@ const HeaderRow = (props: HeaderRowProps) => {
     }, [sudokuBoard.statistics.time])
   );
 
-  const handlePause = () => {
-    saveGame(sudokuBoard);
-    navigation.goBack();
-  };
-
   return (
     <View
       style={{
@@ -52,18 +53,38 @@ const HeaderRow = (props: HeaderRowProps) => {
         marginTop: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2),
       }}
     >
-      <Text
-        style={{
-          fontFamily: "Inter_400Regular",
-          fontSize: cellSize
-            ? cellSize * (1 / 3) + 1
-            : fallbackHeight * (1 / 3) + 1,
-          color: theme.colors.onBackground,
-        }}
-      >
-        Time: {formatTime(currentTime)}
-      </Text>
-      <PauseButton handlePause={handlePause} isPaused={false} />
+      <View style={{ width: cellSize * 3 }}>
+        <Text
+          style={{
+            fontFamily: "Inter_400Regular",
+            fontSize: cellSize
+              ? cellSize * (1 / 3) + 1
+              : fallbackHeight * (1 / 3) + 1,
+            color: theme.colors.onBackground,
+          }}
+        >
+          Time: {formatTime(currentTime)}
+        </Text>
+      </View>
+      <View style={{ width: cellSize * 3, alignItems: "center" }}>
+        <Text
+          style={{
+            fontFamily: "Inter_400Regular",
+            fontSize: cellSize
+              ? cellSize * (1 / 3.5) + 1
+              : fallbackHeight * (1 / 3.5) + 1,
+            color: theme.colors.onBackground,
+          }}
+        >
+          Difficulty: {difficulty}
+        </Text>
+      </View>
+      <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>
+        <PauseButton
+          handlePause={() => handlePause(sudokuBoard, navigation)}
+          isPaused={false}
+        />
+      </View>
     </View>
   );
 };

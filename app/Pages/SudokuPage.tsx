@@ -23,6 +23,7 @@ let strategies: sudokuStrategyArray = [
 
 const SudokuPage = ({ route }: any) => {
   const { action } = route.params;
+  const { difficulty } = route.params;
 
   return (
     <>

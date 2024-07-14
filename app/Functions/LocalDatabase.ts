@@ -1,20 +1,59 @@
 import { sudokuStrategy } from "sudokuru";
 import { puzzle } from "../Api/Puzzle.Types";
+import { GameDifficulty } from "../Components/Sudoku Board/Functions/Difficulty";
+
+export interface Puzzle {
+  p: string; // initial puzzle string
+  s: string; // solution string
+  d: number; // difficulty
+}
 
 /**
- * This function returns a normal Sudoku Game.
- * Temporarily only returning Naked Single Drill games as a POC
- * TODO Return Puzzles based on user difficulty and learned puzzles
- * @returns A puzzle object for the user to play a normal Sudoku Game
+ * This function takes in a Puzzle object and returns a SudokuObjectProps object.
+ * @param puzzle Puzzle object
  */
-export function returnLocalGame(): SudokuObjectProps {
-  const game =
-    NAKED_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-    ];
+export const convertPuzzleToSudokuObject = (
+  puzzle: Puzzle,
+  difficulty: GameDifficulty
+): SudokuObjectProps => {
+  let game: SudokuObjectProps = {
+    variant: "classic",
+    version: "1.0.0",
+    selectedCells: [],
+    puzzle: [],
+    puzzleSolution: [],
+    statistics: {
+      difficulty: difficulty,
+      internalDifficulty: puzzle.d,
+      numHintsUsed: 0,
+      numWrongCellsPlayed: 0,
+      score: 0,
+      time: 0,
+    },
+    inNoteMode: false,
+    actionHistory: [],
+  };
+
+  for (let i = 0; i < 9; i++) {
+    game.puzzle.push([]);
+    game.puzzleSolution.push([]);
+    for (let j = 0; j < 9; j++) {
+      let charValuePuzzle = puzzle.p.charAt(i * 9 + j);
+      let numValuePuzzle = Number(charValuePuzzle);
+      if (numValuePuzzle === 0) {
+        game.puzzle[i][j] = { type: "value", entry: 0 };
+      } else {
+        game.puzzle[i][j] = { type: "given", entry: numValuePuzzle };
+      }
+
+      let charValueSolution = puzzle.s.charAt(i * 9 + j);
+      let numValueSolution = Number(charValueSolution);
+      game.puzzleSolution[i][j] = numValueSolution;
+    }
+  }
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
-}
+};
 
 export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
   // if (strategy === "NAKED_SINGLE") {
@@ -65,11 +104,11 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 export interface SudokuObjectProps {
   variant: GameVariant;
   version: string;
-  selectedCell: CellLocation | null;
+  selectedCells: CellLocation[];
   statistics: GameStatistics;
   puzzle: CellProps[][];
   puzzleSolution: number[][];
-  actionHistory: GameAction[];
+  actionHistory: GameAction[][];
   inNoteMode: boolean;
 }
 
@@ -97,9 +136,6 @@ export interface GameStatistics {
 }
 
 export type GameVariant = "demo" | "drill" | "classic";
-export type GameDifficulty = "easy" | "medium" | "hard";
-export type GameDifficultyScore = 10 | 20 | 30;
-
 export type CellProps = CellWithValue | CellWithNotes;
 
 export interface CellWithValue {
@@ -131,7 +167,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
     variant: "classic",
     version: "1.0.0",
-    selectedCell: null,
+    selectedCells: [],
     puzzle: [
       [
         {
@@ -488,7 +524,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
       [6, 4, 8, 5, 2, 3, 7, 1, 9],
     ],
     statistics: {
-      difficulty: "easy",
+      difficulty: "novice",
       internalDifficulty: 0,
       numHintsUsed: 0,
       numWrongCellsPlayed: 0,

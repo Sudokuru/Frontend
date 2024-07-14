@@ -2,6 +2,9 @@
 [![Coveralls Coverage](https://coveralls.io/repos/github/SudoKuru/Frontend/badge.svg?branch=main)](https://coveralls.io/github/SudoKuru/Frontend?branch=main)
 [![Codecov Coverage](https://codecov.io/gh/SudoKuru/Frontend/graph/badge.svg?token=XQSTKPTBFF)](https://codecov.io/gh/SudoKuru/Frontend)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSudoKuru%2FFrontend.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FSudoKuru%2FFrontend?ref=badge_shield&issueType=license)
+[![CodeFactor](https://www.codefactor.io/repository/github/sudokuru/frontend/badge)](https://www.codefactor.io/repository/github/sudokuru/frontend)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1342f842a14f40cca856d6e81204f8ac)](https://app.codacy.com/gh/Sudokuru/Frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4cd1d1027b7b2532c680/maintainability)](https://codeclimate.com/github/Sudokuru/Frontend/maintainability)
 
 # Start the frontend app
 
@@ -17,6 +20,12 @@ Contact Thomas to get added to the Expo organization so that you can log in with
 For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 
 For Web, hit the w key to start up the website at `localhost:19000`
+
+# Only use single puzzle for debugging
+
+In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
+Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
+The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default it returns the first `novice` puzzle.
 
 # EAS Update
 
