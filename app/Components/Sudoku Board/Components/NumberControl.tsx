@@ -14,7 +14,7 @@ interface NumberControlProps {
 }
 
 const NumberControl = (props: NumberControlProps) => {
-  const { areNumberButtonsDisabled: prefilled, updateEntry } = props;
+  const { areNumberButtonsDisabled, updateEntry } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
   return (
@@ -37,7 +37,7 @@ const NumberControl = (props: NumberControlProps) => {
           <Pressable
             key={number}
             onPress={onClick}
-            disabled={prefilled} // disable also if cell is correct.
+            disabled={areNumberButtonsDisabled} // disable also if cell is correct.
             style={{
               width: cellSize
                 ? cellSize * (50 / 60)
