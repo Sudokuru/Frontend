@@ -194,7 +194,7 @@ jobs:
       matrix:
         platform: [ [linux, ubuntu-20.04], [windows, windows-latest] ]
     runs-on: ${{ matrix.platform[1] }}
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - uses: actions/checkout@v3
       - name: setup node
