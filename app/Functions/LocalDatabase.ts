@@ -19,7 +19,7 @@ export const convertPuzzleToSudokuObject = (
   let game: SudokuObjectProps = {
     variant: "classic",
     version: "1.0.0",
-    selectedCell: null,
+    selectedCells: [],
     puzzle: [],
     puzzleSolution: [],
     statistics: {
@@ -104,11 +104,11 @@ export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
 export interface SudokuObjectProps {
   variant: GameVariant;
   version: string;
-  selectedCell: CellLocation | null;
+  selectedCells: CellLocation[];
   statistics: GameStatistics;
   puzzle: CellProps[][];
   puzzleSolution: number[][];
-  actionHistory: GameAction[];
+  actionHistory: GameAction[][];
   inNoteMode: boolean;
 }
 
@@ -167,7 +167,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   {
     variant: "classic",
     version: "1.0.0",
-    selectedCell: null,
+    selectedCells: [],
     puzzle: [
       [
         {

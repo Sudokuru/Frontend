@@ -8,7 +8,7 @@ let fallbackHeight = 30;
 interface RenderCellProps {
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
-  onClick: (r: number, c: number) => void;
+  onClick: (r: number, c: number, event: any) => void;
   backgroundColor: string;
   c: number;
   r: number;
@@ -18,9 +18,14 @@ const Cell = (props: RenderCellProps) => {
   const { entry, type, onClick, backgroundColor, c, r } = props;
   const cellSize = getCellSize();
 
+  /**
+   * Generates note text for each note if the note exists in the cell.
+   * @param noteIndex The index of the note.
+   * @returns void or a text component for the note index of a cell.
+   */
   const getNoteContents = (noteIndex: number) => {
     if (entry.includes(noteIndex)) {
-      let styleVal = {
+      const styleVal = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
       };
@@ -28,8 +33,12 @@ const Cell = (props: RenderCellProps) => {
     }
   };
 
+  /**
+   * This generates a string used for testid to determine the contents of a cell
+   * @returns A string representing the contents of the cell
+   */
   const getCellContents = () => {
-    var contents = "";
+    let contents = "";
     if (type === "note") {
       contents += "notes:";
       for (let i = 1; i <= 9; i++) {
@@ -49,7 +58,12 @@ const Cell = (props: RenderCellProps) => {
   };
 
   return (
-    <Pressable onPress={() => onClick(r, c)} style={{ outline: "none" }}>
+    <Pressable
+      onPress={(event: any) => {
+        onClick(r, c, event);
+      }}
+      style={{ outline: "none" }}
+    >
       <View
         testID={"cellr" + r + "c" + c + getCellContents()}
         style={[
