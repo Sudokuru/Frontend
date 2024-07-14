@@ -18,7 +18,8 @@ import Puzzle from "./Components/Puzzle";
 import {
   CellLocation,
   CellProps,
-  GameDifficulty,
+  CellType,
+  GameAction,
   SudokuObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -36,6 +37,7 @@ import {
 } from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Components/Hint";
+import { GameDifficulty } from "./Functions/Difficulty";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -99,15 +101,17 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
    */
   const undo = () => {
-    // Adding previous move back to the board
-    const move = sudokuBoard.actionHistory.pop();
-    if (move == null) {
+    // Adding previous moves back to the board
+    const moves = sudokuBoard.actionHistory.pop();
+    if (!moves || moves.length === 0) {
       return;
     }
-    sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].type =
-      move.cell.type;
-    sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].entry =
-      move.cell.entry;
+    for (const move of moves) {
+      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].type =
+        move.cell.type;
+      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].entry =
+        move.cell.entry;
+    }
     // remove from move history
     setSudokuBoard({
       ...sudokuBoard,
@@ -157,48 +161,69 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param inputValue User input 0-9
    */
   const updateCellEntry = (inputValue: number) => {
-    if (sudokuBoard.selectedCell == null) {
-      return;
-    }
-    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
-    // We do not need to take action if this is a given value
-    if (currentSelectedCell.type === "given") {
+    if (sudokuBoard.selectedCells.length === 0) {
       return;
     }
 
-    const r: number = sudokuBoard.selectedCell.r;
-    const c: number = sudokuBoard.selectedCell.c;
-    const currentEntry = currentSelectedCell.entry;
-    const currentType = currentSelectedCell.type;
-
-    // We do not need to take action if current value matches existing value, or if value is correct
+    // we can return if we are attempting to insert multiple values
     if (
-      currentType === "value" &&
-      (currentEntry === inputValue ||
-        isValueCorrect(
-          sudokuBoard.puzzleSolution[r][c],
-          currentEntry as number
-        ))
-    ) {
-      return;
-    }
-
-    // Set new Cell Value
-    setCellEntryValue(inputValue);
-
-    // Incrementing numWrongCellsPlayed value
-    if (
+      inputValue !== 0 &&
       !sudokuBoard.inNoteMode &&
-      !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+      sudokuBoard.selectedCells.length > 1
     ) {
-      sudokuBoard.statistics.numWrongCellsPlayed++;
+      return;
+    }
+
+    const newActionHistory: GameAction[] = [];
+    let cellsHaveUpdates = false;
+
+    const currentSelectedCells = getSelectedCells();
+
+    // We do not need to take action if this is a given value
+    for (let i = 0; i < currentSelectedCells.length; i++) {
+      if (currentSelectedCells[i].type === "given") {
+        continue;
+      }
+
+      const r: number = sudokuBoard.selectedCells[i].r;
+      const c: number = sudokuBoard.selectedCells[i].c;
+      const currentEntry = currentSelectedCells[i].entry;
+      const currentType = currentSelectedCells[i].type;
+
+      // We do not need to take action if value is correct
+      if (
+        currentType === "value" &&
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], currentEntry as number)
+      ) {
+        continue;
+      }
+
+      cellsHaveUpdates = true;
+
+      // Incrementing numWrongCellsPlayed value
+      if (
+        !sudokuBoard.inNoteMode &&
+        !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+      ) {
+        sudokuBoard.statistics.numWrongCellsPlayed++;
+      }
+
+      // Set new Cell Value
+      setCellEntryValue(inputValue, currentType, currentEntry, r, c);
+
+      newActionHistory.push({
+        cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
+        cellLocation: { c: c, r: r },
+      });
+    }
+
+    // selected values are all correct values or givens
+    if (!cellsHaveUpdates) {
+      return;
     }
 
     // Storing old value in actionHistory
-    sudokuBoard.actionHistory.push({
-      cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
-      cellLocation: { c: c, r: r },
-    });
+    sudokuBoard.actionHistory.push(newActionHistory);
 
     // Saving current game status
     saveGame(sudokuBoard);
@@ -233,29 +258,41 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Updates the selected cell updated based on the user input value and what is currently in the cell
    * @param inputValue User input 0-9
    */
-  const setCellEntryValue = (inputValue: number) => {
-    if (sudokuBoard.selectedCell == null) {
+  const setCellEntryValue = (
+    inputValue: number,
+    currentType: CellType,
+    currentEntry: number | number[],
+    r: number,
+    c: number
+  ) => {
+    if (sudokuBoard.selectedCells.length === 0) {
       return;
     }
-    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
-    const currentType = currentSelectedCell.type;
-    const currentEntry = currentSelectedCell.entry;
-    const r: number = sudokuBoard.selectedCell.r;
-    const c: number = sudokuBoard.selectedCell.c;
 
     // This value will be overridden if we are in note mode
     let newCellEntry: number | number[] = inputValue;
-    // update type and newCellEntry of selected cell
-    if (sudokuBoard.inNoteMode && currentType === "value" && inputValue !== 0) {
-      sudokuBoard.puzzle[r][c].type = "note";
-      newCellEntry = [inputValue];
-    }
     // update type of selected cell
-    else if (
+    if (
       (!sudokuBoard.inNoteMode && currentType === "note") ||
       inputValue === 0
     ) {
       sudokuBoard.puzzle[r][c].type = "value";
+    }
+    // update type and newCellEntry of selected cell
+    else if (sudokuBoard.inNoteMode && currentType === "value") {
+      sudokuBoard.puzzle[r][c].type = "note";
+      newCellEntry = [inputValue];
+    }
+    // handling case where there is one note remaining
+    // and that is removed via note press
+    else if (
+      sudokuBoard.inNoteMode &&
+      currentType === "note" &&
+      (currentEntry as number[]).length === 1 &&
+      (currentEntry as number[])[0] === inputValue
+    ) {
+      sudokuBoard.puzzle[r][c].type = "value";
+      newCellEntry = 0;
     }
     // set new note value
     else if (sudokuBoard.inNoteMode) {
@@ -298,28 +335,96 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   /**
    * Toggles whether or not a cell is selected on click
+   * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
+   * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
+   * https://github.com/necolas/react-native-web/issues/1684
    * @param r The row of a given cell 0-8
    * @param c the column of a given cell 0-8
+   * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
    */
-  const toggleSelectCell = (r: number, c: number) => {
+  const toggleSelectCell = (r: number, c: number, event: any) => {
     if (isBoardDisabled()) {
       return;
     }
-    if (
-      sudokuBoard.selectedCell &&
-      sudokuBoard.selectedCell.c === c &&
-      sudokuBoard.selectedCell.r === r
-    ) {
-      setSudokuBoard({
-        ...sudokuBoard,
-        selectedCell: null,
-      });
+    if (sudokuBoard.selectedCells.length === 0) {
+      sudokuBoard.selectedCells.push({ r: r, c: c });
+    } else if (event.ctrlKey || event.metaKey) {
+      toggleSelectCellWithControlRules(r, c);
+    } else if (event.shiftKey) {
+      toggleSelectCellWithShiftRules(r, c);
     } else {
-      setSudokuBoard({
-        ...sudokuBoard,
-        selectedCell: { r: r, c: c },
-      });
+      toggleSelectCellWithDefaultRules(r, c);
     }
+
+    setSudokuBoard({
+      ...sudokuBoard,
+      selectedCells: sudokuBoard.selectedCells,
+    });
+  };
+
+  /**
+   * Determines what deselect / select actions should take place.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithDefaultRules = (r: number, c: number) => {
+    let addCell = true;
+    for (const cell of sudokuBoard.selectedCells) {
+      if (cell.c === c && cell.r === r) {
+        addCell = false;
+      }
+    }
+    sudokuBoard.selectedCells = [];
+    if (addCell) {
+      sudokuBoard.selectedCells.push({ r: r, c: c });
+    }
+  };
+
+  /**
+   * Determines what deselect / select actions should take place when control/meta key is held down.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithControlRules = (r: number, c: number) => {
+    let addCell = true;
+    for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
+      if (
+        sudokuBoard.selectedCells[i].c === c &&
+        sudokuBoard.selectedCells[i].r === r
+      ) {
+        addCell = false;
+        sudokuBoard.selectedCells.splice(i, 1);
+      }
+    }
+    if (addCell) {
+      sudokuBoard.selectedCells.push({ r: r, c: c });
+    }
+  };
+
+  /**
+   * Determines what deselect / select actions should take place when shift key is held down.
+   * @param r The row of the cell where select toggle action is taking place.
+   * @param c The column of the cell where select toggle action is taking place.
+   */
+  const toggleSelectCellWithShiftRules = (r: number, c: number) => {
+    const pointOneRow = sudokuBoard.selectedCells[0].r;
+    const pointOneColumn = sudokuBoard.selectedCells[0].c;
+
+    const selectionRowLength = r - pointOneRow;
+    const selectionColumnLength = c - pointOneColumn;
+
+    const newSelectedCells = [];
+    for (let i = 0; i <= Math.abs(selectionRowLength); i++) {
+      for (let j = 0; j <= Math.abs(selectionColumnLength); j++) {
+        newSelectedCells.push({
+          r: sudokuBoard.selectedCells[0].r + i * Math.sign(selectionRowLength),
+          c:
+            sudokuBoard.selectedCells[0].c +
+            j * Math.sign(selectionColumnLength),
+        });
+      }
+    }
+    sudokuBoard.selectedCells = newSelectedCells;
   };
 
   /**
@@ -386,8 +491,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return (
       <Cell
         disable={disable}
-        onClick={(r: number, c: number) => {
-          toggleSelectCell(r, c);
+        onClick={(r: number, c: number, event: any) => {
+          toggleSelectCell(r, c, event);
         }}
         backgroundColor={cellBackgroundColor}
         noteColor={noteColor}
@@ -441,7 +546,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     r: number,
     c: number
   ): string => {
-    const selectedCell = sudokuBoard.selectedCell;
+    const selectedCell = sudokuBoard.selectedCells;
     const selected: boolean = isCellSelected(r, c, selectedCell);
     const conflict: boolean = doesCellHaveConflict(r, c, cell);
     const peer: boolean = isCellPeer(r, c, selectedCell);
@@ -530,38 +635,45 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
    * @param selectedCell The selected cell
-   * @returns false if selectedCell is null or does not match the coordinates provided
+   * @returns false if selectedCell is empty or does not match the coordinates provided
    */
   const isCellSelected = (
     r: number,
     c: number,
-    selectedCell: CellLocation | null
+    selectedCell: CellLocation[]
   ): boolean => {
-    if (selectedCell == null) {
+    if (selectedCell.length === 0) {
       return false;
     } else {
-      return c === selectedCell.c && r === selectedCell.r;
+      let isCellSelected = false;
+      for (const cell of selectedCell) {
+        if (c === cell.c && r === cell.r) {
+          isCellSelected = true;
+        }
+      }
+      return isCellSelected;
     }
   };
 
   /**
    * Determines if the provided cell has the same value as the selected cell
    * @param cell The provided cell
-   * @returns true if the provided cell's value is equal to the selected cell's value
+   * @returns true if the provided cell's value is equal to the selected cell
    */
   const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
-    if (sudokuBoard.selectedCell == null) {
+    // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
+    if (sudokuBoard.selectedCells.length !== 1) {
       return false;
     }
     const { highlightIdenticalValuesSetting } =
       React.useContext(PreferencesContext);
-    const currentSelectedCell = getCurrentSelectedCell() as CellProps;
-    const selectedEntry = currentSelectedCell.entry;
-    let currentEntry = cell.entry;
+    const currentSelectedCell = getSelectedCells();
+    const currentEntry = cell.entry;
+    const selectedEntry = currentSelectedCell[0].entry;
+    const identicalValue = selectedEntry === currentEntry;
+
     return (
-      highlightIdenticalValuesSetting &&
-      selectedEntry === currentEntry &&
-      currentEntry != 0
+      highlightIdenticalValuesSetting && identicalValue && currentEntry != 0
     );
   };
 
@@ -570,26 +682,32 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Definition of peer can be found here: http://sudopedia.enjoysudoku.com/Peer.html
    * @param r The row coordinate of a cell
    * @param c The column coordinate of a cell
-   * @param selectedCell The selected cell
-   * @returns false if not a peer or selectedCell is null, otherwise returns true
+   * @param selectedCells The selected cell
+   * @returns false if not a peer or selectedCell is empty, or if there is more than one selected cell, otherwise returns true
    */
   const isCellPeer = (
     r: number,
     c: number,
-    selectedCell: CellLocation | null
+    selectedCells: CellLocation[]
   ): boolean => {
-    if (selectedCell == null) {
+    // disable highlighting peers if no cells selected or more than 1 cell is selected.
+    if (selectedCells.length !== 1) {
       return false;
     }
+
+    const selectedCell = selectedCells[0];
+
     const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
       React.useContext(PreferencesContext);
-    const box = areCellsInSameBox({ r: r, c: c }, selectedCell);
-    const row = areCellsInSameRow({ r: r, c: c }, selectedCell);
-    const column = areCellsInSameColumn({ r: r, c: c }, selectedCell);
+
+    const sameBox = areCellsInSameBox({ r: r, c: c }, selectedCell);
+    const sameRow = areCellsInSameRow({ r: r, c: c }, selectedCell);
+    const sameColumn = areCellsInSameColumn({ r: r, c: c }, selectedCell);
+
     return (
-      (box && highlightBoxSetting) ||
-      (row && highlightRowSetting) ||
-      (column && highlightColumnSetting)
+      (sameBox && highlightBoxSetting) ||
+      (sameRow && highlightRowSetting) ||
+      (sameColumn && highlightColumnSetting)
     );
   };
 
@@ -599,46 +717,72 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
-  const getCurrentSelectedCell = (): CellProps | null => {
-    if (sudokuBoard.selectedCell == null) {
-      return null;
+  const getSelectedCells = (): CellProps[] => {
+    if (sudokuBoard.selectedCells.length === 0) {
+      return [];
     }
-    return sudokuBoard.puzzle[sudokuBoard.selectedCell.r][
-      sudokuBoard.selectedCell.c
-    ];
+    const selectedCells: CellProps[] = [];
+    for (const selectedCell of sudokuBoard.selectedCells) {
+      selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
+    }
+    return selectedCells;
   };
 
+  /**
+   * When a user presses a key down, do the desired action
+   * @param event onKeyDown event for react-native-web documented here: https://necolas.github.io/react-native-web/docs/interactions/#keyboardevent-props-api
+   * @returns void
+   */
   const handleKeyDown = (event: any) => {
-    if (sudokuBoard.selectedCell == null) {
+    console.log(event);
+    const inputValue = event.nativeEvent.key;
+
+    switch (inputValue) {
+      case "u":
+      case "U":
+        if (sudokuBoard.actionHistory.length !== 0) {
+          undo();
+        }
+        return;
+      case "p":
+      case "P":
+        handlePause(sudokuBoard, navigation);
+        return;
+      case "t":
+      case "T":
+      case "n":
+      case "N":
+        toggleNoteMode();
+        return;
+      default:
+        break;
+    }
+
+    if (sudokuBoard.selectedCells.length === 0) {
       return;
     }
 
-    const inputValue = event.nativeEvent.key;
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntry(parseInt(inputValue, 10));
-    } else if (
-      inputValue == "Delete" ||
-      inputValue == "Backspace" ||
-      inputValue == "0" ||
-      inputValue == "e" ||
-      inputValue == "E" // e and E are for erase
-    ) {
-      eraseSelected();
-    } else if (inputValue == "u" || inputValue == "U") {
-      undo();
-    } else if (inputValue == "p" || inputValue == "P") {
-      handlePause(sudokuBoard, navigation);
-    } else if (
-      inputValue == "t" ||
-      inputValue == "T" ||
-      inputValue == "n" ||
-      inputValue == "N"
-    ) {
-      toggleNoteMode();
-    } else if (sudokuBoard.selectedCell) {
-      let newCol = sudokuBoard.selectedCell.c;
-      let newRow = sudokuBoard.selectedCell.r;
+      return;
+    }
+
+    switch (inputValue) {
+      case "Delete":
+      case "Backspace":
+      case "0":
+      case "e":
+      case "E":
+        eraseSelected();
+        break;
+    }
+
+    for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
+      let newCol = sudokuBoard.selectedCells[i].c;
+      let newRow = sudokuBoard.selectedCells[i].r;
       switch (inputValue) {
+        // below cases do not return to allow for update of selected cell
+        // todo create function for updating selectedCell for below cases to call
         case "ArrowLeft":
         case "a":
         case "A":
@@ -662,11 +806,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         default:
           return;
       }
-      setSudokuBoard({
-        ...sudokuBoard,
-        selectedCell: { r: newRow, c: newCol },
-      });
+      sudokuBoard.selectedCells[i] = { r: newRow, c: newCol };
     }
+    setSudokuBoard({
+      ...sudokuBoard,
+      selectedCells: sudokuBoard.selectedCells,
+    });
   };
 
   const renderPuzzle = () => {
@@ -677,32 +822,57 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (sudokuHint) {
       return;
     }
-    let currentSelectedCell: CellProps | null = null;
-    let isBoardSelected: boolean = true;
-    if (sudokuBoard.selectedCell != null) {
-      currentSelectedCell = getCurrentSelectedCell();
-    } else {
-      isBoardSelected = false;
+    let currentSelectedCells: CellProps[] = [];
+    let enableNumberButtons = false;
+
+    if (sudokuBoard.selectedCells.length > 0) {
+      currentSelectedCells = getSelectedCells();
     }
-    let isGiven = false;
-    let isCellCorrect = false;
-    if (currentSelectedCell != null) {
-      isGiven = currentSelectedCell.type === "given";
-      isCellCorrect =
-        currentSelectedCell.type === "value" &&
-        isValueCorrect(
-          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
-            sudokuBoard.selectedCell!.c
-          ],
-          currentSelectedCell.entry
-        );
+
+    if (currentSelectedCells.length != 0) {
+      for (let i = 0; i < currentSelectedCells.length; i++) {
+        // if there is at least one cell that can be updated, we enable number buttons
+        if (
+          !areCellUpdatesDisabled(
+            currentSelectedCells[i],
+            sudokuBoard.selectedCells[i].r,
+            sudokuBoard.selectedCells[i].c
+          )
+        ) {
+          enableNumberButtons = true;
+        }
+      }
+      // disable number buttons if we are in value mode an multiple cells are selected
+      if (currentSelectedCells.length > 1 && !sudokuBoard.inNoteMode) {
+        enableNumberButtons = false;
+      }
     }
     return (
       <NumberControl
-        areNumberButtonsDisabled={isGiven || !isBoardSelected || isCellCorrect}
+        areNumberButtonsDisabled={!enableNumberButtons}
         updateEntry={updateCellEntry}
       />
     );
+  };
+
+  /**
+   *
+   * @param cell A cell of the sudoku board
+   * @param r The row of the cell
+   * @param c The column of the cell
+   * @returns Returns whether the given cell should allow updates or not.
+   */
+  const areCellUpdatesDisabled = (cell: CellProps, r: number, c: number) => {
+    if (cell.type === "given") {
+      return true;
+    } else if (
+      cell.type === "value" &&
+      isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderActions = () => {
@@ -711,32 +881,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
     const inNoteMode = sudokuBoard.inNoteMode;
     const boardHasConflict = doesBoardHaveConflict();
-    let currentSelectedCell: CellProps | null = getCurrentSelectedCell();
-    let isEraseButtonDisabled = sudokuBoard.selectedCell == null;
-    const isUndoButtonDisabled =
-      sudokuBoard.actionHistory == null ||
-      sudokuBoard.actionHistory.length == 0;
-    if (currentSelectedCell != null) {
-      const isCellGiven = currentSelectedCell.type === "given";
-      const isCellEmpty =
-        currentSelectedCell.type === "value" && currentSelectedCell.entry === 0;
-      const isCellCorrect =
-        currentSelectedCell.type === "value" &&
-        isValueCorrect(
-          sudokuBoard.puzzleSolution[sudokuBoard.selectedCell!.r][
-            sudokuBoard.selectedCell!.c
-          ],
-          currentSelectedCell.entry
-        );
-      // disable erase button if value === 0 or is given
-      if (isCellGiven || isCellEmpty || isCellCorrect) {
-        isEraseButtonDisabled = true;
-      }
-    }
+    const eraseButtonDisabled = isEraseButtonDisabled();
+    const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
 
     return (
       <ActionRow
-        isEraseButtonDisabled={isEraseButtonDisabled}
+        isEraseButtonDisabled={eraseButtonDisabled}
         isUndoButtonDisabled={isUndoButtonDisabled}
         inNoteMode={inNoteMode}
         undo={undo}
@@ -761,6 +911,36 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         incrementStage={updateHintStage}
       />
     );
+  };
+
+  /**
+   * Considering the state of the selected cells, we determine if the erase button should be disabled.
+   * @returns True or False depending on if the erase button should be disabled.
+   */
+  const isEraseButtonDisabled = () => {
+    const currentSelectedCells: CellProps[] = getSelectedCells();
+    if (sudokuBoard.selectedCells.length === 0) {
+      return true;
+    }
+    for (let i = 0; i < currentSelectedCells.length; i++) {
+      const isCellGiven = currentSelectedCells[i].type === "given";
+      const isCellEmpty =
+        currentSelectedCells[i].type === "value" &&
+        currentSelectedCells[i].entry === 0;
+      const isCellCorrect =
+        currentSelectedCells[i].type === "value" &&
+        isValueCorrect(
+          sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
+            sudokuBoard.selectedCells[i].c
+          ],
+          currentSelectedCells[i].entry as number
+        );
+      // disable erase button if value === 0 or is given
+      if (!isCellGiven && !isCellEmpty && !isCellCorrect) {
+        return false;
+      }
+    }
+    return true;
   };
 
   /**
@@ -927,6 +1107,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   return (
     <View
       testID={"sudokuBoard"}
+      //@ts-ignore react-native-web types not supported: https://github.com/necolas/react-native-web/issues/1684
       onKeyDown={handleKeyDown}
       style={{
         alignItems: "center",

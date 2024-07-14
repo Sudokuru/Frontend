@@ -7,6 +7,7 @@ on:
       - ".github/**"
       - "docs/**"
       - "cypress/**"
+      - "e2e/**"
       - "**/*.test.ts"
       - "README.md"
       - "License.md"
@@ -14,6 +15,7 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
       - "cypress.config.ts"
+      - "playwright.config.ts"
     branches:
       - main
   pull_request:
@@ -25,7 +27,6 @@ on:
       - ".gitignore"
       - ".prettierignore"
       - ".prettierrc.json"
-      - "cypress.config.ts"
     branches:
       - main
 
@@ -36,6 +37,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
   code_scan:
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +78,7 @@ jobs:
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -85,7 +114,7 @@ jobs:
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -129,7 +158,7 @@ jobs:
 
   app_build_android:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3

@@ -9,7 +9,7 @@ interface RenderCellProps {
   disable: boolean;
   entry: any; // todo find some way to derive this from type instad of duplicate
   type: CellType;
-  onClick: (r: number, c: number) => void;
+  onClick: (r: number, c: number, event: any) => void;
   backgroundColor: string;
   noteColor: string[];
   backgroundNoteColor: string[];
@@ -31,6 +31,11 @@ const Cell = (props: RenderCellProps) => {
   } = props;
   const cellSize = getCellSize();
 
+  /**
+   * Generates note text for each note if the note exists in the cell.
+   * @param noteIndex The index of the note.
+   * @returns void or a text component for the note index of a cell.
+   */
   const getNoteContents = (
     noteIndex: number,
     noteColor: string[],
@@ -47,8 +52,12 @@ const Cell = (props: RenderCellProps) => {
     }
   };
 
+  /**
+   * This generates a string used for testid to determine the contents of a cell
+   * @returns A string representing the contents of the cell
+   */
   const getCellContents = () => {
-    var contents = "";
+    let contents = "";
     if (type === "note") {
       contents += "notes:";
       for (let i = 1; i <= 9; i++) {
@@ -69,7 +78,9 @@ const Cell = (props: RenderCellProps) => {
 
   return (
     <Pressable
-      onPress={() => onClick(r, c)}
+      onPress={(event: any) => {
+        onClick(r, c, event);
+      }}
       style={{ outline: "none" }}
       disabled={disable}
     >

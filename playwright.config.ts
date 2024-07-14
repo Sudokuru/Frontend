@@ -1,17 +1,41 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
 import path from "path";
+const { platform } = require("node:process");
 
 config();
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
 declare const process: {
   env: {
     CI: string;
+    WORKERS: string;
   };
 };
 
 // Converting environment variable into number for easy boolean comparisons
 const CI = Number(process.env.CI);
+const WORKERS = Number(process.env.WORKERS);
+
+// determines how many playwright parallel workers there should be
+const workerValue = (CI: number, WORKERS: number) => {
+  if (WORKERS) {
+    return WORKERS;
+  } else if (CI) {
+    return 1;
+  } else {
+    return undefined;
+  }
+};
+
+// Determine platform-specfic single-select key.
+// Mac cannot use control key as that is right-click.
+export const getSingleMultiSelectKey = () => {
+  if (platform === "darwin") {
+    return "Meta";
+  } else {
+    return "Control";
+  }
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -26,7 +50,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: CI ? 1 : 2,
+  workers: workerValue(CI, WORKERS),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],

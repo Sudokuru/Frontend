@@ -6,26 +6,25 @@ import { HeaderComponent } from "./components/header.component";
 import { ContactPage } from "./page/contact.page";
 
 import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
+import { ALMOST_FINISHED_GAME } from "./data";
 
-import { ACTIVE_GAME } from "./data";
-
-// Declare the types of your fixtures.
-type MyFixtures = {
+// Declare the interfaces of your fixtures.
+interface MyFixtures {
   page: Page;
   resumeGame: Page;
   contact: Page;
-};
+}
 
-type MyOptions = {
+interface MyOptions {
   gameToResume?: string;
-};
+}
 
 const newBase = mixinCoverage(base);
 
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
 export const test = newBase.extend<MyFixtures & MyOptions>({
-  gameToResume: [ACTIVE_GAME, { option: true }],
+  gameToResume: [ALMOST_FINISHED_GAME, { option: true }],
 
   page: async ({ page }, use) => {
     await page.goto("");
@@ -34,7 +33,7 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   // Loads a game from local storage and navigates to resume the game.
   resumeGame: async ({ page, gameToResume }, use) => {
     await page.goto("");
-    await page.evaluate((gameToResume) => {
+    await page.evaluate((gameToResume: string) => {
       window.localStorage.setItem("active_game", gameToResume);
     }, gameToResume as string);
     const homePage = new HomePage(page);
