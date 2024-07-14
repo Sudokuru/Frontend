@@ -4,7 +4,7 @@ import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
 import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
 import { NEW_EMPTY_GAME } from "../data";
-import { singleMultiSelectKey } from "../../../playwright.config";
+import { getSingleMultiSelectKey } from "../../../playwright.config";
 
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
@@ -204,7 +204,7 @@ test.describe("undo", () => {
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(singleMultiSelectKey);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][8].click();
 

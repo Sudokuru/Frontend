@@ -29,10 +29,13 @@ const workerValue = (CI: number, WORKERS: number) => {
 
 // Determine platform-specfic single-select key.
 // Mac cannot use control key as that is right-click.
-export let singleMultiSelectKey = "Control";
-if (platform === "darwin") {
-  singleMultiSelectKey = "Meta";
-}
+export const getSingleMultiSelectKey = () => {
+  if (platform === "darwin") {
+    return "Meta";
+  } else {
+    return "Control";
+  }
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
