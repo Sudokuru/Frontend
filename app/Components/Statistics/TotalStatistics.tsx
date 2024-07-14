@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import Statistic from "./Statistic";
-import { formatTime } from "../Sudoku Board/Functions/BoardFunctions";
+import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
 
 export interface StatisticsProps {
   totalScore: number;
