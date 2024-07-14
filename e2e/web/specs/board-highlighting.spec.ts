@@ -295,7 +295,7 @@ test.describe("board multiselect highlighting", () => {
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -316,7 +316,7 @@ test.describe("board multiselect highlighting", () => {
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -427,7 +427,7 @@ test.describe("board multiselect highlighting", () => {
 
     await resumeGame.keyboard.up("Shift");
 
-    await resumeGame.keyboard.down(getSingleMultiSelectKey);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey());
 
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][8].click();

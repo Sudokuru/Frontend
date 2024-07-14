@@ -204,7 +204,7 @@ test.describe("undo", () => {
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][8].click();
 
