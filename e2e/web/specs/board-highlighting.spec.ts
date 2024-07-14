@@ -456,7 +456,7 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await resumeGame.keyboard.up(getSingleMultiSelectKey);
+    await resumeGame.keyboard.up(getSingleMultiSelectKey());
 
     await resumeGame.keyboard.down("Shift");
 
