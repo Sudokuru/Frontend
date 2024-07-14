@@ -34,8 +34,6 @@ if (platform === "darwin") {
   singleMultiSelectKey = "Meta";
 }
 
-console.log(`This platform is ${platform}`);
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
