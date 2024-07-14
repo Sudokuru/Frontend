@@ -154,6 +154,16 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: SonarCloud Scan
+        if: always()
+        uses: SonarSource/sonarcloud-github-action@v2.3.0
+        with:
+          args: >
+            -Dsonar.organization=sudokuru
+            -Dsonar.projectKey=Sudokuru_Frontend
+            -Dsonar.javascript.lcov.reportPaths=./test-results/coverage/lcov.info
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       
 
   app_build_android:
