@@ -37,6 +37,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  analyze:
+    name: Analyze
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
+
   code_scan:
     runs-on: ubuntu-latest
     steps:
@@ -50,7 +78,7 @@ jobs:
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -86,7 +114,7 @@ jobs:
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -112,25 +140,29 @@ jobs:
         if: always()
         with:
           files: playwright-report/results.xml
-      - name: Upload code coverage
+      - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: CodeCoverageReport
-          path: playwright-coverage/*
-      - name: Coveralls
-        if: always()
-        uses: coverallsapp/github-action@v2
+          name: PlaywrightTestResults
+          path: test-results/*
       - name: Upload coverage reports to Codecov
         if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      
+      # https://github.com/codacy/codacy-coverage-reporter/issues/506
+      # codacy does not allow uploading of codacy.json files directly without API endpoint
+      # - name: Run codacy-coverage-reporter
+      #   if: always()
+      #   uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      #   with:
+      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      #     coverage-reports: test-results/coverage/codacy.json
 
   app_build_android:
     runs-on: ubuntu-latest
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -166,7 +198,7 @@ jobs:
       matrix:
         platform: [ [linux, ubuntu-20.04], [windows, windows-latest] ]
     runs-on: ${{ matrix.platform[1] }}
-    needs: [ code_scan ]
+    needs: [ code_scan, analyze ]
     steps:
       - uses: actions/checkout@v3
       - name: setup node

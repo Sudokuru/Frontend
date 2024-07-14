@@ -1,5 +1,5 @@
 import React from "react";
-import SudokuBoard from "../Components/Sudoku Board/SudokuBoard";
+import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { sudokuStrategyArray } from "sudokuru";

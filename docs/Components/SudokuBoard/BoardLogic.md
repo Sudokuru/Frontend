@@ -5,11 +5,11 @@
 ```mermaid
 flowchart
     PencilButtonState[Note Button State]
-    InsertStart{{User Selects Cell}}
-    InsertValue[User Presses HotKey/Button <br> to insert value into Cell]
-    InsertNote[User Presses HotKey/Button <br>to insert note into Cell]
+    InsertStart{{User Selects Cell(s)}}
+    InsertValue[User Presses HotKey/Button <br> to insert value into Cell(s)]
+    InsertNote[User Presses HotKey/Button <br>to insert note into Cell(s)]
     PushHistory[Board pushes existing cell state <br> to ActionHistory array]
-    UpdateCell[Cell is updated with new value]
+    UpdateCell[Cell(s) is/are updated with new content]
 
     PencilButtonState --> InsertStart
     InsertStart --> |If Note button is disabled|InsertValue

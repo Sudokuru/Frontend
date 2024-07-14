@@ -3,6 +3,8 @@ import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
 import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
+import { NEW_EMPTY_GAME } from "../data";
+import { getSingleMultiSelectKey } from "../../../playwright.config";
 
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
@@ -197,6 +199,48 @@ test.describe("undo", () => {
     await sudokuBoard.undo.click();
     await sudokuBoard.cellHasNotes(7, 8, "45");
   });
+
+  test("Undo button should function with a note move spanning multiple cells @os-specific", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await resumeGame.keyboard.down(getSingleMultiSelectKey());
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.cell[7][8].click();
+
+    await sudokuBoard.page.keyboard.press("N");
+    await sudokuBoard.numPad[7].click();
+
+    await sudokuBoard.cellHasNotes(7, 7, "8");
+    await sudokuBoard.cellHasNotes(7, 8, "458");
+
+    await sudokuBoard.undo.click();
+
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+  });
+
+  test("Undo button should function with an erase move spanning multiple cells", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[6][6].click();
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[8][8].click();
+    await resumeGame.keyboard.up("Shift");
+
+    await sudokuBoard.erase.click();
+
+    await sudokuBoard.cellHasValue(7, 6, "0");
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasValue(7, 8, "0");
+
+    await sudokuBoard.undo.click();
+
+    await sudokuBoard.cellHasValue(7, 6, "1");
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+  });
 });
 
 test.describe("erase", () => {
@@ -209,12 +253,41 @@ test.describe("erase", () => {
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
+  test("Erase hotkey should not work if a cell with a given is selected", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cellHasValue(0, 2, "3");
+    await sudokuBoard.cell[0][2].click();
+    await sudokuBoard.cell[0][2].press("0");
+    await sudokuBoard.cellHasValue(0, 2, "3");
+  });
+
   test("Erase button should be disabled if a cell with a correct value is selected", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cellHasValue(0, 0, "1");
     await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.eraseButtonIsDisabled();
+  });
+
+  test("Erase hotkey should not work if a cell with a correct value is selected", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cellHasValue(0, 0, "1");
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("0");
+    await sudokuBoard.cellHasValue(0, 0, "1");
+  });
+
+  test("Erase button should be disabled if an empty cell is selected", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cell[7][7].click();
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
@@ -233,6 +306,55 @@ test.describe("erase", () => {
       await sudokuBoard.cell[7][6].press(key);
       await sudokuBoard.cellHasValue(7, 6, "0");
     }
+  });
+
+  test("Erasing a cell with notes should succeed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.erase.click();
+    await sudokuBoard.cellHasValue(7, 8, "0");
+  });
+
+  test("Erasing multiple cells with notes and incorrect values should succeed", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[6][6].click();
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[8][8].click();
+    await resumeGame.keyboard.up("Shift");
+
+    await sudokuBoard.erase.click();
+
+    await sudokuBoard.cellHasValue(7, 6, "0");
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.cellHasValue(7, 8, "0");
+  });
+
+  test("Erase button should be disabled if only multiple correct values and givens are selected", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[2][2].click();
+    await resumeGame.keyboard.up("Shift");
+    await sudokuBoard.eraseButtonIsDisabled();
+  });
+
+  test("Erase hotkey should not work if only multiple correct values and givens are selected", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await resumeGame.keyboard.down("Shift");
+    await sudokuBoard.cell[2][2].click();
+    await resumeGame.keyboard.up("Shift");
+
+    await sudokuBoard.erase.click();
+
+    await sudokuBoard.cellHasValue(0, 0, "1");
   });
 });
 
@@ -314,4 +436,103 @@ test.describe("toggle notes", () => {
       await sudokuBoard.cellHasValue(7, 7, "2");
     });
   }
+});
+
+test.describe("typing with multiple cells selected", () => {
+  test.use({ gameToResume: NEW_EMPTY_GAME });
+
+  test("inserting notes should succeed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.cellHasValue(3, 6, "0");
+    await sudokuBoard.cellHasNotes(3, 7, "1");
+    await sudokuBoard.cellHasNotes(3, 8, "1");
+    await sudokuBoard.cellHasNotes(4, 6, "1");
+    await sudokuBoard.cellHasNotes(4, 7, "1");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
+
+  test.use({ gameToResume: NEW_EMPTY_GAME });
+
+  test("inserting values should fail", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.page.keyboard.press("n");
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.cellHasNotes(3, 6, "1");
+    await sudokuBoard.cellHasValue(3, 7, "0");
+    await sudokuBoard.cellHasValue(3, 8, "0");
+    await sudokuBoard.cellHasValue(4, 6, "0");
+    await sudokuBoard.cellHasValue(4, 7, "0");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
+});
+
+test.describe("numpad with multiple cells selected", () => {
+  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test("inserting notes should succeed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.numPad[0].click();
+
+    await sudokuBoard.cellHasValue(3, 6, "0");
+    await sudokuBoard.cellHasNotes(3, 7, "1");
+    await sudokuBoard.cellHasNotes(3, 8, "1");
+    await sudokuBoard.cellHasNotes(4, 6, "1");
+    await sudokuBoard.cellHasNotes(4, 7, "1");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
+
+  test("numpad disabled when not in note mode", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.page.keyboard.press("1");
+
+    await sudokuBoard.page.keyboard.press("n");
+    await resumeGame.keyboard.down("Shift");
+
+    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.numPad[0].click();
+
+    await sudokuBoard.cellHasNotes(3, 6, "1");
+    await sudokuBoard.cellHasValue(3, 7, "0");
+    await sudokuBoard.cellHasValue(3, 8, "0");
+    await sudokuBoard.cellHasValue(4, 6, "0");
+    await sudokuBoard.cellHasValue(4, 7, "0");
+    await sudokuBoard.cellHasValue(4, 8, "8");
+    await sudokuBoard.cellHasValue(5, 6, "5");
+    await sudokuBoard.cellHasValue(5, 7, "6");
+    await sudokuBoard.cellHasValue(5, 8, "4");
+  });
 });

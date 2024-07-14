@@ -1,17 +1,40 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
-import path from "path";
+const { platform } = require("node:process");
 
 config();
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
 declare const process: {
   env: {
     CI: string;
+    WORKERS: string;
   };
 };
 
 // Converting environment variable into number for easy boolean comparisons
 const CI = Number(process.env.CI);
+const WORKERS = Number(process.env.WORKERS);
+
+// determines how many playwright parallel workers there should be
+const workerValue = (CI: number, WORKERS: number) => {
+  if (WORKERS) {
+    return WORKERS;
+  } else if (CI) {
+    return 1;
+  } else {
+    return undefined;
+  }
+};
+
+// Determine platform-specfic single-select key.
+// Mac cannot use control key as that is right-click.
+export const getSingleMultiSelectKey = () => {
+  if (platform === "darwin") {
+    return "Meta";
+  } else {
+    return "Control";
+  }
+};
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -26,45 +49,32 @@ export default defineConfig({
   /* Retry on CI only */
   retries: CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: CI ? 1 : undefined,
+  workers: workerValue(CI, WORKERS),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],
     ["html"],
     ["junit", { outputFile: "playwright-report/results.xml" }],
     [
-      "@bgotink/playwright-coverage",
-      /** @type {import('@bgotink/playwright-coverage').CoverageReporterOptions} */ {
-        // Path to the root files should be resolved from, most likely your repository root
-        sourceRoot: __dirname,
-        // This comment was very helpful for getting working syntax for exclude
-        // https://github.com/bgotink/playwright-coverage/issues/3#issuecomment-963923625
-        exclude: [
-          "**/node_modules/**",
-          "**/.assets/**",
-          "**/.expo/**",
-          "**/app/Data/**",
-        ],
-        // Directory in which to write coverage reports
-        resultDir: path.join(__dirname, "playwright-coverage"),
-        // Configure the reports to generate.
-        // The value is an array of istanbul reports, with optional configuration attached.
-        reports: [
-          ["html"],
-          [
-            "lcovonly",
-            {
-              file: "coverage.lcov",
-            },
+      "monocart-reporter",
+      {
+        name: "Sudokuru Report",
+        outputFile: "./test-results/report.html",
+        // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
+        coverage: {
+          entryFilter: () => true,
+          // exclude the generated javascript files that are storing puzzle data
+          sourceFilter: (sourcePath: string) =>
+            sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
+          reports: [
+            "v8",
+            "v8-json",
+            "console-summary",
+            "html",
+            "codecov",
+            "codacy",
           ],
-          // Log a coverage summary at the end of the test run
-          [
-            "text-summary",
-            {
-              file: null,
-            },
-          ],
-        ],
+        },
       },
     ],
   ],
