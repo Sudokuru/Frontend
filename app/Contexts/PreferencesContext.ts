@@ -1,4 +1,5 @@
 import React from "react";
+import { returnDefaultPreviewMode } from "./InitializeContext";
 
 export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
@@ -15,4 +16,6 @@ export const PreferencesContext = React.createContext({
   highlightRowSetting: true,
   toggleHighlightColumn: () => {},
   highlightColumnSetting: true,
+  togglePreviewMode: () => {},
+  previewModeSetting: returnDefaultPreviewMode(),
 });

@@ -15,6 +15,7 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
+import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -22,6 +23,8 @@ import NavigationButton from "../Components/Home/NavigationButton";
 const LandingPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
+
+  const { previewModeSetting } = React.useContext(PreferencesContext);
 
   const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
@@ -64,11 +67,15 @@ const LandingPage = () => {
             navigationPage="Learn"
             testID="HomeLearnButton"
           />
-          <NavigationButton
-            image={START_DRILLS_LOGO}
-            navigationPage="Drill"
-            testID="HomeDrillButton"
-          />
+          {previewModeSetting ? (
+            <NavigationButton
+              image={START_DRILLS_LOGO}
+              navigationPage="Drill"
+              testID="HomeDrillButton"
+            />
+          ) : (
+            <></>
+          )}
           <NavigationButton
             image={PLAY_SUDOKU_LOGO}
             navigationPage="Play"

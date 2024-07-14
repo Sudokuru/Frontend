@@ -1,6 +1,14 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
+import { returnDefaultPreviewMode } from "../Contexts/InitializeContext";
 
+type profileValue =
+  | "theme"
+  | "highlightBox"
+  | "highlightColumn"
+  | "highlightIdenticalValues"
+  | "highlightRow"
+  | "previewMode";
 export class Profile {
   public static async getProfile(): Promise<profile> {
     let value = await getKeyJSON("profile");
@@ -11,6 +19,7 @@ export class Profile {
         highlightColumn: true,
         highlightIdenticalValues: true,
         highlightRow: true,
+        previewMode: returnDefaultPreviewMode(),
       };
       await this.setProfile(profile);
       return profile;
@@ -22,7 +31,7 @@ export class Profile {
     storeData("profile", JSON.stringify(profile));
   }
 
-  public static async setProfileValue(profileValue: string) {
+  public static async setProfileValue(profileValue: profileValue) {
     let value: profile = await this.getProfile();
     if (profileValue === "theme") {
       value.theme = !value.theme;
@@ -34,6 +43,8 @@ export class Profile {
       value.highlightIdenticalValues = !value.highlightIdenticalValues;
     } else if (profileValue === "highlightRow") {
       value.highlightRow = !value.highlightRow;
+    } else if (profileValue === "previewMode") {
+      value.previewMode = !value.previewMode;
     }
     this.setProfile(value);
   }

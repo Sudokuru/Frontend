@@ -4,6 +4,15 @@ import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
+import { profile } from "../Api/Puzzle.Types";
+
+export const returnDefaultPreviewMode = () => {
+  if (process.env.EXPO_PUBLIC_ENVIRONMENT === "dev") {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -15,14 +24,19 @@ const InitializeContext = () => {
   const [highlightRowSetting, setHighlightRow] = React.useState(true);
   const [highlightColumnSetting, setHighlightColumn] = React.useState(true);
 
+  const [previewModeSetting, setPreviewMode] = React.useState(
+    returnDefaultPreviewMode()
+  );
+
   // set initial values of theme
   React.useEffect(() => {
-    Profile.getProfile().then((data) => {
+    Profile.getProfile().then((data: profile) => {
       setDarkThemeSetting(data.theme);
       setHighlightIdenticalValues(data.highlightIdenticalValues);
       setHighlightBox(data.highlightBox);
       setHighlightRow(data.highlightRow);
       setHighlightColumn(data.highlightColumn);
+      setPreviewMode(data.previewMode);
     });
   }, []);
 
@@ -67,6 +81,11 @@ const InitializeContext = () => {
     return setHighlightColumn(!highlightColumnSetting);
   }, [highlightColumnSetting]);
 
+  const togglePreviewMode = React.useCallback(() => {
+    Profile.setProfileValue("previewMode");
+    return setPreviewMode(!previewModeSetting);
+  }, [previewModeSetting]);
+
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
@@ -83,6 +102,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      togglePreviewMode,
+      previewModeSetting,
     }),
     [
       toggleTheme,
@@ -99,6 +120,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      togglePreviewMode,
+      previewModeSetting,
     ]
   );
 
