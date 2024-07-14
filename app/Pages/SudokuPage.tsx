@@ -27,7 +27,7 @@ const SudokuPage = ({ route }: any) => {
 
   return (
     <>
-      <SudokuBoard action={action} />
+      <SudokuBoard action={action} difficulty={difficulty} />
       <StatusBar style="auto" />
     </>
   );
