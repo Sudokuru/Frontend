@@ -151,13 +151,14 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - run: cat test-results/coverage/codacy.json
-      - name: Run codacy-coverage-reporter
-        if: always()
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: test-results/coverage/codacy.json
+      # https://github.com/codacy/codacy-coverage-reporter/issues/506
+      # codacy does not allow uploading of codacy.json files directly without API endpoint
+      # - name: Run codacy-coverage-reporter
+      #   if: always()
+      #   uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      #   with:
+      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      #     coverage-reports: test-results/coverage/codacy.json
 
   app_build_android:
     runs-on: ubuntu-latest
