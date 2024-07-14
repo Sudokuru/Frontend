@@ -42,3 +42,5 @@ Buttons that are always enabled
 "ArrowRight", "D", "d" - Move selected cells right  
 "ArrowUp", "W", "w", - Move selected cells up  
 "ArrowDown", "S", "s" - Move selected cells down
+"Shift" - block multiselect key  
+"Control", "Meta" - single multiselect key

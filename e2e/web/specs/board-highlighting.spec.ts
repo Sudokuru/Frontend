@@ -11,6 +11,7 @@ import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { HeaderComponent } from "../components/header.component";
 import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
+import { singleMultiSelectKey } from "../../../playwright.config";
 
 test.describe("board highlighting", () => {
   test("should render correctly when a cell is selected", async ({
@@ -290,11 +291,11 @@ test.describe("board multiselect highlighting", () => {
     ]);
   });
 
-  test("Should select multiple cells when using control key", async ({
+  test("Should select multiple cells when using control/meta key @os-specific", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down("Control");
+    await resumeGame.keyboard.down(singleMultiSelectKey);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -311,11 +312,11 @@ test.describe("board multiselect highlighting", () => {
     ]);
   });
 
-  test("Should select and unselect cells correctly when using control key", async ({
+  test("Should select and unselect cells correctly when using control/meta key @os-specific", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down("Control");
+    await resumeGame.keyboard.down(singleMultiSelectKey);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -362,7 +363,7 @@ test.describe("board multiselect highlighting", () => {
     ]);
   });
 
-  test("Should handle complex highlighting situation", async ({
+  test("Should handle complex highlighting situation @os-specific", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -426,7 +427,7 @@ test.describe("board multiselect highlighting", () => {
 
     await resumeGame.keyboard.up("Shift");
 
-    await resumeGame.keyboard.down("Control");
+    await resumeGame.keyboard.down(singleMultiSelectKey);
 
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][8].click();
@@ -455,7 +456,7 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await resumeGame.keyboard.up("Control");
+    await resumeGame.keyboard.up(singleMultiSelectKey);
 
     await resumeGame.keyboard.down("Shift");
 

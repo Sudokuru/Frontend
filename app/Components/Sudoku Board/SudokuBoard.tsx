@@ -293,7 +293,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   /**
    * Toggles whether or not a cell is selected on click
-   * event.ctrlKey and event.shiftKey are from React Native Web, which does not export types that we can use
+   * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
    * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
    * https://github.com/necolas/react-native-web/issues/1684
    * @param r The row of a given cell 0-8
@@ -303,7 +303,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const toggleSelectCell = (r: number, c: number, event: any) => {
     if (sudokuBoard.selectedCells.length === 0) {
       sudokuBoard.selectedCells.push({ r: r, c: c });
-    } else if (event.ctrlKey) {
+    } else if (event.ctrlKey || event.metaKey) {
       toggleSelectCellWithControlRules(r, c);
     } else if (event.shiftKey) {
       toggleSelectCellWithShiftRules(r, c);
@@ -336,7 +336,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines what deselect / select actions should take place when control key is held down.
+   * Determines what deselect / select actions should take place when control/meta key is held down.
    * @param r The row of the cell where select toggle action is taking place.
    * @param c The column of the cell where select toggle action is taking place.
    */
@@ -559,6 +559,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns void
    */
   const handleKeyDown = (event: any) => {
+    console.log(event);
     const inputValue = event.nativeEvent.key;
 
     switch (inputValue) {

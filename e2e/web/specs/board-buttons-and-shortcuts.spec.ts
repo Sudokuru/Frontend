@@ -4,6 +4,7 @@ import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
 import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
 import { NEW_EMPTY_GAME } from "../data";
+import { singleMultiSelectKey } from "../../../playwright.config";
 
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
@@ -199,11 +200,11 @@ test.describe("undo", () => {
     await sudokuBoard.cellHasNotes(7, 8, "45");
   });
 
-  test("Undo button should function with a note move spanning multiple cells", async ({
+  test("Undo button should function with a note move spanning multiple cells @os-specific", async ({
     resumeGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down("Control");
+    await resumeGame.keyboard.down(singleMultiSelectKey);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][8].click();
 

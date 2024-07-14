@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
 import path from "path";
+const { platform } = require("node:process");
 
 config();
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
@@ -25,6 +26,15 @@ const workerValue = (CI: number, WORKERS: number) => {
     return undefined;
   }
 };
+
+// Determine platform-specfic single-select key.
+// Mac cannot use control key as that is right-click.
+export let singleMultiSelectKey = "Control";
+if (platform === "darwin") {
+  singleMultiSelectKey = "Meta";
+}
+
+console.log(`This platform is ${platform}`);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
