@@ -1,6 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
-import path from "path";
 const { platform } = require("node:process");
 
 config();
