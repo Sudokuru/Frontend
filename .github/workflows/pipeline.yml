@@ -151,11 +151,13 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      - run: bash <(curl -Ls https://coverage.codacy.com/get.sh)
-        name: Run codacy-coverage-reporter
+      - run: cat test-results/coverage/codacy.json
+      - name: Run codacy-coverage-reporter
         if: always()
-        env: 
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: test-results/coverage/codacy.json
 
   app_build_android:
     runs-on: ubuntu-latest
