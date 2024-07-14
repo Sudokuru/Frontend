@@ -6,7 +6,7 @@ import { Statistics } from "./Statistics";
 import {
   GameDifficulty,
   returnGameOfDifficulty,
-} from "../Components/Sudoku Board/Functions/Difficulty";
+} from "../Components/SudokuBoard/Functions/Difficulty";
 
 /**
  * Functions to handle puzzle related operations

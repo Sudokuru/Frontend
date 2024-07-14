@@ -4,8 +4,10 @@ import { PlayPage } from "./page/play.page";
 import { SudokuBoardComponent } from "./components/sudoku-board.component";
 import { HeaderComponent } from "./components/header.component";
 import { ContactPage } from "./page/contact.page";
-
-import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
+import {
+  collectV8CodeCoverageAsync,
+  CollectV8CodeCoverageOptions,
+} from "./v8-code-coverage";
 import { ALMOST_FINISHED_GAME } from "./data";
 
 // Declare the interfaces of your fixtures.
@@ -19,7 +21,31 @@ interface MyOptions {
   gameToResume?: string;
 }
 
-const newBase = mixinCoverage(base);
+// See https://playwright.dev/docs/test-fixtures and https://playwright.dev/docs/test-parameterize
+interface AppFixtures {
+  codeCoverageAutoTestFixture: void;
+}
+
+// Export the extended test type.
+// All tests that use this export 'test' type will have the automatic fixture applied to them.
+// Code from https://github.com/edumserrano/playwright-adventures/blob/main/demos/code-coverage-with-monocart-reporter/tests/_shared/app-fixtures.ts
+const newBase = base.extend<AppFixtures>({
+  codeCoverageAutoTestFixture: [
+    async ({ browser, page }, use): Promise<void> => {
+      const options: CollectV8CodeCoverageOptions = {
+        browserType: browser.browserType(),
+        page: page,
+        use: use,
+        enableJsCoverage: true,
+        enableCssCoverage: true,
+      };
+      await collectV8CodeCoverageAsync(options);
+    },
+    {
+      auto: true,
+    },
+  ],
+});
 
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
