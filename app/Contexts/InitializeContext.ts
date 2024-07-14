@@ -34,14 +34,14 @@ const InitializeContext = () => {
   }, [darkThemeSetting]);
 
   const updateCurrentPage = React.useCallback(
-    (props: any) => {
+    (props: React.SetStateAction<string>) => {
       return setCurrentPage(props);
     },
     [currentPage]
   );
 
   const updateLearnedLessons = React.useCallback(
-    (props: any) => {
+    (props: React.SetStateAction<string[]>) => {
       return setLearnedLessons(props);
     },
     [learnedLessons]
