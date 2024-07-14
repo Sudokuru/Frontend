@@ -146,30 +146,32 @@ jobs:
         with:
           name: PlaywrightTestResults
           path: test-results/*
-      - name: Coveralls
-        if: always()
-        uses: coverallsapp/github-action@v2
+      # - name: Coveralls
+      #   if: always()
+      #   uses: coverallsapp/github-action@v2
       - name: Upload coverage reports to Codecov
         if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - run: cat test-results/coverage/codacy.json
+      - run: ls -A
       - name: Run codacy-coverage-reporter
         if: always()
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: test-results/coverage/codacy.json
-      - name: SonarCloud Scan
-        if: always()
-        uses: SonarSource/sonarcloud-github-action@v2.3.0
-        with:
-          args: >
-            -Dsonar.organization=sudokuru
-            -Dsonar.projectKey=Sudokuru_Frontend
-            -Dsonar.javascript.lcov.reportPaths=./test-results/coverage/coverage-report.json
-        env:
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+      # - name: SonarCloud Scan
+      #   if: always()
+      #   uses: SonarSource/sonarcloud-github-action@v2.3.0
+      #   with:
+      #     args: >
+      #       -Dsonar.organization=sudokuru
+      #       -Dsonar.projectKey=Sudokuru_Frontend
+      #       -Dsonar.javascript.lcov.reportPaths=./test-results/coverage/coverage-report.json
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       
 
   app_build_android:
