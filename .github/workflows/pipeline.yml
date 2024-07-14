@@ -159,7 +159,7 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./test-results/coverage/codacy.json
+          coverage-reports: test-results/coverage/codacy.json
       - name: SonarCloud Scan
         if: always()
         uses: SonarSource/sonarcloud-github-action@v2.3.0
