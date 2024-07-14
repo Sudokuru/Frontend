@@ -140,12 +140,12 @@ jobs:
         if: always()
         with:
           files: playwright-report/results.xml
-      - name: Upload code coverage
+      - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: CodeCoverageReport
-          path: playwright-coverage/*
+          name: PlaywrightTestResults
+          path: test-results/*
       - name: Coveralls
         if: always()
         uses: coverallsapp/github-action@v2
