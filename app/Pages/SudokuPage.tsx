@@ -1,8 +1,8 @@
 import React from "react";
 import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { sudokuStrategyArray } from "sudokuru";
+import { View } from "react-native";
 
 // startGame - https://www.npmjs.com/package/sudokuru#:~:text=sudokuru.Puzzles%3B-,Puzzles.startGame(),-Description%3A%20Returns%20puzzle
 
@@ -26,12 +26,10 @@ const SudokuPage = ({ route }: any) => {
   const { difficulty } = route.params;
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <SudokuBoard action={action} difficulty={difficulty} />
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <>
+      <SudokuBoard action={action} difficulty={difficulty} />
+      <StatusBar style="auto" />
+    </>
   );
 };
 

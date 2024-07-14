@@ -1,6 +1,7 @@
 .idea/
 .dccache
 node_modules/
+android
 coverage/
 jest-coverage/
 .nyc_output/

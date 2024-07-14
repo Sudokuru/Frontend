@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 const Drill = (props: any) => {
@@ -14,21 +13,17 @@ const Drill = (props: any) => {
   const navigation: any = useNavigation();
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <View style={homeScreenStyles.home}>
-          <View style={styles.statisticsTitle}>
-            {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-            {/* <SudokuBoard
-              gameType={"StartDrill"}
-              strategies={strategy}
-              navigation={navigation}
-            /> */}
-            <StatusBar style="auto" />
-          </View>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <View style={homeScreenStyles.home}>
+      <View style={styles.statisticsTitle}>
+        {/* The game now required the info about it to be rendered, which is given in generateGame() */}
+        {/* <SudokuBoard
+          gameType={"StartDrill"}
+          strategies={strategy}
+          navigation={navigation}
+        /> */}
+        <StatusBar style="auto" />
+      </View>
+    </View>
   );
 };
 
