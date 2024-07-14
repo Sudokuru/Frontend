@@ -66,8 +66,14 @@ export default defineConfig({
           // exclude the generated javascript files that are storing puzzle data
           sourceFilter: (sourcePath: string) =>
             sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
-          lcov: true,
-          reports: ["v8", "console-summary", "html"],
+          reports: [
+            "v8",
+            "v8-json",
+            "console-summary",
+            "html",
+            "codecov",
+            "codacy",
+          ],
         },
       },
     ],
