@@ -11,6 +11,7 @@ import {
 } from "../Functions/WindowDimensions";
 import { Puzzles } from "../Api/Puzzles";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
+import DifficultyPanel from "../Components/Home/DifficultyPanel";
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
@@ -18,6 +19,7 @@ const PlayPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
   const newSize = minWindowSize / 25;
+  const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const theme = useTheme();
 
@@ -123,6 +125,11 @@ const PlayPage = () => {
               >
                 Start Puzzle
               </Button>
+              <View style={{ alignItems: "center", alignSelf: "center" }}>
+                <View style={{ padding: reSize / 4 }}>
+                  <DifficultyPanel width={windowSize.width} />
+                </View>
+              </View>
             </View>
           </View>
         </View>
