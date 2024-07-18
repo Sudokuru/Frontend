@@ -1,18 +1,10 @@
 import React from "react";
-import { Profile } from "../Api/Profile";
 import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
 import { profile } from "../Api/Puzzle.Types";
-
-export const returnDefaultPreviewMode = () => {
-  if (process.env.EXPO_PUBLIC_ENVIRONMENT === "dev") {
-    return true;
-  } else {
-    return false;
-  }
-};
+import { Profile, returnDefaultPreviewMode } from "../Api/Profile";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -24,7 +16,7 @@ const InitializeContext = () => {
   const [highlightRowSetting, setHighlightRow] = React.useState(true);
   const [highlightColumnSetting, setHighlightColumn] = React.useState(true);
 
-  const [previewModeSetting, setPreviewMode] = React.useState(
+  const [featurePreviewSetting, setFeaturePreview] = React.useState(
     returnDefaultPreviewMode()
   );
 
@@ -36,7 +28,7 @@ const InitializeContext = () => {
       setHighlightBox(data.highlightBox);
       setHighlightRow(data.highlightRow);
       setHighlightColumn(data.highlightColumn);
-      setPreviewMode(data.previewMode);
+      setFeaturePreview(data.previewMode);
     });
   }, []);
 
@@ -81,10 +73,10 @@ const InitializeContext = () => {
     return setHighlightColumn(!highlightColumnSetting);
   }, [highlightColumnSetting]);
 
-  const togglePreviewMode = React.useCallback(() => {
+  const toggleFeaturePreview = React.useCallback(() => {
     Profile.setProfileValue("previewMode");
-    return setPreviewMode(!previewModeSetting);
-  }, [previewModeSetting]);
+    return setFeaturePreview(!featurePreviewSetting);
+  }, [featurePreviewSetting]);
 
   const preferences = React.useMemo(
     () => ({
@@ -102,8 +94,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
-      togglePreviewMode,
-      previewModeSetting,
+      toggleFeaturePreview,
+      featurePreviewSetting,
     }),
     [
       toggleTheme,
@@ -120,8 +112,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
-      togglePreviewMode,
-      previewModeSetting,
+      toggleFeaturePreview,
+      featurePreviewSetting,
     ]
   );
 

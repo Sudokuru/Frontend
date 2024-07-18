@@ -1,6 +1,13 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
-import { returnDefaultPreviewMode } from "../Contexts/InitializeContext";
+
+export const returnDefaultPreviewMode = () => {
+  if (process.env.EXPO_PUBLIC_ENVIRONMENT === "dev") {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 type profileValue =
   | "theme"

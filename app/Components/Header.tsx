@@ -1,22 +1,31 @@
 import React from "react";
 import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
-import { Image, Pressable, View } from "react-native";
+import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { IconButton } from "react-native-paper";
+import { IconButton, Text, useTheme } from "react-native-paper";
 
 const Header = () => {
   const navigation: any = useNavigation();
+  const theme = useTheme();
 
-  const { darkThemeSetting, currentPage, updateCurrentPage } =
-    React.useContext(PreferencesContext);
+  const {
+    darkThemeSetting,
+    currentPage,
+    updateCurrentPage,
+    featurePreviewSetting,
+  } = React.useContext(PreferencesContext);
+
+  const size = useWindowDimensions();
+  const minSize = Math.min(size.width, size.height);
+  const featurePreviewText = minSize >= 500 ? "Feature Preview" : "FP";
 
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
 
-  let logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
+  const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
 
   return (
     <View
@@ -70,6 +79,20 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
+        {featurePreviewSetting ? (
+          <View style={{ alignSelf: "center" }}>
+            <Text
+              style={{
+                color: theme.colors.primary,
+                fontWeight: "bold",
+              }}
+            >
+              {featurePreviewText}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
         {currentPage == "No" ? (
           <></>
         ) : currentPage == "Statistics" ? (
