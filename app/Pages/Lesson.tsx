@@ -129,7 +129,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   return (
     <ScrollView>
-      <SafeAreaView
+      <View
         style={{
           height: "100%",
           width: "100%",
@@ -188,7 +188,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             hideLearnHelp();
           }}
         />
-      </SafeAreaView>
+      </View>
     </ScrollView>
   );
 };

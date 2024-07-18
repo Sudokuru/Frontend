@@ -26,12 +26,10 @@ const SudokuPage = ({ route }: any) => {
   const { difficulty } = route.params;
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <SudokuBoard action={action} difficulty={difficulty} />
-        <StatusBar style="auto" />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <>
+      <SudokuBoard action={action} difficulty={difficulty} />
+      <StatusBar style="auto" />
+    </>
   );
 };
 
