@@ -7,9 +7,85 @@
       "Users can now select multiple Sudoku cells using hotkeys.",
       "Shift select and control select (meta select on mac) are supported.",
       "Users can insert notes into all selected cells.",
-      "Users can move the selection box using arrow keys or wasd keys"
+      "Users can move the selection box using arrow keys or wasd keys."
     ],
     "targets": ["web", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+
+  {
+    "version": "v0.3.0",
+    "date": "March 1st, 2023",
+    "summary": "Adding a landing page for Sudokuru.",
+    "features": [
+      "The user now must log in before being able to access the rest of the site.",
+      "Toggle theme between light/dark mode is now in prototype",
+      "Landing page includes Sudokuru logo and welcome text"
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["DahliaL", "Thomas-Gallant"]
+  },
+  {
+    "version": "v0.2.1",
+    "date": "March 1st, 2023",
+    "summary": "The Sudoku board now resizes to fit the screen.",
+    "features": ["The Sudoku board now resizes to fit the screen."],
+    "bug fixes": [
+      "The number buttons for the board are now horizontal instead of vertical."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["denielcosentino", "Thomas-Gallant"]
+  },
+  {
+    "version": "v0.2.0",
+    "date": "Feburary 25th, 2023",
+    "summary": "Implementing initial Sudoku Board",
+    "features": ["A Sudoku board is now useable on the Home page"],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore", "danielcosentino"]
+  },
+  {
+    "version": "v0.1.3",
+    "date": "Feburary 24th, 2023",
+    "summary": "Login state is preserved across refreshes / browser restarts for 10 hours.",
+    "features": [
+      "Users can now stay logged in through their browser for 10 hours at a time before being asked to log in again."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.1.2",
+    "date": "Feburary 22nd, 2023",
+    "summary": "Implemented logout functionality for mobile.",
+    "features": ["Implemented logout functionality for mobile."],
+    "targets": ["mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.1.1",
+    "date": "Feburary 22nd, 2023",
+    "summary": "Implemented logout functionality for web.",
+    "features": ["Implemented logout functionality for web."],
+    "targets": ["web"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.1.0",
+    "date": "January 27th, 2023",
+    "summary": "Setting up initial layout and navigation for the site.",
+    "features": [
+      "Created side navigation bar with placeholder pages.",
+      "Created header with buttons for statistics page, profile page, and login."
+    ],
+    "targets": ["web"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.0.1",
+    "date": "December 12th, 2022",
+    "summary": "Setting up initial login for the site.",
+    "targets": ["web"],
     "contributors": ["Thomas-Gallant"]
   }
 ]
