@@ -61,6 +61,16 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
+        icon={"note-text"}
+        testID="ReleaseNotes"
+        label="Release Notes"
+        active={currentPage === "ReleaseNotes"}
+        onPress={() => {
+          updateCurrentPage("ReleaseNotes");
+          navigation.navigate("ReleaseNotes");
+        }}
+      />
+      <Drawer.Item
         icon={"email"}
         testID="ContactButton"
         label="Contact"

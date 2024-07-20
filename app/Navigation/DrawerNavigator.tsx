@@ -12,6 +12,7 @@ import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
 import { useTheme } from "react-native-paper";
 import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import ReleaseNotesNavigator from "./StackNavigators/ReleaseNotesStackNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -49,6 +50,10 @@ const DrawerNavigator = () => {
             component={StatisticsStackNavigator}
           />
           <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
+          <Drawer.Screen
+            name="ReleaseNotes"
+            component={ReleaseNotesNavigator}
+          />
           <Drawer.Screen name="Contact" component={ContactStackNavigator} />
         </Drawer.Navigator>
       </SafeAreaView>
