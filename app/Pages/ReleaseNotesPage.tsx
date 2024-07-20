@@ -14,6 +14,12 @@ const ReleaseNotesPage = () => {
   const copy = `- Render this 
      - render that
      - render hat
+
+     **bold**
+
+     - banana
+
+     **bold** tow haha
     `;
   const MarkdownWrapper: React.FC<any> = ({ children }) => {
     const { colors } = useTheme();
@@ -26,7 +32,7 @@ const ReleaseNotesPage = () => {
 
   return (
     <ScrollView>
-      <MarkdownWrapper>{copy}</MarkdownWrapper>
+      <MarkdownWrapper>{releasenotes}</MarkdownWrapper>
     </ScrollView>
   );
 };
