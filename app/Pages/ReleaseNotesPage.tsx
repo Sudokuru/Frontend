@@ -3,13 +3,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import Markdown from "react-native-markdown-display";
 import { useTheme } from "react-native-paper";
 
+import json from "../../Changelog.json";
+
 const ReleaseNotesPage = () => {
-  // const copy = `# h1 Heading 8-)
-
-  //  **This is some bold text!**
-
-  // This is normal text
-  // `;
+  console.log(json);
 
   const copy = `- Render this 
      - render that
@@ -32,7 +29,7 @@ const ReleaseNotesPage = () => {
 
   return (
     <ScrollView>
-      <MarkdownWrapper>{releasenotes}</MarkdownWrapper>
+      <MarkdownWrapper>{copy}</MarkdownWrapper>
     </ScrollView>
   );
 };
