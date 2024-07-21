@@ -14,6 +14,324 @@
   },
 
   {
+    "version": "v0.24.1",
+    "date": "April 11th, 2023",
+    "summary": "Updated the sudoku end game screen.",
+    "features": [
+      "The sudoku end game screen now displays statistics in the same style and format as the statistics page.",
+      "The user's learned lessons are now displayed in the profile page instead of the statistics page."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.24.0",
+    "date": "April 11th, 2023",
+    "summary": "Replacing the lesson carousel with lesson button panel.",
+    "features": [
+      "Replacing the lesson carousel with lesson button panel.",
+      "Lessons are now locked until the user complets the previous lesson."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.23.2",
+    "date": "April 10th, 2023",
+    "summary": "Removing the 'r' letter that was rendering in the home page.",
+    "bug fixes": [
+      "Removing the 'r' letter that was rendering in the home page."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.23.1",
+    "date": "April 10th, 2023",
+    "summary": "Improving readability of learned lessons in statistics page.",
+    "bug fixes": [
+      "Learned lessons in statistics page no longer have underscores in the name when displayed to the user."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.23.0",
+    "date": "April 10th, 2023",
+    "summary": "Added lesson tracking.",
+    "features": [
+      "User's learned lessons show up in Statistics page.",
+      "New button in statistics page for users to reset their statistics.",
+      "Lessons now have a button to press for the user to declare they have completed the lesson.",
+      "Drill and Play modes now throw an alert if required lessons have not been completed.",
+      "Drill buttons in drill drawer only are visible if the user has completed the associated lesson.",
+      "Missing lessons are added to the lesson carousel."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.22.1",
+    "date": "April 10th, 2023",
+    "summary": "Fixing issue with loading in lessons.",
+    "features": [
+      "Lesson pages now have a loading screen when loading in lessons remotely."
+    ],
+    "bug fixes": ["Fixing error when loading in lessons."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.22.0",
+    "date": "April 9th, 2023",
+    "summary": "Once a game is finished, an alert box shows the user their statistics for that game.",
+    "features": [
+      "Once a game is finished, an alert box shows the user their statistics for that game."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.21.5",
+    "date": "April 9th, 2023",
+    "summary": "Adding hint name and hint description when the user asks for a hint.",
+    "features": [
+      "Adding hint name and hint description when the user asks for a hint.",
+      "Hint arrow navigation is moved from the sides of the board to below the Sudoku board."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.21.4",
+    "date": "April 8th, 2023",
+    "summary": "Fixed issues with drill mode.",
+    "bug fixes": [
+      "Drill mode get hint functionality works again.",
+      "Drill mode now displays visually if a value is incorrect like in play mode."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.21.3",
+    "date": "April 8th, 2023",
+    "summary": "Fixing issue where keyboard could no longer be used to input notes.",
+    "bug fixes": [
+      "Fixing issue where keyboard could no longer be used to input notes."
+    ],
+    "targets": ["web"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.21.2",
+    "date": "April 3rd, 2023",
+    "summary": "Fixing issue with drill games",
+    "bug fixes": ["Fixing issue with drill games"],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.21.1",
+    "date": "April 3rd, 2023",
+    "summary": "Changes to Lesson pages.",
+    "features": [
+      "On mobile, navigation buttons for lessons are now at the bottom of the screen.",
+      "The right arrow changes to a checkmark at the end of a lesson, which navigates the user to the home page.",
+      "The landing page will automatically take the user to the Amend Notes lesson"
+    ],
+    "bug fixes": ["Improving sizing of lesson page content."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Mink234"]
+  },
+  {
+    "version": "v0.21.0",
+    "date": "April 2nd, 2023",
+    "summary": "Implementing light mode theme that can be toggled on in settings.",
+    "features": [
+      "Implementing light mode theme that can be toggled on in settings."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.20.4",
+    "date": "March 20th, 2023",
+    "summary": "Improving content sizing.",
+    "features": [
+      "Sudoku board action button sizes are now larger and therefore easier to use.",
+      "Lesson right navigation button is removed at the end of the lesson.",
+      "Lesson left navigation button is removed at the beginning of the lesson."
+    ],
+    "bug fixes": ["Lesson text is now larger on mobile"],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.20.3",
+    "date": "March 30th, 2023",
+    "summary": "Improving functionality of amend notes hint.",
+    "features": ["Board amend notes now amends incorrect notes."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.20.2",
+    "date": "March 29th, 2023",
+    "summary": "User is no longer able to enter hint mode if there is an incorrect cell on the board.",
+    "bug fixes": [
+      "User is no longer able to enter hint mode if there is an incorrect cell on the board."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.20.1",
+    "date": "March 29th, 2023",
+    "summary": "Fixing a bug which caused drills to stop working.",
+    "bug fixes": ["Fixing a bug which caused drills to stop working."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.20.0",
+    "date": "March 29th, 2023",
+    "summary": "Statistics are now displayed on Statistics page after the user completes a game.",
+    "features": [
+      "Statistics are now displayed on Statistics page after the user completes a game."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore", "Thomas-Gallant"]
+  },
+  {
+    "version": "v0.19.4",
+    "date": "March 29th, 2023",
+    "summary": "Improving Sudoku lessons.",
+    "features": [
+      "Updating the lesson carousel options to match the lessons we have created.",
+      "Creating a help popup for the lessons explaining the navigation."
+    ],
+    "bug fixes": [
+      "Improving the content sizing for web and mobile based on screen size"
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant", "Gregory711"]
+  },
+  {
+    "version": "v0.19.3",
+    "date": "March 29th, 2023",
+    "summary": "User cannot interact with the Sudoku board while in hint mode.",
+    "bug fixes": [
+      "User cannot interact with the Sudoku board while in hint mode.",
+      "Erase, notes, and undo buttons are not toggleable.",
+      "Any existing highlighting is cleared and user cannot select cells on the board."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.19.2",
+    "date": "March 28th, 2023",
+    "summary": "Drills no longer save state of previous drill sessions.",
+    "bug fixes": ["Drills no longer save state of previous drill sessions."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Mink234"]
+  },
+  {
+    "version": "v0.19.1",
+    "date": "March 28th, 2023",
+    "summary": "Assorted bug fixes.",
+    "bug fixes": [
+      "Fixed rendering update issues with login / logout buttons and resume game button.",
+      "Fixed issue where identical value highlights that also were invalid cells were rendering as identical values and not invalid values (green highlight instead of red highlight)"
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.19.0",
+    "date": "March 28th, 2023",
+    "summary": "User's selected difficulty is now passed into play game.",
+    "features": [
+      "The user's selected difficulty is now taken into account when playing a game."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.18.0",
+    "date": "March 28th, 2023",
+    "summary": "Adding drill submit button to verify if user has completed drill correctly.",
+    "features": [
+      "Adding drill submit button to verify if user has completed drill correctly."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.17.5",
+    "date": "March 28th, 2023",
+    "summary": "The puzzle now displays to the user when they have an incorrect value in a cell.",
+    "bug fixes": [
+      "The puzzle now displays to the user when they have an incorrect value in a cell.",
+      "Previously, it was only displayed to the user if there were two equal values on the same row / column / box."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.17.4",
+    "date": "March 28th, 2023",
+    "summary": "Resumed games now start the timer from the saved time value instead of 0",
+    "bug fixes": [
+      "Resumed games now start the timer from the saved time value instead of 0"
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.17.3",
+    "date": "March 28th, 2023",
+    "summary": "Additional information is now saved with active games.",
+    "features": [
+      "The puzzle current time used is now stored with the active game.",
+      "The number of hints used is now stored with the active game.",
+      "The number of wrong cells played is now stored with the active game."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.17.2",
+    "date": "March 27th, 2023",
+    "summary": "Difficulty slider now shows user the numerical difficulty.",
+    "features": [
+      "Difficulty slider now shows user the numerical difficulty.",
+      "The statistics page now has placeholder charts."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["DahliaL"]
+  },
+  {
+    "version": "v0.17.1",
+    "date": "March 27th, 2023",
+    "summary": "Bug fixes with the lessons pages.",
+    "bug fixes": [
+      "Fixing the left / right arrows for lessons so they do not go out of bounds.",
+      "Lesson content fits better on mobile devices."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Mink234", "Thomas-Gallant"]
+  },
+  {
+    "version": "v0.17.0",
+    "date": "March 27th, 2023",
+    "summary": "Hint functionality implemented for hidden set strategies.",
+    "features": ["Hint functionality implemented for hidden set strategies."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
     "version": "v0.16.4",
     "date": "March 26th, 2023",
     "summary": "Fixed bug with hint highlighting.",
@@ -347,7 +665,7 @@
       "Sudoku board action icons are now white instead of black on the green background, making them more visible."
     ],
     "targets": ["web", "mobile"],
-    "contributors": ["danielcosenino"]
+    "contributors": ["danielcosentino"]
   },
   {
     "version": "v0.4.7",
