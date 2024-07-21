@@ -14,6 +14,182 @@
   },
 
   {
+    "version": "v0.16.4",
+    "date": "March 26th, 2023",
+    "summary": "Fixed bug with hint highlighting.",
+    "bug fixes": ["Fixed bug with hint highlighting."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.16.3",
+    "date": "March 26th, 2023",
+    "summary": "Game no longer saves all user's moves and only latest move. This fixes issue where game data was too large to be processed.",
+    "bug fixes": [
+      "Game no longer saves all user's moves and only latest move. This fixes issue where game data was too large to be processed."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.16.2",
+    "date": "March 26th, 2023",
+    "summary": "Removed drills and lessons for strategies that are no longer planned to be implemented.",
+    "bug fixes": [
+      "Removed drills and lessons for strategies that are no longer planned to be implemented."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.16.1",
+    "date": "March 26th, 2023",
+    "summary": "Fixed bug with sudoku game that prevented navigation to home page after game completion.",
+    "bug fixes": [
+      "Fixed bug with sudoku game that prevented navigation to home page after game completion."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.16.0",
+    "date": "March 26th, 2023",
+    "summary": "Hint functionality implemented for naked set strategies.",
+    "features": ["Hint functionality implemented for naked set strategies."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.15.0",
+    "date": "March 26th, 2023",
+    "summary": "Hint functionality implemented for simplify notes strategy.",
+    "features": ["Hint functionality implemented for simplify notes strategy."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.14.0",
+    "date": "March 26th, 2023",
+    "summary": "Hint functionality implemented for amend notes strategy.",
+    "features": ["Hint functionality implemented for amend notes strategy."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.13.4",
+    "date": "March 25th, 2023",
+    "summary": "Fixed bugs related to hint functionality for drill and play modes.",
+    "bug fixes": [
+      "Fixed bugs related to hint functionality for drill and play modes."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.13.3",
+    "date": "March 25th, 2023",
+    "summary": "Removing back button from drill sidebar and any site errors results in navigation to Home page.",
+    "features": [
+      "Removed back button from drill sidebar. (The Sudokuru logo acts as a home button and therefore the back button is unnecessary.)"
+    ],
+    "bug fixes": [
+      "When game ends or there is a failure in the site, the user is navigated to the Home page instead of rendering a white screen."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.13.2",
+    "date": "March 25th, 2023",
+    "summary": "Fixing drill mode on mobile.",
+    "bug fixes": ["Fixing drill mode on mobile."],
+    "targets": ["mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.13.1",
+    "date": "March 25th, 2023",
+    "summary": "Fixing start game and resume game on mobile.",
+    "bug fixes": ["Fixing start game and resume game on mobile."],
+    "targets": ["mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.13.0",
+    "date": "March 25th, 2023",
+    "summary": "Hint functionality implemented for naked single strategy.",
+    "features": ["Hint functionality implemented for naked single strategy."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.12.2",
+    "date": "March 25th, 2023",
+    "summary": "Fixes issue with resume game button render location.",
+    "bug fixes": ["Fixes issue with resume game button render location."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.12.1",
+    "date": "March 25th, 2023",
+    "summary": "Home page content resizes based on the screen size.",
+    "bug fixes": ["Home page content resizes based on the screen size."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.12.0",
+    "date": "March 24th, 2023",
+    "summary": "Hint functionality implemented for hidden single strategy.",
+    "features": ["Hint functionality implemented for hidden single strategy."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Gregory711"]
+  },
+  {
+    "version": "v0.11.0",
+    "date": "March 24th, 2023",
+    "summary": "Adding end game functionality.",
+    "features": [
+      "When a user completes a game, they are sent back to the home screen and the game is completed."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.10.0",
+    "date": "March 24th, 2023",
+    "summary": "Lesson pages are now added.",
+    "features": [
+      "Lesson pages can now be accessed from the lesson carousel.",
+      "Arrow buttons on lesson page can be used to navigate the lessons."
+    ],
+    "bug fixes": ["Fixed the back button on the Drill sidebar."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Mink234", "Gregory711"]
+  },
+  {
+    "version": "v0.9.3",
+    "date": "March 23rd, 2023",
+    "summary": "Fixing bug with previously inserted values not being updatable when resuming a game.",
+    "bug fixes": [
+      "Fixing bug with previously inserted values not being updatable when resuming a game."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.9.2",
+    "date": "March 23rd, 2023",
+    "summary": "Enhancements to the Home page.",
+    "features": [
+      "Adding titles for Drills, Lessons, and Play areas on home page.",
+      "Created help buttons with pop-ups explaining each of the home page options."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "v0.9.1",
     "date": "March 22nd, 2023",
     "summary": "Fixed an issue with resume game button rendering on mobile.",
