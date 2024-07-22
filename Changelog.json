@@ -14,6 +14,340 @@
   },
 
   {
+    "version": "v1.0.0",
+    "date": "April 17th, 2023",
+    "summary": "Adjusting difficulty and strategy algorithm for retrieving puzzles",
+    "bug fixes": [
+      "Adjusting difficulty and strategy algorithm for retrieving puzzles"
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v0.34.9",
+    "date": "April 17th, 2023",
+    "summary": "Adding back selected font for Sudoku board.",
+    "bug fixes": ["Adding back selected for for Sudoku board."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.8",
+    "date": "April 17th, 2023",
+    "summary": "Restoring amend note and simplify note hint functionality.",
+    "bug fixes": ["Restoring amend note and simplify note hint functionality."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.7",
+    "date": "April 16th, 2023",
+    "summary": "Fixing issue with a user's retrieved game not based on the user's learned games.",
+    "bug fixes": [
+      "When a user requests a new game, their learned lessons are now taken into account."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.6",
+    "date": "April 15th, 2023",
+    "summary": "Fixing issues with profile page.",
+    "bug fixes": [
+      "Fixing issue with profile page occasionally crashing.",
+      "Fixing issue where user's profile settings are stored in memory even if they log out of the site."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.5",
+    "date": "April 14th, 2023",
+    "summary": "Fixing issue with hint text not being the correct color.",
+    "bug fixes": ["Fixing issue with hint text not being the correct color."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.4",
+    "date": "April 14th, 2023",
+    "summary": "Fixing issue with pointing set not rendering title correctly on lesson.",
+    "bug fixes": [
+      "Fixing issue with pointing set not rendering title correctly on lesson."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v0.34.3",
+    "date": "April 14th, 2023",
+    "summary": "Fixing issue with drill drawer navigation being partially inaccessible on mobile.",
+    "bug fixes": [
+      "Fixing issue with drill drawer navigation being partially inaccessible on mobile."
+    ],
+    "targets": ["mobile"],
+    "contributors": ["Mink234"]
+  },
+  {
+    "version": "v0.34.2",
+    "date": "April 14th, 2023",
+    "summary": "Implementing fix for cell being outlined when selected.",
+    "bug fixes": ["Implementing fix for cell being outlined when selected."],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.34.1",
+    "date": "April 14th, 2023",
+    "summary": "Adding tab name, tab icon, and app icon.",
+    "features": [
+      "Adding tab name to website 'Sudokuru'.",
+      "Adding tab icon to the website.",
+      "Adding icon for the mobile app."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.34.0",
+    "date": "April 14th, 2023",
+    "summary": "Greatly improving light mode theme for site.",
+    "features": [
+      "Light mode now renders a different color logo.",
+      "Light mode colors are more appealing.",
+      "Much of the content is modified to use theme colors instead of hardcoded colors."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.33.10",
+    "date": "April 14th, 2023",
+    "summary": "Lesson panel buttons now restructure into rows based on screen size.",
+    "bug fixes": [
+      "Lesson panel buttons now restructure into rows based on screen size."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "Thomas-Gallant"]
+  },
+  {
+    "version": "v0.33.9",
+    "date": "April 14th, 2023",
+    "summary": "Fixing bug with pointing set.",
+    "bug fixes": ["Fixing bug with pointing set."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v0.33.8",
+    "date": "April 14th, 2023",
+    "summary": "Fixing bug with highlighting for pointing pair hints.",
+    "bug fixes": ["Fixing bug with highlighting for pointing pair hints."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.33.7",
+    "date": "April 13th, 2023",
+    "summary": "Improving dynamic sizing of landing page based on screen size.",
+    "bug fixes": [
+      "Improving dynamic sizing of landing page based on screen size."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.33.6",
+    "date": "April 13th, 2023",
+    "summary": "Fixing bug with topbar color on landing page with mobile.",
+    "bug fixes": [
+      "Topbar on landing page for mobile should no longer render as white."
+    ],
+    "targets": ["mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.33.5",
+    "date": "April 13th, 2023",
+    "summary": "Enhancements with lesson page.",
+    "features": [
+      "Loading text is replaced with loading indicator symbol for the lesson panel."
+    ],
+    "bug fixes": ["Lesson buttons now support any size lesson name."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.33.4",
+    "date": "April 14th, 2023",
+    "summary": "Enhancing time to support days, hours, minutes and seconds.",
+    "features": [
+      "Timer and statistics time reporting now supports hours and days."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.33.3",
+    "date": "April 14th, 2023",
+    "summary": "Disabling ability for user to learn a lesson more than once.",
+    "bug fixes": [
+      "Profile page only shows user learning a lesson once even if the lesson is completed multiple times."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.33.2",
+    "date": "April 13th, 2023",
+    "summary": "User is now automatically redirected to lessons if they have not completed the first 4 lessons.",
+    "features": [
+      "User is now automatically redirected to lessons if they have not completed the first 4 lessons."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v0.33.1",
+    "date": "April 13th, 2023",
+    "summary": "Adding warning for user to confirm deleting statistics with the 'delete statistics' button",
+    "features": [
+      "Adding warning for user to confirm deleting statistics with the 'delete statistics' button",
+      "Making background for all alerts more transparent."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["DahliaL"]
+  },
+  {
+    "version": "v0.33.0",
+    "date": "April 12th, 2023",
+    "summary": "Implementing pointing pair and pointing triplet hints.",
+    "features": ["Implementing pointing pair and pointing triplet hints."],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore", "Gregory711"]
+  },
+  {
+    "version": "v0.32.0",
+    "date": "April 12th, 2023",
+    "summary": "Pressing the pause button now navigates the user to the home page.",
+    "features": [
+      "Pressing the pause button now navigates the user to the home page."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.31.2",
+    "date": "April 12th, 2023",
+    "summary": "Polishing the header navigation buttons.",
+    "features": [
+      "Updating the size and spacing of the header navigation buttons."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["DahliaL"]
+  },
+  {
+    "version": "v0.31.1",
+    "date": "April 12th, 2023",
+    "summary": "Fixing bug with notes and value rendering on mobile",
+    "bug fixes": [
+      "Rendering of values on mobile is now aligned.",
+      "Note rendering on mobile no longer cuts off the numbers."
+    ],
+    "targets": ["mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.31.0",
+    "date": "April 12th, 2023",
+    "summary": "Enhancing the home page.",
+    "features": [
+      "The alert modals on the home page are updated to have more accurate help messages.",
+      "The play and drill sections on the home page are displayed as 'locked' until the user has completed enough lessons to access them",
+      "The 'do more lessons' alert modal is removed as it is no longer needed due to adding the conditional locks on play and drill sections."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.30.0",
+    "date": "April 12th, 2023",
+    "summary": "Redesign of the landing page for web and mobile.",
+    "features": ["Redesign of the landing page for web and mobile."],
+    "targets": ["web", "mobile"],
+    "contributors": ["salmoncore"]
+  },
+  {
+    "version": "v0.29.0",
+    "date": "April 11th, 2023",
+    "summary": "Adding landing page sudoku board which auto plays solving a puzzle.",
+    "features": [
+      "Adding landing page sudoku board which auto plays solving a puzzle."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino", "salmoncore"]
+  },
+  {
+    "version": "v0.28.0",
+    "date": "April 11th, 2023",
+    "summary": "Adding pointing set drills and updating logic for when user can play games and drills.",
+    "features": [
+      "Adding pointing set drills.",
+      "Updating logic for when user can play games and drills."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v0.27.1",
+    "date": "April 11th, 2023",
+    "summary": "Adjusting lesson page completion method.",
+    "features": [
+      "The 'complete lesson' button has been removed.",
+      "The right check button at the end of the lesson now automatically completes the lesson for the user."
+    ],
+    "bug fixes": ["Fixed issue with desync with lesson rendering."],
+    "targets": ["web", "mobile"],
+    "contributors": ["danielcosentino"]
+  },
+  {
+    "version": "v0.27.0",
+    "date": "April 11th, 2023",
+    "summary": "Updating profile page and adding new settings.",
+    "features": [
+      "Added a profile setting for whether identical values should be highlighted on the board.",
+      "Added a profile setting for whether the box of the selected cell should be highlighted on the board.",
+      "Added a profile setting for whether the row of the selected cell should be highlighted on the board.",
+      "Added a profile setting for whether the column of the selected cell should be highlighted on the board.",
+      "Enhanced the visual display of the profile page."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v0.26.0",
+    "date": "April 11th, 2023",
+    "summary": "Updating profile page.",
+    "features": [
+      "Profile page formatting is updated.",
+      "Profile page now displays user's name and email."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["DahliaL"]
+  },
+  {
+    "version": "v0.25.0",
+    "date": "April 11th, 2023",
+    "summary": "Implementing total statistics tracking for sudoku games.",
+    "features": [
+      "Implementing total statistics tracking for sudoku games in statistics page.",
+      "Adding loading indicators for lessons, home, and statistics pages.",
+      "Statistics page is scrollable now on web and mobile."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "v0.24.1",
     "date": "April 11th, 2023",
     "summary": "Updated the sudoku end game screen.",
@@ -22,7 +356,7 @@
       "The user's learned lessons are now displayed in the profile page instead of the statistics page."
     ],
     "targets": ["web", "mobile"],
-    "contributors": ["Thomas-Gallant"]
+    "contributors": ["Thomas-Gallant", "salmoncore"]
   },
   {
     "version": "v0.24.0",
