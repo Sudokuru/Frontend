@@ -1,6 +1,16 @@
 [
   {
-    "version": "1.1.1",
+    "version": "1.21.1",
+    "date": "July 18th, 2024",
+    "summary": "Fixing issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
+    "bug fixes": [
+      "App no longer overlaps with phone icons at the top of the page."
+    ],
+    "targets": ["mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.21.0",
     "date": "July 13th, 2024",
     "summary": "This release adds the ability to select multiple cells at the same time for mass notes insertions.",
     "features": [
@@ -12,7 +22,332 @@
     "targets": ["web", "desktop"],
     "contributors": ["Thomas-Gallant"]
   },
-
+  {
+    "version": "v1.20.0",
+    "date": "July 4th, 2024",
+    "summary": "Adding additional difficulties for play game and regenerating puzzle library.",
+    "features": [
+      "Adding additional difficulties: protoge, professional, pundit, master, grandmaster.",
+      "Regenerated puzzle library with newly generated puzzles with updated difficulty thresholds."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.19.2",
+    "date": "April 30th, 2024",
+    "summary": "Sudoku board hotkeys now work when board is not selected.",
+    "bug fixes": [
+      "Sudoku board hotkeys now work when board is not selected. However, the board needs to have been selected at least once."
+    ],
+    "targets": ["web", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.19.1",
+    "date": "April 18th, 2024",
+    "summary": "Home navigation buttons no longer resize when hovered over. Instead they gain glowing boarders.",
+    "features": [
+      "Home navigation buttons no longer resize when hovered over. Instead they gain glowing boarders."
+    ],
+    "targets": ["web", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.19.0",
+    "date": "April 11th, 2024",
+    "summary": "Adding arrow key navigation for selected cell and additional hotkeys.",
+    "features": [
+      "Arrow keys and wasd (or WASD) keys can be used to move the selected cell in a Sudoku game.",
+      "'e' and 'E' are added to '0' as hotkeys for erasing a selected cell's contents.",
+      "'u', 'U' are added as hotkeys for undoing the latest move.",
+      "'p', 'P' are added as hotkeys for pausing the game.",
+      "'t', 'T', 'n', 'N', are added as hotkeys for toggling note mode."
+    ],
+    "targets": ["web", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.18.0",
+    "date": "April 7th, 2024",
+    "summary": "Greatly increasing the puzzle catalog and adding difficulty modes.",
+    "features": [
+      "Created new difficulties: amateur, layman, novice, and trainee.",
+      "Added ability to see the current difficulty level when playing a game.",
+      "Greatly increased the number of avaliable puzzles for users to play."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant", "Gregory711"]
+  },
+  {
+    "version": "v1.17.0",
+    "date": "March 23rd, 2024",
+    "summary": "Contact page is added to the site.",
+    "features": [
+      "Users have the ability to submit up to 1000 characters of feedback with the label of 'feature', 'bug', or 'other'"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.16.2",
+    "date": "March 3rd, 2024",
+    "summary": "Fixing issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed.",
+    "bug fixes": [
+      "Fixing issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.16.1",
+    "date": "Feburary 4th, 2024",
+    "summary": "Adding placeholder contact page.",
+    "features": ["A placeholder 'Contact Us' page is added."],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.16.0",
+    "date": "December 3rd, 2023",
+    "summary": "Rebuilding the Sudoku board logic from the ground up.",
+    "features": [
+      "Move history is now preserved through browser refreshes, and is stored on the user's device.",
+      "0 key can now be used to erase values or notes in a Sudoku cell",
+      "Users can now unselect the currently selected cell.",
+      "The end game modal is replaced with an end game screen.",
+      "Improving performance of the Sudoku board",
+      "Demo board and Drills are no longer functional and will be added back in a later release."
+    ],
+    "bug fixes": [
+      "Erase button is now disabled if a cell is not selected. User can no longer erase correct cells.",
+      "Erase button is disabled if cell is empty, a given value, or is correct.",
+      "Number pad buttons are disabled if selected cell is correct or if no cells are selected.",
+      "Incorrect cells are highlighted red even if no cells are selected.",
+      "Fixed a bug where timer would stop anytime the user would perform an action. A user spam clicking any action 'such as toggle notes button' would previously result in the pausing of the timer."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.15.1",
+    "date": "November 25th, 2023",
+    "summary": "Improving display for cards on small screens / window sizes.",
+    "bug fixes": [
+      "Improving display for cards on small screens / window sizes."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.15.0",
+    "date": "November 4th, 2023",
+    "summary": "Users now recieve a drill explanation when they enter a drill.",
+    "features": [
+      "Users now recieve a drill explanation when they enter a drill.",
+      "Users have the option to check a box if they do not want to see the explanation in the future."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.14.0",
+    "date": "October 28th, 2023",
+    "summary": "Restructuring lessons to only take up a single page.",
+    "features": [
+      "Lessons now only use a single page, with support for scrolling."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.13.0",
+    "date": "Octobre 22nd, 2023",
+    "summary": "Implementing desktop app support",
+    "features": ["Sudokuru can now be downloaded and played on desktop."],
+    "targets": ["desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.12.0",
+    "date": "October 21st, 2023",
+    "summary": "Enhancements to lesson card page.",
+    "features": [
+      "Lesson cards have indicators based on when they are completed.",
+      "User is presented with a popup warning if they want to learn a locked lesson. They can choose to ignore or heed this warning.",
+      "The styling for the learning cards has been updated."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.11.0",
+    "date": "October 15th, 2023",
+    "summary": "Lesson buttons are replaced with lesson cards.",
+    "features": [
+      "Lesson buttons are replaced with lesson cards.",
+      "Lesson cards display the difficulty of the lesson. (very easy, easy, intermediate, hard, very hard)",
+      "Lesson cards have indicators based on when they are locked."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.10.0",
+    "date": "October 8th, 2023",
+    "summary": "Drill buttons are replaced with drill cards.",
+    "features": [
+      "Drill buttons are replaced with drill cards.",
+      "Drill cards restructure based on the size of the screen."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "v1.9.0",
+    "date": "September 7th, 2023",
+    "summary": "Fixing bugs with sudoku games and home page.",
+    "features": [
+      "Home page is restructured so that navigation buttons are below the demo board.",
+      "Resizing of the home page content based on screen size is improved.",
+      "Navigation buttons increase in size when being hovered over by mouse."
+    ],
+    "bug fixes": [
+      "Resolving issue with scroll bar temporarily appearing on home page with first page render.",
+      "Removing elevation effect from home navigation buttons as that resulted in weird rendering on mobile devices.",
+      "Fixed issue where time spent playing and score showed as NaN in game results popup."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.8.2",
+    "date": "August 31st, 2023",
+    "summary": "Fixing bug with timer not starting on initial puzzle start.",
+    "bug fixes": [
+      "Fixing bug with timer not starting on initial puzzle start."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.8.1",
+    "date": "August 31st, 2023",
+    "summary": "Fixing bug with inputing values into Sudoku board",
+    "bug fixes": [
+      "Fixing an issue where the demo board was sharing state with the play board, causing inputs to the play board to be disabled when the demo board was in 'hint' mode."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.8.0",
+    "date": "August 27th, 2023",
+    "summary": "Restructuring drawer menu",
+    "features": [
+      "Navigation sidebar is now closed by default, and can be opened through the hamburger menu icon.",
+      "Navigation sidebar now has a close button for closing the sidebar.",
+      "Profile and Statistics buttons have been changed from buttons to icon buttons.",
+      "Theme colors have been adjusted slightly."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.7.0",
+    "date": "August 26th, 2023",
+    "summary": "Restructuring website.",
+    "features": [
+      "The landing page and the home page have been combined.",
+      "Learn, Drill, Home, and Play are now located on seperate pages.",
+      "Added a navigation bar on the left side of the page for navigating to these pages.",
+      "Home page now has buttons for navigating directly to Drill, Learn, and Play pages.",
+      "The drill navigation panel is replaced with buttons on the Drill page.",
+      "Removed the difficulty slider.",
+      "Sudoku games will now ignore the user's learned strategies when selecting puzzles to play."
+    ],
+    "bug fixes": [
+      "The page header always displays the profile and settings buttons."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.6.0",
+    "date": "August 20th, 2023",
+    "summary": "Profile and statistics page no longer require Internet connection.",
+    "features": [
+      "Profile page no longer requires an Internet connection. User's profile settings are stored on their device.",
+      "Statistics page no longer requires an Internet connection. User's profile settings are stored on their device."
+    ],
+    "bug fixes": [
+      "The 'highlight peers' profile setting is renamed to 'highlight identical values' to be more accurate."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.5.0",
+    "date": "August 19th, 2023",
+    "summary": "Sudoku games no longer rely on user needing Internet access.",
+    "features": [
+      "Staring a Sudoku game now retrieves a puzzle from the user's device instead of requring Internet access.",
+      "Games are saved locally on the user's device instead of requring an Internet connection to save games.",
+      "Resuming games no longer requires an Internet connection, as the games are stored on the user's device."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.4.0",
+    "date": "August 19th, 2023",
+    "summary": "User's lesson progress is stored locally on their device.",
+    "features": ["User's lesson progress is stored locally on their device."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.3.0",
+    "date": "August 19th, 2023",
+    "summary": "Login / Logout functionality is removed.",
+    "features": ["The user no longer needs to login to play Sudoku."],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.2.0",
+    "date": "August 19th, 2023",
+    "summary": "Removing dependency on online servers for drills and lessons.",
+    "features": [
+      "Drills are now stored locally on device, and no longer require an Internet connection to play.",
+      "Lessons are now stored locally on device, and no longer require an Internet connection to access."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.1.0",
+    "date": "June 13th, 2023",
+    "summary": "Assorted enhancements to drills, sudoku board rendering, and demo board.",
+    "features": [
+      "Loading icon now appears while waiting for a Sudoku puzzle to be loaded in.",
+      "Drill hint button no longer gives a hint, but instead resets the drill board if incorrect or navigates the user to the home page if correct.",
+      "The demo board now cycles to a new puzzle once finished with a puzzle and continues auto-playing."
+    ],
+    "targets": ["web", "mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "v1.0.1",
+    "date": "June 3rd, 2023",
+    "summary": "Fixing assorted issues with the login / logout process.",
+    "bug fixes": [
+      "Fixing issue with iOS login not working.",
+      "Fixing an issue on iOS and Android where logging out did not close the logout window."
+    ],
+    "targets": ["mobile"],
+    "contributors": ["Thomas-Gallant"]
+  },
   {
     "version": "v1.0.0",
     "date": "April 17th, 2023",
