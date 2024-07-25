@@ -69,7 +69,11 @@ const DifficultyPanel = (props: any) => {
     }
     let difficultyColor: string = getDifficultyColor(description);
     subArray.push(
-      <View key={difficulty} testID={difficulty} style={{ width: CARD_WIDTH }}>
+      <View
+        key={difficulty}
+        testID={difficulty}
+        style={{ width: (CARD_WIDTH * 3) / 5 }}
+      >
         <TouchableOpacity onPress={() => {}}>
           <Card mode="outlined">
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
