@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, ScrollView } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Alert from "react-native-awesome-alerts";
@@ -49,7 +49,7 @@ const PlayPage = () => {
   const hideResumeButton = () => setResumeVisible(false);
 
   return (
-    <View style={{ width: windowSize.width, height: windowSize.height }}>
+    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -151,7 +151,7 @@ const PlayPage = () => {
         }}
         overlayStyle={{ backgroundColor: "transparent" }}
       />
-    </View>
+    </ScrollView>
   );
 };
 
