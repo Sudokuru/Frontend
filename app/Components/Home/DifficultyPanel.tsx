@@ -29,7 +29,14 @@ let difficultyStars: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/5points.png"),
   require("../../../.assets/DifficultyStars/9points.png"),
   require("../../../.assets/DifficultyStars/24points.png"),
-];
+]; /* Sources:
+https://commons.wikimedia.org/wiki/File:Equilateral_Triangle_(PSF).png
+https://commons.wikimedia.org/wiki/File:Black_4_Point_Star.png
+https://commons.wikimedia.org/wiki/File:A_Black_Star.png
+https://commons.wikimedia.org/wiki/File:Ninestar.svg
+https://commons.wikimedia.org/wiki/File:24-pointed_star.svg
+Used 512px when available, otherwise full resolution
+*/
 
 const DifficultyPanel = (props: any) => {
   let difficultyButtonArray = [];
