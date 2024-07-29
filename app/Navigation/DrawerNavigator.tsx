@@ -43,12 +43,12 @@ const DrawerNavigator = () => {
             },
           }}
         >
+          <Drawer.Screen name="LandingPage" component={LandingPage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
           <Drawer.Screen name="SudokuPage" component={SudokuPage} />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
           <Drawer.Screen name="DrillGame" component={DrillGame} />
-          <Drawer.Screen name="LandingPage" component={LandingPage} />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           <Drawer.Screen name="Lesson" component={Lesson} />
           <Drawer.Screen name="ProfilePage" component={ProfilePage} />
