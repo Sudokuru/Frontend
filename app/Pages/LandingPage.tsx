@@ -59,17 +59,17 @@ const LandingPage = () => {
       >
         <NavigationButton
           image={START_LESSONS_LOGO}
-          navigationPage="Learn"
+          navigationPage="LearnPage"
           testID="HomeLearnButton"
         />
         <NavigationButton
           image={START_DRILLS_LOGO}
-          navigationPage="Drill"
+          navigationPage="DrillPage"
           testID="HomeDrillButton"
         />
         <NavigationButton
           image={PLAY_SUDOKU_LOGO}
-          navigationPage="Play"
+          navigationPage="PlayPage"
           testID="HomePlayButton"
         />
       </View>

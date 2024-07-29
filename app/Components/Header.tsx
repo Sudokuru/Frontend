@@ -22,7 +22,6 @@ const Header = () => {
     <View
       style={{
         flexDirection: "row",
-        margin: 5,
       }}
     >
       <IconButton
@@ -48,8 +47,8 @@ const Header = () => {
         ) : (
           <Pressable
             onPress={() => {
-              updateCurrentPage("Landing");
-              navigation.navigate("Landing");
+              updateCurrentPage("LandingPage");
+              navigation.navigate("LandingPage");
             }}
           >
             <Image
@@ -72,14 +71,14 @@ const Header = () => {
       >
         {currentPage == "No" ? (
           <></>
-        ) : currentPage == "Statistics" ? (
+        ) : currentPage == "StatisticsPage" ? (
           <HomeButton />
         ) : (
           <StatisticsButton />
         )}
         {currentPage == "No" ? (
           <></>
-        ) : currentPage == "Profile" ? (
+        ) : currentPage == "ProfilePage" ? (
           <HomeButton />
         ) : (
           <ProfileButton />

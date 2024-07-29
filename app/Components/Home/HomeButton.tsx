@@ -13,8 +13,8 @@ const HomeButton = () => {
       testID={"ViewHomePageButton"}
       size={20}
       onPress={() => {
-        updateCurrentPage("Landing");
-        navigation.navigate("Landing");
+        updateCurrentPage("LandingPage");
+        navigation.navigate("LandingPage");
       }}
     />
   );
