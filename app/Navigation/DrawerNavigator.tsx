@@ -41,6 +41,10 @@ const DrawerNavigator = () => {
             header: ({ navigation, route, options }) => {
               return <Header />;
             },
+            // https://reactnavigation.org/docs/drawer-navigator#specify-a-height-in-headerstyle
+            headerStyle: {
+              height: 48,
+            },
           }}
         >
           <Drawer.Screen name="LandingPage" component={LandingPage} />
