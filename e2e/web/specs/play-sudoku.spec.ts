@@ -68,7 +68,7 @@ test.describe("complete game", () => {
     const endGameModal = new EndGameModalComponent(resumeGame);
     await endGameModal.newGame.click();
     const header = new HeaderComponent(resumeGame);
-    await header.statistics.click(); // todo: stop using last (fix infinite stack)
+    await header.statistics.click();
     const statistics = new StatisticsPage(resumeGame);
     await statistics.statisticsPageIsRendered();
     await expect(statistics.page.getByText("Total Score: 24")).toBeInViewport({
