@@ -19,7 +19,7 @@ const Header = () => {
   const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
 
   const statisticsButton = (currentPage: string) => {
-    if (currentPage == "StatisticsPage") {
+    if (currentPage != "StatisticsPage") {
       return <StatisticsButton />;
     } else {
       return <HomeButton />;
@@ -27,7 +27,7 @@ const Header = () => {
   };
 
   const profileButton = (currentPage: string) => {
-    if (currentPage == "ProfilePage") {
+    if (currentPage != "ProfilePage") {
       return <ProfileButton />;
     } else {
       return <HomeButton />;
