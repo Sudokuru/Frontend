@@ -18,6 +18,22 @@ const Header = () => {
 
   const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
 
+  const statisticsButton = (currentPage: string) => {
+    if (currentPage == "StatisticsPage") {
+      return <StatisticsButton />;
+    } else {
+      return <HomeButton />;
+    }
+  };
+
+  const profileButton = (currentPage: string) => {
+    if (currentPage == "ProfilePage") {
+      return <ProfileButton />;
+    } else {
+      return <HomeButton />;
+    }
+  };
+
   return (
     <View
       style={{
@@ -58,20 +74,8 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
-        {currentPage == "No" ? (
-          <></>
-        ) : currentPage == "StatisticsPage" ? (
-          <HomeButton />
-        ) : (
-          <StatisticsButton />
-        )}
-        {currentPage == "No" ? (
-          <></>
-        ) : currentPage == "ProfilePage" ? (
-          <HomeButton />
-        ) : (
-          <ProfileButton />
-        )}
+        {statisticsButton(currentPage)}
+        {profileButton(currentPage)}
       </View>
     </View>
   );
