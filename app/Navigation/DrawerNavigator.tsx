@@ -42,9 +42,13 @@ const DrawerNavigator = () => {
               return <Header />;
             },
             // https://reactnavigation.org/docs/drawer-navigator#specify-a-height-in-headerstyle
-            headerStyle: {
-              height: 48,
-            },
+            // headerStyle: {
+            //   height: 64,
+            // },
+            // freezeOnBlur: false,
+            // lazy: true,
+            unmountOnBlur: true,
+            // turning unmountOnBlur means useHeaderHeight is never zero anymore... no idea why.
           }}
         >
           <Drawer.Screen name="LandingPage" component={LandingPage} />
