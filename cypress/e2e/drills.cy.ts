@@ -69,7 +69,7 @@ describe("naked single drills", () => {
     cy.contains("Delete Statistics").click();
     cy.get("[data-testid=awesome-alert-confirm-btn]").click();
     // Check then uncheck the checkbox to not show the tutorial again
-    cy.get(VIEW_HOME_PAGE_BUTTON).last().click();
+    cy.get(VIEW_HOME_PAGE_BUTTON).click();
     cy.get(HOME_DRILL_BUTTON).click();
     cy.contains("Naked Single").click();
     cy.get(DISMISS_DRILL_TUTORIAL_CHECKBOX).click();
