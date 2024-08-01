@@ -41,14 +41,9 @@ const DrawerNavigator = () => {
             header: ({ navigation, route, options }) => {
               return <Header />;
             },
-            // https://reactnavigation.org/docs/drawer-navigator#specify-a-height-in-headerstyle
-            // headerStyle: {
-            //   height: 64,
-            // },
-            // freezeOnBlur: false,
-            // lazy: true,
             unmountOnBlur: true,
             // turning unmountOnBlur means useHeaderHeight is never zero anymore... no idea why.
+            // also I believe it may have sped up the playwright test execution, which makes sense as less html to parse through.
           }}
         >
           <Drawer.Screen name="LandingPage" component={LandingPage} />

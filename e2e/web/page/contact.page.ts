@@ -26,7 +26,7 @@ export class ContactPage {
   }
 
   async inputCounterIsX(x: number) {
-    await expect(this.page.getByText(`${x}/1000`).last()).toBeInViewport({
+    await expect(this.page.getByText(`${x}/1000`)).toBeInViewport({
       ratio: 1,
     });
   }
@@ -59,6 +59,6 @@ export class ContactPage {
   }
 
   async closeAlert() {
-    await this.page.getByText("OK").last().click();
+    await this.page.getByText("OK").click();
   }
 }

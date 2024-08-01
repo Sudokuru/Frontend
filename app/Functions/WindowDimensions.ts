@@ -15,10 +15,10 @@ import {
 export const useMinWindowDimensions = (): number => {
   const size = useWindowDimensions();
   const headerHeightOld = useHeaderHeight();
-  const frame = useSafeAreaFrame();
-  const insets = useSafeAreaInsets();
-  const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
-  console.log("COMPARISON: ", headerHeightOld, headerHeight);
+  // const frame = useSafeAreaFrame();
+  // const insets = useSafeAreaInsets();
+  // const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
+  // console.log("COMPARISON: ", headerHeightOld, headerHeight);
   return Math.min(size.width, size.height - headerHeightOld);
 };
 
@@ -26,10 +26,10 @@ export function useNewWindowDimensions(): ScaledSize {
   const size = useWindowDimensions();
   const clone = JSON.parse(JSON.stringify(size));
   const headerHeightOld = useHeaderHeight();
-  const frame = useSafeAreaFrame();
-  const insets = useSafeAreaInsets();
-  const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
-  console.log("COMPARISON: ", headerHeightOld, headerHeight);
+  // const frame = useSafeAreaFrame();
+  // const insets = useSafeAreaInsets();
+  // const headerHeight = getDefaultHeaderHeight(frame, false, insets.top);
+  // console.log("COMPARISON: ", headerHeightOld, headerHeight);
   clone.height = size.height - headerHeightOld;
   return clone;
 }

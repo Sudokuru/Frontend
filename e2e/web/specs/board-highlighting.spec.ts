@@ -111,10 +111,10 @@ test.describe("board highlighting", () => {
 
   test("disable identical values", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.identicalValuesSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
@@ -142,10 +142,10 @@ test.describe("board highlighting", () => {
 
   test("disable box", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightBoxSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
@@ -171,10 +171,10 @@ test.describe("board highlighting", () => {
 
   test("disable rows", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightRowSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
@@ -200,10 +200,10 @@ test.describe("board highlighting", () => {
 
   test("disable column", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightColumnSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
@@ -229,12 +229,12 @@ test.describe("board highlighting", () => {
 
   test("disable all", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightColumnSwitchEnabled.click();
     await profilePage.highlightBoxSwitchEnabled.click();
     await profilePage.highlightRowSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
@@ -256,11 +256,11 @@ test.describe("board highlighting", () => {
 
   test("disable rows and columns", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightRowSwitchEnabled.click();
     await profilePage.highlightColumnSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(resumeGame);
