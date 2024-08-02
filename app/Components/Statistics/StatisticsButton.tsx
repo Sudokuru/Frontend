@@ -13,8 +13,8 @@ const StatisticsButton = () => {
       testID={"ViewStatisticsPageButton"}
       size={20}
       onPress={() => {
-        updateCurrentPage("Statistics");
-        navigation.navigate("Statistics");
+        updateCurrentPage("StatisticsPage");
+        navigation.navigate("StatisticsPage");
       }}
     />
   );

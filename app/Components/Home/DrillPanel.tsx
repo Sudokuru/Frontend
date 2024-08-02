@@ -129,6 +129,7 @@ const DrillPanel = (props: any) => {
             </Text>
             <Image
               source={img}
+              defaultSource={img}
               style={{
                 width: CARD_IMAGE_WIDTH,
                 height: CARD_IMAGE_HEIGHT,
