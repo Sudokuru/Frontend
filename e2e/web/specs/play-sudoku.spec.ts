@@ -94,3 +94,23 @@ test.describe("complete game", () => {
     ).toBeInViewport({ ratio: 1 });
   });
 });
+
+test.describe("start game", () => {
+  test("Clicking on novice button should start novice game", async ({
+    play,
+  }) => {
+    await play.getByText("Novice").click();
+    await expect(play.getByText("Difficulty: novice")).toBeInViewport({
+      ratio: 1,
+    });
+  });
+
+  test("Clicking on button with intermediate text should start protege game", async ({
+    play,
+  }) => {
+    await play.getByText("Intermediate").click();
+    await expect(play.getByText("Difficulty: protege")).toBeInViewport({
+      ratio: 1,
+    });
+  });
+});
