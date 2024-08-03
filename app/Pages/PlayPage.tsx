@@ -20,6 +20,8 @@ const PlayPage = () => {
   const newSize = minWindowSize / 25;
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
+  const titleText = windowSize.width > 500 ? "a Sudoku game" : "Sudoku";
+
   const theme = useTheme();
 
   const [value, setValue] = React.useState("novice");
@@ -74,7 +76,7 @@ const PlayPage = () => {
             >
               Play{" "}
               <Text style={{ color: theme.colors.onBackground }}>
-                a Sudoku game
+                {titleText}
               </Text>
             </Text>
             <Pressable
