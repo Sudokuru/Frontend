@@ -44,13 +44,67 @@ Added final white border to non transparent pixels (shapes) like this:
 convert 3points.png \( +clone -alpha extract -morphology dilate diamond:10 -background white -alpha shape \) -compose DstOver -composite 3points.png
 */
 
+/**
+ * Given total number of cards and number of cards per column calculates how many rows there are total
+ * @param cardCount
+ * @param columnCount
+ * @returns number of rows
+ */
+function getRowCount(cardCount: number, columnCount: number): number {
+  return Math.ceil(cardCount / columnCount);
+}
+
+/**
+ * Calculates the total height taken up by cards and the padding in between them
+ * @param rowCount
+ * @param cardHeight
+ * @param shrinkage
+ * @returns total height taken up by cards and their padding
+ */
+function getTotalCardsHeight(
+  rowCount: number,
+  cardHeight: number,
+  shrinkage: number
+): number {
+  let fromCards: number = rowCount * ((CARD_WIDTH * 3) / 5);
+  let fromPadding: number = (rowCount - 1) * CARD_PADDING;
+  console.log(
+    "rowCount: " +
+      rowCount +
+      ", fromCards: " +
+      fromCards +
+      ", fromPadding: " +
+      fromPadding
+  );
+  return (fromCards + fromPadding) * (1 - shrinkage);
+}
+
 const DifficultyPanel = (props: any) => {
   let difficultyButtonArray = [];
   let subArray = [];
-  let columnCount: number = calculateCardsPerRow(
-    props.width,
-    difficulties.length
+
+  // Calculate shrinkage based on screen size (shrinkage of 0.1 decreases card size by 10%, high shrinkage removes image and difficulty description)
+  // Does this by adjusting total height of cards (row count * card height * (1-shrinkage) + padding) to be at most 50% of screen height
+  let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
+  let shrinkage: number = -0.01,
+    columnCount,
+    rowCount;
+  do {
+    shrinkage += 0.01;
+    columnCount = calculateCardsPerRow(
+      props.width,
+      difficulties.length,
+      shrinkage + 0.6
+    );
+    rowCount = getRowCount(difficulties.length, columnCount);
+  } while (
+    getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
+    props.height * 1.3
   );
+
+  console.log("Shrinkage: " + shrinkage);
+  CARD_LENGTH *= 1 - shrinkage;
+
   for (let i = 0; i < difficulties.length; i++) {
     let img: ImageURISource;
     let difficulty: string = difficulties[i];
@@ -85,7 +139,11 @@ const DifficultyPanel = (props: any) => {
       <View
         key={difficulty}
         testID={difficulty}
-        style={{ width: (CARD_WIDTH * 3) / 5 }}
+        style={{
+          width: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
+          height: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
+          padding: CARD_PADDING * (1 - shrinkage),
+        }}
       >
         <TouchableOpacity onPress={() => {}}>
           <Card mode="outlined">
@@ -103,8 +161,8 @@ const DifficultyPanel = (props: any) => {
             <Image
               source={img}
               style={{
-                width: CARD_IMAGE_WIDTH / 3,
-                height: CARD_IMAGE_HEIGHT / 3,
+                width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+                height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
                 resizeMode: "contain",
                 alignSelf: "center",
               }}
