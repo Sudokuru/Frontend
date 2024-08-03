@@ -16,17 +16,10 @@ export const CARD_IMAGE_HEIGHT: number = CARD_HEIGHT / 2;
  * Given window width calculates how many cards should be on each row
  * @param width - window width
  * @param count - number of cards
- * @param shrinkage - optional parameter specifying how much to shrink CARD_WIDTH by (0.1 should shrink by 10%, defaults to 0)
  * @returns number of cards that can fit on each row
  */
-export function calculateCardsPerRow(
-  width: number,
-  count: number,
-  shrinkage = 0
-): number {
-  let columnCount: number = Math.floor(
-    width / (CARD_WIDTH * (1 - shrinkage) + 100)
-  );
+export function calculateCardsPerRow(width: number, count: number): number {
+  let columnCount: number = Math.floor(width / (CARD_WIDTH + 100));
   console.log(
     "width: " + width + ", count: " + count + ", columnCount: " + columnCount
   );

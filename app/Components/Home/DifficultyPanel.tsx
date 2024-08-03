@@ -91,15 +91,11 @@ const DifficultyPanel = (props: any) => {
     rowCount;
   do {
     shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(
-      props.width,
-      difficulties.length,
-      shrinkage + 0.6
-    );
+    columnCount = calculateCardsPerRow(props.width, difficulties.length);
     rowCount = getRowCount(difficulties.length, columnCount);
   } while (
     getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
-    props.height * 1.3
+    props.height * 0.7
   );
 
   console.log("Shrinkage: " + shrinkage);
@@ -140,7 +136,7 @@ const DifficultyPanel = (props: any) => {
         key={difficulty}
         testID={difficulty}
         style={{
-          width: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
+          width: CARD_WIDTH,
           height: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
           padding: CARD_PADDING * (1 - shrinkage),
         }}
@@ -158,15 +154,19 @@ const DifficultyPanel = (props: any) => {
             >
               {description}
             </Text>
-            <Image
-              source={img}
-              style={{
-                width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                resizeMode: "contain",
-                alignSelf: "center",
-              }}
-            />
+            {shrinkage < 0.3 ? (
+              <Image
+                source={img}
+                style={{
+                  width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+                  height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </Card>
         </TouchableOpacity>
       </View>
