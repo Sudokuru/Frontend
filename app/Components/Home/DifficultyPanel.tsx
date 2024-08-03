@@ -36,8 +36,12 @@ https://commons.wikimedia.org/wiki/File:A_Black_Star.png
 https://commons.wikimedia.org/wiki/File:Ninestar.svg
 https://commons.wikimedia.org/wiki/File:24-pointed_star.svg
 Used 512px when available, otherwise full resolution
+Used following ImageMagick commands:
 Turned surrounding white pixels into transparent pixels when needed with commands like this:
 convert 3points.png -fuzz 50% -transparent white 3points.png
+Above command also used to remove existing borders when needed.
+Added final white border to non transparent pixels (shapes) like this:
+convert 3points.png \( +clone -alpha extract -morphology dilate diamond:10 -background white -alpha shape \) -compose DstOver -composite 3points.png
 */
 
 const DifficultyPanel = (props: any) => {
