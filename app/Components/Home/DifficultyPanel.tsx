@@ -132,7 +132,14 @@ const DifficultyPanel = (props: any) => {
           margin: 5,
         }}
       >
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("SudokuPage", {
+              action: "StartGame",
+              difficulty: difficulty.toLowerCase(),
+            });
+          }}
+        >
           <Card mode="outlined">
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {difficulty}

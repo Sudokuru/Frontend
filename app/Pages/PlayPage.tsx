@@ -116,6 +116,7 @@ const PlayPage = () => {
                 <DifficultyPanel
                   width={windowSize.width}
                   height={windowSize.height}
+                  navigation={navigation}
                 />
               </View>
             </View>
