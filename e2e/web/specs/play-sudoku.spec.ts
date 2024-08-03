@@ -1,5 +1,5 @@
 import { test } from "../fixture";
-import { expect } from "@playwright/test";
+import { devices, expect } from "@playwright/test";
 import { PlayPage } from "../page/play.page";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { EndGameModalComponent } from "../components/end-game-modal.component";
@@ -112,5 +112,23 @@ test.describe("start game", () => {
     await expect(play.getByText("Difficulty: protege")).toBeInViewport({
       ratio: 1,
     });
+  });
+
+  test("Difficulty descriptions are visible on desktop sized screen", async ({
+    play,
+  }) => {
+    const elementLocator = await play.locator("text=Very Easy");
+    const isVisible = await elementLocator.first().isVisible();
+    const count = await elementLocator.count();
+    expect(isVisible).toBeTruthy();
+    expect(count).toBe(2);
+  });
+
+  test("Difficulty descriptions go away on small screens", async ({ play }) => {
+    play.setViewportSize(devices["iPhone 14"].viewport);
+    const elementLocator = await play.locator("text=Very Easy");
+    await play.waitForTimeout(500);
+    const isVisible = await elementLocator.isVisible();
+    expect(isVisible).toBeFalsy();
   });
 });
