@@ -113,7 +113,9 @@ test.describe("start game", () => {
       ratio: 1,
     });
   });
+});
 
+test.describe("resize play page", () => {
   test("Difficulty descriptions are visible on desktop sized screen", async ({
     play,
   }) => {
@@ -130,5 +132,29 @@ test.describe("start game", () => {
     await play.waitForTimeout(500);
     const isVisible = await elementLocator.isVisible();
     expect(isVisible).toBeFalsy();
+  });
+
+  test("Full page title is visible on desktop sized screens", async ({
+    play,
+  }) => {
+    const fullLocator = await play.locator("text=a Sudoku game");
+    const fullIsVisible = await fullLocator.isVisible();
+    expect(fullIsVisible).toBeTruthy();
+    const partialLocator = await play.locator("text=Play Sudoku");
+    const partialIsVisible = await partialLocator.isVisible();
+    expect(partialIsVisible).toBeFalsy();
+  });
+
+  test("Only partial page title is visible on small screens", async ({
+    play,
+  }) => {
+    play.setViewportSize(devices["iPhone 14"].viewport);
+    const partialLocator = await play.locator("text=Play Sudoku");
+    await play.waitForTimeout(500);
+    const partialIsVisible = await partialLocator.isVisible();
+    expect(partialIsVisible).toBeTruthy();
+    const fullLocator = await play.locator("text=a Sudoku game");
+    const fullIsVisible = await fullLocator.isVisible();
+    expect(fullIsVisible).toBeFalsy();
   });
 });
