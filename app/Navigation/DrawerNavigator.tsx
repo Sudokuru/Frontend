@@ -1,17 +1,20 @@
 import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import LandingStackNavigator from "./StackNavigators/LandingStackNavigator";
-import LearnStackNavigator from "./StackNavigators/LearnStackNavigator";
-import DrillStackNavigator from "./StackNavigators/DrillStackNavigator";
-import PlayStackNavigator from "./StackNavigators/PlayStackNavigator";
 import Header from "../Components/Header";
 import { useWindowDimensions } from "react-native";
 import NavigationSideBar from "../Components/NavigationSideBar";
-import StatisticsStackNavigator from "./StackNavigators/StatisticsStackNavigator";
-import ProfileStackNavigator from "./StackNavigators/ProfileStackNavigator";
 import { useTheme } from "react-native-paper";
-import ContactStackNavigator from "./StackNavigators/ContactStackNavigator";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import StatisticsPage from "../Pages/StatisticsPage";
+import ProfilePage from "../Pages/ProfilePage";
+import SudokuPage from "../Pages/SudokuPage";
+import PlayPage from "../Pages/PlayPage";
+import LearnPage from "../Pages/LearnPage";
+import Lesson from "../Pages/Lesson";
+import LandingPage from "../Pages/LandingPage";
+import DrillPage from "../Pages/DrillPage";
+import DrillGame from "../Pages/DrillGame";
+import ContactPage from "../Pages/ContactPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -38,18 +41,22 @@ const DrawerNavigator = () => {
             header: ({ navigation, route, options }) => {
               return <Header />;
             },
+            unmountOnBlur: true,
+            title: "Sudokuru",
+            // turning unmountOnBlur means useHeaderHeight is never zero anymore... no idea why.
+            // also I believe it may have sped up the playwright test execution, which makes sense as less html to parse through.
           }}
         >
-          <Drawer.Screen name="Landing" component={LandingStackNavigator} />
-          <Drawer.Screen name="Learn" component={LearnStackNavigator} />
-          <Drawer.Screen name="Drill" component={DrillStackNavigator} />
-          <Drawer.Screen name="Play" component={PlayStackNavigator} />
-          <Drawer.Screen
-            name="Statistics"
-            component={StatisticsStackNavigator}
-          />
-          <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
-          <Drawer.Screen name="Contact" component={ContactStackNavigator} />
+          <Drawer.Screen name="LandingPage" component={LandingPage} />
+          <Drawer.Screen name="PlayPage" component={PlayPage} />
+          <Drawer.Screen name="SudokuPage" component={SudokuPage} />
+          <Drawer.Screen name="ContactPage" component={ContactPage} />
+          <Drawer.Screen name="DrillPage" component={DrillPage} />
+          <Drawer.Screen name="DrillGame" component={DrillGame} />
+          <Drawer.Screen name="LearnPage" component={LearnPage} />
+          <Drawer.Screen name="Lesson" component={Lesson} />
+          <Drawer.Screen name="ProfilePage" component={ProfilePage} />
+          <Drawer.Screen name="StatisticsPage" component={StatisticsPage} />
         </Drawer.Navigator>
       </SafeAreaView>
     </SafeAreaProvider>

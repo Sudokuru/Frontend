@@ -16,13 +16,28 @@ const Header = () => {
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
 
-  let logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
+  const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
+
+  const statisticsButton = (currentPage: string) => {
+    if (currentPage != "StatisticsPage") {
+      return <StatisticsButton />;
+    } else {
+      return <HomeButton />;
+    }
+  };
+
+  const profileButton = (currentPage: string) => {
+    if (currentPage != "ProfilePage") {
+      return <ProfileButton />;
+    } else {
+      return <HomeButton />;
+    }
+  };
 
   return (
     <View
       style={{
         flexDirection: "row",
-        margin: 5,
       }}
     >
       <IconButton
@@ -31,38 +46,27 @@ const Header = () => {
         size={20}
         onPress={() => navigation.toggleDrawer()}
       />
-      {
-        /*
-         * If we are on the Landing page, Logo will not navigate to the Landing page
-         * If we are on any other page, Logo will navigate to the Landing page
-         */
-        currentPage == "Landing" ? (
-          <Image
-            style={{
-              resizeMode: "cover",
-              height: 45,
-              width: 100,
-            }}
-            source={logoUrl}
-          />
-        ) : (
-          <Pressable
-            onPress={() => {
-              updateCurrentPage("Landing");
-              navigation.navigate("Landing");
-            }}
-          >
-            <Image
-              style={{
-                resizeMode: "cover",
-                height: 45,
-                width: 100,
-              }}
-              source={logoUrl}
-            />
-          </Pressable>
-        )
-      }
+      {/*
+       * If we are on the Landing page, Logo will not navigate to the Landing page
+       * If we are on any other page, Logo will navigate to the Landing page
+       */}
+      <Pressable
+        disabled={currentPage == "LandingPage"}
+        onPress={() => {
+          updateCurrentPage("LandingPage");
+          navigation.navigate("LandingPage");
+        }}
+      >
+        <Image
+          style={{
+            resizeMode: "cover",
+            height: 45,
+            width: 100,
+          }}
+          defaultSource={logoUrl} // bruh adding this fixed the flickering issue bruh
+          source={logoUrl}
+        />
+      </Pressable>
       <View
         style={{
           flex: 1,
@@ -70,20 +74,8 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
-        {currentPage == "No" ? (
-          <></>
-        ) : currentPage == "Statistics" ? (
-          <HomeButton />
-        ) : (
-          <StatisticsButton />
-        )}
-        {currentPage == "No" ? (
-          <></>
-        ) : currentPage == "Profile" ? (
-          <HomeButton />
-        ) : (
-          <ProfileButton />
-        )}
+        {statisticsButton(currentPage)}
+        {profileButton(currentPage)}
       </View>
     </View>
   );
