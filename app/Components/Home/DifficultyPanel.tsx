@@ -99,6 +99,9 @@ const DifficultyPanel = (props: any) => {
   );
 
   console.log("Shrinkage: " + shrinkage);
+  console.log(
+    "Card will be: " + (CARD_LENGTH + CARD_PADDING * (1 - shrinkage)) + " long."
+  );
   CARD_LENGTH *= 1 - shrinkage;
 
   for (let i = 0; i < difficulties.length; i++) {
@@ -139,6 +142,7 @@ const DifficultyPanel = (props: any) => {
           width: CARD_WIDTH,
           height: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
           padding: CARD_PADDING * (1 - shrinkage),
+          margin: 5,
         }}
       >
         <TouchableOpacity onPress={() => {}}>
