@@ -109,18 +109,6 @@ const PlayPage = () => {
             ) : (
               <></>
             )}
-            <Button
-              style={{ margin: newSize / 4 }}
-              mode="contained"
-              onPress={() => {
-                navigation.navigate("SudokuPage", {
-                  action: "StartGame",
-                  difficulty: value,
-                });
-              }}
-            >
-              Start Puzzle
-            </Button>
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               <View style={{ padding: reSize / 4 }}>
                 <DifficultyPanel
