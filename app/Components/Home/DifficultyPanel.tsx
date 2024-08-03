@@ -66,16 +66,8 @@ function getTotalCardsHeight(
   cardHeight: number,
   shrinkage: number
 ): number {
-  let fromCards: number = rowCount * ((CARD_WIDTH * 3) / 5);
+  let fromCards: number = rowCount * cardHeight;
   let fromPadding: number = (rowCount - 1) * CARD_PADDING;
-  console.log(
-    "rowCount: " +
-      rowCount +
-      ", fromCards: " +
-      fromCards +
-      ", fromPadding: " +
-      fromPadding
-  );
   return (fromCards + fromPadding) * (1 - shrinkage);
 }
 
@@ -84,7 +76,7 @@ const DifficultyPanel = (props: any) => {
   let subArray = [];
 
   // Calculate shrinkage based on screen size (shrinkage of 0.1 decreases card size by 10%, high shrinkage removes image and difficulty description)
-  // Does this by adjusting total height of cards (row count * card height * (1-shrinkage) + padding) to be at most 50% of screen height
+  // Does this by adjusting total height of cards (row count * card height * (1-shrinkage) + padding) to be at most 70% of screen height
   let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
   let shrinkage: number = -0.01,
     columnCount,
@@ -96,11 +88,6 @@ const DifficultyPanel = (props: any) => {
   } while (
     getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
     props.height * 0.7
-  );
-
-  console.log("Shrinkage: " + shrinkage);
-  console.log(
-    "Card will be: " + (CARD_LENGTH + CARD_PADDING * (1 - shrinkage)) + " long."
   );
   CARD_LENGTH *= 1 - shrinkage;
 
