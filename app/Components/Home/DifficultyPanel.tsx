@@ -146,14 +146,18 @@ const DifficultyPanel = (props: any) => {
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {difficulty}
             </Text>
-            <Text
-              testID={"difficulty"}
-              variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: difficultyColor } }}
-            >
-              {description}
-            </Text>
+            {shrinkage < 0.6 ? (
+              <Text
+                testID={"difficulty"}
+                variant="headlineSmall"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: difficultyColor } }}
+              >
+                {description}
+              </Text>
+            ) : (
+              <></>
+            )}
             {shrinkage < 0.3 ? (
               <Image
                 source={img}
