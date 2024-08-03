@@ -93,6 +93,7 @@ const DifficultyPanel = (props: any) => {
 
   for (let i = 0; i < difficulties.length; i++) {
     let img: ImageURISource;
+    let alt: string;
     let difficulty: string = difficulties[i];
     let description: difficulty;
     switch (difficulty) {
@@ -100,24 +101,29 @@ const DifficultyPanel = (props: any) => {
       case "Amateur":
         description = "Very Easy";
         img = difficultyStars[0];
+        alt = "3 Point Star";
         break;
       case "Layman":
       case "Trainee":
         description = "Easy";
         img = difficultyStars[1];
+        alt = "4 Point Star";
         break;
       case "Protege":
         description = "Intermediate";
         img = difficultyStars[2];
+        alt = "5 Point Star";
         break;
       case "Professional":
       case "Pundit":
         description = "Hard";
         img = difficultyStars[3];
+        alt = "9 Point Star";
         break;
       default:
         description = "Very Hard";
         img = difficultyStars[4];
+        alt = "24 Point Star";
         break;
     }
     let difficultyColor: string = getDifficultyColor(description);
@@ -165,6 +171,7 @@ const DifficultyPanel = (props: any) => {
                   resizeMode: "contain",
                   alignSelf: "center",
                 }}
+                accessibilityLabel={alt}
               />
             ) : (
               <></>

@@ -126,12 +126,17 @@ test.describe("resize play page", () => {
     expect(count).toBe(2);
   });
 
-  test("Difficulty descriptions go away on small screens", async ({ play }) => {
+  test("Difficulty descriptions and stars go away on small screens", async ({
+    play,
+  }) => {
     play.setViewportSize(devices["iPhone 14"].viewport);
     const elementLocator = await play.locator("text=Very Easy");
+    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
     await play.waitForTimeout(500);
     const isVisible = await elementLocator.isVisible();
     expect(isVisible).toBeFalsy();
+    const imgIsVisible = await threePointLocator.isVisible();
+    expect(imgIsVisible).toBeFalsy();
   });
 
   test("Full page title is visible on desktop sized screens", async ({
@@ -156,5 +161,33 @@ test.describe("resize play page", () => {
     const fullLocator = await play.locator("text=a Sudoku game");
     const fullIsVisible = await fullLocator.isVisible();
     expect(fullIsVisible).toBeFalsy();
+  });
+
+  test("Difficulty stars are visible on desktop sized screens", async ({
+    play,
+  }) => {
+    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
+    const isVisible = await threePointLocator.first().isVisible();
+    const count = await threePointLocator.count();
+    expect(isVisible).toBeTruthy();
+    expect(count).toBe(2);
+  });
+
+  test("Difficulty stars go away on but descriptions stay on medium screens", async ({
+    play,
+  }) => {
+    play.setViewportSize({
+      width: 1024,
+      height: 1024,
+    });
+    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
+    const elementLocator = await play.locator("text=Very Hard");
+    await play.waitForTimeout(500);
+    const imgIsVisible = await threePointLocator.isVisible();
+    expect(imgIsVisible).toBeFalsy();
+    const isVisible = await elementLocator.first().isVisible();
+    const count = await elementLocator.count();
+    expect(isVisible).toBeTruthy();
+    expect(count).toBe(2);
   });
 });
