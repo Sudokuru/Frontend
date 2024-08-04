@@ -64,10 +64,10 @@ const NavigationSideBar = (props: any) => {
         icon={"note-text"}
         testID="ReleaseNotes"
         label="Release Notes"
-        active={currentPage === "ReleaseNotes"}
+        active={currentPage === "ReleaseNotesPage"}
         onPress={() => {
-          updateCurrentPage("ReleaseNotes");
-          navigation.navigate("ReleaseNotes");
+          updateCurrentPage("ReleaseNotesPage");
+          navigation.navigate("ReleaseNotesPage");
         }}
       />
       <Drawer.Item
