@@ -16,17 +16,17 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
   const createArrayString = (items: string[]) => {
     let itemString = "";
     for (const item of items) {
-      itemString = itemString + "\t" + "• " + item + "\n";
+      itemString = itemString + "• " + item + "\n";
     }
     return itemString;
   };
 
-  let featureString = "\tNone\n";
+  let featureString = "None\n";
   if (props.features) {
     featureString = createArrayString(props.features);
   }
 
-  let bugFixString = "\tNone\n";
+  let bugFixString = "None\n";
   if (props["bug fixes"]) {
     bugFixString = createArrayString(props["bug fixes"]);
   }
@@ -41,6 +41,7 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
+        alignItems: "stretch",
       }}
       key={key}
     >
@@ -55,19 +56,18 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
       <Divider style={{ marginBottom: 10 }} />
       <>
         <Text style={{ fontSize: 20 }}>Summary: </Text>{" "}
-        <Text>
-          {"\t"}
+        <Text style={{ paddingLeft: 20 }}>
           {props.summary}
           {"\n"}
         </Text>
         <Text style={{ fontSize: 20 }}>Features: </Text>{" "}
-        <Text>{featureString}</Text>
+        <Text style={{ paddingLeft: 20 }}>{featureString}</Text>
         <Text style={{ fontSize: 20 }}>Bug Fixes: </Text>{" "}
-        <Text>{bugFixString}</Text>
+        <Text style={{ paddingLeft: 20 }}>{bugFixString}</Text>
         <Text style={{ fontSize: 20 }}>Target Platforms:</Text>{" "}
-        <Text>{targetPlatformsString}</Text>
+        <Text style={{ paddingLeft: 20 }}>{targetPlatformsString}</Text>
         <Text style={{ fontSize: 20 }}>Contributors:</Text>{" "}
-        <Text>{contributorsString}</Text>
+        <Text style={{ paddingLeft: 20 }}>{contributorsString}</Text>
       </>
     </View>
   );

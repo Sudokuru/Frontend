@@ -16,7 +16,11 @@ const ReleaseNotesPage = () => {
     content.push(ReleaseNote(releaseNote, releaseNotes.indexOf(releaseNote)));
   }
 
-  return <ScrollView>{content}</ScrollView>;
+  return (
+    <ScrollView contentContainerStyle={{ alignSelf: "center" }}>
+      {content}
+    </ScrollView>
+  );
 };
 
 export default ReleaseNotesPage;
