@@ -204,8 +204,8 @@ const ContactPage = () => {
             thankYouVisible: false,
             buttonText: "Submit*",
           });
-          updateCurrentPage("Landing");
-          navigation.navigate("Landing");
+          updateCurrentPage("LandingPage");
+          navigation.navigate("LandingPage");
         }}
         overlayStyle={{ backgroundColor: "transparent" }}
         alertContainerStyle={{

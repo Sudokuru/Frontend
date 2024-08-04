@@ -13,8 +13,8 @@ const ProfileButton = () => {
       testID={"ViewProfilePageButton"}
       size={20}
       onPress={() => {
-        updateCurrentPage("Profile");
-        navigation.navigate("Profile");
+        updateCurrentPage("ProfilePage");
+        navigation.navigate("ProfilePage");
       }}
     />
   );

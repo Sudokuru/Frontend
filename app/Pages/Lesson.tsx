@@ -106,6 +106,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           >
             <Image
               source={steps[i][1]}
+              defaultSource={steps[i][1]}
               style={{
                 width:
                   size.width > 800

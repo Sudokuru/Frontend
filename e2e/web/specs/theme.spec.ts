@@ -10,7 +10,7 @@ import {
 test.describe("theme", () => {
   test("toggle theme", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
     const title = page.getByText("Profile");
     await expect(title).toHaveCSS("color", GOLD_COLOR_RGB);
