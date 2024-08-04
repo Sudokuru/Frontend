@@ -1,37 +1,22 @@
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import Markdown from "react-native-markdown-display";
-import { useTheme } from "react-native-paper";
 
 import json from "../../Changelog.json";
+import {
+  ReleaseNoteInterface,
+  ReleaseNote,
+} from "../Components/ReleaseNotes/ReleaseNote";
 
 const ReleaseNotesPage = () => {
-  console.log(json);
+  const releaseNotes: ReleaseNoteInterface[] = json;
+  console.log(releaseNotes);
 
-  const copy = `- Render this 
-     - render that
-     - render hat
+  const content = [];
+  for (const releaseNote of releaseNotes) {
+    content.push(ReleaseNote(releaseNote, releaseNotes.indexOf(releaseNote)));
+  }
 
-     **bold**
-
-     - banana
-
-     **bold** tow haha
-    `;
-  const MarkdownWrapper: React.FC<any> = ({ children }) => {
-    const { colors } = useTheme();
-    return (
-      <Markdown style={{ text: { color: colors.onBackground } }}>
-        {children}
-      </Markdown>
-    );
-  };
-
-  return (
-    <ScrollView>
-      <MarkdownWrapper>{copy}</MarkdownWrapper>
-    </ScrollView>
-  );
+  return <ScrollView>{content}</ScrollView>;
 };
 
 export default ReleaseNotesPage;
