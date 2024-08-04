@@ -18,15 +18,16 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
     for (const item of items) {
       itemString = itemString + "• " + item + "\n";
     }
+    itemString = itemString.slice(0, -1); // remove last \n character
     return itemString;
   };
 
-  let featureString = "None\n";
+  let featureString = "None";
   if (props.features) {
     featureString = createArrayString(props.features);
   }
 
-  let bugFixString = "None\n";
+  let bugFixString = "None";
   if (props["bug fixes"]) {
     bugFixString = createArrayString(props["bug fixes"]);
   }
@@ -45,28 +46,19 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
       }}
       key={key}
     >
-      <Text style={{ fontSize: 20 }}>
-        Version: {props.version}
-        {"\n"}
-      </Text>
-      <Text style={{ fontSize: 20 }}>
-        Release Date: {props.date}
-        {"\n"}
-      </Text>
+      <Text style={{ fontSize: 20 }}>Version: {props.version}</Text>
+      <Text style={{ fontSize: 20 }}>Release Date: {props.date}</Text>
       <Divider style={{ marginBottom: 10 }} />
       <>
-        <Text style={{ fontSize: 20 }}>Summary: </Text>{" "}
-        <Text style={{ paddingLeft: 20, maxWidth: 800 }}>
-          {props.summary}
-          {"\n"}
-        </Text>
-        <Text style={{ fontSize: 20 }}>Features: </Text>{" "}
+        <Text style={{ fontSize: 20 }}>Summary: </Text>
+        <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{props.summary}</Text>
+        <Text style={{ fontSize: 20 }}>Features: </Text>
         <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{featureString}</Text>
-        <Text style={{ fontSize: 20 }}>Bug Fixes: </Text>{" "}
+        <Text style={{ fontSize: 20 }}>Bug Fixes: </Text>
         <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{bugFixString}</Text>
-        <Text style={{ fontSize: 20 }}>Target Platforms:</Text>{" "}
+        <Text style={{ fontSize: 20 }}>Target Platforms: </Text>
         <Text style={{ paddingLeft: 20 }}>{targetPlatformsString}</Text>
-        <Text style={{ fontSize: 20 }}>Contributors:</Text>{" "}
+        <Text style={{ fontSize: 20 }}>Contributors: </Text>
         <Text style={{ paddingLeft: 20 }}>{contributorsString}</Text>
       </>
     </View>
