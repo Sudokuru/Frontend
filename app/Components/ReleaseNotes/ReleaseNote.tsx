@@ -51,15 +51,25 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
       <Divider style={{ marginBottom: 10 }} />
       <>
         <Text style={{ fontSize: 20 }}>Summary: </Text>
-        <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{props.summary}</Text>
+        <Text style={{ paddingLeft: 20, maxWidth: 800, fontSize: 14 }}>
+          {props.summary}
+        </Text>
         <Text style={{ fontSize: 20 }}>Features: </Text>
-        <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{featureString}</Text>
+        <Text style={{ paddingLeft: 20, maxWidth: 800, fontSize: 14 }}>
+          {featureString}
+        </Text>
         <Text style={{ fontSize: 20 }}>Bug Fixes: </Text>
-        <Text style={{ paddingLeft: 20, maxWidth: 800 }}>{bugFixString}</Text>
+        <Text style={{ paddingLeft: 20, maxWidth: 800, fontSize: 14 }}>
+          {bugFixString}
+        </Text>
         <Text style={{ fontSize: 20 }}>Target Platforms: </Text>
-        <Text style={{ paddingLeft: 20 }}>{targetPlatformsString}</Text>
+        <Text style={{ paddingLeft: 20, fontSize: 14 }}>
+          {targetPlatformsString}
+        </Text>
         <Text style={{ fontSize: 20 }}>Contributors: </Text>
-        <Text style={{ paddingLeft: 20 }}>{contributorsString}</Text>
+        <Text style={{ paddingLeft: 20, fontSize: 14 }}>
+          {contributorsString}
+        </Text>
       </>
     </View>
   );
