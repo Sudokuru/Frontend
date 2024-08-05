@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.21.2",
+    "date": "August 1st, 2024",
+    "summary": "Fixed image display bugs and navigation / routing issue",
+    "bug fixes": [
+      "Eliminated bug on web where logo would flash when navigating to a different page.",
+      "Fixed bug where there is no way to navigate to Lesson page once user has entered lesson without closing app or refreshing page.",
+      "Fixed bug where there is no way to navigate to Play page once user has entered a game without closing app or refreshing page."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.21.1",
     "date": "July 18th, 2024",
     "summary": "Fixing issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
