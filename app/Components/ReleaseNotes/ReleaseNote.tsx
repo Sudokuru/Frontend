@@ -14,23 +14,17 @@ export interface ReleaseNoteInterface {
 
 export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
   // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
+  // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
   /**
    * Takes in a string and creates a bullet component
    * @param point a string for the bullet component
    * @returns A JSX element of a bullet
    */
   const BulletComponent = (point: string) => {
-    // note the reason why the Text elements are wrapped in view components is to
-    // keep spacing even. Text components have different spacing based on character length otherwise,
-    // leading to variance in the spacing between bullet and first character.
     return (
       <View style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}>
-        <View>
-          <Text style={{ width: 10, fontSize: 14 }}>•</Text>
-        </View>
-        <View style={{ flex: 1, flexWrap: "wrap" }}>
-          <Text style={{ fontSize: 14 }}>{point}</Text>
-        </View>
+        <Text style={{ fontSize: 14 }}>•</Text>
+        <Text style={{ fontSize: 14, flex: 1, paddingLeft: 5 }}>{point}</Text>
       </View>
     );
   };
