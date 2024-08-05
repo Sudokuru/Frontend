@@ -18,11 +18,15 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
   /**
    * Takes in a string and creates a bullet component
    * @param point a string for the bullet component
+   * @param key a key for the view element
    * @returns A JSX element of a bullet
    */
-  const BulletComponent = (point: string) => {
+  const BulletComponent = (point: string, key: number) => {
     return (
-      <View style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}>
+      <View
+        style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
+        key={key}
+      >
         <Text style={{ fontSize: 14 }}>•</Text>
         <Text style={{ fontSize: 14, paddingLeft: 5 }}>{point}</Text>
       </View>
@@ -37,7 +41,7 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
   const BulletedListComponent = (points: string[]) => {
     const list = [];
     for (const point of points) {
-      list.push(BulletComponent(point));
+      list.push(BulletComponent(point, points.indexOf(point)));
     }
     return list;
   };
