@@ -24,7 +24,7 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
     return (
       <View style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}>
         <Text style={{ fontSize: 14 }}>•</Text>
-        <Text style={{ fontSize: 14, flex: 1, paddingLeft: 5 }}>{point}</Text>
+        <Text style={{ fontSize: 14, paddingLeft: 5 }}>{point}</Text>
       </View>
     );
   };
