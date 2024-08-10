@@ -65,7 +65,7 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
   return (
     <View
       style={{
-        backgroundColor: "#000000",
+        backgroundColor: "#012D39",
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
