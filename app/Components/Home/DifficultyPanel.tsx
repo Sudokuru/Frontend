@@ -1,4 +1,10 @@
-import { ImageURISource, TouchableOpacity, View, Image } from "react-native";
+import {
+  ImageURISource,
+  TouchableOpacity,
+  View,
+  Image,
+  Touchable,
+} from "react-native";
 import {
   calculateCardsPerRow,
   CARD_IMAGE_HEIGHT,
@@ -126,59 +132,70 @@ const DifficultyPanel = (props: any) => {
         alt = "24 Point Star";
         break;
     }
-    let difficultyColor: string = getDifficultyColor(description);
+    const difficultyColor: string = getDifficultyColor(description);
+
+    const cardHeight = () => {
+      const cardHeight = CARD_LENGTH + CARD_PADDING * (1 - shrinkage);
+      if (shrinkage > 0.6) {
+        return undefined;
+      } else {
+        return cardHeight;
+      }
+    };
+
     subArray.push(
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate("SudokuPage", {
+            action: "StartGame",
+            difficulty: difficulty.toLowerCase(),
+          });
+        }}
         key={difficulty}
         testID={difficulty}
         style={{
           width: CARD_WIDTH,
-          height: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
-          padding: CARD_PADDING * (1 - shrinkage),
+          height: cardHeight(),
           margin: 5,
+          backgroundColor: "#012D39",
+          borderWidth: 1,
+          borderRadius: 10,
+          borderColor: "#D9A05B",
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("SudokuPage", {
-              action: "StartGame",
-              difficulty: difficulty.toLowerCase(),
-            });
-          }}
+        <Text
+          variant="headlineMedium"
+          style={{ alignSelf: "center", alignItems: "center" }}
         >
-          <Card mode="outlined">
-            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
-              {difficulty}
-            </Text>
-            {shrinkage < 0.6 ? (
-              <Text
-                testID={"difficulty"}
-                variant="headlineSmall"
-                style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: difficultyColor } }}
-              >
-                {description}
-              </Text>
-            ) : (
-              <></>
-            )}
-            {shrinkage < 0.3 ? (
-              <Image
-                source={img}
-                style={{
-                  width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                  height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                }}
-                accessibilityLabel={alt}
-              />
-            ) : (
-              <></>
-            )}
-          </Card>
-        </TouchableOpacity>
-      </View>
+          {difficulty}
+        </Text>
+        {shrinkage < 0.7 ? (
+          <Text
+            testID={"difficulty"}
+            variant="headlineSmall"
+            style={{ alignSelf: "center" }}
+            theme={{ colors: { onSurface: difficultyColor } }}
+          >
+            {description}
+          </Text>
+        ) : (
+          <></>
+        )}
+        {shrinkage < 0.3 ? (
+          <Image
+            source={img}
+            style={{
+              width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+              height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+              resizeMode: "contain",
+              alignSelf: "center",
+            }}
+            accessibilityLabel={alt}
+          />
+        ) : (
+          <></>
+        )}
+      </TouchableOpacity>
     );
 
     // Add row
