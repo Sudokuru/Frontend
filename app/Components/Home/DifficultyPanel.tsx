@@ -164,13 +164,14 @@ const DifficultyPanel = (props: any) => {
             )}
             {shrinkage < 0.3 ? (
               <Image
-                source={img}
                 style={{
                   width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
                   height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
                   resizeMode: "contain",
                   alignSelf: "center",
                 }}
+                source={img}
+                defaultSource={img}
                 accessibilityLabel={alt}
               />
             ) : (
