@@ -8,6 +8,7 @@ export class HeaderComponent {
   readonly drawerDrill: Locator;
   readonly drawerPlay: Locator;
   readonly drawerContact: Locator;
+  readonly releaseNotes: Locator;
 
   readonly logo: Locator;
   readonly statistics: Locator;
@@ -24,6 +25,7 @@ export class HeaderComponent {
     this.drawerDrill = page.getByRole("button", { name: "Drill" });
     this.drawerPlay = page.getByRole("button", { name: "Play" });
     this.drawerContact = page.getByRole("button", { name: "Contact" });
+    this.releaseNotes = page.getByRole("button", { name: "Release Notes" });
 
     this.logo = page.locator("img").nth(3); //todo create test id for logo
     this.statistics = page.getByTestId("ViewStatisticsPageButton");

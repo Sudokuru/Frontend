@@ -15,6 +15,7 @@ import LandingPage from "../Pages/LandingPage";
 import DrillPage from "../Pages/DrillPage";
 import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
+import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -33,7 +34,7 @@ const DrawerNavigator = () => {
           }}
           screenOptions={{
             drawerStyle: {
-              width: 210,
+              width: 230,
               backgroundColor: theme.colors.background,
               overflow: "hidden", //white space was being caused during some resizes
             },
@@ -57,6 +58,7 @@ const DrawerNavigator = () => {
           <Drawer.Screen name="Lesson" component={Lesson} />
           <Drawer.Screen name="ProfilePage" component={ProfilePage} />
           <Drawer.Screen name="StatisticsPage" component={StatisticsPage} />
+          <Drawer.Screen name="ReleaseNotesPage" component={ReleaseNotesPage} />
         </Drawer.Navigator>
       </SafeAreaView>
     </SafeAreaProvider>
