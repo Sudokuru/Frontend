@@ -14,6 +14,15 @@ const ReleaseNotesPage = () => {
   const theme = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  const width = size.width;
+
+  const componentWidth = (width: number) => {
+    if (width > 800) {
+      return 800;
+    } else {
+      return width;
+    }
+  };
 
   return (
     <FlatList
@@ -32,7 +41,9 @@ const ReleaseNotesPage = () => {
         </Text>
       }
       data={releaseNotes}
-      renderItem={({ item }) => ReleaseNote(item, item.version)}
+      renderItem={({ item }) =>
+        ReleaseNote(item, item.version, componentWidth(width))
+      }
     />
   );
 };

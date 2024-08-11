@@ -46,7 +46,11 @@ const BulletedListComponent = (points: string[]) => {
   return list;
 };
 
-export const ReleaseNote = (props: ReleaseNoteInterface, key: string) => {
+export const ReleaseNote = (
+  props: ReleaseNoteInterface,
+  key: string,
+  width: number
+) => {
   let featureList = ["None"];
   if (props.features) {
     featureList = props.features;
@@ -77,6 +81,8 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: string) => {
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
+        width: width,
+        alignSelf: "center",
       }}
       key={key}
     >
