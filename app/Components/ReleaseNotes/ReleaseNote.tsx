@@ -7,6 +7,7 @@ export interface ReleaseNoteInterface {
   date: string;
   summary: string;
   features?: string[];
+  "preview features"?: string[];
   "bug fixes"?: string[];
   targets: string[];
   contributors: string[];
@@ -53,6 +54,13 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
 
   const featureListComponent = BulletedListComponent(featureList);
 
+  let previewFeatureList = ["None"];
+  if (props["preview features"]) {
+    previewFeatureList = props["preview features"];
+  }
+
+  const previewFeatureListComponent = BulletedListComponent(previewFeatureList);
+
   let bugList = ["None"];
   if (props["bug fixes"]) {
     bugList = props["bug fixes"];
@@ -82,6 +90,8 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
         </Text>
         <Text style={{ fontSize: 20 }}>Features: </Text>
         {featureListComponent}
+        <Text style={{ fontSize: 20 }}>Preview Features: </Text>
+        {previewFeatureListComponent}
         <Text style={{ fontSize: 20 }}>Bug Fixes: </Text>
         {bugListComponent}
         <Text style={{ fontSize: 20 }}>Target Platforms: </Text>
