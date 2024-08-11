@@ -24,8 +24,6 @@ const PlayPage = () => {
 
   const theme = useTheme();
 
-  const [value, setValue] = React.useState("novice");
-
   useFocusEffect(
     React.useCallback(() => {
       // This determines if user has active game and displays resume button conditionally.
