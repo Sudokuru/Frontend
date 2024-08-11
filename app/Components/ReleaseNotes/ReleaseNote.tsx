@@ -13,40 +13,40 @@ export interface ReleaseNoteInterface {
   contributors: string[];
 }
 
+// https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
+// https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
+/**
+ * Takes in a string and creates a bullet component
+ * @param point a string for the bullet component
+ * @param key a key for the view element
+ * @returns A JSX element of a bullet
+ */
+const BulletComponent = (point: string, key: number) => {
+  return (
+    <View
+      style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
+      key={key}
+    >
+      <Text style={{ fontSize: 14 }}>•</Text>
+      <Text style={{ fontSize: 14, paddingLeft: 5 }}>{point}</Text>
+    </View>
+  );
+};
+
+/**
+ * Takes in a list of strings and creates a bullet list component
+ * @param points A list of strings for the bulleted list component
+ * @returns A JSX element of a bullet list component
+ */
+const BulletedListComponent = (points: string[]) => {
+  const list = [];
+  for (const point of points) {
+    list.push(BulletComponent(point, points.indexOf(point)));
+  }
+  return list;
+};
+
 export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
-  // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
-  // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
-  /**
-   * Takes in a string and creates a bullet component
-   * @param point a string for the bullet component
-   * @param key a key for the view element
-   * @returns A JSX element of a bullet
-   */
-  const BulletComponent = (point: string, key: number) => {
-    return (
-      <View
-        style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
-        key={key}
-      >
-        <Text style={{ fontSize: 14 }}>•</Text>
-        <Text style={{ fontSize: 14, paddingLeft: 5 }}>{point}</Text>
-      </View>
-    );
-  };
-
-  /**
-   * Takes in a list of strings and creates a bullet list component
-   * @param points A list of strings for the bulleted list component
-   * @returns A JSX element of a bullet list component
-   */
-  const BulletedListComponent = (points: string[]) => {
-    const list = [];
-    for (const point of points) {
-      list.push(BulletComponent(point, points.indexOf(point)));
-    }
-    return list;
-  };
-
   let featureList = ["None"];
   if (props.features) {
     featureList = props.features;
