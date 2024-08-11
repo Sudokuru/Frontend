@@ -71,7 +71,13 @@ function getTotalCardsHeight(
   return (fromCards + fromPadding) * (1 - shrinkage);
 }
 
-const DifficultyPanel = (props: any) => {
+interface DifficultyPanelProps {
+  width: number;
+  height: number;
+  navigation: any;
+}
+
+const DifficultyPanel = (props: DifficultyPanelProps) => {
   let difficultyButtonArray = [];
   let subArray = [];
 
