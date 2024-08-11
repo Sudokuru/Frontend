@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.21.2",
+    "version": "v1.21.2",
     "date": "August 1st, 2024",
     "summary": "Fixed image display bugs and navigation / routing issue",
     "bug fixes": [
@@ -12,7 +12,7 @@
     "contributors": ["Thomas-Gallant"]
   },
   {
-    "version": "1.21.1",
+    "version": "v1.21.1",
     "date": "July 18th, 2024",
     "summary": "Fixing issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
     "bug fixes": [
@@ -22,7 +22,7 @@
     "contributors": ["Thomas-Gallant"]
   },
   {
-    "version": "1.21.0",
+    "version": "v1.21.0",
     "date": "July 13th, 2024",
     "summary": "This release adds the ability to select multiple cells at the same time for mass notes insertions.",
     "features": [
@@ -39,7 +39,7 @@
     "date": "July 4th, 2024",
     "summary": "Adding additional difficulties for play game and regenerating puzzle library.",
     "features": [
-      "Adding additional difficulties: protoge, professional, pundit, master, grandmaster.",
+      "Adding additional difficulties: protege, professional, pundit, master, grandmaster.",
       "Regenerated puzzle library with newly generated puzzles with updated difficulty thresholds."
     ],
     "targets": ["web", "mobile", "desktop"],
@@ -58,9 +58,9 @@
   {
     "version": "v1.19.1",
     "date": "April 18th, 2024",
-    "summary": "Home navigation buttons no longer resize when hovered over. Instead they gain glowing boarders.",
+    "summary": "Home navigation buttons no longer resize when hovered over. Instead they gain glowing borders.",
     "features": [
-      "Home navigation buttons no longer resize when hovered over. Instead they gain glowing boarders."
+      "Home navigation buttons no longer resize when hovered over. Instead they gain glowing borders."
     ],
     "targets": ["web", "desktop"],
     "contributors": ["Gregory711"]
@@ -86,7 +86,7 @@
     "features": [
       "Created new difficulties: amateur, layman, novice, and trainee.",
       "Added ability to see the current difficulty level when playing a game.",
-      "Greatly increased the number of avaliable puzzles for users to play."
+      "Greatly increased the number of available puzzles for users to play."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant", "Gregory711"]
@@ -113,7 +113,7 @@
   },
   {
     "version": "v1.16.1",
-    "date": "Feburary 4th, 2024",
+    "date": "February 4th, 2024",
     "summary": "Adding placeholder contact page.",
     "features": ["A placeholder 'Contact Us' page is added."],
     "targets": ["web", "mobile", "desktop"],
@@ -154,7 +154,7 @@
   {
     "version": "v1.15.0",
     "date": "November 4th, 2023",
-    "summary": "Users now recieve a drill explanation when they enter a drill.",
+    "summary": "Users now receive a drill explanation when they enter a drill.",
     "features": [
       "Users now recieve a drill explanation when they enter a drill.",
       "Users have the option to check a box if they do not want to see the explanation in the future."
@@ -271,7 +271,7 @@
     "summary": "Restructuring website.",
     "features": [
       "The landing page and the home page have been combined.",
-      "Learn, Drill, Home, and Play are now located on seperate pages.",
+      "Learn, Drill, Home, and Play are now located on separate pages.",
       "Added a navigation bar on the left side of the page for navigating to these pages.",
       "Home page now has buttons for navigating directly to Drill, Learn, and Play pages.",
       "The drill navigation panel is replaced with buttons on the Drill page.",
@@ -711,7 +711,7 @@
     "summary": "Replacing the lesson carousel with lesson button panel.",
     "features": [
       "Replacing the lesson carousel with lesson button panel.",
-      "Lessons are now locked until the user complets the previous lesson."
+      "Lessons are now locked until the user completes the previous lesson."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -1469,7 +1469,7 @@
   },
   {
     "version": "v0.2.0",
-    "date": "Feburary 25th, 2023",
+    "date": "February 25th, 2023",
     "summary": "Implementing initial Sudoku Board",
     "features": ["A Sudoku board is now useable on the Home page"],
     "targets": ["web", "mobile"],
@@ -1477,7 +1477,7 @@
   },
   {
     "version": "v0.1.3",
-    "date": "Feburary 24th, 2023",
+    "date": "February 24th, 2023",
     "summary": "Login state is preserved across refreshes / browser restarts for 10 hours.",
     "features": [
       "Users can now stay logged in through their browser for 10 hours at a time before being asked to log in again."
@@ -1487,7 +1487,7 @@
   },
   {
     "version": "v0.1.2",
-    "date": "Feburary 22nd, 2023",
+    "date": "February 22nd, 2023",
     "summary": "Implemented logout functionality for mobile.",
     "features": ["Implemented logout functionality for mobile."],
     "targets": ["mobile"],
@@ -1495,7 +1495,7 @@
   },
   {
     "version": "v0.1.1",
-    "date": "Feburary 22nd, 2023",
+    "date": "February 22nd, 2023",
     "summary": "Implemented logout functionality for web.",
     "features": ["Implemented logout functionality for web."],
     "targets": ["web"],
