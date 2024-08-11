@@ -85,9 +85,7 @@ export const ReleaseNote = (props: ReleaseNoteInterface, key: string) => {
       <Divider style={{ marginBottom: 10 }} />
       <>
         <Text style={{ fontSize: 20 }}>Summary: </Text>
-        <Text style={{ paddingLeft: 20, maxWidth: 800, fontSize: 14 }}>
-          {props.summary}
-        </Text>
+        <Text style={{ paddingLeft: 20, fontSize: 14 }}>{props.summary}</Text>
         <Text style={{ fontSize: 20 }}>Features: </Text>
         {featureListComponent}
         <Text style={{ fontSize: 20 }}>Preview Features: </Text>
