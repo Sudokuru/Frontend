@@ -40,8 +40,8 @@ const BulletComponent = (point: string, key: number) => {
  */
 const BulletedListComponent = (points: string[]) => {
   const list = [];
-  for (const point of points) {
-    list.push(BulletComponent(point, points.indexOf(point)));
+  for (const [index, point] of points.entries()) {
+    list.push(BulletComponent(point, index));
   }
   return list;
 };
