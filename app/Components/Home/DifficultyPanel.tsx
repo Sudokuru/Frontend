@@ -97,10 +97,11 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
   );
   CARD_LENGTH *= 1 - shrinkage;
 
+  let difficulty: string = "";
   for (let i = 0; i < difficulties.length; i++) {
     let img: ImageURISource;
     let alt: string;
-    let difficulty: string = difficulties[i];
+    difficulty = difficulties[i];
     let description: difficulty;
     switch (difficulty) {
       case "Novice":
@@ -191,28 +192,28 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
 
     // Add row
     if ((i + 1) % columnCount === 0) {
-      difficultyButtonArray.push(subArray);
+      difficultyButtonArray.push([difficulty, subArray]);
       subArray = [];
     }
   }
   // Add last row if not evenly divisible
   if (subArray.length > 0) {
-    difficultyButtonArray.push(subArray);
+    difficultyButtonArray.push([difficulty, subArray]);
   }
 
   // render each sub-array as a row
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
-      {difficultyButtonArray.map((subArray, index) => (
+      {difficultyButtonArray.map(([rowKey, difficultyCard]) => (
         <View
           style={{
             flexWrap: "wrap",
             flexDirection: "row",
             justifyContent: "center",
           }}
-          key={index}
+          key={String(rowKey)}
         >
-          {subArray}
+          {difficultyCard}
         </View>
       ))}
     </View>
