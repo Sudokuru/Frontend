@@ -4,6 +4,15 @@ export class PlayPage {
   readonly page: Page;
   readonly title: Locator;
   readonly start: Locator;
+  readonly noviceDesc: Locator;
+  readonly amateurDesc: Locator;
+  readonly laymanDesc: Locator;
+  readonly traineeDesc: Locator;
+  readonly protegeDesc: Locator;
+  readonly professionalDesc: Locator;
+  readonly punditDesc: Locator;
+  readonly masterDesc: Locator;
+  readonly grandmasterDesc: Locator;
   readonly threePointStar: Locator;
   readonly fourPointStar: Locator;
   readonly fivePointStar: Locator;
@@ -14,6 +23,15 @@ export class PlayPage {
     this.page = page;
     this.title = page.getByText("Play a Sudoku game");
     this.start = page.getByText("Start Puzzle");
+    this.noviceDesc = page.getByTestId("NoviceDescription");
+    this.amateurDesc = page.getByTestId("AmateurDescription");
+    this.laymanDesc = page.getByTestId("LaymanDescription");
+    this.traineeDesc = page.getByTestId("TraineeDescription");
+    this.protegeDesc = page.getByTestId("ProtegeDescription");
+    this.professionalDesc = page.getByTestId("ProfessionalDescription");
+    this.punditDesc = page.getByTestId("PunditDescription");
+    this.masterDesc = page.getByTestId("MasterDescription");
+    this.grandmasterDesc = page.getByTestId("GrandmasterDescription");
     this.threePointStar = page.getByAltText("3 Point Star");
     this.fourPointStar = page.getByAltText("4 Point Star");
     this.fivePointStar = page.getByAltText("5 Point Star");
@@ -39,5 +57,17 @@ export class PlayPage {
 
   async starsAreHidden() {
     await this.starsHaveCount(0);
+  }
+
+  async descriptionsAreVisible() {
+    await expect(this.noviceDesc).toHaveCount(1);
+    await expect(this.amateurDesc).toHaveCount(1);
+    await expect(this.laymanDesc).toHaveCount(1);
+    await expect(this.traineeDesc).toHaveCount(1);
+    await expect(this.protegeDesc).toHaveCount(1);
+    await expect(this.professionalDesc).toHaveCount(1);
+    await expect(this.punditDesc).toHaveCount(1);
+    await expect(this.masterDesc).toHaveCount(1);
+    await expect(this.grandmasterDesc).toHaveCount(1);
   }
 }
