@@ -85,6 +85,7 @@ export const ReleaseNote = (
         alignSelf: "center",
       }}
       key={key}
+      testID={key}
     >
       <Text style={{ fontSize: 20 }}>Version: {props.version}</Text>
       <Text style={{ fontSize: 20 }}>Release Date: {props.date}</Text>
