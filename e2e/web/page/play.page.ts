@@ -59,15 +59,23 @@ export class PlayPage {
     await this.starsHaveCount(0);
   }
 
+  async descriptionsHaveCount(count: number) {
+    await expect(this.noviceDesc).toHaveCount(count);
+    await expect(this.amateurDesc).toHaveCount(count);
+    await expect(this.laymanDesc).toHaveCount(count);
+    await expect(this.traineeDesc).toHaveCount(count);
+    await expect(this.protegeDesc).toHaveCount(count);
+    await expect(this.professionalDesc).toHaveCount(count);
+    await expect(this.punditDesc).toHaveCount(count);
+    await expect(this.masterDesc).toHaveCount(count);
+    await expect(this.grandmasterDesc).toHaveCount(count);
+  }
+
   async descriptionsAreVisible() {
-    await expect(this.noviceDesc).toHaveCount(1);
-    await expect(this.amateurDesc).toHaveCount(1);
-    await expect(this.laymanDesc).toHaveCount(1);
-    await expect(this.traineeDesc).toHaveCount(1);
-    await expect(this.protegeDesc).toHaveCount(1);
-    await expect(this.professionalDesc).toHaveCount(1);
-    await expect(this.punditDesc).toHaveCount(1);
-    await expect(this.masterDesc).toHaveCount(1);
-    await expect(this.grandmasterDesc).toHaveCount(1);
+    await this.descriptionsHaveCount(1);
+  }
+
+  async descriptionsAreHidden() {
+    await this.descriptionsHaveCount(0);
   }
 }
