@@ -33,7 +33,9 @@ export class PlayPage {
     this.masterDesc = page.getByTestId("MasterDescription");
     this.grandmasterDesc = page.getByTestId("GrandmasterDescription");
     this.threePointStar = page.getByAltText("3 Point Star");
-    this.fourPointStar = page.getByAltText("4 Point Star");
+    // Does substring match by default so 4 Point Star will match 24 Point Star
+    // /^ marks the beginning of the string and $/ marks the end for exact match
+    this.fourPointStar = page.getByAltText(/^4 Point Star$/);
     this.fivePointStar = page.getByAltText("5 Point Star");
     this.ninePointStar = page.getByAltText("9 Point Star");
     this.twentyFourPointStar = page.getByAltText("24 Point Star");
@@ -52,11 +54,12 @@ export class PlayPage {
   }
 
   async starsHaveCount(count: number) {
-    await expect(this.threePointStar).toHaveCount(0);
-    await expect(this.fourPointStar).toHaveCount(0);
-    await expect(this.fivePointStar).toHaveCount(0);
-    await expect(this.ninePointStar).toHaveCount(0);
-    await expect(this.twentyFourPointStar).toHaveCount(0);
+    // some stars appear multiple times if they appear
+    await expect(this.threePointStar).toHaveCount(count * 2);
+    await expect(this.fourPointStar).toHaveCount(count * 2);
+    await expect(this.fivePointStar).toHaveCount(count);
+    await expect(this.ninePointStar).toHaveCount(count * 2);
+    await expect(this.twentyFourPointStar).toHaveCount(count * 2);
   }
 
   async starsAreVisible() {
