@@ -135,6 +135,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
     }
     let difficultyColor: string = getDifficultyColor(description);
     const descriptionTestID = `${difficulty}Description`;
+    const difficultyString = difficulty.toLowerCase();
     subArray.push(
       <View
         key={difficulty}
@@ -150,7 +151,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
           onPress={() => {
             props.navigation.navigate("SudokuPage", {
               action: "StartGame",
-              difficulty: difficulty.toLowerCase(),
+              difficulty: difficultyString,
             });
           }}
         >
@@ -192,13 +193,13 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
 
     // Add row
     if ((i + 1) % columnCount === 0) {
-      difficultyButtonArray.push([difficulty, subArray]);
+      difficultyButtonArray.push([difficulty + "Row", subArray]);
       subArray = [];
     }
   }
   // Add last row if not evenly divisible
   if (subArray.length > 0) {
-    difficultyButtonArray.push([difficulty, subArray]);
+    difficultyButtonArray.push([difficulty + "Row", subArray]);
   }
 
   // render each sub-array as a row
