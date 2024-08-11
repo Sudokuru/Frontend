@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 
 import json from "../../Changelog.json";
 import {
@@ -7,7 +7,7 @@ import {
   ReleaseNote,
 } from "../Components/ReleaseNotes/ReleaseNote";
 import { useTheme, Text } from "react-native-paper";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -21,20 +21,27 @@ const ReleaseNotesPage = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ alignSelf: "center" }}>
-      <Text
-        style={{
-          fontSize: reSize / 20,
-          color: theme.colors.primary,
-          fontWeight: "bold",
-          marginBottom: 10,
-          alignSelf: "center",
-        }}
-      >
-        Release Notes
-      </Text>
-      {content}
-    </ScrollView>
+    <FlatList
+      contentContainerStyle={{ alignSelf: "center" }}
+      directionalLockEnabled={true}
+      horizontal={false}
+      showsHorizontalScrollIndicator={false}
+      ListHeaderComponent={
+        <Text
+          style={{
+            fontSize: reSize / 20,
+            color: theme.colors.primary,
+            fontWeight: "bold",
+            marginBottom: 10,
+            alignSelf: "center",
+          }}
+        >
+          Release Notes
+        </Text>
+      }
+      data={releaseNotes}
+      renderItem={({ item }) => ReleaseNote(item, releaseNotes.indexOf(item))}
+    />
   );
 };
 
