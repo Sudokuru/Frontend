@@ -67,6 +67,7 @@ const PlayPage = () => {
             }}
           >
             <Text
+              testID="playPageTitle"
               style={{
                 color: theme.colors.primary,
                 fontSize: 50,
