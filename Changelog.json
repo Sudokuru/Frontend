@@ -1,5 +1,18 @@
 [
   {
+    "version": "1.22.0",
+    "date": "August 11th, 2024",
+    "summary": "Added Release notes page",
+    "features": [
+      "Added release notes page for the user to see history and new updates to the app/site."
+    ],
+    "bug fixes": [
+      "The size of the navigatino drawer has been slightly increased to be able to fit all elements."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.21.2",
     "date": "August 1st, 2024",
     "summary": "Fixed image display bugs and navigation / routing issue",
