@@ -36,7 +36,7 @@ const ReleaseNotesPage = () => {
         </Text>
       }
       data={releaseNotes}
-      renderItem={({ item }) => ReleaseNote(item, releaseNotes.indexOf(item))}
+      renderItem={({ item }) => ReleaseNote(item, item.version)}
     />
   );
 };

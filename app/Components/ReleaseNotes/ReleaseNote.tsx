@@ -46,7 +46,7 @@ const BulletedListComponent = (points: string[]) => {
   return list;
 };
 
-export const ReleaseNote = (props: ReleaseNoteInterface, key: number) => {
+export const ReleaseNote = (props: ReleaseNoteInterface, key: string) => {
   let featureList = ["None"];
   if (props.features) {
     featureList = props.features;
