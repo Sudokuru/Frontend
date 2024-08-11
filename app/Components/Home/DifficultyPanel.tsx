@@ -127,6 +127,7 @@ const DifficultyPanel = (props: any) => {
         break;
     }
     let difficultyColor: string = getDifficultyColor(description);
+    const descriptionTestID = `${difficulty}Description`;
     subArray.push(
       <View
         key={difficulty}
@@ -152,7 +153,7 @@ const DifficultyPanel = (props: any) => {
             </Text>
             {shrinkage < 0.6 ? (
               <Text
-                testID={"difficulty"}
+                testID={descriptionTestID}
                 variant="headlineSmall"
                 style={{ alignSelf: "center" }}
                 theme={{ colors: { onSurface: difficultyColor } }}
