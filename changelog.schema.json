@@ -1,0 +1,61 @@
+{
+  "schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Changelog",
+  "description": "The changelog for Sudokuru",
+  "type": "array",
+  "additionalItems": false,
+  "items": {
+    "required": ["version", "date", "summary", "targets", "contributors"],
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "description": "The version of the change.",
+        "type": "string"
+      },
+      "date": {
+        "description": "The date of the change.",
+        "type": "string"
+      },
+      "summary": {
+        "description": "The summary of the change.",
+        "type": "string"
+      },
+      "features": {
+        "description": "A list of the features added by this change.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "preview features": {
+        "description": "A list of the preview features added by this change.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "bug fixes": {
+        "description": "A list of the bugs fixed by this change.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "targets": {
+        "description": "A list of targets updated by this change.",
+        "type": "array",
+        "items": {
+          "enum": ["web", "mobile", "desktop"]
+        }
+      },
+      "contributors": {
+        "description": "A list of the contributors for this change.",
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
