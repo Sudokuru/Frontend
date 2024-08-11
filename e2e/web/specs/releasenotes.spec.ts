@@ -8,6 +8,7 @@ const releaseNotes: ReleaseNoteInterface[] = json;
 test.describe("release notes", () => {
   test("first release note renders", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
     await headerComponent.releaseNotes.click();
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.releaseNotesPageIsRendered();

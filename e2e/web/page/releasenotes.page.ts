@@ -6,7 +6,7 @@ export class ReleaseNotesPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("Release Notes");
+    this.title = page.getByTestId("ReleaseNotesTitle");
   }
 
   async releaseNotesPageIsRendered() {

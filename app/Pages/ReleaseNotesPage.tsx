@@ -28,6 +28,7 @@ const ReleaseNotesPage = () => {
       showsHorizontalScrollIndicator={false}
       ListHeaderComponent={
         <Text
+          testID="ReleaseNotesTitle"
           style={{
             fontSize: reSize / 20,
             color: theme.colors.primary,
