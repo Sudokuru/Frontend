@@ -112,14 +112,18 @@ const PlayPage = () => {
             ) : (
               <></>
             )}
-            <View style={{ alignItems: "center", alignSelf: "center" }}>
-              <View style={{ padding: reSize / 4 }}>
-                <DifficultyPanel
-                  width={windowSize.width}
-                  height={windowSize.height}
-                  navigation={navigation}
-                />
-              </View>
+            <View
+              style={{
+                alignItems: "center",
+                alignSelf: "center",
+                padding: reSize / 4,
+              }}
+            >
+              <DifficultyPanel
+                width={windowSize.width}
+                height={windowSize.height}
+                navigation={navigation}
+              />
             </View>
           </View>
         </View>
