@@ -46,7 +46,6 @@ export class ReleaseNotesPage {
 
   /**
    * Determines if the provided text for the release note is present
-   * @param notes All of the release notes in json format
    * @param version The version of the release note we want to load in
    * @param text The text we want to verify is present in the release note
    */
@@ -59,10 +58,10 @@ export class ReleaseNotesPage {
   }
 
   /**
-   * Determines if the provided text for the release note is present with expected number
-   * @param notes All of the release notes in json format
+   * Checks to see how many occurances of a string exist in the release note
    * @param version The version of the release note we want to load in
-   * @param text The text we want to verify is present in the release note with expected number
+   * @param text The text we want to verify is present or not present
+   * @param count The number of instances we expect the text to occur in the release note
    */
   async isReleaseNoteTextPresentWithCount(
     version: string,
