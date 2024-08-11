@@ -1,5 +1,5 @@
 import React from "react";
-// import { FlatList } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 
 import json from "../../Changelog.json";
 import {
@@ -7,7 +7,7 @@ import {
   ReleaseNote,
 } from "../Components/ReleaseNotes/ReleaseNote";
 import { useTheme, Text } from "react-native-paper";
-import { useWindowDimensions, FlatList, Platform } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -15,22 +15,8 @@ const ReleaseNotesPage = () => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
-  // react-native-web has weird behavior for scroll bar disabling
-  // https://github.com/necolas/react-native-web/blob/54c14d64dabd175e8055e1dc92e9196c821f9b7d/packages/react-native-web/src/exports/ScrollView/ScrollViewBase.js#L149-L151
-  const horizontalScrollIndicator = () => {
-    if (Platform.OS === "android" || Platform.OS === "ios") {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   return (
     <FlatList
-      contentContainerStyle={{ alignSelf: "center" }}
-      directionalLockEnabled={true}
-      horizontal={false}
-      showsHorizontalScrollIndicator={horizontalScrollIndicator()}
       ListHeaderComponent={
         <Text
           testID="ReleaseNotesTitle"
