@@ -116,61 +116,34 @@ test.describe("start game", () => {
 });
 
 test.describe("resize play page", () => {
-  test("Difficulty descriptions are visible on desktop sized screen", async ({
+  test("Difficulty stars and descriptions are visible on desktop sized screen", async ({
     play,
   }) => {
-    const elementLocator = await play.locator("text=Very Easy");
-    const isVisible = await elementLocator.first().isVisible();
-    const count = await elementLocator.count();
-    expect(isVisible).toBeTruthy();
-    expect(count).toBe(2);
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreVisible();
+    await playPage.starsAreVisible();
   });
 
   test("Difficulty descriptions and stars go away on small screens", async ({
     play,
   }) => {
     play.setViewportSize(devices["iPhone 14"].viewport);
-    const elementLocator = await play.locator("text=Very Easy");
-    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
-    await play.waitForTimeout(500);
-    const isVisible = await elementLocator.isVisible();
-    expect(isVisible).toBeFalsy();
-    const imgIsVisible = await threePointLocator.isVisible();
-    expect(imgIsVisible).toBeFalsy();
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreHidden();
+    await playPage.starsAreHidden();
   });
 
   test("Full page title is visible on desktop sized screens", async ({
     play,
   }) => {
-    const fullLocator = await play.locator("text=a Sudoku game");
-    const fullIsVisible = await fullLocator.isVisible();
-    expect(fullIsVisible).toBeTruthy();
-    const partialLocator = await play.locator("text=Play Sudoku");
-    const partialIsVisible = await partialLocator.isVisible();
-    expect(partialIsVisible).toBeFalsy();
+    const playPage = new PlayPage(play);
+    await playPage.fullTitleIsVisible();
   });
 
-  test("Only partial page title is visible on small screens", async ({
-    play,
-  }) => {
+  test("Partial page title is visible on small screens", async ({ play }) => {
     play.setViewportSize(devices["iPhone 14"].viewport);
-    const partialLocator = await play.locator("text=Play Sudoku");
-    await play.waitForTimeout(500);
-    const partialIsVisible = await partialLocator.isVisible();
-    expect(partialIsVisible).toBeTruthy();
-    const fullLocator = await play.locator("text=a Sudoku game");
-    const fullIsVisible = await fullLocator.isVisible();
-    expect(fullIsVisible).toBeFalsy();
-  });
-
-  test("Difficulty stars are visible on desktop sized screens", async ({
-    play,
-  }) => {
-    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
-    const isVisible = await threePointLocator.first().isVisible();
-    const count = await threePointLocator.count();
-    expect(isVisible).toBeTruthy();
-    expect(count).toBe(2);
+    const playPage = new PlayPage(play);
+    await playPage.partialTitleIsVisible();
   });
 
   test("Difficulty stars go away on but descriptions stay on medium screens", async ({
@@ -180,14 +153,8 @@ test.describe("resize play page", () => {
       width: 1024,
       height: 1024,
     });
-    const threePointLocator = await play.locator('img[alt="3 Point Star"]');
-    const elementLocator = await play.locator("text=Very Hard");
-    await play.waitForTimeout(500);
-    const imgIsVisible = await threePointLocator.isVisible();
-    expect(imgIsVisible).toBeFalsy();
-    const isVisible = await elementLocator.first().isVisible();
-    const count = await elementLocator.count();
-    expect(isVisible).toBeTruthy();
-    expect(count).toBe(2);
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreVisible();
+    await playPage.starsAreHidden();
   });
 });
