@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.23.0",
+    "date": "August 11th, 2024",
+    "summary": "New difficulty selection panel on Play page",
+    "features": [
+      "Replaced difficulty buttons with cards with images and descriptions when resized large enough",
+      "Removed start game button in favor of clicking on the difficulty card to start a game"
+    ],
+    "bug fixes": [
+      "Fixed bug where the difficulty selection panel would not display correctly on mobile devices"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
     "version": "1.22.0",
     "date": "August 11th, 2024",
     "summary": "Added Release notes page",
