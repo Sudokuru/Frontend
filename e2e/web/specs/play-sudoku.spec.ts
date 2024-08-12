@@ -1,5 +1,5 @@
 import { test } from "../fixture";
-import { expect } from "@playwright/test";
+import { devices, expect } from "@playwright/test";
 import { PlayPage } from "../page/play.page";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { EndGameModalComponent } from "../components/end-game-modal.component";
@@ -92,5 +92,69 @@ test.describe("complete game", () => {
     await expect(
       statistics.page.getByText("Total Mistakes Made: 235")
     ).toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("start game", () => {
+  test("Clicking on novice button should start novice game", async ({
+    play,
+  }) => {
+    await play.getByText("Novice").click();
+    await expect(play.getByText("Difficulty: novice")).toBeInViewport({
+      ratio: 1,
+    });
+  });
+
+  test("Clicking on button with intermediate text should start protege game", async ({
+    play,
+  }) => {
+    await play.getByText("Intermediate").click();
+    await expect(play.getByText("Difficulty: protege")).toBeInViewport({
+      ratio: 1,
+    });
+  });
+});
+
+test.describe("resize play page", () => {
+  test("Difficulty stars and descriptions are visible on desktop sized screen", async ({
+    play,
+  }) => {
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreVisible();
+    await playPage.starsAreVisible();
+  });
+
+  test("Difficulty descriptions and stars go away on small screens", async ({
+    play,
+  }) => {
+    play.setViewportSize(devices["iPhone 14"].viewport);
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreHidden();
+    await playPage.starsAreHidden();
+  });
+
+  test("Full page title is visible on desktop sized screens", async ({
+    play,
+  }) => {
+    const playPage = new PlayPage(play);
+    await playPage.fullTitleIsVisible();
+  });
+
+  test("Partial page title is visible on small screens", async ({ play }) => {
+    play.setViewportSize(devices["iPhone 14"].viewport);
+    const playPage = new PlayPage(play);
+    await playPage.partialTitleIsVisible();
+  });
+
+  test("Difficulty stars go away on but descriptions stay on medium screens", async ({
+    play,
+  }) => {
+    play.setViewportSize({
+      width: 1024,
+      height: 1024,
+    });
+    const playPage = new PlayPage(play);
+    await playPage.descriptionsAreVisible();
+    await playPage.starsAreHidden();
   });
 });

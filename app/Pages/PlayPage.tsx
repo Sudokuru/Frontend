@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Pressable } from "react-native";
-import { Text, useTheme, Button, SegmentedButtons } from "react-native-paper";
+import { View, Pressable, ScrollView } from "react-native";
+import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
@@ -9,21 +9,8 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 import { Puzzles } from "../Api/Puzzles";
-import { sudokuStrategyArray } from "sudokuru";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
-
-let strategies: sudokuStrategyArray = [
-  "AMEND_NOTES",
-  "SIMPLIFY_NOTES",
-  "NAKED_SINGLE",
-  "NAKED_PAIR",
-  "NAKED_TRIPLET",
-  "NAKED_QUADRUPLET",
-  "HIDDEN_SINGLE",
-  "HIDDEN_PAIR",
-  "HIDDEN_TRIPLET",
-  "HIDDEN_QUADRUPLET",
-];
+import DifficultyPanel from "../Components/Home/DifficultyPanel";
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
@@ -31,10 +18,11 @@ const PlayPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
   const newSize = minWindowSize / 25;
+  const reSize = Math.min(windowSize.width, windowSize.height) / 25;
+
+  const titleText = windowSize.width > 500 ? "a Sudoku game" : "Sudoku";
 
   const theme = useTheme();
-
-  const [value, setValue] = React.useState("novice");
 
   useFocusEffect(
     React.useCallback(() => {
@@ -61,7 +49,7 @@ const PlayPage = () => {
   const hideResumeButton = () => setResumeVisible(false);
 
   return (
-    <View style={{ width: windowSize.width, height: windowSize.height }}>
+    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -77,6 +65,7 @@ const PlayPage = () => {
             }}
           >
             <Text
+              testID="playPageTitle"
               style={{
                 color: theme.colors.primary,
                 fontSize: 50,
@@ -86,7 +75,7 @@ const PlayPage = () => {
             >
               Play{" "}
               <Text style={{ color: theme.colors.onBackground }}>
-                a Sudoku game
+                {titleText}
               </Text>
             </Text>
             <Pressable
@@ -121,89 +110,19 @@ const PlayPage = () => {
             ) : (
               <></>
             )}
-            <Button
-              style={{ margin: newSize / 4 }}
-              mode="contained"
-              onPress={() => {
-                navigation.navigate("SudokuPage", {
-                  action: "StartGame",
-                  difficulty: value,
-                });
+            <View
+              style={{
+                alignItems: "center",
+                alignSelf: "center",
+                padding: reSize / 4,
               }}
             >
-              Start Puzzle
-            </Button>
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ margin: newSize / 4, width: 200 }}
-              buttons={[
-                {
-                  value: "novice",
-                  label: "novice",
-                },
-                {
-                  value: "amateur",
-                  label: "amateur",
-                },
-              ]}
-            />
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ margin: newSize / 4, width: 200 }}
-              buttons={[
-                {
-                  value: "layman",
-                  label: "layman",
-                },
-                {
-                  value: "trainee",
-                  label: "trainee",
-                },
-              ]}
-            />
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ margin: newSize / 4, width: 200 }}
-              buttons={[
-                {
-                  value: "protege",
-                  label: "protege",
-                },
-                {
-                  value: "professional",
-                  label: "professional",
-                },
-              ]}
-            />
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ margin: newSize / 4, width: 200 }}
-              buttons={[
-                {
-                  value: "pundit",
-                  label: "pundit",
-                },
-                {
-                  value: "master",
-                  label: "master",
-                },
-              ]}
-            />
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ margin: newSize / 4, width: 200 }}
-              buttons={[
-                {
-                  value: "grandmaster",
-                  label: "grandmaster",
-                }, // note: could add random difficulty especially if end design requires even number
-              ]}
-            />
+              <DifficultyPanel
+                width={windowSize.width}
+                height={windowSize.height}
+                navigation={navigation}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -229,7 +148,7 @@ const PlayPage = () => {
         }}
         overlayStyle={{ backgroundColor: "transparent" }}
       />
-    </View>
+    </ScrollView>
   );
 };
 

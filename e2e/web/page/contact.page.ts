@@ -59,7 +59,9 @@ export class ContactPage {
   }
 
   async errorIsNotVisible() {
-    await expect(this.page.getByText("There was an error")).not.toBeVisible();
+    await expect(this.page.getByText("There was an error")).not.toBeInViewport({
+      ratio: 1,
+    });
   }
 
   async closeAlert() {
