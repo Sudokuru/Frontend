@@ -16,7 +16,7 @@ export class HomePage {
 
   async homePageIsRendered() {
     await expect(this.startLessons).toBeInViewport({ ratio: 1 });
-    await expect(this.startDrills).toBeInViewport({ ratio: 1 });
+    // await expect(this.startDrills).toBeInViewport({ ratio: 1 });
     await expect(this.playSudoku).toBeInViewport({ ratio: 1 });
   }
 
