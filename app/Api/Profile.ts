@@ -32,18 +32,25 @@ export class Profile {
 
   public static async setProfileValue(profileValue: profileValue) {
     let value: profile = await this.getProfile();
-    if (profileValue === "theme") {
-      value.theme = !value.theme;
-    } else if (profileValue === "highlightBox") {
-      value.highlightBox = !value.highlightBox;
-    } else if (profileValue === "highlightColumn") {
-      value.highlightColumn = !value.highlightColumn;
-    } else if (profileValue === "highlightIdenticalValues") {
-      value.highlightIdenticalValues = !value.highlightIdenticalValues;
-    } else if (profileValue === "highlightRow") {
-      value.highlightRow = !value.highlightRow;
-    } else if (profileValue === "previewMode") {
-      value.previewMode = !value.previewMode;
+    switch (profileValue) {
+      case "theme":
+        value.theme = !value.theme;
+        break;
+      case "highlightBox":
+        value.highlightBox = !value.highlightBox;
+        break;
+      case "highlightColumn":
+        value.highlightColumn = !value.highlightColumn;
+        break;
+      case "highlightIdenticalValues":
+        value.highlightIdenticalValues = !value.highlightIdenticalValues;
+        break;
+      case "highlightRow":
+        value.highlightRow = !value.highlightRow;
+        break;
+      case "previewMode":
+        value.previewMode = !value.previewMode;
+        break;
     }
     this.setProfile(value);
   }
