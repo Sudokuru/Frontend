@@ -84,7 +84,7 @@ const Header = () => {
         }}
       >
         {featurePreviewSetting ? (
-          <View style={{ alignSelf: "center" }}>
+          <View style={{ alignSelf: "center" }} testID="FeaturePreviewText">
             <Text
               style={{
                 color: theme.colors.primary,
