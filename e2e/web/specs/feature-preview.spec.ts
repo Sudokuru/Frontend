@@ -4,9 +4,7 @@ import { devices } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
 
 test.describe("feature preview", () => {
-  test("full feature preview text appears on wide viewports", async ({
-    page,
-  }) => {
+  test("full indicator text appears on wide viewports", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     await headerComponent.fullFeaturePreviewTextIsNotVisible();
@@ -15,7 +13,7 @@ test.describe("feature preview", () => {
     await headerComponent.fullFeaturePreviewTextIsVisible();
   });
 
-  test("partial feature preview text appears on small viewports", async ({
+  test("partial indicator text appears on small viewports", async ({
     page,
   }) => {
     await page.setViewportSize(devices["iPhone 14"].viewport);
