@@ -26,7 +26,11 @@ export class ContactPage {
   }
 
   async inputCounterIsX(x: number) {
-    await expect(this.page.getByText(`${x}/1000`).last()).toBeInViewport({
+    await expect(
+      this.page
+        .getByTestId("FeedbackTextInput-label-active")
+        .getByText(`${x}/1000`)
+    ).toBeInViewport({
       ratio: 1,
     });
   }
@@ -55,10 +59,15 @@ export class ContactPage {
   }
 
   async errorIsNotVisible() {
-    await expect(this.page.getByText("There was an error")).not.toBeVisible();
+    await expect(this.page.getByText("There was an error")).not.toBeInViewport({
+      ratio: 1,
+    });
   }
 
   async closeAlert() {
-    await this.page.getByText("OK").last().click();
+    await this.page
+      .getByTestId("awesome-alert-confirm-btn")
+      .getByText("OK")
+      .click();
   }
 }

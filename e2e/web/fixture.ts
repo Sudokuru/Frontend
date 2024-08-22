@@ -15,6 +15,7 @@ interface MyFixtures {
   page: Page;
   resumeGame: Page;
   contact: Page;
+  play: Page;
 }
 
 interface MyOptions {
@@ -78,6 +79,16 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     await headerComponent.drawerContact.click();
     const contactPage = new ContactPage(page);
     await contactPage.contactPageIsRendered();
+    await use(page);
+  },
+  // Navigates to the play page.
+  play: async ({ page }, use) => {
+    await page.goto("");
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(page);
+    await playPage.playPageIsRendered();
     await use(page);
   },
 });

@@ -24,20 +24,20 @@ const NavigationSideBar = (props: any) => {
         icon={"home"}
         testID="HomeButton"
         label="Home"
-        active={currentPage === "Landing"}
+        active={currentPage === "LandingPage"}
         onPress={() => {
-          updateCurrentPage("Landing");
-          navigation.navigate("Landing");
+          updateCurrentPage("LandingPage");
+          navigation.navigate("LandingPage");
         }}
       />
       <Drawer.Item
         icon={"book-open-page-variant"}
         testID="LearnButton"
         label="Learn"
-        active={currentPage === "Learn"}
+        active={currentPage === "LearnPage"}
         onPress={() => {
-          updateCurrentPage("Learn");
-          navigation.navigate("Learn");
+          updateCurrentPage("LearnPage");
+          navigation.navigate("LearnPage");
         }}
       />
       {featurePreviewSetting ? (
@@ -45,10 +45,10 @@ const NavigationSideBar = (props: any) => {
           icon={"whistle"}
           testID="DrillButton"
           label="Drill"
-          active={currentPage === "Drill"}
+          active={currentPage === "DrillPage"}
           onPress={() => {
-            updateCurrentPage("Drill");
-            navigation.navigate("Drill");
+            updateCurrentPage("DrillPage");
+            navigation.navigate("DrillPage");
           }}
         />
       ) : (
@@ -58,20 +58,30 @@ const NavigationSideBar = (props: any) => {
         icon={"play"}
         testID="PlayButton"
         label="Play"
-        active={currentPage === "Play"}
+        active={currentPage === "PlayPage"}
         onPress={() => {
-          updateCurrentPage("Play");
-          navigation.navigate("Play");
+          updateCurrentPage("PlayPage");
+          navigation.navigate("PlayPage");
+        }}
+      />
+      <Drawer.Item
+        icon={"note-text"}
+        testID="ReleaseNotes"
+        label="Release Notes"
+        active={currentPage === "ReleaseNotesPage"}
+        onPress={() => {
+          updateCurrentPage("ReleaseNotesPage");
+          navigation.navigate("ReleaseNotesPage");
         }}
       />
       <Drawer.Item
         icon={"email"}
         testID="ContactButton"
         label="Contact"
-        active={currentPage === "Contact"}
+        active={currentPage === "ContactPage"}
         onPress={() => {
-          updateCurrentPage("Contact");
-          navigation.navigate("Contact");
+          updateCurrentPage("ContactPage");
+          navigation.navigate("ContactPage");
         }}
       />
     </Drawer.Section>

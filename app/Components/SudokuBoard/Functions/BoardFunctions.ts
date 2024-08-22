@@ -102,5 +102,5 @@ export function finishGame(
  */
 export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
   saveGame(sudokuBoard);
-  navigation.goBack();
+  navigation.navigate("PlayPage");
 }

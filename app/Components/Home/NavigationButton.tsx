@@ -53,6 +53,7 @@ const NavigationButton = (props: navigationButton) => {
                 maxWidth: "100%",
               }}
               source={props.image}
+              defaultSource={props.image}
             />
           </Surface>
         );

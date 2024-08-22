@@ -1,6 +1,5 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -44,46 +43,44 @@ const LandingPage = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
+    <View
+      style={{
+        width: windowSize.width,
+        height: windowSize.height,
+        flexDirection: "column",
+        alignItems: "center",
+        gap: minWindowSize / 25,
+      }}
+    >
+      {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
+      <View
         style={{
-          width: windowSize.width,
-          height: windowSize.height,
-          flexDirection: "column",
-          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "center",
           gap: minWindowSize / 25,
         }}
       >
-        {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: minWindowSize / 25,
-          }}
-        >
+        <NavigationButton
+          image={START_LESSONS_LOGO}
+          navigationPage="LearnPage"
+          testID="HomeLearnButton"
+        />
+        {featurePreviewSetting ? (
           <NavigationButton
-            image={START_LESSONS_LOGO}
-            navigationPage="Learn"
-            testID="HomeLearnButton"
+            image={START_DRILLS_LOGO}
+            navigationPage="DrillPage"
+            testID="HomeDrillButton"
           />
-          {featurePreviewSetting ? (
-            <NavigationButton
-              image={START_DRILLS_LOGO}
-              navigationPage="Drill"
-              testID="HomeDrillButton"
-            />
-          ) : (
-            <></>
-          )}
-          <NavigationButton
-            image={PLAY_SUDOKU_LOGO}
-            navigationPage="Play"
-            testID="HomePlayButton"
-          />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        ) : (
+          <></>
+        )}
+        <NavigationButton
+          image={PLAY_SUDOKU_LOGO}
+          navigationPage="PlayPage"
+          testID="HomePlayButton"
+        />
+      </View>
+    </View>
   );
 };
 
