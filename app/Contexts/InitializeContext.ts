@@ -4,7 +4,7 @@ import {
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
 import { profile } from "../Api/Puzzle.Types";
-import { Profile, returnDefaultPreviewMode } from "../Api/Profile";
+import { Profile } from "../Api/Profile";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -16,9 +16,7 @@ const InitializeContext = () => {
   const [highlightRowSetting, setHighlightRow] = React.useState(true);
   const [highlightColumnSetting, setHighlightColumn] = React.useState(true);
 
-  const [featurePreviewSetting, setFeaturePreview] = React.useState(
-    returnDefaultPreviewMode()
-  );
+  const [featurePreviewSetting, setFeaturePreview] = React.useState(false);
 
   // set initial values of theme
   React.useEffect(() => {

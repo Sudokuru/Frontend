@@ -1,14 +1,6 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 
-export const returnDefaultPreviewMode = () => {
-  if (process.env.EXPO_PUBLIC_ENVIRONMENT === "dev") {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 type profileValue =
   | "theme"
   | "highlightBox"
@@ -26,7 +18,7 @@ export class Profile {
         highlightColumn: true,
         highlightIdenticalValues: true,
         highlightRow: true,
-        previewMode: returnDefaultPreviewMode(),
+        previewMode: false,
       };
       await this.setProfile(profile);
       return profile;
