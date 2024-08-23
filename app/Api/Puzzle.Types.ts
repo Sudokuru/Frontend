@@ -55,4 +55,5 @@ export interface profile {
   highlightBox: boolean;
   highlightRow: boolean;
   highlightColumn: boolean;
+  previewMode: boolean;
 }

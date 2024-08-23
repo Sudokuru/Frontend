@@ -7,7 +7,7 @@ test.describe("navigation buttons", () => {
     const homePage = new HomePage(page);
     const buttons = [
       homePage.startLessons,
-      homePage.startDrills,
+      // homePage.startDrills,
       homePage.playSudoku,
     ];
     for (const button of buttons) {

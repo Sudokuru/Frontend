@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.24.0",
+    "date": "August 22nd, 2024",
+    "summary": "Adding Feature Preview mode for the user to preview incomplete or upcoming features.",
+    "features": [
+      "Adding a toggle switch in profile page for turning on and off Feature Preview mode.",
+      "Adding an indicator on the page header for if the user is in Feature Preview mode."
+    ],
+    "preview features": [
+      "Moved drill functionality into Preview Feature mode as it is incomplete."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.23.0",
     "date": "August 11th, 2024",
     "summary": "New difficulty selection panel on Play page",

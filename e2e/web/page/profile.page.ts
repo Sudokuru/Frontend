@@ -13,6 +13,8 @@ export class ProfilePage {
   readonly highlightRowSwitchDisabled: Locator;
   readonly highlightColumnSwitchEnabled: Locator;
   readonly highlightColumnSwitchDisabled: Locator;
+  readonly featurePreviewSwitchEnabled: Locator;
+  readonly featurePreviewSwitchDisabled: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -34,6 +36,12 @@ export class ProfilePage {
     );
     this.highlightColumnSwitchDisabled = page.getByTestId(
       "HighlightColumnDisabled"
+    );
+    this.featurePreviewSwitchEnabled = page.getByTestId(
+      "FeaturePreviewEnabled"
+    );
+    this.featurePreviewSwitchDisabled = page.getByTestId(
+      "FeaturePreviewDisabled"
     );
   }
 

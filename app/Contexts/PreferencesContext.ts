@@ -15,4 +15,6 @@ export const PreferencesContext = React.createContext({
   highlightRowSetting: true,
   toggleHighlightColumn: () => {},
   highlightColumnSetting: true,
+  toggleFeaturePreview: () => {},
+  featurePreviewSetting: false,
 });

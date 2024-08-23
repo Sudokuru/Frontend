@@ -6,7 +6,7 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 const NavigationSideBar = (props: any) => {
   const navigation: any = useNavigation();
 
-  const { currentPage, updateCurrentPage } =
+  const { currentPage, updateCurrentPage, featurePreviewSetting } =
     React.useContext(PreferencesContext);
 
   return (
@@ -40,16 +40,20 @@ const NavigationSideBar = (props: any) => {
           navigation.navigate("LearnPage");
         }}
       />
-      <Drawer.Item
-        icon={"whistle"}
-        testID="DrillButton"
-        label="Drill"
-        active={currentPage === "DrillPage"}
-        onPress={() => {
-          updateCurrentPage("DrillPage");
-          navigation.navigate("DrillPage");
-        }}
-      />
+      {featurePreviewSetting ? (
+        <Drawer.Item
+          icon={"whistle"}
+          testID="DrillButton"
+          label="Drill"
+          active={currentPage === "DrillPage"}
+          onPress={() => {
+            updateCurrentPage("DrillPage");
+            navigation.navigate("DrillPage");
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <Drawer.Item
         icon={"play"}
         testID="PlayButton"

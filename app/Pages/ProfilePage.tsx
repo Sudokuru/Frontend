@@ -22,6 +22,8 @@ const ProfilePage = () => {
     highlightColumnSetting,
     toggleHighlightRow,
     highlightRowSetting,
+    toggleFeaturePreview,
+    featurePreviewSetting,
   } = React.useContext(PreferencesContext);
 
   return (
@@ -173,6 +175,30 @@ const ProfilePage = () => {
                   highlightColumnSetting
                     ? "HighlightColumnEnabled"
                     : "HighlightColumnDisabled"
+                }
+                style={{ alignSelf: "center", flexDirection: "column" }}
+              />
+            </View>
+          </View>
+          <View style={{ marginBottom: 10, flexDirection: "row" }}>
+            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
+              Feature Preview:{" "}
+            </Text>
+            <View
+              style={{
+                justifyContent: "flex-end",
+                flexDirection: "row",
+                flex: 1,
+              }}
+            >
+              <Switch
+                color={"#025E73"}
+                value={featurePreviewSetting}
+                onValueChange={toggleFeaturePreview}
+                testID={
+                  featurePreviewSetting
+                    ? "FeaturePreviewEnabled"
+                    : "FeaturePreviewDisabled"
                 }
                 style={{ alignSelf: "center", flexDirection: "column" }}
               />

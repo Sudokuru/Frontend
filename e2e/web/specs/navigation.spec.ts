@@ -17,12 +17,12 @@ test.describe("home page", () => {
     await learnPage.learnPageIsRendered();
   });
 
-  test("start drills button", async ({ page }) => {
-    const homePage = new HomePage(page);
-    await homePage.startDrills.click();
-    const drillPage = new DrillPage(page);
-    await drillPage.drillPageIsRendered();
-  });
+  // test("start drills button", async ({ page }) => {
+  //   const homePage = new HomePage(page);
+  //   await homePage.startDrills.click();
+  //   const drillPage = new DrillPage(page);
+  //   await drillPage.drillPageIsRendered();
+  // });
 
   test("play sudoku button", async ({ page }) => {
     const homePage = new HomePage(page);
