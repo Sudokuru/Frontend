@@ -25,20 +25,20 @@
 
 # 🛠️ Local development
 
-## General Setup:
+## ⚙️ General Setup:
 
 1. Git clone this repository
 2. Install nodejs `v19.5.0` or later
 3. Install npm `9.3.1` or later
 4. Run `npm i` in this repositories root folder
 
-## Mobile Setup (not needed to run website):
+## 📲 Mobile Setup (not needed to run website):
 
 1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
 2. Download the expo app on your mobile device.
 3. On your development device e.g. laptop login by running: `expo login` and fill out the parameters.
 
-## Running the Application Locally
+## 🏃‍♂️ Running the Application Locally
 
 1. Run `npm run start` from this repositories root folder
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
