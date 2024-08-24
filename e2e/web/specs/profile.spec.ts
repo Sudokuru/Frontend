@@ -8,7 +8,9 @@ import {
 } from "../../../app/Styling/HighlightColors";
 
 test.describe("profile", () => {
-  test("toggle theme", async ({ page }) => {
+  test("should toggle the theme and verify title color change", async ({
+    page,
+  }) => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
@@ -18,21 +20,23 @@ test.describe("profile", () => {
     await expect(title).toHaveCSS("color", PURPLE_COLOR_RGB);
   });
 
-  test("root highlight toggle functions correctly", async ({ page }) => {
+  test("should toggle root highlight and verify all highlight switches' states", async ({
+    page,
+  }) => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
     await profilePage.highlightSwitchEnabled.click();
-    await profilePage.allHighlightSwitchesAreDisabled();
+    await profilePage.verifyAllHighlightSwitchesAreDisabled();
 
     await profilePage.highlightSwitchDisabled.click();
-    await profilePage.allHighlightSwitchesAreEnabled();
+    await profilePage.verifyAllHighlightSwitchesAreEnabled();
 
     await profilePage.highlightSwitchEnabled.click();
     await profilePage.highlightBoxSwitchDisabled.click();
     await profilePage.highlightColumnSwitchDisabled.click();
 
     await profilePage.highlightSwitchDisabled.click();
-    await profilePage.allHighlightSwitchesAreEnabled();
+    await profilePage.verifyAllHighlightSwitchesAreEnabled();
   });
 });

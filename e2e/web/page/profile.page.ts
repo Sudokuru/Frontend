@@ -53,7 +53,7 @@ export class ProfilePage {
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
 
-  async allHighlightSwitchesAreEnabled() {
+  async verifyAllHighlightSwitchesAreEnabled() {
     await expect(this.highlightSwitchEnabled).toBeInViewport({ ratio: 1 });
     await expect(this.highlightIdenticalValuesSwitchEnabled).toBeInViewport({
       ratio: 1,
@@ -65,7 +65,7 @@ export class ProfilePage {
     });
   }
 
-  async allHighlightSwitchesAreDisabled() {
+  async verifyAllHighlightSwitchesAreDisabled() {
     await expect(this.highlightSwitchDisabled).toBeInViewport({ ratio: 1 });
     await expect(this.highlightIdenticalValuesSwitchDisabled).toBeInViewport({
       ratio: 1,
