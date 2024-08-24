@@ -1,11 +1,22 @@
 [
   {
+    "version": "1.24.1",
+    "date": "August 24th, 2024",
+    "summary": "Updated profile page so that items fit better on the page.",
+    "features": [
+      "Added a master switch for highlight settings to disable or enable all highlight settings."
+    ],
+    "bug fixes": [
+      "Fixed issue where profile settings would not fit on some mobile device screens."
+    ]
+  },
+  {
     "version": "1.24.0",
     "date": "August 22nd, 2024",
-    "summary": "Adding Feature Preview mode for the user to preview incomplete or upcoming features.",
+    "summary": "Added Feature Preview mode for the user to preview incomplete or upcoming features.",
     "features": [
-      "Adding a toggle switch in profile page for turning on and off Feature Preview mode.",
-      "Adding an indicator on the page header for if the user is in Feature Preview mode."
+      "Added a toggle switch in profile page for turning on and off Feature Preview mode.",
+      "Added an indicator on the page header for if the user is in Feature Preview mode."
     ],
     "preview features": [
       "Moved drill functionality into Preview Feature mode as it is incomplete."
@@ -55,7 +66,7 @@
   {
     "version": "1.21.1",
     "date": "July 18th, 2024",
-    "summary": "Fixing issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
+    "summary": "Fixed issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
     "bug fixes": [
       "App no longer overlaps with phone icons at the top of the page."
     ],
@@ -78,9 +89,9 @@
   {
     "version": "1.20.0",
     "date": "July 4th, 2024",
-    "summary": "Adding additional difficulties for play game and regenerating puzzle library.",
+    "summary": "Added additional difficulties for play game and regenerated puzzle library.",
     "features": [
-      "Adding additional difficulties: protege, professional, pundit, master, grandmaster.",
+      "Added additional difficulties: protege, professional, pundit, master, grandmaster.",
       "Regenerated puzzle library with newly generated puzzles with updated difficulty thresholds."
     ],
     "targets": ["web", "mobile", "desktop"],
@@ -109,7 +120,7 @@
   {
     "version": "1.19.0",
     "date": "April 11th, 2024",
-    "summary": "Adding arrow key navigation for selected cell and additional hotkeys.",
+    "summary": "Added arrow key navigation for selected cell and additional hotkeys.",
     "features": [
       "Arrow keys and wasd (or WASD) keys can be used to move the selected cell in a Sudoku game.",
       "'e' and 'E' are added to '0' as hotkeys for erasing a selected cell's contents.",
@@ -123,7 +134,7 @@
   {
     "version": "1.18.0",
     "date": "April 7th, 2024",
-    "summary": "Greatly increasing the puzzle catalog and adding difficulty modes.",
+    "summary": "Greatly increased the puzzle catalog and added difficulty modes.",
     "features": [
       "Created new difficulties: amateur, layman, novice, and trainee.",
       "Added ability to see the current difficulty level when playing a game.",
@@ -145,9 +156,9 @@
   {
     "version": "1.16.2",
     "date": "March 3rd, 2024",
-    "summary": "Fixing issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed.",
+    "summary": "Fixed issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed.",
     "bug fixes": [
-      "Fixing issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed."
+      "Fixed issue where pausing and resuming a game would create a new game instance, slowly increasing the site size until page is refreshed or app is closed."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
@@ -155,7 +166,7 @@
   {
     "version": "1.16.1",
     "date": "February 4th, 2024",
-    "summary": "Adding placeholder contact page.",
+    "summary": "Added placeholder contact page.",
     "features": ["A placeholder 'Contact Us' page is added."],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Gregory711"]
@@ -163,13 +174,13 @@
   {
     "version": "1.16.0",
     "date": "December 3rd, 2023",
-    "summary": "Rebuilding the Sudoku board logic from the ground up.",
+    "summary": "Rebuilt the Sudoku board logic from the ground up.",
     "features": [
       "Move history is now preserved through browser refreshes, and is stored on the user's device.",
       "0 key can now be used to erase values or notes in a Sudoku cell",
       "Users can now unselect the currently selected cell.",
       "The end game modal is replaced with an end game screen.",
-      "Improving performance of the Sudoku board",
+      "Improved performance of the Sudoku board",
       "Demo board and Drills are no longer functional and will be added back in a later release."
     ],
     "bug fixes": [
@@ -185,9 +196,9 @@
   {
     "version": "1.15.1",
     "date": "November 25th, 2023",
-    "summary": "Improving display for cards on small screens / window sizes.",
+    "summary": "Improved display for cards on small screens / window sizes.",
     "bug fixes": [
-      "Improving display for cards on small screens / window sizes."
+      "Improved display for cards on small screens / window sizes."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Gregory711"]
@@ -206,7 +217,7 @@
   {
     "version": "1.14.0",
     "date": "October 28th, 2023",
-    "summary": "Restructuring lessons to only take up a single page.",
+    "summary": "Restructured lessons to only take up a single page.",
     "features": [
       "Lessons now only use a single page, with support for scrolling."
     ],
@@ -216,7 +227,7 @@
   {
     "version": "1.13.0",
     "date": "Octobre 22nd, 2023",
-    "summary": "Implementing desktop app support",
+    "summary": "Implemented desktop app support",
     "features": ["Sudokuru can now be downloaded and played on desktop."],
     "targets": ["desktop"],
     "contributors": ["Thomas-Gallant"]
@@ -259,15 +270,15 @@
   {
     "version": "1.9.0",
     "date": "September 7th, 2023",
-    "summary": "Fixing bugs with sudoku games and home page.",
+    "summary": "Fixed bugs with sudoku games and home page.",
     "features": [
       "Home page is restructured so that navigation buttons are below the demo board.",
       "Resizing of the home page content based on screen size is improved.",
       "Navigation buttons increase in size when being hovered over by mouse."
     ],
     "bug fixes": [
-      "Resolving issue with scroll bar temporarily appearing on home page with first page render.",
-      "Removing elevation effect from home navigation buttons as that resulted in weird rendering on mobile devices.",
+      "Resolved issue with scroll bar temporarily appearing on home page with first page render.",
+      "Removed elevation effect from home navigation buttons as that resulted in weird rendering on mobile devices.",
       "Fixed issue where time spent playing and score showed as NaN in game results popup."
     ],
     "targets": ["web", "mobile"],
@@ -276,19 +287,17 @@
   {
     "version": "1.8.2",
     "date": "August 31st, 2023",
-    "summary": "Fixing bug with timer not starting on initial puzzle start.",
-    "bug fixes": [
-      "Fixing bug with timer not starting on initial puzzle start."
-    ],
+    "summary": "Fixed bug with timer not starting on initial puzzle start.",
+    "bug fixes": ["Fixed bug with timer not starting on initial puzzle start."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "1.8.1",
     "date": "August 31st, 2023",
-    "summary": "Fixing bug with inputing values into Sudoku board",
+    "summary": "Fixed bug with inputing values into Sudoku board",
     "bug fixes": [
-      "Fixing an issue where the demo board was sharing state with the play board, causing inputs to the play board to be disabled when the demo board was in 'hint' mode."
+      "Fixed an issue where the demo board was sharing state with the play board, causing inputs to the play board to be disabled when the demo board was in 'hint' mode."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -296,7 +305,7 @@
   {
     "version": "1.8.0",
     "date": "August 27th, 2023",
-    "summary": "Restructuring drawer menu",
+    "summary": "Restructured drawer menu",
     "features": [
       "Navigation sidebar is now closed by default, and can be opened through the hamburger menu icon.",
       "Navigation sidebar now has a close button for closing the sidebar.",
@@ -309,7 +318,7 @@
   {
     "version": "1.7.0",
     "date": "August 26th, 2023",
-    "summary": "Restructuring website.",
+    "summary": "Restructured website.",
     "features": [
       "The landing page and the home page have been combined.",
       "Learn, Drill, Home, and Play are now located on separate pages.",
@@ -344,7 +353,7 @@
     "date": "August 19th, 2023",
     "summary": "Sudoku games no longer rely on user needing Internet access.",
     "features": [
-      "Staring a Sudoku game now retrieves a puzzle from the user's device instead of requring Internet access.",
+      "Starting a Sudoku game now retrieves a puzzle from the user's device instead of requring Internet access.",
       "Games are saved locally on the user's device instead of requring an Internet connection to save games.",
       "Resuming games no longer requires an Internet connection, as the games are stored on the user's device."
     ],
@@ -370,7 +379,7 @@
   {
     "version": "1.2.0",
     "date": "August 19th, 2023",
-    "summary": "Removing dependency on online servers for drills and lessons.",
+    "summary": "Removed dependency on online servers for drills and lessons.",
     "features": [
       "Drills are now stored locally on device, and no longer require an Internet connection to play.",
       "Lessons are now stored locally on device, and no longer require an Internet connection to access."
@@ -393,10 +402,10 @@
   {
     "version": "1.0.1",
     "date": "June 3rd, 2023",
-    "summary": "Fixing assorted issues with the login / logout process.",
+    "summary": "Fixed assorted issues with the login / logout process.",
     "bug fixes": [
-      "Fixing issue with iOS login not working.",
-      "Fixing an issue on iOS and Android where logging out did not close the logout window."
+      "Fixed issue with iOS login not working.",
+      "Fixed an issue on iOS and Android where logging out did not close the logout window."
     ],
     "targets": ["mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -404,9 +413,9 @@
   {
     "version": "1.0.0",
     "date": "April 17th, 2023",
-    "summary": "Adjusting difficulty and strategy algorithm for retrieving puzzles",
+    "summary": "Adjusted difficulty and strategy algorithm for retrieving puzzles",
     "bug fixes": [
-      "Adjusting difficulty and strategy algorithm for retrieving puzzles"
+      "Adjusted difficulty and strategy algorithm for retrieving puzzles"
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Gregory711"]
@@ -414,23 +423,23 @@
   {
     "version": "0.34.9",
     "date": "April 17th, 2023",
-    "summary": "Adding back selected font for Sudoku board.",
-    "bug fixes": ["Adding back selected for for Sudoku board."],
+    "summary": "Added back selected font for Sudoku board.",
+    "bug fixes": ["Added back selected for for Sudoku board."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "0.34.8",
     "date": "April 17th, 2023",
-    "summary": "Restoring amend note and simplify note hint functionality.",
-    "bug fixes": ["Restoring amend note and simplify note hint functionality."],
+    "summary": "Restored amend note and simplify note hint functionality.",
+    "bug fixes": ["Restored amend note and simplify note hint functionality."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "0.34.7",
     "date": "April 16th, 2023",
-    "summary": "Fixing issue with a user's retrieved game not based on the user's learned games.",
+    "summary": "Fixed issue with a user's retrieved game not based on the user's learned games.",
     "bug fixes": [
       "When a user requests a new game, their learned lessons are now taken into account."
     ],
@@ -440,10 +449,10 @@
   {
     "version": "0.34.6",
     "date": "April 15th, 2023",
-    "summary": "Fixing issues with profile page.",
+    "summary": "Fixed issues with profile page.",
     "bug fixes": [
-      "Fixing issue with profile page occasionally crashing.",
-      "Fixing issue where user's profile settings are stored in memory even if they log out of the site."
+      "Fixed issue with profile page occasionally crashing.",
+      "Fixed issue where user's profile settings are stored in memory even if they log out of the site."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -451,17 +460,17 @@
   {
     "version": "0.34.5",
     "date": "April 14th, 2023",
-    "summary": "Fixing issue with hint text not being the correct color.",
-    "bug fixes": ["Fixing issue with hint text not being the correct color."],
+    "summary": "Fixed issue with hint text not being the correct color.",
+    "bug fixes": ["Fixed issue with hint text not being the correct color."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "0.34.4",
     "date": "April 14th, 2023",
-    "summary": "Fixing issue with pointing set not rendering title correctly on lesson.",
+    "summary": "Fixed issue with pointing set not rendering title correctly on lesson.",
     "bug fixes": [
-      "Fixing issue with pointing set not rendering title correctly on lesson."
+      "Fixed issue with pointing set not rendering title correctly on lesson."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Gregory711"]
@@ -469,9 +478,9 @@
   {
     "version": "0.34.3",
     "date": "April 14th, 2023",
-    "summary": "Fixing issue with drill drawer navigation being partially inaccessible on mobile.",
+    "summary": "Fixed issue with drill drawer navigation being partially inaccessible on mobile.",
     "bug fixes": [
-      "Fixing issue with drill drawer navigation being partially inaccessible on mobile."
+      "Fixed issue with drill drawer navigation being partially inaccessible on mobile."
     ],
     "targets": ["mobile"],
     "contributors": ["Mink234"]
@@ -479,19 +488,19 @@
   {
     "version": "0.34.2",
     "date": "April 14th, 2023",
-    "summary": "Implementing fix for cell being outlined when selected.",
-    "bug fixes": ["Implementing fix for cell being outlined when selected."],
+    "summary": "Implemented fix for cell being outlined when selected.",
+    "bug fixes": ["Implemented fix for cell being outlined when selected."],
     "targets": ["web", "mobile"],
     "contributors": ["salmoncore"]
   },
   {
     "version": "0.34.1",
     "date": "April 14th, 2023",
-    "summary": "Adding tab name, tab icon, and app icon.",
+    "summary": "Added tab name, tab icon, and app icon.",
     "features": [
-      "Adding tab name to website 'Sudokuru'.",
-      "Adding tab icon to the website.",
-      "Adding icon for the mobile app."
+      "Added tab name to website 'Sudokuru'.",
+      "Added tab icon to the website.",
+      "Added icon for the mobile app."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -499,7 +508,7 @@
   {
     "version": "0.34.0",
     "date": "April 14th, 2023",
-    "summary": "Greatly improving light mode theme for site.",
+    "summary": "Greatly improved light mode theme for site.",
     "features": [
       "Light mode now renders a different color logo.",
       "Light mode colors are more appealing.",
@@ -521,25 +530,25 @@
   {
     "version": "0.33.9",
     "date": "April 14th, 2023",
-    "summary": "Fixing bug with pointing set.",
-    "bug fixes": ["Fixing bug with pointing set."],
+    "summary": "Fixed bug with pointing set.",
+    "bug fixes": ["Fixed bug with pointing set."],
     "targets": ["web", "mobile"],
     "contributors": ["Gregory711"]
   },
   {
     "version": "0.33.8",
     "date": "April 14th, 2023",
-    "summary": "Fixing bug with highlighting for pointing pair hints.",
-    "bug fixes": ["Fixing bug with highlighting for pointing pair hints."],
+    "summary": "Fixed bug with highlighting for pointing pair hints.",
+    "bug fixes": ["Fixed bug with highlighting for pointing pair hints."],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino"]
   },
   {
     "version": "0.33.7",
     "date": "April 13th, 2023",
-    "summary": "Improving dynamic sizing of landing page based on screen size.",
+    "summary": "Improved dynamic sizing of landing page based on screen size.",
     "bug fixes": [
-      "Improving dynamic sizing of landing page based on screen size."
+      "Improved dynamic sizing of landing page based on screen size."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["salmoncore"]
@@ -547,7 +556,7 @@
   {
     "version": "0.33.6",
     "date": "April 13th, 2023",
-    "summary": "Fixing bug with topbar color on landing page with mobile.",
+    "summary": "Fixed bug with topbar color on landing page with mobile.",
     "bug fixes": [
       "Topbar on landing page for mobile should no longer render as white."
     ],
@@ -568,7 +577,7 @@
   {
     "version": "0.33.4",
     "date": "April 14th, 2023",
-    "summary": "Enhancing time to support days, hours, minutes and seconds.",
+    "summary": "Enhanced time to support days, hours, minutes and seconds.",
     "features": [
       "Timer and statistics time reporting now supports hours and days."
     ],
@@ -578,7 +587,7 @@
   {
     "version": "0.33.3",
     "date": "April 14th, 2023",
-    "summary": "Disabling ability for user to learn a lesson more than once.",
+    "summary": "Disabled ability for user to learn a lesson more than once.",
     "bug fixes": [
       "Profile page only shows user learning a lesson once even if the lesson is completed multiple times."
     ],
@@ -598,10 +607,10 @@
   {
     "version": "0.33.1",
     "date": "April 13th, 2023",
-    "summary": "Adding warning for user to confirm deleting statistics with the 'delete statistics' button",
+    "summary": "Added warning for user to confirm deleting statistics with the 'delete statistics' button",
     "features": [
-      "Adding warning for user to confirm deleting statistics with the 'delete statistics' button",
-      "Making background for all alerts more transparent."
+      "Added warning for user to confirm deleting statistics with the 'delete statistics' button",
+      "Made background for all alerts more transparent."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["DahliaL"]
@@ -609,8 +618,8 @@
   {
     "version": "0.33.0",
     "date": "April 12th, 2023",
-    "summary": "Implementing pointing pair and pointing triplet hints.",
-    "features": ["Implementing pointing pair and pointing triplet hints."],
+    "summary": "Implemented pointing pair and pointing triplet hints.",
+    "features": ["Implemented pointing pair and pointing triplet hints."],
     "targets": ["web", "mobile"],
     "contributors": ["salmoncore", "Gregory711"]
   },
@@ -627,9 +636,9 @@
   {
     "version": "0.31.2",
     "date": "April 12th, 2023",
-    "summary": "Polishing the header navigation buttons.",
+    "summary": "Polished the header navigation buttons.",
     "features": [
-      "Updating the size and spacing of the header navigation buttons."
+      "Updated the size and spacing of the header navigation buttons."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["DahliaL"]
@@ -637,7 +646,7 @@
   {
     "version": "0.31.1",
     "date": "April 12th, 2023",
-    "summary": "Fixing bug with notes and value rendering on mobile",
+    "summary": "Fixed bug with notes and value rendering on mobile",
     "bug fixes": [
       "Rendering of values on mobile is now aligned.",
       "Note rendering on mobile no longer cuts off the numbers."
@@ -648,7 +657,7 @@
   {
     "version": "0.31.0",
     "date": "April 12th, 2023",
-    "summary": "Enhancing the home page.",
+    "summary": "Enhanced the home page.",
     "features": [
       "The alert modals on the home page are updated to have more accurate help messages.",
       "The play and drill sections on the home page are displayed as 'locked' until the user has completed enough lessons to access them",
@@ -668,9 +677,9 @@
   {
     "version": "0.29.0",
     "date": "April 11th, 2023",
-    "summary": "Adding landing page sudoku board which auto plays solving a puzzle.",
+    "summary": "Added landing page sudoku board which auto plays solving a puzzle.",
     "features": [
-      "Adding landing page sudoku board which auto plays solving a puzzle."
+      "Added landing page sudoku board which auto plays solving a puzzle."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino", "salmoncore"]
@@ -678,10 +687,10 @@
   {
     "version": "0.28.0",
     "date": "April 11th, 2023",
-    "summary": "Adding pointing set drills and updating logic for when user can play games and drills.",
+    "summary": "Added pointing set drills and updating logic for when user can play games and drills.",
     "features": [
-      "Adding pointing set drills.",
-      "Updating logic for when user can play games and drills."
+      "Added pointing set drills.",
+      "Updated logic for when user can play games and drills."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Gregory711"]
@@ -689,7 +698,7 @@
   {
     "version": "0.27.1",
     "date": "April 11th, 2023",
-    "summary": "Adjusting lesson page completion method.",
+    "summary": "Adjusted lesson page completion method.",
     "features": [
       "The 'complete lesson' button has been removed.",
       "The right check button at the end of the lesson now automatically completes the lesson for the user."
@@ -701,7 +710,7 @@
   {
     "version": "0.27.0",
     "date": "April 11th, 2023",
-    "summary": "Updating profile page and adding new settings.",
+    "summary": "Updated profile page and adding new settings.",
     "features": [
       "Added a profile setting for whether identical values should be highlighted on the board.",
       "Added a profile setting for whether the box of the selected cell should be highlighted on the board.",
@@ -715,7 +724,7 @@
   {
     "version": "0.26.0",
     "date": "April 11th, 2023",
-    "summary": "Updating profile page.",
+    "summary": "Updated profile page.",
     "features": [
       "Profile page formatting is updated.",
       "Profile page now displays user's name and email."
@@ -726,10 +735,10 @@
   {
     "version": "0.25.0",
     "date": "April 11th, 2023",
-    "summary": "Implementing total statistics tracking for sudoku games.",
+    "summary": "Implemented total statistics tracking for sudoku games.",
     "features": [
-      "Implementing total statistics tracking for sudoku games in statistics page.",
-      "Adding loading indicators for lessons, home, and statistics pages.",
+      "Implemented total statistics tracking for sudoku games in statistics page.",
+      "Added loading indicators for lessons, home, and statistics pages.",
       "Statistics page is scrollable now on web and mobile."
     ],
     "targets": ["web", "mobile"],
@@ -749,9 +758,9 @@
   {
     "version": "0.24.0",
     "date": "April 11th, 2023",
-    "summary": "Replacing the lesson carousel with lesson button panel.",
+    "summary": "Replaced the lesson carousel with lesson button panel.",
     "features": [
-      "Replacing the lesson carousel with lesson button panel.",
+      "Replaced the lesson carousel with lesson button panel.",
       "Lessons are now locked until the user completes the previous lesson."
     ],
     "targets": ["web", "mobile"],
@@ -760,9 +769,9 @@
   {
     "version": "0.23.2",
     "date": "April 10th, 2023",
-    "summary": "Removing the 'r' letter that was rendering in the home page.",
+    "summary": "Removed the 'r' letter that was rendering in the home page.",
     "bug fixes": [
-      "Removing the 'r' letter that was rendering in the home page."
+      "Removed the 'r' letter that was rendering in the home page."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -770,7 +779,7 @@
   {
     "version": "0.23.1",
     "date": "April 10th, 2023",
-    "summary": "Improving readability of learned lessons in statistics page.",
+    "summary": "Improved readability of learned lessons in statistics page.",
     "bug fixes": [
       "Learned lessons in statistics page no longer have underscores in the name when displayed to the user."
     ],
@@ -795,11 +804,11 @@
   {
     "version": "0.22.1",
     "date": "April 10th, 2023",
-    "summary": "Fixing issue with loading in lessons.",
+    "summary": "Fixed issue with loading in lessons.",
     "features": [
       "Lesson pages now have a loading screen when loading in lessons remotely."
     ],
-    "bug fixes": ["Fixing error when loading in lessons."],
+    "bug fixes": ["Fixed error when loading in lessons."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
@@ -816,9 +825,9 @@
   {
     "version": "0.21.5",
     "date": "April 9th, 2023",
-    "summary": "Adding hint name and hint description when the user asks for a hint.",
+    "summary": "Added hint name and hint description when the user asks for a hint.",
     "features": [
-      "Adding hint name and hint description when the user asks for a hint.",
+      "Added hint name and hint description when the user asks for a hint.",
       "Hint arrow navigation is moved from the sides of the board to below the Sudoku board."
     ],
     "targets": ["web", "mobile"],
@@ -838,9 +847,9 @@
   {
     "version": "0.21.3",
     "date": "April 8th, 2023",
-    "summary": "Fixing issue where keyboard could no longer be used to input notes.",
+    "summary": "Fixed issue where keyboard could no longer be used to input notes.",
     "bug fixes": [
-      "Fixing issue where keyboard could no longer be used to input notes."
+      "Fixed issue where keyboard could no longer be used to input notes."
     ],
     "targets": ["web"],
     "contributors": ["danielcosentino"]
@@ -848,8 +857,8 @@
   {
     "version": "0.21.2",
     "date": "April 3rd, 2023",
-    "summary": "Fixing issue with drill games",
-    "bug fixes": ["Fixing issue with drill games"],
+    "summary": "Fixed issue with drill games",
+    "bug fixes": ["Fixed issue with drill games"],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino"]
   },
@@ -862,16 +871,16 @@
       "The right arrow changes to a checkmark at the end of a lesson, which navigates the user to the home page.",
       "The landing page will automatically take the user to the Amend Notes lesson"
     ],
-    "bug fixes": ["Improving sizing of lesson page content."],
+    "bug fixes": ["Improved sizing of lesson page content."],
     "targets": ["web", "mobile"],
     "contributors": ["Mink234"]
   },
   {
     "version": "0.21.0",
     "date": "April 2nd, 2023",
-    "summary": "Implementing light mode theme that can be toggled on in settings.",
+    "summary": "Implemented light mode theme that can be toggled on in settings.",
     "features": [
-      "Implementing light mode theme that can be toggled on in settings."
+      "Implemented light mode theme that can be toggled on in settings."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
@@ -879,7 +888,7 @@
   {
     "version": "0.20.4",
     "date": "March 20th, 2023",
-    "summary": "Improving content sizing.",
+    "summary": "Improved content sizing.",
     "features": [
       "Sudoku board action button sizes are now larger and therefore easier to use.",
       "Lesson right navigation button is removed at the end of the lesson.",
@@ -892,7 +901,7 @@
   {
     "version": "0.20.3",
     "date": "March 30th, 2023",
-    "summary": "Improving functionality of amend notes hint.",
+    "summary": "Improved functionality of amend notes hint.",
     "features": ["Board amend notes now amends incorrect notes."],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino", "Gregory711"]
@@ -910,8 +919,8 @@
   {
     "version": "0.20.1",
     "date": "March 29th, 2023",
-    "summary": "Fixing a bug which caused drills to stop working.",
-    "bug fixes": ["Fixing a bug which caused drills to stop working."],
+    "summary": "Fixed a bug which caused drills to stop working.",
+    "bug fixes": ["Fixed a bug which caused drills to stop working."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
@@ -928,13 +937,13 @@
   {
     "version": "0.19.4",
     "date": "March 29th, 2023",
-    "summary": "Improving Sudoku lessons.",
+    "summary": "Improved Sudoku lessons.",
     "features": [
-      "Updating the lesson carousel options to match the lessons we have created.",
-      "Creating a help popup for the lessons explaining the navigation."
+      "Updated the lesson carousel options to match the lessons we have created.",
+      "Created a help popup for the lessons explaining the navigation."
     ],
     "bug fixes": [
-      "Improving the content sizing for web and mobile based on screen size"
+      "Improved the content sizing for web and mobile based on screen size"
     ],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant", "Gregory711"]
@@ -983,9 +992,9 @@
   {
     "version": "0.18.0",
     "date": "March 28th, 2023",
-    "summary": "Adding drill submit button to verify if user has completed drill correctly.",
+    "summary": "Added drill submit button to verify if user has completed drill correctly.",
     "features": [
-      "Adding drill submit button to verify if user has completed drill correctly."
+      "Added drill submit button to verify if user has completed drill correctly."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino"]
@@ -1039,7 +1048,7 @@
     "date": "March 27th, 2023",
     "summary": "Bug fixes with the lessons pages.",
     "bug fixes": [
-      "Fixing the left / right arrows for lessons so they do not go out of bounds.",
+      "Fixed the left / right arrows for lessons so they do not go out of bounds.",
       "Lesson content fits better on mobile devices."
     ],
     "targets": ["web", "mobile"],
@@ -1128,7 +1137,7 @@
   {
     "version": "0.13.3",
     "date": "March 25th, 2023",
-    "summary": "Removing back button from drill sidebar and any site errors results in navigation to Home page.",
+    "summary": "Removed back button from drill sidebar and any site errors results in navigation to Home page.",
     "features": [
       "Removed back button from drill sidebar. (The Sudokuru logo acts as a home button and therefore the back button is unnecessary.)"
     ],
@@ -1141,16 +1150,16 @@
   {
     "version": "0.13.2",
     "date": "March 25th, 2023",
-    "summary": "Fixing drill mode on mobile.",
-    "bug fixes": ["Fixing drill mode on mobile."],
+    "summary": "Fixed drill mode on mobile.",
+    "bug fixes": ["Fixed drill mode on mobile."],
     "targets": ["mobile"],
     "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "0.13.1",
     "date": "March 25th, 2023",
-    "summary": "Fixing start game and resume game on mobile.",
-    "bug fixes": ["Fixing start game and resume game on mobile."],
+    "summary": "Fixed start game and resume game on mobile.",
+    "bug fixes": ["Fixed start game and resume game on mobile."],
     "targets": ["mobile"],
     "contributors": ["Thomas-Gallant"]
   },
@@ -1165,8 +1174,8 @@
   {
     "version": "0.12.2",
     "date": "March 25th, 2023",
-    "summary": "Fixes issue with resume game button render location.",
-    "bug fixes": ["Fixes issue with resume game button render location."],
+    "summary": "Fixed issue with resume game button render location.",
+    "bug fixes": ["Fixed issue with resume game button render location."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
@@ -1189,7 +1198,7 @@
   {
     "version": "0.11.0",
     "date": "March 24th, 2023",
-    "summary": "Adding end game functionality.",
+    "summary": "Added end game functionality.",
     "features": [
       "When a user completes a game, they are sent back to the home screen and the game is completed."
     ],
@@ -1211,9 +1220,9 @@
   {
     "version": "0.9.3",
     "date": "March 23rd, 2023",
-    "summary": "Fixing bug with previously inserted values not being updatable when resuming a game.",
+    "summary": "Fixed bug with previously inserted values not being updatable when resuming a game.",
     "bug fixes": [
-      "Fixing bug with previously inserted values not being updatable when resuming a game."
+      "Fixed bug with previously inserted values not being updatable when resuming a game."
     ],
     "targets": ["web", "mobile"],
     "contributors": ["salmoncore"]
@@ -1223,7 +1232,7 @@
     "date": "March 23rd, 2023",
     "summary": "Enhancements to the Home page.",
     "features": [
-      "Adding titles for Drills, Lessons, and Play areas on home page.",
+      "Added titles for Drills, Lessons, and Play areas on home page.",
       "Created help buttons with pop-ups explaining each of the home page options."
     ],
     "targets": ["web", "mobile"],
@@ -1296,7 +1305,7 @@
   {
     "version": "0.6.1",
     "date": "March 20th, 2023",
-    "summary": "Enhancing Drill sidebar.",
+    "summary": "Enhanced Drill sidebar.",
     "features": [
       "Hidden set and Naked set are new fields in Drill sidebar that have subfields of 'naked single', 'naked pair', etc for better organization."
     ],
@@ -1320,7 +1329,7 @@
   {
     "version": "0.5.3",
     "date": "March 18th, 2023",
-    "summary": "Enforcing user login before the user can proceed from the landing page.",
+    "summary": "Enforced user login before the user can proceed from the landing page.",
     "features": [
       "If the user clicks on 'get started' button before being logged in, an alert pops up requesting user to login.",
       "If the user logs out of the site / app, they get booted out to the landing page, where they need to log in again to access the site."
@@ -1360,7 +1369,7 @@
   {
     "version": "0.4.10",
     "date": "March 11th, 2023",
-    "summary": "Adding hotkey input for delete and backspace keys for the Sudoku Board.",
+    "summary": "Added hotkey input for delete and backspace keys for the Sudoku Board.",
     "features": [
       "Hitting the 'delete' or 'backspace' keys on web now perform the 'erase' operation on a selected cell."
     ],
@@ -1392,7 +1401,7 @@
   {
     "version": "0.4.7",
     "date": "March 8th, 2023",
-    "summary": "Replacing Sudoku action words with action icons",
+    "summary": "Replaced Sudoku action words with action icons",
     "features": [
       "The Sudoku board action words (for example, 'undo', 'erase', togglenotes', etc) have been replaced with action icons."
     ],
@@ -1402,15 +1411,15 @@
   {
     "version": "0.4.6",
     "date": "March 7th, 2023",
-    "summary": "Adding hotkey input for 1-9 keys.",
-    "features": ["Adding hotkey input for 1-9 keys."],
+    "summary": "Added hotkey input for 1-9 keys.",
+    "features": ["Added hotkey input for 1-9 keys."],
     "targets": ["web"],
     "contributors": ["salmoncore"]
   },
   {
     "version": "0.4.5",
     "date": "March 7th, 2023",
-    "summary": "Enhancing functionality of lesson carousel.",
+    "summary": "Enhanced functionality of lesson carousel.",
     "features": [
       "Lesson carousel now has back and forward buttons for selecting lessons.",
       "The lesson icon text is clickable on web, whereas whole icon is clickable on mobile."
@@ -1424,9 +1433,9 @@
   {
     "version": "0.4.4",
     "date": "March 6th, 2023",
-    "summary": "Improving formatting and sizing for Landing page.",
+    "summary": "Improved formatting and sizing for Landing page.",
     "bug fixes": [
-      "Improving formatting and sizing for Landing page",
+      "Improved formatting and sizing for Landing page",
       "Landing page now takes into account screen size when determining size of content."
     ],
     "targets": ["web", "mobile"],
@@ -1435,9 +1444,9 @@
   {
     "version": "0.4.3",
     "date": "March 6th, 2023",
-    "summary": "Improving mobile formatting and Sudoku board buttons are now functional on mobile.",
+    "summary": "Improved mobile formatting and Sudoku board buttons are now functional on mobile.",
     "bug fixes": [
-      "Improving mobile formatting so content fits on screen better on mobile devices.",
+      "Improved mobile formatting so content fits on screen better on mobile devices.",
       "It is now possible to use the Sudoku board buttons on mobile."
     ],
     "targets": ["mobile"],
@@ -1446,9 +1455,9 @@
   {
     "version": "0.4.2",
     "date": "March 6th, 2023",
-    "summary": "Fixing bug with carousel with inverted swipe directions on web.",
+    "summary": "Fixed bug with carousel with inverted swipe directions on web.",
     "bug fixes": [
-      "Fixing bug with carousel with inverted swipe directions on web."
+      "Fixed bug with carousel with inverted swipe directions on web."
     ],
     "targets": ["web"],
     "contributors": ["Thomas-Gallant"]
@@ -1488,7 +1497,7 @@
   {
     "version": "0.3.0",
     "date": "March 1st, 2023",
-    "summary": "Adding a landing page for Sudokuru.",
+    "summary": "Added a landing page for Sudokuru.",
     "features": [
       "The user now must log in before being able to access the rest of the site.",
       "Toggle theme between light/dark mode is now in prototype",
@@ -1511,7 +1520,7 @@
   {
     "version": "0.2.0",
     "date": "February 25th, 2023",
-    "summary": "Implementing initial Sudoku Board",
+    "summary": "Implemented initial Sudoku Board",
     "features": ["A Sudoku board is now useable on the Home page"],
     "targets": ["web", "mobile"],
     "contributors": ["salmoncore", "danielcosentino"]
@@ -1545,7 +1554,7 @@
   {
     "version": "0.1.0",
     "date": "January 27th, 2023",
-    "summary": "Setting up initial layout and navigation for the site.",
+    "summary": "Set up initial layout and navigation for the site.",
     "features": [
       "Created side navigation bar with placeholder pages.",
       "Created header with buttons for statistics page, profile page, and login."
@@ -1556,7 +1565,7 @@
   {
     "version": "0.0.1",
     "date": "December 12th, 2022",
-    "summary": "Setting up initial login for the site.",
+    "summary": "Set up initial login for the site.",
     "targets": ["web"],
     "contributors": ["Thomas-Gallant"]
   }
