@@ -28,7 +28,7 @@
 ## ⚙️ General Setup:
 
 1. Git clone this repository
-2. Install nodejs `v19.5.0` or later
+2. Install Node.js `v19.5.0` or later
 3. Install npm `9.3.1` or later
 4. Run `npm i` in this repositories root folder
 
@@ -36,7 +36,7 @@
 
 1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
 2. Download the expo app on your mobile device.
-3. On your development device e.g. laptop login by running: `expo login` and fill out the parameters.
+3. On your development device, e.g., laptop, login by running: `expo login` and fill out the parameters.
 
 ## 🏃‍♂️ Running the Application Locally
 
@@ -62,7 +62,7 @@
 
 - In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
 - Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
-- The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default it returns the first `novice` puzzle.
+- The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default, it returns the first `novice` puzzle.
 
 ### ⚠️ Cypress E2E Tests ⚠️ (We are phasing out Cypress Tests)
 
@@ -82,7 +82,7 @@ The command to run a Snyk Open Source scan is `npm run snyk:opensource`
 
 The command to run a Snyk code scan is `npm run snyk:code`
 
-Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
+Existing issues in the main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
 
 # 🛣️ Roadmap
 
@@ -96,7 +96,7 @@ This is the general bucket for everything that we are considering doing someday 
 
 ### ⚠️ Tech Debt
 
-This is for where we've taken short cuts during development and have to go back and make improvements e.g. fixing old SonarCloud issues.
+This is for where we've taken short cuts during development and have to go back and make improvements, e.g., fixing old SonarCloud issues.
 
 ### ❌ Bugs
 
@@ -104,11 +104,11 @@ This is for where things are working as intended.
 
 ### 🚀 Official Web Release
 
-This is our current milestone we are working towards where we will move to a permanent URL after getting the website ready for end user traffic. After this is completed we plan on replacing it with an Android App Store Release and then iOS App Store Release boards.
+This is our current milestone we are working towards where we will move to a permanent URL after getting the website ready for end user traffic. After this is completed, we plan on replacing it with an Android App Store Release and then iOS App Store Release boards.
 
 ### ⚙️ In development
 
-This is for all of the tickets we are currently working.
+This is for all the tickets we are currently working.
 
 ### 🚢 Shipped
 
