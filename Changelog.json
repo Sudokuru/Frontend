@@ -8,7 +8,9 @@
     ],
     "bug fixes": [
       "Fixed issue where profile settings would not fit on some mobile device screens."
-    ]
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
   },
   {
     "version": "1.24.0",
