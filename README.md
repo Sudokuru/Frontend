@@ -83,3 +83,33 @@ The command to run a Snyk Open Source scan is `npm run snyk:opensource`
 The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
+
+# 🛣️ Roadmap
+
+## Github Project Kanban Boards
+
+We organize our future work using the [Frontend Github Project Board](https://github.com/orgs/Sudokuru/projects/4/views/1) which we currently have divided into the following six subboards. Each individual ticket starts as a draft with just a few words describing the issue and becomes an issue after we have, at a minimum, added clear agreed upon acceptance criteria.
+
+### 💡 Backlog
+
+This is the general bucket for everything that we are considering doing someday but does not fit into any of the following boards.
+
+### ⚠️ Tech Debt
+
+This is for where we've taken short cuts during development and have to go back and make improvements e.g. fixing old SonarCloud issues.
+
+### ❌ Bugs
+
+This is for where things are working as intended.
+
+### 🚀 Official Web Release
+
+This is our current milestone we are working towards where we will move to a permanent URL after getting the website ready for end user traffic. After this is completed we plan on replacing it with an Android App Store Release and then iOS App Store Release boards.
+
+### ⚙️ In development
+
+This is for all of the tickets we are currently working.
+
+### 🚢 Shipped
+
+This is for all the cool things we have already accomplished!
