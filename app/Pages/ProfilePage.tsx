@@ -1,8 +1,9 @@
 import React from "react";
 import { useWindowDimensions, View, ScrollView } from "react-native";
-import { Switch, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
+import ProfileToggle from "../Components/Profile/ProfileToggle";
 
 const ProfilePage = () => {
   const theme = useTheme();
@@ -62,148 +63,48 @@ const ProfilePage = () => {
               {formatLessonNameArray(learnedLessons)}
             </Text>
           </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Theme:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={darkThemeSetting}
-                onValueChange={toggleTheme}
-                testID={
-                  darkThemeSetting ? "DarkThemeEnabled" : "DarkThemeDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Highlight Identical Values:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={highlightIdenticalValuesSetting}
-                onValueChange={toggleHighlightIdenticalValues}
-                testID={
-                  highlightIdenticalValuesSetting
-                    ? "HighlightIdenticalValuesEnabled"
-                    : "HighlightIdenticalValuesDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Highlight Box:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={highlightBoxSetting}
-                onValueChange={toggleHighlightBox}
-                testID={
-                  highlightBoxSetting
-                    ? "HighlightBoxEnabled"
-                    : "HighlightBoxDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Highlight Row:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={highlightRowSetting}
-                onValueChange={toggleHighlightRow}
-                testID={
-                  highlightRowSetting
-                    ? "HighlightRowEnabled"
-                    : "HighlightRowDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Highlight Column:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={highlightColumnSetting}
-                onValueChange={toggleHighlightColumn}
-                testID={
-                  highlightColumnSetting
-                    ? "HighlightColumnEnabled"
-                    : "HighlightColumnDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
-          <View style={{ marginBottom: 10, flexDirection: "row" }}>
-            <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-              Feature Preview:{" "}
-            </Text>
-            <View
-              style={{
-                justifyContent: "flex-end",
-                flexDirection: "row",
-                flex: 1,
-              }}
-            >
-              <Switch
-                color={"#025E73"}
-                value={featurePreviewSetting}
-                onValueChange={toggleFeaturePreview}
-                testID={
-                  featurePreviewSetting
-                    ? "FeaturePreviewEnabled"
-                    : "FeaturePreviewDisabled"
-                }
-                style={{ alignSelf: "center", flexDirection: "column" }}
-              />
-            </View>
-          </View>
+          <ProfileToggle
+            name="Theme"
+            fontSize={reSize / 22}
+            value={darkThemeSetting}
+            valueToggle={toggleTheme}
+            testIdPrefix="DarkTheme"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight Identical Values"
+            fontSize={reSize / 22}
+            value={highlightIdenticalValuesSetting}
+            valueToggle={toggleHighlightIdenticalValues}
+            testIdPrefix="HighlightIdenticalValues"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight Box"
+            fontSize={reSize / 22}
+            value={highlightBoxSetting}
+            valueToggle={toggleHighlightBox}
+            testIdPrefix="HighlightBox"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight Row"
+            fontSize={reSize / 22}
+            value={highlightRowSetting}
+            valueToggle={toggleHighlightRow}
+            testIdPrefix="HighlightRow"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight Column"
+            fontSize={reSize / 22}
+            value={highlightColumnSetting}
+            valueToggle={toggleHighlightColumn}
+            testIdPrefix="HighlightColumn"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Feature Preview"
+            fontSize={reSize / 22}
+            value={featurePreviewSetting}
+            valueToggle={toggleFeaturePreview}
+            testIdPrefix="FeaturePreview"
+          ></ProfileToggle>
         </View>
       </View>
     </ScrollView>
