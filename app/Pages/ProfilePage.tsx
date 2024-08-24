@@ -1,5 +1,5 @@
 import React from "react";
-import { useWindowDimensions, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
