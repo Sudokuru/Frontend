@@ -76,18 +76,6 @@ After running tests, `.nyc_output` and `coverage` folders are generated. The cov
 More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
 The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
 
-# EAS Update
-
-[EAS Update Description](https://docs.expo.dev/eas-update/how-it-works/)
-
-To make use of EAS update, run following commands:
-
-1. `npm i -g eas-cli`
-
-2. `npx expo install expo-updates`
-
-3. `eas update --branch [branch] --message [message]` or `eas update --auto` (--auto will get message from latest commit and branch from current branch)
-
 # Run Snyk scans
 
 The command to run a Snyk Open Source scan is `npm run snyk:opensource`
