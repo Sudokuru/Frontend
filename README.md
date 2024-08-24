@@ -83,21 +83,3 @@ The command to run a Snyk Open Source scan is `npm run snyk:opensource`
 The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
-
-# Deployments
-
-### Preview Branch
-
-In order to deploy your local branch in preview mode, run the following command:  
-`npm run preview:vercel`  
-You will need to log in with our team email account.  
-The console will output a preview url for viewing.
-
-Preview mode can be run on any branch to preview how the site will look on Vercel.  
-It is encouraged to use preview mode before merging changes into main.
-
-### Preview PR
-
-PR Previews can be viewed from the bot comment at the bottom of the PR.
-PR Previews can also be viewed in the `Publish Preview` task of the `app_preview` job.  
-The website link allows you to add comments directly to the webpage!
