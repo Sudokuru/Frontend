@@ -297,7 +297,7 @@
   {
     "version": "1.8.1",
     "date": "August 31st, 2023",
-    "summary": "Fixed bug with inputing values into Sudoku board",
+    "summary": "Fixed bug with inputting values into Sudoku board",
     "bug fixes": [
       "Fixed an issue where the demo board was sharing state with the play board, causing inputs to the play board to be disabled when the demo board was in 'hint' mode."
     ],
@@ -426,7 +426,7 @@
     "version": "0.34.9",
     "date": "April 17th, 2023",
     "summary": "Added back selected font for Sudoku board.",
-    "bug fixes": ["Added back selected for for Sudoku board."],
+    "bug fixes": ["Added back selected font for Sudoku board."],
     "targets": ["web", "mobile"],
     "contributors": ["Thomas-Gallant"]
   },
