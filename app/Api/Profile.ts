@@ -1,6 +1,13 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 
+type profileValue =
+  | "theme"
+  | "highlightBox"
+  | "highlightColumn"
+  | "highlightIdenticalValues"
+  | "highlightRow"
+  | "previewMode";
 export class Profile {
   public static async getProfile(): Promise<profile> {
     let value = await getKeyJSON("profile");
@@ -11,6 +18,7 @@ export class Profile {
         highlightColumn: true,
         highlightIdenticalValues: true,
         highlightRow: true,
+        previewMode: false,
       };
       await this.setProfile(profile);
       return profile;
@@ -22,18 +30,27 @@ export class Profile {
     storeData("profile", JSON.stringify(profile));
   }
 
-  public static async setProfileValue(profileValue: string) {
+  public static async setProfileValue(profileValue: profileValue) {
     let value: profile = await this.getProfile();
-    if (profileValue === "theme") {
-      value.theme = !value.theme;
-    } else if (profileValue === "highlightBox") {
-      value.highlightBox = !value.highlightBox;
-    } else if (profileValue === "highlightColumn") {
-      value.highlightColumn = !value.highlightColumn;
-    } else if (profileValue === "highlightIdenticalValues") {
-      value.highlightIdenticalValues = !value.highlightIdenticalValues;
-    } else if (profileValue === "highlightRow") {
-      value.highlightRow = !value.highlightRow;
+    switch (profileValue) {
+      case "theme":
+        value.theme = !value.theme;
+        break;
+      case "highlightBox":
+        value.highlightBox = !value.highlightBox;
+        break;
+      case "highlightColumn":
+        value.highlightColumn = !value.highlightColumn;
+        break;
+      case "highlightIdenticalValues":
+        value.highlightIdenticalValues = !value.highlightIdenticalValues;
+        break;
+      case "highlightRow":
+        value.highlightRow = !value.highlightRow;
+        break;
+      case "previewMode":
+        value.previewMode = !value.previewMode;
+        break;
     }
     this.setProfile(value);
   }

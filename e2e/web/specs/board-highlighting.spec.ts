@@ -113,7 +113,7 @@ test.describe("board highlighting", () => {
     const headerComponent = new HeaderComponent(resumeGame);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
-    await profilePage.identicalValuesSwitchEnabled.click();
+    await profilePage.highlightIdenticalValuesSwitchEnabled.click();
     await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();

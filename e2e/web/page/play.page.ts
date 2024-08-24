@@ -46,11 +46,11 @@ export class PlayPage {
   }
 
   async fullTitleIsVisible() {
-    await expect(this.title).toContainText("Play a Sudoku game");
+    await expect(this.title).toHaveText("Play a Sudoku game");
   }
 
   async partialTitleIsVisible() {
-    await expect(this.title).toContainText("Play Sudoku");
+    await expect(this.title).toHaveText("Play Sudoku");
   }
 
   async starsHaveCount(count: number) {

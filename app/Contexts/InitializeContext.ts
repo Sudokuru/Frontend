@@ -1,28 +1,34 @@
 import React from "react";
-import { Profile } from "../Api/Profile";
 import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
+import { profile } from "../Api/Puzzle.Types";
+import { Profile } from "../Api/Profile";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState("Landing");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
-  const [highlightIdenticalValuesSetting, setHighlightIdenticalValues] =
+  const [highlightIdenticalValuesSetting, setHighlightIdenticalValuesSetting] =
     React.useState(true);
-  const [highlightBoxSetting, setHighlightBox] = React.useState(true);
-  const [highlightRowSetting, setHighlightRow] = React.useState(true);
-  const [highlightColumnSetting, setHighlightColumn] = React.useState(true);
+  const [highlightBoxSetting, setHighlightBoxSetting] = React.useState(true);
+  const [highlightRowSetting, setHighlightRowSetting] = React.useState(true);
+  const [highlightColumnSetting, setHighlightColumnSetting] =
+    React.useState(true);
+
+  const [featurePreviewSetting, setFeaturePreviewSetting] =
+    React.useState(false);
 
   // set initial values of theme
   React.useEffect(() => {
-    Profile.getProfile().then((data) => {
+    Profile.getProfile().then((data: profile) => {
       setDarkThemeSetting(data.theme);
-      setHighlightIdenticalValues(data.highlightIdenticalValues);
-      setHighlightBox(data.highlightBox);
-      setHighlightRow(data.highlightRow);
-      setHighlightColumn(data.highlightColumn);
+      setHighlightIdenticalValuesSetting(data.highlightIdenticalValues);
+      setHighlightBoxSetting(data.highlightBox);
+      setHighlightRowSetting(data.highlightRow);
+      setHighlightColumnSetting(data.highlightColumn);
+      setFeaturePreviewSetting(data.previewMode);
     });
   }, []);
 
@@ -34,14 +40,14 @@ const InitializeContext = () => {
   }, [darkThemeSetting]);
 
   const updateCurrentPage = React.useCallback(
-    (props: any) => {
+    (props: React.SetStateAction<string>) => {
       return setCurrentPage(props);
     },
     [currentPage]
   );
 
   const updateLearnedLessons = React.useCallback(
-    (props: any) => {
+    (props: React.SetStateAction<string[]>) => {
       return setLearnedLessons(props);
     },
     [learnedLessons]
@@ -49,23 +55,28 @@ const InitializeContext = () => {
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
     Profile.setProfileValue("highlightIdenticalValues");
-    return setHighlightIdenticalValues(!highlightIdenticalValuesSetting);
+    return setHighlightIdenticalValuesSetting(!highlightIdenticalValuesSetting);
   }, [highlightIdenticalValuesSetting]);
 
   const toggleHighlightBox = React.useCallback(() => {
     Profile.setProfileValue("highlightBox");
-    return setHighlightBox(!highlightBoxSetting);
+    return setHighlightBoxSetting(!highlightBoxSetting);
   }, [highlightBoxSetting]);
 
   const toggleHighlightRow = React.useCallback(() => {
     Profile.setProfileValue("highlightRow");
-    return setHighlightRow(!highlightRowSetting);
+    return setHighlightRowSetting(!highlightRowSetting);
   }, [highlightRowSetting]);
 
   const toggleHighlightColumn = React.useCallback(() => {
     Profile.setProfileValue("highlightColumn");
-    return setHighlightColumn(!highlightColumnSetting);
+    return setHighlightColumnSetting(!highlightColumnSetting);
   }, [highlightColumnSetting]);
+
+  const toggleFeaturePreview = React.useCallback(() => {
+    Profile.setProfileValue("previewMode");
+    return setFeaturePreviewSetting(!featurePreviewSetting);
+  }, [featurePreviewSetting]);
 
   const preferences = React.useMemo(
     () => ({
@@ -83,6 +94,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleFeaturePreview,
+      featurePreviewSetting,
     }),
     [
       toggleTheme,
@@ -99,6 +112,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleFeaturePreview,
+      featurePreviewSetting,
     ]
   );
 
