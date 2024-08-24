@@ -68,7 +68,7 @@
   {
     "version": "1.21.1",
     "date": "July 18th, 2024",
-    "summary": "Fixed issue where some pages in app overlap with phone icons on top of page (time, battery indicator, etc).",
+    "summary": "Fixed issue where some pages in app overlapped with phone icons on top of page (time, battery indicator, etc).",
     "bug fixes": [
       "App no longer overlaps with phone icons at the top of the page."
     ],
