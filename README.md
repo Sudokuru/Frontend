@@ -44,11 +44,37 @@
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 3. For Web, hit the w key to start up the website at `localhost:19000`
 
-# Only use single puzzle for debugging
+## ✅ Playwright E2E Tests
 
-In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
-Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
-The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default it returns the first `novice` puzzle.
+### ⚙️ Setup
+
+1. Run `npx playwright install` to install playwright dependencies
+2. Create a `.env` file in for local development based on values in `.env.example`
+
+### 🏃‍♂️ Running the Tests
+
+- ⚠️ Make sure that the website is running locally (or change baseURL to match where you want to test)
+- 💻 Run `npm run playwright:ui` to run tests using playwright ui
+- ⌨️ Run `npm run playwright:test` to run tests using playwright cli
+- 📋 Run `npm run playwright:report` to view playwright report
+
+### 🔧 Setup to use a Single Puzzle for Debugging
+
+- In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
+- Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
+- The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default it returns the first `novice` puzzle.
+
+### ⚠️ Cypress E2E Tests ⚠️ (We are phasing out Cypress Tests)
+
+Run `npm run web:dev`  
+This starts the website in development mode, with access to the development plugins.  
+Run `npm run open:cypress` or `npx cypress open` to open up the cypress testing interface.  
+**Note: Running individual spec files will override the code coverage of the previous spec file**  
+To generate a code-coverage report for all spec files, run the command `npx cypress run`. This will run all of the tests at the same time and output a combined code-coverage report at the end.  
+To disable screenshots and video for cypress tests run `npm run test:cypress`  
+After running tests, `.nyc_output` and `coverage` folders are generated. The coverage folder contains all of the code coverage results from the tests.  
+More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
+The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
 
 # EAS Update
 
@@ -69,32 +95,6 @@ The command to run a Snyk Open Source scan is `npm run snyk:opensource`
 The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
-
-# Run Playwright E2E Tests
-
-## Setup
-
-- run `npx playwright install` to install playwright dependencies
-- create a `.env` file in for local development based on values in `.env.example`
-
-## Run Tests
-
-- make sure that the website is running locally (or change baseURL to match where you want to test)
-- run `npm run playwright:ui` to run tests using playwright ui
-- run `npm run playwright:test` to run tests using playwright cli
-- run `npm run playwright:report` to view playwright report
-
-# Run Code Coverage and Cypress E2E tests
-
-Run `npm run web:dev`  
-This starts the website in development mode, with access to the development plugins.  
-Run `npm run open:cypress` or `npx cypress open` to open up the cypress testing interface.  
-**Note: Running individual spec files will override the code coverage of the previous spec file**  
-To generate a code-coverage report for all spec files, run the command `npx cypress run`. This will run all of the tests at the same time and output a combined code-coverage report at the end.  
-To disable screenshots and video for cypress tests run `npm run test:cypress`  
-After running tests, `.nyc_output` and `coverage` folders are generated. The coverage folder contains all of the code coverage results from the tests.  
-More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
-The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
 
 # Deployments
 
