@@ -8,9 +8,6 @@ import ProfileToggle from "../Components/Profile/ProfileToggle";
 const ProfilePage = () => {
   const theme = useTheme();
 
-  const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
-
   const {
     learnedLessons,
     toggleTheme,
@@ -26,6 +23,30 @@ const ProfilePage = () => {
     toggleFeaturePreview,
     featurePreviewSetting,
   } = React.useContext(PreferencesContext);
+
+  const highlightMode = () => {
+    return (
+      highlightIdenticalValuesSetting &&
+      highlightBoxSetting &&
+      highlightColumnSetting &&
+      highlightRowSetting
+    );
+  };
+
+  const setAllHighlights = (mode: boolean) => {
+    if (mode !== highlightIdenticalValuesSetting) {
+      toggleHighlightIdenticalValues();
+    }
+    if (mode !== highlightBoxSetting) {
+      toggleHighlightBox();
+    }
+    if (mode !== highlightColumnSetting) {
+      toggleHighlightColumn();
+    }
+    if (mode !== highlightRowSetting) {
+      toggleHighlightRow();
+    }
+  };
 
   return (
     <ScrollView
@@ -62,9 +83,12 @@ const ProfilePage = () => {
           valueToggle={toggleTheme}
           testIdPrefix="DarkTheme"
         ></ProfileToggle>
-        <Text style={{ fontSize: 25, color: "#025E73", marginBottom: 10 }}>
-          Highlight
-        </Text>
+        <ProfileToggle
+          name="Highlight"
+          value={highlightMode()}
+          valueToggle={setAllHighlights}
+          testIdPrefix="Highlight"
+        ></ProfileToggle>
         <ProfileToggle
           name="  Identical Values"
           value={highlightIdenticalValuesSetting}

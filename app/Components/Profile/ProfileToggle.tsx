@@ -6,7 +6,7 @@ const ProfileToggle = (props: {
   name: string;
   fontSize?: number;
   value: boolean;
-  valueToggle: () => void;
+  valueToggle: (() => void) | ((mode: boolean) => void);
   testIdPrefix: string;
 }) => {
   let fontSize = props.fontSize;
