@@ -355,8 +355,8 @@
     "date": "August 19th, 2023",
     "summary": "Sudoku games no longer rely on user needing Internet access.",
     "features": [
-      "Starting a Sudoku game now retrieves a puzzle from the user's device instead of requring Internet access.",
-      "Games are saved locally on the user's device instead of requring an Internet connection to save games.",
+      "Starting a Sudoku game now retrieves a puzzle from the user's device instead of requiring Internet access.",
+      "Games are saved locally on the user's device instead of requiring an Internet connection to save games.",
       "Resuming games no longer requires an Internet connection, as the games are stored on the user's device."
     ],
     "targets": ["web", "mobile"],
