@@ -4,30 +4,30 @@ on:
   workflow_dispatch:
   merge_group:
   push:
-    paths-ignore:
-      - ".github/**"
-      - "docs/**"
-      - "cypress/**"
-      - "e2e/**"
-      - "**/*.test.ts"
-      - "README.md"
-      - "License.md"
-      - ".gitignore"
-      - ".prettierignore"
-      - ".prettierrc.json"
-      - "cypress.config.ts"
-      - "playwright.config.ts"
+    # paths-ignore:
+    #   - ".github/**"
+    #   - "docs/**"
+    #   - "cypress/**"
+    #   - "e2e/**"
+    #   - "**/*.test.ts"
+    #   - "README.md"
+    #   - "License.md"
+    #   - ".gitignore"
+    #   - ".prettierignore"
+    #   - ".prettierrc.json"
+    #   - "cypress.config.ts"
+    #   - "playwright.config.ts"
     branches:
       - main
   pull_request:
-    paths-ignore:
-      - ".github/**"
-      - "docs/**"
-      - "README.md"
-      - "License.md"
-      - ".gitignore"
-      - ".prettierignore"
-      - ".prettierrc.json"
+    # paths-ignore:
+    #   - ".github/**"
+    #   - "docs/**"
+    #   - "README.md"
+    #   - "License.md"
+    #   - ".gitignore"
+    #   - ".prettierignore"
+    #   - ".prettierrc.json"
     branches:
       - main
 
