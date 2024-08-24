@@ -2,7 +2,7 @@
 
 # The Official Cross-Platform Frontend for our Free Open Source Sudoku Project
 
-# Try our DEV site at: https://sudokuru.pages.dev/
+# 💻 Try our DEV site at: https://sudokuru.pages.dev/
 
 [![Pipeline](https://github.com/SudoKuru/Frontend/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/SudoKuru/Frontend/actions/workflows/pipeline.yml)
 [![Coveralls Coverage](https://coveralls.io/repos/github/SudoKuru/Frontend/badge.svg?branch=main)](https://coveralls.io/github/SudoKuru/Frontend?branch=main)
@@ -23,20 +23,26 @@
 - _Upcoming_: custom strategy based hints from the Sudokuru npm library module
 - _Upcoming_: drills which let you practice individual strategies also powered by the Sudokuru npm library module
 
-# Start the frontend app
+# 🛠️ Local development
 
-Run `npm i` in the root folder  
-Run `npm run start`
+## General Setup:
 
-For testing with a mobile device you can download the Expo app.  
-You will also need to be logged in to Expo on the development device (laptop/desktop that is running the code).  
-To login type: `expo login` and fill out the parameters.
+1. Git clone this repository
+2. Install nodejs `v19.5.0` or later
+3. Install npm `9.3.1` or later
+4. Run `npm i` in this repositories root folder
 
-Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
+## Mobile Setup (not needed to run website):
 
-For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
+1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
+2. Download the expo app on your mobile device.
+3. On your development device e.g. laptop login by running: `expo login` and fill out the parameters.
 
-For Web, hit the w key to start up the website at `localhost:19000`
+## Running the Application Locally
+
+1. Run `npm run start` from this repositories root folder
+2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
+3. For Web, hit the w key to start up the website at `localhost:19000`
 
 # Only use single puzzle for debugging
 
