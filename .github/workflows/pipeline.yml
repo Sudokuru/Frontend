@@ -2,6 +2,7 @@ name: "Pipeline"
 
 on:
   workflow_dispatch:
+  merge_group:
   push:
     paths-ignore:
       - ".github/**"
