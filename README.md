@@ -76,7 +76,7 @@ After running tests, `.nyc_output` and `coverage` folders are generated. The cov
 More information can be found at [cypress docs](https://github.com/cypress-io/code-coverage).  
 The best way to view coverage results locally is to open the `coverage/lcov-report/index.html` file.
 
-# Run Snyk scans
+## 🛡️🐶 Run Snyk scans
 
 The command to run a Snyk Open Source scan is `npm run snyk:opensource`
 
