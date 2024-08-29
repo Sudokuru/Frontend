@@ -30,7 +30,7 @@
 1. Git clone this repository
 2. Install Node.js `v19.5.0` or later
 3. Install npm `9.3.1` or later
-4. Run `npm i` in this repositories root folder
+4. Run `npm i` in the root folder
 
 ## 📲 Mobile Setup (not needed to run website):
 
