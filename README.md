@@ -74,7 +74,7 @@
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 3. For Web, hit the w key to start up the website at `localhost:19000`
 
-## ✅ Playwright E2E Tests
+## 🎭 Playwright E2E Tests
 
 ### ⚙️ Setup
 
