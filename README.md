@@ -118,27 +118,15 @@ Existing issues in the main branch can be [viewed here](https://app.snyk.io/org/
 
 ## Github Project Kanban Boards
 
-We organize our future work using the [Frontend Github Project Board](https://github.com/orgs/Sudokuru/projects/4/views/1) which we currently have divided into the following six subboards. Each individual ticket starts as a draft with just a few words describing the issue and becomes an issue after we have, at a minimum, added clear agreed upon acceptance criteria.
+We organize our future work using the [Frontend Github Project Board](https://github.com/orgs/Sudokuru/projects/4/views/1) which we currently have divided into the following columns. We also apply labels which are [documented here](https://github.com/Sudokuru/Frontend/labels) and work towards milestones [listed here](https://github.com/Sudokuru/Frontend/milestones).
 
 ### 💡 Backlog
 
 This is the general bucket for everything that we are considering doing someday but does not fit into any of the following boards.
 
-### ⚠️ Tech Debt
-
-This is for where we've taken short cuts during development and have to go back and make improvements, e.g., fixing old SonarCloud issues.
-
-### ❌ Bugs
-
-This is for where things are working as intended.
-
-### 🚀 Official Web Release
-
-This is our current milestone we are working towards where we will move to a permanent URL after getting the website ready for end user traffic. After this is completed, we plan on replacing it with an Android App Store Release and then iOS App Store Release boards.
-
 ### ⚙️ In development
 
-This is for all the tickets we are currently working.
+This is for all the tickets we are currently working. Requires an acceptance criteria to be added to the description at this stage.
 
 ### 🚢 Shipped
 
