@@ -25,6 +25,34 @@
 - 📅 _Upcoming_: custom strategy based hints from the Sudokuru npm library module
 - 📅 _Upcoming_: drills which let you practice individual strategies also powered by the Sudokuru npm library module
 
+# 🖥️ Supported Platforms
+
+## Tier 1 Support
+
+### 🚢 Web
+
+## Tier 2 Support
+
+### ⚒️ Android
+
+### ⚒️ Windows
+
+### ⚒️ Linux
+
+## Planned Support
+
+### 📅 iOS
+
+### 📅 MacOS
+
+## Legend
+
+### 🚢 Tier 1 Support - We have full end to end test coverage for all new and existing functionality. We do manual testing of new features before deployment.
+
+### ⚒️ Tier 2 Support - We have partial or zero end to end test coverage for new and existing functionality. We may not always do manual testing of new features before deployment.
+
+### 📅 Planned Support - We do not currently support this platform, but we plan on supporting in the future.
+
 # 🛠️ Local development
 
 ## ⚙️ General Setup:
