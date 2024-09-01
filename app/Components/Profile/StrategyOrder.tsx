@@ -38,7 +38,9 @@ const StrategyOrder = () => {
         style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
         key={key}
       >
-        <Text style={{ fontSize: 14, color: "#025E73" }}>{bullet}</Text>
+        <Text style={{ fontSize: 14, color: "#025E73", minWidth: 20 }}>
+          {bullet}
+        </Text>
         <Text style={{ fontSize: 14, paddingLeft: 5, color: "#025E73" }}>
           {point}
         </Text>
