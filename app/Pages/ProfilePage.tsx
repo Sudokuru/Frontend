@@ -120,7 +120,7 @@ const ProfilePage = () => {
           valueToggle={toggleFeaturePreview}
           testIdPrefix="FeaturePreview"
         ></ProfileToggle>
-        <StrategyOrder></StrategyOrder>
+        {featurePreviewSetting ? <StrategyOrder></StrategyOrder> : <></>}
       </View>
     </ScrollView>
   );
