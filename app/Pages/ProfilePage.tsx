@@ -4,6 +4,7 @@ import { Text, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
 import ProfileToggle from "../Components/Profile/ProfileToggle";
+import StrategyOrder from "../Components/Profile/StrategyOrder";
 
 const ProfilePage = () => {
   const theme = useTheme();
@@ -119,6 +120,7 @@ const ProfilePage = () => {
           valueToggle={toggleFeaturePreview}
           testIdPrefix="FeaturePreview"
         ></ProfileToggle>
+        <StrategyOrder></StrategyOrder>
       </View>
     </ScrollView>
   );
