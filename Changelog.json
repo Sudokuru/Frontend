@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.24.1",
+    "version": "1.24.2",
     "date": "September 2nd, 2024",
     "summary": "Fixing issue with loading profile data on mobile devices and adding preview feature to change hint strategy order",
     "bug fixes": [
