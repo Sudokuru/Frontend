@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton, Text } from "react-native-paper";
-import { sudokuStrategy, sudokuStrategyArray } from "sudokuru";
+import { sudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
