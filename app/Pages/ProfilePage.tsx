@@ -1,5 +1,10 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  ScaledSize,
+} from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
@@ -8,6 +13,8 @@ import StrategyOrder from "../Components/Profile/StrategyOrder";
 
 const ProfilePage = () => {
   const theme = useTheme();
+
+  const size = useWindowDimensions();
 
   const {
     learnedLessons,
@@ -49,6 +56,14 @@ const ProfilePage = () => {
     }
   };
 
+  const profileFlexDirection = (size: ScaledSize) => {
+    if (size.width > 600) {
+      return "row";
+    } else {
+      return "column";
+    }
+  };
+
   return (
     <ScrollView
       contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
@@ -63,86 +78,88 @@ const ProfilePage = () => {
       >
         Profile
       </Text>
-      <View
-        style={{
-          backgroundColor: "#fff",
-          borderRadius: 10,
-          padding: 20,
-          margin: 20,
-          minWidth: 280,
-        }}
-      >
-        <View style={{ marginBottom: 10 }}>
-          <Text style={{ fontSize: 25, color: "#025E73" }}>
-            Strategies Learned:
-          </Text>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              color: "#D9A05B",
-            }}
-          >
-            {formatLessonNameArray(learnedLessons)}
-          </Text>
-        </View>
-        <ProfileToggle
-          name="Theme"
-          value={darkThemeSetting}
-          valueToggle={toggleTheme}
-          testIdPrefix="DarkTheme"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="Highlight"
-          value={highlightMode()}
-          valueToggle={setAllHighlights}
-          testIdPrefix="Highlight"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="  Identical Values"
-          value={highlightIdenticalValuesSetting}
-          valueToggle={toggleHighlightIdenticalValues}
-          testIdPrefix="HighlightIdenticalValues"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="  Box"
-          value={highlightBoxSetting}
-          valueToggle={toggleHighlightBox}
-          testIdPrefix="HighlightBox"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="  Row"
-          value={highlightRowSetting}
-          valueToggle={toggleHighlightRow}
-          testIdPrefix="HighlightRow"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="  Column"
-          value={highlightColumnSetting}
-          valueToggle={toggleHighlightColumn}
-          testIdPrefix="HighlightColumn"
-        ></ProfileToggle>
-        <ProfileToggle
-          name="Feature Preview"
-          value={featurePreviewSetting}
-          valueToggle={toggleFeaturePreview}
-          testIdPrefix="FeaturePreview"
-        ></ProfileToggle>
-      </View>
-      {featurePreviewSetting ? (
+      <View style={{ flexDirection: profileFlexDirection(size) }}>
         <View
           style={{
             backgroundColor: "#fff",
             borderRadius: 10,
             padding: 20,
+            margin: 20,
             minWidth: 280,
           }}
         >
-          {featurePreviewSetting ? <StrategyOrder></StrategyOrder> : <></>}
+          <View style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 25, color: "#025E73" }}>
+              Strategies Learned:
+            </Text>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#D9A05B",
+              }}
+            >
+              {formatLessonNameArray(learnedLessons)}
+            </Text>
+          </View>
+          <ProfileToggle
+            name="Theme"
+            value={darkThemeSetting}
+            valueToggle={toggleTheme}
+            testIdPrefix="DarkTheme"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight"
+            value={highlightMode()}
+            valueToggle={setAllHighlights}
+            testIdPrefix="Highlight"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Identical Values"
+            value={highlightIdenticalValuesSetting}
+            valueToggle={toggleHighlightIdenticalValues}
+            testIdPrefix="HighlightIdenticalValues"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Box"
+            value={highlightBoxSetting}
+            valueToggle={toggleHighlightBox}
+            testIdPrefix="HighlightBox"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Row"
+            value={highlightRowSetting}
+            valueToggle={toggleHighlightRow}
+            testIdPrefix="HighlightRow"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Column"
+            value={highlightColumnSetting}
+            valueToggle={toggleHighlightColumn}
+            testIdPrefix="HighlightColumn"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Feature Preview"
+            value={featurePreviewSetting}
+            valueToggle={toggleFeaturePreview}
+            testIdPrefix="FeaturePreview"
+          ></ProfileToggle>
         </View>
-      ) : (
-        <></>
-      )}
+        {featurePreviewSetting ? (
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 20,
+              minWidth: 280,
+            }}
+          >
+            {featurePreviewSetting ? <StrategyOrder></StrategyOrder> : <></>}
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
     </ScrollView>
   );
 };
