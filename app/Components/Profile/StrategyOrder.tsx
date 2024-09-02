@@ -87,8 +87,6 @@ const StrategyOrder = () => {
   };
 
   const incrementStrategyOrder = (index: number, increment: -1 | 1) => {
-    index = index - 1;
-
     let incrementString: "up" | "down";
     if (increment === 1) {
       incrementString = "down";
@@ -98,6 +96,8 @@ const StrategyOrder = () => {
     if (isIncrementButtonDisabled(index, incrementString)) {
       return;
     }
+
+    index = index - 1;
 
     [
       strategyHintOrderSetting[index],
@@ -139,7 +139,7 @@ const StrategyOrder = () => {
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <IconButton
           icon="menu-up"
-          testID={"ViewStatisticsPageButton"}
+          testID={"HintStrategyMenuUp"}
           size={20}
           style={{
             borderWidth: 2,
@@ -149,8 +149,33 @@ const StrategyOrder = () => {
           onPress={() => incrementStrategyOrder(selectedElement, -1)}
         />
         <IconButton
+          icon="refresh"
+          testID={"HintStrategyMenuReset"}
+          size={20}
+          style={{
+            borderWidth: 2,
+            borderColor: "#025E73",
+          }}
+          onPress={() =>
+            updateStrategyHintOrder([
+              "AMEND_NOTES",
+              "SIMPLIFY_NOTES",
+              "NAKED_SINGLE",
+              "HIDDEN_SINGLE",
+              "NAKED_PAIR",
+              "HIDDEN_PAIR",
+              "POINTING_PAIR",
+              "NAKED_TRIPLET",
+              "HIDDEN_TRIPLET",
+              "POINTING_TRIPLET",
+              "NAKED_QUADRUPLET",
+              "HIDDEN_QUADRUPLET",
+            ])
+          }
+        />
+        <IconButton
           icon="menu-down"
-          testID={"ViewStatisticsPageButton"}
+          testID={"HintStrategyMenuDown"}
           size={20}
           style={{
             borderWidth: 2,
