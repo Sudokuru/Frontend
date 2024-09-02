@@ -45,8 +45,9 @@ const StrategyOrder = () => {
       <TouchableOpacity
         style={{
           flexDirection: "row",
-          paddingLeft: 20,
-          marginBottom: 5,
+          padding: 5,
+          paddingLeft: 10,
+          marginTop: 5,
           borderRadius: 10,
           borderWidth: 3,
           borderColor: borderColor,
