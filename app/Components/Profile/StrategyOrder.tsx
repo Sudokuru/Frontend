@@ -140,7 +140,7 @@ const StrategyOrder = () => {
       </Text>
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <IconButton
-          icon="menu-up"
+          icon="arrow-up"
           iconColor={buttonOutlineColor(selectedElement, "up")}
           theme={{ colors: { onSurfaceDisabled: "grey" } }}
           testID={"HintStrategyMenuUp"}
@@ -182,7 +182,7 @@ const StrategyOrder = () => {
           <Text style={{ color: "#025E73" }}>RESET</Text>
         </View>
         <IconButton
-          icon="menu-down"
+          icon="arrow-down"
           iconColor={buttonOutlineColor(selectedElement, "down")}
           theme={{ colors: { onSurfaceDisabled: "grey" } }}
           testID={"HintStrategyMenuDown"}
