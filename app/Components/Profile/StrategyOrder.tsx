@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { IconButton, Text } from "react-native-paper";
+import { IconButton, Text, useTheme } from "react-native-paper";
 import { sudokuStrategy, sudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -10,6 +10,8 @@ const StrategyOrder = () => {
     React.useContext(PreferencesContext);
 
   const [selectedElement, setSelectedElement] = React.useState(-1);
+
+  const theme = useTheme();
 
   // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
   // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
@@ -139,6 +141,8 @@ const StrategyOrder = () => {
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <IconButton
           icon="menu-up"
+          iconColor={buttonOutlineColor(selectedElement, "up")}
+          theme={{ colors: { onSurfaceDisabled: "grey" } }}
           testID={"HintStrategyMenuUp"}
           size={20}
           style={{
@@ -148,33 +152,39 @@ const StrategyOrder = () => {
           disabled={isIncrementButtonDisabled(selectedElement, "up")}
           onPress={() => incrementStrategyOrder(selectedElement, -1)}
         />
-        <IconButton
-          icon="refresh"
-          testID={"HintStrategyMenuReset"}
-          size={20}
-          style={{
-            borderWidth: 2,
-            borderColor: "#025E73",
-          }}
-          onPress={() =>
-            updateStrategyHintOrder([
-              "AMEND_NOTES",
-              "SIMPLIFY_NOTES",
-              "NAKED_SINGLE",
-              "HIDDEN_SINGLE",
-              "NAKED_PAIR",
-              "HIDDEN_PAIR",
-              "POINTING_PAIR",
-              "NAKED_TRIPLET",
-              "HIDDEN_TRIPLET",
-              "POINTING_TRIPLET",
-              "NAKED_QUADRUPLET",
-              "HIDDEN_QUADRUPLET",
-            ])
-          }
-        />
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
+          <IconButton
+            icon="refresh"
+            iconColor="#025E73"
+            testID={"HintStrategyMenuReset"}
+            size={20}
+            style={{
+              borderWidth: 2,
+              borderColor: "#025E73",
+            }}
+            onPress={() =>
+              updateStrategyHintOrder([
+                "AMEND_NOTES",
+                "SIMPLIFY_NOTES",
+                "NAKED_SINGLE",
+                "HIDDEN_SINGLE",
+                "NAKED_PAIR",
+                "HIDDEN_PAIR",
+                "POINTING_PAIR",
+                "NAKED_TRIPLET",
+                "HIDDEN_TRIPLET",
+                "POINTING_TRIPLET",
+                "NAKED_QUADRUPLET",
+                "HIDDEN_QUADRUPLET",
+              ])
+            }
+          />
+          <Text style={{ color: "#025E73" }}>RESET</Text>
+        </View>
         <IconButton
           icon="menu-down"
+          iconColor={buttonOutlineColor(selectedElement, "down")}
+          theme={{ colors: { onSurfaceDisabled: "grey" } }}
           testID={"HintStrategyMenuDown"}
           size={20}
           style={{
