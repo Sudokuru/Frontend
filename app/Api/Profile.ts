@@ -38,6 +38,41 @@ export class Profile {
       await this.setProfile(profile);
       return profile;
     }
+    // handle initialization if some data is present but not other data
+    if (!value.theme) {
+      value.theme = true;
+    }
+    if (!value.highlightBox) {
+      value.highlightBox = true;
+    }
+    if (!value.highlightColumn) {
+      value.highlightColumn = true;
+    }
+    if (!value.highlightRow) {
+      value.highlightRow = true;
+    }
+    if (!value.highlightIdenticalValues) {
+      value.highlightIdenticalValues = true;
+    }
+    if (!value.previewMode) {
+      value.previewMode = false;
+    }
+    if (!value.strategyHintOrder) {
+      value.strategyHintOrder = [
+        "AMEND_NOTES",
+        "SIMPLIFY_NOTES",
+        "NAKED_SINGLE",
+        "HIDDEN_SINGLE",
+        "NAKED_PAIR",
+        "HIDDEN_PAIR",
+        "POINTING_PAIR",
+        "NAKED_TRIPLET",
+        "HIDDEN_TRIPLET",
+        "POINTING_TRIPLET",
+        "NAKED_QUADRUPLET",
+        "HIDDEN_QUADRUPLET",
+      ];
+    }
     return value;
   }
 
