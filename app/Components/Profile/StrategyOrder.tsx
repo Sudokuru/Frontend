@@ -146,9 +146,7 @@ const StrategyOrder = () => {
             borderColor: buttonOutlineColor(selectedElement, "up"),
           }}
           disabled={isIncrementButtonDisabled(selectedElement, "up")}
-          onPress={() => {
-            incrementStrategyOrder(selectedElement, -1);
-          }}
+          onPress={() => incrementStrategyOrder(selectedElement, -1)}
         />
         <IconButton
           icon="menu-down"
@@ -159,9 +157,7 @@ const StrategyOrder = () => {
             borderColor: buttonOutlineColor(selectedElement, "down"),
           }}
           disabled={isIncrementButtonDisabled(selectedElement, "down")}
-          onPress={() => {
-            incrementStrategyOrder(selectedElement, 1);
-          }}
+          onPress={() => incrementStrategyOrder(selectedElement, 1)}
         />
       </View>
       {strategyViews(strategyHintOrderSetting, selectedElement)}

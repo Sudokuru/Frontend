@@ -98,6 +98,7 @@ const InitializeContext = () => {
 
   const updateStrategyHintOrder = React.useCallback(
     (props: React.SetStateAction<sudokuStrategyArray>) => {
+      Profile.setProfileValue("strategyHintOrder", props);
       return setStrategyHintOrderSetting(props);
     },
     [strategyHintOrderSetting]

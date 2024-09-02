@@ -7,12 +7,13 @@ type profileValue =
   | "highlightColumn"
   | "highlightIdenticalValues"
   | "highlightRow"
-  | "previewMode";
+  | "previewMode"
+  | "strategyHintOrder";
 export class Profile {
   public static async getProfile(): Promise<profile> {
-    let value = await getKeyJSON("profile");
+    const value = await getKeyJSON("profile");
     if (value == null) {
-      let profile: profile = {
+      const profile: profile = {
         theme: true,
         highlightBox: true,
         highlightColumn: true,
@@ -44,7 +45,10 @@ export class Profile {
     storeData("profile", JSON.stringify(profile));
   }
 
-  public static async setProfileValue(profileValue: profileValue) {
+  public static async setProfileValue(
+    profileValue: profileValue,
+    newValue?: any
+  ) {
     let value: profile = await this.getProfile();
     switch (profileValue) {
       case "theme":
@@ -64,6 +68,9 @@ export class Profile {
         break;
       case "previewMode":
         value.previewMode = !value.previewMode;
+        break;
+      case "strategyHintOrder":
+        value.strategyHintOrder = newValue;
         break;
     }
     this.setProfile(value);

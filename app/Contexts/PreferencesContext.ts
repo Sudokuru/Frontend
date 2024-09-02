@@ -18,6 +18,6 @@ export const PreferencesContext = React.createContext({
   highlightColumnSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
-  updateStrategyHintOrder: (props: any) => {},
+  updateStrategyHintOrder: (props: sudokuStrategyArray) => {},
   strategyHintOrderSetting: ["AMEND_NOTES"] as sudokuStrategyArray,
 });
