@@ -56,8 +56,12 @@ const ProfilePage = () => {
     }
   };
 
+  // This determines the minimum width
+  // To render all profile components horizontally instead of vertically
+  const PROFILE_COMPONENTS_WIDTH = 600;
+
   const profileFlexDirection = (size: ScaledSize) => {
-    if (size.width > 600) {
+    if (size.width > PROFILE_COMPONENTS_WIDTH) {
       return "row";
     } else {
       return "column";
