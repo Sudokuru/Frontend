@@ -90,7 +90,7 @@ const StrategyOrder = () => {
     index = index - 1;
 
     let incrementString: "up" | "down";
-    if (increment) {
+    if (increment === 1) {
       incrementString = "down";
     } else {
       incrementString = "up";
