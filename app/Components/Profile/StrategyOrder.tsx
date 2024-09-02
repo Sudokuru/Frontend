@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { IconButton, Text, useTheme } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 import { sudokuStrategy, sudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -22,9 +22,9 @@ const StrategyOrder = () => {
   const BulletComponent = (
     point: string,
     key: number | string,
-    bullet = "•",
     order: number,
-    selected: boolean
+    selected: boolean,
+    bullet = "•"
   ) => {
     let borderColor = "grey";
     if (selected) {
@@ -70,9 +70,9 @@ const StrategyOrder = () => {
     return BulletComponent(
       formatOneLessonName(strategy),
       strategy,
-      `${order}.`,
       order,
-      selected
+      selected,
+      `${order}.`
     );
   };
 
@@ -120,15 +120,15 @@ const StrategyOrder = () => {
   };
 
   const isIncrementButtonDisabled = (index: number, button: "up" | "down") => {
-    if (index === -1) {
+    if (
+      index === -1 ||
+      (button === "up" && index === 1) ||
+      (button === "down" && index === strategyHintOrderSetting.length)
+    ) {
       return true;
+    } else {
+      return false;
     }
-    if (button === "up" && index === 1) {
-      return true;
-    } else if (button === "down" && index === strategyHintOrderSetting.length) {
-      return true;
-    }
-    return false;
   };
 
   return (
