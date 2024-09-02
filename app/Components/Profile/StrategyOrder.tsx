@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
-import { IconButton, Text, useTheme } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 import { sudokuStrategy, sudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -10,8 +10,6 @@ const StrategyOrder = () => {
     React.useContext(PreferencesContext);
 
   const [selectedElement, setSelectedElement] = React.useState(-1);
-
-  const theme = useTheme();
 
   // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
   // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
