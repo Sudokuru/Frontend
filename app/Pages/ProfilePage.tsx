@@ -151,6 +151,7 @@ const ProfilePage = () => {
               backgroundColor: "#fff",
               borderRadius: 10,
               padding: 20,
+              margin: 20,
               minWidth: 280,
             }}
           >
