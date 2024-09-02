@@ -35,7 +35,14 @@ const StrategyOrder = () => {
   ) => {
     return (
       <View
-        style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
+        style={{
+          flexDirection: "row",
+          paddingLeft: 20,
+          marginBottom: 5,
+          borderRadius: 10,
+          borderWidth: 3,
+          borderColor: "#D9A05B",
+        }}
         key={key}
       >
         <Text style={{ fontSize: 14, color: "#025E73", minWidth: 20 }}>
@@ -66,7 +73,9 @@ const StrategyOrder = () => {
 
   return (
     <>
-      <Text style={{ color: "#025E73" }}>Strategy Hint Order</Text>
+      <Text style={{ color: "#025E73", fontSize: 25 }}>
+        Strategy Hint Order
+      </Text>
       {strategyViews(strategies)}
     </>
   );
