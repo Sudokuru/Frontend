@@ -1,4 +1,5 @@
 import React from "react";
+import { sudokuStrategyArray } from "sudokuru";
 
 export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
@@ -17,4 +18,6 @@ export const PreferencesContext = React.createContext({
   highlightColumnSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
+  updateStrategyHintOrder: (props: any) => {},
+  strategyHintOrderSetting: ["AMEND_NOTES"] as sudokuStrategyArray,
 });

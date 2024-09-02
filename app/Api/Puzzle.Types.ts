@@ -56,4 +56,5 @@ export interface profile {
   highlightRow: boolean;
   highlightColumn: boolean;
   previewMode: boolean;
+  strategyHintOrder: sudokuStrategyArray;
 }

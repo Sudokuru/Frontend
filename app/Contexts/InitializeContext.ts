@@ -5,6 +5,7 @@ import {
 } from "../Styling/ThemeColors";
 import { profile } from "../Api/Puzzle.Types";
 import { Profile } from "../Api/Profile";
+import { sudokuStrategyArray } from "sudokuru";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -20,6 +21,22 @@ const InitializeContext = () => {
   const [featurePreviewSetting, setFeaturePreviewSetting] =
     React.useState(false);
 
+  const [strategyHintOrderSetting, setStrategyHintOrderSetting] =
+    React.useState<sudokuStrategyArray>([
+      "AMEND_NOTES",
+      "SIMPLIFY_NOTES",
+      "NAKED_SINGLE",
+      "HIDDEN_SINGLE",
+      "NAKED_PAIR",
+      "HIDDEN_PAIR",
+      "POINTING_PAIR",
+      "NAKED_TRIPLET",
+      "HIDDEN_TRIPLET",
+      "POINTING_TRIPLET",
+      "NAKED_QUADRUPLET",
+      "HIDDEN_QUADRUPLET",
+    ]);
+
   // set initial values of theme
   React.useEffect(() => {
     Profile.getProfile().then((data: profile) => {
@@ -29,6 +46,7 @@ const InitializeContext = () => {
       setHighlightRowSetting(data.highlightRow);
       setHighlightColumnSetting(data.highlightColumn);
       setFeaturePreviewSetting(data.previewMode);
+      setStrategyHintOrderSetting(data.strategyHintOrder);
     });
   }, []);
 
@@ -78,6 +96,13 @@ const InitializeContext = () => {
     return setFeaturePreviewSetting(!featurePreviewSetting);
   }, [featurePreviewSetting]);
 
+  const updateStrategyHintOrder = React.useCallback(
+    (props: React.SetStateAction<sudokuStrategyArray>) => {
+      return setStrategyHintOrderSetting(props);
+    },
+    [strategyHintOrderSetting]
+  );
+
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
@@ -96,6 +121,8 @@ const InitializeContext = () => {
       highlightColumnSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
+      updateStrategyHintOrder,
+      strategyHintOrderSetting,
     }),
     [
       toggleTheme,
@@ -114,6 +141,8 @@ const InitializeContext = () => {
       highlightColumnSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
+      updateStrategyHintOrder,
+      strategyHintOrderSetting,
     ]
   );
 

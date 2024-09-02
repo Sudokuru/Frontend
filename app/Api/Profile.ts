@@ -19,6 +19,20 @@ export class Profile {
         highlightIdenticalValues: true,
         highlightRow: true,
         previewMode: false,
+        strategyHintOrder: [
+          "AMEND_NOTES",
+          "SIMPLIFY_NOTES",
+          "NAKED_SINGLE",
+          "HIDDEN_SINGLE",
+          "NAKED_PAIR",
+          "HIDDEN_PAIR",
+          "POINTING_PAIR",
+          "NAKED_TRIPLET",
+          "HIDDEN_TRIPLET",
+          "POINTING_TRIPLET",
+          "NAKED_QUADRUPLET",
+          "HIDDEN_QUADRUPLET",
+        ],
       };
       await this.setProfile(profile);
       return profile;
