@@ -83,7 +83,7 @@ const Header = () => {
           justifyContent: "flex-end",
         }}
       >
-        {featurePreviewSetting ? (
+        {featurePreviewSetting && (
           <View style={{ alignSelf: "center" }} testID="FeaturePreviewText">
             <Text
               style={{
@@ -94,8 +94,6 @@ const Header = () => {
               {featurePreviewText}
             </Text>
           </View>
-        ) : (
-          <></>
         )}
         {statisticsButton(currentPage)}
         {profileButton(currentPage)}

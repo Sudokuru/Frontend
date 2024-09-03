@@ -159,7 +159,7 @@ const ProfilePage = () => {
               minWidth: 280,
             }}
           >
-            {featurePreviewSetting ? <StrategyOrder></StrategyOrder> : <></>}
+            <StrategyOrder></StrategyOrder>
           </View>
         )}
       </View>

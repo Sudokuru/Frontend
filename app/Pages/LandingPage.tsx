@@ -65,14 +65,12 @@ const LandingPage = () => {
           navigationPage="LearnPage"
           testID="HomeLearnButton"
         />
-        {featurePreviewSetting ? (
+        {featurePreviewSetting && (
           <NavigationButton
             image={START_DRILLS_LOGO}
             navigationPage="DrillPage"
             testID="HomeDrillButton"
           />
-        ) : (
-          <></>
         )}
         <NavigationButton
           image={PLAY_SUDOKU_LOGO}
