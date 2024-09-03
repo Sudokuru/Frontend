@@ -21,7 +21,7 @@ export class Profile {
       highlightRow: true,
       highlightIdenticalValues: true,
       previewMode: false,
-      strategyHintOrder: SUDOKU_STRATEGY_ARRAY, // Assuming you've implemented the previous suggestion
+      strategyHintOrder: SUDOKU_STRATEGY_ARRAY,
     };
 
     if (value == null) {

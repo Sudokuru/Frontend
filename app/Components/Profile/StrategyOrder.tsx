@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton, Text } from "react-native-paper";
-import { SudokuStrategyArray } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 
@@ -191,21 +191,11 @@ const StrategyOrder = () => {
               borderWidth: 2,
               borderColor: "#025E73",
             }}
+            // need a deep copy of SUDOKU_STRATEGY_ARRAY otherwise it becomes mutated
             onPress={() =>
-              updateStrategyHintOrder([
-                "AMEND_NOTES",
-                "SIMPLIFY_NOTES",
-                "NAKED_SINGLE",
-                "HIDDEN_SINGLE",
-                "NAKED_PAIR",
-                "HIDDEN_PAIR",
-                "POINTING_PAIR",
-                "NAKED_TRIPLET",
-                "HIDDEN_TRIPLET",
-                "POINTING_TRIPLET",
-                "NAKED_QUADRUPLET",
-                "HIDDEN_QUADRUPLET",
-              ])
+              updateStrategyHintOrder(
+                JSON.parse(JSON.stringify(SUDOKU_STRATEGY_ARRAY))
+              )
             }
           />
           <Text style={{ color: "#025E73" }}>RESET</Text>
