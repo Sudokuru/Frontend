@@ -13,41 +13,31 @@ type profileValue =
 export class Profile {
   public static async getProfile(): Promise<profile> {
     const value = await getKeyJSON("profile");
+
+    const defaultProfileValues: profile = {
+      theme: true,
+      highlightBox: true,
+      highlightColumn: true,
+      highlightRow: true,
+      highlightIdenticalValues: true,
+      previewMode: false,
+      strategyHintOrder: SUDOKU_STRATEGY_ARRAY, // Assuming you've implemented the previous suggestion
+    };
+
     if (value == null) {
-      const profile: profile = {
-        theme: true,
-        highlightBox: true,
-        highlightColumn: true,
-        highlightIdenticalValues: true,
-        highlightRow: true,
-        previewMode: false,
-        strategyHintOrder: SUDOKU_STRATEGY_ARRAY,
-      };
-      await this.setProfile(profile);
-      return profile;
+      await this.setProfile(defaultProfileValues);
+      return defaultProfileValues;
     }
+
     // handle initialization if some data is present but not other data
-    if (!value.theme) {
-      value.theme = true;
-    }
-    if (!value.highlightBox) {
-      value.highlightBox = true;
-    }
-    if (!value.highlightColumn) {
-      value.highlightColumn = true;
-    }
-    if (!value.highlightRow) {
-      value.highlightRow = true;
-    }
-    if (!value.highlightIdenticalValues) {
-      value.highlightIdenticalValues = true;
-    }
-    if (!value.previewMode) {
-      value.previewMode = false;
-    }
-    if (!value.strategyHintOrder) {
-      value.strategyHintOrder = SUDOKU_STRATEGY_ARRAY;
-    }
+    // Not having this code caused a crash on mobile (web was ok for some reason)
+    // when a user had some but not all profile settings defined in their app storage
+    // TODO we will want to conver this scenario with end to end tests in the future
+    Object.entries(defaultProfileValues).forEach(([key, defaultValue]) => {
+      if (value[key] === undefined) {
+        value[key] = defaultValue;
+      }
+    });
     return value;
   }
 
