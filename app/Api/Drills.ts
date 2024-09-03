@@ -1,4 +1,4 @@
-import { calculateNotes, sudokuStrategy, sudokuStrategyArray } from "sudokuru";
+import { calculateNotes, SudokuStrategy } from "sudokuru";
 import { puzzle } from "./Puzzle.Types";
 import { drill } from "./Puzzle.Types";
 import { returnLocalDrillGame } from "../Functions/LocalDatabase";
@@ -12,7 +12,7 @@ export class Drills {
    * @param strategy the name of the sudoku strategy to retrieve the relevant drill.
    * @returns a drill object corresponding to the drill type being requested.
    */
-  public static async getGame(strategy: sudokuStrategy): Promise<drill> {
+  public static async getGame(strategy: SudokuStrategy): Promise<drill> {
     let data: puzzle = returnLocalDrillGame(strategy);
     let boardString: string = data.puzzle;
     let notes: string = calculateNotes(boardString);

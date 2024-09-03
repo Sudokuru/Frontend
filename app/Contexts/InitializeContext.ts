@@ -5,7 +5,7 @@ import {
 } from "../Styling/ThemeColors";
 import { profile } from "../Api/Puzzle.Types";
 import { Profile } from "../Api/Profile";
-import { sudokuStrategyArray } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -22,20 +22,7 @@ const InitializeContext = () => {
     React.useState(false);
 
   const [strategyHintOrderSetting, setStrategyHintOrderSetting] =
-    React.useState<sudokuStrategyArray>([
-      "AMEND_NOTES",
-      "SIMPLIFY_NOTES",
-      "NAKED_SINGLE",
-      "HIDDEN_SINGLE",
-      "NAKED_PAIR",
-      "HIDDEN_PAIR",
-      "POINTING_PAIR",
-      "NAKED_TRIPLET",
-      "HIDDEN_TRIPLET",
-      "POINTING_TRIPLET",
-      "NAKED_QUADRUPLET",
-      "HIDDEN_QUADRUPLET",
-    ]);
+    React.useState<SudokuStrategyArray>(SUDOKU_STRATEGY_ARRAY);
 
   // set initial values of theme
   React.useEffect(() => {
@@ -97,7 +84,7 @@ const InitializeContext = () => {
   }, [featurePreviewSetting]);
 
   const updateStrategyHintOrder = React.useCallback(
-    (props: React.SetStateAction<sudokuStrategyArray>) => {
+    (props: React.SetStateAction<SudokuStrategyArray>) => {
       Profile.setProfileValue("strategyHintOrder", props);
       return setStrategyHintOrderSetting(props);
     },

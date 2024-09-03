@@ -1,5 +1,6 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
+import { SUDOKU_STRATEGY_ARRAY } from "sudokuru";
 
 type profileValue =
   | "theme"
@@ -20,20 +21,7 @@ export class Profile {
         highlightIdenticalValues: true,
         highlightRow: true,
         previewMode: false,
-        strategyHintOrder: [
-          "AMEND_NOTES",
-          "SIMPLIFY_NOTES",
-          "NAKED_SINGLE",
-          "HIDDEN_SINGLE",
-          "NAKED_PAIR",
-          "HIDDEN_PAIR",
-          "POINTING_PAIR",
-          "NAKED_TRIPLET",
-          "HIDDEN_TRIPLET",
-          "POINTING_TRIPLET",
-          "NAKED_QUADRUPLET",
-          "HIDDEN_QUADRUPLET",
-        ],
+        strategyHintOrder: SUDOKU_STRATEGY_ARRAY,
       };
       await this.setProfile(profile);
       return profile;
@@ -58,20 +46,7 @@ export class Profile {
       value.previewMode = false;
     }
     if (!value.strategyHintOrder) {
-      value.strategyHintOrder = [
-        "AMEND_NOTES",
-        "SIMPLIFY_NOTES",
-        "NAKED_SINGLE",
-        "HIDDEN_SINGLE",
-        "NAKED_PAIR",
-        "HIDDEN_PAIR",
-        "POINTING_PAIR",
-        "NAKED_TRIPLET",
-        "HIDDEN_TRIPLET",
-        "POINTING_TRIPLET",
-        "NAKED_QUADRUPLET",
-        "HIDDEN_QUADRUPLET",
-      ];
+      value.strategyHintOrder = SUDOKU_STRATEGY_ARRAY;
     }
     return value;
   }

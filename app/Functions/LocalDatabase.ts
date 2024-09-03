@@ -1,4 +1,4 @@
-import { sudokuStrategy } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 import { puzzle } from "../Api/Puzzle.Types";
 import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
 
@@ -55,7 +55,7 @@ export const convertPuzzleToSudokuObject = (
   return JSON.parse(JSON.stringify(game));
 };
 
-export function returnLocalDrillGame(strategy: sudokuStrategy): puzzle {
+export function returnLocalDrillGame(strategy: SudokuStrategy): puzzle {
   // if (strategy === "NAKED_SINGLE") {
   //   return NAKED_SINGLE_DRILL_GAMES[
   //     Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
