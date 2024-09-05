@@ -105,7 +105,6 @@ export class ProfilePage {
 
   async strategiesRenderCorrectly(strategies: SudokuStrategyArray) {
     for (const strategy of strategies) {
-      const formattedStrategy = formatOneLessonName(strategy);
       await this.isHintStrategyVisible(
         strategies.indexOf(strategy) + 1,
         strategy
