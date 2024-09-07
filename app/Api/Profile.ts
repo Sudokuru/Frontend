@@ -14,6 +14,11 @@ export class Profile {
   public static async getProfile(): Promise<profile> {
     const value = await getKeyJSON("profile");
 
+    // deep clone to avoid manipulation of const value.
+    const sudokuStrategyArray = JSON.parse(
+      JSON.stringify(SUDOKU_STRATEGY_ARRAY)
+    );
+
     const defaultProfileValues: profile = {
       theme: true,
       highlightBox: true,
@@ -21,7 +26,7 @@ export class Profile {
       highlightRow: true,
       highlightIdenticalValues: true,
       previewMode: false,
-      strategyHintOrder: SUDOKU_STRATEGY_ARRAY,
+      strategyHintOrder: sudokuStrategyArray,
     };
 
     if (value == null) {
