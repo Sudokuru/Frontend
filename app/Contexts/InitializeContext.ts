@@ -5,6 +5,7 @@ import {
 } from "../Styling/ThemeColors";
 import { profile } from "../Api/Puzzle.Types";
 import { Profile } from "../Api/Profile";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -20,6 +21,9 @@ const InitializeContext = () => {
   const [featurePreviewSetting, setFeaturePreviewSetting] =
     React.useState(false);
 
+  const [strategyHintOrderSetting, setStrategyHintOrderSetting] =
+    React.useState<SudokuStrategyArray>(SUDOKU_STRATEGY_ARRAY);
+
   // set initial values of theme
   React.useEffect(() => {
     Profile.getProfile().then((data: profile) => {
@@ -29,6 +33,7 @@ const InitializeContext = () => {
       setHighlightRowSetting(data.highlightRow);
       setHighlightColumnSetting(data.highlightColumn);
       setFeaturePreviewSetting(data.previewMode);
+      setStrategyHintOrderSetting(data.strategyHintOrder);
     });
   }, []);
 
@@ -78,6 +83,14 @@ const InitializeContext = () => {
     return setFeaturePreviewSetting(!featurePreviewSetting);
   }, [featurePreviewSetting]);
 
+  const updateStrategyHintOrder = React.useCallback(
+    (props: React.SetStateAction<SudokuStrategyArray>) => {
+      Profile.setProfileValue("strategyHintOrder", props);
+      return setStrategyHintOrderSetting(props);
+    },
+    [strategyHintOrderSetting]
+  );
+
   const preferences = React.useMemo(
     () => ({
       toggleTheme,
@@ -96,6 +109,8 @@ const InitializeContext = () => {
       highlightColumnSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
+      updateStrategyHintOrder,
+      strategyHintOrderSetting,
     }),
     [
       toggleTheme,
@@ -114,6 +129,8 @@ const InitializeContext = () => {
       highlightColumnSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
+      updateStrategyHintOrder,
+      strategyHintOrderSetting,
     ]
   );
 

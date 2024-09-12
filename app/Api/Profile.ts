@@ -1,5 +1,6 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
+import { SUDOKU_STRATEGY_ARRAY } from "sudokuru";
 
 type profileValue =
   | "theme"
@@ -7,22 +8,41 @@ type profileValue =
   | "highlightColumn"
   | "highlightIdenticalValues"
   | "highlightRow"
-  | "previewMode";
+  | "previewMode"
+  | "strategyHintOrder";
 export class Profile {
   public static async getProfile(): Promise<profile> {
-    let value = await getKeyJSON("profile");
+    const value = await getKeyJSON("profile");
+
+    // deep clone to avoid manipulation of const value.
+    const sudokuStrategyArray = JSON.parse(
+      JSON.stringify(SUDOKU_STRATEGY_ARRAY)
+    );
+
+    const defaultProfileValues: profile = {
+      theme: true,
+      highlightBox: true,
+      highlightColumn: true,
+      highlightRow: true,
+      highlightIdenticalValues: true,
+      previewMode: false,
+      strategyHintOrder: sudokuStrategyArray,
+    };
+
     if (value == null) {
-      let profile: profile = {
-        theme: true,
-        highlightBox: true,
-        highlightColumn: true,
-        highlightIdenticalValues: true,
-        highlightRow: true,
-        previewMode: false,
-      };
-      await this.setProfile(profile);
-      return profile;
+      await this.setProfile(defaultProfileValues);
+      return defaultProfileValues;
     }
+
+    // handle initialization if some data is present but not other data
+    // Not having this code caused a crash on mobile (web was ok for some reason)
+    // when a user had some but not all profile settings defined in their app storage
+    // TODO we will want to conver this scenario with end to end tests in the future
+    Object.entries(defaultProfileValues).forEach(([key, defaultValue]) => {
+      if (value[key] === undefined) {
+        value[key] = defaultValue;
+      }
+    });
     return value;
   }
 
@@ -30,7 +50,10 @@ export class Profile {
     storeData("profile", JSON.stringify(profile));
   }
 
-  public static async setProfileValue(profileValue: profileValue) {
+  public static async setProfileValue(
+    profileValue: profileValue,
+    newValue?: any
+  ) {
     let value: profile = await this.getProfile();
     switch (profileValue) {
       case "theme":
@@ -50,6 +73,9 @@ export class Profile {
         break;
       case "previewMode":
         value.previewMode = !value.previewMode;
+        break;
+      case "strategyHintOrder":
+        value.strategyHintOrder = newValue;
         break;
     }
     this.setProfile(value);

@@ -9,6 +9,7 @@ import {
   CollectV8CodeCoverageOptions,
 } from "./v8-code-coverage";
 import { ALMOST_FINISHED_GAME } from "./data";
+import { ProfilePage } from "./page/profile.page";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -16,6 +17,8 @@ interface MyFixtures {
   resumeGame: Page;
   contact: Page;
   play: Page;
+  profile: Page;
+  featurePreview: Page;
 }
 
 interface MyOptions {
@@ -89,6 +92,22 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     await headerComponent.drawerPlay.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
+    await use(page);
+  },
+  // Navigates to the profile page.
+  profile: async ({ page }, use) => {
+    await page.goto("");
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.profile.click();
+    await use(page);
+  },
+  // Turns on feature preview
+  featurePreview: async ({ page }, use) => {
+    await page.goto("");
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(page);
+    await profilePage.featurePreviewSwitchDisabled.click();
     await use(page);
   },
 });

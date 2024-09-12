@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.24.2",
+    "date": "September 12th, 2024",
+    "summary": "Fixing issue with loading profile data on mobile devices and adding preview feature to change hint strategy order",
+    "bug fixes": [
+      "Fixed a crash scenario on mobile when a user had partial profile data stored and loads profile page."
+    ],
+    "preview features": [
+      "Added UI interface on profile page for changing the hint priority order for strategies.",
+      "Includes up and down arrows for changing priority order, and a reset button for reseting to default order.",
+      "Settings are stored on user's device, so the data is saved between sessions."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.24.1",
     "date": "August 24th, 2024",
     "summary": "Updated profile page so that items fit better on the page.",

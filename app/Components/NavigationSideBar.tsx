@@ -40,7 +40,7 @@ const NavigationSideBar = (props: any) => {
           navigation.navigate("LearnPage");
         }}
       />
-      {featurePreviewSetting ? (
+      {featurePreviewSetting && (
         <Drawer.Item
           icon={"whistle"}
           testID="DrillButton"
@@ -51,8 +51,6 @@ const NavigationSideBar = (props: any) => {
             navigation.navigate("DrillPage");
           }}
         />
-      ) : (
-        <></>
       )}
       <Drawer.Item
         icon={"play"}

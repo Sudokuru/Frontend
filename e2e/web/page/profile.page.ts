@@ -1,4 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { formatOneLessonName } from "../../../app/Functions/learnedLessons";
+import { SudokuStrategy, SudokuStrategyArray } from "sudokuru";
 
 export class ProfilePage {
   readonly page: Page;
@@ -17,6 +19,10 @@ export class ProfilePage {
   readonly highlightColumnSwitchDisabled: Locator;
   readonly featurePreviewSwitchEnabled: Locator;
   readonly featurePreviewSwitchDisabled: Locator;
+
+  readonly hintStrategyMenuUp: Locator;
+  readonly hintStrategyMenuDown: Locator;
+  readonly hintStrategyReset: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -47,6 +53,10 @@ export class ProfilePage {
     this.featurePreviewSwitchDisabled = page.getByTestId(
       "FeaturePreviewDisabled"
     );
+
+    this.hintStrategyMenuUp = page.getByTestId("HintStrategyMenuUp");
+    this.hintStrategyMenuDown = page.getByTestId("HintStrategyMenuDown");
+    this.hintStrategyReset = page.getByTestId("HintStrategyMenuReset");
   }
 
   async profilePageIsRendered() {
@@ -75,5 +85,30 @@ export class ProfilePage {
     await expect(this.highlightColumnSwitchDisabled).toBeInViewport({
       ratio: 1,
     });
+  }
+
+  async isHintStrategyVisible(priority: number, strategy: SudokuStrategy) {
+    const formattedStrategy = formatOneLessonName(strategy);
+    const strategyButton = this.page.getByText(
+      `${priority}.${formattedStrategy}`
+    );
+    await expect(strategyButton).toBeInViewport({ ratio: 1 });
+  }
+
+  async clickHintStrategy(priority: number, strategy: SudokuStrategy) {
+    const formattedStrategy = formatOneLessonName(strategy);
+    const strategyButton = this.page.getByText(
+      `${priority}.${formattedStrategy}`
+    );
+    await strategyButton.click();
+  }
+
+  async strategiesRenderCorrectly(strategies: SudokuStrategyArray) {
+    for (const strategy of strategies) {
+      await this.isHintStrategyVisible(
+        strategies.indexOf(strategy) + 1,
+        strategy
+      );
+    }
   }
 }
