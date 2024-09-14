@@ -943,6 +943,33 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return true;
   };
 
+  const replaceSudokuBoardCells = (
+    cells: CellProps[][],
+    locations: CellLocation[]
+  ) => {
+    const actionHistory: GameAction[] = [];
+    for (const [i, location] of locations.entries()) {
+      for (const [j, value] of cells[i].entries()) {
+        actionHistory.push({
+          cell: {
+            entry: sudokuBoard.puzzle[location.r][location.c].entry,
+            type: sudokuBoard.puzzle[location.r][location.c].type,
+          } as CellProps,
+          cellLocation: { c: location.c, r: location.r },
+        });
+        sudokuBoard.puzzle[location.r][location.c].type = cells[i][j].type;
+        sudokuBoard.puzzle[location.r][location.c].entry = cells[i][j].entry;
+      }
+    }
+    sudokuBoard.actionHistory.push(actionHistory);
+    saveGame(sudokuBoard);
+    setSudokuBoard({
+      ...sudokuBoard,
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+    });
+  };
+
   /**
    * Increments the hint stage depending on user actions
    * @param stageOffset A number (-1) or (1) that represents how to alter hint stage
@@ -1023,28 +1050,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
       }
 
-      // Storing old value in actionHistory
-      // todo This is duplicated code, find some way to condense
       if (notesWereUpdated) {
-        sudokuBoard.actionHistory.push([
-          {
-            cell: {
-              entry: sudokuBoard.puzzle[r][c].entry,
-              type: sudokuBoard.puzzle[r][c].type,
-            } as CellProps, // annoying typescript casting workaround
-            cellLocation: { c: c, r: r },
-          },
-        ]);
-        sudokuBoard.puzzle[r][c].type = "note";
-        sudokuBoard.puzzle[r][c].entry = newNotes;
-
-        saveGame(sudokuBoard);
-
-        setSudokuBoard({
-          ...sudokuBoard,
-          puzzle: sudokuBoard.puzzle,
-          actionHistory: sudokuBoard.actionHistory,
-        });
+        replaceSudokuBoardCells(
+          [[{ type: "note", entry: newNotes }]],
+          [{ c: c, r: r }]
+        );
       }
     } else if (
       sudokuHint.hint.strategy === "NAKED_SINGLE" &&
@@ -1055,25 +1065,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
       placements.splice(0, 2);
 
-      sudokuBoard.actionHistory.push([
-        {
-          cell: {
-            entry: sudokuBoard.puzzle[r][c].entry,
-            type: sudokuBoard.puzzle[r][c].type,
-          } as CellProps, // annoying typescript casting workaround
-          cellLocation: { c: c, r: r },
-        },
-      ]);
-      sudokuBoard.puzzle[r][c].type = "value";
-      sudokuBoard.puzzle[r][c].entry = placements[0];
-
-      saveGame(sudokuBoard);
-
-      setSudokuBoard({
-        ...sudokuBoard,
-        puzzle: sudokuBoard.puzzle,
-        actionHistory: sudokuBoard.actionHistory,
-      });
+      replaceSudokuBoardCells(
+        [[{ type: "value", entry: placements[0] }]],
+        [{ c: c, r: r }]
+      );
     } else if (currentStage === 5) {
       const r = sudokuHint.hint.removals[0][0];
       const c = sudokuHint.hint.removals[0][1];
@@ -1087,27 +1082,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           newNotes.splice(index, 1);
         }
       }
-
-      sudokuBoard.actionHistory.push([
-        {
-          cell: {
-            entry: sudokuBoard.puzzle[r][c].entry,
-            type: sudokuBoard.puzzle[r][c].type,
-          } as CellProps, // annoying typescript casting workaround
-          cellLocation: { c: c, r: r },
-        },
-      ]);
-
-      sudokuBoard.puzzle[r][c].type = "note";
-      sudokuBoard.puzzle[r][c].entry = newNotes;
+      replaceSudokuBoardCells(
+        [[{ type: "note", entry: newNotes }]],
+        [{ c: c, r: r }]
+      );
     }
-    saveGame(sudokuBoard);
-
-    setSudokuBoard({
-      ...sudokuBoard,
-      puzzle: sudokuBoard.puzzle,
-      actionHistory: sudokuBoard.actionHistory,
-    });
   };
 
   return (
