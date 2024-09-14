@@ -121,10 +121,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const getHint = () => {
     // unselect board
-    if (sudokuBoard.selectedCell != null) {
+    if (sudokuBoard.selectedCells.length != 0) {
       setSudokuBoard({
         ...sudokuBoard,
-        selectedCell: null,
+        selectedCells: [],
       });
     }
     const returnedHint = getSudokuHint(
