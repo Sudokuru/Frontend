@@ -12,6 +12,7 @@ import { HeaderComponent } from "../components/header.component";
 import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
 import { getSingleMultiSelectKey } from "../../../playwright.config";
+import { PlayPage } from "../page/play.page";
 
 test.describe("board highlighting", () => {
   test("should render correctly when a cell is selected", async ({
@@ -110,12 +111,14 @@ test.describe("board highlighting", () => {
 
   test("disable identical values", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
-    await profilePage.identicalValuesSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await profilePage.highlightIdenticalValuesSwitchEnabled.click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][7].press("2");
@@ -139,12 +142,14 @@ test.describe("board highlighting", () => {
 
   test("disable box", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightBoxSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -166,12 +171,14 @@ test.describe("board highlighting", () => {
 
   test("disable rows", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightRowSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -193,12 +200,14 @@ test.describe("board highlighting", () => {
 
   test("disable column", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightColumnSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -220,14 +229,16 @@ test.describe("board highlighting", () => {
 
   test("disable all", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightColumnSwitchEnabled.click();
     await profilePage.highlightBoxSwitchEnabled.click();
     await profilePage.highlightRowSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -245,13 +256,15 @@ test.describe("board highlighting", () => {
 
   test("disable rows and columns", async ({ resumeGame }) => {
     const headerComponent = new HeaderComponent(resumeGame);
-    await headerComponent.profile.last().click();
+    await headerComponent.profile.click();
     const profilePage = new ProfilePage(resumeGame);
     await profilePage.highlightRowSwitchEnabled.click();
     await profilePage.highlightColumnSwitchEnabled.click();
-    await headerComponent.home.last().click();
+    await headerComponent.home.click();
     const homePage = new HomePage(resumeGame);
     await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.page.getByText("Resume Puzzle").click();
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([

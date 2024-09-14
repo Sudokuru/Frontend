@@ -2,7 +2,7 @@ import React from "react";
 import { Text } from "react-native-paper";
 import { View, useWindowDimensions } from "react-native";
 
-export interface StatisticProps {
+interface StatisticProps {
   statisticName: string;
   statisticValue: string | number;
   testID: string;

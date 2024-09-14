@@ -1,6 +1,5 @@
 import React from "react";
 import { View } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -15,6 +14,7 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
+import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -22,6 +22,8 @@ import NavigationButton from "../Components/Home/NavigationButton";
 const LandingPage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
+
+  const { featurePreviewSetting } = React.useContext(PreferencesContext);
 
   const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
@@ -41,42 +43,42 @@ const LandingPage = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView
+    <View
+      style={{
+        width: windowSize.width,
+        height: windowSize.height,
+        flexDirection: "column",
+        alignItems: "center",
+        gap: minWindowSize / 25,
+      }}
+    >
+      {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
+      <View
         style={{
-          width: windowSize.width,
-          height: windowSize.height,
-          flexDirection: "column",
-          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "center",
           gap: minWindowSize / 25,
         }}
       >
-        {/* <SudokuBoard gameType={"Demo"} strategies={strategies} /> */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            gap: minWindowSize / 25,
-          }}
-        >
-          <NavigationButton
-            image={START_LESSONS_LOGO}
-            navigationPage="Learn"
-            testID="HomeLearnButton"
-          />
+        <NavigationButton
+          image={START_LESSONS_LOGO}
+          navigationPage="LearnPage"
+          testID="HomeLearnButton"
+        />
+        {featurePreviewSetting && (
           <NavigationButton
             image={START_DRILLS_LOGO}
-            navigationPage="Drill"
+            navigationPage="DrillPage"
             testID="HomeDrillButton"
           />
-          <NavigationButton
-            image={PLAY_SUDOKU_LOGO}
-            navigationPage="Play"
-            testID="HomePlayButton"
-          />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+        )}
+        <NavigationButton
+          image={PLAY_SUDOKU_LOGO}
+          navigationPage="PlayPage"
+          testID="HomePlayButton"
+        />
+      </View>
+    </View>
   );
 };
 

@@ -1,9 +1,7 @@
 import { LearnPage } from "./../page/learn.page";
 import { HomePage } from "./../page/home.page";
-import { expect } from "@playwright/test";
 import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
-import { DrillPage } from "./../page/drill.page";
 import { PlayPage } from "./../page/play.page";
 import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
@@ -17,12 +15,12 @@ test.describe("home page", () => {
     await learnPage.learnPageIsRendered();
   });
 
-  test("start drills button", async ({ page }) => {
-    const homePage = new HomePage(page);
-    await homePage.startDrills.click();
-    const drillPage = new DrillPage(page);
-    await drillPage.drillPageIsRendered();
-  });
+  // test("start drills button", async ({ page }) => {
+  //   const homePage = new HomePage(page);
+  //   await homePage.startDrills.click();
+  //   const drillPage = new DrillPage(page);
+  //   await drillPage.drillPageIsRendered();
+  // });
 
   test("play sudoku button", async ({ page }) => {
     const homePage = new HomePage(page);
@@ -43,10 +41,8 @@ test.describe("home page", () => {
     await statisticsPage.statisticsPageIsRendered();
   });
 
-  test("profile button", async ({ page }) => {
-    const headerComponent = new HeaderComponent(page);
-    await headerComponent.profile.click();
-    const profilePage = new ProfilePage(page);
+  test("profile button", async ({ profile }) => {
+    const profilePage = new ProfilePage(profile);
     await profilePage.profilePageIsRendered();
   });
 

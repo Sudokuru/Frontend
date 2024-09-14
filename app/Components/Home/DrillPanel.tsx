@@ -9,7 +9,7 @@ import {
   Portal,
   Text,
 } from "react-native-paper";
-import { sudokuStrategyArray } from "sudokuru";
+import { SudokuStrategyArray } from "sudokuru";
 import {
   CARD_IMAGE_HEIGHT,
   CARD_IMAGE_WIDTH,
@@ -26,7 +26,7 @@ import {
   storeData,
 } from "../../Functions/AsyncStorage";
 
-let drillStrategies: sudokuStrategyArray = [
+let drillStrategies: SudokuStrategyArray = [
   "NAKED_SINGLE",
   "NAKED_PAIR",
   "NAKED_TRIPLET",
@@ -129,6 +129,7 @@ const DrillPanel = (props: any) => {
             </Text>
             <Image
               source={img}
+              defaultSource={img}
               style={{
                 width: CARD_IMAGE_WIDTH,
                 height: CARD_IMAGE_HEIGHT,

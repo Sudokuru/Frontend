@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator } from "react-native-paper";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -64,45 +63,35 @@ const StatisticsPage = () => {
   );
 
   if (isLoading) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          <ActivityIndicator animating={true} color={theme.colors.primary} />
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
+    return <ActivityIndicator animating={true} color={theme.colors.primary} />;
   } else {
     return (
-      <SafeAreaProvider>
-        <SafeAreaView style={{ height: "100%", width: "100%" }}>
-          <ScrollView>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <TotalStatistics
-                totalScore={totalStatistics.totalScore}
-                numGamesPlayed={totalStatistics.numGamesPlayed}
-                fastestSolveTime={totalStatistics.fastestSolveTime}
-                averageSolveTime={totalStatistics.averageSolveTime}
-                totalSolveTime={totalStatistics.totalSolveTime}
-                numHintsUsed={totalStatistics.numHintsUsed}
-                numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
-              />
-              <Button
-                mode="contained"
-                onPress={() => {
-                  showWarningButton();
-                }}
-              >
-                Delete Statistics
-              </Button>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
+      <ScrollView>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TotalStatistics
+            totalScore={totalStatistics.totalScore}
+            numGamesPlayed={totalStatistics.numGamesPlayed}
+            fastestSolveTime={totalStatistics.fastestSolveTime}
+            averageSolveTime={totalStatistics.averageSolveTime}
+            totalSolveTime={totalStatistics.totalSolveTime}
+            numHintsUsed={totalStatistics.numHintsUsed}
+            numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
+          />
+          <Button
+            mode="contained"
+            onPress={() => {
+              showWarningButton();
+            }}
+          >
+            Delete Statistics
+          </Button>
+        </View>
         <Alert
           show={warningVisible}
           title="Delete Statistics Warning"
@@ -129,7 +118,7 @@ const StatisticsPage = () => {
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
         />
-      </SafeAreaProvider>
+      </ScrollView>
     );
   }
 };

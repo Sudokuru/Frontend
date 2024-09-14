@@ -1,15 +1,20 @@
 import React from "react";
-import { useWindowDimensions, View, ScrollView } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Switch, Text, useTheme } from "react-native-paper";
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  ScaledSize,
+} from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
+import ProfileToggle from "../Components/Profile/ProfileToggle";
+import StrategyOrder from "../Components/Profile/StrategyOrder";
 
 const ProfilePage = () => {
   const theme = useTheme();
 
   const size = useWindowDimensions();
-  const reSize = Math.min(size.width, size.height);
 
   const {
     learnedLessons,
@@ -23,171 +28,142 @@ const ProfilePage = () => {
     highlightColumnSetting,
     toggleHighlightRow,
     highlightRowSetting,
+    toggleFeaturePreview,
+    featurePreviewSetting,
   } = React.useContext(PreferencesContext);
 
+  const highlightMode = () => {
+    return (
+      highlightIdenticalValuesSetting &&
+      highlightBoxSetting &&
+      highlightColumnSetting &&
+      highlightRowSetting
+    );
+  };
+
+  const setAllHighlights = (mode: boolean) => {
+    if (mode !== highlightIdenticalValuesSetting) {
+      toggleHighlightIdenticalValues();
+    }
+    if (mode !== highlightBoxSetting) {
+      toggleHighlightBox();
+    }
+    if (mode !== highlightColumnSetting) {
+      toggleHighlightColumn();
+    }
+    if (mode !== highlightRowSetting) {
+      toggleHighlightRow();
+    }
+  };
+
+  // This determines the minimum width
+  // To render all profile components horizontally instead of vertically
+  const PROFILE_COMPONENTS_WIDTH = 600;
+
+  const profileFlexDirection = (size: ScaledSize) => {
+    if (size.width > PROFILE_COMPONENTS_WIDTH) {
+      return "row";
+    } else {
+      return "column";
+    }
+  };
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <ScrollView>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginVertical: 30,
-            }}
-          >
+    <ScrollView
+      contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+    >
+      <Text
+        style={{
+          fontSize: 40,
+          color: theme.colors.primary,
+          fontWeight: "bold",
+          marginBottom: 10,
+        }}
+      >
+        Profile
+      </Text>
+      <View style={{ flexDirection: profileFlexDirection(size) }}>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            padding: 20,
+            margin: 20,
+            minWidth: 280,
+          }}
+        >
+          <View style={{ marginBottom: 10 }}>
+            <Text style={{ fontSize: 25, color: "#025E73" }}>
+              Strategies Learned:
+            </Text>
             <Text
               style={{
-                fontSize: reSize / 20,
-                color: theme.colors.primary,
+                fontSize: 20,
                 fontWeight: "bold",
-                marginBottom: 10,
+                color: "#D9A05B",
               }}
             >
-              Profile
+              {formatLessonNameArray(learnedLessons)}
             </Text>
-            <View
-              style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}
-            >
-              <View style={{ marginBottom: 10 }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Strategies Learned:
-                </Text>
-                <Text
-                  style={{
-                    fontSize: reSize / 40,
-                    fontWeight: "bold",
-                    color: "#D9A05B",
-                  }}
-                >
-                  {formatLessonNameArray(learnedLessons)}
-                </Text>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Theme:{" "}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <Switch
-                    color={"#025E73"}
-                    value={darkThemeSetting}
-                    onValueChange={toggleTheme}
-                    testID={
-                      darkThemeSetting
-                        ? "DarkThemeEnabled"
-                        : "DarkThemeDisabled"
-                    }
-                    style={{ alignSelf: "center", flexDirection: "column" }}
-                  />
-                </View>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Identical Values:{" "}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <Switch
-                    color={"#025E73"}
-                    value={highlightIdenticalValuesSetting}
-                    onValueChange={toggleHighlightIdenticalValues}
-                    testID={
-                      highlightIdenticalValuesSetting
-                        ? "HighlightIdenticalValuesEnabled"
-                        : "HighlightIdenticalValuesDisabled"
-                    }
-                    style={{ alignSelf: "center", flexDirection: "column" }}
-                  />
-                </View>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Box:{" "}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <Switch
-                    color={"#025E73"}
-                    value={highlightBoxSetting}
-                    onValueChange={toggleHighlightBox}
-                    testID={
-                      highlightBoxSetting
-                        ? "HighlightBoxEnabled"
-                        : "HighlightBoxDisabled"
-                    }
-                    style={{ alignSelf: "center", flexDirection: "column" }}
-                  />
-                </View>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Row:{" "}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <Switch
-                    color={"#025E73"}
-                    value={highlightRowSetting}
-                    onValueChange={toggleHighlightRow}
-                    testID={
-                      highlightRowSetting
-                        ? "HighlightRowEnabled"
-                        : "HighlightRowDisabled"
-                    }
-                    style={{ alignSelf: "center", flexDirection: "column" }}
-                  />
-                </View>
-              </View>
-              <View style={{ marginBottom: 10, flexDirection: "row" }}>
-                <Text style={{ fontSize: reSize / 22, color: "#025E73" }}>
-                  Highlight Column:{" "}
-                </Text>
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                >
-                  <Switch
-                    color={"#025E73"}
-                    value={highlightColumnSetting}
-                    onValueChange={toggleHighlightColumn}
-                    testID={
-                      highlightColumnSetting
-                        ? "HighlightColumnEnabled"
-                        : "HighlightColumnDisabled"
-                    }
-                    style={{ alignSelf: "center", flexDirection: "column" }}
-                  />
-                </View>
-              </View>
-            </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </SafeAreaProvider>
+          <ProfileToggle
+            name="Theme"
+            value={darkThemeSetting}
+            valueToggle={toggleTheme}
+            testIdPrefix="DarkTheme"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Highlight"
+            value={highlightMode()}
+            valueToggle={setAllHighlights}
+            testIdPrefix="Highlight"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Identical Values"
+            value={highlightIdenticalValuesSetting}
+            valueToggle={toggleHighlightIdenticalValues}
+            testIdPrefix="HighlightIdenticalValues"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Box"
+            value={highlightBoxSetting}
+            valueToggle={toggleHighlightBox}
+            testIdPrefix="HighlightBox"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Row"
+            value={highlightRowSetting}
+            valueToggle={toggleHighlightRow}
+            testIdPrefix="HighlightRow"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="  Column"
+            value={highlightColumnSetting}
+            valueToggle={toggleHighlightColumn}
+            testIdPrefix="HighlightColumn"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Feature Preview"
+            value={featurePreviewSetting}
+            valueToggle={toggleFeaturePreview}
+            testIdPrefix="FeaturePreview"
+          ></ProfileToggle>
+        </View>
+        {featurePreviewSetting && (
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              padding: 20,
+              margin: 20,
+              minWidth: 280,
+            }}
+          >
+            <StrategyOrder></StrategyOrder>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 

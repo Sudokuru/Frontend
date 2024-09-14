@@ -4,7 +4,7 @@ import { useWindowDimensions } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
 
-export interface StatisticsProps {
+interface TotalStatisticsProps {
   totalScore: number;
   numGamesPlayed: number;
   fastestSolveTime: number;
@@ -14,7 +14,7 @@ export interface StatisticsProps {
   numWrongCellsPlayed: number;
 }
 
-const TotalStatistics = (props: StatisticsProps) => {
+const TotalStatistics = (props: TotalStatisticsProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
