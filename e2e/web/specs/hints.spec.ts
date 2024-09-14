@@ -18,8 +18,8 @@ import {
   HINT_SELECTED_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
-import { sudokuStrategy } from "sudokuru";
-import { toTitle } from "../../../app/Components/Sudoku Board/sudoku";
+import { SudokuStrategy } from "sudokuru";
+import { toTitle } from "../../../app/Components/SudokuBoard/sudoku";
 
 // todo test that board is unselected when entering hint mode
 
@@ -389,7 +389,7 @@ test.describe("board HIDDEN_SINGLE", () => {
  */
 const hintBaseTest = async (
   sudokuBoard: SudokuBoardComponent,
-  strategy: sudokuStrategy,
+  strategy: SudokuStrategy,
   row: number,
   column: number,
   hintSelectedColor: (row: number, column: number) => boolean,
@@ -539,7 +539,7 @@ const hintBaseTest = async (
  * @param hintType The hint type to recieve the hint message for
  * @returns A string with the hint message for the hint type and stage
  */
-const getHintMessageForStage = (stage: number, hintType: sudokuStrategy) => {
+const getHintMessageForStage = (stage: number, hintType: SudokuStrategy) => {
   if (stage === 1) {
     return toTitle(hintType);
   } else if (stage === 2) {
