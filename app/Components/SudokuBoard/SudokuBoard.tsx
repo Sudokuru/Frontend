@@ -120,13 +120,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const getHint = () => {
-    // unselect board
-    if (sudokuBoard.selectedCells.length != 0) {
-      setSudokuBoard({
-        ...sudokuBoard,
-        selectedCells: [],
-      });
-    }
+    // unselect board and increment hint
+    sudokuBoard.statistics.numHintsUsed++;
+    setSudokuBoard({
+      ...sudokuBoard,
+      statistics: sudokuBoard.statistics,
+      selectedCells: [],
+    });
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
       sudokuBoard.puzzleSolution
@@ -968,6 +968,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       puzzle: sudokuBoard.puzzle,
       actionHistory: sudokuBoard.actionHistory,
     });
+    if (isGameSolved()) {
+      setGameOver(true);
+    }
   };
 
   /**
