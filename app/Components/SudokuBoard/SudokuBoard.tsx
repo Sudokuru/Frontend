@@ -1026,13 +1026,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       // Storing old value in actionHistory
       // todo This is duplicated code, find some way to condense
       if (notesWereUpdated) {
-        sudokuBoard.actionHistory.push({
-          cell: {
-            entry: sudokuBoard.puzzle[r][c].entry,
-            type: sudokuBoard.puzzle[r][c].type,
-          } as CellProps, // annoying typescript casting workaround
-          cellLocation: { c: c, r: r },
-        });
+        sudokuBoard.actionHistory.push([
+          {
+            cell: {
+              entry: sudokuBoard.puzzle[r][c].entry,
+              type: sudokuBoard.puzzle[r][c].type,
+            } as CellProps, // annoying typescript casting workaround
+            cellLocation: { c: c, r: r },
+          },
+        ]);
         sudokuBoard.puzzle[r][c].type = "note";
         sudokuBoard.puzzle[r][c].entry = newNotes;
 
@@ -1053,13 +1055,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
       placements.splice(0, 2);
 
-      sudokuBoard.actionHistory.push({
-        cell: {
-          entry: sudokuBoard.puzzle[r][c].entry,
-          type: sudokuBoard.puzzle[r][c].type,
-        } as CellProps, // annoying typescript casting workaround
-        cellLocation: { c: c, r: r },
-      });
+      sudokuBoard.actionHistory.push([
+        {
+          cell: {
+            entry: sudokuBoard.puzzle[r][c].entry,
+            type: sudokuBoard.puzzle[r][c].type,
+          } as CellProps, // annoying typescript casting workaround
+          cellLocation: { c: c, r: r },
+        },
+      ]);
       sudokuBoard.puzzle[r][c].type = "value";
       sudokuBoard.puzzle[r][c].entry = placements[0];
 
@@ -1084,13 +1088,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
       }
 
-      sudokuBoard.actionHistory.push({
-        cell: {
-          entry: sudokuBoard.puzzle[r][c].entry,
-          type: sudokuBoard.puzzle[r][c].type,
-        } as CellProps, // annoying typescript casting workaround
-        cellLocation: { c: c, r: r },
-      });
+      sudokuBoard.actionHistory.push([
+        {
+          cell: {
+            entry: sudokuBoard.puzzle[r][c].entry,
+            type: sudokuBoard.puzzle[r][c].type,
+          } as CellProps, // annoying typescript casting workaround
+          cellLocation: { c: c, r: r },
+        },
+      ]);
 
       sudokuBoard.puzzle[r][c].type = "note";
       sudokuBoard.puzzle[r][c].entry = newNotes;
