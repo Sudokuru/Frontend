@@ -6,6 +6,7 @@ import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface EndGameModalProps {
   time: number;
@@ -38,8 +39,8 @@ const EndGameModal = (props: EndGameModalProps) => {
   }
 
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         alignItems: "center",
         justifyContent: "center",
         marginVertical: 30,
@@ -91,7 +92,7 @@ const EndGameModal = (props: EndGameModalProps) => {
       >
         Play New Game
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 
