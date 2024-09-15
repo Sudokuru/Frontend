@@ -1,6 +1,15 @@
 import React from "react";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
 
+// Clones Sudoku Strategy Array and removes Amend Notes from list
+export const returnSudokuStrategyArray = () => {
+  const updatedArray: SudokuStrategyArray = JSON.parse(
+    JSON.stringify(SUDOKU_STRATEGY_ARRAY)
+  );
+  updatedArray.shift();
+  return updatedArray;
+};
+
 export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
   darkThemeSetting: false,
@@ -19,5 +28,5 @@ export const PreferencesContext = React.createContext({
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
   updateStrategyHintOrder: (props: SudokuStrategyArray) => {},
-  strategyHintOrderSetting: SUDOKU_STRATEGY_ARRAY,
+  strategyHintOrderSetting: returnSudokuStrategyArray(),
 });

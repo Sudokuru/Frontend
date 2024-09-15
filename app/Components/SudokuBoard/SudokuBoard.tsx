@@ -129,6 +129,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       statistics: sudokuBoard.statistics,
       selectedCells: [],
     });
+    strategyHintOrderSetting.unshift("AMEND_NOTES");
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
       sudokuBoard.puzzleSolution,
