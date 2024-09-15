@@ -20,30 +20,55 @@ const Hint = (hintProps: HintProps) => {
   let fallbackHeight = 30;
 
   let hintContent: React.JSX.Element;
+  const STRATEGY_FONT_SIZE = 30;
   switch (stage) {
     case 1:
-      hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
+      hintContent = (
+        <Text style={{ textAlign: "center", fontSize: STRATEGY_FONT_SIZE }}>
+          {formatOneLessonName(hint.strategy)}
+        </Text>
+      );
       break;
     case 2:
       hintContent = (
-        <Text style={{ textAlign: "center" }}>
-          {formatOneLessonName(hint.strategy)}
-          {"\n"}
-          {hint.info}
-        </Text>
+        <>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: STRATEGY_FONT_SIZE,
+              marginBottom: 10,
+            }}
+          >
+            {formatOneLessonName(hint.strategy)}
+          </Text>
+          <Text style={{ textAlign: "center", fontSize: 16 }}>{hint.info}</Text>
+        </>
       );
       break;
     case 3:
       hintContent = (
-        <Text style={{ textAlign: "center" }}>
-          {formatOneLessonName(hint.strategy)}
-          {"\n"}
-          {"The hint is located in this region"}
-        </Text>
+        <>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: STRATEGY_FONT_SIZE,
+              marginBottom: 10,
+            }}
+          >
+            {formatOneLessonName(hint.strategy)}
+          </Text>
+          <Text style={{ textAlign: "center", fontSize: 16 }}>
+            {"The hint is located in this region"}
+          </Text>
+        </>
       );
       break;
     default:
-      hintContent = <Text>{formatOneLessonName(hint.strategy)}</Text>;
+      hintContent = (
+        <Text style={{ textAlign: "center", fontSize: STRATEGY_FONT_SIZE }}>
+          {formatOneLessonName(hint.strategy)}
+        </Text>
+      );
   }
 
   let leftButtonTestId = "hintArrowLeft";
