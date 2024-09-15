@@ -1,6 +1,13 @@
 import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+} from "react-native";
 import { CellType } from "../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
@@ -42,11 +49,12 @@ const Cell = (props: RenderCellProps) => {
     backgroundNoteColor: string[]
   ) => {
     if (entry.includes(noteIndex)) {
-      const styleVal = {
+      const styleVal: StyleProp<TextStyle> = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
         color: noteColor[noteIndex - 1],
         backgroundColor: backgroundNoteColor[noteIndex - 1],
+        fontWeight: "bold",
       };
       return <Text style={styleVal}>{noteIndex}</Text>;
     }

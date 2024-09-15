@@ -511,7 +511,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
     const disable: boolean = isBoardDisabled();
-    const noteColor: string[] = getCellNotesColor();
+    const noteColor: string[] = getCellNotesColor(r, c);
     const backgroundNotesColor: string[] =
       getCellBackgroundNotesColor(cellBackgroundColor);
 
@@ -533,8 +533,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
-  const getCellNotesColor = () => {
-    return [
+  const getCellNotesColor = (r: number, c: number) => {
+    const notesToReturn = [
       "black",
       "black",
       "black",
@@ -545,6 +545,19 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       "black",
       "black",
     ];
+    // change note color to red for note removals as part of hint
+    if (sudokuHint && sudokuHint.stage === 4) {
+      const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
+      for (const notes of hintNotes) {
+        if (notes[0] === r && notes[1] === c) {
+          notes.splice(0, 2);
+          for (const note of notes) {
+            notesToReturn[note - 1] = "red";
+          }
+        }
+      }
+    }
+    return notesToReturn;
   };
 
   const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
