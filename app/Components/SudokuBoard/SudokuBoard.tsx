@@ -762,6 +762,16 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       case "N":
         toggleNoteMode();
         return;
+      case "H":
+      case "h":
+        if (!doesBoardHaveConflict()) {
+          if (sudokuHint) {
+            updateHintStage(1);
+          } else {
+            getHint();
+          }
+        }
+        return;
       default:
         break;
     }
