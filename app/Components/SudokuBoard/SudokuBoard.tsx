@@ -141,12 +141,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       i,
       strategies,
     ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
-      console.log(
-        i,
-        sudokuBoard.statistics.numHintsUsedPerStrategy[i],
-        returnedHint.strategy,
-        strategies.hintStrategy
-      );
       if (strategies.hintStrategy == returnedHint.strategy) {
         sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
         incrementedStrategy = true;
