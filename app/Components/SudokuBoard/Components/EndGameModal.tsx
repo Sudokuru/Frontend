@@ -7,6 +7,7 @@ import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
 import { ScrollView } from "react-native-gesture-handler";
+import { formatOneLessonName } from "../../../Functions/learnedLessons";
 
 interface EndGameModalProps {
   time: number;
@@ -27,11 +28,18 @@ const EndGameModal = (props: EndGameModalProps) => {
   const theme = useTheme();
   const navigation: any = useNavigation();
 
+  // sort by most number of hints
+  props.numHintsUsedPerStrategy.sort((a, b) => {
+    return b.numHintsUsed - a.numHintsUsed;
+  });
+
   const strategyHints: React.JSX.Element[] = [];
   for (const strategyHint of props.numHintsUsedPerStrategy) {
     strategyHints.push(
       <Statistic
-        statisticName={strategyHint.hintStrategy + " Hints Used: "}
+        statisticName={
+          "  " + formatOneLessonName(strategyHint.hintStrategy) + ": "
+        }
         statisticValue={strategyHint.numHintsUsed}
         testID={"hintsUsed" + strategyHint.hintStrategy}
       />
