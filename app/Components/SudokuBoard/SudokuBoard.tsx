@@ -38,6 +38,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Components/Hint";
 import { GameDifficulty } from "./Functions/Difficulty";
+import { SudokuStrategyArray } from "sudokuru";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -129,11 +130,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       statistics: sudokuBoard.statistics,
       selectedCells: [],
     });
-    strategyHintOrderSetting.unshift("AMEND_NOTES");
+    const updatedArray: SudokuStrategyArray = JSON.parse(
+      JSON.stringify(strategyHintOrderSetting)
+    );
+    updatedArray.unshift("AMEND_NOTES");
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
       sudokuBoard.puzzleSolution,
-      strategyHintOrderSetting
+      updatedArray
     );
 
     setSudokuHint({
