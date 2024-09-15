@@ -91,6 +91,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         time={sudokuBoard.statistics.time}
         difficulty={sudokuBoard.statistics.difficulty}
         numHintsUsed={sudokuBoard.statistics.numHintsUsed}
+        numHintsUsedPerStrategy={sudokuBoard.statistics.numHintsUsedPerStrategy}
         numWrongCellsPlayed={sudokuBoard.statistics.numWrongCellsPlayed}
       />
     );
@@ -123,13 +124,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const getHint = () => {
-    // unselect board and increment hint
-    sudokuBoard.statistics.numHintsUsed++;
-    setSudokuBoard({
-      ...sudokuBoard,
-      statistics: sudokuBoard.statistics,
-      selectedCells: [],
-    });
     const updatedArray: SudokuStrategyArray = JSON.parse(
       JSON.stringify(strategyHintOrderSetting)
     );
@@ -139,6 +133,37 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       sudokuBoard.puzzleSolution,
       updatedArray
     );
+
+    // unselect board and increment hint statistics
+    sudokuBoard.statistics.numHintsUsed++;
+    let incrementedStrategy = false;
+    for (const [
+      i,
+      strategies,
+    ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
+      console.log(
+        i,
+        sudokuBoard.statistics.numHintsUsedPerStrategy[i],
+        returnedHint.strategy,
+        strategies.hintStrategy
+      );
+      if (strategies.hintStrategy == returnedHint.strategy) {
+        sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
+        incrementedStrategy = true;
+        break;
+      }
+    }
+    if (!incrementedStrategy) {
+      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: returnedHint.strategy,
+        numHintsUsed: 1,
+      });
+    }
+    setSudokuBoard({
+      ...sudokuBoard,
+      statistics: sudokuBoard.statistics,
+      selectedCells: [],
+    });
 
     setSudokuHint({
       stage: 1,
@@ -742,7 +767,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns void
    */
   const handleKeyDown = (event: any) => {
-    console.log(event);
     const inputValue = event.nativeEvent.key;
 
     switch (inputValue) {
@@ -1003,8 +1027,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     if (!sudokuHint) {
       return;
     }
-
-    console.log(sudokuHint.stage + stageOffset);
 
     switch (sudokuHint.stage + stageOffset) {
       case 0:

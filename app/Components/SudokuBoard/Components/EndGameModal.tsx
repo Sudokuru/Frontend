@@ -4,11 +4,17 @@ import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
+import React from "react";
+import { SudokuStrategy } from "sudokuru";
 
 interface EndGameModalProps {
   time: number;
   numHintsUsed: number;
   numWrongCellsPlayed: number;
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[];
   score: number;
   difficulty: string;
 }
@@ -19,6 +25,17 @@ const EndGameModal = (props: EndGameModalProps) => {
 
   const theme = useTheme();
   const navigation: any = useNavigation();
+
+  const strategyHints: React.JSX.Element[] = [];
+  for (const strategyHint of props.numHintsUsedPerStrategy) {
+    strategyHints.push(
+      <Statistic
+        statisticName={strategyHint.hintStrategy + " Hints Used: "}
+        statisticValue={strategyHint.numHintsUsed}
+        testID={"hintsUsed" + strategyHint.hintStrategy}
+      />
+    );
+  }
 
   return (
     <View
@@ -50,11 +67,6 @@ const EndGameModal = (props: EndGameModalProps) => {
           testID="time"
         />
         <Statistic
-          statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <Statistic
           statisticName="Mistakes Made: "
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
@@ -64,6 +76,12 @@ const EndGameModal = (props: EndGameModalProps) => {
           statisticValue={props.difficulty}
           testID="difficulty"
         />
+        <Statistic
+          statisticName="Number of Hints Used: "
+          statisticValue={props.numHintsUsed}
+          testID="numHintsUsed"
+        />
+        {strategyHints}
       </View>
       <Button
         mode="contained"
