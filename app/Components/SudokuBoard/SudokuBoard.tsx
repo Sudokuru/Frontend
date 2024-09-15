@@ -980,22 +980,20 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const replaceSudokuBoardCells = (
-    cells: CellProps[][],
+    cells: CellProps[],
     locations: CellLocation[]
   ) => {
     const actionHistory: GameAction[] = [];
     for (const [i, location] of locations.entries()) {
-      for (const [j, value] of cells[i].entries()) {
-        actionHistory.push({
-          cell: {
-            entry: sudokuBoard.puzzle[location.r][location.c].entry,
-            type: sudokuBoard.puzzle[location.r][location.c].type,
-          } as CellProps,
-          cellLocation: { c: location.c, r: location.r },
-        });
-        sudokuBoard.puzzle[location.r][location.c].type = cells[i][j].type;
-        sudokuBoard.puzzle[location.r][location.c].entry = cells[i][j].entry;
-      }
+      actionHistory.push({
+        cell: {
+          entry: sudokuBoard.puzzle[location.r][location.c].entry,
+          type: sudokuBoard.puzzle[location.r][location.c].type,
+        } as CellProps,
+        cellLocation: { c: location.c, r: location.r },
+      });
+      sudokuBoard.puzzle[location.r][location.c].type = cells[i].type;
+      sudokuBoard.puzzle[location.r][location.c].entry = cells[i].entry;
     }
     sudokuBoard.actionHistory.push(actionHistory);
     saveGame(sudokuBoard);
@@ -1047,6 +1045,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
 
+    const removals: number[][] = JSON.parse(
+      JSON.stringify(sudokuHint.hint.removals)
+    );
+
     if (
       sudokuHint.hint.strategy === "AMEND_NOTES" &&
       (currentStage === 4 || currentStage === 5)
@@ -1089,7 +1091,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
       if (notesWereUpdated) {
         replaceSudokuBoardCells(
-          [[{ type: "note", entry: newNotes }]],
+          [{ type: "note", entry: newNotes }],
           [{ c: c, r: r }]
         );
       }
@@ -1103,26 +1105,28 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       placements.splice(0, 2);
 
       replaceSudokuBoardCells(
-        [[{ type: "value", entry: placements[0] }]],
+        [{ type: "value", entry: placements[0] }],
         [{ c: c, r: r }]
       );
     } else if (currentStage === 5) {
-      const r = sudokuHint.hint.removals[0][0];
-      const c = sudokuHint.hint.removals[0][1];
-      const removals = [...sudokuHint.hint.removals[0]]; // deep clone to prevent sudokuHint state update
-      removals.splice(0, 2);
+      const cells: CellProps[] = [];
+      const locations: CellLocation[] = [];
+      for (const removal of removals) {
+        const r = removal[0];
+        const c = removal[1];
+        removal.splice(0, 2);
 
-      let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
-      for (let j = 0; j < removals.length; j++) {
-        if (newNotes.includes(removals[j])) {
-          const index = newNotes.indexOf(removals[j]);
-          newNotes.splice(index, 1);
+        let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+        for (let j = 0; j < removal.length; j++) {
+          if (newNotes.includes(removal[j])) {
+            const index = newNotes.indexOf(removal[j]);
+            newNotes.splice(index, 1);
+          }
         }
+        cells.push({ type: "note", entry: newNotes });
+        locations.push({ c: c, r: r });
       }
-      replaceSudokuBoardCells(
-        [[{ type: "note", entry: newNotes }]],
-        [{ c: c, r: r }]
-      );
+      replaceSudokuBoardCells(cells, locations);
     }
   };
 
