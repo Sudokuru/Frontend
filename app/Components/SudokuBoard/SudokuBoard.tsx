@@ -66,6 +66,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const [sudokuHint, setSudokuHint] = useState<HintObjectProps>();
 
+  const { strategyHintOrderSetting } = React.useContext(PreferencesContext);
+
   useEffect(() => {
     generateGame(props).then((game) => {
       if (game == null) {
@@ -129,7 +131,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
-      sudokuBoard.puzzleSolution
+      sudokuBoard.puzzleSolution,
+      strategyHintOrderSetting
     );
 
     setSudokuHint({

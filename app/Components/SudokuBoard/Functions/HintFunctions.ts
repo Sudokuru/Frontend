@@ -1,18 +1,19 @@
-import { getHint } from "sudokuru";
+import { getHint, SudokuStrategy } from "sudokuru";
 import { CellProps } from "../../../Functions/LocalDatabase";
 import { Hint } from "../SudokuBoard";
 import { generateBoxIndex } from "../sudoku";
 
 export const getSudokuHint = (
   puzzle: CellProps[][],
-  solution: number[][]
+  solution: number[][],
+  strategies: SudokuStrategy[]
 ): Hint => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
   const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
   let hint = getHint(
     puzzleState.puzzleValues,
     puzzleState.puzzleNotes,
-    undefined,
+    strategies,
     puzzleSolution
   ) as unknown as Hint;
   hint = hintInjections(hint);
