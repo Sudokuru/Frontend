@@ -43,17 +43,12 @@ const Cell = (props: RenderCellProps) => {
    * @param noteIndex The index of the note.
    * @returns void or a text component for the note index of a cell.
    */
-  const getNoteContents = (
-    noteIndex: number,
-    noteColor: string[],
-    backgroundNoteColor: string[]
-  ) => {
+  const getNoteContents = (noteIndex: number, noteColor: string[]) => {
     if (entry.includes(noteIndex)) {
       const styleVal: StyleProp<TextStyle> = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
         color: noteColor[noteIndex - 1],
-        backgroundColor: backgroundNoteColor[noteIndex - 1],
         fontWeight: "bold",
         alignSelf: "center",
       };
@@ -120,36 +115,63 @@ const Cell = (props: RenderCellProps) => {
             }}
           >
             <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note1"}>
-                {getNoteContents(1, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[0], cellSize).noteViewElement}
+                testID={"note1"}
+              >
+                {getNoteContents(1, noteColor)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note2"}>
-                {getNoteContents(2, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[1], cellSize).noteViewElement}
+                testID={"note2"}
+              >
+                {getNoteContents(2, noteColor)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note3"}>
-                {getNoteContents(3, noteColor, backgroundNoteColor)}
-              </View>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note4"}>
-                {getNoteContents(4, noteColor, backgroundNoteColor)}
-              </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note5"}>
-                {getNoteContents(5, noteColor, backgroundNoteColor)}
-              </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note6"}>
-                {getNoteContents(6, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[2], cellSize).noteViewElement}
+                testID={"note3"}
+              >
+                {getNoteContents(3, noteColor)}
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <View style={styles(cellSize).noteViewElement} testID={"note7"}>
-                {getNoteContents(7, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[3], cellSize).noteViewElement}
+                testID={"note4"}
+              >
+                {getNoteContents(4, noteColor)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note8"}>
-                {getNoteContents(8, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[4], cellSize).noteViewElement}
+                testID={"note5"}
+              >
+                {getNoteContents(5, noteColor)}
               </View>
-              <View style={styles(cellSize).noteViewElement} testID={"note9"}>
-                {getNoteContents(9, noteColor, backgroundNoteColor)}
+              <View
+                style={styles(backgroundNoteColor[5], cellSize).noteViewElement}
+                testID={"note6"}
+              >
+                {getNoteContents(6, noteColor)}
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={styles(backgroundNoteColor[6], cellSize).noteViewElement}
+                testID={"note7"}
+              >
+                {getNoteContents(7, noteColor)}
+              </View>
+              <View
+                style={styles(backgroundNoteColor[7], cellSize).noteViewElement}
+                testID={"note8"}
+              >
+                {getNoteContents(8, noteColor)}
+              </View>
+              <View
+                style={styles(backgroundNoteColor[8], cellSize).noteViewElement}
+                testID={"note9"}
+              >
+                {getNoteContents(9, noteColor)}
               </View>
             </View>
           </View>
@@ -174,12 +196,13 @@ const Cell = (props: RenderCellProps) => {
   );
 };
 
-const styles = (cellSize?: number) =>
+const styles = (backgroundNoteColor: string, cellSize?: number) =>
   StyleSheet.create({
     noteViewElement: {
       width: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
       height: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
       margin: 1,
+      backgroundColor: backgroundNoteColor,
     },
   });
 
