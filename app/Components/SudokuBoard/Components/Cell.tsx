@@ -55,6 +55,7 @@ const Cell = (props: RenderCellProps) => {
         color: noteColor[noteIndex - 1],
         backgroundColor: backgroundNoteColor[noteIndex - 1],
         fontWeight: "bold",
+        alignSelf: "center",
       };
       return <Text style={styleVal}>{noteIndex}</Text>;
     }
@@ -176,9 +177,9 @@ const Cell = (props: RenderCellProps) => {
 const styles = (cellSize?: number) =>
   StyleSheet.create({
     noteViewElement: {
-      width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-      height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-      paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
+      width: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
+      height: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
+      margin: 1,
     },
   });
 
