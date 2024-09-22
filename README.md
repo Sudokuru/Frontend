@@ -74,6 +74,49 @@
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 3. For Web, hit the w key to start up the website at `localhost:19000`
 
+## 🧭 Navigating the Codebase
+
+<details>
+<summary>app</summary>
+
+📂 app/ is the parent folder for all the application code
+
+- 📡 Api/ contains classes to make it easier to interact with LocalStorage state data
+
+- 🖼️ ️Components/ contains the React components displayed on the pages
+  - Contains folders to store components for various pages
+  - Due to its size and complexity we'll break down SudokuBoard directory further.
+    - In addition to the SudokuBoard.tsx component, SudokuBoard contains a folder of subcomponents /Components, a folder of helper functions /Functions, and a sudoku.ts file with even more helper functions.
+- ⚛️ Contexts/ contains the React contexts code
+  - TODO: explain this folder better
+- 🔢 Data/ contains files filled with Sudoku puzzles to serve to the user
+- 🔨 Functions/ contains files of helper functions
+- 🧭 Navigation/ contains code for Drawer navigation
+- 📄 Pages/ contains the applications pages
+  - ContactPage.tsx lets users provide us with feedback from inside the app
+    - <img src="docs/PageScreenshots/Contact.png" alt="ContactPage Screenshot" width=400>
+  - DrillGame.tsx is not currently available to users
+  - DrillPage.tsx is not currently available to users
+  - HomePage.tsx is the users entry into the app
+    - <img src="docs/PageScreenshots/Home.png" alt="HomePage Screenshot" width=400>
+  - LearnPage.tsx lets users select lessons to start
+    - <img src="docs/PageScreenshots/Learn.png" alt="LearnPage Screenshot" width=400>
+  - Lesson.tsx lets users complete lessons
+    - <img src="docs/PageScreenshots/Lesson.png" alt="Lesson Screenshot" width=400>
+  - PlayPage.tsx lets users select puzzle to play based on difficulty
+    - <img src="docs/PageScreenshots/Play.png" alt="Play Screenshot" width=400>
+  - ProfilePage.tsx lets users select preferences e.g. theme
+    - <img src="docs/PageScreenshots/Profile.png" alt="Profile Screenshot" width=400>
+  - ReleaseNotesPage.tsx lets users see what's added to the app with each version update
+    - <img src="docs/PageScreenshots/ReleaseNotes.png" alt="ReleaseNotes Screenshot" width=400>
+  - StatisticsPage.tsx lets users see their Sudoku playing statistics
+    - <img src="docs/PageScreenshots/Statistics.png" alt="Statistics Screenshot" width=400>
+  - SudokuPage.tsx lets users play Sudoku!
+    - <img src="docs/PageScreenshots/Sudoku.png" alt="Sudoku Screenshot" width=400>
+- 🎨 Styling/ contains code for theme and highlighting colors
+
+</details>
+
 ## 🎭 Playwright E2E Tests
 
 ### ⚙️ Setup
