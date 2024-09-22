@@ -56,14 +56,14 @@ const Header = () => {
         onPress={() => navigation.toggleDrawer()}
       />
       {/*
-       * If we are on the Landing page, Logo will not navigate to the Landing page
-       * If we are on any other page, Logo will navigate to the Landing page
+       * If we are on the Home page, Logo will not navigate to the Home page
+       * If we are on any other page, Logo will navigate to the Home page
        */}
       <Pressable
-        disabled={currentPage == "LandingPage"}
+        disabled={currentPage == "HomePage"}
         onPress={() => {
-          updateCurrentPage("LandingPage");
-          navigation.navigate("LandingPage");
+          updateCurrentPage("HomePage");
+          navigation.navigate("HomePage");
         }}
       >
         <Image
