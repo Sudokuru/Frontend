@@ -117,6 +117,18 @@
 
 </details>
 
+<details>
+<summary>docs</summary>
+
+📂 docs/ is the parent folder for all the documentation
+
+- 📡 BackendApiCalls/ contains docs to help understand how to make API calls to Sudokuru npm library
+- 🖼️ Components/ contains various docs related to Sudoku logic, terminology, and highlighting
+- 📜 DesignDecisions/ contains docs explaining some historical design decisions made in the apps development
+- 📸 PageScreenshots/ contains screenshots of the apps pages used as reference in this README
+
+</details>
+
 ## 🎭 Playwright E2E Tests
 
 ### ⚙️ Setup
