@@ -129,6 +129,17 @@
 
 </details>
 
+<details>
+<summary>e2e/web</summary>
+
+- 🖼️ components/ contains testing components to help assert things about components including the SudokuBoard itself
+- 📄 page/ contains testing components to help assert things about pages
+- 🎭 specs/ contains the actual Playwright e2e tests
+- 🔢 data.ts contains test Sudoku game objects
+- 🏗️ fixture.ts contains test fixtures including to automatically get things setup like navigating to a page to be tested
+
+</details>
+
 ## 🎭 Playwright E2E Tests
 
 ### ⚙️ Setup
