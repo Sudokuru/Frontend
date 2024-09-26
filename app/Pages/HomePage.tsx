@@ -19,7 +19,7 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
 
-const LandingPage = () => {
+const HomePage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
@@ -82,4 +82,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default HomePage;
