@@ -63,6 +63,16 @@ const NavigationSideBar = (props: any) => {
         }}
       />
       <Drawer.Item
+        icon={"badge-account-horizontal"}
+        testID="AboutUsButton"
+        label="About Us"
+        active={currentPage === "AboutUsPage"}
+        onPress={() => {
+          updateCurrentPage("AboutUsPage");
+          navigation.navigate("AboutUsPage");
+        }}
+      />
+      <Drawer.Item
         icon={"note-text"}
         testID="ReleaseNotes"
         label="Release Notes"
