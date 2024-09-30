@@ -14,6 +14,8 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1342f842a14f40cca856d6e81204f8ac)](https://app.codacy.com/gh/Sudokuru/Frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/4cd1d1027b7b2532c680/maintainability)](https://codeclimate.com/github/Sudokuru/Frontend/maintainability)
 
+<!--- Note: The following text is duplicated in the AboutUsPage.tsx file -->
+
 ## Sudokuru is an open-source project focused on developing a world-class, cross-platform Sudoku app. We aim to provide a delightful user experience while also contributing to the community by building a collection of reusable software modules. These modules are designed to be free, well-documented, modern, and interoperable, allowing developers to easily incorporate them into their own Sudoku-related projects.
 
 ### This frontend module is the primary user interface for Sudokuru, providing a cross-platform Sudoku experience built with React Native Web and TypeScript. It offers a clean, intuitive design with features such as:
