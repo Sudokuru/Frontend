@@ -14,7 +14,7 @@ export const PreferencesContext = React.createContext({
   toggleTheme: () => {},
   darkThemeSetting: false,
   updateCurrentPage: (props: any) => {},
-  currentPage: "Landing",
+  currentPage: "Home",
   updateLearnedLessons: (props: any) => {},
   learnedLessons: [""],
   toggleHighlightIdenticalValues: () => {},

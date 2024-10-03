@@ -24,10 +24,10 @@ const NavigationSideBar = (props: any) => {
         icon={"home"}
         testID="HomeButton"
         label="Home"
-        active={currentPage === "LandingPage"}
+        active={currentPage === "HomePage"}
         onPress={() => {
-          updateCurrentPage("LandingPage");
-          navigation.navigate("LandingPage");
+          updateCurrentPage("HomePage");
+          navigation.navigate("HomePage");
         }}
       />
       <Drawer.Item

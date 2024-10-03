@@ -11,7 +11,7 @@ import SudokuPage from "../Pages/SudokuPage";
 import PlayPage from "../Pages/PlayPage";
 import LearnPage from "../Pages/LearnPage";
 import Lesson from "../Pages/Lesson";
-import LandingPage from "../Pages/LandingPage";
+import HomePage from "../Pages/HomePage";
 import DrillPage from "../Pages/DrillPage";
 import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
@@ -48,7 +48,7 @@ const DrawerNavigator = () => {
             // also I believe it may have sped up the playwright test execution, which makes sense as less html to parse through.
           }}
         >
-          <Drawer.Screen name="LandingPage" component={LandingPage} />
+          <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
           <Drawer.Screen name="SudokuPage" component={SudokuPage} />
           <Drawer.Screen name="ContactPage" component={ContactPage} />

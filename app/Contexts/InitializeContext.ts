@@ -9,7 +9,7 @@ import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
-  const [currentPage, setCurrentPage] = React.useState("Landing");
+  const [currentPage, setCurrentPage] = React.useState("Home");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [highlightIdenticalValuesSetting, setHighlightIdenticalValuesSetting] =
     React.useState(true);
