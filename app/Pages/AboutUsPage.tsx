@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { Card, Text, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import {
   calculateCardsPerRow,
   CARD_PADDING,
@@ -27,11 +27,15 @@ const AboutUsPage = (props: any) => {
       <View
         key={teamMembers[i].name}
         testID={teamMembers[i].name}
-        style={{ width: CARD_WIDTH, height: CARD_PADDING }}
+        style={{
+          width: CARD_WIDTH,
+          height: CARD_WIDTH / 5,
+          borderWidth: 1,
+          borderColor: theme.colors.secondary,
+          padding: 5,
+        }}
       >
-        <Card mode="outlined">
-          <Text>{teamMembers[i].name}</Text>
-        </Card>
+        <Text>{teamMembers[i].name}</Text>
       </View>
     );
 
