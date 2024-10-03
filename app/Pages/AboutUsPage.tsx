@@ -1,9 +1,50 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Card, Text, useTheme } from "react-native-paper";
+import {
+  calculateCardsPerRow,
+  CARD_PADDING,
+  CARD_WIDTH,
+} from "../Components/Home/Cards";
 
-const AboutUsPage = () => {
+interface teamMember {
+  name: string;
+}
+
+const AboutUsPage = (props: any) => {
   const theme = useTheme();
+
+  const teamMembers: teamMember[] = [{ name: "Greg" }];
+  let teamCards = [];
+  let subArray = [];
+  let columnCount: number = calculateCardsPerRow(
+    props.width,
+    teamMembers.length
+  );
+
+  for (let i = 0; i < teamMembers.length; i++) {
+    subArray.push(
+      <View
+        key={teamMembers[i].name}
+        testID={teamMembers[i].name}
+        style={{ width: CARD_WIDTH, height: CARD_PADDING }}
+      >
+        <Card mode="outlined">
+          <Text>{teamMembers[i].name}</Text>
+        </Card>
+      </View>
+    );
+
+    // Add row
+    if ((i + 1) % columnCount === 0) {
+      teamCards.push(subArray);
+      subArray = [];
+    }
+  }
+  // Add last row if not evenly divisible
+  if (subArray.length > 0) {
+    teamCards.push(subArray);
+  }
 
   return (
     <ScrollView>
@@ -38,6 +79,21 @@ const AboutUsPage = () => {
           graduation with a current goal of launching the official production
           website in early 2025 and on mobile appstores later that year.
         </Text>
+        <Text variant="headlineSmall">Team</Text>
+        <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+          {teamCards.map((subArray, index) => (
+            <View
+              style={{
+                flexWrap: "wrap",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+              key={index}
+            >
+              {subArray}
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );
