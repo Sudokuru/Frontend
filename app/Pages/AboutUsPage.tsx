@@ -9,12 +9,20 @@ import {
 
 interface teamMember {
   name: string;
+  active: string;
+  specialty?: string;
 }
 
 const AboutUsPage = (props: any) => {
   const theme = useTheme();
 
-  const teamMembers: teamMember[] = [{ name: "Greg" }];
+  const teamMembers: teamMember[] = [
+    {
+      name: "Greg",
+      active: "Founding (Fall 2022) - Present",
+      specialty: "Sudoku Solving Algorithms",
+    },
+  ];
   let teamCards = [];
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
@@ -35,7 +43,11 @@ const AboutUsPage = (props: any) => {
           padding: 5,
         }}
       >
-        <Text>{teamMembers[i].name}</Text>
+        <Text>Name: {teamMembers[i].name}</Text>
+        <Text>Active: {teamMembers[i].active}</Text>
+        {teamMembers[i].specialty && (
+          <Text>Specialty: {teamMembers[i].specialty}</Text>
+        )}
       </View>
     );
 
