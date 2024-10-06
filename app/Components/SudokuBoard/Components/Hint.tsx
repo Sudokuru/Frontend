@@ -81,6 +81,24 @@ const Hint = (hintProps: HintProps) => {
         </>
       );
       break;
+    case 5:
+      hintContent = (
+        <>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: STRATEGY_FONT_SIZE,
+              marginBottom: 10,
+            }}
+          >
+            {formatOneLessonName(hint.strategy)}
+          </Text>
+          <Text style={{ textAlign: "center", fontSize: 16 }}>
+            {hint.action}
+          </Text>
+        </>
+      );
+      break;
     default:
       hintContent = (
         <Text style={{ textAlign: "center", fontSize: STRATEGY_FONT_SIZE }}>
