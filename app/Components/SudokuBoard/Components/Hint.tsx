@@ -21,26 +21,27 @@ const Hint = (hintProps: HintProps) => {
 
   let hintContent: React.JSX.Element;
   const STRATEGY_FONT_SIZE = 30;
+
+  const hintTitle = (
+    <Text
+      style={{
+        textAlign: "center",
+        fontSize: STRATEGY_FONT_SIZE,
+        marginBottom: 10,
+      }}
+    >
+      {formatOneLessonName(hint.strategy)}
+    </Text>
+  );
+
   switch (stage) {
     case 1:
-      hintContent = (
-        <Text style={{ textAlign: "center", fontSize: STRATEGY_FONT_SIZE }}>
-          {formatOneLessonName(hint.strategy)}
-        </Text>
-      );
+      hintContent = hintTitle;
       break;
     case 2:
       hintContent = (
         <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: STRATEGY_FONT_SIZE,
-              marginBottom: 10,
-            }}
-          >
-            {formatOneLessonName(hint.strategy)}
-          </Text>
+          {hintTitle}
           <Text style={{ textAlign: "center", fontSize: 16 }}>{hint.info}</Text>
         </>
       );
@@ -48,15 +49,7 @@ const Hint = (hintProps: HintProps) => {
     case 3:
       hintContent = (
         <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: STRATEGY_FONT_SIZE,
-              marginBottom: 10,
-            }}
-          >
-            {formatOneLessonName(hint.strategy)}
-          </Text>
+          {hintTitle}
           <Text style={{ textAlign: "center", fontSize: 16 }}>
             {"The hint is located in this region"}
           </Text>
@@ -66,15 +59,7 @@ const Hint = (hintProps: HintProps) => {
     case 4:
       hintContent = (
         <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: STRATEGY_FONT_SIZE,
-              marginBottom: 10,
-            }}
-          >
-            {formatOneLessonName(hint.strategy)}
-          </Text>
+          {hintTitle}
           <Text style={{ textAlign: "center", fontSize: 16 }}>
             {hint.action}
           </Text>
@@ -84,15 +69,7 @@ const Hint = (hintProps: HintProps) => {
     case 5:
       hintContent = (
         <>
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: STRATEGY_FONT_SIZE,
-              marginBottom: 10,
-            }}
-          >
-            {formatOneLessonName(hint.strategy)}
-          </Text>
+          {hintTitle}
           <Text style={{ textAlign: "center", fontSize: 16 }}>
             {hint.action}
           </Text>
@@ -100,11 +77,7 @@ const Hint = (hintProps: HintProps) => {
       );
       break;
     default:
-      hintContent = (
-        <Text style={{ textAlign: "center", fontSize: STRATEGY_FONT_SIZE }}>
-          {formatOneLessonName(hint.strategy)}
-        </Text>
-      );
+      hintContent = hintTitle;
   }
 
   let leftButtonTestId = "hintArrowLeft";
