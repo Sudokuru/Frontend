@@ -47,12 +47,11 @@ const AboutUsPage = (props: any) => {
           padding: 5,
         }}
       >
-        <Text>Name: {teamMembers[i].name}</Text>
         <Button
           icon="github"
           onPress={() => openLink("https://github.com/Gregory711")}
         >
-          Test
+          {teamMembers[i].name}
         </Button>
         <Text>Active: {teamMembers[i].active}</Text>
         {teamMembers[i].specialty && (
