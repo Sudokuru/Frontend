@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollView, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Linking, ScrollView, View } from "react-native";
+import { Button, Text, useTheme } from "react-native-paper";
 import {
   calculateCardsPerRow,
   CARD_PADDING,
@@ -30,6 +30,10 @@ const AboutUsPage = (props: any) => {
     teamMembers.length
   );
 
+  const openLink = (url: string) => {
+    Linking.openURL(url);
+  };
+
   for (let i = 0; i < teamMembers.length; i++) {
     subArray.push(
       <View
@@ -44,6 +48,12 @@ const AboutUsPage = (props: any) => {
         }}
       >
         <Text>Name: {teamMembers[i].name}</Text>
+        <Button
+          icon="github"
+          onPress={() => openLink("https://github.com/Gregory711")}
+        >
+          Test
+        </Button>
         <Text>Active: {teamMembers[i].active}</Text>
         {teamMembers[i].specialty && (
           <Text>Specialty: {teamMembers[i].specialty}</Text>
