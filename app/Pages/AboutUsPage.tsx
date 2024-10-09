@@ -9,6 +9,7 @@ import {
 
 interface teamMember {
   name: string;
+  github: string;
   active: string;
   specialty?: string;
 }
@@ -19,6 +20,7 @@ const AboutUsPage = (props: any) => {
   const teamMembers: teamMember[] = [
     {
       name: "Greg",
+      github: "https://github.com/Gregory711",
       active: "Founding (Fall 2022) - Present",
       specialty: "Sudoku Solving Algorithms",
     },
@@ -47,10 +49,7 @@ const AboutUsPage = (props: any) => {
           padding: 5,
         }}
       >
-        <Button
-          icon="github"
-          onPress={() => openLink("https://github.com/Gregory711")}
-        >
+        <Button icon="github" onPress={() => openLink(teamMembers[i].github)}>
           {teamMembers[i].name}
         </Button>
         <Text>Active: {teamMembers[i].active}</Text>
