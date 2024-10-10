@@ -2,14 +2,14 @@ import { Locator, Page, expect } from "@playwright/test";
 
 export class AboutUsPage {
   readonly page: Page;
-  readonly title: Locator;
+  readonly mission: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("About Us");
+    this.mission = page.getByText("Mission");
   }
 
   async aboutUsPageIsRendered() {
-    await expect(this.title).toBeInViewport({ ratio: 1 });
+    await expect(this.mission).toBeInViewport({ ratio: 1 });
   }
 }
