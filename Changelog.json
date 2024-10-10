@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.24.3",
+    "date": "October 10th, 2024",
+    "summary": "Centering notes better in sudoku cell and making notes bold",
+    "bug fixes": [
+      "Centering notes in sudoku cell better.",
+      "Notes are now as dark as values and are easier to see"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.24.2",
     "date": "September 12th, 2024",
     "summary": "Fixing issue with loading profile data on mobile devices and adding preview feature to change hint strategy order",
@@ -243,7 +254,7 @@
   },
   {
     "version": "1.13.0",
-    "date": "Octobre 22nd, 2023",
+    "date": "October 22nd, 2023",
     "summary": "Implemented desktop app support",
     "features": ["Sudokuru can now be downloaded and played on desktop."],
     "targets": ["desktop"],
