@@ -79,7 +79,11 @@ const AboutUsPage = () => {
           margin: 10,
         }}
       >
-        <Button icon="github" onPress={() => openLink(teamMembers[i].github)}>
+        <Button
+          icon="github"
+          onPress={() => openLink(teamMembers[i].github)}
+          testID={`button-${teamMembers[i].name}`}
+        >
           {teamMembers[i].name}
         </Button>
         <Text>Active: {teamMembers[i].active}</Text>
