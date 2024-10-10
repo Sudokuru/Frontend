@@ -152,7 +152,7 @@ const styles = (cellSize?: number) =>
     noteViewElement: {
       width: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
       height: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
-      margin: 1,
+      margin: 2,
     },
   });
 
