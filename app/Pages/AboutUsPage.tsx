@@ -134,7 +134,13 @@ const AboutUsPage = () => {
           website in early 2025 and on mobile appstores later that year.
         </Text>
         <Text variant="headlineSmall">Team</Text>
-        <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+        <View
+          style={{
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
           {teamCards.map((subArray, index) => (
             <View
               style={{
