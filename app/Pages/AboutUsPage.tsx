@@ -154,7 +154,7 @@ const AboutUsPage = () => {
             </View>
           ))}
         </View>
-        <View style={{ alignSelf: "flex-start" }}>
+        <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
           <Button
             icon="github"
             onPress={() => openLink("https://github.com/Sudokuru/Frontend")}
