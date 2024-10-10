@@ -29,7 +29,6 @@ const Cell = (props: RenderCellProps) => {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
         fontWeight: "bold",
-        alignSelf: "center",
       };
       return <Text style={styleVal}>{noteIndex}</Text>;
     }
@@ -150,9 +149,9 @@ const Cell = (props: RenderCellProps) => {
 const styles = (cellSize?: number) =>
   StyleSheet.create({
     noteViewElement: {
-      width: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
-      height: cellSize ? cellSize / 4.5 : fallbackHeight / 4.5,
-      margin: 2,
+      width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+      height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+      paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
     },
   });
 
