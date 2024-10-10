@@ -162,6 +162,13 @@ const AboutUsPage = () => {
           >
             Source Code
           </Button>
+          <Button
+            icon="youtube"
+            onPress={() => openLink("https://www.youtube.com/@SudoKuru")}
+            labelStyle={{ fontSize: 20 }}
+          >
+            YouTube
+          </Button>
         </View>
       </View>
     </ScrollView>
