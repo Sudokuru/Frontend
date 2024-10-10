@@ -6,6 +6,7 @@ import {
   CARD_PADDING,
   CARD_WIDTH,
 } from "../Components/Home/Cards";
+import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 interface teamMember {
   name: string;
@@ -14,7 +15,9 @@ interface teamMember {
   specialty?: string;
 }
 
-const AboutUsPage = (props: any) => {
+const AboutUsPage = () => {
+  const windowSize = useNewWindowDimensions();
+
   const theme = useTheme();
 
   const teamMembers: teamMember[] = [
@@ -54,7 +57,7 @@ const AboutUsPage = (props: any) => {
   let teamCards = [];
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
-    props.width,
+    windowSize.width,
     teamMembers.length
   );
 
