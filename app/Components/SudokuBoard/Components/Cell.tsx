@@ -28,6 +28,7 @@ const Cell = (props: RenderCellProps) => {
       const styleVal = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
         fontFamily: "Inter_200ExtraLight",
+        fontWeight: "bold",
       };
       return <Text style={styleVal}>{noteIndex}</Text>;
     }
