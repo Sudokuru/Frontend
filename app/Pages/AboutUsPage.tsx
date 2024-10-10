@@ -154,6 +154,15 @@ const AboutUsPage = () => {
             </View>
           ))}
         </View>
+        <View style={{ alignSelf: "flex-start" }}>
+          <Button
+            icon="github"
+            onPress={() => openLink("https://github.com/Sudokuru/Frontend")}
+            labelStyle={{ fontSize: 20 }}
+          >
+            Source Code
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
