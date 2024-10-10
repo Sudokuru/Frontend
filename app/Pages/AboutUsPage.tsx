@@ -76,6 +76,7 @@ const AboutUsPage = () => {
           borderWidth: 1,
           borderColor: theme.colors.secondary,
           padding: 5,
+          margin: 10,
         }}
       >
         <Button icon="github" onPress={() => openLink(teamMembers[i].github)}>
