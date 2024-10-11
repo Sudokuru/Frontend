@@ -8,6 +8,10 @@ test.describe("about us page", () => {
     const aboutUsPage = new AboutUsPage(aboutUs);
     for (const member of teamMembers) {
       await aboutUsPage.teamMemberCardIsVisible(member.name);
+      await aboutUsPage.teamMemberCardHasText(member.name, member.active);
+      if (member.specialty) {
+        await aboutUsPage.teamMemberCardHasText(member.name, member.specialty);
+      }
     }
   });
 });

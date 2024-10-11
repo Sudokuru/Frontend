@@ -16,4 +16,8 @@ export class AboutUsPage {
   async teamMemberCardIsVisible(name: string) {
     await expect(this.page.getByTestId(name)).toBeInViewport({ ratio: 1 });
   }
+
+  async teamMemberCardHasText(name: string, text: string) {
+    await expect(this.page.getByTestId(name)).toContainText(text);
+  }
 }
