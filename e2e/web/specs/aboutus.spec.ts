@@ -1,4 +1,3 @@
-import { expect } from "@playwright/test";
 import { test } from "../fixture";
 import { AboutUsPage } from "../page/aboutus.page";
 import { teamMembers } from "../../../app/Data/members";
@@ -12,7 +11,12 @@ test.describe("about us page", () => {
       if (member.specialty) {
         await aboutUsPage.teamMemberCardHasText(member.name, member.specialty);
       }
-      await aboutUsPage.teamMemberCardButtonWorks(member.name, member.github);
+      await aboutUsPage.linkButtonWorks(member.name, member.github);
     }
+  });
+
+  test("media buttons work", async ({ aboutUs }) => {
+    const aboutUsPage = new AboutUsPage(aboutUs);
+    await aboutUsPage.mediaButtonsWork();
   });
 });

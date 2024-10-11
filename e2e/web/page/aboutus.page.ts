@@ -21,11 +21,19 @@ export class AboutUsPage {
     await expect(this.page.getByTestId(name)).toContainText(text);
   }
 
-  async teamMemberCardButtonWorks(name: string, url: string) {
+  async linkButtonWorks(name: string, url: string) {
     const [newPage] = await Promise.all([
       this.page.waitForEvent("popup"),
       this.page.getByTestId("button-" + name).click(),
     ]);
     expect(newPage.url()).toBe(url);
+  }
+
+  async mediaButtonsWork() {
+    await this.linkButtonWorks(
+      "source-code",
+      "https://github.com/Sudokuru/Frontend"
+    );
+    await this.linkButtonWorks("youtube", "https://www.youtube.com/@SudoKuru");
   }
 }
