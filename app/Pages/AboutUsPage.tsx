@@ -1,11 +1,7 @@
 import React from "react";
 import { Linking, ScrollView, View } from "react-native";
 import { Button, Text, useTheme } from "react-native-paper";
-import {
-  calculateCardsPerRow,
-  CARD_PADDING,
-  CARD_WIDTH,
-} from "../Components/Home/Cards";
+import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { teamMembers } from "../Data/members";
 
