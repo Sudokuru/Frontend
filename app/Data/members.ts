@@ -1,11 +1,11 @@
-interface teamMember {
+interface TeamMember {
   name: string;
   github: string;
   active: string;
   specialty?: string;
 }
 
-export const teamMembers: teamMember[] = [
+export const teamMembers: TeamMember[] = [
   {
     name: "Greg",
     github: "https://github.com/Gregory711",
