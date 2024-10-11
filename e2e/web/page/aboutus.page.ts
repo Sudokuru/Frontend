@@ -20,4 +20,12 @@ export class AboutUsPage {
   async teamMemberCardHasText(name: string, text: string) {
     await expect(this.page.getByTestId(name)).toContainText(text);
   }
+
+  async teamMemberCardButtonWorks(name: string, url: string) {
+    const [newPage] = await Promise.all([
+      this.page.waitForEvent("popup"),
+      this.page.getByTestId("button-" + name).click(),
+    ]);
+    expect(newPage.url()).toBe(url);
+  }
 }

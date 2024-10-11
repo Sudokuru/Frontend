@@ -12,6 +12,7 @@ test.describe("about us page", () => {
       if (member.specialty) {
         await aboutUsPage.teamMemberCardHasText(member.name, member.specialty);
       }
+      await aboutUsPage.teamMemberCardButtonWorks(member.name, member.github);
     }
   });
 });
