@@ -123,6 +123,7 @@ const AboutUsPage = () => {
             icon="github"
             onPress={() => openLink("https://github.com/Sudokuru/Frontend")}
             labelStyle={{ fontSize: 20 }}
+            testID="button-source-code"
           >
             Source Code
           </Button>
@@ -130,6 +131,7 @@ const AboutUsPage = () => {
             icon="youtube"
             onPress={() => openLink("https://www.youtube.com/@SudoKuru")}
             labelStyle={{ fontSize: 20 }}
+            testID="button-youtube"
           >
             YouTube
           </Button>
