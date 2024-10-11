@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.25.0",
+    "date": "October 10th, 2024",
+    "summary": "Added about us page",
+    "features": [
+      "Added about us page containing our mission, history, team members, and links"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
     "version": "1.24.2",
     "date": "September 12th, 2024",
     "summary": "Fixing issue with loading profile data on mobile devices and adding preview feature to change hint strategy order",
