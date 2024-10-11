@@ -95,6 +95,8 @@
 - 🔨 Functions/ contains files of helper functions
 - 🧭 Navigation/ contains code for Drawer navigation
 - 📄 Pages/ contains the applications pages
+  - AboutUsPage.tsx lets users learn more about the Sudokuru project
+    - <img src="docs/PageScreenshots/AboutUs.png" alt="AboutUsPage Screenshot" width=400>
   - ContactPage.tsx lets users provide us with feedback from inside the app
     - <img src="docs/PageScreenshots/Contact.png" alt="ContactPage Screenshot" width=400>
   - DrillGame.tsx is not currently available to users
