@@ -10,8 +10,8 @@ import {
 import {
   Lessons,
   getLessonMode,
-  lessonOfflineMode,
-  lessonOnlineMode,
+  LessonOfflineMode,
+  LessonOnlineMode,
 } from "../../Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -76,7 +76,7 @@ const LessonPanel = (props: any) => {
 
   // setting lesson mode to offline
   let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+  let getlessonArgs: LessonOfflineMode | LessonOnlineMode = {
     mode: LESSON_MODE,
   };
 
