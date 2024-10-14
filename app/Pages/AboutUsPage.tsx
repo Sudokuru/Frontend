@@ -1,6 +1,6 @@
 import React from "react";
-import { Linking, ScrollView, View } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
+import { Button, Icon, Text, useTheme } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { teamMembers } from "../Data/members";
@@ -35,13 +35,21 @@ const AboutUsPage = () => {
           margin: 10,
         }}
       >
-        <Button
-          icon="github"
+        <TouchableOpacity
           onPress={() => openLink(teamMembers[i].github)}
           testID={`button-${teamMembers[i].name}`}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "center",
+            marginBottom: "1%",
+          }}
         >
-          {teamMembers[i].name}
-        </Button>
+          <Icon source="github" size={30} color={theme.colors.primary} />
+          <Text style={{ color: theme.colors.primary }}>
+            {teamMembers[i].name}
+          </Text>
+        </TouchableOpacity>
         <Text>Active: {teamMembers[i].active}</Text>
         {teamMembers[i].specialty && (
           <Text>Specialty: {teamMembers[i].specialty}</Text>
