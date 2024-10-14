@@ -101,7 +101,9 @@ const AboutUsPage = () => {
           graduation with a current goal of launching the official production
           website in early 2025 and on mobile appstores later that year.
         </Text>
-        <Text variant="headlineSmall">Team</Text>
+        <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+          Team
+        </Text>
         <View
           style={{
             flexWrap: "wrap",
