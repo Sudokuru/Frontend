@@ -6,6 +6,7 @@ import { PlayPage } from "./../page/play.page";
 import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
 import { ContactPage } from "../page/contact.page";
+import { AboutUsPage } from "../page/aboutus.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {
@@ -74,5 +75,13 @@ test.describe("home page", () => {
     await headerComponent.drawerContact.click();
     const contactPage = new ContactPage(page);
     await contactPage.contactPageIsRendered();
+  });
+
+  test("sidebar about us button", async ({ page }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerAboutUs.click();
+    const aboutUsPage = new AboutUsPage(page);
+    await aboutUsPage.aboutUsPageIsRendered();
   });
 });
