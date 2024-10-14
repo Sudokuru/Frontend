@@ -46,13 +46,15 @@ const AboutUsPage = () => {
           }}
         >
           <Icon source="github" size={30} color={theme.colors.primary} />
-          <Text style={{ color: theme.colors.primary }}>
+          <Text variant="bodyLarge" style={{ color: theme.colors.primary }}>
             {teamMembers[i].name}
           </Text>
         </TouchableOpacity>
-        <Text>Active: {teamMembers[i].active}</Text>
+        <Text variant="bodyMedium">Active: {teamMembers[i].active}</Text>
         {teamMembers[i].specialty && (
-          <Text>Specialty: {teamMembers[i].specialty}</Text>
+          <Text variant="bodyMedium">
+            Specialty: {teamMembers[i].specialty}
+          </Text>
         )}
       </View>
     );
