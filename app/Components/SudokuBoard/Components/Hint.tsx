@@ -28,6 +28,7 @@ const Hint = (hintProps: HintProps) => {
         textAlign: "center",
         fontSize: STRATEGY_FONT_SIZE,
         marginBottom: 10,
+        color: theme.colors.primary,
       }}
     >
       {formatOneLessonName(hint.strategy)}
@@ -42,7 +43,15 @@ const Hint = (hintProps: HintProps) => {
       hintContent = (
         <>
           {hintTitle}
-          <Text style={{ textAlign: "center", fontSize: 16 }}>{hint.info}</Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: theme.colors.onBackground,
+            }}
+          >
+            {hint.info}
+          </Text>
         </>
       );
       break;
@@ -50,7 +59,13 @@ const Hint = (hintProps: HintProps) => {
       hintContent = (
         <>
           {hintTitle}
-          <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: theme.colors.onBackground,
+            }}
+          >
             {"The hint is located in this region"}
           </Text>
         </>
@@ -60,7 +75,13 @@ const Hint = (hintProps: HintProps) => {
       hintContent = (
         <>
           {hintTitle}
-          <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: theme.colors.onBackground,
+            }}
+          >
             {hint.action}
           </Text>
         </>
@@ -70,7 +91,13 @@ const Hint = (hintProps: HintProps) => {
       hintContent = (
         <>
           {hintTitle}
-          <Text style={{ textAlign: "center", fontSize: 16 }}>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: theme.colors.onBackground,
+            }}
+          >
             {hint.action}
           </Text>
         </>
