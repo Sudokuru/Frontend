@@ -30,7 +30,6 @@ export const getSudokuHint = (
 export const hintInjections = (hint: Hint) => {
   if (hint.strategy == "NAKED_SINGLE") {
     hint.groups.push([2, generateBoxIndex(hint.cause[0][0], hint.cause[0][1])]);
-    console.log(hint.groups);
   }
   return hint;
 };

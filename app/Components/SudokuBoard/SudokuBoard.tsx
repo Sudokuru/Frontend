@@ -285,6 +285,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const score = finishGame(
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
+        sudokuBoard.statistics.numHintsUsedPerStrategy,
         sudokuBoard.statistics.numWrongCellsPlayed,
         sudokuBoard.statistics.time
       );
@@ -1149,6 +1150,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           const score = finishGame(
             sudokuBoard.statistics.difficulty,
             sudokuBoard.statistics.numHintsUsed,
+            sudokuBoard.statistics.numHintsUsedPerStrategy,
             sudokuBoard.statistics.numWrongCellsPlayed,
             sudokuBoard.statistics.time
           );

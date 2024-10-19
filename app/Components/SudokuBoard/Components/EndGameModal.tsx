@@ -42,6 +42,7 @@ const EndGameModal = (props: EndGameModalProps) => {
         }
         statisticValue={strategyHint.numHintsUsed}
         testID={"hintsUsed" + strategyHint.hintStrategy}
+        key={strategyHint.hintStrategy}
       />
     );
   }
