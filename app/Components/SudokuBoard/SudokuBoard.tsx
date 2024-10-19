@@ -1095,8 +1095,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    *
    * This function iterates over the provided locations and replaces the corresponding cells
    * in the board with the new cell types and entries from the `cells` array. It also records
-   * the previous state of these cells in the action history for undo functionality, saves the
-   * updated game state, and checks if the game is solved.
+   * the previous state of these cells in the action history for undo functionality and saves the
+   * updated game state.
    *
    * @param cells - An array of new cell data to be placed into the Sudoku board.
    * @param locations - An array of cell locations that specify where to place the new cell data.
@@ -1124,9 +1124,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       puzzle: sudokuBoard.puzzle,
       actionHistory: sudokuBoard.actionHistory,
     });
-    if (isGameSolved()) {
-      setGameOver(true);
-    }
   };
 
   /**
@@ -1148,6 +1145,22 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         return;
       case sudokuHint.maxStage + 1:
         setSudokuHint(undefined);
+        if (isGameSolved()) {
+          const score = finishGame(
+            sudokuBoard.statistics.difficulty,
+            sudokuBoard.statistics.numHintsUsed,
+            sudokuBoard.statistics.numWrongCellsPlayed,
+            sudokuBoard.statistics.time
+          );
+          sudokuBoard.statistics.score = score;
+          setSudokuBoard({
+            ...sudokuBoard,
+            puzzle: sudokuBoard.puzzle,
+            actionHistory: sudokuBoard.actionHistory,
+            statistics: sudokuBoard.statistics,
+          });
+          setGameOver(true);
+        }
         return;
       default:
         if (

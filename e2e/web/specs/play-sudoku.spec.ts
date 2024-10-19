@@ -55,6 +55,41 @@ test.describe("complete game", () => {
     ).toBeInViewport({ ratio: 1 });
   });
 
+  test("Completing a game with hint should display correct game results", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.cell[7][6].press("8");
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.numPad[2 - 1].click();
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.solveHint();
+    await sudokuBoard.solveHint();
+    const endGameModal = new EndGameModalComponent(resumeGame);
+    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      endGameModal.page.getByText("Time Spent: 06:1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Number of Hints Used: 2")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Simplify Notes: 1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Naked Single: 1")).toBeInViewport(
+      { ratio: 1 }
+    );
+    await expect(
+      endGameModal.page.getByText("Mistakes Made: 235")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Difficulty: novice")
+    ).toBeInViewport({ ratio: 1 });
+  });
+
   test("Completing a game should display correct statistics", async ({
     resumeGame,
   }) => {
@@ -127,8 +162,14 @@ test.describe("complete game", () => {
       statistics.page.getByText("Total Solve Time: 06:1")
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Hints Used: 0")
+      statistics.page.getByText("Total Hints Used: 2")
     ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Simplify Notes: 1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Naked Single: 1")).toBeInViewport(
+      { ratio: 1 }
+    );
     await expect(
       statistics.page.getByText("Total Mistakes Made: 235")
     ).toBeInViewport({ ratio: 1 });
