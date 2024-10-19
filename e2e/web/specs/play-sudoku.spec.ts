@@ -93,6 +93,46 @@ test.describe("complete game", () => {
       statistics.page.getByText("Total Mistakes Made: 235")
     ).toBeInViewport({ ratio: 1 });
   });
+
+  test("Completing a game with hint should display correct statistics", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.cell[7][6].press("8");
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.numPad[2 - 1].click();
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.solveHint();
+    await sudokuBoard.solveHint();
+    const endGameModal = new EndGameModalComponent(resumeGame);
+    await endGameModal.newGame.click();
+    const header = new HeaderComponent(resumeGame);
+    await header.statistics.click();
+    const statistics = new StatisticsPage(resumeGame);
+    await statistics.statisticsPageIsRendered();
+    await expect(statistics.page.getByText("Total Score: 24")).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(statistics.page.getByText("Games Played: 1")).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      statistics.page.getByText("Fastest Solve Time: 06:1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      statistics.page.getByText("Average Solve Time: 06:1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      statistics.page.getByText("Total Solve Time: 06:1")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      statistics.page.getByText("Total Hints Used: 0")
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      statistics.page.getByText("Total Mistakes Made: 235")
+    ).toBeInViewport({ ratio: 1 });
+  });
 });
 
 test.describe("start game", () => {
