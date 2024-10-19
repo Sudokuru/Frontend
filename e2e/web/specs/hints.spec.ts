@@ -1,3 +1,4 @@
+import { HIDDEN_SINGLE_PROFILE } from "./../data";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { test } from "../fixture";
 import {
@@ -5,6 +6,7 @@ import {
   AMEND_NOTES_CORRECT_CELL_GAME,
   AMEND_NOTES_EMPTY_CELL_GAME,
   AMEND_NOTES_INCORRECT_CELL_GAME,
+  HIDDEN_SINGLE_BOX_GAME,
   HIDDEN_SINGLE_COLUMN_GAME,
   HIDDEN_SINGLE_ROW_GAME,
   NAKED_PAIR_BOX_GAME,
@@ -355,4 +357,35 @@ test.describe("board HIDDEN_SINGLE", () => {
   });
 });
 
-// todo write test for hidden single box variant (need to find example)
+test.describe("board HIDDEN_SINGLE", () => {
+  test.use({
+    gameToResume: HIDDEN_SINGLE_BOX_GAME,
+    profileSetting: HIDDEN_SINGLE_PROFILE,
+  });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row < 3 && column < 3;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 1 && column === 0) ||
+        (row === 1 && column === 1) ||
+        (row === 2 && column === 0)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_SINGLE",
+      0,
+      1,
+      hintSelectedColor,
+      notHighlightedColor,
+      { contentType: "notes", content: "25" },
+      { contentType: "notes", content: "25" },
+      { contentType: "notes", content: "2" }
+    );
+  });
+});

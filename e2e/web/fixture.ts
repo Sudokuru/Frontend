@@ -1,3 +1,4 @@
+import { statistics } from "./../../app/Api/Puzzle.Types";
 import { Page, test as base } from "@playwright/test";
 import { HomePage } from "./page/home.page";
 import { PlayPage } from "./page/play.page";
@@ -23,6 +24,7 @@ interface MyFixtures {
 
 interface MyOptions {
   gameToResume?: string;
+  profileSetting?: string;
 }
 
 // See https://playwright.dev/docs/test-fixtures and https://playwright.dev/docs/test-parameterize
@@ -55,17 +57,23 @@ const newBase = base.extend<AppFixtures>({
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
 export const test = newBase.extend<MyFixtures & MyOptions>({
   gameToResume: [ALMOST_FINISHED_GAME, { option: true }],
+  profileSetting: ["", { option: true }],
 
   page: async ({ page }, use) => {
     await page.goto("");
     await use(page);
   },
   // Loads a game from local storage and navigates to resume the game.
-  resumeGame: async ({ page, gameToResume }, use) => {
-    await page.goto("");
+  resumeGame: async ({ page, gameToResume, profileSetting }, use) => {
     await page.evaluate((gameToResume: string) => {
       window.localStorage.setItem("active_game", gameToResume);
     }, gameToResume as string);
+    if (profileSetting) {
+      await page.evaluate((profileSetting: string) => {
+        window.localStorage.setItem("profile", profileSetting);
+      }, profileSetting as string);
+    }
+    await page.goto("");
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
