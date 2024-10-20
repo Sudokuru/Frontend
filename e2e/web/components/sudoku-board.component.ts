@@ -387,6 +387,8 @@ export class SudokuBoardComponent {
         return "When you see a pointing pair you can remove all other instances of the shared note from the shared row or column (except for those in the pair themself)";
       } else if (hintType === "POINTING_TRIPLET") {
         return "When you see a pointing triplet you can remove all other instances of the shared note from the shared row or column (except for those in the triplet themself)";
+      } else {
+        return "Could not find Hint Message";
       }
     } else {
       return "Could not find Hint Message";
