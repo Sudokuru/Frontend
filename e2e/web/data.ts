@@ -63,9 +63,9 @@ export { default as HIDDEN_TRIPLET_BOX_GAME } from "./data/hidden-triplet-box-ga
 // HIDDEN QUADRUPLET DATA
 
 export { default as HIDDEN_QUADRUPLET_PROFILE } from "./data/hidden-quadruplet-profile.json";
-// export { default as HIDDEN_QUADRUPLET_ROW_GAME } from "./data/hidden-quadruplet-row-game.json";
-// export { default as HIDDEN_QUADRUPLET_COLUMN_GAME } from "./data/hidden-quadruplet-column-game.json";
-// export { default as HIDDEN_QUADRUPLET_BOX_GAME } from "./data/hidden-quadruplet-box-game.json";
+export { default as HIDDEN_QUADRUPLET_ROW_GAME } from "./data/hidden-quadruplet-row-game.json";
+export { default as HIDDEN_QUADRUPLET_COLUMN_GAME } from "./data/hidden-quadruplet-column-game.json";
+export { default as HIDDEN_QUADRUPLET_BOX_GAME } from "./data/hidden-quadruplet-box-game.json";
 
 // POINTING PAIR DATA
 

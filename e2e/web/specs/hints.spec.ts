@@ -1,16 +1,25 @@
 import {
   AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME,
   AMEND_NOTES_CORRECT_CELL_GAME,
+  AMEND_NOTES_EMPTY_CELL_GAME,
   AMEND_NOTES_INCORRECT_CELL_GAME,
   HIDDEN_PAIR_BOX_GAME,
   HIDDEN_PAIR_COLUMN_GAME,
   HIDDEN_PAIR_PROFILE,
   HIDDEN_PAIR_ROW_GAME,
+  HIDDEN_QUADRUPLET_BOX_GAME,
+  HIDDEN_QUADRUPLET_COLUMN_GAME,
+  HIDDEN_QUADRUPLET_PROFILE,
+  HIDDEN_QUADRUPLET_ROW_GAME,
+  HIDDEN_SINGLE_BOX_GAME,
+  HIDDEN_SINGLE_COLUMN_GAME,
   HIDDEN_SINGLE_PROFILE,
+  HIDDEN_SINGLE_ROW_GAME,
   HIDDEN_TRIPLET_BOX_GAME,
   HIDDEN_TRIPLET_COLUMN_GAME,
   HIDDEN_TRIPLET_PROFILE,
   HIDDEN_TRIPLET_ROW_GAME,
+  NAKED_PAIR_BOX_GAME,
   NAKED_PAIR_COLUMN_GAME,
   NAKED_PAIR_PROFILE,
   NAKED_PAIR_ROW_GAME,
@@ -18,24 +27,17 @@ import {
   NAKED_QUADRUPLET_COLUMN_GAME,
   NAKED_QUADRUPLET_PROFILE,
   NAKED_QUADRUPLET_ROW_GAME,
+  NAKED_SINGLE_GAME,
   NAKED_TRIPLET_BOX_GAME,
   NAKED_TRIPLET_COLUMN_GAME,
   NAKED_TRIPLET_PROFILE,
   NAKED_TRIPLET_ROW_GAME,
-} from "./../data";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { test } from "../fixture";
-import {
-  AMEND_NOTES_EMPTY_CELL_GAME,
-  HIDDEN_SINGLE_BOX_GAME,
-  HIDDEN_SINGLE_COLUMN_GAME,
-  HIDDEN_SINGLE_ROW_GAME,
-  NAKED_PAIR_BOX_GAME,
-  NAKED_SINGLE_GAME,
   SIMPLIFY_NOTES_BOX_GAME,
   SIMPLIFY_NOTES_COLUMN_GAME,
   SIMPLIFY_NOTES_ROW_GAME,
 } from "../data";
+import { SudokuBoardComponent } from "../components/sudoku-board.component";
+import { test } from "../fixture";
 
 // todo test that board is unselected when entering hint mode
 
@@ -922,6 +924,112 @@ test.describe("board HIDDEN_TRIPLET", () => {
         { contentType: "notes", content: "3", row: 2, column: 3 },
         { contentType: "notes", content: "13", row: 2, column: 4 },
         { contentType: "notes", content: "134", row: 2, column: 5 },
+      ]
+    );
+  });
+});
+
+test.describe("board HIDDEN_QUADRUPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_QUADRUPLET_ROW_GAME,
+    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+  });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row === 2;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 2 && column === 3) ||
+        (row === 2 && column === 4) ||
+        (row === 2 && column === 5)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_QUADRUPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [{ contentType: "notes", content: "47", row: 2, column: 0 }],
+      [{ contentType: "notes", content: "47", row: 2, column: 0 }],
+      [{ contentType: "notes", content: "7", row: 2, column: 0 }]
+    );
+  });
+});
+
+test.describe("board HIDDEN_QUADRUPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_QUADRUPLET_COLUMN_GAME,
+    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+  });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 0;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 1 && column === 0) || (row === 2 && column === 0);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_QUADRUPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "3469", row: 3, column: 0 },
+        { contentType: "notes", content: "3468", row: 7, column: 0 },
+        { contentType: "notes", content: "3468", row: 8, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "3469", row: 3, column: 0 },
+        { contentType: "notes", content: "3468", row: 7, column: 0 },
+        { contentType: "notes", content: "3468", row: 8, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "369", row: 3, column: 0 },
+        { contentType: "notes", content: "368", row: 7, column: 0 },
+        { contentType: "notes", content: "368", row: 8, column: 0 },
+      ]
+    );
+  });
+});
+
+test.describe("board HIDDEN_QUADRUPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_QUADRUPLET_BOX_GAME,
+    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+  });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column >= 6 && row <= 2;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 2 && column === 6) || (row === 2 && column === 7);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_QUADRUPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "25689", row: 0, column: 6 },
+        { contentType: "notes", content: "579", row: 1, column: 7 },
+      ],
+      [
+        { contentType: "notes", content: "25689", row: 0, column: 6 },
+        { contentType: "notes", content: "579", row: 1, column: 7 },
+      ],
+      [
+        { contentType: "notes", content: "289", row: 0, column: 6 },
+        { contentType: "notes", content: "79", row: 1, column: 7 },
       ]
     );
   });

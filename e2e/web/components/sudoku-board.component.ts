@@ -354,7 +354,7 @@ export class SudokuBoardComponent {
       } else if (hintType === "HIDDEN_TRIPLET") {
         return "Hidden triplets are when you only have three cells left still containing three specific values in a shared row, column, or box";
       } else if (hintType === "HIDDEN_QUADRUPLET") {
-        return "Hidden quintuplets are when you only have five cells left still containing five specific values in a shared row, column, or box";
+        return "Hidden quadruplets are when you only have four cells left still containing four specific values in a shared row, column, or box";
       } else if (hintType === "POINTING_PAIR") {
         return "Pointing pairs are when you only have two cells in a box left still containing a specific value and the cells also share a row or column";
       } else if (hintType === "POINTING_TRIPLET") {
