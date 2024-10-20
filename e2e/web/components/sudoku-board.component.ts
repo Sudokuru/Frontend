@@ -144,14 +144,11 @@ export class SudokuBoardComponent {
   /**
    * This is a helper function for Hint testing.
    * This tests highlighting at relevant stages, hint undo and 'redo' functionality, and cell content of the hint stages.
-   * @param sudokuBoard The playwright sudoku board page object.
-   * @param row This is the row (0-8) of the target cell of the hint.
-   * @param column This is the column (0-8) of the target cell of the hint.
    * @param hintSelectedColor This is a function provided to determine which cells should be highlighted as causes.
    * @param notHighlightedColor This is a function provided to determine what cells should be left unshaded as groups to focus on during the hint.
-   * @param initialCellState This is an object containing the cell content and cell content type for initial cell state.
-   * @param stageFourCellNotes This is an object containing the cell content and cell content type for the target cell for hint stage four.
-   * @param stageFiveCellNotes This is an object containing the cell content and cell content type for the target cell for hint stage five.
+   * @param initialCellState This is an array containing the cell(s) content and cell(s) content type for initial cell(s) state.
+   * @param stageFourCellNotes This is an array containing the cell(s) content and cell(s) content type for the target cell(s) for hint stage four.
+   * @param stageFiveCellNotes This is an array containing the cell(s) content and cell(s) content type for the target cell(s) for hint stage five.
    */
   async hintBaseTest(
     strategy: SudokuStrategy,
