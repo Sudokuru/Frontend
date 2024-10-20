@@ -70,13 +70,11 @@ export { default as HIDDEN_QUADRUPLET_BOX_GAME } from "./data/hidden-quadruplet-
 // POINTING PAIR DATA
 
 export { default as POINTING_PAIR_PROFILE } from "./data/pointing-pair-profile.json";
-// export { default as POINTING_PAIR_ROW_GAME } from "./data/pointing-pair-row-game.json";
-// export { default as POINTING_PAIR_COLUMN_GAME } from "./data/pointing-pair-column-game.json";
-// export { default as POINTING_PAIR_BOX_GAME } from "./data/pointing-pair-box-game.json";
+export { default as POINTING_PAIR_ROW_GAME } from "./data/pointing-pair-row-game.json";
+export { default as POINTING_PAIR_COLUMN_GAME } from "./data/pointing-pair-column-game.json";
 
 // POINTING TRIPLET DATA
 
 export { default as POINTING_TRIPLET_PROFILE } from "./data/pointing-triplet-profile.json";
-// export { default as POINTING_TRIPLET_ROW_GAME } from "./data/pointing-triplet-row-game.json";
-// export { default as POINTING_TRIPLET_COLUMN_GAME } from "./data/pointing-triplet-column-game.json";
-// export { default as POINTING_TRIPLET_BOX_GAME } from "./data/pointing-triplet-box-game.json";
+export { default as POINTING_TRIPLET_ROW_GAME } from "./data/pointing-triplet-row-game.json";
+export { default as POINTING_TRIPLET_COLUMN_GAME } from "./data/pointing-triplet-column-game.json";
