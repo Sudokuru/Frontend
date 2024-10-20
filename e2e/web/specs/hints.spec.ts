@@ -2,7 +2,15 @@ import {
   AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME,
   AMEND_NOTES_CORRECT_CELL_GAME,
   AMEND_NOTES_INCORRECT_CELL_GAME,
+  HIDDEN_PAIR_BOX_GAME,
+  HIDDEN_PAIR_COLUMN_GAME,
+  HIDDEN_PAIR_PROFILE,
+  HIDDEN_PAIR_ROW_GAME,
   HIDDEN_SINGLE_PROFILE,
+  HIDDEN_TRIPLET_BOX_GAME,
+  HIDDEN_TRIPLET_COLUMN_GAME,
+  HIDDEN_TRIPLET_PROFILE,
+  HIDDEN_TRIPLET_ROW_GAME,
   NAKED_PAIR_COLUMN_GAME,
   NAKED_PAIR_PROFILE,
   NAKED_PAIR_ROW_GAME,
@@ -691,6 +699,230 @@ test.describe("board HIDDEN_SINGLE", () => {
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "2", row: 0, column: 1 }]
+    );
+  });
+});
+
+test.describe("board HIDDEN_PAIR", () => {
+  test.use({
+    gameToResume: HIDDEN_PAIR_ROW_GAME,
+    profileSetting: HIDDEN_PAIR_PROFILE,
+  });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row === 1;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 1 && column === 1) ||
+        (row === 1 && column === 3) ||
+        (row === 1 && column === 4)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_PAIR",
+      hintSelectedColor,
+      notHighlightedColor,
+      [{ contentType: "notes", content: "579", row: 1, column: 7 }],
+      [{ contentType: "notes", content: "579", row: 1, column: 7 }],
+      [{ contentType: "notes", content: "7", row: 1, column: 7 }]
+    );
+  });
+});
+
+test.describe("board HIDDEN_PAIR", () => {
+  test.use({
+    gameToResume: HIDDEN_PAIR_COLUMN_GAME,
+    profileSetting: HIDDEN_PAIR_PROFILE,
+  });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 3;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 0 && column === 3) ||
+        (row === 2 && column === 3) ||
+        (row === 6 && column === 3) ||
+        (row === 7 && column === 3) ||
+        (row === 8 && column === 3)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_PAIR",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "89", row: 1, column: 3 },
+        { contentType: "notes", content: "2389", row: 4, column: 3 },
+      ],
+      [
+        { contentType: "notes", content: "89", row: 1, column: 3 },
+        { contentType: "notes", content: "2389", row: 4, column: 3 },
+      ],
+      [
+        { contentType: "notes", content: "9", row: 1, column: 3 },
+        { contentType: "notes", content: "29", row: 4, column: 3 },
+      ]
+    );
+  });
+});
+
+test.describe("board HIDDEN_PAIR", () => {
+  test.use({
+    gameToResume: HIDDEN_PAIR_BOX_GAME,
+    profileSetting: HIDDEN_PAIR_PROFILE,
+  });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row < 3 && column < 3;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 1 && column === 0) || (row === 2 && column === 0);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_PAIR",
+      hintSelectedColor,
+      notHighlightedColor,
+      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
+      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
+      [{ contentType: "notes", content: "5", row: 1, column: 1 }]
+    );
+  });
+});
+
+test.describe("board HIDDEN_TRIPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_TRIPLET_ROW_GAME,
+    profileSetting: HIDDEN_TRIPLET_PROFILE,
+  });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return row === 2;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 2 && column === 0) ||
+        (row === 2 && column === 3) ||
+        (row === 2 && column === 4) ||
+        (row === 2 && column === 5)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_TRIPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "2567", row: 2, column: 6 },
+        { contentType: "notes", content: "2567", row: 2, column: 7 },
+        { contentType: "notes", content: "27", row: 2, column: 8 },
+      ],
+      [
+        { contentType: "notes", content: "2567", row: 2, column: 6 },
+        { contentType: "notes", content: "2567", row: 2, column: 7 },
+        { contentType: "notes", content: "27", row: 2, column: 8 },
+      ],
+      [
+        { contentType: "notes", content: "256", row: 2, column: 6 },
+        { contentType: "notes", content: "256", row: 2, column: 7 },
+        { contentType: "notes", content: "2", row: 2, column: 8 },
+      ]
+    );
+  });
+});
+
+test.describe("board HIDDEN_TRIPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_TRIPLET_COLUMN_GAME,
+    profileSetting: HIDDEN_TRIPLET_PROFILE,
+  });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 1;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 0 && column === 1) || (row === 1 && column === 1);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_TRIPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "2346", row: 3, column: 1 },
+        { contentType: "notes", content: "236", row: 5, column: 1 },
+      ],
+      [
+        { contentType: "notes", content: "2346", row: 3, column: 1 },
+        { contentType: "notes", content: "236", row: 5, column: 1 },
+      ],
+      [
+        { contentType: "notes", content: "346", row: 3, column: 1 },
+        { contentType: "notes", content: "36", row: 5, column: 1 },
+      ]
+    );
+  });
+});
+
+test.describe("board HIDDEN_TRIPLET", () => {
+  test.use({
+    gameToResume: HIDDEN_TRIPLET_BOX_GAME,
+    profileSetting: HIDDEN_TRIPLET_PROFILE,
+  });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column <= 5 && column >= 3 && row <= 2;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 0 && column === 3) ||
+        (row === 0 && column === 5) ||
+        (row === 1 && column === 3) ||
+        (row === 1 && column === 4)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "HIDDEN_TRIPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "356", row: 2, column: 3 },
+        { contentType: "notes", content: "1356", row: 2, column: 4 },
+        { contentType: "notes", content: "13456", row: 2, column: 5 },
+      ],
+      [
+        { contentType: "notes", content: "356", row: 2, column: 3 },
+        { contentType: "notes", content: "1356", row: 2, column: 4 },
+        { contentType: "notes", content: "13456", row: 2, column: 5 },
+      ],
+      [
+        { contentType: "notes", content: "3", row: 2, column: 3 },
+        { contentType: "notes", content: "13", row: 2, column: 4 },
+        { contentType: "notes", content: "134", row: 2, column: 5 },
+      ]
     );
   });
 });

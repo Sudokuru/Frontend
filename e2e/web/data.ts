@@ -49,16 +49,16 @@ export { default as HIDDEN_SINGLE_BOX_GAME } from "./data/hidden-single-box-game
 // HIDDEN PAIR DATA
 
 export { default as HIDDEN_PAIR_PROFILE } from "./data/hidden-pair-profile.json";
-// export { default as HIDDEN_PAIR_ROW_GAME } from "./data/hidden-pair-row-game.json";
-// export { default as HIDDEN_PAIR_COLUMN_GAME } from "./data/hidden-pair-column-game.json";
-// export { default as HIDDEN_PAIR_BOX_GAME } from "./data/hidden-pair-box-game.json";
+export { default as HIDDEN_PAIR_ROW_GAME } from "./data/hidden-pair-row-game.json";
+export { default as HIDDEN_PAIR_COLUMN_GAME } from "./data/hidden-pair-column-game.json";
+export { default as HIDDEN_PAIR_BOX_GAME } from "./data/hidden-pair-box-game.json";
 
 // HIDDEN TRIPLET DATA
 
 export { default as HIDDEN_TRIPLET_PROFILE } from "./data/hidden-triplet-profile.json";
-// export { default as HIDDEN_TRIPLET_ROW_GAME } from "./data/hidden-triplet-row-game.json";
-// export { default as HIDDEN_TRIPLET_COLUMN_GAME } from "./data/hidden-triplet-column-game.json";
-// export { default as HIDDEN_TRIPLET_BOX_GAME } from "./data/hidden-triplet-box-game.json";
+export { default as HIDDEN_TRIPLET_ROW_GAME } from "./data/hidden-triplet-row-game.json";
+export { default as HIDDEN_TRIPLET_COLUMN_GAME } from "./data/hidden-triplet-column-game.json";
+export { default as HIDDEN_TRIPLET_BOX_GAME } from "./data/hidden-triplet-box-game.json";
 
 // HIDDEN QUADRUPLET DATA
 
