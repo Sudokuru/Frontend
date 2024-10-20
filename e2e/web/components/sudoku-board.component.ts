@@ -155,13 +155,26 @@ export class SudokuBoardComponent {
    */
   async hintBaseTest(
     strategy: SudokuStrategy,
-    row: number,
-    column: number,
     hintSelectedColor: (row: number, column: number) => boolean,
     notHighlightedColor: (row: number, column: number) => boolean,
-    initialCellState: { contentType: "notes" | "value"; content: string },
-    stageFourCellNotes: { contentType: "notes" | "value"; content: string },
-    stageFiveCellNotes: { contentType: "notes" | "value"; content: string }
+    initialCellState: {
+      contentType: "notes" | "value";
+      content: string;
+      row: number;
+      column: number;
+    }[],
+    stageFourCellNotes: {
+      contentType: "notes" | "value";
+      content: string;
+      row: number;
+      column: number;
+    }[],
+    stageFiveCellNotes: {
+      contentType: "notes" | "value";
+      content: string;
+      row: number;
+      column: number;
+    }[]
   ) {
     await this.hint.click();
 
@@ -205,58 +218,72 @@ export class SudokuBoardComponent {
 
     // testing undo logic
     await this.hintArrowLeft.click();
-    await this.cellHasContent(
-      row,
-      column,
-      initialCellState.content,
-      initialCellState.contentType
-    );
+    for (const state of initialCellState) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
     await this.hintArrowRight.click();
-    await this.cellHasContent(
-      row,
-      column,
-      stageFourCellNotes.content,
-      stageFourCellNotes.contentType
-    );
+    for (const state of stageFourCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     await this.hintArrowRight.click();
-    await this.cellHasContent(
-      row,
-      column,
-      stageFiveCellNotes.content,
-      stageFiveCellNotes.contentType
-    );
+    for (const state of stageFiveCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     await this.hintArrowLeft.click();
-    await this.cellHasContent(
-      row,
-      column,
-      stageFourCellNotes.content,
-      stageFourCellNotes.contentType
-    );
+    for (const state of stageFourCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
     await this.hintArrowLeft.click();
-    await this.cellHasContent(
-      row,
-      column,
-      initialCellState.content,
-      initialCellState.contentType
-    );
+    for (const state of initialCellState) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     await this.hintArrowRight.click();
-    await this.cellHasContent(
-      row,
-      column,
-      stageFourCellNotes.content,
-      stageFourCellNotes.contentType
-    );
+    for (const state of stageFourCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     await this.hintArrowRight.click();
-    await this.cellHasContent(
-      row,
-      column,
-      stageFiveCellNotes.content,
-      stageFiveCellNotes.contentType
-    );
+    for (const state of stageFiveCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     await this.isSudokuBoardHighlightedCorrectly([
       {
@@ -279,21 +306,25 @@ export class SudokuBoardComponent {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await this.cellHasContent(
-      row,
-      column,
-      stageFiveCellNotes.content,
-      stageFiveCellNotes.contentType
-    );
+    for (const state of stageFiveCellNotes) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
 
     // testing undo works at end of hint
     await this.undo.click();
-    await this.cellHasContent(
-      row,
-      column,
-      initialCellState.content,
-      initialCellState.contentType
-    );
+    for (const state of initialCellState) {
+      await this.cellHasContent(
+        state.row,
+        state.column,
+        state.content,
+        state.contentType
+      );
+    }
   }
 
   /**
