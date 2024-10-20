@@ -138,7 +138,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const updatedArray: SudokuStrategyArray = JSON.parse(
       JSON.stringify(strategyHintOrderSetting)
     );
+
+    // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
+    updatedArray.unshift("SIMPLIFY_NOTES");
     updatedArray.unshift("AMEND_NOTES");
+
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
       sudokuBoard.puzzleSolution,

@@ -7,6 +7,7 @@ export const returnSudokuStrategyArray = () => {
     JSON.stringify(SUDOKU_STRATEGY_ARRAY)
   );
   updatedArray.shift();
+  updatedArray.shift();
   return updatedArray;
 };
 
