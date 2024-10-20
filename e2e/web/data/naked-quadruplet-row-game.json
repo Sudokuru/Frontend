@@ -361,11 +361,11 @@
     "statistics": {
       "difficulty": "easy",
       "internalDifficulty": 0,
-      "numHintsUsed": 135,
+      "numHintsUsed": 139,
       "numHintsUsedPerStrategy": [],
       "numWrongCellsPlayed": 0,
       "score": 0,
-      "time": 4538
+      "time": 6607
     },
     "inNoteMode": false,
     "actionHistory": []
