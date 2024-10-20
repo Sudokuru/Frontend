@@ -1,4 +1,9 @@
-import { HIDDEN_SINGLE_PROFILE } from "./../data";
+import {
+  HIDDEN_SINGLE_PROFILE,
+  NAKED_PAIR_COLUMN_GAME,
+  NAKED_PAIR_PROFILE,
+  NAKED_PAIR_ROW_GAME,
+} from "./../data";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { test } from "../fixture";
 import {
@@ -282,7 +287,92 @@ test.describe("board NAKED_PAIR", () => {
   });
 });
 
-// todo write tests for NAKED_PAIR row and column variant
+test.describe("board NAKED_PAIR", () => {
+  test.use({
+    gameToResume: NAKED_PAIR_COLUMN_GAME,
+    profileSetting: NAKED_PAIR_PROFILE,
+  });
+  test("with column group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return (row <= 2 && column <= 2) || column === 0;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 1 && column === 0) || (row === 2 && column === 0);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "NAKED_PAIR",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "45", row: 1, column: 1 },
+        { contentType: "notes", content: "3469", row: 3, column: 0 },
+        { contentType: "notes", content: "3468", row: 7, column: 0 },
+        { contentType: "notes", content: "3468", row: 8, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "45", row: 1, column: 1 },
+        { contentType: "notes", content: "3469", row: 3, column: 0 },
+        { contentType: "notes", content: "3468", row: 7, column: 0 },
+        { contentType: "notes", content: "3468", row: 8, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "5", row: 1, column: 1 },
+        { contentType: "notes", content: "369", row: 3, column: 0 },
+        { contentType: "notes", content: "368", row: 7, column: 0 },
+        { contentType: "notes", content: "368", row: 8, column: 0 },
+      ]
+    );
+  });
+});
+
+test.describe("board NAKED_PAIR", () => {
+  test.use({
+    gameToResume: NAKED_PAIR_ROW_GAME,
+    profileSetting: NAKED_PAIR_PROFILE,
+  });
+  test("with row group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return (row <= 2 && column <= 2) || row === 1;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (row === 1 && column === 0) || (row === 1 && column === 1);
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "NAKED_PAIR",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "25", row: 0, column: 1 },
+        { contentType: "notes", content: "589", row: 1, column: 3 },
+        { contentType: "notes", content: "589", row: 1, column: 4 },
+        { contentType: "notes", content: "579", row: 1, column: 7 },
+        { contentType: "notes", content: "47", row: 2, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "25", row: 0, column: 1 },
+        { contentType: "notes", content: "589", row: 1, column: 3 },
+        { contentType: "notes", content: "589", row: 1, column: 4 },
+        { contentType: "notes", content: "579", row: 1, column: 7 },
+        { contentType: "notes", content: "47", row: 2, column: 0 },
+      ],
+      [
+        { contentType: "notes", content: "2", row: 0, column: 1 },
+        { contentType: "notes", content: "89", row: 1, column: 3 },
+        { contentType: "notes", content: "89", row: 1, column: 4 },
+        { contentType: "notes", content: "79", row: 1, column: 7 },
+        { contentType: "notes", content: "7", row: 2, column: 0 },
+      ]
+    );
+  });
+});
 
 test.describe("board HIDDEN_SINGLE", () => {
   test.use({ gameToResume: HIDDEN_SINGLE_ROW_GAME });
