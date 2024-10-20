@@ -328,6 +328,7 @@ export class SudokuBoardComponent {
   }
 
   /**
+   * todo would be nice in the future to have these values avaliable from the library instead of duplicated here.
    * Given stage number and hint type, returns the expected hint message
    * @param stage The stage of the hint to retrieve the hint message
    * @param hintType The hint type to recieve the hint message for
@@ -345,10 +346,50 @@ export class SudokuBoardComponent {
         return "Naked singles are when you only have one number left as a possibility in a cell";
       } else if (hintType === "NAKED_PAIR") {
         return "Naked pairs are when you only have the same two numbers left as a possibility in two cells in the same row, column, or box";
+      } else if (hintType === "NAKED_TRIPLET") {
+        return "Naked triplets are when you only have the same three numbers left as a possibility in three cells in the same row, column, or box";
+      } else if (hintType === "NAKED_QUADRUPLET") {
+        return "Naked quadruplets are when you only have the same four numbers left as a possibility in four cells in the same row, column, or box";
       } else if (hintType === "HIDDEN_SINGLE") {
         return "Hidden singles are when you only have one cell left still containing a specific value in a row, column, or box";
+      } else if (hintType === "HIDDEN_PAIR") {
+        return "Hidden pairs are when you only have two cells left still containing two specific values in a shared row, column, or box";
+      } else if (hintType === "HIDDEN_TRIPLET") {
+        return "Hidden triplets are when you only have three cells left still containing three specific values in a shared row, column, or box";
+      } else if (hintType === "HIDDEN_QUADRUPLET") {
+        return "Hidden quintuplets are when you only have five cells left still containing five specific values in a shared row, column, or box";
+      } else if (hintType === "POINTING_PAIR") {
+        return "Pointing pairs are when you only have two cells in a box left still containing a specific value and the cells also share a row or column";
+      } else if (hintType === "POINTING_TRIPLET") {
+        return "Pointing triplets are when you only have three cells in a box left still containing a specific value and the cells also share a row or column";
       } else {
         return "Could not find Hint Message";
+      }
+    } else if (stage === 3 || stage === 4) {
+      if (hintType === "AMEND_NOTES") {
+        return "When you see an amend notes you can remove all notes then add all nonconflicting numbers to its notes";
+      } else if (hintType === "SIMPLIFY_NOTES") {
+        return "When there is a value already placed in a cell than it can be removed from all other cells notes in its row, column, and box";
+      } else if (hintType === "NAKED_SINGLE") {
+        return "When you see a naked single you can fill it in with its last remaining possibility";
+      } else if (hintType === "NAKED_PAIR") {
+        return "When you see a naked pair you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "NAKED_TRIPLET") {
+        return "When you see a naked triplet you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "NAKED_QUADRUPLET") {
+        return "When you see a naked quadruplet you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "HIDDEN_SINGLE") {
+        return "When you see a hidden single you can remove all notes other than the single from the cell";
+      } else if (hintType === "HIDDEN_PAIR") {
+        return "When you see a hidden pair you can remove all notes other than the pair from the cells";
+      } else if (hintType === "HIDDEN_TRIPLET") {
+        return "When you see a hidden triplet you can remove all notes other than the triplet from the cells";
+      } else if (hintType === "HIDDEN_QUADRUPLET") {
+        return "When you see a hidden quadruplet you can remove all notes other than the quadruplet from the cells";
+      } else if (hintType === "POINTING_PAIR") {
+        return "When you see a pointing pair you can remove all other instances of the shared note from the shared row or column (except for those in the pair themself)";
+      } else if (hintType === "POINTING_TRIPLET") {
+        return "When you see a pointing triplet you can remove all other instances of the shared note from the shared row or column (except for those in the triplet themself)";
       }
     } else {
       return "Could not find Hint Message";

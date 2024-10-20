@@ -53,7 +53,28 @@ export const NAKED_PAIR_ROW_GAME =
 
 // NAKED TRIPLET DATA
 
+export const NAKED_TRIPLET_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["NAKED_TRIPLET","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","POINTING_PAIR","HIDDEN_TRIPLET","POINTING_TRIPLET","NAKED_QUADRUPLET","HIDDEN_QUADRUPLET"]}';
+
+export const NAKED_TRIPLET_ROW_GAME =
+  '[{"variant":"classic","version":"1.0.0","selectedCells":[],"puzzle":[[{"type":"value","entry":1},{"type":"note","entry":[2]},{"type":"given","entry":3},{"type":"note","entry":[5,6,8,9]},{"type":"given","entry":7},{"type":"note","entry":[5,6,8]},{"type":"note","entry":[2,5,6,8,9]},{"type":"given","entry":4},{"type":"note","entry":[2,8,9]}],[{"type":"note","entry":[4,7]},{"type":"note","entry":[5]},{"type":"given","entry":6},{"type":"note","entry":[5,8,9]},{"type":"note","entry":[5,8,9]},{"type":"given","entry":2},{"type":"given","entry":3},{"type":"note","entry":[5,7,9]},{"type":"given","entry":1}],[{"type":"note","entry":[4,7]},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"note","entry":[3,5,6]},{"type":"note","entry":[1,3,5,6]},{"type":"note","entry":[1,3,4,5,6]},{"type":"note","entry":[2,5,6,7]},{"type":"note","entry":[2,5,6,7]},{"type":"note","entry":[2,7]}],[{"type":"note","entry":[3,4,6,9]},{"type":"note","entry":[2,3,4,6]},{"type":"note","entry":[2,4]},{"type":"given","entry":1},{"type":"note","entry":[3,5,6,9]},{"type":"given","entry":7},{"type":"note","entry":[2,5,9]},{"type":"given","entry":8},{"type":"note","entry":[2,3,9]}],[{"type":"given","entry":5},{"type":"given","entry":1},{"type":"given","entry":7},{"type":"note","entry":[2,3,8,9]},{"type":"note","entry":[3,8,9]},{"type":"note","entry":[3,8]},{"type":"value","entry":4},{"type":"note","entry":[2,3,9]},{"type":"given","entry":6}],[{"type":"note","entry":[3,6,8,9]},{"type":"note","entry":[2,3,6]},{"type":"note","entry":[2,8]},{"type":"given","entry":4},{"type":"note","entry":[3,5,6,8,9]},{"type":"note","entry":[3,5,6,8]},{"type":"note","entry":[1,2,5,7,9]},{"type":"note","entry":[1,2,3,5,7,9]},{"type":"note","entry":[2,3,7,9]}],[{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":1},{"type":"note","entry":[3,6,8]},{"type":"value","entry":4},{"type":"given","entry":9},{"type":"note","entry":[6,8]},{"type":"note","entry":[3,6]},{"type":"given","entry":5}],[{"type":"note","entry":[3,4,6,8]},{"type":"given","entry":9},{"type":"given","entry":5},{"type":"note","entry":[3,6,7,8]},{"type":"note","entry":[1,3,6,8]},{"type":"note","entry":[1,3,6,8]},{"type":"note","entry":[1,2,6,7,8]},{"type":"note","entry":[1,2,3,6,7]},{"type":"note","entry":[2,3,4,7,8]}],[{"type":"note","entry":[3,4,6,8]},{"type":"note","entry":[3,4,6]},{"type":"note","entry":[4,8]},{"type":"note","entry":[3,5,6,7,8]},{"type":"given","entry":2},{"type":"note","entry":[1,3,5,6,8]},{"type":"note","entry":[1,6,7,8,9]},{"type":"note","entry":[1,3,6,7,9]},{"type":"note","entry":[3,4,7,8,9]}]],"puzzleSolution":[[1,2,3,6,7,5,9,4,8],[4,5,6,9,8,2,3,7,1],[7,8,9,3,1,4,5,6,2],[9,6,4,1,5,7,2,8,3],[5,1,7,2,3,8,4,9,6],[8,3,2,4,9,6,1,5,7],[2,7,1,8,4,9,6,3,5],[3,9,5,7,6,1,8,2,4],[6,4,8,5,2,3,7,1,9]],"statistics":{"difficulty":"easy","internalDifficulty":0,"numHintsUsed":62,"numHintsUsedPerStrategy":[],"numWrongCellsPlayed":0,"score":0,"time":3349},"inNoteMode":false,"actionHistory":[]}]';
+
+export const NAKED_TRIPLET_COLUMN_GAME =
+  '[{"variant":"classic","version":"1.0.0","selectedCells":[],"puzzle":[[{"type":"value","entry":1},{"type":"value","entry":2},{"type":"given","entry":3},{"type":"note","entry":[5,6]},{"type":"given","entry":7},{"type":"note","entry":[5,6]},{"type":"note","entry":[8,9]},{"type":"given","entry":4},{"type":"note","entry":[8,9]}],[{"type":"value","entry":4},{"type":"value","entry":5},{"type":"given","entry":6},{"type":"note","entry":[9]},{"type":"note","entry":[8]},{"type":"given","entry":2},{"type":"given","entry":3},{"type":"value","entry":7},{"type":"given","entry":1}],[{"type":"value","entry":7},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"value","entry":3},{"type":"value","entry":1},{"type":"value","entry":4},{"type":"note","entry":[5,6]},{"type":"note","entry":[5,6]},{"type":"value","entry":2}],[{"type":"note","entry":[6,9]},{"type":"note","entry":[4,6]},{"type":"note","entry":[2,4]},{"type":"given","entry":1},{"type":"note","entry":[5,6,9]},{"type":"given","entry":7},{"type":"note","entry":[2,5]},{"type":"given","entry":8},{"type":"value","entry":3}],[{"type":"given","entry":5},{"type":"given","entry":1},{"type":"given","entry":7},{"type":"value","entry":2},{"type":"note","entry":[3,8]},{"type":"note","entry":[3,8]},{"type":"value","entry":4},{"type":"value","entry":9},{"type":"given","entry":6}],[{"type":"note","entry":[3,6,8,9]},{"type":"note","entry":[3,6]},{"type":"note","entry":[2,8]},{"type":"given","entry":4},{"type":"note","entry":[3,5,6,8,9]},{"type":"note","entry":[3,5,6,8]},{"type":"note","entry":[1,2,5]},{"type":"note","entry":[1,2,5]},{"type":"value","entry":7}],[{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":1},{"type":"note","entry":[6,8]},{"type":"value","entry":4},{"type":"given","entry":9},{"type":"note","entry":[6,8]},{"type":"value","entry":3},{"type":"given","entry":5}],[{"type":"note","entry":[3,6,8]},{"type":"given","entry":9},{"type":"given","entry":5},{"type":"note","entry":[6,7,8]},{"type":"note","entry":[3,6,8]},{"type":"note","entry":[1,3,6,8]},{"type":"note","entry":[1,2,6,7,8]},{"type":"note","entry":[1,2,6]},{"type":"value","entry":4}],[{"type":"note","entry":[3,6,8]},{"type":"note","entry":[3,4,6]},{"type":"note","entry":[4,8]},{"type":"note","entry":[5,6,7,8]},{"type":"given","entry":2},{"type":"note","entry":[1,3,5,6,8]},{"type":"note","entry":[1,6,7,8,9]},{"type":"note","entry":[1,6]},{"type":"note","entry":[8,9]}]],"puzzleSolution":[[1,2,3,6,7,5,9,4,8],[4,5,6,9,8,2,3,7,1],[7,8,9,3,1,4,5,6,2],[9,6,4,1,5,7,2,8,3],[5,1,7,2,3,8,4,9,6],[8,3,2,4,9,6,1,5,7],[2,7,1,8,4,9,6,3,5],[3,9,5,7,6,1,8,2,4],[6,4,8,5,2,3,7,1,9]],"statistics":{"difficulty":"easy","internalDifficulty":0,"numHintsUsed":132,"numHintsUsedPerStrategy":[],"numWrongCellsPlayed":0,"score":0,"time":3773},"inNoteMode":false,"actionHistory":[]}]';
+
+export const NAKED_TRIPLET_BOX_GAME =
+  '[{"variant":"classic","version":"1.0.0","selectedCells":[],"puzzle":[[{"type":"value","entry":1},{"type":"note","entry":[2,5]},{"type":"given","entry":3},{"type":"note","entry":[5,6,8,9]},{"type":"given","entry":7},{"type":"note","entry":[5,6,8]},{"type":"note","entry":[2,5,6,8,9]},{"type":"given","entry":4},{"type":"note","entry":[2,8,9]}],[{"type":"note","entry":[4,7]},{"type":"note","entry":[4,5]},{"type":"given","entry":6},{"type":"note","entry":[5,8,9]},{"type":"note","entry":[5,8,9]},{"type":"given","entry":2},{"type":"given","entry":3},{"type":"note","entry":[5,7,9]},{"type":"given","entry":1}],[{"type":"note","entry":[4,7]},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"note","entry":[3,5,6]},{"type":"note","entry":[1,3,5,6]},{"type":"note","entry":[1,3,4,5,6]},{"type":"note","entry":[2,5,6,7]},{"type":"note","entry":[2,5,6,7]},{"type":"note","entry":[2,7]}],[{"type":"note","entry":[3,4,6,9]},{"type":"note","entry":[2,3,4,6]},{"type":"note","entry":[2,4]},{"type":"given","entry":1},{"type":"note","entry":[3,5,6,9]},{"type":"given","entry":7},{"type":"note","entry":[2,5,9]},{"type":"given","entry":8},{"type":"note","entry":[2,3,9]}],[{"type":"given","entry":5},{"type":"given","entry":1},{"type":"given","entry":7},{"type":"note","entry":[2,3,8,9]},{"type":"note","entry":[3,8,9]},{"type":"note","entry":[3,8]},{"type":"value","entry":4},{"type":"note","entry":[2,3,9]},{"type":"given","entry":6}],[{"type":"note","entry":[3,6,8,9]},{"type":"note","entry":[2,3,6]},{"type":"note","entry":[2,8]},{"type":"given","entry":4},{"type":"note","entry":[3,5,6,8,9]},{"type":"note","entry":[3,5,6,8]},{"type":"note","entry":[1,2,5,7,9]},{"type":"note","entry":[1,2,3,5,7,9]},{"type":"note","entry":[2,3,7,9]}],[{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":1},{"type":"note","entry":[3,6,8]},{"type":"value","entry":4},{"type":"given","entry":9},{"type":"note","entry":[6,8]},{"type":"note","entry":[3,6]},{"type":"given","entry":5}],[{"type":"note","entry":[3,4,6,8]},{"type":"given","entry":9},{"type":"given","entry":5},{"type":"note","entry":[3,6,7,8]},{"type":"note","entry":[1,3,6,8]},{"type":"note","entry":[1,3,6,8]},{"type":"note","entry":[1,2,6,7,8]},{"type":"note","entry":[1,2,3,6,7]},{"type":"note","entry":[2,3,4,7,8]}],[{"type":"note","entry":[3,4,6,8]},{"type":"note","entry":[3,4,6]},{"type":"note","entry":[4,8]},{"type":"note","entry":[3,5,6,7,8]},{"type":"given","entry":2},{"type":"note","entry":[1,3,5,6,8]},{"type":"note","entry":[1,6,7,8,9]},{"type":"note","entry":[1,3,6,7,9]},{"type":"note","entry":[3,4,7,8,9]}]],"puzzleSolution":[[1,2,3,6,7,5,9,4,8],[4,5,6,9,8,2,3,7,1],[7,8,9,3,1,4,5,6,2],[9,6,4,1,5,7,2,8,3],[5,1,7,2,3,8,4,9,6],[8,3,2,4,9,6,1,5,7],[2,7,1,8,4,9,6,3,5],[3,9,5,7,6,1,8,2,4],[6,4,8,5,2,3,7,1,9]],"statistics":{"difficulty":"easy","internalDifficulty":0,"numHintsUsed":60,"numHintsUsedPerStrategy":[],"numWrongCellsPlayed":0,"score":0,"time":3134},"inNoteMode":false,"actionHistory":[]}]';
+
 // NAKED QUADRUPLET DATA
+
+export const NAKED_QUADRUPLET_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["NAKED_QUADRUPLET","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","POINTING_PAIR","NAKED_TRIPLET","HIDDEN_TRIPLET","POINTING_TRIPLET","HIDDEN_QUADRUPLET"]}';
+
+export const NAKED_QUADRUPLET_ROW_GAME = "";
+
+export const NAKED_QUADRUPLET_COLUMN_GAME = "";
+
+export const NAKED_QUADRUPLET_BOX_GAME = "";
 
 // HIDDEN SINGLE DATA
 
@@ -71,10 +92,55 @@ export const HIDDEN_SINGLE_BOX_GAME =
 
 // HIDDEN PAIR DATA
 
+export const HIDDEN_PAIR_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["HIDDEN_PAIR","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","POINTING_PAIR","NAKED_TRIPLET","HIDDEN_TRIPLET","POINTING_TRIPLET","NAKED_QUADRUPLET","HIDDEN_QUADRUPLET"]}';
+
+export const HIDDEN_PAIR_ROW_GAME = "";
+
+export const HIDDEN_PAIR_COLUMN_GAME = "";
+
+export const HIDDEN_PAIR_BOX_GAME = "";
+
 // HIDDEN TRIPLET DATA
+
+export const HIDDEN_TRIPLET_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["HIDDEN_TRIPLET","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","POINTING_PAIR","NAKED_TRIPLET","POINTING_TRIPLET","NAKED_QUADRUPLET","HIDDEN_QUADRUPLET"]}';
+
+export const HIDDEN_TRIPLET_ROW_GAME = "";
+
+export const HIDDEN_TRIPLET_COLUMN_GAME = "";
+
+export const HIDDEN_TRIPLET_BOX_GAME = "";
 
 // HIDDEN QUADRUPLET DATA
 
+export const HIDDEN_QUADRUPLET_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["HIDDEN_QUADRUPLET","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","POINTING_PAIR","NAKED_TRIPLET","HIDDEN_TRIPLET","POINTING_TRIPLET","NAKED_QUADRUPLET"]}';
+
+export const HIDDEN_QUADRUPLET_ROW_GAME = "";
+
+export const HIDDEN_QUADRUPLET_COLUMN_GAME = "";
+
+export const HIDDEN_QUADRUPLET_BOX_GAME = "";
+
 // POINTING PAIR DATA
 
+export const POINTING_PAIR_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["POINTING_PAIR","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","NAKED_TRIPLET","HIDDEN_TRIPLET","POINTING_TRIPLET","NAKED_QUADRUPLET","HIDDEN_QUADRUPLET"]}';
+
+export const POINTING_PAIR_ROW_GAME = "";
+
+export const POINTING_PAIR_COLUMN_GAME = "";
+
+export const POINTING_PAIR_BOX_GAME = "";
+
 // POINTING TRIPLET DATA
+
+export const POINTING_TRIPLET_PROFILE =
+  '{"theme":true,"highlightBox":true,"highlightColumn":true,"highlightRow":true,"highlightIdenticalValues":true,"previewMode":false,"strategyHintOrder":["POINTING_TRIPLET","SIMPLIFY_NOTES","NAKED_SINGLE","HIDDEN_SINGLE","NAKED_PAIR","HIDDEN_PAIR","POINTING_PAIR","NAKED_TRIPLET","HIDDEN_TRIPLET","NAKED_QUADRUPLET","HIDDEN_QUADRUPLET"]}';
+
+export const POINTING_TRIPLET_ROW_GAME = "";
+
+export const POINTING_TRIPLET_COLUMN_GAME = "";
+
+export const POINTING_TRIPLET_BOX_GAME = "";
