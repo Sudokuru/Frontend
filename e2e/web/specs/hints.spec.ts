@@ -1,8 +1,13 @@
 import {
+  AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME,
+  AMEND_NOTES_CORRECT_CELL_GAME,
+  AMEND_NOTES_INCORRECT_CELL_GAME,
   HIDDEN_SINGLE_PROFILE,
   NAKED_PAIR_COLUMN_GAME,
   NAKED_PAIR_PROFILE,
   NAKED_PAIR_ROW_GAME,
+  NAKED_QUADRUPLET_BOX_GAME,
+  NAKED_QUADRUPLET_PROFILE,
   NAKED_TRIPLET_BOX_GAME,
   NAKED_TRIPLET_COLUMN_GAME,
   NAKED_TRIPLET_PROFILE,
@@ -11,10 +16,7 @@ import {
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { test } from "../fixture";
 import {
-  AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME,
-  AMEND_NOTES_CORRECT_CELL_GAME,
   AMEND_NOTES_EMPTY_CELL_GAME,
-  AMEND_NOTES_INCORRECT_CELL_GAME,
   HIDDEN_SINGLE_BOX_GAME,
   HIDDEN_SINGLE_COLUMN_GAME,
   HIDDEN_SINGLE_ROW_GAME,
@@ -476,6 +478,50 @@ test.describe("board NAKED_TRIPLET", () => {
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "2", row: 0, column: 1 }]
+    );
+  });
+});
+
+test.describe("board NAKED_QUADRUPLET", () => {
+  test.use({
+    gameToResume: NAKED_QUADRUPLET_BOX_GAME,
+    profileSetting: NAKED_QUADRUPLET_PROFILE,
+  });
+  test("with box group", async ({ resumeGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column <= 5 && column >= 3 && row <= 2;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 0 && column === 3) ||
+        (row === 0 && column === 5) ||
+        (row === 1 && column === 3) ||
+        (row === 1 && column === 4)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+
+    await sudokuBoard.hintBaseTest(
+      "NAKED_QUADRUPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [
+        { contentType: "notes", content: "356", row: 2, column: 3 },
+        { contentType: "notes", content: "1356", row: 2, column: 4 },
+        { contentType: "notes", content: "13456", row: 2, column: 5 },
+      ],
+      [
+        { contentType: "notes", content: "356", row: 2, column: 3 },
+        { contentType: "notes", content: "1356", row: 2, column: 4 },
+        { contentType: "notes", content: "13456", row: 2, column: 5 },
+      ],
+      [
+        { contentType: "notes", content: "3", row: 2, column: 3 },
+        { contentType: "notes", content: "13", row: 2, column: 4 },
+        { contentType: "notes", content: "134", row: 2, column: 5 },
+      ]
     );
   });
 });
