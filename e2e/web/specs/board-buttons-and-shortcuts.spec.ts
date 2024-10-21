@@ -9,7 +9,7 @@ import { getSingleMultiSelectKey } from "../../../playwright.config";
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
   for (const key of keys) {
-    let capital = key === "P" ? "capital " : "";
+    const capital = key === "P" ? "capital " : "";
     test("pause button: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[0][0].click();
@@ -77,7 +77,7 @@ test.describe("numpad", () => {
 test.describe("undo", () => {
   const keys = ["button", "u", "U"];
   for (const key of keys) {
-    let capital = key === "U" ? "capital " : "";
+    const capital = key === "U" ? "capital " : "";
     test(
       "Undo button should remove value entered on previous move from keypad with: " +
         capital +
@@ -415,7 +415,7 @@ test.describe("navigate board", () => {
 test.describe("toggle notes", () => {
   const keys = ["button", "n", "N", "t", "T"];
   for (const key of keys) {
-    let capital = key === "N" || key === "T" ? "capital " : "";
+    const capital = key === "N" || key === "T" ? "capital " : "";
     test("toggle notes: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[7][7].click();
