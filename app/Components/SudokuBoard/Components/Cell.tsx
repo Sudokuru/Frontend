@@ -83,113 +83,110 @@ const Cell = (props: RenderCellProps) => {
       onPress={(event: any) => {
         onClick(r, c, event);
       }}
-      style={{ outline: "none" }}
+      style={[
+        {
+          height: cellSize ? cellSize : fallbackHeight,
+          width: cellSize ? cellSize : fallbackHeight,
+          display: "flex",
+          justifyContent: "center",
+          borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
+          backgroundColor: backgroundColor,
+          outline: "none",
+        },
+        c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
+        r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
+        c === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
+        r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
+      ]}
+      testID={"cellr" + r + "c" + c + getCellContents()}
       disabled={disable}
     >
-      <View
-        testID={"cellr" + r + "c" + c + getCellContents()}
-        style={[
-          {
-            height: cellSize ? cellSize : fallbackHeight,
-            width: cellSize ? cellSize : fallbackHeight,
-            display: "flex",
+      {type === "note" ? (
+        <View
+          style={{
+            flex: 1,
             justifyContent: "center",
-            borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-            backgroundColor: backgroundColor,
-          },
-          c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
-          r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,
-          c === 8 ? { borderRightWidth: getOutsideBorderWidth() } : null,
-          r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
-        ]}
-      >
-        {type === "note" ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={styles(backgroundNoteColor[0], cellSize).noteViewElement}
-                testID={"note1"}
-              >
-                {getNoteContents(1, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[1], cellSize).noteViewElement}
-                testID={"note2"}
-              >
-                {getNoteContents(2, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[2], cellSize).noteViewElement}
-                testID={"note3"}
-              >
-                {getNoteContents(3, noteColor)}
-              </View>
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={styles(backgroundNoteColor[0], cellSize).noteViewElement}
+              testID={"note1"}
+            >
+              {getNoteContents(1, noteColor)}
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={styles(backgroundNoteColor[3], cellSize).noteViewElement}
-                testID={"note4"}
-              >
-                {getNoteContents(4, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[4], cellSize).noteViewElement}
-                testID={"note5"}
-              >
-                {getNoteContents(5, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[5], cellSize).noteViewElement}
-                testID={"note6"}
-              >
-                {getNoteContents(6, noteColor)}
-              </View>
+            <View
+              style={styles(backgroundNoteColor[1], cellSize).noteViewElement}
+              testID={"note2"}
+            >
+              {getNoteContents(2, noteColor)}
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <View
-                style={styles(backgroundNoteColor[6], cellSize).noteViewElement}
-                testID={"note7"}
-              >
-                {getNoteContents(7, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[7], cellSize).noteViewElement}
-                testID={"note8"}
-              >
-                {getNoteContents(8, noteColor)}
-              </View>
-              <View
-                style={styles(backgroundNoteColor[8], cellSize).noteViewElement}
-                testID={"note9"}
-              >
-                {getNoteContents(9, noteColor)}
-              </View>
+            <View
+              style={styles(backgroundNoteColor[2], cellSize).noteViewElement}
+              testID={"note3"}
+            >
+              {getNoteContents(3, noteColor)}
             </View>
           </View>
-        ) : entry != 0 ? (
-          <Text
-            style={{
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize
-                ? cellSize * (3 / 4) + 1
-                : fallbackHeight * (3 / 4) + 1,
-              textAlign: "center",
-              lineHeight: cellSize ? cellSize : fallbackHeight,
-            }}
-          >
-            {entry}
-          </Text>
-        ) : (
-          <></>
-        )}
-      </View>
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={styles(backgroundNoteColor[3], cellSize).noteViewElement}
+              testID={"note4"}
+            >
+              {getNoteContents(4, noteColor)}
+            </View>
+            <View
+              style={styles(backgroundNoteColor[4], cellSize).noteViewElement}
+              testID={"note5"}
+            >
+              {getNoteContents(5, noteColor)}
+            </View>
+            <View
+              style={styles(backgroundNoteColor[5], cellSize).noteViewElement}
+              testID={"note6"}
+            >
+              {getNoteContents(6, noteColor)}
+            </View>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={styles(backgroundNoteColor[6], cellSize).noteViewElement}
+              testID={"note7"}
+            >
+              {getNoteContents(7, noteColor)}
+            </View>
+            <View
+              style={styles(backgroundNoteColor[7], cellSize).noteViewElement}
+              testID={"note8"}
+            >
+              {getNoteContents(8, noteColor)}
+            </View>
+            <View
+              style={styles(backgroundNoteColor[8], cellSize).noteViewElement}
+              testID={"note9"}
+            >
+              {getNoteContents(9, noteColor)}
+            </View>
+          </View>
+        </View>
+      ) : entry != 0 ? (
+        <Text
+          style={{
+            fontFamily: "Inter_400Regular",
+            fontSize: cellSize
+              ? cellSize * (3 / 4) + 1
+              : fallbackHeight * (3 / 4) + 1,
+            textAlign: "center",
+            lineHeight: cellSize ? cellSize : fallbackHeight,
+          }}
+        >
+          {entry}
+        </Text>
+      ) : (
+        <></>
+      )}
     </Pressable>
   );
 };

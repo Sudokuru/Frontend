@@ -102,6 +102,20 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
+  async cellIsDisabled(row: number, column: number) {
+    await expect(this.cell[row][column]).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
+  }
+
+  async cellIsEnabled(row: number, column: number) {
+    await expect(this.cell[row][column]).not.toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
+  }
+
   /**
    * For each cell in the puzzle, checks each condition starting from the first.
    * If the condition is valid then checks that the cell matches the expected color.

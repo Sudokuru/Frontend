@@ -44,12 +44,33 @@ import {
 } from "../data";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { test } from "../fixture";
-
-// todo test that board is unselected when entering hint mode
-
-// todo test that board cannot be selected when entering hint mode
+import {
+  NOT_HIGHLIGHTED_COLOR_RGB,
+  SELECTED_COLOR_RGB,
+} from "../../../app/Styling/HighlightColors";
 
 // todo test hotkeys for hint mode
+
+test.describe("hint mode operates correctly", () => {
+  test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
+
+  test("selected cells are unselected when entering hint mode", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cellHasColor(0, 0, SELECTED_COLOR_RGB);
+    await sudokuBoard.hint.click();
+    await sudokuBoard.cellHasColor(0, 0, NOT_HIGHLIGHTED_COLOR_RGB);
+  });
+
+  test("cells cannot be selected when in hint mode", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cellIsEnabled(0, 0);
+    await sudokuBoard.hint.click();
+    await sudokuBoard.cellIsDisabled(0, 0);
+  });
+});
 
 test.describe("board AMEND_NOTES", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
