@@ -28,7 +28,6 @@ const AboutUsPage = () => {
         testID={teamMembers[i].name}
         style={{
           width: CARD_WIDTH,
-          height: CARD_WIDTH / 3,
           borderWidth: 1,
           borderColor: theme.colors.secondary,
           padding: 5,
