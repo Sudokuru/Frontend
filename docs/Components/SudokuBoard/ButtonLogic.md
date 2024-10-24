@@ -38,7 +38,8 @@ Buttons that are always enabled
 
 0, "Delete", "Backspace", "e", "E" - Erase Button  
 "u", "U" - Undo Button  
-"p", "P" - Pause Button  
+"p", "P" - Pause Button
+"h", "H" - Hint Button
 "t", "T", "n", "N" - Toggle Notes Button  
 1-9 - NumKeys  
 "ArrowLeft", "A", "a" - Move selected cells left  
