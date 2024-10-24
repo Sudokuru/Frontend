@@ -696,12 +696,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return false;
     }
 
-    for (let i = 0; i < sudokuHint.hint.cause.length; i++) {
-      if (
-        sudokuHint.hint.cause[i][0] === r &&
-        sudokuHint.hint.cause[i][1] == c &&
-        sudokuHint.stage >= 4
-      ) {
+    for (const cause of sudokuHint.hint.cause) {
+      if (cause[0] === r && cause[1] === c && sudokuHint.stage >= 4) {
         return true;
       }
     }
@@ -724,22 +720,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     let hintFocused = false;
-    for (let i = 0; i < sudokuHint.hint.groups.length; i++) {
-      if (
-        sudokuHint.hint.groups[i][0] === 0 &&
-        sudokuHint.hint.groups[i][1] === r
-      ) {
-        hintFocused = true;
-      } else if (
-        sudokuHint.hint.groups[i][0] === 1 &&
-        sudokuHint.hint.groups[i][1] === c
-      ) {
-        hintFocused = true;
-      } else if (
-        sudokuHint.hint.groups[i][0] === 2 &&
-        generateBoxIndex(r, c) === sudokuHint.hint.groups[i][1]
-      ) {
-        hintFocused = true;
+    for (const group of sudokuHint.hint.groups) {
+      if (group[0] === 0 && group[1] === r) {
+        return true;
+      } else if (group[0] === 1 && group[1] === c) {
+        return true;
+      } else if (group[0] === 2 && generateBoxIndex(r, c) === group[1]) {
+        return true;
       }
     }
 
@@ -1171,15 +1158,17 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
         return;
       default:
-        if (
+        const amendNotesUndoStage =
           stageOffset === -1 &&
           sudokuHint.stage === 4 &&
-          sudokuHint.hint.strategy === "AMEND_NOTES"
-        ) {
-          undo();
-        } else if (stageOffset === -1 && sudokuHint.stage === 5) {
+          sudokuHint.hint.strategy === "AMEND_NOTES";
+
+        const undoStage = stageOffset === -1 && sudokuHint.stage === 5;
+
+        if (amendNotesUndoStage || undoStage) {
           undo();
         }
+
         setSudokuHint({
           ...sudokuHint,
           stage: sudokuHint.stage + stageOffset,
@@ -1210,23 +1199,19 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
       // Insert missing notes due to AMEND_NOTES hint
       if (currentStage === 4) {
-        for (let j = 0; j < allNotes.length; j++) {
-          if (
-            !removals.includes(allNotes[j]) &&
-            !newNotes.includes(allNotes[j])
-          ) {
-            newNotes.push(allNotes[j]);
+        for (const note of allNotes) {
+          if (!removals.includes(note) && !newNotes.includes(note)) {
+            newNotes.push(note);
             notesWereUpdated = true;
           }
         }
       }
       // Remove unnecessary notes due to AMEND_NOTES hint
-      // todo this might be shared with simplify notes logic?
       else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type == "note") {
         newNotes = sudokuBoard.puzzle[r][c].entry as number[];
-        for (let j = 0; j < removals.length; j++) {
-          if (newNotes.includes(removals[j])) {
-            const index = newNotes.indexOf(removals[j]);
+        for (const note of newNotes) {
+          if (newNotes.includes(note)) {
+            const index = newNotes.indexOf(note);
             newNotes.splice(index, 1);
           }
         }
@@ -1260,9 +1245,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         removal.splice(0, 2);
 
         let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
-        for (let j = 0; j < removal.length; j++) {
-          if (newNotes.includes(removal[j])) {
-            const index = newNotes.indexOf(removal[j]);
+        for (const note of removal) {
+          if (newNotes.includes(note)) {
+            const index = newNotes.indexOf(note);
             newNotes.splice(index, 1);
           }
         }

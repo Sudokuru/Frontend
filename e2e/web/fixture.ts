@@ -1,4 +1,3 @@
-import { statistics } from "./../../app/Api/Puzzle.Types";
 import { Page, test as base } from "@playwright/test";
 import { HomePage } from "./page/home.page";
 import { PlayPage } from "./page/play.page";
