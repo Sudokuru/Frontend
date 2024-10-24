@@ -1135,10 +1135,11 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
 
     switch (sudokuHint.stage + stageOffset) {
-      case 0:
+      case 0: {
         setSudokuHint(undefined);
         return;
-      case sudokuHint.maxStage + 1:
+      }
+      case sudokuHint.maxStage + 1: {
         setSudokuHint(undefined);
         if (isGameSolved()) {
           const score = finishGame(
@@ -1158,7 +1159,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           setGameOver(true);
         }
         return;
-      default:
+      }
+      default: {
         const amendNotesUndoStage =
           stageOffset === -1 &&
           sudokuHint.stage === 4 &&
@@ -1174,6 +1176,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           ...sudokuHint,
           stage: sudokuHint.stage + stageOffset,
         });
+      }
     }
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
