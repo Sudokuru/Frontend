@@ -721,11 +721,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
     let hintFocused = false;
     for (const group of sudokuHint.hint.groups) {
-      if (group[0] === 0 && group[1] === r) {
-        return true;
-      } else if (group[0] === 1 && group[1] === c) {
-        return true;
-      } else if (group[0] === 2 && generateBoxIndex(r, c) === group[1]) {
+      const cellSharesGroupRow = group[0] === 0 && group[1] === r;
+      const cellSharesGroupColumn = group[0] === 1 && group[1] === c;
+      const cellSharesGroupBox =
+        group[0] === 2 && generateBoxIndex(r, c) === group[1];
+
+      if (cellSharesGroupRow || cellSharesGroupColumn || cellSharesGroupBox) {
         return true;
       }
     }
