@@ -49,8 +49,6 @@ import {
   SELECTED_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
 
-// todo test hotkeys for hint mode
-
 test.describe("hint mode operates correctly", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
 
