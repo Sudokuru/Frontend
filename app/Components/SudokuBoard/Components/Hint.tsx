@@ -72,21 +72,6 @@ const Hint = (hintProps: HintProps) => {
       );
       break;
     case 4:
-      hintContent = (
-        <>
-          {hintTitle}
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 16,
-              color: theme.colors.onBackground,
-            }}
-          >
-            {hint.action}
-          </Text>
-        </>
-      );
-      break;
     case 5:
       hintContent = (
         <>

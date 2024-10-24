@@ -1,6 +1,5 @@
 import { profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
-import { SudokuStrategyArray } from "sudokuru";
 import { returnSudokuStrategyArray } from "../Contexts/PreferencesContext";
 
 type profileValue =
