@@ -45,7 +45,9 @@ function getCardArray(
             {teamMembers[i].name}
           </Text>
         </TouchableOpacity>
-        <Text variant="bodyMedium">Active: {teamMembers[i].active}</Text>
+        {teamMembers[i].activeSince && (
+          <Text variant="bodyMedium">Active: {teamMembers[i].activeSince}</Text>
+        )}
         {teamMembers[i].specialty && (
           <Text variant="bodyMedium">
             Specialty: {teamMembers[i].specialty}
