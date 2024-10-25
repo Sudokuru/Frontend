@@ -3,14 +3,14 @@ import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
 import { Button, Icon, MD3Theme, Text, useTheme } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
-import { TeamMember, teamMembers } from "../Data/members";
+import { Member, contributors, teamMembers } from "../Data/members";
 
 const openLink = (url: string) => {
   Linking.openURL(url);
 };
 
 function getCardArray(
-  teamMembers: TeamMember[],
+  teamMembers: Member[],
   columnCount: number,
   theme: MD3Theme
 ): any[] {
@@ -46,7 +46,9 @@ function getCardArray(
           </Text>
         </TouchableOpacity>
         {teamMembers[i].activeSince && (
-          <Text variant="bodyMedium">Active: {teamMembers[i].activeSince}</Text>
+          <Text variant="bodyMedium">
+            Active Since: {teamMembers[i].activeSince}
+          </Text>
         )}
         {teamMembers[i].specialty && (
           <Text variant="bodyMedium">
@@ -80,6 +82,7 @@ const AboutUsPage = () => {
   );
 
   let teamCards = getCardArray(teamMembers, columnCount, theme);
+  let contributorCards = getCardArray(contributors, columnCount, theme);
 
   return (
     <ScrollView>
@@ -125,6 +128,29 @@ const AboutUsPage = () => {
           }}
         >
           {teamCards.map((subArray, index) => (
+            <View
+              style={{
+                flexWrap: "wrap",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+              key={index}
+            >
+              {subArray}
+            </View>
+          ))}
+        </View>
+        <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+          Contributors
+        </Text>
+        <View
+          style={{
+            flexWrap: "wrap",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          {contributorCards.map((subArray, index) => (
             <View
               style={{
                 flexWrap: "wrap",

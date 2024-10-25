@@ -1,11 +1,11 @@
-export interface TeamMember {
+export interface Member {
   name: string;
   github: string;
   activeSince?: string;
   specialty?: string;
 }
 
-export const teamMembers: TeamMember[] = [
+export const teamMembers: Member[] = [
   {
     name: "Greg",
     github: "https://github.com/Gregory711",
@@ -18,6 +18,9 @@ export const teamMembers: TeamMember[] = [
     activeSince: "Founding (Fall 2022)",
     specialty: "Continuous Integration & Deployment",
   },
+];
+
+export const contributors: Member[] = [
   {
     name: "Daniel",
     github: "https://github.com/danielcosentino",
