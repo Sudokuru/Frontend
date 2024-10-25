@@ -130,8 +130,7 @@ const Hint = (hintProps: HintProps) => {
       </View>
       <View
         style={{
-          width: (cellSize || fallbackHeight) * 8,
-          height: cellSize || fallbackHeight,
+          maxWidth: (cellSize || fallbackHeight) * 8,
           alignItems: "center",
           flexDirection: "column",
           marginBottom: cellSize
