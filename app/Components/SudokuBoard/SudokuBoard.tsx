@@ -1213,7 +1213,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       // Remove unnecessary notes due to AMEND_NOTES hint
       else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type == "note") {
         newNotes = sudokuBoard.puzzle[r][c].entry as number[];
-        for (const note of newNotes) {
+        for (const note of removals) {
           if (newNotes.includes(note)) {
             const index = newNotes.indexOf(note);
             newNotes.splice(index, 1);
