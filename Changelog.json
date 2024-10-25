@@ -1,10 +1,13 @@
 [
   {
     "version": "1.25.0",
-    "date": "October 10th, 2024",
-    "summary": "Added about us page",
+    "date": "October 24th, 2024",
+    "summary": "Added about us page and fixed difficulty selection button text overflow bug",
     "features": [
       "Added about us page containing our mission, history, team members, and links"
+    ],
+    "bug fixes": [
+      "Fixed a bug where on some small mobile devices difficulty button text would overflow"
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Gregory711"]
