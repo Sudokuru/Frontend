@@ -1,14 +1,9 @@
 import React from "react";
-import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 
-// Clones Sudoku Strategy Array and removes Amend Notes from list
+// Clones Sudoku Strategy Array and removes Amend Notes and Simplify notes from list
 export const returnSudokuStrategyArray = () => {
-  const updatedArray: SudokuStrategyArray = JSON.parse(
-    JSON.stringify(SUDOKU_STRATEGY_ARRAY)
-  );
-  updatedArray.shift();
-  updatedArray.shift();
-  return updatedArray;
+  return [...SUDOKU_STRATEGY_ARRAY.slice(2)];
 };
 
 export const PreferencesContext = React.createContext({
@@ -28,6 +23,6 @@ export const PreferencesContext = React.createContext({
   highlightColumnSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
-  updateStrategyHintOrder: (props: SudokuStrategyArray) => {},
+  updateStrategyHintOrder: (props: SudokuStrategy[]) => {},
   strategyHintOrderSetting: returnSudokuStrategyArray(),
 });
