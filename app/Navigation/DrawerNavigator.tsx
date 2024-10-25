@@ -16,6 +16,7 @@ import DrillPage from "../Pages/DrillPage";
 import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
+import AboutUsPage from "../Pages/AboutUsPage";
 
 const Drawer = createDrawerNavigator();
 
@@ -59,6 +60,7 @@ const DrawerNavigator = () => {
           <Drawer.Screen name="ProfilePage" component={ProfilePage} />
           <Drawer.Screen name="StatisticsPage" component={StatisticsPage} />
           <Drawer.Screen name="ReleaseNotesPage" component={ReleaseNotesPage} />
+          <Drawer.Screen name="AboutUsPage" component={AboutUsPage} />
         </Drawer.Navigator>
       </SafeAreaView>
     </SafeAreaProvider>
