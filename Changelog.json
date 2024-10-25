@@ -1,7 +1,7 @@
 [
   {
-    "version": "1.25.0",
-    "date": "October 24th, 2024",
+    "version": "1.26.0",
+    "date": "October 299th, 2024",
     "summary": "Adding hints back to sudoku board. Adding ability to change hint strategy order.",
     "features": [
       "User can now click a hint. There are 5 stages to the hint which show the user how to continue the sudoku puzzle.",
@@ -12,6 +12,19 @@
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.25.0",
+    "date": "October 24th, 2024",
+    "summary": "Added about us page and fixed difficulty selection button text overflow bug",
+    "features": [
+      "Added about us page containing our mission, history, team members, and links"
+    ],
+    "bug fixes": [
+      "Fixed a bug where on some small mobile devices difficulty button text would overflow"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
   },
   {
     "version": "1.24.2",
@@ -258,7 +271,7 @@
   },
   {
     "version": "1.13.0",
-    "date": "Octobre 22nd, 2023",
+    "date": "October 22nd, 2023",
     "summary": "Implemented desktop app support",
     "features": ["Sudokuru can now be downloaded and played on desktop."],
     "targets": ["desktop"],

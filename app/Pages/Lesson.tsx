@@ -15,8 +15,8 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import {
   Lessons,
   getLessonMode,
-  lessonOfflineMode,
-  lessonOnlineMode,
+  LessonOfflineMode,
+  LessonOnlineMode,
 } from "../Api/Lessons";
 import { Statistics } from "../Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
@@ -51,7 +51,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   // setting lesson mode to offline
   let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: lessonOfflineMode | lessonOnlineMode = {
+  let getlessonArgs: LessonOfflineMode | LessonOnlineMode = {
     mode: LESSON_MODE,
   };
 

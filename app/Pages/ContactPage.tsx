@@ -19,7 +19,7 @@ const ContactPage = () => {
   const navigation: any = useNavigation();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const size = useWindowDimensions();
-  interface contactPageState {
+  interface ContactPageState {
     value: string;
     text: string;
     label: string;
@@ -29,7 +29,7 @@ const ContactPage = () => {
     thankYouVisible: boolean;
     errorVisible: boolean;
   }
-  const [contactPage, setContactPage] = React.useState<contactPageState>({
+  const [contactPage, setContactPage] = React.useState<ContactPageState>({
     buttonDisabled: true,
     buttonText: "Submit*",
     label: "0/1000",

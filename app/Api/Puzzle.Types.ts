@@ -1,37 +1,37 @@
 import { SudokuStrategy, SudokuStrategyArray } from "sudokuru";
 
-export interface puzzle {
+export interface Puzzle {
   puzzle: string;
-  moves: move[];
+  moves: Move[];
   puzzleSolution: string;
   strategies: SudokuStrategyArray;
   difficulty: number;
   drillStrategies?: SudokuStrategyArray;
 }
 
-export interface drill {
+export interface Drill {
   puzzleCurrentState: string;
   puzzleCurrentNotesState: string;
   puzzleSolution: string;
 }
 
-export interface activeGame {
+export interface ActiveGame {
   userId: string;
   puzzle: string;
   puzzleSolution: string;
   currentTime: number;
   difficulty: number;
-  moves: move[];
+  moves: Move[];
   numHintsUsed: number;
   numWrongCellsPlayed: number;
 }
 
-export interface move {
+export interface Move {
   puzzleCurrentState: string;
   puzzleCurrentNotesState: string;
 }
 
-export interface gameResults {
+export interface GameResults {
   score: number;
   solveTime: number;
   numHintsUsed: number;
@@ -39,7 +39,7 @@ export interface gameResults {
   difficulty: number;
 }
 
-export interface statistics {
+export interface Statistics {
   totalScore: number;
   numGamesPlayed: number;
   fastestSolveTime: number;
@@ -53,7 +53,7 @@ export interface statistics {
   }[];
 }
 
-export interface profile {
+export interface Profile {
   theme: boolean;
   highlightIdenticalValues: boolean;
   highlightBox: boolean;

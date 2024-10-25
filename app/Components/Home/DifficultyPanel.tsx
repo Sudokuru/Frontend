@@ -95,7 +95,6 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
     getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
     props.height * 0.7
   );
-  CARD_LENGTH *= 1 - shrinkage;
 
   let difficulty: string = "";
   for (let i = 0; i < difficulties.length; i++) {
@@ -142,7 +141,6 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
         testID={difficulty}
         style={{
           width: CARD_WIDTH,
-          height: CARD_LENGTH + CARD_PADDING * (1 - shrinkage),
           padding: CARD_PADDING * (1 - shrinkage),
           margin: 5,
         }}

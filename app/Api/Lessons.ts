@@ -1,8 +1,8 @@
-export interface lessonOfflineMode {
+export interface LessonOfflineMode {
   mode: getLessonMode.Offline;
 }
 
-export interface lessonOnlineMode {
+export interface LessonOnlineMode {
   mode: getLessonMode.Online;
 }
 
@@ -20,7 +20,7 @@ export class Lessons {
    * @returns string array of strategy names that getSteps can be called with
    */
   public static async getStrategies(
-    args: lessonOfflineMode | lessonOnlineMode
+    args: LessonOfflineMode | LessonOnlineMode
   ): Promise<string[]> {
     if (args.mode === getLessonMode.Online) {
       const response: Response = await fetch(
@@ -50,7 +50,7 @@ export class Lessons {
    */
   public static async getSteps(
     strategy: string,
-    args: lessonOfflineMode | lessonOnlineMode
+    args: LessonOfflineMode | LessonOnlineMode
   ): Promise<string[][]> {
     if (args.mode === getLessonMode.Online) {
       const response: Response = await fetch(
