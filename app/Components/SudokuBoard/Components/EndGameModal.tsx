@@ -29,12 +29,12 @@ const EndGameModal = (props: EndGameModalProps) => {
   const navigation: any = useNavigation();
 
   // sort by most number of hints
-  props.numHintsUsedPerStrategy.sort((a, b) => {
-    return b.numHintsUsed - a.numHintsUsed;
-  });
+  const sortedHints = [...props.numHintsUsedPerStrategy].sort(
+    (a, b) => b.numHintsUsed - a.numHintsUsed
+  );
 
   const strategyHints: React.JSX.Element[] = [];
-  for (const strategyHint of props.numHintsUsedPerStrategy) {
+  for (const strategyHint of sortedHints) {
     strategyHints.push(
       <Statistic
         statisticName={
