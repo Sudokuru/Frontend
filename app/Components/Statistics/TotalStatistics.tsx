@@ -28,12 +28,14 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
   const theme = useTheme();
 
   // sort by most number of hints
-  props.numHintsUsedPerStrategy.sort((a, b) => {
-    return b.numHintsUsed - a.numHintsUsed;
-  });
+  const numHintsUsedPerStrategy = [...props.numHintsUsedPerStrategy].sort(
+    (a, b) => {
+      return b.numHintsUsed - a.numHintsUsed;
+    }
+  );
 
   const strategyHints: React.JSX.Element[] = [];
-  for (const strategyHint of props.numHintsUsedPerStrategy) {
+  for (const strategyHint of numHintsUsedPerStrategy) {
     strategyHints.push(
       <Statistic
         statisticName={
