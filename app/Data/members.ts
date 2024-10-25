@@ -1,4 +1,4 @@
-interface TeamMember {
+export interface TeamMember {
   name: string;
   github: string;
   active: string;

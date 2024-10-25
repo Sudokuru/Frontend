@@ -1,25 +1,21 @@
 import React from "react";
 import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
-import { Button, Icon, Text, useTheme } from "react-native-paper";
+import { Button, Icon, MD3Theme, Text, useTheme } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
-import { teamMembers } from "../Data/members";
+import { TeamMember, teamMembers } from "../Data/members";
 
-const AboutUsPage = () => {
-  const windowSize = useNewWindowDimensions();
+const openLink = (url: string) => {
+  Linking.openURL(url);
+};
 
-  const theme = useTheme();
-
+function getCardArray(
+  teamMembers: TeamMember[],
+  columnCount: number,
+  theme: MD3Theme
+): any[] {
   let teamCards = [];
   let subArray = [];
-  let columnCount: number = calculateCardsPerRow(
-    windowSize.width,
-    teamMembers.length
-  );
-
-  const openLink = (url: string) => {
-    Linking.openURL(url);
-  };
 
   for (let i = 0; i < teamMembers.length; i++) {
     subArray.push(
@@ -68,6 +64,20 @@ const AboutUsPage = () => {
   if (subArray.length > 0) {
     teamCards.push(subArray);
   }
+
+  return teamCards;
+}
+
+const AboutUsPage = () => {
+  const theme: MD3Theme = useTheme();
+  const windowSize = useNewWindowDimensions();
+
+  let columnCount: number = calculateCardsPerRow(
+    windowSize.width,
+    teamMembers.length
+  );
+
+  let teamCards = getCardArray(teamMembers, columnCount, theme);
 
   return (
     <ScrollView>
