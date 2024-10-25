@@ -31,7 +31,7 @@ export function areCellsInSameBox(
  * @param row number 0-8 of the cell
  * @param column number 0-8 of the cell
  */
-function generateBoxIndex(row: number, column: number): number {
+export function generateBoxIndex(row: number, column: number): number {
   return Math.floor(column / 3) + Math.floor(row / 3) * 3;
 }
 

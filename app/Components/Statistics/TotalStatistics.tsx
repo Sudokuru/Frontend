@@ -3,14 +3,21 @@ import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
+import { SudokuStrategy } from "sudokuru";
+import React from "react";
+import { formatOneLessonName } from "../../Functions/learnedLessons";
 
-interface TotalStatisticsProps {
+export interface TotalStatisticsProps {
   totalScore: number;
   numGamesPlayed: number;
   fastestSolveTime: number;
   averageSolveTime: number;
   totalSolveTime: number;
   numHintsUsed: number;
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[];
   numWrongCellsPlayed: number;
 }
 
@@ -19,6 +26,25 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
   const reSize = Math.min(size.width, size.height);
 
   const theme = useTheme();
+
+  // sort by most number of hints
+  props.numHintsUsedPerStrategy.sort((a, b) => {
+    return b.numHintsUsed - a.numHintsUsed;
+  });
+
+  const strategyHints: React.JSX.Element[] = [];
+  for (const strategyHint of props.numHintsUsedPerStrategy) {
+    strategyHints.push(
+      <Statistic
+        statisticName={
+          "  " + formatOneLessonName(strategyHint.hintStrategy) + ": "
+        }
+        statisticValue={strategyHint.numHintsUsed}
+        testID={"hintsUsed" + strategyHint.hintStrategy}
+        key={strategyHint.hintStrategy}
+      />
+    );
+  }
 
   return (
     <View
@@ -65,15 +91,16 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
           testID="totalSolveTime"
         />
         <Statistic
-          statisticName="Total Hints Used: "
-          statisticValue={props.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <Statistic
           statisticName="Total Mistakes Made: "
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
+        <Statistic
+          statisticName="Total Hints Used: "
+          statisticValue={props.numHintsUsed}
+          testID="numHintsUsed"
+        />
+        {strategyHints}
       </View>
     </View>
   );

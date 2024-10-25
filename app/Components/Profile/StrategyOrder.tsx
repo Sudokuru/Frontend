@@ -1,9 +1,12 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton, Text } from "react-native-paper";
-import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategyArray } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
-import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import {
+  PreferencesContext,
+  returnSudokuStrategyArray,
+} from "../../Contexts/PreferencesContext";
 
 /**
  * This is a component for the user to select what order hints for strategies should be given in
@@ -192,11 +195,9 @@ const StrategyOrder = () => {
               borderColor: "#025E73",
             }}
             // need a deep copy of SUDOKU_STRATEGY_ARRAY otherwise it becomes mutated
-            onPress={() =>
-              updateStrategyHintOrder(
-                JSON.parse(JSON.stringify(SUDOKU_STRATEGY_ARRAY))
-              )
-            }
+            onPress={() => {
+              updateStrategyHintOrder(returnSudokuStrategyArray());
+            }}
           />
           <Text style={{ color: "#025E73" }}>RESET</Text>
         </View>

@@ -1,4 +1,4 @@
-import { SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy, SudokuStrategyArray } from "sudokuru";
 
 export interface puzzle {
   puzzle: string;
@@ -45,8 +45,12 @@ export interface statistics {
   fastestSolveTime: number;
   averageSolveTime: number;
   totalSolveTime: number;
-  numHintsUsed: number;
   numWrongCellsPlayed: number;
+  numHintsUsed: number;
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[];
 }
 
 export interface profile {

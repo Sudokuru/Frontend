@@ -5,8 +5,10 @@ import {
   GOLD_COLOR_RGB,
   PURPLE_COLOR_RGB,
 } from "../../../app/Styling/HighlightColors";
-import { SUDOKU_STRATEGY_ARRAY } from "sudokuru";
 import { HeaderComponent } from "../components/header.component";
+import { returnSudokuStrategyArray } from "../../../app/Contexts/PreferencesContext";
+
+const SUDOKU_STRATEGY_ARRAY = returnSudokuStrategyArray();
 
 test.describe("profile", () => {
   test("should toggle the theme and verify title color change", async ({
@@ -38,15 +40,15 @@ test.describe("profile", () => {
   });
 
   test.describe("strategy hint order", () => {
-    test("strategies render correctly", async ({ featurePreview }) => {
-      const profilePage = new ProfilePage(featurePreview);
+    test("strategies render correctly", async ({ profile }) => {
+      const profilePage = new ProfilePage(profile);
       await profilePage.strategiesRenderCorrectly(SUDOKU_STRATEGY_ARRAY);
     });
 
     test("increment buttons should be disabled and enabled correctly", async ({
-      featurePreview,
+      profile,
     }) => {
-      const profilePage = new ProfilePage(featurePreview);
+      const profilePage = new ProfilePage(profile);
       await expect(profilePage.hintStrategyMenuUp).toBeDisabled();
       await expect(profilePage.hintStrategyMenuDown).toBeDisabled();
 
@@ -65,8 +67,8 @@ test.describe("profile", () => {
       await expect(profilePage.hintStrategyMenuDown).toBeDisabled();
     });
 
-    test("reset button functions correctly", async ({ featurePreview }) => {
-      const profilePage = new ProfilePage(featurePreview);
+    test("reset button functions correctly", async ({ profile }) => {
+      const profilePage = new ProfilePage(profile);
 
       await profilePage.clickHintStrategy(1, SUDOKU_STRATEGY_ARRAY[0]);
 
@@ -105,10 +107,8 @@ test.describe("profile", () => {
       );
     });
 
-    test("setting changes are saved accross refresh", async ({
-      featurePreview,
-    }) => {
-      const profilePage = new ProfilePage(featurePreview);
+    test("setting changes are saved accross refresh", async ({ profile }) => {
+      const profilePage = new ProfilePage(profile);
 
       await profilePage.clickHintStrategy(1, SUDOKU_STRATEGY_ARRAY[0]);
 
@@ -136,11 +136,11 @@ test.describe("profile", () => {
         SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 2]
       );
 
-      await featurePreview.reload();
+      await profile.reload();
 
-      const headerComponent = new HeaderComponent(featurePreview);
+      const headerComponent = new HeaderComponent(profile);
       await headerComponent.profile.click();
-      const reloadedProfilePage = new ProfilePage(featurePreview);
+      const reloadedProfilePage = new ProfilePage(profile);
 
       await reloadedProfilePage.isHintStrategyVisible(
         4,

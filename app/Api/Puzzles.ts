@@ -7,6 +7,7 @@ import {
   GameDifficulty,
   returnGameOfDifficulty,
 } from "../Components/SudokuBoard/Functions/Difficulty";
+import { SudokuStrategy } from "sudokuru";
 
 /**
  * Functions to handle puzzle related operations
@@ -48,6 +49,10 @@ export class Puzzles {
    */
   public static async finishGame(
     numHintsUsed: number,
+    numHintsUsedPerStrategy: {
+      hintStrategy: SudokuStrategy;
+      numHintsUsed: number;
+    }[],
     numWrongCellsPlayed: number,
     time: number,
     score: number
@@ -72,6 +77,20 @@ export class Puzzles {
     statistics.averageSolveTime = Math.round(
       statistics.totalSolveTime / statistics.numGamesPlayed
     );
+
+    for (const newHintStrategies of numHintsUsedPerStrategy) {
+      const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
+        (strategy) => strategy.hintStrategy === newHintStrategies.hintStrategy
+      );
+      if (existingHintStrategies) {
+        existingHintStrategies.numHintsUsed += newHintStrategies.numHintsUsed;
+      } else {
+        statistics.numHintsUsedPerStrategy.push({
+          hintStrategy: newHintStrategies.hintStrategy,
+          numHintsUsed: newHintStrategies.numHintsUsed,
+        });
+      }
+    }
 
     Statistics.saveStatisitics(statistics);
   }

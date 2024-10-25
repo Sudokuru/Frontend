@@ -3,13 +3,32 @@ import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
 import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
-import { NEW_EMPTY_GAME } from "../data";
+import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME } from "../data";
 import { getSingleMultiSelectKey } from "../../../playwright.config";
+
+test.describe("hint", () => {
+  test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
+  const keys = ["h", "H"];
+  for (const key of keys) {
+    const capital = key === "H" ? "capital " : "";
+    test("hint button: " + capital + key, async ({ resumeGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      await sudokuBoard.cell[0][0].click();
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.page.keyboard.press(key);
+      await sudokuBoard.cellHasNotes(0, 0, "1");
+    });
+  }
+});
 
 test.describe("pause", () => {
   const keys = ["button", "p", "P"];
   for (const key of keys) {
-    let capital = key === "P" ? "capital " : "";
+    const capital = key === "P" ? "capital " : "";
     test("pause button: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[0][0].click();
@@ -77,7 +96,7 @@ test.describe("numpad", () => {
 test.describe("undo", () => {
   const keys = ["button", "u", "U"];
   for (const key of keys) {
-    let capital = key === "U" ? "capital " : "";
+    const capital = key === "U" ? "capital " : "";
     test(
       "Undo button should remove value entered on previous move from keypad with: " +
         capital +
@@ -415,7 +434,7 @@ test.describe("navigate board", () => {
 test.describe("toggle notes", () => {
   const keys = ["button", "n", "N", "t", "T"];
   for (const key of keys) {
-    let capital = key === "N" || key === "T" ? "capital " : "";
+    const capital = key === "N" || key === "T" ? "capital " : "";
     test("toggle notes: " + capital + key, async ({ resumeGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeGame);
       await sudokuBoard.cell[7][7].click();

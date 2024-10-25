@@ -149,19 +149,17 @@ const ProfilePage = () => {
             testIdPrefix="FeaturePreview"
           ></ProfileToggle>
         </View>
-        {featurePreviewSetting && (
-          <View
-            style={{
-              backgroundColor: "#fff",
-              borderRadius: 10,
-              padding: 20,
-              margin: 20,
-              minWidth: 280,
-            }}
-          >
-            <StrategyOrder></StrategyOrder>
-          </View>
-        )}
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            padding: 20,
+            margin: 20,
+            minWidth: 280,
+          }}
+        >
+          <StrategyOrder></StrategyOrder>
+        </View>
       </View>
     </ScrollView>
   );
