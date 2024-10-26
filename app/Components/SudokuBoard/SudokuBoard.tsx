@@ -531,12 +531,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzle[r][c].entry === 0
         )
           continue;
-        const isValueIncorrect = doesCellHaveConflict(
+        const isCellIncorrect = doesCellHaveConflict(
           r,
           c,
           sudokuBoard.puzzle[r][c]
         );
-        if (isValueIncorrect === true) {
+        if (isCellIncorrect === true) {
           return true;
         }
       }
