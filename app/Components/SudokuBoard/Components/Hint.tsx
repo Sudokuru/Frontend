@@ -17,7 +17,7 @@ const Hint = (hintProps: HintProps) => {
   const theme = useTheme();
 
   const sizeConst = Platform.OS == "web" ? 1.5 : 1;
-  let fallbackHeight = 30;
+  let FALLBACK_HEIGHT = 30;
 
   const STRATEGY_FONT_SIZE = 30;
 
@@ -92,12 +92,17 @@ const Hint = (hintProps: HintProps) => {
 
   const [leftButton, rightButton] = getButtonConfigs(stage, maxStage);
 
+  const getResponsiveSize = (multiplier: number) => {
+    const baseSize = cellSize || FALLBACK_HEIGHT;
+    return baseSize * multiplier;
+  };
+
   return (
     <>
       <View
         style={{
           flexDirection: "row",
-          width: cellSize ? cellSize * 8 : fallbackHeight * 8,
+          width: getResponsiveSize(8),
           justifyContent: "space-evenly",
         }}
       >
@@ -124,12 +129,10 @@ const Hint = (hintProps: HintProps) => {
       </View>
       <View
         style={{
-          maxWidth: (cellSize || fallbackHeight) * 8,
+          maxWidth: getResponsiveSize(8),
           alignItems: "center",
           flexDirection: "column",
-          marginBottom: cellSize
-            ? cellSize * (1 / 4)
-            : fallbackHeight * (1 / 4),
+          marginBottom: getResponsiveSize(0.25),
         }}
       >
         {hintContent}
