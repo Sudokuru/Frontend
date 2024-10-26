@@ -78,6 +78,36 @@ const Cell = (props: RenderCellProps) => {
     return cellSize ? cellSize * (3 / 40) : 40;
   };
 
+  const NoteGrid = () => {
+    const rows = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+    ];
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        {rows.map((row, rowIndex) => (
+          <View key={rowIndex} style={{ flexDirection: "row" }}>
+            {row.map((noteIndex) => (
+              <View
+                key={noteIndex}
+                style={{
+                  width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+                  height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+                  paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
+                  backgroundColor: backgroundNoteColor[noteIndex - 1],
+                }}
+                testID={`note${noteIndex}`}
+              >
+                {getNoteContents(noteIndex, noteColor)}
+              </View>
+            ))}
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   return (
     <Pressable
       onPress={(event: any) => {
@@ -102,75 +132,7 @@ const Cell = (props: RenderCellProps) => {
       disabled={disable}
     >
       {type === "note" ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={styles(backgroundNoteColor[0], cellSize).noteViewElement}
-              testID={"note1"}
-            >
-              {getNoteContents(1, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[1], cellSize).noteViewElement}
-              testID={"note2"}
-            >
-              {getNoteContents(2, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[2], cellSize).noteViewElement}
-              testID={"note3"}
-            >
-              {getNoteContents(3, noteColor)}
-            </View>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={styles(backgroundNoteColor[3], cellSize).noteViewElement}
-              testID={"note4"}
-            >
-              {getNoteContents(4, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[4], cellSize).noteViewElement}
-              testID={"note5"}
-            >
-              {getNoteContents(5, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[5], cellSize).noteViewElement}
-              testID={"note6"}
-            >
-              {getNoteContents(6, noteColor)}
-            </View>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={styles(backgroundNoteColor[6], cellSize).noteViewElement}
-              testID={"note7"}
-            >
-              {getNoteContents(7, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[7], cellSize).noteViewElement}
-              testID={"note8"}
-            >
-              {getNoteContents(8, noteColor)}
-            </View>
-            <View
-              style={styles(backgroundNoteColor[8], cellSize).noteViewElement}
-              testID={"note9"}
-            >
-              {getNoteContents(9, noteColor)}
-            </View>
-          </View>
-        </View>
+        <NoteGrid />
       ) : entry != 0 ? (
         <Text
           style={{
@@ -190,15 +152,5 @@ const Cell = (props: RenderCellProps) => {
     </Pressable>
   );
 };
-
-const styles = (backgroundNoteColor: string, cellSize?: number) =>
-  StyleSheet.create({
-    noteViewElement: {
-      width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-      height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-      paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
-      backgroundColor: backgroundNoteColor,
-    },
-  });
 
 export default Cell;
