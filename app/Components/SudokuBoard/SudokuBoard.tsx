@@ -27,7 +27,7 @@ import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
 import { getSudokuHint } from "./Functions/HintFunctions";
 import {
-  HINT_NOT_HIGHILGHTED_COLOR,
+  HINT_NOT_HIGHLIGHTED_COLOR,
   HINT_SELECTED_COLOR,
   IDENTICAL_VALUE_COLOR,
   NOT_SELECTED_CONFLICT_COLOR,
@@ -676,7 +676,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       if (hintCause) {
         cellBackgroundColor = HINT_SELECTED_COLOR;
       } else if (!hintFocus) {
-        cellBackgroundColor = HINT_NOT_HIGHILGHTED_COLOR;
+        cellBackgroundColor = HINT_NOT_HIGHLIGHTED_COLOR;
       }
     }
 
