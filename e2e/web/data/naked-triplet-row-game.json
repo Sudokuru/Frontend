@@ -361,7 +361,7 @@
     "statistics": {
       "difficulty": "easy",
       "internalDifficulty": 0,
-      "numHintsUsed": 62,
+      "numHintsUsed": 0,
       "numHintsUsedPerStrategy": [],
       "numWrongCellsPlayed": 0,
       "score": 0,

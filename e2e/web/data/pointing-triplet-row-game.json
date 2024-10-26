@@ -361,7 +361,7 @@
     "statistics": {
       "difficulty": "master",
       "internalDifficulty": 54000000,
-      "numHintsUsed": 61,
+      "numHintsUsed": 0,
       "numHintsUsedPerStrategy": [],
       "numWrongCellsPlayed": 0,
       "score": 0,
