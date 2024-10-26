@@ -1,13 +1,6 @@
 import { getCellSize } from "../Functions/BoardFunctions";
 import React from "react";
-import {
-  Pressable,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-} from "react-native";
+import { Pressable, StyleProp, Text, TextStyle, View } from "react-native";
 import { CellType } from "../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
