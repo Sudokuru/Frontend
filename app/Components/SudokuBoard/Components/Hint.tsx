@@ -19,7 +19,6 @@ const Hint = (hintProps: HintProps) => {
   const sizeConst = Platform.OS == "web" ? 1.5 : 1;
   let fallbackHeight = 30;
 
-  let hintContent: React.JSX.Element;
   const STRATEGY_FONT_SIZE = 30;
 
   const hintTitle = (
@@ -35,62 +34,40 @@ const Hint = (hintProps: HintProps) => {
     </Text>
   );
 
-  switch (stage) {
-    case 1:
-      hintContent = hintTitle;
-      break;
-    case 2:
-      hintContent = (
-        <>
-          {hintTitle}
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 16,
-              color: theme.colors.onBackground,
-            }}
-          >
-            {hint.info}
-          </Text>
-        </>
-      );
-      break;
-    case 3:
-      hintContent = (
-        <>
-          {hintTitle}
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 16,
-              color: theme.colors.onBackground,
-            }}
-          >
-            {"The hint is located in this region"}
-          </Text>
-        </>
-      );
-      break;
-    case 4:
-    case 5:
-      hintContent = (
-        <>
-          {hintTitle}
-          <Text
-            style={{
-              textAlign: "center",
-              fontSize: 16,
-              color: theme.colors.onBackground,
-            }}
-          >
-            {hint.action}
-          </Text>
-        </>
-      );
-      break;
-    default:
-      hintContent = hintTitle;
+  interface StageContent {
+    title: boolean;
+    content?: string;
   }
+
+  const STAGE_CONFIG: Record<number, StageContent> = {
+    1: { title: true },
+    2: { title: true, content: hint.info },
+    3: { title: true, content: "The hint is located in this region" },
+    4: { title: true, content: hint.action },
+    5: { title: true, content: hint.action },
+  };
+
+  const renderStageContent = (stage: number) => {
+    const config = STAGE_CONFIG[stage];
+    return (
+      <>
+        {config.title && hintTitle}
+        {config.content && (
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 16,
+              color: theme.colors.onBackground,
+            }}
+          >
+            {config.content}
+          </Text>
+        )}
+      </>
+    );
+  };
+
+  const hintContent = renderStageContent(stage);
 
   let leftButtonTestId = "hintArrowLeft";
   let leftButtonIcon: any = "arrow-left-circle-outline";
