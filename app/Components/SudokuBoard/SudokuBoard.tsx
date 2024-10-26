@@ -135,9 +135,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
-    const updatedArray: SudokuStrategyArray = JSON.parse(
-      JSON.stringify(strategyHintOrderSetting)
-    );
+    const updatedArray: SudokuStrategyArray = [...strategyHintOrderSetting];
 
     // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
     updatedArray.unshift("SIMPLIFY_NOTES");
