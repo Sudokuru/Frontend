@@ -69,17 +69,28 @@ const Hint = (hintProps: HintProps) => {
 
   const hintContent = renderStageContent(stage);
 
-  let leftButtonTestId = "hintArrowLeft";
-  let leftButtonIcon: any = "arrow-left-circle-outline";
-  let rightButtonTestId = "hintArrowRight";
-  let rightButtonIcon: any = "arrow-right-circle-outline";
-  if (stage == maxStage) {
-    rightButtonTestId = "hintFinish";
-    rightButtonIcon = "check-circle-outline";
-  } else if (stage == 1) {
-    leftButtonTestId = "hintExit";
-    leftButtonIcon = "alpha-x-circle-outline";
+  type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+
+  interface ButtonConfig {
+    testId: string;
+    icon: IconName;
   }
+
+  const getButtonConfigs = (
+    stage: number,
+    maxStage: number
+  ): [ButtonConfig, ButtonConfig] => [
+    // left button
+    stage === 1
+      ? { testId: "hintExit", icon: "alpha-x-circle-outline" }
+      : { testId: "hintArrowLeft", icon: "arrow-left-circle-outline" },
+    // right button
+    stage === maxStage
+      ? { testId: "hintFinish", icon: "check-circle-outline" }
+      : { testId: "hintArrowRight", icon: "arrow-right-circle-outline" },
+  ];
+
+  const [leftButton, rightButton] = getButtonConfigs(stage, maxStage);
 
   return (
     <>
@@ -90,17 +101,23 @@ const Hint = (hintProps: HintProps) => {
           justifyContent: "space-evenly",
         }}
       >
-        <Pressable onPress={() => incrementStage(-1)} testID={leftButtonTestId}>
+        <Pressable
+          onPress={() => incrementStage(-1)}
+          testID={leftButton.testId}
+        >
           <MaterialCommunityIcons
             color={theme.colors.onBackground}
-            name={leftButtonIcon}
+            name={leftButton.icon}
             size={cellSize / sizeConst}
           />
         </Pressable>
-        <Pressable onPress={() => incrementStage(1)} testID={rightButtonTestId}>
+        <Pressable
+          onPress={() => incrementStage(1)}
+          testID={rightButton.testId}
+        >
           <MaterialCommunityIcons
             color={theme.colors.onBackground}
-            name={rightButtonIcon}
+            name={rightButton.icon}
             size={cellSize / sizeConst}
           />
         </Pressable>
