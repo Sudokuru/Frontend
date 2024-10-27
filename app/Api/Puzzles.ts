@@ -44,8 +44,7 @@ export class Puzzles {
   }
 
   /**
-   * Given deletes the users active game and returns game score
-   * @returns promise of game score
+   * Given deletes the users active game and updates user's total statistics
    */
   public static async finishGame(
     numHintsUsed: number,
@@ -80,7 +79,8 @@ export class Puzzles {
 
     for (const newHintStrategies of numHintsUsedPerStrategy) {
       const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
-        (strategy) => strategy.hintStrategy === newHintStrategies.hintStrategy
+        (strategy: { hintStrategy: SudokuStrategy; numHintsUsed: number }) =>
+          strategy.hintStrategy === newHintStrategies.hintStrategy
       );
       if (existingHintStrategies) {
         existingHintStrategies.numHintsUsed += newHintStrategies.numHintsUsed;
