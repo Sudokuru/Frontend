@@ -32,9 +32,11 @@ const Cell = (props: RenderCellProps) => {
   const cellSize = getCellSize();
 
   /**
-   * Generates note text for each note if the note exists in the cell.
-   * @param noteIndex The index of the note.
-   * @returns void or a text component for the note index of a cell.
+   * Generates a styled text component for a note index within a cell.
+   *
+   * @param noteIndex - The index of the note to be rendered.
+   * @param noteColor - An array of colors corresponding to each note index.
+   * @returns A Text component with the specified style if the note index is present in the entry.
    */
   const getNoteContents = (noteIndex: number, noteColor: string[]) => {
     if (entry.includes(noteIndex)) {
