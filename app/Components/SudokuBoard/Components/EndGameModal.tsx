@@ -4,6 +4,7 @@ import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
+import React from "react";
 
 interface EndGameModalProps {
   time: number;

@@ -5,12 +5,11 @@ import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
-import TotalStatistics, {
-  StatisticsProps,
-} from "../Components/Statistics/TotalStatistics";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
-import { Statistics } from "../Api/Statistics";
+import { deleteStatistics, getStatistics } from "../Api/Statistics";
+import TotalStatistics from "../Components/Statistics/TotalStatistics";
+import { Statistics } from "../Api/Puzzle.Types";
 
 const StatisticsPage = () => {
   const theme = useTheme();
@@ -23,30 +22,28 @@ const StatisticsPage = () => {
     React.useContext(PreferencesContext);
 
   const [isLoading, setLoading] = React.useState<boolean>(true);
-  const [totalStatistics, setTotalStatistics] = React.useState<StatisticsProps>(
-    {
-      totalScore: 0,
-      averageSolveTime: 0,
-      fastestSolveTime: 0,
-      numGamesPlayed: 0,
-      numHintsUsed: 0,
-      numWrongCellsPlayed: 0,
-      totalSolveTime: 0,
-    }
-  );
+  const [totalStatistics, setTotalStatistics] = React.useState<Statistics>({
+    totalScore: 0,
+    averageSolveTime: 0,
+    fastestSolveTime: 0,
+    numGamesPlayed: 0,
+    numHintsUsed: 0,
+    numWrongCellsPlayed: 0,
+    totalSolveTime: 0,
+  });
 
   const [warningVisible, setWarningVisible] = React.useState(false);
   const showWarningButton = () => setWarningVisible(true);
   const hideWarningButton = () => setWarningVisible(false);
 
   async function deleteUserStatistics() {
-    await Statistics.deleteStatistics().then(() => {
+    await deleteStatistics().then(() => {
       updateLearnedLessons([]);
     });
   }
 
   async function getUserStatistics() {
-    await Statistics.getStatistics().then((res: any) => {
+    await getStatistics().then((res: any) => {
       if (res) {
         setTotalStatistics(res);
       } else {

@@ -6,7 +6,7 @@ import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { rgba } from "polished";
-import { Statistics } from "../Api/Statistics";
+import { getLearnedLessons } from "../Api/Statistics";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const LearnPage = () => {
@@ -27,7 +27,7 @@ const LearnPage = () => {
     useCallback(() => {
       // This determines what lessons the user has learned and conditionally displays everything.
       async function getUserLearnedLessons() {
-        await Statistics.getLearnedLessons().then((lessons: any) => {
+        await getLearnedLessons().then((lessons: any) => {
           if (lessons !== null) {
             // prevent the infinite loop
             if (learnedLessons != lessons && !areLessonsLoaded) {

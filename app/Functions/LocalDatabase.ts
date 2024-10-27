@@ -1,8 +1,8 @@
 import { SudokuStrategy } from "sudokuru";
-import { puzzle } from "../Api/Puzzle.Types";
 import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
+import { Puzzle } from "../Api/Puzzle.Types";
 
-export interface Puzzle {
+export interface InputPuzzle {
   p: string; // initial puzzle string
   s: string; // solution string
   d: number; // difficulty
@@ -13,7 +13,7 @@ export interface Puzzle {
  * @param puzzle Puzzle object
  */
 export const convertPuzzleToSudokuObject = (
-  puzzle: Puzzle,
+  puzzle: InputPuzzle,
   difficulty: GameDifficulty
 ): SudokuObjectProps => {
   let game: SudokuObjectProps = {
@@ -54,52 +54,6 @@ export const convertPuzzleToSudokuObject = (
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
 };
-
-export function returnLocalDrillGame(strategy: SudokuStrategy): puzzle {
-  // if (strategy === "NAKED_SINGLE") {
-  //   return NAKED_SINGLE_DRILL_GAMES[
-  //     Math.floor(Math.random() * NAKED_SINGLE_DRILL_GAMES.length)
-  //   ];
-  // }
-  if (strategy === "NAKED_PAIR") {
-    return NAKED_PAIR_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_PAIR_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "NAKED_TRIPLET") {
-    return NAKED_TRIPLET_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_TRIPLET_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "NAKED_QUADRUPLET") {
-    return NAKED_QUADRUPLET_DRILL_GAMES[
-      Math.floor(Math.random() * NAKED_QUADRUPLET_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "HIDDEN_SINGLE") {
-    return HIDDEN_SINGLE_DRILL_GAMES[
-      Math.floor(Math.random() * HIDDEN_SINGLE_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "HIDDEN_PAIR") {
-    return HIDDEN_PAIR_DRILL_GAMES[
-      Math.floor(Math.random() * HIDDEN_PAIR_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "HIDDEN_TRIPLET") {
-    return HIDDEN_TRIPLET_DRILL_GAMES[
-      Math.floor(Math.random() * HIDDEN_TRIPLET_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "HIDDEN_QUADRUPLET") {
-    return HIDDEN_QUADRUPLET_DRILL_GAMES[
-      Math.floor(Math.random() * HIDDEN_QUADRUPLET_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "POINTING_PAIR") {
-    return POINTING_PAIR_DRILL_GAMES[
-      Math.floor(Math.random() * POINTING_PAIR_DRILL_GAMES.length)
-    ];
-  } else if (strategy === "POINTING_TRIPLET") {
-    return POINTING_TRIPLET_DRILL_GAMES[
-      Math.floor(Math.random() * POINTING_TRIPLET_DRILL_GAMES.length)
-    ];
-  }
-  return JSON.parse("{}");
-}
 
 export interface SudokuObjectProps {
   variant: GameVariant;
@@ -611,7 +565,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
   // }
 ];
 
-const NAKED_PAIR_DRILL_GAMES: puzzle[] = [
+const NAKED_PAIR_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "120000000400009017780500034060000003000065000800070002000000400500900001300080050",
@@ -700,7 +654,7 @@ const NAKED_PAIR_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const NAKED_TRIPLET_DRILL_GAMES: puzzle[] = [
+const NAKED_TRIPLET_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "020400000006009130000015200000080000300000500800064700014702805000001090000000000",
@@ -797,7 +751,7 @@ const NAKED_TRIPLET_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const NAKED_QUADRUPLET_DRILL_GAMES: puzzle[] = [
+const NAKED_QUADRUPLET_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "020700080050091007709304000000500098004010000290000040008060300000180004900000070",
@@ -886,7 +840,7 @@ const NAKED_QUADRUPLET_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const HIDDEN_SINGLE_DRILL_GAMES: puzzle[] = [
+const HIDDEN_SINGLE_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "020000008000700900000000010007009100000008056240006000005302000890004030300800560",
@@ -987,7 +941,7 @@ const HIDDEN_SINGLE_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const HIDDEN_PAIR_DRILL_GAMES: puzzle[] = [
+const HIDDEN_PAIR_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "020609780050000090709050340071008000004000000060020000030001000900007020000000160",
@@ -1088,7 +1042,7 @@ const HIDDEN_PAIR_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const HIDDEN_TRIPLET_DRILL_GAMES: puzzle[] = [
+const HIDDEN_TRIPLET_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "120000000400009017780500034060000003000065000800070002000000400500900001300080050",
@@ -1177,7 +1131,7 @@ const HIDDEN_TRIPLET_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const HIDDEN_QUADRUPLET_DRILL_GAMES: puzzle[] = [
+const HIDDEN_QUADRUPLET_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "020400000006009130000015200000080000300000500800064700014702805000001090000000000",
@@ -1255,7 +1209,7 @@ const HIDDEN_QUADRUPLET_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const POINTING_PAIR_DRILL_GAMES: puzzle[] = [
+const POINTING_PAIR_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "003070040006002301089000000000107080517000006000400000271009005095000000000020000",
@@ -1345,7 +1299,7 @@ const POINTING_PAIR_DRILL_GAMES: puzzle[] = [
   },
 ];
 
-const POINTING_TRIPLET_DRILL_GAMES: puzzle[] = [
+const POINTING_TRIPLET_DRILL_GAMES: Puzzle[] = [
   {
     puzzle:
       "003070040006002301089000000000107080517000006000400000271009005095000000000020000",

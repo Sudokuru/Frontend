@@ -1,28 +1,19 @@
 # Table of Contents
 
-- [Puzzles Class](#puzzles-class)
-  - [Setup](#setup)
-  - [Puzzles.startGame()](#puzzlesstartgame)
-  - [Puzzles.getGame()](#puzzlesgetgame)
-  - [Puzzles.saveGame()](#puzzlessavegame)
-  - [Puzzles.finishGame()](#puzzlesfinishgame)
-  - [Puzzles.getRandomGame()](#puzzlesgetrandomgame)
-- [Drills Class](#drills-class)
-  - [Setup](#setup-1)
-  - [Drills.strategies](#drillsstrategies)
-  - [Drills.getGame()](#drillsgetgame)
-  - [How to Use Drills](#how-to-use-drills)
-- [Lessons Class](#lessons-class)
-  - [Setup](#setup-2)
-  - [Lessons.getStrategies()](#lessonsgetstrategies)
-  - [Lessons.getSteps()](#lessonsgetsteps)
-  - [Lessons.getTutorial()](#lessonsgettutorial)
-- [Statistics Class](#statistics-class)
-  - [Setup](#setup-3)
-  - [Statistics.getLearnedLessons()](#statisticsgetlearnedlessons)
-  - [Statistics.saveLearnedLessons()](#statisticssavelearnedlessons)
-  - [Statistics.getStatistics()](#statisticsgetstatistics)
-  - [Statistics.deleteStatistics()](statisticsdeletestatistics)
+- [Puzzles](#puzzles)
+  - [startGame()](#puzzlesstartgame)
+  - [getGame()](#puzzlesgetgame)
+  - [saveGame()](#puzzlessavegame)
+  - [finishGame()](#puzzlesfinishgame)
+- [Lessons](#lessons)
+  - [getStrategies()](#lessonsgetstrategies)
+  - [getSteps()](#lessonsgetsteps)
+  - [getTutorial()](#lessonsgettutorial)
+- [Statistics](#statistics)
+  - [getLearnedLessons()](#statisticsgetlearnedlessons)
+  - [saveLearnedLessons()](#statisticssavelearnedlessons)
+  - [getStatistics()](#statisticsgetstatistics)
+  - [deleteStatistics()](statisticsdeletestatistics)
 - [Statistics Object Properties](#statistics-object-properties)
   - [userID](#userid)
   - [dateRange](#daterange)
@@ -55,194 +46,82 @@
   - [numHintsUsed](#numhintsused)
   - [numWrongCellsPlayed](#numwrongcellsplayed)
 
-### Puzzles Class
+### Puzzles
 
-#### Setup
-
-```typescript
-import { Puzzles } from "sudokuru";
-```
-
-#### Puzzles.startGame()
+#### startGame()
 
 1. Description: Returns puzzle only containing strategies specified, hasn't been solved by user, and has difficulty as close to the specified difficulty as possible.
 2. Syntax
    ```typescript
-   Puzzles.startGame(url, difficulty, strategies, token).then(game => {
-       if (game !== null) {
-           console.log(game);
-       }
-       else {
-           console.log("Unexpected error when starting game");
-       }
+   startGame(difficulty);
    ```
 3. Parameters
-   - url: Server url e.g. "http://localhost:3100/"
    - difficulty: integer representing rd score, see Report.txt to see example values
-   - strategies: array of strategies that are allowed to be in returned puzzle e.g. [ "NAKED_SINGLE" ]
-   - token: string authentication token
 4. Return Value: [activeGame](#activegame-object-properties) JSON object
 
-#### Puzzles.getGame()
+#### getGame()
 
 1. Description: Retrieves users active game if they have one, otherwise returns null
 2. Syntax
    ```typescript
-   Puzzles.getGame(url, token).then((game) => {
-     if (game !== null) {
-       console.log(game);
-     } else {
-       console.log("User doesn't have an activeGame");
-     }
-   });
+   const game = await getGame();
    ```
-3. Parameters:
-   - url: Server url e.g. "http://localhost:3100/"
-   - token: string authentication token
-4. Return Value: [activeGame](#activegame-object-properties) JSON object if user has an active game, otherwise null
+3. Return Value: [activeGame](#activegame-object-properties) JSON object if user has an active game, otherwise null
 
-#### Puzzles.saveGame()
+#### saveGame()
 
 1. Description: Saves changes to users active game and returns true if successful
 2. Syntax
    ```typescript
-   Puzzles.saveGame(url, activeGame, puzzle, token).then((res) => {
-     if (res) {
-       console.log("Game progress was saved successfully");
-     }
-   });
+   saveGame(activeGame);
    ```
 3. Parameters:
-   - url: Server url e.g. "http://localhost:3100/"
    - activeGame: [activeGame](#activegame-object-properties) JSON object containing only properties that are being updated
-   - puzzle: a string containing the initial puzzle state
-   - token: string authentication token
-4. Return Value: true if game was saved successfully
+4. Return Value: None
 
-#### Puzzles.finishGame()
+#### finishGame()
 
 1. Description: Deletes users active game and returns true if successful
 2. Syntax
    ```typescript
-   Puzzles.finishGame(url, puzzle, token).then((res) => {
-     if (res) {
-       console.log("Game was deleted successfully");
-     }
-   });
+   await finishGame(numHintsUsed: number, numWrongCellsPlayed: number, time: number, score: number);
    ```
 3. Parameters:
-   - url: Server url e.g. "http://localhost:3100/"
-   - puzzle: a string containing the initial puzzle state
-   - token: string authentication token
-     [finishGame](#finishgame-object-properties) JSON object if game exists and has been ended, otherwise null
+   - numHintsUsed: the number of hints used from the game
+   - numWrongCellsPlayed: the number of wrong cells from the game
+   - time: the time from the game
+   - score: the score from the game
 
-#### Puzzles.getRandomGame()
+### Lessons
 
-1. Description: Returns a random game to be used by landing page display
-2. Syntax
-   ```typescript
-   Puzzles.getRandomGame();
-   ```
-3. Return Value: [activeGame](#activegame-object-properties) JSON object
-
-### Drills Class
-
-#### Setup
-
-```typescript
-import { Drills } from "sudokuru";
-```
-
-#### Drills.strategies
-
-1. Description: 2d array, subarrays contain strategy strings that drills are available for, the first element in each subarray with more than one element is the name of the group of strategies e.g. [["NAKED_SET", "NAKED_SINGLE", "NAKED_PAIR", ...]].
-
-#### Drills.getGame()
-
-1. Description: Returns board and notes state for a drill of the given strategy type if there is one
-2. Syntax
-   ```typescript
-   Drills.getGame(url, strategy, token).then((drill) => {
-     if (drill !== null) {
-       console.log(drill);
-     } else {
-       console.log("No drill was found for the given strategy type");
-     }
-   });
-   ```
-3. Parameters:
-   - url: Server url e.g. "http://localhost:3100/"
-   - strategy: string representing strategy type, can be any from Drills.getDrillStrategies()
-   - token: string authentication token
-4. Return Value: JSON object containing puzzleCurrentState,puzzleCurrentNotesState, and puzzleSolution as described in [activeGame](#activegame-object-properties) if drill found, otherwise null
-
-#### How to Use Drills
-
-Once you get a drill game using Drills.getGame() and one of the supported strategies from Drills.strategies you just need to get a hint. To do that you can use [Puzzles.getHint()](#puzzlesgethint) using the board and notes from Drills.getGame() and the strategy you are using put inside of an array.
-
-### Lessons Class
-
-#### Setup
-
-```typescript
-import { Lessons } from "sudokuru";
-```
-
-#### Lessons.getStrategies()
+#### getLessonStrategies()
 
 1. Description: Returns an array containing strategy strings that lessons are available for
 2. Syntax
    ```typescript
-   Lessons.getStrategies().then((strategies) => {
-     console.log(strategies);
-   });
+   const strategies = getLessonStrategies();
    ```
 3. Return Value: string array e.g. ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SET", ...]
 
-#### Lessons.getSteps()
+#### getLessonSteps()
 
 1. Description: Returns a 2d array containing "steps" which are arrays containing two strings, the first of which is text describing the image which is linked to by the url which is the second string in the subarray.
 2. Syntax
    ```typescript
-   Lessons.getSteps(strategy).then((steps) => {
-     console.log(steps);
-   });
+   const steps = getLessonSteps(strategy);
    ```
 3. Parameters:
    - strategy: string representing type, can be any from Lessons.strategies
 4. Return Value: 2d array e.g. [["Here is an example of the simplify notes strategy", "https://sudokuru.s3.amazonaws.com/hintExample2-V2.png"]].
 
-#### Lessons.getTutorial()
+### Statistics
 
-1. Description: Returns a 2d string array containing "steps" which are arrays containing two strings, the first of which is text describing the image which is linked to by the url which is the second string in the subarray for the first few lessons.
-2. Syntax
-   ```typescript
-   Lessons.getTutorial().then((tutorial) => {
-     console.log(tutorial);
-   });
-   ```
-3. Return Value: 2d array e.g. [["Here is an example of the simplify notes strategy", "https://sudokuru.s3.amazonaws.com/hintExample2-V2.png"]].
-
-### Statistics Class
-
-#### Setup
-
-```shell
-import {Statistics} from 'sudokuru';
-```
-
-#### Statistics.getLearnedLessons()
+#### getLearnedLessons()
 
 1. Description: Returns an JSON object containing the strategies a user has learned
 2. Syntax
    ```typescript
-   Statistics.getLearnedLessons(url, token).then((lessons) => {
-     if (lessons !== null) {
-       console.log(lessons);
-     } else {
-       console.log("User has not completed any lessons");
-     }
-   });
+   const learnedLessons = await getLearnedLessons();
    ```
 3. Return Value: JSON array:
    Example:
@@ -253,44 +132,30 @@ import {Statistics} from 'sudokuru';
 }
 ```
 
-#### Statistics.saveLearnedLessons()
+#### saveLearnedLessons()
 
 1. Description: Returns an JSON object containing the strategies a user has learned
 2. Syntax
    ```typescript
-   Statistics.saveLearnedLessons(url, learnedLessons, token).then((res) => {
-     if (res) {
-       console.log("User's learned lessons were updated successfully!");
-     }
-   });
+   saveLearnedLessons(learnedLessons);
    ```
 3. Return Value: boolean
 
-#### Statistics.getStatistics()
+#### getStatistics()
 
 1. Description: Returns an JSON object containing the strategies a user has learned
 2. Syntax
    ```typescript
-   Statistics.getStatistics(url, token).then((statistics) => {
-     if (statistics !== null) {
-       console.log(statistics);
-     } else {
-       console.log("User does not have any game statistics!");
-     }
-   });
+   const statistics = await getStatistics();
    ```
 3. Return Value: [statistics](#statistics-object-properties)
 
-#### Statistics.deleteStatistics()
+#### deleteStatistics()
 
 1. Description: Returns an JSON object containing the strategies a user has learned
 2. Syntax
    ```typescript
-   Statistics.deleteStatistics(url, token).then((res) => {
-     if (res) {
-       console.log("User's statistics were deleted successfully!");
-     }
-   });
+   await deleteStatistics();
    ```
 3. Return Value: boolean
 

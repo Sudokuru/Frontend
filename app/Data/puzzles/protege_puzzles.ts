@@ -1,5 +1,5 @@
-import { Puzzle } from "../../Functions/LocalDatabase";
-export const PROTEGE_PUZZLES: Puzzle[] = [
+import { InputPuzzle } from "../../Functions/LocalDatabase";
+export const PROTEGE_PUZZLES: InputPuzzle[] = [
   {
     p: "000000000000000650091576008003905060105008043000063205824000001000200090000800432",
     s: "658392714372481659491576328283945167165728943749163285824639571537214896916857432",

@@ -1,5 +1,5 @@
-import { Puzzle } from "../../Functions/LocalDatabase";
-export const LAYMAN_PUZZLES: Puzzle[] = [
+import { InputPuzzle } from "../../Functions/LocalDatabase";
+export const LAYMAN_PUZZLES: InputPuzzle[] = [
   {
     p: "000000000010090850857000194790653000080104600040820005205708906109300000470960510",
     s: "924581367316497852857236194792653481583174629641829735235718946169345278478962513",

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { finishGame, handlePause, saveGame } from "./Functions/BoardFunctions";
+import {
+  finishSudokuGame,
+  handlePause,
+  saveGame,
+} from "./Functions/BoardFunctions";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -187,7 +191,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     saveGame(sudokuBoard);
 
     if (!sudokuBoard.inNoteMode && isGameSolved()) {
-      const score = finishGame(
+      const score = finishSudokuGame(
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
         sudokuBoard.statistics.numWrongCellsPlayed,

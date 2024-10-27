@@ -62,6 +62,7 @@ const Cell = (props: RenderCellProps) => {
       onPress={(event: any) => {
         onClick(r, c, event);
       }}
+      // @ts-ignore
       style={{ outline: "none" }}
     >
       <View

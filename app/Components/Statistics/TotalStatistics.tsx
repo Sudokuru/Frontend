@@ -3,6 +3,7 @@ import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
+import React from "react";
 
 interface TotalStatisticsProps {
   totalScore: number;

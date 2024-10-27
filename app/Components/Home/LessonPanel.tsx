@@ -7,12 +7,6 @@ import {
   formatOneLessonName,
   getLockedLessons,
 } from "../../Functions/learnedLessons";
-import {
-  Lessons,
-  getLessonMode,
-  LessonOfflineMode,
-  LessonOnlineMode,
-} from "../../Api/Lessons";
 import { useNavigation } from "@react-navigation/native";
 import {
   CARD_IMAGE_HEIGHT,
@@ -25,6 +19,7 @@ import {
 } from "./Cards";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
+import { getStrategies } from "../../Api/Lessons";
 
 let lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
@@ -66,7 +61,7 @@ const LessonPanel = (props: any) => {
 
   const { learnedLessons } = React.useContext(PreferencesContext);
 
-  const [availableLessons, setAvailableLessons] = React.useState([]);
+  const [availableLessons, setAvailableLessons] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const [lockedWarningVisible, setLockedWarningVisible] = useState(false);
@@ -74,18 +69,10 @@ const LessonPanel = (props: any) => {
   const hideLockedWarning = () => setLockedWarningVisible(false);
   const [lockedLesson, setLockedLesson] = useState(-1);
 
-  // setting lesson mode to offline
-  let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: LessonOfflineMode | LessonOnlineMode = {
-    mode: LESSON_MODE,
-  };
-
   useFocusEffect(
     React.useCallback(() => {
-      Lessons.getStrategies(getlessonArgs).then((result: any) => {
-        setAvailableLessons(result);
-        setIsLoading(false);
-      });
+      setAvailableLessons(getStrategies());
+      setIsLoading(false);
     }, [])
   );
 
@@ -95,7 +82,6 @@ const LessonPanel = (props: any) => {
     // dynamically render in lesson buttons based on criteria
     let lessonButtonArray = [];
     let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
-    let NUM_LESSONS_PER_ROW = 2;
 
     let subArray = [];
     let columnCount: number = calculateCardsPerRow(

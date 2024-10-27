@@ -56,6 +56,7 @@ const DrawerNavigator = () => {
           <Drawer.Screen name="DrillPage" component={DrillPage} />
           <Drawer.Screen name="DrillGame" component={DrillGame} />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
+          {/* @ts-ignore */}
           <Drawer.Screen name="Lesson" component={Lesson} />
           <Drawer.Screen name="ProfilePage" component={ProfilePage} />
           <Drawer.Screen name="StatisticsPage" component={StatisticsPage} />

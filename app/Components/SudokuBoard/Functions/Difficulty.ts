@@ -9,7 +9,7 @@ import { PUNDIT_PUZZLES } from "../../../Data/puzzles/pundit_puzzles";
 import { TRAINEE_PUZZLES } from "../../../Data/puzzles/trainee_puzzles";
 import {
   convertPuzzleToSudokuObject,
-  Puzzle,
+  InputPuzzle,
   SudokuObjectProps,
 } from "../../../Functions/LocalDatabase";
 
@@ -120,7 +120,7 @@ export function calculateGameScore(
  * @param PUZZLES An array of puzzles
  * @returns a random puzzle from an array of puzzles
  */
-const retrieveRandomPuzzle = (PUZZLES: Puzzle[]): Puzzle => {
+const retrieveRandomPuzzle = (PUZZLES: InputPuzzle[]): InputPuzzle => {
   return PUZZLES[Math.floor(Math.random() * PUZZLES.length)];
 };
 
@@ -131,7 +131,7 @@ const retrieveRandomPuzzle = (PUZZLES: Puzzle[]): Puzzle => {
  */
 export const returnPuzzleOfDifficulty = (
   difficulty: GameDifficulty | "dev"
-): Puzzle => {
+): InputPuzzle => {
   switch (difficulty) {
     // "dev" difficulty is a custom difficulty that always returns the same puzzle.
     case "dev":

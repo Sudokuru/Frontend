@@ -1,7 +1,7 @@
 import { useWindowDimensions } from "react-native";
-import { Puzzles } from "../../../Api/Puzzles";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
 import { calculateGameScore, GameDifficulty } from "./Difficulty";
+import { finishGame } from "../../../Api/Puzzles";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -60,7 +60,7 @@ export const formatTime = (inputSeconds: number) => {
 };
 
 export async function saveGame(activeGame: SudokuObjectProps) {
-  Puzzles.saveGame(activeGame).then((res: any) => {
+  saveGame(activeGame).then((res: any) => {
     if (res) {
       console.log("Game progress was saved successfully!");
     }
@@ -76,7 +76,7 @@ export async function saveGame(activeGame: SudokuObjectProps) {
  * @param time
  * @returns
  */
-export function finishGame(
+export function finishSudokuGame(
   difficulty: GameDifficulty,
   numHintsUsed: number,
   numWrongCellsPlayed: number,
@@ -91,7 +91,7 @@ export function finishGame(
   );
 
   // removes game from localstorage and updates statistics page
-  Puzzles.finishGame(numHintsUsed, numWrongCellsPlayed, time, score);
+  finishGame(numHintsUsed, numWrongCellsPlayed, time, score);
   return score;
 }
 
