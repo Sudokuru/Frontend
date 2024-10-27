@@ -77,6 +77,7 @@ export class Puzzles {
       statistics.totalSolveTime / statistics.numGamesPlayed
     );
 
+    // Create or update user's total number of hints used per strategy statistics
     for (const newHintStrategies of numHintsUsedPerStrategy) {
       const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
         (strategy: { hintStrategy: SudokuStrategy; numHintsUsed: number }) =>
