@@ -28,7 +28,7 @@ export const getProfile = async (): Promise<Profile> => {
   };
 
   if (value == null) {
-    await setProfile(defaultProfileValues);
+    setProfile(defaultProfileValues);
     return defaultProfileValues;
   }
 

@@ -48,7 +48,7 @@ export const getStatistics = async (): Promise<Statistics> => {
       numHintsUsed: 0,
       numWrongCellsPlayed: 0,
     };
-    await saveStatisitics(statistics);
+    saveStatisitics(statistics);
     return statistics;
   }
   return value;

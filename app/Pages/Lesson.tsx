@@ -49,15 +49,11 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
     }, [])
   );
 
-  async function saveUserLearnedLessons(learnedLessons: string[]) {
-    await saveLearnedLessons(learnedLessons);
-  }
-
   const clickCheckMark = () => {
     if (!learnedLessons.includes(name)) {
       learnedLessons.push(name);
       updateLearnedLessons(learnedLessons);
-      saveUserLearnedLessons(learnedLessons);
+      saveLearnedLessons(learnedLessons);
     }
     navigation.navigate("LearnPage");
   };

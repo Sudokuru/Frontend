@@ -4,6 +4,7 @@ import {
   finishSudokuGame,
   handlePause,
   saveGame,
+  isValueCorrect,
 } from "./Functions/BoardFunctions";
 import {
   areCellsInSameBox,
@@ -13,7 +14,6 @@ import {
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
-import { isValueCorrect } from "./Functions/BoardFunctions";
 import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import { generateGame } from "./Functions/generateGame";

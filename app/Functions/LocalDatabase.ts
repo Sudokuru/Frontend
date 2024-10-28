@@ -1,4 +1,3 @@
-import { SudokuStrategy } from "sudokuru";
 import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
 import { Puzzle } from "../Api/Puzzle.Types";
 
