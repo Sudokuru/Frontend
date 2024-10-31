@@ -589,17 +589,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * determined
    */
   const getCellNotesColor = (r: number, c: number) => {
-    const notesToReturn = [
-      "black",
-      "black",
-      "black",
-      "black",
-      "black",
-      "black",
-      "black",
-      "black",
-      "black",
-    ];
+    const notesToReturn = Array(9).fill("black");
     // change note color to red for note removals as part of hint
     if (sudokuHint && sudokuHint.stage === 4) {
       const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
