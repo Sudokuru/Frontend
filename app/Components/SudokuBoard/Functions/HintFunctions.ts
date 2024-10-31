@@ -3,6 +3,15 @@ import { CellProps } from "../../../Functions/LocalDatabase";
 import { Hint } from "../SudokuBoard";
 import { generateBoxIndex } from "../sudoku";
 
+/**
+ * Retrieves a hint for the current sudoku puzzle state based on the specified strategy order.
+ * The hint is generated using the current puzzle state, solution, and an strategy array that determines priority order of hint.
+ * Hint information is then processed through the hintInjections function to further customize the output.
+ * @param puzzle - current sudoku puzzle state
+ * @param solution - sudoku solution
+ * @param strategies - order of strategies to use for generating the hint
+ * @returns Hint object containing the hint information
+ */
 export const getSudokuHint = (
   puzzle: CellProps[][],
   solution: number[][],

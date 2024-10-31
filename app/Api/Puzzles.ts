@@ -44,7 +44,17 @@ export class Puzzles {
   }
 
   /**
-   * Given deletes the users active game and updates user's total statistics
+   * Completes the game by removing the active game from storage and updating user statistics.
+   *
+   * @param numHintsUsed - The total number of hints used during the game.
+   * @param numHintsUsedPerStrategy - An array of objects detailing the number of hints used per strategy.
+   * @param numWrongCellsPlayed - The total number of incorrect cells played during the game.
+   * @param time - The total time taken to complete the game.
+   * @param score - The score achieved in the game.
+   *
+   * This function removes the current active game from storage and updates the user's statistics
+   * including total score, fastest and total solve times, average solve time, and the number of games played.
+   * It also updates the number of hints used for each strategy applied during the game.
    */
   public static async finishGame(
     numHintsUsed: number,
