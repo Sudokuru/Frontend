@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../Statistics/Statistic";
@@ -7,7 +7,7 @@ import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
 import { ScrollView } from "react-native-gesture-handler";
-import { formatOneLessonName } from "../../../Functions/learnedLessons";
+import { NumHintsUsedPerStrategy } from "../../NumHintsUsedPerStrategy";
 
 interface EndGameModalProps {
   time: number;
@@ -25,27 +25,7 @@ const EndGameModal = (props: EndGameModalProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
-  const theme = useTheme();
   const navigation: any = useNavigation();
-
-  // sort by most number of hints
-  const sortedHints = [...props.numHintsUsedPerStrategy].sort(
-    (a, b) => b.numHintsUsed - a.numHintsUsed
-  );
-
-  const strategyHints: React.JSX.Element[] = [];
-  for (const strategyHint of sortedHints) {
-    strategyHints.push(
-      <Statistic
-        statisticName={
-          "  " + formatOneLessonName(strategyHint.hintStrategy) + ": "
-        }
-        statisticValue={strategyHint.numHintsUsed}
-        testID={"hintsUsed" + strategyHint.hintStrategy}
-        key={strategyHint.hintStrategy}
-      />
-    );
-  }
 
   return (
     <ScrollView
@@ -91,7 +71,9 @@ const EndGameModal = (props: EndGameModalProps) => {
           statisticValue={props.numHintsUsed}
           testID="numHintsUsed"
         />
-        {strategyHints}
+        <NumHintsUsedPerStrategy
+          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
+        />
       </View>
       <Button
         mode="contained"

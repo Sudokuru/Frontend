@@ -5,7 +5,7 @@ import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
 import { SudokuStrategy } from "sudokuru";
 import React from "react";
-import { formatOneLessonName } from "../../Functions/learnedLessons";
+import { NumHintsUsedPerStrategy } from "../NumHintsUsedPerStrategy";
 
 export interface TotalStatisticsProps {
   totalScore: number;
@@ -26,28 +26,6 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
   const reSize = Math.min(size.width, size.height);
 
   const theme = useTheme();
-
-  // sort by most number of hints
-  const numHintsUsedPerStrategy = [...props.numHintsUsedPerStrategy].sort(
-    (a, b) => {
-      return b.numHintsUsed - a.numHintsUsed;
-    }
-  );
-
-  // Generates the JSX elements for the number of hints used per strategy
-  const strategyHints: React.JSX.Element[] = [];
-  for (const strategyHint of numHintsUsedPerStrategy) {
-    strategyHints.push(
-      <Statistic
-        statisticName={
-          "  " + formatOneLessonName(strategyHint.hintStrategy) + ": "
-        }
-        statisticValue={strategyHint.numHintsUsed}
-        testID={"hintsUsed" + strategyHint.hintStrategy}
-        key={strategyHint.hintStrategy}
-      />
-    );
-  }
 
   return (
     <View
@@ -103,7 +81,9 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
           statisticValue={props.numHintsUsed}
           testID="numHintsUsed"
         />
-        {strategyHints}
+        <NumHintsUsedPerStrategy
+          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
+        />
       </View>
     </View>
   );
