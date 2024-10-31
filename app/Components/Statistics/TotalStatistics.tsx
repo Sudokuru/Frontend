@@ -34,6 +34,7 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
     }
   );
 
+  // Generates the JSX elements for the number of hints used per strategy
   const strategyHints: React.JSX.Element[] = [];
   for (const strategyHint of numHintsUsedPerStrategy) {
     strategyHints.push(
