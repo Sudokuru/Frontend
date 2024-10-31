@@ -34,12 +34,12 @@ const Hint = (hintProps: HintProps) => {
     </Text>
   );
 
-  interface StageContent {
+  interface HintStageContent {
     title: boolean;
     content?: string;
   }
 
-  const STAGE_CONFIG: Record<number, StageContent> = {
+  const STAGE_CONFIG: Record<number, HintStageContent> = {
     1: { title: true },
     2: { title: true, content: hint.info },
     3: { title: true, content: "The hint is located in this region" },
@@ -47,7 +47,7 @@ const Hint = (hintProps: HintProps) => {
     5: { title: true, content: hint.action },
   };
 
-  const renderStageContent = (stage: number) => {
+  const renderHintStageContent = (stage: number) => {
     const config = STAGE_CONFIG[stage];
     return (
       <>
@@ -67,7 +67,7 @@ const Hint = (hintProps: HintProps) => {
     );
   };
 
-  const hintContent = renderStageContent(stage);
+  const hintContent = renderHintStageContent(stage);
 
   type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
 
