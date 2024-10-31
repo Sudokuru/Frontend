@@ -606,17 +606,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
-    return [
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-      cellBackgroundColor,
-    ];
+    return Array(9).fill(cellBackgroundColor);
   };
 
   /**
