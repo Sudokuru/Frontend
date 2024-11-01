@@ -42,8 +42,9 @@ export class Statistics {
         fastestSolveTime: 0,
         averageSolveTime: 0,
         totalSolveTime: 0,
-        numHintsUsed: 0,
         numWrongCellsPlayed: 0,
+        numHintsUsed: 0,
+        numHintsUsedPerStrategy: [],
       };
       await this.saveStatisitics(statistics);
       return statistics;

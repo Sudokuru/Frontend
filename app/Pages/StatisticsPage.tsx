@@ -5,12 +5,12 @@ import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
-import TotalStatistics, {
-  StatisticsProps,
-} from "../Components/Statistics/TotalStatistics";
 import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { Statistics } from "../Api/Statistics";
+import TotalStatistics, {
+  TotalStatisticsProps,
+} from "../Components/Statistics/TotalStatistics";
 
 const StatisticsPage = () => {
   const theme = useTheme();
@@ -23,17 +23,17 @@ const StatisticsPage = () => {
     React.useContext(PreferencesContext);
 
   const [isLoading, setLoading] = React.useState<boolean>(true);
-  const [totalStatistics, setTotalStatistics] = React.useState<StatisticsProps>(
-    {
+  const [totalStatistics, setTotalStatistics] =
+    React.useState<TotalStatisticsProps>({
       totalScore: 0,
       averageSolveTime: 0,
       fastestSolveTime: 0,
-      numGamesPlayed: 0,
-      numHintsUsed: 0,
-      numWrongCellsPlayed: 0,
       totalSolveTime: 0,
-    }
-  );
+      numGamesPlayed: 0,
+      numWrongCellsPlayed: 0,
+      numHintsUsed: 0,
+      numHintsUsedPerStrategy: [],
+    });
 
   const [warningVisible, setWarningVisible] = React.useState(false);
   const showWarningButton = () => setWarningVisible(true);
@@ -80,8 +80,9 @@ const StatisticsPage = () => {
             fastestSolveTime={totalStatistics.fastestSolveTime}
             averageSolveTime={totalStatistics.averageSolveTime}
             totalSolveTime={totalStatistics.totalSolveTime}
-            numHintsUsed={totalStatistics.numHintsUsed}
             numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
+            numHintsUsed={totalStatistics.numHintsUsed}
+            numHintsUsedPerStrategy={totalStatistics.numHintsUsedPerStrategy}
           />
           <Button
             mode="contained"

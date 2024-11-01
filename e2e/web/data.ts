@@ -1,5 +1,80 @@
-export const NEW_EMPTY_GAME =
-  '[{"variant":"classic","version":"1.0.0","selectedCells":[],"puzzle":[[{"type":"given","entry":6},{"type":"given","entry":4},{"type":"given","entry":9},{"type":"given","entry":8},{"type":"given","entry":7},{"type":"given","entry":2},{"type":"given","entry":1},{"type":"given","entry":3},{"type":"given","entry":5}],[{"type":"given","entry":3},{"type":"value","entry":0},{"type":"given","entry":7},{"type":"value","entry":0},{"type":"given","entry":1},{"type":"given","entry":9},{"type":"given","entry":4},{"type":"value","entry":0},{"type":"given","entry":6}],[{"type":"given","entry":2},{"type":"given","entry":5},{"type":"given","entry":1},{"type":"given","entry":6},{"type":"value","entry":0},{"type":"given","entry":3},{"type":"given","entry":9},{"type":"given","entry":8},{"type":"value","entry":0}],[{"type":"given","entry":8},{"type":"given","entry":6},{"type":"given","entry":4},{"type":"given","entry":9},{"type":"given","entry":3},{"type":"given","entry":5},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0}],[{"type":"given","entry":1},{"type":"given","entry":7},{"type":"given","entry":5},{"type":"value","entry":0},{"type":"given","entry":2},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"given","entry":8}],[{"type":"value","entry":0},{"type":"given","entry":3},{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":8},{"type":"given","entry":1},{"type":"given","entry":5},{"type":"given","entry":6},{"type":"given","entry":4}],[{"type":"given","entry":7},{"type":"given","entry":1},{"type":"given","entry":3},{"type":"given","entry":2},{"type":"given","entry":6},{"type":"given","entry":4},{"type":"value","entry":0},{"type":"given","entry":5},{"type":"value","entry":0}],[{"type":"value","entry":0},{"type":"given","entry":2},{"type":"given","entry":8},{"type":"given","entry":3},{"type":"value","entry":0},{"type":"given","entry":7},{"type":"value","entry":0},{"type":"value","entry":0},{"type":"value","entry":0}],[{"type":"given","entry":4},{"type":"value","entry":0},{"type":"given","entry":6},{"type":"given","entry":1},{"type":"given","entry":5},{"type":"given","entry":8},{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":3}]],"puzzleSolution":[[6,4,9,8,7,2,1,3,5],[3,8,7,5,1,9,4,2,6],[2,5,1,6,4,3,9,8,7],[8,6,4,9,3,5,7,1,2],[1,7,5,4,2,6,3,9,8],[9,3,2,7,8,1,5,6,4],[7,1,3,2,6,4,8,5,9],[5,2,8,3,9,7,6,4,1],[4,9,6,1,5,8,2,7,3]],"statistics":{"difficulty":"layman","internalDifficulty":-10,"numHintsUsed":0,"numWrongCellsPlayed":1,"score":0,"time":22},"inNoteMode":false,"actionHistory":[]}]';
+// Generic puzzle data
+export { default as NEW_EMPTY_GAME } from "./data/new-empty-game.json";
+export { default as ALMOST_FINISHED_GAME } from "./data/almost-finished-game.json";
 
-export const ALMOST_FINISHED_GAME =
-  '[{"variant":"classic","version":"1.0.0","selectedCells":[],"puzzle":[[{"type":"value","entry":1},{"type":"value","entry":2},{"type":"given","entry":3},{"type":"value","entry":6},{"type":"given","entry":7},{"type":"value","entry":5},{"type":"value","entry":9},{"type":"given","entry":4},{"type":"value","entry":8}],[{"type":"value","entry":4},{"type":"value","entry":5},{"type":"given","entry":6},{"type":"value","entry":9},{"type":"value","entry":8},{"type":"given","entry":2},{"type":"given","entry":3},{"type":"value","entry":7},{"type":"given","entry":1}],[{"type":"value","entry":7},{"type":"given","entry":8},{"type":"given","entry":9},{"type":"value","entry":3},{"type":"value","entry":1},{"type":"value","entry":4},{"type":"value","entry":5},{"type":"value","entry":6},{"type":"value","entry":2}],[{"type":"value","entry":9},{"type":"value","entry":6},{"type":"value","entry":4},{"type":"given","entry":1},{"type":"value","entry":5},{"type":"given","entry":7},{"type":"value","entry":2},{"type":"given","entry":8},{"type":"value","entry":3}],[{"type":"given","entry":5},{"type":"given","entry":1},{"type":"given","entry":7},{"type":"value","entry":2},{"type":"value","entry":3},{"type":"value","entry":8},{"type":"value","entry":4},{"type":"value","entry":9},{"type":"given","entry":6}],[{"type":"value","entry":8},{"type":"value","entry":3},{"type":"value","entry":2},{"type":"given","entry":4},{"type":"value","entry":9},{"type":"value","entry":6},{"type":"value","entry":1},{"type":"value","entry":5},{"type":"value","entry":7}],[{"type":"given","entry":2},{"type":"given","entry":7},{"type":"given","entry":1},{"type":"value","entry":8},{"type":"value","entry":4},{"type":"given","entry":9},{"type":"value","entry":6},{"type":"value","entry":3},{"type":"given","entry":5}],[{"type":"value","entry":3},{"type":"given","entry":9},{"type":"given","entry":5},{"type":"value","entry":7},{"type":"value","entry":6},{"type":"value","entry":1},{"type":"value","entry":1},{"type":"value","entry":0},{"type":"note","entry":[4,5]}],[{"type":"value","entry":6},{"type":"value","entry":4},{"type":"value","entry":8},{"type":"value","entry":5},{"type":"given","entry":2},{"type":"value","entry":3},{"type":"value","entry":7},{"type":"value","entry":1},{"type":"value","entry":9}]],"puzzleSolution":[[1,2,3,6,7,5,9,4,8],[4,5,6,9,8,2,3,7,1],[7,8,9,3,1,4,5,6,2],[9,6,4,1,5,7,2,8,3],[5,1,7,2,3,8,4,9,6],[8,3,2,4,9,6,1,5,7],[2,7,1,8,4,9,6,3,5],[3,9,5,7,6,1,8,2,4],[6,4,8,5,2,3,7,1,9]],"statistics":{"difficulty":"novice","internalDifficulty":348,"numHintsUsed":0,"numWrongCellsPlayed":235,"score":0,"time":374},"inNoteMode":false,"actionHistory":[]}]';
+// AMEND NOTE DATA
+export { default as AMEND_NOTES_EMPTY_CELL_GAME } from "./data/amend-notes-empty-cell-game.json";
+export { default as AMEND_NOTES_INCORRECT_CELL_GAME } from "./data/amend-notes-incorrect-cell-game.json";
+export { default as AMEND_NOTES_CORRECT_CELL_GAME } from "./data/amend-notes-correct-cell-game.json";
+export { default as AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME } from "./data/amend-notes-correct-and-incorrect-cell-game.json";
+
+// SIMPLIFY NOTES DATA
+
+export { default as SIMPLIFY_NOTES_ROW_GAME } from "./data/simplify-notes-row-game.json";
+export { default as SIMPLIFY_NOTES_COLUMN_GAME } from "./data/simplify-notes-column-game.json";
+export { default as SIMPLIFY_NOTES_BOX_GAME } from "./data/simplify-notes-box-game.json";
+
+// NAKED SINGLE DATA
+
+export { default as NAKED_SINGLE_GAME } from "./data/naked-single-game.json";
+
+// NAKED PAIR DATA
+
+export { default as NAKED_PAIR_PROFILE } from "./data/naked-pair-profile.json";
+export { default as NAKED_PAIR_BOX_GAME } from "./data/naked-pair-box-game.json";
+export { default as NAKED_PAIR_ROW_GAME } from "./data/naked-pair-row-game.json";
+export { default as NAKED_PAIR_COLUMN_GAME } from "./data/naked-pair-column-game.json";
+
+// NAKED TRIPLET DATA
+
+export { default as NAKED_TRIPLET_PROFILE } from "./data/naked-triplet-profile.json";
+export { default as NAKED_TRIPLET_ROW_GAME } from "./data/naked-triplet-row-game.json";
+export { default as NAKED_TRIPLET_COLUMN_GAME } from "./data/naked-triplet-column-game.json";
+export { default as NAKED_TRIPLET_BOX_GAME } from "./data/naked-triplet-box-game.json";
+
+// NAKED QUADRUPLET DATA
+
+export { default as NAKED_QUADRUPLET_PROFILE } from "./data/naked-quadruplet-profile.json";
+export { default as NAKED_QUADRUPLET_ROW_GAME } from "./data/naked-quadruplet-row-game.json";
+export { default as NAKED_QUADRUPLET_COLUMN_GAME } from "./data/naked-quadruplet-column-game.json";
+export { default as NAKED_QUADRUPLET_BOX_GAME } from "./data/naked-quadruplet-box-game.json";
+
+// HIDDEN SINGLE DATA
+
+export { default as HIDDEN_SINGLE_PROFILE } from "./data/hidden-single-profile.json";
+export { default as HIDDEN_SINGLE_ROW_GAME } from "./data/hidden-single-row-game.json";
+export { default as HIDDEN_SINGLE_COLUMN_GAME } from "./data/hidden-single-column-game.json";
+export { default as HIDDEN_SINGLE_BOX_GAME } from "./data/hidden-single-box-game.json";
+
+// HIDDEN PAIR DATA
+
+export { default as HIDDEN_PAIR_PROFILE } from "./data/hidden-pair-profile.json";
+export { default as HIDDEN_PAIR_ROW_GAME } from "./data/hidden-pair-row-game.json";
+export { default as HIDDEN_PAIR_COLUMN_GAME } from "./data/hidden-pair-column-game.json";
+export { default as HIDDEN_PAIR_BOX_GAME } from "./data/hidden-pair-box-game.json";
+
+// HIDDEN TRIPLET DATA
+
+export { default as HIDDEN_TRIPLET_PROFILE } from "./data/hidden-triplet-profile.json";
+export { default as HIDDEN_TRIPLET_ROW_GAME } from "./data/hidden-triplet-row-game.json";
+export { default as HIDDEN_TRIPLET_COLUMN_GAME } from "./data/hidden-triplet-column-game.json";
+export { default as HIDDEN_TRIPLET_BOX_GAME } from "./data/hidden-triplet-box-game.json";
+
+// HIDDEN QUADRUPLET DATA
+
+export { default as HIDDEN_QUADRUPLET_PROFILE } from "./data/hidden-quadruplet-profile.json";
+export { default as HIDDEN_QUADRUPLET_ROW_GAME } from "./data/hidden-quadruplet-row-game.json";
+export { default as HIDDEN_QUADRUPLET_COLUMN_GAME } from "./data/hidden-quadruplet-column-game.json";
+export { default as HIDDEN_QUADRUPLET_BOX_GAME } from "./data/hidden-quadruplet-box-game.json";
+
+// POINTING PAIR DATA
+
+export { default as POINTING_PAIR_PROFILE } from "./data/pointing-pair-profile.json";
+export { default as POINTING_PAIR_ROW_GAME } from "./data/pointing-pair-row-game.json";
+export { default as POINTING_PAIR_COLUMN_GAME } from "./data/pointing-pair-column-game.json";
+
+// POINTING TRIPLET DATA
+
+export { default as POINTING_TRIPLET_PROFILE } from "./data/pointing-triplet-profile.json";
+export { default as POINTING_TRIPLET_ROW_GAME } from "./data/pointing-triplet-row-game.json";
+export { default as POINTING_TRIPLET_COLUMN_GAME } from "./data/pointing-triplet-column-game.json";

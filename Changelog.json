@@ -1,5 +1,19 @@
 [
   {
+    "version": "1.26.0",
+    "date": "October 31st, 2024",
+    "summary": "🎃 Adding hints back to sudoku board. Adding ability to change hint strategy order.",
+    "features": [
+      "User can now click a hint. There are 5 stages to the hint which show the user how to continue the sudoku puzzle.",
+      "UI interface for changing the hint priority order is moved out of feature preview and is visible on profile page.",
+      "User can now see the number of hints they used after completing a game, and the total hints they have used on the statistics page.",
+      "User can now see the number of hints used for each strategy after completing a game, and the total number they have used on the statistics page.",
+      "User can use hotkeys 'h' or 'H' for triggering a hint"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.25.0",
     "date": "October 24th, 2024",
     "summary": "Added about us page and fixed difficulty selection button text overflow bug",
@@ -204,14 +218,15 @@
   {
     "version": "1.16.0",
     "date": "December 3rd, 2023",
-    "summary": "Rebuilt the Sudoku board logic from the ground up.",
+    "summary": "Rebuilt the Sudoku board logic from the ground up. Removed hint logic, Drills, and Demo board.",
     "features": [
       "Move history is now preserved through browser refreshes, and is stored on the user's device.",
       "0 key can now be used to erase values or notes in a Sudoku cell",
       "Users can now unselect the currently selected cell.",
       "The end game modal is replaced with an end game screen.",
       "Improved performance of the Sudoku board",
-      "Demo board and Drills are no longer functional and will be added back in a later release."
+      "Demo board and Drills are no longer functional and will be added back in a later release.",
+      "Hints are no longer functional and will be added back in a later release."
     ],
     "bug fixes": [
       "Erase button is now disabled if a cell is not selected. User can no longer erase correct cells.",

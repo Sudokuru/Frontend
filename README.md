@@ -24,7 +24,7 @@
 - 🎓 Learn how to play Sudoku with lessons from the basics all the way to advanced strategies
 - 📊 Statistics to track your progress
 - ⚙️ Sensible default settings for casual players with options to customize the playing experience for users with different playstyles
-- 📅 _Upcoming_: custom strategy based hints from the Sudokuru npm library module
+- 💡Custom strategy based hints from the Sudokuru npm library module
 - 📅 _Upcoming_: drills which let you practice individual strategies also powered by the Sudokuru npm library module
 
 # 🖥️ Supported Platforms

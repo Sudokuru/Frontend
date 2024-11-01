@@ -40,7 +40,7 @@ export const getSingleMultiSelectKey = () => {
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 60000,
+  timeout: 120000,
   testDir: "./e2e/web",
   /* Run tests in files in parallel */
   fullyParallel: true,

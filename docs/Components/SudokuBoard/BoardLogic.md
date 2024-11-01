@@ -78,6 +78,7 @@ When a game ends, the following information is displayed to the user
 - Score
 - Time spent
 - Number of Hints used
+- Number of Hints used per strategy
 - Mistakes made
 - Difficulty
 
@@ -91,6 +92,7 @@ Here is an example of the JSON object used to save the statistics and display th
   "averageSolveTime": 334,
   "totalSolveTime": 334,
   "numHintsUsed": 0,
+  "numHintsUsedPerStrategy": [],
   "numWrongCellsPlayed": 3
 }
 ```

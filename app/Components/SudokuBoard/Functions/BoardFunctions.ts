@@ -2,6 +2,7 @@ import { useWindowDimensions } from "react-native";
 import { Puzzles } from "../../../Api/Puzzles";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
 import { calculateGameScore, GameDifficulty } from "./Difficulty";
+import { SudokuStrategy } from "sudokuru";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -79,6 +80,10 @@ export async function saveGame(activeGame: SudokuObjectProps) {
 export function finishGame(
   difficulty: GameDifficulty,
   numHintsUsed: number,
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[],
   numWrongCellsPlayed: number,
   time: number
 ): number {
@@ -91,7 +96,13 @@ export function finishGame(
   );
 
   // removes game from localstorage and updates statistics page
-  Puzzles.finishGame(numHintsUsed, numWrongCellsPlayed, time, score);
+  Puzzles.finishGame(
+    numHintsUsed,
+    numHintsUsedPerStrategy,
+    numWrongCellsPlayed,
+    time,
+    score
+  );
   return score;
 }
 
