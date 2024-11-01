@@ -1124,7 +1124,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       case sudokuHint.maxStage + 1: {
         setSudokuHint(undefined);
         if (isGameSolved()) {
-          const score = finishGame(
+          const score = finishSudokuGame(
             sudokuBoard.statistics.difficulty,
             sudokuBoard.statistics.numHintsUsed,
             sudokuBoard.statistics.numHintsUsedPerStrategy,
