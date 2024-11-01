@@ -1,8 +1,8 @@
 [
   {
     "version": "1.26.0",
-    "date": "October 299th, 2024",
-    "summary": "Adding hints back to sudoku board. Adding ability to change hint strategy order.",
+    "date": "October 31st, 2024",
+    "summary": "🎃 Adding hints back to sudoku board. Adding ability to change hint strategy order.",
     "features": [
       "User can now click a hint. There are 5 stages to the hint which show the user how to continue the sudoku puzzle.",
       "UI interface for changing the hint priority order is moved out of feature preview and is visible on profile page.",
