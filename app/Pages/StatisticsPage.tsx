@@ -26,10 +26,11 @@ const StatisticsPage = () => {
     totalScore: 0,
     averageSolveTime: 0,
     fastestSolveTime: 0,
-    numGamesPlayed: 0,
-    numHintsUsed: 0,
-    numWrongCellsPlayed: 0,
     totalSolveTime: 0,
+    numGamesPlayed: 0,
+    numWrongCellsPlayed: 0,
+    numHintsUsed: 0,
+    numHintsUsedPerStrategy: [],
   });
 
   const [warningVisible, setWarningVisible] = React.useState(false);
@@ -77,8 +78,9 @@ const StatisticsPage = () => {
             fastestSolveTime={totalStatistics.fastestSolveTime}
             averageSolveTime={totalStatistics.averageSolveTime}
             totalSolveTime={totalStatistics.totalSolveTime}
-            numHintsUsed={totalStatistics.numHintsUsed}
             numWrongCellsPlayed={totalStatistics.numWrongCellsPlayed}
+            numHintsUsed={totalStatistics.numHintsUsed}
+            numHintsUsedPerStrategy={totalStatistics.numHintsUsedPerStrategy}
           />
           <Button
             mode="contained"

@@ -6,6 +6,7 @@ import {
 } from "../Components/SudokuBoard/Functions/Difficulty";
 import { Statistics } from "./Puzzle.Types";
 import { getStatistics, saveStatisitics } from "./Statistics";
+import { SudokuStrategy } from "sudokuru";
 
 /**
  * Given a difficulty and an user auth token retrieves a random puzzle close to the difficulty that the user hasn't solved before
@@ -36,11 +37,24 @@ export const saveGame = (game: SudokuObjectProps) => {
 };
 
 /**
- * Given deletes the users active game and returns game score
- * @returns promise of game score
+ * Completes the game by removing the active game from storage and updating user statistics.
+ *
+ * @param numHintsUsed - The total number of hints used during the game.
+ * @param numHintsUsedPerStrategy - An array of objects detailing the number of hints used per strategy.
+ * @param numWrongCellsPlayed - The total number of incorrect cells played during the game.
+ * @param time - The total time taken to complete the game.
+ * @param score - The score achieved in the game.
+ *
+ * This function removes the current active game from storage and updates the user's statistics
+ * including total score, fastest and total solve times, average solve time, and the number of games played.
+ * It also updates the number of hints used for each strategy applied during the game.
  */
 export const finishGame = async (
   numHintsUsed: number,
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[],
   numWrongCellsPlayed: number,
   time: number,
   score: number
@@ -62,6 +76,22 @@ export const finishGame = async (
   statistics.averageSolveTime = Math.round(
     statistics.totalSolveTime / statistics.numGamesPlayed
   );
+
+  // Create or update user's total number of hints used per strategy statistics
+  for (const newHintStrategies of numHintsUsedPerStrategy) {
+    const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
+      (strategy: { hintStrategy: SudokuStrategy; numHintsUsed: number }) =>
+        strategy.hintStrategy === newHintStrategies.hintStrategy
+    );
+    if (existingHintStrategies) {
+      existingHintStrategies.numHintsUsed += newHintStrategies.numHintsUsed;
+    } else {
+      statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: newHintStrategies.hintStrategy,
+        numHintsUsed: newHintStrategies.numHintsUsed,
+      });
+    }
+  }
 
   saveStatisitics(statistics);
 };

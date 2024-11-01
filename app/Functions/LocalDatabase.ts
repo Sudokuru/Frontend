@@ -1,5 +1,6 @@
 import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
 import { Puzzle } from "../Api/Puzzle.Types";
+import { SudokuStrategy } from "sudokuru";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
@@ -25,6 +26,7 @@ export const convertPuzzleToSudokuObject = (
       difficulty: difficulty,
       internalDifficulty: puzzle.d,
       numHintsUsed: 0,
+      numHintsUsedPerStrategy: [],
       numWrongCellsPlayed: 0,
       score: 0,
       time: 0,
@@ -86,6 +88,10 @@ export interface GameStatistics {
   score: number;
   numWrongCellsPlayed: number;
   numHintsUsed: number;
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[];
 }
 
 export type GameVariant = "demo" | "drill" | "classic";
@@ -480,6 +486,7 @@ const NAKED_SINGLE_DRILL_GAMES: SudokuObjectProps[] = [
       difficulty: "novice",
       internalDifficulty: 0,
       numHintsUsed: 0,
+      numHintsUsedPerStrategy: [],
       numWrongCellsPlayed: 0,
       score: 0,
       time: 0,

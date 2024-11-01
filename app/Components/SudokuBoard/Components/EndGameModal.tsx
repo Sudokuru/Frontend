@@ -1,15 +1,22 @@
 import { View } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
+import { SudokuStrategy } from "sudokuru";
+import { ScrollView } from "react-native-gesture-handler";
+import { NumHintsUsedPerStrategy } from "../../NumHintsUsedPerStrategy";
 
 interface EndGameModalProps {
   time: number;
   numHintsUsed: number;
   numWrongCellsPlayed: number;
+  numHintsUsedPerStrategy: {
+    hintStrategy: SudokuStrategy;
+    numHintsUsed: number;
+  }[];
   score: number;
   difficulty: string;
 }
@@ -18,12 +25,11 @@ const EndGameModal = (props: EndGameModalProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
-  const theme = useTheme();
   const navigation: any = useNavigation();
 
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         alignItems: "center",
         justifyContent: "center",
         marginVertical: 30,
@@ -51,11 +57,6 @@ const EndGameModal = (props: EndGameModalProps) => {
           testID="time"
         />
         <Statistic
-          statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <Statistic
           statisticName="Mistakes Made: "
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
@@ -64,6 +65,14 @@ const EndGameModal = (props: EndGameModalProps) => {
           statisticName="Difficulty: "
           statisticValue={props.difficulty}
           testID="difficulty"
+        />
+        <Statistic
+          statisticName="Number of Hints Used: "
+          statisticValue={props.numHintsUsed}
+          testID="numHintsUsed"
+        />
+        <NumHintsUsedPerStrategy
+          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
         />
       </View>
       <Button
@@ -74,7 +83,7 @@ const EndGameModal = (props: EndGameModalProps) => {
       >
         Play New Game
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,0 +1,21 @@
+{
+  "theme": true,
+  "highlightBox": true,
+  "highlightColumn": true,
+  "highlightRow": true,
+  "highlightIdenticalValues": true,
+  "previewMode": false,
+  "strategyHintOrder": [
+    "NAKED_TRIPLET",
+    "SIMPLIFY_NOTES",
+    "NAKED_SINGLE",
+    "HIDDEN_SINGLE",
+    "NAKED_PAIR",
+    "HIDDEN_PAIR",
+    "POINTING_PAIR",
+    "HIDDEN_TRIPLET",
+    "POINTING_TRIPLET",
+    "NAKED_QUADRUPLET",
+    "HIDDEN_QUADRUPLET"
+  ]
+}

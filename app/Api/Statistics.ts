@@ -46,6 +46,7 @@ export const getStatistics = async (): Promise<Statistics> => {
       averageSolveTime: 0,
       totalSolveTime: 0,
       numHintsUsed: 0,
+      numHintsUsedPerStrategy: [],
       numWrongCellsPlayed: 0,
     };
     saveStatisitics(statistics);

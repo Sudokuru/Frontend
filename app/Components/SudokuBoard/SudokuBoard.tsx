@@ -10,6 +10,7 @@ import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
+  generateBoxIndex,
   wrapDigit,
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
@@ -28,7 +29,10 @@ import {
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Components/HeaderRow";
 import EndGameModal from "./Components/EndGameModal";
+import { getSudokuHint } from "./Functions/HintFunctions";
 import {
+  HINT_NOT_HIGHLIGHTED_COLOR,
+  HINT_SELECTED_COLOR,
   IDENTICAL_VALUE_COLOR,
   NOT_SELECTED_CONFLICT_COLOR,
   PEER_SELECTED_COLOR,
@@ -36,17 +40,38 @@ import {
   SELECTED_CONFLICT_COLOR,
 } from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
+import Hint from "./Components/Hint";
 import { GameDifficulty } from "./Functions/Difficulty";
+import { SudokuStrategyArray } from "sudokuru";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
   difficulty: GameDifficulty;
 }
 
+export interface HintObjectProps {
+  stage: number;
+  maxStage: number;
+  hint: Hint;
+}
+export interface Hint {
+  strategy: any;
+  cause: any;
+  groups: any;
+  placements: any;
+  removals: any;
+  info: string;
+  action: string;
+}
+
 const SudokuBoard = (props: SudokuBoardProps) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
+
+  const [sudokuHint, setSudokuHint] = useState<HintObjectProps>();
+
+  const { strategyHintOrderSetting } = React.useContext(PreferencesContext);
 
   useEffect(() => {
     generateGame(props).then((game) => {
@@ -70,6 +95,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         time={sudokuBoard.statistics.time}
         difficulty={sudokuBoard.statistics.difficulty}
         numHintsUsed={sudokuBoard.statistics.numHintsUsed}
+        numHintsUsedPerStrategy={sudokuBoard.statistics.numHintsUsedPerStrategy}
         numWrongCellsPlayed={sudokuBoard.statistics.numWrongCellsPlayed}
       />
     );
@@ -101,6 +127,67 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
   };
 
+  /**
+   * Provides a hint for the current sudoku puzzle state by determining the next possible move
+   * based on the specified strategy order. The hint is generated using the current puzzle state,
+   * solution, and an updated strategy array which prioritizes the "AMEND_NOTES" strategy.
+   *
+   * Updates the hint statistics, including total hints used and hints used per strategy.
+   * Clears the currently selected cells on the board to prepare for hint visualization.
+   *
+   * The hint information is stored in the component's state, including the hint stage and
+   * maximum stages for hint visualization.
+   */
+  const getHint = () => {
+    const updatedArray: SudokuStrategyArray = [...strategyHintOrderSetting];
+
+    // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
+    updatedArray.unshift("SIMPLIFY_NOTES");
+    updatedArray.unshift("AMEND_NOTES");
+
+    const returnedHint = getSudokuHint(
+      sudokuBoard.puzzle,
+      sudokuBoard.puzzleSolution,
+      updatedArray
+    );
+
+    // unselect board and increment hint statistics
+    sudokuBoard.statistics.numHintsUsed++;
+    let incrementedStrategy = false;
+    for (const [
+      i,
+      strategies,
+    ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
+      if (strategies.hintStrategy == returnedHint.strategy) {
+        sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
+        incrementedStrategy = true;
+        break;
+      }
+    }
+    if (!incrementedStrategy) {
+      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: returnedHint.strategy,
+        numHintsUsed: 1,
+      });
+    }
+    setSudokuBoard({
+      ...sudokuBoard,
+      statistics: sudokuBoard.statistics,
+      selectedCells: [],
+    });
+
+    setSudokuHint({
+      stage: 1,
+      hint: returnedHint,
+      maxStage: 5,
+    });
+  };
+
+  /**
+   * Toggles whether or not the board is in note mode. In note mode, the user can
+   * enter notes into the cells of the board. If the board is not in note mode, the
+   * user can enter values into the cells of the board.
+   */
   const toggleNoteMode = () => {
     sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
     setSudokuBoard({
@@ -119,8 +206,18 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Inserts or removes a note or value from a selected cell
-   * @param inputValue User input 0-9
+   * Updates the entries of the selected cells based on the user input value.
+   * Handles both note and value modes, and updates game state accordingly.
+   *
+   * - If no cells are selected, the function returns immediately.
+   * - Prevents multiple value entries if not in note mode.
+   * - Skips any cells that are marked as 'given' or already have the correct value.
+   * - Updates the cell entry value and type, and tracks changes in the action history.
+   * - If a wrong value is inserted, increments the numWrongCellsPlayed statistic.
+   * - Saves the current game state after updates.
+   * - Checks if the game is solved upon updating values and updates the game over state.
+   *
+   * @param inputValue User input value (0-9) to be inserted into the selected cells.
    */
   const updateCellEntry = (inputValue: number) => {
     if (sudokuBoard.selectedCells.length === 0) {
@@ -194,6 +291,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const score = finishSudokuGame(
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
+        sudokuBoard.statistics.numHintsUsedPerStrategy,
         sudokuBoard.statistics.numWrongCellsPlayed,
         sudokuBoard.statistics.time
       );
@@ -219,6 +317,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * Sub function of @function updateCellEntry
    * Updates the selected cell updated based on the user input value and what is currently in the cell
    * @param inputValue User input 0-9
+   * @param currentType Type of the current cell ("value" or "note")
+   * @param currentEntry The current entry in the cell (number or array of numbers)
+   * @param r Row index of the current cell
+   * @param c Column index of the current cell
    */
   const setCellEntryValue = (
     inputValue: number,
@@ -273,6 +375,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     sudokuBoard.puzzle[r][c].entry = newCellEntry;
   };
 
+  /**
+   * Determines if the game has been solved by iterating through the
+   * puzzle board and checking if the values entered in the cells are
+   * correct. If any cells are incorrect, or if any cells have notes or
+   * are empty, the function returns false. If all cells are correct and
+   * the game has been solved, the function returns true.
+   * @returns {boolean} True if the game has been solved, false otherwise.
+   */
   const isGameSolved = (): boolean => {
     for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
       for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
@@ -305,6 +415,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
    */
   const toggleSelectCell = (r: number, c: number, event: any) => {
+    if (isBoardDisabled()) {
+      return;
+    }
     if (sudokuBoard.selectedCells.length === 0) {
       sudokuBoard.selectedCells.push({ r: r, c: c });
     } else if (event.ctrlKey || event.metaKey) {
@@ -323,6 +436,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   /**
    * Determines what deselect / select actions should take place.
+   * This function is run when default behavior is desired, which is when
+   * no modifier keys are pressed.
    * @param r The row of the cell where select toggle action is taking place.
    * @param c The column of the cell where select toggle action is taking place.
    */
@@ -387,11 +502,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines if a cell in the puzzle has an incorrect value
-   * @param r The row of a given cell 0-8
-   * @param c the column of a given cell 0-8
-   * @param cell The cell object
-   * @returns True if the value in a cell is incorrect, False otherwise
+   * Checks if a given cell in the puzzle has a conflict with the solution.
+   *
+   * @param r - The row index of the cell.
+   * @param c - The column index of the cell.
+   * @param cell - The cell object containing its type and entry.
+   * @returns True if the cell's entry is incorrect; false otherwise.
    */
   const doesCellHaveConflict = (
     r: number,
@@ -406,15 +522,56 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     );
   };
 
+  /**
+   * Determines if there are any incorrect values in the board
+   * @returns True if there are no correct values in board, False otherwise
+   */
+  const doesBoardHaveConflict = (): boolean => {
+    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
+      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+        if (sudokuBoard.puzzle[r][c].type === "given") continue;
+        if (
+          sudokuBoard.puzzle[r][c].type === "note" ||
+          sudokuBoard.puzzle[r][c].entry === 0
+        )
+          continue;
+        const isCellIncorrect = doesCellHaveConflict(
+          r,
+          c,
+          sudokuBoard.puzzle[r][c]
+        );
+        if (isCellIncorrect === true) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const isBoardDisabled = () => {
+    if (sudokuHint != null) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const renderCell = (cell: CellProps, r: number, c: number) => {
     const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
+    const disable: boolean = isBoardDisabled();
+    const noteColor: string[] = getCellNotesColor(r, c);
+    const backgroundNotesColor: string[] =
+      getCellBackgroundNotesColor(cellBackgroundColor);
 
     return (
       <Cell
+        disable={disable}
         onClick={(r: number, c: number, event: any) => {
           toggleSelectCell(r, c, event);
         }}
         backgroundColor={cellBackgroundColor}
+        noteColor={noteColor}
+        backgroundNoteColor={backgroundNotesColor}
         type={cell.type}
         entry={cell.entry}
         key={r + ":" + c}
@@ -425,11 +582,50 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines the background color of a cell based on the user's settings, the game state, the cell coordinates, and other factors
-   * @param cell The provided cell
-   * @param r The row coordinate of the provided cell
-   * @param c The column coordinate of the provided cell
-   * @returns A hex string that determines the background color of the cell
+   * This function returns an array of 9 strings representing the colors of the
+   * notes for the cell at row r and column c. The colors returned are black
+   * unless the cell is part of a note removal hint and the hint is currently
+   * being displayed. In the case of a note removal hint, the color of the
+   * removed note will be red. The inputs r and c are the row and column of the
+   * cell for which the note colors should be determined.
+   * @param r the row of the cell for which the note colors should be determined
+   * @param c the column of the cell for which the note colors should be
+   * determined
+   */
+  const getCellNotesColor = (r: number, c: number) => {
+    const notesToReturn = Array(9).fill("black");
+    // change note color to red for note removals as part of hint
+    if (sudokuHint && sudokuHint.stage === 4) {
+      const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
+      for (const notes of hintNotes) {
+        if (notes[0] === r && notes[1] === c) {
+          notes.splice(0, 2);
+          for (const note of notes) {
+            notesToReturn[note - 1] = "red";
+          }
+        }
+      }
+    }
+    return notesToReturn;
+  };
+
+  const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
+    return Array(9).fill(cellBackgroundColor);
+  };
+
+  /**
+   * Determines the background color of a cell based on its state and properties.
+   *
+   * @param cell - The cell properties including its value and notes.
+   * @param r - The row index of the cell.
+   * @param c - The column index of the cell.
+   * @returns The background color as a string based on the cell's selection, conflict status,
+   *          peer relationship, identical value presence, and hint associations.
+   *
+   * The function evaluates the cell's state to set the background color. It considers
+   * if the cell is selected, in conflict, a peer to the selected cell, or has identical
+   * values with another cell, and assigns a color accordingly. Additionally, it checks
+   * if the cell is part of a hint, adjusting the color to reflect its role in the hint.
    */
   const getCellBackgroundColor = (
     cell: CellProps,
@@ -456,7 +652,68 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     } else {
       cellBackgroundColor = "white";
     }
+
+    if (sudokuHint) {
+      const hintCause = isCellAHintCause(r, c);
+      const hintFocus = isCellAHintFocus(r, c);
+
+      if (hintCause) {
+        cellBackgroundColor = HINT_SELECTED_COLOR;
+      } else if (!hintFocus) {
+        cellBackgroundColor = HINT_NOT_HIGHLIGHTED_COLOR;
+      }
+    }
+
     return cellBackgroundColor;
+  };
+
+  /**
+   * Determines if a cell is a cause of a hint. A cause is a cell that is relevant to the hint and is highlighted in the hint.
+   * @param r The row coordinate of the cell to check
+   * @param c The column coordinate of the cell to check
+   * @returns True if the cell is a cause of the hint, false otherwise
+   */
+  const isCellAHintCause = (r: number, c: number): boolean => {
+    if (!sudokuHint) {
+      return false;
+    }
+
+    for (const cause of sudokuHint.hint.cause) {
+      if (cause[0] === r && cause[1] === c && sudokuHint.stage >= 4) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  /**
+   * Determines if a cell is a focus of a hint. A focus is the region the user should be focused on during a hint.
+   * @param r The row coordinate of the cell to check.
+   * @param c The column coordinate of the cell to check.
+   * @returns True if the cell is a focus of the hint, false otherwise.
+   */
+  const isCellAHintFocus = (r: number, c: number): boolean => {
+    if (!sudokuHint) {
+      return false;
+    }
+
+    if (sudokuHint.stage < 3) {
+      return true;
+    }
+
+    let hintFocused = false;
+    for (const group of sudokuHint.hint.groups) {
+      const cellSharesGroupRow = group[0] === 0 && group[1] === r;
+      const cellSharesGroupColumn = group[0] === 1 && group[1] === c;
+      const cellSharesGroupBox =
+        group[0] === 2 && generateBoxIndex(r, c) === group[1];
+
+      if (cellSharesGroupRow || cellSharesGroupColumn || cellSharesGroupBox) {
+        return true;
+      }
+    }
+
+    return hintFocused;
   };
 
   /**
@@ -485,9 +742,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines if the provided cell has the same value as the selected cell
-   * @param cell The provided cell
-   * @returns true if the provided cell's value is equal to the selected cell
+   * Determines if a cell should be highlighted as having an identical value to the selected cell.
+   * @param cell The cell to check
+   * @returns True if the cell should be highlighted as having an identical value, false otherwise
+   * @remarks
+   * This function will return false if no cells are selected, more than one cell is selected, or if the cell is empty.
+   * This function will also return false if the user has disabled highlighting of identical values in their preferences.
    */
   const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
     // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
@@ -507,12 +767,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Determines if the provided coordinates are a peer of the selected cell
+   * Determines if a cell should be highlighted as a peer of the selected cell.
    * Definition of peer can be found here: http://sudopedia.enjoysudoku.com/Peer.html
-   * @param r The row coordinate of a cell
-   * @param c The column coordinate of a cell
-   * @param selectedCells The selected cell
-   * @returns false if not a peer or selectedCell is empty, or if there is more than one selected cell, otherwise returns true
+   * @param r The row of the cell to check.
+   * @param c The column of the cell to check.
+   * @param selectedCells The selected cells.
+   * @returns True if the cell should be highlighted as a peer, false otherwise.
+   * @remarks
+   * This function will return false if no cells are selected or more than 1 cell is selected.
+   * This function will also return false if the user has disabled highlighting of peers in their preferences.
    */
   const isCellPeer = (
     r: number,
@@ -563,7 +826,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns void
    */
   const handleKeyDown = (event: any) => {
-    console.log(event);
     const inputValue = event.nativeEvent.key;
 
     switch (inputValue) {
@@ -582,6 +844,16 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       case "n":
       case "N":
         toggleNoteMode();
+        return;
+      case "H":
+      case "h":
+        if (!doesBoardHaveConflict()) {
+          if (sudokuHint) {
+            updateHintStage(1);
+          } else {
+            getHint();
+          }
+        }
         return;
       default:
         break;
@@ -647,7 +919,15 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard} />;
   };
 
+  /**
+   * Renders the number control component based on the state of the selected cells.
+   * If there is at least one cell that can be updated, the number buttons are enabled.
+   * Number buttons are disabled if we are in value mode and multiple cells are selected.
+   */
   const renderNumberControl = () => {
+    if (sudokuHint) {
+      return;
+    }
     let currentSelectedCells: CellProps[] = [];
     let enableNumberButtons = false;
 
@@ -682,11 +962,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   *
-   * @param cell A cell of the sudoku board
-   * @param r The row of the cell
-   * @param c The column of the cell
-   * @returns Returns whether the given cell should allow updates or not.
+   * Checks if the given cell is disabled from being updated.
+   * A cell is disabled from being updated if it is a given cell or if it is a value cell with a correct value.
+   * @param cell The cell to check.
+   * @param r The row index of the cell.
+   * @param c The column index of the cell.
+   * @returns True if the cell is disabled from being updated, false otherwise.
    */
   const areCellUpdatesDisabled = (cell: CellProps, r: number, c: number) => {
     if (cell.type === "given") {
@@ -701,8 +982,18 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     }
   };
 
+  /**
+   * Renders the action row component based on the state of the Sudoku board.
+   * If there is a hint, nothing is rendered.
+   * Otherwise, the action row component is rendered with the state of the Sudoku board.
+   * @returns The rendered action row component.
+   */
   const renderActions = () => {
+    if (sudokuHint) {
+      return;
+    }
     const inNoteMode = sudokuBoard.inNoteMode;
+    const boardHasConflict = doesBoardHaveConflict();
     const eraseButtonDisabled = isEraseButtonDisabled();
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
 
@@ -714,13 +1005,39 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
+        getHint={getHint}
+        boardHasConflict={boardHasConflict}
       />
     );
   };
 
   /**
-   * Considering the state of the selected cells, we determine if the erase button should be disabled.
-   * @returns True or False depending on if the erase button should be disabled.
+   * Renders the hint component if sudokuHint is not null.
+   * This component should be rendered when the user has requested a hint.
+   * The component will display the hint message and the current stage of the hint.
+   * The incrementStage function is used to update the stage of the hint.
+   * @returns The hint component if sudokuHint is not null.
+   */
+  const renderHint = () => {
+    if (!sudokuHint) {
+      return;
+    }
+
+    return (
+      <Hint
+        hint={sudokuHint.hint}
+        stage={sudokuHint.stage}
+        maxStage={sudokuHint.maxStage}
+        incrementStage={updateHintStage}
+      />
+    );
+  };
+
+  /**
+   * @returns true if the erase button should be disabled, false otherwise.
+   * The erase button is disabled if either:
+   * 1. No cells are selected.
+   * 2. All selected cells are either given, empty, or correct.
    */
   const isEraseButtonDisabled = () => {
     const currentSelectedCells: CellProps[] = getSelectedCells();
@@ -748,6 +1065,185 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return true;
   };
 
+  /**
+   * Replaces the cells in the Sudoku board with new cell data and updates the action history.
+   *
+   * This function iterates over the provided locations and replaces the corresponding cells
+   * in the board with the new cell types and entries from the `cells` array. It also records
+   * the previous state of these cells in the action history for undo functionality and saves the
+   * updated game state.
+   *
+   * @param cells - An array of new cell data to be placed into the Sudoku board.
+   * @param locations - An array of cell locations that specify where to place the new cell data.
+   */
+  const replaceSudokuBoardCells = (
+    cells: CellProps[],
+    locations: CellLocation[]
+  ) => {
+    const actionHistory: GameAction[] = [];
+    for (const [i, location] of locations.entries()) {
+      actionHistory.push({
+        cell: {
+          entry: sudokuBoard.puzzle[location.r][location.c].entry,
+          type: sudokuBoard.puzzle[location.r][location.c].type,
+        } as CellProps,
+        cellLocation: { c: location.c, r: location.r },
+      });
+      sudokuBoard.puzzle[location.r][location.c].type = cells[i].type;
+      sudokuBoard.puzzle[location.r][location.c].entry = cells[i].entry;
+    }
+    sudokuBoard.actionHistory.push(actionHistory);
+    saveGame(sudokuBoard);
+    setSudokuBoard({
+      ...sudokuBoard,
+      puzzle: sudokuBoard.puzzle,
+      actionHistory: sudokuBoard.actionHistory,
+    });
+  };
+
+  /**
+   * Increments the hint stage depending on user actions
+   * This is an incredibly messy function, but it works.
+   * I am thinking this is ok since we are planning on revising the hint api.
+   * @param stageOffset A number (-1) or (1) that represents how to alter hint stage
+   * @returns void
+   */
+  const updateHintStage = (stageOffset: number) => {
+    if (stageOffset != -1 && stageOffset != 1) {
+      return;
+    }
+    if (!sudokuHint) {
+      return;
+    }
+
+    switch (sudokuHint.stage + stageOffset) {
+      case 0: {
+        setSudokuHint(undefined);
+        return;
+      }
+      case sudokuHint.maxStage + 1: {
+        setSudokuHint(undefined);
+        if (isGameSolved()) {
+          const score = finishGame(
+            sudokuBoard.statistics.difficulty,
+            sudokuBoard.statistics.numHintsUsed,
+            sudokuBoard.statistics.numHintsUsedPerStrategy,
+            sudokuBoard.statistics.numWrongCellsPlayed,
+            sudokuBoard.statistics.time
+          );
+          sudokuBoard.statistics.score = score;
+          setSudokuBoard({
+            ...sudokuBoard,
+            puzzle: sudokuBoard.puzzle,
+            actionHistory: sudokuBoard.actionHistory,
+            statistics: sudokuBoard.statistics,
+          });
+          setGameOver(true);
+        }
+        return;
+      }
+      default: {
+        const amendNotesUndoStage =
+          stageOffset === -1 &&
+          sudokuHint.stage === 4 &&
+          sudokuHint.hint.strategy === "AMEND_NOTES";
+
+        const undoStage = stageOffset === -1 && sudokuHint.stage === 5;
+
+        if (amendNotesUndoStage || undoStage) {
+          undo();
+        }
+
+        setSudokuHint({
+          ...sudokuHint,
+          stage: sudokuHint.stage + stageOffset,
+        });
+      }
+    }
+
+    const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
+
+    const removals: number[][] = JSON.parse(
+      JSON.stringify(sudokuHint.hint.removals)
+    );
+
+    if (
+      sudokuHint.hint.strategy === "AMEND_NOTES" &&
+      (currentStage === 4 || currentStage === 5)
+    ) {
+      const r = sudokuHint.hint.removals[0][0];
+      const c = sudokuHint.hint.removals[0][1];
+      const removals = [...sudokuHint.hint.removals[0]]; // deep clone to prevent sudokuHint state update
+      removals.splice(0, 2);
+
+      let notesWereUpdated = false;
+
+      const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let newNotes: number[] = [];
+      if (sudokuBoard.puzzle[r][c].type == "note") {
+        newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+      }
+      // Insert missing notes due to AMEND_NOTES hint
+      if (currentStage === 4) {
+        for (const note of allNotes) {
+          if (!removals.includes(note) && !newNotes.includes(note)) {
+            newNotes.push(note);
+            notesWereUpdated = true;
+          }
+        }
+      }
+      // Remove unnecessary notes due to AMEND_NOTES hint
+      else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type == "note") {
+        newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+        for (const note of removals) {
+          if (newNotes.includes(note)) {
+            const index = newNotes.indexOf(note);
+            newNotes.splice(index, 1);
+          }
+        }
+      }
+
+      if (notesWereUpdated) {
+        replaceSudokuBoardCells(
+          [{ type: "note", entry: newNotes }],
+          [{ c: c, r: r }]
+        );
+      }
+    } else if (
+      sudokuHint.hint.strategy === "NAKED_SINGLE" &&
+      currentStage === 5
+    ) {
+      const r = sudokuHint.hint.placements[0][0];
+      const c = sudokuHint.hint.placements[0][1];
+      const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
+      placements.splice(0, 2);
+
+      replaceSudokuBoardCells(
+        [{ type: "value", entry: placements[0] }],
+        [{ c: c, r: r }]
+      );
+    } else if (currentStage === 5) {
+      const cells: CellProps[] = [];
+      const locations: CellLocation[] = [];
+      for (const removal of removals) {
+        const r = removal[0];
+        const c = removal[1];
+        removal.splice(0, 2);
+
+        let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+        for (const note of removal) {
+          if (newNotes.includes(note)) {
+            const index = newNotes.indexOf(note);
+            newNotes.splice(index, 1);
+          }
+        }
+        cells.push({ type: "note", entry: newNotes });
+        locations.push({ c: c, r: r });
+      }
+      replaceSudokuBoardCells(cells, locations);
+    }
+  };
+
   return (
     <View
       testID={"sudokuBoard"}
@@ -762,6 +1258,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       {renderPuzzle()}
       {renderActions()}
       {renderNumberControl()}
+      {renderHint()}
     </View>
   );
 };
