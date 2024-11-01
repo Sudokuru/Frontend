@@ -3,9 +3,9 @@ import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
-import { profile } from "../Api/Puzzle.Types";
-import { Profile } from "../Api/Profile";
+import { getProfile, setProfileValue } from "../Api/Profile";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
+import { Profile } from "../Api/Puzzle.Types";
 
 const InitializeContext = () => {
   const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
@@ -26,7 +26,7 @@ const InitializeContext = () => {
 
   // set initial values of theme
   React.useEffect(() => {
-    Profile.getProfile().then((data: profile) => {
+    getProfile().then((data: Profile) => {
       setDarkThemeSetting(data.theme);
       setHighlightIdenticalValuesSetting(data.highlightIdenticalValues);
       setHighlightBoxSetting(data.highlightBox);
@@ -40,7 +40,7 @@ const InitializeContext = () => {
   const theme = darkThemeSetting ? CombinedDarkTheme : CombinedDefaultTheme;
 
   const toggleTheme = React.useCallback(() => {
-    Profile.setProfileValue("theme");
+    setProfileValue("theme");
     return setDarkThemeSetting(!darkThemeSetting);
   }, [darkThemeSetting]);
 
@@ -59,33 +59,33 @@ const InitializeContext = () => {
   );
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
-    Profile.setProfileValue("highlightIdenticalValues");
+    setProfileValue("highlightIdenticalValues");
     return setHighlightIdenticalValuesSetting(!highlightIdenticalValuesSetting);
   }, [highlightIdenticalValuesSetting]);
 
   const toggleHighlightBox = React.useCallback(() => {
-    Profile.setProfileValue("highlightBox");
+    setProfileValue("highlightBox");
     return setHighlightBoxSetting(!highlightBoxSetting);
   }, [highlightBoxSetting]);
 
   const toggleHighlightRow = React.useCallback(() => {
-    Profile.setProfileValue("highlightRow");
+    setProfileValue("highlightRow");
     return setHighlightRowSetting(!highlightRowSetting);
   }, [highlightRowSetting]);
 
   const toggleHighlightColumn = React.useCallback(() => {
-    Profile.setProfileValue("highlightColumn");
+    setProfileValue("highlightColumn");
     return setHighlightColumnSetting(!highlightColumnSetting);
   }, [highlightColumnSetting]);
 
   const toggleFeaturePreview = React.useCallback(() => {
-    Profile.setProfileValue("previewMode");
+    setProfileValue("previewMode");
     return setFeaturePreviewSetting(!featurePreviewSetting);
   }, [featurePreviewSetting]);
 
   const updateStrategyHintOrder = React.useCallback(
     (props: React.SetStateAction<SudokuStrategyArray>) => {
-      Profile.setProfileValue("strategyHintOrder", props);
+      setProfileValue("strategyHintOrder", props);
       return setStrategyHintOrderSetting(props);
     },
     [strategyHintOrderSetting]

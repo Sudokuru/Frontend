@@ -5,6 +5,7 @@ import {
   useWindowDimensions,
   Pressable,
   ScrollView,
+  ImageURISource,
 } from "react-native";
 import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -12,15 +13,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Alert from "react-native-awesome-alerts";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import {
-  Lessons,
-  getLessonMode,
-  LessonOfflineMode,
-  LessonOnlineMode,
-} from "../Api/Lessons";
-import { Statistics } from "../Api/Statistics";
 import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Components/SudokuBoard/sudoku";
+import { getLessonSteps } from "../Api/Lessons";
+import { saveLearnedLessons } from "../Api/Statistics";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -39,47 +35,25 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const showLearnHelp = () => setLearnHelpVisible(true);
   const hideLearnHelp = () => setLearnHelpVisible(false);
 
-  const [steps, setSteps] = React.useState([]);
+  const [steps, setSteps] = React.useState<[string, ImageURISource][]>([]);
 
   const theme = useTheme();
 
   let title = toTitle(name);
 
-  if (Lessons == null) {
-    return;
-  }
-
-  // setting lesson mode to offline
-  let LESSON_MODE = getLessonMode.Offline;
-  let getlessonArgs: LessonOfflineMode | LessonOnlineMode = {
-    mode: LESSON_MODE,
-  };
-
   //2d array - [[],[]]. 1st array indicates which step, 2nd array indicates text or image.
   // This useFocusEffect stores the steps in state when page is loaded in.
   useFocusEffect(
     React.useCallback(() => {
-      Lessons.getSteps(name, getlessonArgs).then((result: any) => {
-        setSteps(result);
-      });
+      setSteps(getLessonSteps(name));
     }, [])
   );
-
-  async function saveUserLearnedLessons(learnedLessons: string[]) {
-    await Statistics.saveLearnedLessons(learnedLessons).then((res: any) => {
-      if (res) {
-        console.log("Lessons save successfully!");
-      } else {
-        console.log("Lesson not saved");
-      }
-    });
-  }
 
   const clickCheckMark = () => {
     if (!learnedLessons.includes(name)) {
       learnedLessons.push(name);
       updateLearnedLessons(learnedLessons);
-      saveUserLearnedLessons(learnedLessons);
+      saveLearnedLessons(learnedLessons);
     }
     navigation.navigate("LearnPage");
   };

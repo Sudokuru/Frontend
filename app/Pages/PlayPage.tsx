@@ -8,7 +8,7 @@ import {
   useMinWindowDimensions,
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
-import { Puzzles } from "../Api/Puzzles";
+import { getGame } from "../Api/Puzzles";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
 
@@ -28,7 +28,7 @@ const PlayPage = () => {
     React.useCallback(() => {
       // This determines if user has active game and displays resume button conditionally.
       async function grabCurrentGame() {
-        await Puzzles.getGame().then((game: SudokuObjectProps[]) => {
+        await getGame().then((game: SudokuObjectProps[]) => {
           if (game != null) {
             showResumeButton();
           } else {

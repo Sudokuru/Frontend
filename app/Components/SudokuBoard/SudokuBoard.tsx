@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { finishGame, handlePause, saveGame } from "./Functions/BoardFunctions";
+import {
+  finishSudokuGame,
+  handlePause,
+  saveGame,
+  isValueCorrect,
+} from "./Functions/BoardFunctions";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -10,7 +15,6 @@ import {
 } from "./sudoku";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Components/NumberControl";
-import { isValueCorrect } from "./Functions/BoardFunctions";
 import Cell from "./Components/Cell";
 import ActionRow from "./Components/ActionRow";
 import { generateGame } from "./Functions/generateGame";
@@ -284,7 +288,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     saveGame(sudokuBoard);
 
     if (!sudokuBoard.inNoteMode && isGameSolved()) {
-      const score = finishGame(
+      const score = finishSudokuGame(
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
         sudokuBoard.statistics.numHintsUsedPerStrategy,
@@ -1120,7 +1124,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       case sudokuHint.maxStage + 1: {
         setSudokuHint(undefined);
         if (isGameSolved()) {
-          const score = finishGame(
+          const score = finishSudokuGame(
             sudokuBoard.statistics.difficulty,
             sudokuBoard.statistics.numHintsUsed,
             sudokuBoard.statistics.numHintsUsedPerStrategy,

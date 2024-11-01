@@ -1,5 +1,5 @@
-import { Puzzle } from "../../Functions/LocalDatabase";
-export const PUNDIT_PUZZLES: Puzzle[] = [
+import { InputPuzzle } from "../../Functions/LocalDatabase";
+export const PUNDIT_PUZZLES: InputPuzzle[] = [
   {
     p: "000000000000028710260700090600000000050000308700904000004003500900810000023007000",
     s: "147569832395428716268731495681352974459176328732984651814293567976815243523647189",
