@@ -2,7 +2,7 @@
   {
     "version": "1.27.0",
     "date": "November 2nd, 2024",
-    "summary": "Renaming Sudoku strategies to allow for better translations and align with sudoku.com termonology.",
+    "summary": "Renaming Sudoku strategies to allow for better translations and align with Sudoku.com terminology.",
     "features": [
       "Renamed Sudoku strategies to Obvious Single, Obvious Pair, Obvious Triplet, and Obvious Quadruplet.",
       "Renamed Sudoku lessons to Obvious Single and Obvious Set."
