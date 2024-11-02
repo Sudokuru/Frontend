@@ -7,7 +7,7 @@
     "module": "commonjs",
     "outDir": "dist",
     "rootDir": ".",
-    "types": ["node"],
+    "types": ["node", "react-native-web"],
     "noEmit": false
   },
   "exclude": ["./node_modules", "**/*.test.ts"]
