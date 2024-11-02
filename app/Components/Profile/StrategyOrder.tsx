@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton, Text } from "react-native-paper";
-import { SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import {
   PreferencesContext,
@@ -79,7 +79,7 @@ const StrategyOrder = () => {
    * @returns JSX StrategyHintComponent
    */
   const StrategyHintListComponent = (
-    strategies: SudokuStrategyArray,
+    strategies: SudokuStrategy[],
     selected: number
   ) => {
     const component: React.JSX.Element[] = [];

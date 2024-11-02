@@ -42,7 +42,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Components/Hint";
 import { GameDifficulty } from "./Functions/Difficulty";
-import { SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -139,7 +139,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
-    const updatedArray: SudokuStrategyArray = [...strategyHintOrderSetting];
+    const updatedArray: SudokuStrategy[] = [...strategyHintOrderSetting];
 
     // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
     updatedArray.unshift("SIMPLIFY_NOTES");

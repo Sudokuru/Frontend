@@ -4,7 +4,7 @@ import {
   CombinedDefaultTheme,
 } from "../Styling/ThemeColors";
 import { getProfile, setProfileValue } from "../Api/Profile";
-import { SUDOKU_STRATEGY_ARRAY, SudokuStrategyArray } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { Profile } from "../Api/Puzzle.Types";
 
 const InitializeContext = () => {
@@ -22,7 +22,7 @@ const InitializeContext = () => {
     React.useState(false);
 
   const [strategyHintOrderSetting, setStrategyHintOrderSetting] =
-    React.useState<SudokuStrategyArray>(SUDOKU_STRATEGY_ARRAY);
+    React.useState<SudokuStrategy[]>(SUDOKU_STRATEGY_ARRAY);
 
   // set initial values of theme
   React.useEffect(() => {
@@ -84,7 +84,7 @@ const InitializeContext = () => {
   }, [featurePreviewSetting]);
 
   const updateStrategyHintOrder = React.useCallback(
-    (props: React.SetStateAction<SudokuStrategyArray>) => {
+    (props: React.SetStateAction<SudokuStrategy[]>) => {
       setProfileValue("strategyHintOrder", props);
       return setStrategyHintOrderSetting(props);
     },
