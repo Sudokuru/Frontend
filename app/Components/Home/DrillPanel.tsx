@@ -9,7 +9,7 @@ import {
   Portal,
   Text,
 } from "react-native-paper";
-import { SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 import {
   CARD_IMAGE_HEIGHT,
   CARD_IMAGE_WIDTH,
@@ -26,11 +26,11 @@ import {
   storeData,
 } from "../../Functions/AsyncStorage";
 
-let drillStrategies: SudokuStrategyArray = [
-  "NAKED_SINGLE",
-  "NAKED_PAIR",
-  "NAKED_TRIPLET",
-  "NAKED_QUADRUPLET",
+let drillStrategies: SudokuStrategy[] = [
+  "OBVIOUS_SINGLE",
+  "OBVIOUS_PAIR",
+  "OBVIOUS_TRIPLET",
+  "OBVIOUS_QUADRUPLET",
   "HIDDEN_SINGLE",
   "HIDDEN_PAIR",
   "HIDDEN_TRIPLET",
@@ -40,10 +40,10 @@ let drillStrategies: SudokuStrategyArray = [
 ];
 
 let drillImages: ImageURISource[] = [
-  require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
-  require("./../../../.assets/CardImages/NAKED_PAIR.png"),
-  require("./../../../.assets/CardImages/NAKED_TRIPLET.png"),
-  require("./../../../.assets/CardImages/NAKED_QUADRUPLET.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_TRIPLET.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_QUADRUPLET.png"),
   require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
   require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
   require("./../../../.assets/CardImages/HIDDEN_TRIPLET.png"),
@@ -81,14 +81,14 @@ const DrillPanel = (props: any) => {
     let img: ImageURISource = drillImages[i];
     let difficulty: difficulty;
     switch (drillStrategies[i]) {
-      case "NAKED_SINGLE":
+      case "OBVIOUS_SINGLE":
         difficulty = "Very Easy";
         break;
-      case "NAKED_PAIR":
+      case "OBVIOUS_PAIR":
         difficulty = "Easy";
         break;
-      case "NAKED_TRIPLET":
-      case "NAKED_QUADRUPLET":
+      case "OBVIOUS_TRIPLET":
+      case "OBVIOUS_QUADRUPLET":
         difficulty = "Intermediate";
         break;
       case "HIDDEN_SINGLE":

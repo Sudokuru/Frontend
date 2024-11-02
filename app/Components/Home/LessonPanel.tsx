@@ -24,9 +24,9 @@ import { getStrategies } from "../../Api/Lessons";
 let lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
   require("./../../../.assets/CardImages/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/NAKED_PAIR.png"),
+  require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
   require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
   require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
   require("./../../../.assets/CardImages/POINTING_PAIR.png"),
@@ -35,9 +35,9 @@ let lessonImages: ImageURISource[] = [
 let learnedLessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/Learned/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/Learned/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/Learned/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/Learned/OBVIOUS_SINGLE.png"),
   require("./../../../.assets/CardImages/Learned/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/Learned/NAKED_SET.png"),
+  require("./../../../.assets/CardImages/Learned/OBVIOUS_SET.png"),
   require("./../../../.assets/CardImages/Learned/HIDDEN_SINGLE.png"),
   require("./../../../.assets/CardImages/Learned/HIDDEN_SET.png"),
   require("./../../../.assets/CardImages/Learned/POINTING_SET.png"),
@@ -46,9 +46,9 @@ let learnedLessonImages: ImageURISource[] = [
 let lockedLessonImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/Locked/SUDOKU_101.png"),
   require("./../../../.assets/CardImages/Locked/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/Locked/NAKED_SINGLE.png"),
+  require("./../../../.assets/CardImages/Locked/OBVIOUS_SINGLE.png"),
   require("./../../../.assets/CardImages/Locked/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/Locked/NAKED_SET.png"),
+  require("./../../../.assets/CardImages/Locked/OBVIOUS_SET.png"),
   require("./../../../.assets/CardImages/Locked/HIDDEN_SINGLE.png"),
   require("./../../../.assets/CardImages/Locked/HIDDEN_SET.png"),
   require("./../../../.assets/CardImages/Locked/POINTING_SET.png"),
@@ -105,11 +105,11 @@ const LessonPanel = (props: any) => {
       switch (availableLessons[i]) {
         case "SUDOKU_101":
         case "AMEND_NOTES":
-        case "NAKED_SINGLE":
+        case "OBVIOUS_SINGLE":
         case "SIMPLIFY_NOTES":
           difficulty = "Very Easy";
           break;
-        case "NAKED_SET":
+        case "OBVIOUS_SET":
           difficulty = "Easy";
           break;
         case "HIDDEN_SINGLE":

@@ -101,7 +101,7 @@
    ```typescript
    const strategies = getLessonStrategies();
    ```
-3. Return Value: string array e.g. ["AMEND_NOTES", "SIMPLIFY_NOTES", "NAKED_SET", ...]
+3. Return Value: string array e.g. ["AMEND_NOTES", "SIMPLIFY_NOTES", "OBVIOUS_SET", ...]
 
 #### getLessonSteps()
 
@@ -128,7 +128,7 @@
 
 ```json
 {
-  "strategiesLearned": ["NAKED_SINGLE", "HIDDEN_SINGLE"]
+  "strategiesLearned": ["OBVIOUS_SINGLE", "HIDDEN_SINGLE"]
 }
 ```
 
@@ -189,7 +189,7 @@ Integer representing the user's total score
 ## strategiesLearned
 
 ```json
-["NAKED_SINGLE", "HIDDEN_SINGLE"]
+["OBVIOUS_SINGLE", "HIDDEN_SINGLE"]
 ```
 
 Array of strategies that the user has learned. Only stored in total statistics object
@@ -263,7 +263,7 @@ Final puzzle state, 81 numeric characters
 ## strategies
 
 ```json
-["NAKED_SINGLE", "HIDDEN_SINGLE", "NAKED_PAIR", "NAKED_TRIPLET"]
+["OBVIOUS_SINGLE", "HIDDEN_SINGLE", "OBVIOUS_PAIR", "OBVIOUS_TRIPLET"]
 ```
 
 Array of strings representing strategies the solver used to figure out puzzle solution
@@ -279,7 +279,7 @@ Integer representing difficulty of puzzle which is directly related to how long 
 ## drillStrategies
 
 ```json
-["HIDDEN_SINGLE", "NAKED_SEXTUPLET"]
+["HIDDEN_SINGLE", "OBVIOUS_SEXTUPLET"]
 ```
 
 Array of strings representing strategies that can be used on the puzzle in its intial state
@@ -367,15 +367,15 @@ Number of times the user has entered the wrong number into a cell
 ## numHintsUsedPerStrategy
 
 ```json
-"NAKED_SINGLE": 4,
+"OBVIOUS_SINGLE": 4,
 "HIDDEN_SINGLE": 8,
-"NAKED_PAIR": 15,
-"NAKED_TRIPLET": 16,
-"NAKED_QUADRUPLET": 23,
-"NAKED_QUINTUPLET": 42,
-"NAKED_SEXTUPLET": 0,
-"NAKED_SEPTUPLET": 0,
-"NAKED_OCTUPLET": 0,
+"OBVIOUS_PAIR": 15,
+"OBVIOUS_TRIPLET": 16,
+"OBVIOUS_QUADRUPLET": 23,
+"OBVIOUS_QUINTUPLET": 42,
+"OBVIOUS_SEXTUPLET": 0,
+"OBVIOUS_SEPTUPLET": 0,
+"OBVIOUS_OCTUPLET": 0,
 "HIDDEN_PAIR": 0,
 "HIDDEN_TRIPLET": 0,
 "HIDDEN_QUADRUPLET": 0,

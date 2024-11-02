@@ -1210,7 +1210,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         );
       }
     } else if (
-      sudokuHint.hint.strategy === "NAKED_SINGLE" &&
+      sudokuHint.hint.strategy === "OBVIOUS_SINGLE" &&
       currentStage === 5
     ) {
       const r = sudokuHint.hint.placements[0][0];

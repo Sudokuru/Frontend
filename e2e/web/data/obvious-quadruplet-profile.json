@@ -6,14 +6,14 @@
   "highlightIdenticalValues": true,
   "previewMode": false,
   "strategyHintOrder": [
-    "NAKED_QUADRUPLET",
+    "OBVIOUS_QUADRUPLET",
     "SIMPLIFY_NOTES",
-    "NAKED_SINGLE",
+    "OBVIOUS_SINGLE",
     "HIDDEN_SINGLE",
-    "NAKED_PAIR",
+    "OBVIOUS_PAIR",
     "HIDDEN_PAIR",
     "POINTING_PAIR",
-    "NAKED_TRIPLET",
+    "OBVIOUS_TRIPLET",
     "HIDDEN_TRIPLET",
     "POINTING_TRIPLET",
     "HIDDEN_QUADRUPLET"

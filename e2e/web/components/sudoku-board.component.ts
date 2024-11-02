@@ -353,14 +353,14 @@ export class SudokuBoardComponent {
         return "Amend notes are when you reset a cell's notes to contain every nonconflicting number";
       } else if (hintType === "SIMPLIFY_NOTES") {
         return "You can simplify notes using values already placed in cells at the start of the game";
-      } else if (hintType === "NAKED_SINGLE") {
-        return "Naked singles are when you only have one number left as a possibility in a cell";
-      } else if (hintType === "NAKED_PAIR") {
-        return "Naked pairs are when you only have the same two numbers left as a possibility in two cells in the same row, column, or box";
-      } else if (hintType === "NAKED_TRIPLET") {
-        return "Naked triplets are when you only have the same three numbers left as a possibility in three cells in the same row, column, or box";
-      } else if (hintType === "NAKED_QUADRUPLET") {
-        return "Naked quadruplets are when you only have the same four numbers left as a possibility in four cells in the same row, column, or box";
+      } else if (hintType === "OBVIOUS_SINGLE") {
+        return "Obvious singles are when you only have one number left as a possibility in a cell";
+      } else if (hintType === "OBVIOUS_PAIR") {
+        return "Obvious pairs are when you only have the same two numbers left as a possibility in two cells in the same row, column, or box";
+      } else if (hintType === "OBVIOUS_TRIPLET") {
+        return "Obvious triplets are when you only have the same three numbers left as a possibility in three cells in the same row, column, or box";
+      } else if (hintType === "OBVIOUS_QUADRUPLET") {
+        return "Obvious quadruplets are when you only have the same four numbers left as a possibility in four cells in the same row, column, or box";
       } else if (hintType === "HIDDEN_SINGLE") {
         return "Hidden singles are when you only have one cell left still containing a specific value in a row, column, or box";
       } else if (hintType === "HIDDEN_PAIR") {
@@ -381,14 +381,14 @@ export class SudokuBoardComponent {
         return "When you see an amend notes you can remove all notes then add all nonconflicting numbers to its notes";
       } else if (hintType === "SIMPLIFY_NOTES") {
         return "When there is a value already placed in a cell than it can be removed from all other cells notes in its row, column, and box";
-      } else if (hintType === "NAKED_SINGLE") {
-        return "When you see a naked single you can fill it in with its last remaining possibility";
-      } else if (hintType === "NAKED_PAIR") {
-        return "When you see a naked pair you can remove them from the notes of every other cell in the row, column, or box that they share";
-      } else if (hintType === "NAKED_TRIPLET") {
-        return "When you see a naked triplet you can remove them from the notes of every other cell in the row, column, or box that they share";
-      } else if (hintType === "NAKED_QUADRUPLET") {
-        return "When you see a naked quadruplet you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "OBVIOUS_SINGLE") {
+        return "When you see a obvious single you can fill it in with its last remaining possibility";
+      } else if (hintType === "OBVIOUS_PAIR") {
+        return "When you see a obvious pair you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "OBVIOUS_TRIPLET") {
+        return "When you see a obvious triplet you can remove them from the notes of every other cell in the row, column, or box that they share";
+      } else if (hintType === "OBVIOUS_QUADRUPLET") {
+        return "When you see a obvious quadruplet you can remove them from the notes of every other cell in the row, column, or box that they share";
       } else if (hintType === "HIDDEN_SINGLE") {
         return "When you see a hidden single you can remove all notes other than the single from the cell";
       } else if (hintType === "HIDDEN_PAIR") {

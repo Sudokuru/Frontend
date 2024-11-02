@@ -55,7 +55,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@cypress/code-coverage": "^3.11.0",
     "@expo/metro-config": "~0.18.1",
     "@playwright/test": "^1.41.2",
     "@tauri-apps/cli": "^1.5.5",
@@ -64,7 +63,6 @@
     "@types/react": "~18.2.79",
     "babel-plugin-istanbul": "^6.1.1",
     "cross-env": "^7.0.3",
-    "cypress": "^13.6.4",
     "dotenv-safe": "^9.0.0",
     "expo-doctor": "^1.4.0",
     "husky": "^8.0.3",

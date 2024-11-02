@@ -8,9 +8,9 @@ export const getStrategies = (): string[] => {
   return [
     "SUDOKU_101",
     "AMEND_NOTES",
-    "NAKED_SINGLE",
+    "OBVIOUS_SINGLE",
     "SIMPLIFY_NOTES",
-    "NAKED_SET",
+    "OBVIOUS_SET",
     "HIDDEN_SINGLE",
     "HIDDEN_SET",
     "POINTING_SET",
@@ -71,61 +71,61 @@ export const getLessonSteps = (
         require("../../.assets/Lessons/AMEND_NOTES_STEP_4.png"),
       ],
     ];
-  } else if (strategy === "NAKED_SINGLE") {
+  } else if (strategy === "OBVIOUS_SINGLE") {
     return [
       [
-        "To solve a Sudoku puzzle you have to correctly fill in all of the empty cells. You can do this by utilizing the naked single strategy. To use the naked single strategy you first have to find a cell with only one note left.",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_1.png"),
+        "To solve a Sudoku puzzle you have to correctly fill in all of the empty cells. You can do this by utilizing the obvious single strategy. To use the obvious single strategy you first have to find a cell with only one note left.",
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_1.png"),
       ],
       [
-        "The highlighted cell in the top middle of the above puzzle is an example of a naked single. Since it only has an 8 left as a note you can fill the cell in with the value 8.",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_2.png"),
+        "The highlighted cell in the top middle of the above puzzle is an example of a obvious single. Since it only has an 8 left as a note you can fill the cell in with the value 8.",
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_2.png"),
       ],
       [
-        "You have now learned how to use the naked single strategy to solve Sudoku puzzles!",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_3.png"),
+        "You have now learned how to use the obvious single strategy to solve Sudoku puzzles!",
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_3.png"),
       ],
     ];
   } else if (strategy === "SIMPLIFY_NOTES") {
     return [
       [
         "Using a placed value, simplify notes lets you to eliminate it from the notes of any cell that shares a row, column, and/or box with the placed value cell.",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_4.png"),
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_4.png"),
       ],
       [
         "You can remove the red 8 as a note from the cell directly to the left of the highlighted placed 8 because they share a row (and box).",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_5.png"),
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_5.png"),
       ],
       [
-        "You have now learned how to use the simplify notes strategy to solve Sudoku puzzles! Part of what makes simplify notes so effective is that they can have a domino effect. For instance, the cell we just removed an 8 from is now a naked single.",
-        require("../../.assets/Lessons/NAKED_SINGLE_STEP_7.png"),
+        "You have now learned how to use the simplify notes strategy to solve Sudoku puzzles! Part of what makes simplify notes so effective is that they can have a domino effect. For instance, the cell we just removed an 8 from is now a obvious single.",
+        require("../../.assets/Lessons/OBVIOUS_SINGLE_STEP_7.png"),
       ],
     ];
-  } else if (strategy === "NAKED_SET") {
+  } else if (strategy === "OBVIOUS_SET") {
     return [
       [
-        "If you recall from a previous lesson naked singles are cells with only one possible value, which must be placed there, resulting in its removal from notes of cells sharing the same group.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_1.png"),
+        "If you recall from a previous lesson obvious singles are cells with only one possible value, which must be placed there, resulting in its removal from notes of cells sharing the same group.",
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_1.png"),
       ],
       [
-        "This rule can be extended to naked pairs, triplets, and quadruplets, where x cells have only x remaining combined possibilities, allowing for removal of these possibilities from the notes of cells in shared groups.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_1.png"),
+        "This rule can be extended to obvious pairs, triplets, and quadruplets, where x cells have only x remaining combined possibilities, allowing for removal of these possibilities from the notes of cells in shared groups.",
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_1.png"),
       ],
       [
-        "Above we highlighted in gold a naked pair made up of the numbers 2 and 9. They form a naked pair because they are two cells that can only be filled with a combined two shared numbers.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_2.png"),
+        "Above we highlighted in gold a obvious pair made up of the numbers 2 and 9. They form a obvious pair because they are two cells that can only be filled with a combined two shared numbers.",
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_2.png"),
       ],
       [
         "Therefore, one of them will eventually be filled with a 2 while the other will be filled with a 9. This lets you remove both 2 and a 9 from every cell in the column and box the cells share.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_2.png"),
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_2.png"),
       ],
       [
-        "We've now finished removing all of the notes from applying the naked pair.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_3.png"),
+        "We've now finished removing all of the notes from applying the obvious pair.",
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_3.png"),
       ],
       [
-        "You've now learned how to use the naked set strategies! While you can't directly place values with naked sets other than singles you can remove lots of notes which lead to placing values like in the case of the 6 naked single revealed in the leftmost column by the naked pair we just applied.",
-        require("../../.assets/Lessons/NAKED_SET_STEP_4.png"),
+        "You've now learned how to use the obvious set strategies! While you can't directly place values with obvious sets other than singles you can remove lots of notes which lead to placing values like in the case of the 6 obvious single revealed in the leftmost column by the obvious pair we just applied.",
+        require("../../.assets/Lessons/OBVIOUS_SET_STEP_4.png"),
       ],
     ];
   } else if (strategy === "HIDDEN_SINGLE") {
@@ -143,7 +143,7 @@ export const getLessonSteps = (
         require("../../.assets/Lessons/HIDDEN_SINGLE_STEP_3.png"),
       ],
       [
-        "You've now learned how to use the hidden single strategy! Hidden singles are particularly useful because they always result in naked singles which can be used to place the value.",
+        "You've now learned how to use the hidden single strategy! Hidden singles are particularly useful because they always result in obvious singles which can be used to place the value.",
         require("../../.assets/Lessons/HIDDEN_SINGLE_STEP_4.png"),
       ],
     ];
@@ -170,7 +170,7 @@ export const getLessonSteps = (
         require("../../.assets/Lessons/HIDDEN_SET_STEP_3.png"),
       ],
       [
-        "You've now learned how to use the hidden set strategies! While you can't directly place values with hidden sets you can remove lots of notes which lead to placing values like in the case of the 1 naked single revealed in the column by the hidden triplet we just applied.",
+        "You've now learned how to use the hidden set strategies! While you can't directly place values with hidden sets you can remove lots of notes which lead to placing values like in the case of the 1 obvious single revealed in the column by the hidden triplet we just applied.",
         require("../../.assets/Lessons/HIDDEN_SET_STEP_4.png"),
       ],
     ];

@@ -79,9 +79,9 @@ test.describe("complete game", () => {
     await expect(
       endGameModal.page.getByText("Simplify Notes: 1")
     ).toBeInViewport({ ratio: 1 });
-    await expect(endGameModal.page.getByText("Naked Single: 1")).toBeInViewport(
-      { ratio: 1 }
-    );
+    await expect(
+      endGameModal.page.getByText("Obvious Single: 1")
+    ).toBeInViewport({ ratio: 1 });
     await expect(
       endGameModal.page.getByText("Mistakes Made: 235")
     ).toBeInViewport({ ratio: 1 });
@@ -167,9 +167,11 @@ test.describe("complete game", () => {
     await expect(statistics.page.getByText("Simplify Notes: 1")).toBeInViewport(
       { ratio: 1 }
     );
-    await expect(statistics.page.getByText("Naked Single: 1")).toBeInViewport({
-      ratio: 1,
-    });
+    await expect(statistics.page.getByText("Obvious Single: 1")).toBeInViewport(
+      {
+        ratio: 1,
+      }
+    );
     await expect(
       statistics.page.getByText("Total Mistakes Made: 235")
     ).toBeInViewport({ ratio: 1 });
