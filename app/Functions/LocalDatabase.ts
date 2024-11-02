@@ -1,5 +1,6 @@
 import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
-import { SudokuStrategy } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
+import { z } from "zod";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
@@ -94,6 +95,9 @@ export interface GameStatistics {
 }
 
 export type GameVariant = "demo" | "drill" | "classic";
+
+export const SUDOKU_GAME_VARIANTS = ["demo", "drill", "classic"];
+
 export type CellProps = CellWithValue | CellWithNotes;
 
 export interface CellWithValue {
@@ -108,6 +112,8 @@ export interface CellWithNotes {
 
 export type CellType = "note" | "value" | "given";
 
+export const SudokuCellTypes = ["note", "value", "given"];
+
 // This will be exported from Sudokuru package
 interface Hint {
   hint: {
@@ -120,3 +126,79 @@ interface Hint {
     action: string;
   };
 }
+
+const SudokuObjectSchema = z.object({
+  statistics: z.object({
+    difficulty: z.string(),
+    internalDifficulty: z.number(),
+    numHintsUsed: z.number(),
+    numHintsUsedPerStrategy: z.array(
+      z.object({
+        hintStrategy: z.string(),
+        numHintsUsed: z.number(),
+      })
+    ),
+    numWrongCellsPlayed: z.number(),
+    score: z.number(),
+    time: z.number(),
+  }),
+  puzzle: z.array(
+    z.array(
+      z.object({
+        type: z.enum(["value", "given", "note"]),
+        entry: z.union([z.number(), z.array(z.number())]),
+      })
+    )
+  ),
+  puzzleSolution: z.array(z.array(z.number())),
+  actionHistory: z.array(
+    z.array(
+      z.object({
+        // todo: define the shape of the action history objects
+      })
+    )
+  ),
+  inNoteMode: z.boolean(),
+});
+
+const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
+  "novice",
+  "amateur",
+  "layman",
+  "trainee",
+  "protege",
+  "professional",
+  "pundit",
+  "master",
+  "grandmaster",
+];
+
+// https://github.com/colinhacks/zod/discussions/3115 for workaround used
+const SudokuBoardSchema = z.object({
+  variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
+  version: z.literal(1),
+  selectedCells: z.array(
+    z.object({
+      r: z.number().int().gte(0).lte(8),
+      c: z.number().int().gte(0).lte(8),
+    })
+  ),
+  statistics: z.object({
+    difficulty: z.enum(
+      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]]
+    ),
+    internalDifficulty: z.number().int().finite().safe(),
+    numHintsUsed: z.number().nonnegative().finite().safe(),
+    numHintsUsedPerStrategy: z.array(
+      z.object({
+        hintStrategy: z.enum(
+          Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]
+        ),
+        numHintsUsed: z.number().nonnegative().finite().safe(),
+      })
+    ),
+    numWrongCellsPlayed: z.number().nonnegative().finite().safe(),
+    score: z.number().nonnegative().finite().safe(),
+    time: z.number(),
+  }),
+});
