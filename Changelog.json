@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.27.0",
+    "date": "November 2nd, 2024",
+    "summary": "Renaming Sudoku strategies to allow for better translations and align with sudoku.com termonology.",
+    "features": [
+      "Renamed Sudoku strategies to Obvious Single, Obvious Pair, Obvious Triplet, and Obvious Quadruplet.",
+      "Renamed Sudoku lessons to Obvious Single and Obvious Set."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.26.0",
     "date": "October 31st, 2024",
     "summary": "🎃 Adding hints back to sudoku board. Adding ability to change hint strategy order.",
