@@ -17,8 +17,6 @@
     "build:metro-web": "npx expo export --platform web",
     "preview:vercel": "vercel --name sudokuru-dev --yes",
     "prettier:run": "npx prettier --write .",
-    "open:cypress": "npx cypress open",
-    "test:cypress": "npx cypress run --config video=false,screenshotOnRunFailure=false",
     "tauri:run": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",

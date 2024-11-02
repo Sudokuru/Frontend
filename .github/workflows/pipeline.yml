@@ -6,7 +6,6 @@ on:
     paths-ignore:
       - ".github/**"
       - "docs/**"
-      - "cypress/**"
       - "e2e/**"
       - "**/*.test.ts"
       - "README.md"
@@ -14,7 +13,6 @@ on:
       - ".gitignore"
       - ".prettierignore"
       - ".prettierrc.json"
-      - "cypress.config.ts"
       - "playwright.config.ts"
     branches:
       - main
