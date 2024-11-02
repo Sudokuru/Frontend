@@ -63,10 +63,14 @@ export const arrayDifference = (
 };
 
 export const convertLessonsToStrategies = (learnedLessons: string[]) => {
-  if (learnedLessons.includes("NAKED_SET")) {
-    let index = learnedLessons.indexOf("NAKED_SET");
+  if (learnedLessons.includes("OBVIOUS_SET")) {
+    let index = learnedLessons.indexOf("OBVIOUS_SET");
     learnedLessons.splice(index, 1);
-    learnedLessons.push("NAKED_PAIR", "NAKED_TRIPLET", "NAKED_QUADRUPLET");
+    learnedLessons.push(
+      "OBVIOUS_PAIR",
+      "OBVIOUS_TRIPLET",
+      "OBVIOUS_QUADRUPLET"
+    );
   }
 
   if (learnedLessons.includes("HIDDEN_SET")) {

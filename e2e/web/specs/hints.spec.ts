@@ -19,19 +19,19 @@ import {
   HIDDEN_TRIPLET_COLUMN_GAME,
   HIDDEN_TRIPLET_PROFILE,
   HIDDEN_TRIPLET_ROW_GAME,
-  NAKED_PAIR_BOX_GAME,
-  NAKED_PAIR_COLUMN_GAME,
-  NAKED_PAIR_PROFILE,
-  NAKED_PAIR_ROW_GAME,
-  NAKED_QUADRUPLET_BOX_GAME,
-  NAKED_QUADRUPLET_COLUMN_GAME,
-  NAKED_QUADRUPLET_PROFILE,
-  NAKED_QUADRUPLET_ROW_GAME,
-  NAKED_SINGLE_GAME,
-  NAKED_TRIPLET_BOX_GAME,
-  NAKED_TRIPLET_COLUMN_GAME,
-  NAKED_TRIPLET_PROFILE,
-  NAKED_TRIPLET_ROW_GAME,
+  OBVIOUS_PAIR_BOX_GAME,
+  OBVIOUS_PAIR_COLUMN_GAME,
+  OBVIOUS_PAIR_PROFILE,
+  OBVIOUS_PAIR_ROW_GAME,
+  OBVIOUS_QUADRUPLET_BOX_GAME,
+  OBVIOUS_QUADRUPLET_COLUMN_GAME,
+  OBVIOUS_QUADRUPLET_PROFILE,
+  OBVIOUS_QUADRUPLET_ROW_GAME,
+  OBVIOUS_SINGLE_GAME,
+  OBVIOUS_TRIPLET_BOX_GAME,
+  OBVIOUS_TRIPLET_COLUMN_GAME,
+  OBVIOUS_TRIPLET_PROFILE,
+  OBVIOUS_TRIPLET_ROW_GAME,
   POINTING_PAIR_COLUMN_GAME,
   POINTING_PAIR_PROFILE,
   POINTING_PAIR_ROW_GAME,
@@ -273,9 +273,9 @@ test.describe("board SIMPLIFY_NOTES", () => {
   });
 });
 
-test.describe("board NAKED_SINGLE", () => {
-  test.use({ gameToResume: NAKED_SINGLE_GAME });
-  test("NAKED_SINGLE", async ({ resumeGame }) => {
+test.describe("board OBVIOUS_SINGLE", () => {
+  test.use({ gameToResume: OBVIOUS_SINGLE_GAME });
+  test("OBVIOUS_SINGLE", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row <= 2 && column <= 2;
     };
@@ -287,7 +287,7 @@ test.describe("board NAKED_SINGLE", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_SINGLE",
+      "OBVIOUS_SINGLE",
       hintSelectedColor,
       notHighlightedColor,
       [{ contentType: "notes", content: "1", row: 0, column: 0 }],
@@ -297,10 +297,10 @@ test.describe("board NAKED_SINGLE", () => {
   });
 });
 
-test.describe("board NAKED_PAIR", () => {
+test.describe("board OBVIOUS_PAIR", () => {
   test.use({
-    gameToResume: NAKED_PAIR_ROW_GAME,
-    profileSetting: NAKED_PAIR_PROFILE,
+    gameToResume: OBVIOUS_PAIR_ROW_GAME,
+    profileSetting: OBVIOUS_PAIR_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -314,7 +314,7 @@ test.describe("board NAKED_PAIR", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_PAIR",
+      "OBVIOUS_PAIR",
       hintSelectedColor,
       notHighlightedColor,
       [
@@ -342,10 +342,10 @@ test.describe("board NAKED_PAIR", () => {
   });
 });
 
-test.describe("board NAKED_PAIR", () => {
+test.describe("board OBVIOUS_PAIR", () => {
   test.use({
-    gameToResume: NAKED_PAIR_COLUMN_GAME,
-    profileSetting: NAKED_PAIR_PROFILE,
+    gameToResume: OBVIOUS_PAIR_COLUMN_GAME,
+    profileSetting: OBVIOUS_PAIR_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -359,7 +359,7 @@ test.describe("board NAKED_PAIR", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_PAIR",
+      "OBVIOUS_PAIR",
       hintSelectedColor,
       notHighlightedColor,
       [
@@ -384,8 +384,8 @@ test.describe("board NAKED_PAIR", () => {
   });
 });
 
-test.describe("board NAKED_PAIR", () => {
-  test.use({ gameToResume: NAKED_PAIR_BOX_GAME });
+test.describe("board OBVIOUS_PAIR", () => {
+  test.use({ gameToResume: OBVIOUS_PAIR_BOX_GAME });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row <= 2 && column > 2 && column < 6;
@@ -398,7 +398,7 @@ test.describe("board NAKED_PAIR", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_PAIR",
+      "OBVIOUS_PAIR",
       hintSelectedColor,
       notHighlightedColor,
       [
@@ -417,10 +417,10 @@ test.describe("board NAKED_PAIR", () => {
   });
 });
 
-test.describe("board NAKED_TRIPLET", () => {
+test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    gameToResume: NAKED_TRIPLET_ROW_GAME,
-    profileSetting: NAKED_TRIPLET_PROFILE,
+    gameToResume: OBVIOUS_TRIPLET_ROW_GAME,
+    profileSetting: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -438,7 +438,7 @@ test.describe("board NAKED_TRIPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_TRIPLET",
+      "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
       [{ contentType: "notes", content: "579", row: 1, column: 7 }],
@@ -448,10 +448,10 @@ test.describe("board NAKED_TRIPLET", () => {
   });
 });
 
-test.describe("board NAKED_TRIPLET", () => {
+test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    gameToResume: NAKED_TRIPLET_COLUMN_GAME,
-    profileSetting: NAKED_TRIPLET_PROFILE,
+    gameToResume: OBVIOUS_TRIPLET_COLUMN_GAME,
+    profileSetting: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -469,7 +469,7 @@ test.describe("board NAKED_TRIPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_TRIPLET",
+      "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
       [
@@ -488,10 +488,10 @@ test.describe("board NAKED_TRIPLET", () => {
   });
 });
 
-test.describe("board NAKED_TRIPLET", () => {
+test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    gameToResume: NAKED_TRIPLET_BOX_GAME,
-    profileSetting: NAKED_TRIPLET_PROFILE,
+    gameToResume: OBVIOUS_TRIPLET_BOX_GAME,
+    profileSetting: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -509,7 +509,7 @@ test.describe("board NAKED_TRIPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_TRIPLET",
+      "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
@@ -519,10 +519,10 @@ test.describe("board NAKED_TRIPLET", () => {
   });
 });
 
-test.describe("board NAKED_QUADRUPLET", () => {
+test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    gameToResume: NAKED_QUADRUPLET_ROW_GAME,
-    profileSetting: NAKED_QUADRUPLET_PROFILE,
+    gameToResume: OBVIOUS_QUADRUPLET_ROW_GAME,
+    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -541,7 +541,7 @@ test.describe("board NAKED_QUADRUPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_QUADRUPLET",
+      "OBVIOUS_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
       [
@@ -563,10 +563,10 @@ test.describe("board NAKED_QUADRUPLET", () => {
   });
 });
 
-test.describe("board NAKED_QUADRUPLET", () => {
+test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    gameToResume: NAKED_QUADRUPLET_COLUMN_GAME,
-    profileSetting: NAKED_QUADRUPLET_PROFILE,
+    gameToResume: OBVIOUS_QUADRUPLET_COLUMN_GAME,
+    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -585,7 +585,7 @@ test.describe("board NAKED_QUADRUPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_QUADRUPLET",
+      "OBVIOUS_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
       [{ contentType: "notes", content: "45", row: 1, column: 1 }],
@@ -595,10 +595,10 @@ test.describe("board NAKED_QUADRUPLET", () => {
   });
 });
 
-test.describe("board NAKED_QUADRUPLET", () => {
+test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    gameToResume: NAKED_QUADRUPLET_BOX_GAME,
-    profileSetting: NAKED_QUADRUPLET_PROFILE,
+    gameToResume: OBVIOUS_QUADRUPLET_BOX_GAME,
+    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -617,7 +617,7 @@ test.describe("board NAKED_QUADRUPLET", () => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
 
     await sudokuBoard.hintBaseTest(
-      "NAKED_QUADRUPLET",
+      "OBVIOUS_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
       [

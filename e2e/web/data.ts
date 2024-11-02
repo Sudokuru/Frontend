@@ -14,30 +14,30 @@ export { default as SIMPLIFY_NOTES_ROW_GAME } from "./data/simplify-notes-row-ga
 export { default as SIMPLIFY_NOTES_COLUMN_GAME } from "./data/simplify-notes-column-game.json";
 export { default as SIMPLIFY_NOTES_BOX_GAME } from "./data/simplify-notes-box-game.json";
 
-// NAKED SINGLE DATA
+// OBVIOUS SINGLE DATA
 
-export { default as NAKED_SINGLE_GAME } from "./data/naked-single-game.json";
+export { default as OBVIOUS_SINGLE_GAME } from "./data/obvious-single-game.json";
 
-// NAKED PAIR DATA
+// OBVIOUS PAIR DATA
 
-export { default as NAKED_PAIR_PROFILE } from "./data/naked-pair-profile.json";
-export { default as NAKED_PAIR_BOX_GAME } from "./data/naked-pair-box-game.json";
-export { default as NAKED_PAIR_ROW_GAME } from "./data/naked-pair-row-game.json";
-export { default as NAKED_PAIR_COLUMN_GAME } from "./data/naked-pair-column-game.json";
+export { default as OBVIOUS_PAIR_PROFILE } from "./data/obvious-pair-profile.json";
+export { default as OBVIOUS_PAIR_BOX_GAME } from "./data/obvious-pair-box-game.json";
+export { default as OBVIOUS_PAIR_ROW_GAME } from "./data/obvious-pair-row-game.json";
+export { default as OBVIOUS_PAIR_COLUMN_GAME } from "./data/obvious-pair-column-game.json";
 
-// NAKED TRIPLET DATA
+// OBVIOUS TRIPLET DATA
 
-export { default as NAKED_TRIPLET_PROFILE } from "./data/naked-triplet-profile.json";
-export { default as NAKED_TRIPLET_ROW_GAME } from "./data/naked-triplet-row-game.json";
-export { default as NAKED_TRIPLET_COLUMN_GAME } from "./data/naked-triplet-column-game.json";
-export { default as NAKED_TRIPLET_BOX_GAME } from "./data/naked-triplet-box-game.json";
+export { default as OBVIOUS_TRIPLET_PROFILE } from "./data/obvious-triplet-profile.json";
+export { default as OBVIOUS_TRIPLET_ROW_GAME } from "./data/obvious-triplet-row-game.json";
+export { default as OBVIOUS_TRIPLET_COLUMN_GAME } from "./data/obvious-triplet-column-game.json";
+export { default as OBVIOUS_TRIPLET_BOX_GAME } from "./data/obvious-triplet-box-game.json";
 
-// NAKED QUADRUPLET DATA
+// OBVIOUS QUADRUPLET DATA
 
-export { default as NAKED_QUADRUPLET_PROFILE } from "./data/naked-quadruplet-profile.json";
-export { default as NAKED_QUADRUPLET_ROW_GAME } from "./data/naked-quadruplet-row-game.json";
-export { default as NAKED_QUADRUPLET_COLUMN_GAME } from "./data/naked-quadruplet-column-game.json";
-export { default as NAKED_QUADRUPLET_BOX_GAME } from "./data/naked-quadruplet-box-game.json";
+export { default as OBVIOUS_QUADRUPLET_PROFILE } from "./data/obvious-quadruplet-profile.json";
+export { default as OBVIOUS_QUADRUPLET_ROW_GAME } from "./data/obvious-quadruplet-row-game.json";
+export { default as OBVIOUS_QUADRUPLET_COLUMN_GAME } from "./data/obvious-quadruplet-column-game.json";
+export { default as OBVIOUS_QUADRUPLET_BOX_GAME } from "./data/obvious-quadruplet-box-game.json";
 
 // HIDDEN SINGLE DATA
 

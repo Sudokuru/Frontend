@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { formatOneLessonName } from "../../../app/Functions/learnedLessons";
-import { SudokuStrategy, SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 
 export class ProfilePage {
   readonly page: Page;
@@ -103,7 +103,7 @@ export class ProfilePage {
     await strategyButton.click();
   }
 
-  async strategiesRenderCorrectly(strategies: SudokuStrategyArray) {
+  async strategiesRenderCorrectly(strategies: SudokuStrategy[]) {
     for (const strategy of strategies) {
       await this.isHintStrategyVisible(
         strategies.indexOf(strategy) + 1,

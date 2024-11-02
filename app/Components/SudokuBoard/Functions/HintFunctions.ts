@@ -32,12 +32,12 @@ export const getSudokuHint = (
 /**
  * This function takes in the hint object and overrides / injects values
  * The Frontend uses groups to indicate regions of interest of a hint, whereas sudokuru package uses groups
- * to store what groups cause a strategy to occur. NAKED_SINGLE is not caused by any groups, but Frontend wants to highlight the box
+ * to store what groups cause a strategy to occur. OBVIOUS_SINGLE is not caused by any groups, but Frontend wants to highlight the box
  * @param hint Hint object returned from sudokuru package
  * @returns Updated Hint object
  */
 export const hintInjections = (hint: Hint) => {
-  if (hint.strategy == "NAKED_SINGLE") {
+  if (hint.strategy == "OBVIOUS_SINGLE") {
     hint.groups.push([2, generateBoxIndex(hint.cause[0][0], hint.cause[0][1])]);
   }
   return hint;

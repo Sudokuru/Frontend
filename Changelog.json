@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.27.0",
+    "date": "November 2nd, 2024",
+    "summary": "Renaming Sudoku strategies to allow for better translations and align with Sudoku.com terminology.",
+    "features": [
+      "Renamed Sudoku strategies to Obvious Single, Obvious Pair, Obvious Triplet, and Obvious Quadruplet.",
+      "Renamed Sudoku lessons to Obvious Single and Obvious Set."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.26.0",
     "date": "October 31st, 2024",
     "summary": "🎃 Adding hints back to sudoku board. Adding ability to change hint strategy order.",
@@ -1148,8 +1159,8 @@
   {
     "version": "0.16.0",
     "date": "March 26th, 2023",
-    "summary": "Hint functionality implemented for naked set strategies.",
-    "features": ["Hint functionality implemented for naked set strategies."],
+    "summary": "Hint functionality implemented for obvious set strategies.",
+    "features": ["Hint functionality implemented for obvious set strategies."],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino", "Gregory711"]
   },
@@ -1211,8 +1222,8 @@
   {
     "version": "0.13.0",
     "date": "March 25th, 2023",
-    "summary": "Hint functionality implemented for naked single strategy.",
-    "features": ["Hint functionality implemented for naked single strategy."],
+    "summary": "Hint functionality implemented for obvious single strategy.",
+    "features": ["Hint functionality implemented for obvious single strategy."],
     "targets": ["web", "mobile"],
     "contributors": ["danielcosentino", "Gregory711"]
   },
@@ -1352,7 +1363,7 @@
     "date": "March 20th, 2023",
     "summary": "Enhanced Drill sidebar.",
     "features": [
-      "Hidden set and Naked set are new fields in Drill sidebar that have subfields of 'naked single', 'naked pair', etc for better organization."
+      "Hidden set and Obvious set are new fields in Drill sidebar that have subfields of 'obvious single', 'obvious pair', etc for better organization."
     ],
     "bug fixes": [
       "Drills now better accessibile on web with a 'Drills' button.",

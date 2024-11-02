@@ -1,12 +1,12 @@
-import { SudokuStrategy, SudokuStrategyArray } from "sudokuru";
+import { SudokuStrategy } from "sudokuru";
 
 export interface Puzzle {
   puzzle: string;
   moves: Move[];
   puzzleSolution: string;
-  strategies: SudokuStrategyArray;
+  strategies: SudokuStrategy[];
   difficulty: number;
-  drillStrategies?: SudokuStrategyArray;
+  drillStrategies?: SudokuStrategy[];
 }
 
 export interface Drill {
@@ -60,5 +60,5 @@ export interface Profile {
   highlightRow: boolean;
   highlightColumn: boolean;
   previewMode: boolean;
-  strategyHintOrder: SudokuStrategyArray;
+  strategyHintOrder: SudokuStrategy[];
 }
