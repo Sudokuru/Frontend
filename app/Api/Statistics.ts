@@ -37,9 +37,9 @@ export const saveStatisitics = (statistics: Statistics) => {
  * returns all statistics objects for given user
  */
 export const getStatistics = async (): Promise<Statistics> => {
-  let value = await getKeyJSON("statistics");
+  const value = await getKeyJSON("statistics");
   if (value == null) {
-    let statistics: Statistics = {
+    const statistics: Statistics = {
       totalScore: 0,
       numGamesPlayed: 0,
       fastestSolveTime: 0,
