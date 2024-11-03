@@ -26,7 +26,7 @@ const PlayPage = () => {
   const theme = useTheme();
 
   // This determines if user has active game and displays resume button conditionally.
-  async function grabCurrentGame() {
+  async function showOrHideResumeButton() {
     const game: SudokuObjectProps[] = await getGame();
     if (game != null) {
       showResumeButton();
@@ -39,7 +39,7 @@ const PlayPage = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      grabCurrentGame();
+      showOrHideResumeButton();
     }, [])
   );
 
@@ -103,7 +103,7 @@ const PlayPage = () => {
                 style={{ margin: newSize / 4 }}
                 mode="outlined"
                 onPress={async function handlePress() {
-                  const game = await grabCurrentGame();
+                  const game = await showOrHideResumeButton();
                   if (game) {
                     navigation.navigate("SudokuPage", {
                       action: "ResumeGame",
