@@ -72,13 +72,11 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
         }, activeGameStorage as JSON);
       }
       if (profileStorage) {
-        console.log(profileStorage);
         await page.evaluate((profileStorage: JSON) => {
           window.localStorage.setItem(
             "profile",
             JSON.stringify(profileStorage)
           );
-          console.log(window.localStorage.getItem("profile"));
         }, profileStorage as JSON);
       }
 

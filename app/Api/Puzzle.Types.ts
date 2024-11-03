@@ -40,6 +40,7 @@ export interface GameResults {
 }
 
 export interface Statistics {
+  version: number;
   totalScore: number;
   numGamesPlayed: number;
   fastestSolveTime: number;
@@ -54,6 +55,7 @@ export interface Statistics {
 }
 
 export interface Profile {
+  version: number;
   theme: boolean;
   highlightIdenticalValues: boolean;
   highlightBox: boolean;

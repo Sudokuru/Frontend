@@ -1,6 +1,7 @@
 import { Profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 import { returnSudokuStrategyArray } from "../Contexts/PreferencesContext";
+import { ProfileSchema } from "../Functions/LocalDatabase";
 
 type profileValue =
   | "theme"
@@ -12,12 +13,13 @@ type profileValue =
   | "strategyHintOrder";
 
 export const getProfile = async (): Promise<Profile> => {
-  const value = await getKeyJSON("profile");
+  const value = await getKeyJSON("profile", ProfileSchema);
 
   // deep clone to avoid manipulation of const value.
   const sudokuStrategyArray = returnSudokuStrategyArray();
 
   const defaultProfileValues: Profile = {
+    version: 1,
     theme: true,
     highlightBox: true,
     highlightColumn: true,

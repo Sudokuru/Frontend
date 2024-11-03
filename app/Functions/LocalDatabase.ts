@@ -170,16 +170,16 @@ export const SudokuBoardSchema = z.object({
       Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]]
     ),
     internalDifficulty: z.number().int().finite().safe(),
-    numHintsUsed: z.number().nonnegative().finite().safe(),
+    numHintsUsed: z.number().int().nonnegative().finite().safe(),
     numHintsUsedPerStrategy: z.array(
       z.object({
         hintStrategy: z.enum(
           Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]
         ),
-        numHintsUsed: z.number().nonnegative().finite().safe(),
+        numHintsUsed: z.number().int().nonnegative().finite().safe(),
       })
     ),
-    numWrongCellsPlayed: z.number().nonnegative().finite().safe(),
+    numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
     score: z.number().int().gte(0).lte(100),
     time: z.number().int().nonnegative().finite().safe(),
   }),
@@ -199,3 +199,34 @@ export const SudokuBoardSchema = z.object({
 });
 
 export const SudokuBoardActiveGameSchema = z.array(SudokuBoardSchema);
+
+export const ProfileSchema = z.object({
+  version: z.literal(1),
+  theme: z.boolean(),
+  highlightBox: z.boolean(),
+  highlightColumn: z.boolean(),
+  highlightRow: z.boolean(),
+  highlightIdenticalValues: z.boolean(),
+  previewMode: z.boolean(),
+  strategyHintOrder: z.array(
+    z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]])
+  ),
+});
+
+export const StatisticsSchema = z.object({
+  totalScore: z.number().int().nonnegative().finite().safe(),
+  numGamesPlayed: z.number().int().nonnegative().finite().safe(),
+  fastestSolveTime: z.number().int().nonnegative().finite().safe(),
+  averageSolveTime: z.number().int().nonnegative().finite().safe(),
+  totalSolveTime: z.number().int().nonnegative().finite().safe(),
+  numHintsUsed: z.number().int().nonnegative().finite().safe(),
+  numHintsUsedPerStrategy: z.array(
+    z.object({
+      hintStrategy: z.enum(
+        Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]
+      ),
+      numHintsUsed: z.number().int().nonnegative().finite().safe(),
+    })
+  ),
+  numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
+});
