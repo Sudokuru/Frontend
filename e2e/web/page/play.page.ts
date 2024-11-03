@@ -3,7 +3,7 @@ import { Locator, Page, expect } from "@playwright/test";
 export class PlayPage {
   readonly page: Page;
   readonly title: Locator;
-  readonly start: Locator;
+  readonly resume: Locator;
   readonly noviceDesc: Locator;
   readonly amateurDesc: Locator;
   readonly laymanDesc: Locator;
@@ -22,7 +22,7 @@ export class PlayPage {
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByTestId("playPageTitle");
-    this.start = page.getByText("Start Puzzle");
+    this.resume = page.getByText("Resume Puzzle");
     this.noviceDesc = page.getByTestId("NoviceDescription");
     this.amateurDesc = page.getByTestId("AmateurDescription");
     this.laymanDesc = page.getByTestId("LaymanDescription");
@@ -43,6 +43,10 @@ export class PlayPage {
 
   async playPageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
+  }
+
+  async resumeButtonIsVisible() {
+    await expect(this.resume).toBeInViewport({ ratio: 1 });
   }
 
   async fullTitleIsVisible() {

@@ -39,6 +39,12 @@ test.describe("pause", () => {
       }
       const playPage = new PlayPage(resumeGame);
       await playPage.playPageIsRendered();
+      await playPage.resumeButtonIsVisible();
+
+      // verify the existing game is resumed.
+      await playPage.resume.click();
+      await sudokuBoard.cellHasValue(0, 0, "1");
+      await sudokuBoard.cellHasValue(8, 8, "9");
     });
   }
 });

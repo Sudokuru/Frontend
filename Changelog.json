@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.27.1",
+    "date": "November 2nd, 2024",
+    "summary": "Fixed bug where Sudoku games were not being saved and could not be resumed after pausing.",
+    "bug fixes": [
+      "Fixed bug where Sudoku games were not being saved and could not be resumed after pausing."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.27.0",
     "date": "November 2nd, 2024",
     "summary": "Renaming Sudoku strategies to allow for better translations and align with Sudoku.com terminology.",
