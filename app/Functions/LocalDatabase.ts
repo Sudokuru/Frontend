@@ -112,7 +112,7 @@ export interface CellWithNotes {
 
 export type CellType = "note" | "value" | "given";
 
-export const SudokuCellTypes = ["note", "value", "given"];
+export const SUDOKU_CELL_TYPES: CellType[] = ["note", "value", "given"];
 
 // This will be exported from Sudokuru package
 interface Hint {
@@ -127,40 +127,6 @@ interface Hint {
   };
 }
 
-const SudokuObjectSchema = z.object({
-  statistics: z.object({
-    difficulty: z.string(),
-    internalDifficulty: z.number(),
-    numHintsUsed: z.number(),
-    numHintsUsedPerStrategy: z.array(
-      z.object({
-        hintStrategy: z.string(),
-        numHintsUsed: z.number(),
-      })
-    ),
-    numWrongCellsPlayed: z.number(),
-    score: z.number(),
-    time: z.number(),
-  }),
-  puzzle: z.array(
-    z.array(
-      z.object({
-        type: z.enum(["value", "given", "note"]),
-        entry: z.union([z.number(), z.array(z.number())]),
-      })
-    )
-  ),
-  puzzleSolution: z.array(z.array(z.number())),
-  actionHistory: z.array(
-    z.array(
-      z.object({
-        // todo: define the shape of the action history objects
-      })
-    )
-  ),
-  inNoteMode: z.boolean(),
-});
-
 const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
   "novice",
   "amateur",
@@ -173,16 +139,32 @@ const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
   "grandmaster",
 ];
 
+const SudokuBoardCellSchema = z.union([
+  z.object({
+    type: z.literal("given"),
+    entry: z.literal(0),
+  }),
+  z.object({
+    type: z.literal("value"),
+    entry: z.number().int().gte(1).lte(9),
+  }),
+  z.object({
+    type: z.literal("note"),
+    entry: z.array(z.number().int().gte(1).lte(9)),
+  }),
+]);
+
+const SudokuBoardCellLocationSchema = z.object({
+  r: z.number().int().gte(0).lte(8),
+  c: z.number().int().gte(0).lte(8),
+});
+
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
+// todo make custom schemas perhaps?
 const SudokuBoardSchema = z.object({
   variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
   version: z.literal(1),
-  selectedCells: z.array(
-    z.object({
-      r: z.number().int().gte(0).lte(8),
-      c: z.number().int().gte(0).lte(8),
-    })
-  ),
+  selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
     difficulty: z.enum(
       Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]]
@@ -198,7 +180,20 @@ const SudokuBoardSchema = z.object({
       })
     ),
     numWrongCellsPlayed: z.number().nonnegative().finite().safe(),
-    score: z.number().nonnegative().finite().safe(),
-    time: z.number(),
+    score: z.number().int().gte(0).lte(100),
+    time: z.string(), //todo make custom type for this string
   }),
+  puzzle: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
+  puzzleSolution: z
+    .array(z.array(z.number().int().gte(1).lte(9)).length(9))
+    .length(9),
+  actionHistory: z.array(
+    z.array(
+      z.object({
+        cellLocation: SudokuBoardCellLocationSchema,
+        cell: SudokuBoardCellSchema,
+      })
+    )
+  ),
+  inNoteMode: z.boolean(),
 });
