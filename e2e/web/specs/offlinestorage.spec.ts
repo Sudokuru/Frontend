@@ -6,6 +6,7 @@ import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
 import { PlayPage } from "../page/play.page";
 import {
+  ALMOST_FINISHED_GAME,
   INVALID_ACTIVE_GAME_DATA,
   INVALID_PROFILE_DATA,
   INVALID_STATISTICS_DATA,
@@ -74,13 +75,33 @@ test.describe("Offline Storage", () => {
 
 test.describe("Offline Storage", () => {
   test.use({ activeGameStorage: INVALID_ACTIVE_GAME_DATA });
-  test("Resume Game buton does not show with invalid active game object data", async ({
+  test("Resume Game button does not show with invalid active game object data", async ({
     page,
   }) => {
     await page.reload();
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
+    await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("Offline Storage", () => {
+  test.use({ activeGameStorage: ALMOST_FINISHED_GAME });
+  test("Resume Game with invalid data does not crash app", async ({ page }) => {
+    const homePage = new HomePage(page);
+    await homePage.playSudoku.click();
+    const playPage = new PlayPage(page);
+    await page.evaluate((INVALID_ACTIVE_GAME_DATA: JSON) => {
+      window.localStorage.setItem(
+        "active_game",
+        JSON.stringify(INVALID_ACTIVE_GAME_DATA)
+      );
+    }, INVALID_ACTIVE_GAME_DATA as unknown as JSON);
+
+    await expect(playPage.resume).toBeInViewport({ ratio: 1 });
+    await playPage.resume.click();
+    await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
