@@ -18,7 +18,7 @@ export const convertPuzzleToSudokuObject = (
 ): SudokuObjectProps => {
   let game: SudokuObjectProps = {
     variant: "classic",
-    version: "1.0.0",
+    version: 1,
     selectedCells: [],
     puzzle: [],
     puzzleSolution: [],
@@ -58,7 +58,7 @@ export const convertPuzzleToSudokuObject = (
 
 export interface SudokuObjectProps {
   variant: GameVariant;
-  version: string;
+  version: number;
   selectedCells: CellLocation[];
   statistics: GameStatistics;
   puzzle: CellProps[][];
@@ -142,11 +142,11 @@ const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
 const SudokuBoardCellSchema = z.union([
   z.object({
     type: z.literal("given"),
-    entry: z.literal(0),
+    entry: z.number().int().gte(1).lte(9),
   }),
   z.object({
     type: z.literal("value"),
-    entry: z.number().int().gte(1).lte(9),
+    entry: z.number().int().gte(0).lte(9),
   }),
   z.object({
     type: z.literal("note"),
@@ -161,7 +161,7 @@ const SudokuBoardCellLocationSchema = z.object({
 
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
 // todo make custom schemas perhaps?
-const SudokuBoardSchema = z.object({
+export const SudokuBoardSchema = z.object({
   variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
   version: z.literal(1),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
@@ -181,7 +181,7 @@ const SudokuBoardSchema = z.object({
     ),
     numWrongCellsPlayed: z.number().nonnegative().finite().safe(),
     score: z.number().int().gte(0).lte(100),
-    time: z.string(), //todo make custom type for this string
+    time: z.number().int().nonnegative().finite().safe(),
   }),
   puzzle: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
   puzzleSolution: z
@@ -197,3 +197,5 @@ const SudokuBoardSchema = z.object({
   ),
   inNoteMode: z.boolean(),
 });
+
+export const SudokuBoardActiveGameSchema = z.array(SudokuBoardSchema);

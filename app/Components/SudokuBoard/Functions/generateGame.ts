@@ -11,8 +11,8 @@ export async function generateGame(props: SudokuBoardProps) {
     const gameData: SudokuObjectProps[] = await getGame();
     // If game object is not returned, you get redirected to Main Page
     if (gameData == null) {
-      //navigation.navigate("Home");
-      return;
+      // If resume game data is invalid, we start a novice game
+      return startGame("novice");
     }
     return gameData[0];
   }

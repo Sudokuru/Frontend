@@ -1,4 +1,7 @@
-import { SudokuObjectProps } from "../Functions/LocalDatabase";
+import {
+  SudokuBoardActiveGameSchema,
+  SudokuObjectProps,
+} from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import {
   GameDifficulty,
@@ -25,7 +28,7 @@ export const startGame = (difficulty: GameDifficulty): SudokuObjectProps => {
  * @returns promise of activeGame JSON object
  */
 export const getGame = (): Promise<SudokuObjectProps[]> => {
-  return getKeyJSON("active_game");
+  return getKeyJSON("active_game", SudokuBoardActiveGameSchema);
 };
 
 /**

@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { z } from "zod";
 
 /**
  * Stores item in AsyncStorage
@@ -17,14 +18,21 @@ export const storeData = async (key: string, value: any) => {
  * Returns the json value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
-export const getKeyJSON = async (key: string) => {
+export const getKeyJSON = async (key: string, schema: z.Schema) => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
-      return JSON.parse(value);
+      // parse the json into javascript
+      const newValue = JSON.parse(value);
+
+      // validate that content matches the schema
+      schema.parse(newValue);
+
+      return newValue;
     }
   } catch (e) {
     // remove data since it could not be parsed
+    console.log(e);
     await removeData(key);
   }
 };
