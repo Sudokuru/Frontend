@@ -18,15 +18,17 @@ export const storeData = async (key: string, value: any) => {
  * Returns the json value of an item in AsyncStorage
  * Takes in the key of the item to be returned
  */
-export const getKeyJSON = async (key: string, schema: z.Schema) => {
+export const getKeyJSON = async (key: string, schema?: z.Schema) => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value !== null) {
       // parse the json into javascript
       const newValue = JSON.parse(value);
 
-      // validate that content matches the schema
-      schema.parse(newValue);
+      if (schema) {
+        // validate that content matches the schema
+        schema.parse(newValue);
+      }
 
       return newValue;
     }
