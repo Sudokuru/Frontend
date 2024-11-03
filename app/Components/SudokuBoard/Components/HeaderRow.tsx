@@ -5,7 +5,6 @@ import { useTheme, Text } from "react-native-paper";
 import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
 import {
   getCellSize,
-  saveGame,
   formatTime,
   handlePause,
 } from "../Functions/BoardFunctions";

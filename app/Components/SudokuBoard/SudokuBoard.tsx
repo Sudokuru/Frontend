@@ -3,7 +3,6 @@ import { View } from "react-native";
 import {
   finishSudokuGame,
   handlePause,
-  saveGame,
   isValueCorrect,
 } from "./Functions/BoardFunctions";
 import {
@@ -43,6 +42,7 @@ import { useNavigation } from "@react-navigation/native";
 import Hint from "./Components/Hint";
 import { GameDifficulty } from "./Functions/Difficulty";
 import { SudokuStrategy } from "sudokuru";
+import { saveGame } from "../../Api/Puzzles";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";

@@ -198,6 +198,18 @@ test.describe("start game", () => {
   });
 });
 
+test.describe("resume game", () => {
+  test("user can pause and resume a game", async ({ play }) => {
+    const playPage = new PlayPage(play);
+    await playPage.noviceDesc.click();
+    const sudokuBoard = new SudokuBoardComponent(play);
+    await sudokuBoard.pause.click();
+    await playPage.resumeButtonIsVisible();
+    await playPage.resume.click();
+    await expect(sudokuBoard.sudokuBoard).toContainText("novice");
+  });
+});
+
 test.describe("resize play page", () => {
   test("Difficulty stars and descriptions are visible on desktop sized screen", async ({
     play,
