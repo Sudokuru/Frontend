@@ -45,6 +45,7 @@ interface AppFixtures {
 const newBase = base.extend<AppFixtures & MyStorageOptions>({
   activeGameStorage: [null, { option: true }],
   profileStorage: [null, { option: true }],
+  statisticsStorage: [null, { option: true }],
 
   codeCoverageAutoTestFixture: [
     async ({ browser, page }, use): Promise<void> => {
@@ -62,7 +63,10 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
     },
   ],
   initalizeLocalStorageFixture: [
-    async ({ page, activeGameStorage, profileStorage }, use) => {
+    async (
+      { page, activeGameStorage, profileStorage, statisticsStorage },
+      use
+    ) => {
       if (activeGameStorage) {
         await page.evaluate((activeGameStorage: JSON) => {
           window.localStorage.setItem(
@@ -78,6 +82,14 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
             JSON.stringify(profileStorage)
           );
         }, profileStorage as JSON);
+      }
+      if (statisticsStorage) {
+        await page.evaluate((statisticsStorage: JSON) => {
+          window.localStorage.setItem(
+            "statistics",
+            JSON.stringify(statisticsStorage)
+          );
+        }, statisticsStorage as JSON);
       }
 
       await use();
