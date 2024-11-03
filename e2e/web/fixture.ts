@@ -67,29 +67,21 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       { page, activeGameStorage, profileStorage, statisticsStorage },
       use
     ) => {
-      if (activeGameStorage) {
-        await page.evaluate((activeGameStorage: JSON) => {
-          window.localStorage.setItem(
-            "active_game",
-            JSON.stringify(activeGameStorage)
+      const storageItems = [
+        { key: "active_game", value: activeGameStorage },
+        { key: "profile", value: profileStorage },
+        { key: "statistics", value: statisticsStorage },
+      ];
+
+      for (const item of storageItems) {
+        if (item.value) {
+          await page.evaluate(
+            ({ key, value }) => {
+              window.localStorage.setItem(key, JSON.stringify(value));
+            },
+            { key: item.key, value: item.value }
           );
-        }, activeGameStorage as JSON);
-      }
-      if (profileStorage) {
-        await page.evaluate((profileStorage: JSON) => {
-          window.localStorage.setItem(
-            "profile",
-            JSON.stringify(profileStorage)
-          );
-        }, profileStorage as JSON);
-      }
-      if (statisticsStorage) {
-        await page.evaluate((statisticsStorage: JSON) => {
-          window.localStorage.setItem(
-            "statistics",
-            JSON.stringify(statisticsStorage)
-          );
-        }, statisticsStorage as JSON);
+        }
       }
 
       await use();
