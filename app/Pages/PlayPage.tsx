@@ -11,7 +11,6 @@ import {
 import { getGame } from "../Api/Puzzles";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
-import { generateGame } from "../Components/SudokuBoard/Functions/generateGame";
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
