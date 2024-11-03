@@ -25,18 +25,27 @@ interface MyFixtures {
 
 interface MyOptions {
   gameToResume?: any;
-  profileSetting?: any;
+}
+
+interface MyStorageOptions {
+  activeGameStorage?: any;
+  profileStorage?: any;
+  statisticsStorage?: any;
 }
 
 // See https://playwright.dev/docs/test-fixtures and https://playwright.dev/docs/test-parameterize
 interface AppFixtures {
   codeCoverageAutoTestFixture: void;
+  initalizeLocalStorageFixture: void;
 }
 
 // Export the extended test type.
 // All tests that use this export 'test' type will have the automatic fixture applied to them.
 // Code from https://github.com/edumserrano/playwright-adventures/blob/main/demos/code-coverage-with-monocart-reporter/tests/_shared/app-fixtures.ts
-const newBase = base.extend<AppFixtures>({
+const newBase = base.extend<AppFixtures & MyStorageOptions>({
+  activeGameStorage: [null, { option: true }],
+  profileStorage: [null, { option: true }],
+
   codeCoverageAutoTestFixture: [
     async ({ browser, page }, use): Promise<void> => {
       const options: CollectV8CodeCoverageOptions = {
@@ -52,28 +61,49 @@ const newBase = base.extend<AppFixtures>({
       auto: true,
     },
   ],
+  initalizeLocalStorageFixture: [
+    async ({ page, activeGameStorage, profileStorage }, use) => {
+      if (activeGameStorage) {
+        await page.evaluate((activeGameStorage: JSON) => {
+          window.localStorage.setItem(
+            "active_game",
+            JSON.stringify(activeGameStorage)
+          );
+        }, activeGameStorage as JSON);
+      }
+      if (profileStorage) {
+        console.log(profileStorage);
+        await page.evaluate((profileStorage: JSON) => {
+          window.localStorage.setItem(
+            "profile",
+            JSON.stringify(profileStorage)
+          );
+          console.log(window.localStorage.getItem("profile"));
+        }, profileStorage as JSON);
+      }
+
+      await use();
+    },
+    {
+      auto: true,
+    },
+  ],
 });
 
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
 export const test = newBase.extend<MyFixtures & MyOptions>({
   gameToResume: [ALMOST_FINISHED_GAME, { option: true }],
-  profileSetting: [{}, { option: true }],
 
   page: async ({ page }, use) => {
     await page.goto("");
     await use(page);
   },
   // Loads a game from local storage and navigates to resume the game.
-  resumeGame: async ({ page, gameToResume, profileSetting }, use) => {
+  resumeGame: async ({ page, gameToResume }, use) => {
     await page.evaluate((gameToResume: JSON) => {
       window.localStorage.setItem("active_game", JSON.stringify(gameToResume));
     }, gameToResume as JSON);
-    if (profileSetting) {
-      await page.evaluate((profileSetting: JSON) => {
-        window.localStorage.setItem("profile", JSON.stringify(profileSetting));
-      }, profileSetting as JSON);
-    }
     await page.goto("");
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();

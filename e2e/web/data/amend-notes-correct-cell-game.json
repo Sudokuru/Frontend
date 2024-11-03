@@ -1,7 +1,7 @@
 [
   {
     "variant": "classic",
-    "version": "1.0.0",
+    "version": 1,
     "selectedCells": [
       {
         "r": 0,
@@ -364,7 +364,7 @@
       [6, 4, 8, 5, 2, 3, 7, 1, 9]
     ],
     "statistics": {
-      "difficulty": "easy",
+      "difficulty": "novice",
       "internalDifficulty": 0,
       "numHintsUsed": 0,
       "numHintsUsedPerStrategy": [],
