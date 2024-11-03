@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.27.2",
+    "date": "November 3rd, 2024",
+    "summary": "The website / app no longer crashes if the user's data becomes corrupted.",
+    "bug fixes": [
+      "If user's data becomes invalid or corrupted, it is deleted to prevent the app/site from crashing."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.27.1",
     "date": "November 2nd, 2024",
     "summary": "Fixed bug where Sudoku games were not being saved and could not be resumed after pausing.",
