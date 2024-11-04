@@ -203,24 +203,20 @@ const LessonPanel = (props: any) => {
             <Dialog.Title>Warning</Dialog.Title>
             <Dialog.Content>
               <Text variant="bodyLarge">
-                You have selected a lesson that is locked. Locked lessons build
-                on knowledge gained from previous lessons. It is recommended
-                that you complete the previous lessons before attempting this
-                one. Are you sure you want to continue?
+                You have selected a lesson that is locked.{"\n"}
+                Locked lessons build on knowledge gained from previous lessons.
+                {"\n"}
+                It is recommended that you complete the previous lessons before
+                attempting this one.
+              </Text>
+              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
+                Are you sure you want to continue?
               </Text>
             </Dialog.Content>
           </Dialog>
         </Portal>
         {/*
         <Alert
-          show={lockedWarningVisible}
-          title="Warning"
-          message={
-            `You have selected a lesson that is locked. \n\n` +
-            `Locked lessons build on knowledge gained from previous lessons. \n\n` +
-            `It is recommended that you complete the previous lessons before attempting this one. \n\n` +
-            `Are you sure you want to continue?`
-          }
           messageStyle={{ maxWidth: 500 }}
           alertContainerStyle={{
             backgroundColor: rgba(theme.colors.background, 0.3),
