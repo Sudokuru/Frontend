@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
-import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Text,
+  Card,
+  useTheme,
+  Dialog,
+} from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import {
@@ -17,7 +23,6 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import Alert from "react-native-awesome-alerts";
 import { rgba } from "polished";
 import { getStrategies } from "../../Api/Lessons";
 
@@ -192,6 +197,10 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
+        <Dialog visible={lockedWarningVisible} onDismiss={hideLockedWarning}>
+          <Dialog.Title>Warning</Dialog.Title>
+        </Dialog>
+        {/*
         <Alert
           show={lockedWarningVisible}
           title="Warning"
@@ -222,7 +231,7 @@ const LessonPanel = (props: any) => {
             });
           }}
           overlayStyle={{ backgroundColor: "transparent" }}
-        />
+        /> */}
       </View>
     );
   }
