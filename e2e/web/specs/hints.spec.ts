@@ -300,7 +300,7 @@ test.describe("board OBVIOUS_SINGLE", () => {
 test.describe("board OBVIOUS_PAIR", () => {
   test.use({
     gameToResume: OBVIOUS_PAIR_ROW_GAME,
-    profileSetting: OBVIOUS_PAIR_PROFILE,
+    profileStorage: OBVIOUS_PAIR_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -345,7 +345,7 @@ test.describe("board OBVIOUS_PAIR", () => {
 test.describe("board OBVIOUS_PAIR", () => {
   test.use({
     gameToResume: OBVIOUS_PAIR_COLUMN_GAME,
-    profileSetting: OBVIOUS_PAIR_PROFILE,
+    profileStorage: OBVIOUS_PAIR_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -420,7 +420,7 @@ test.describe("board OBVIOUS_PAIR", () => {
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
     gameToResume: OBVIOUS_TRIPLET_ROW_GAME,
-    profileSetting: OBVIOUS_TRIPLET_PROFILE,
+    profileStorage: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -451,7 +451,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
     gameToResume: OBVIOUS_TRIPLET_COLUMN_GAME,
-    profileSetting: OBVIOUS_TRIPLET_PROFILE,
+    profileStorage: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -491,7 +491,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
     gameToResume: OBVIOUS_TRIPLET_BOX_GAME,
-    profileSetting: OBVIOUS_TRIPLET_PROFILE,
+    profileStorage: OBVIOUS_TRIPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -522,7 +522,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
     gameToResume: OBVIOUS_QUADRUPLET_ROW_GAME,
-    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
+    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -566,7 +566,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
     gameToResume: OBVIOUS_QUADRUPLET_COLUMN_GAME,
-    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
+    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -598,7 +598,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
     gameToResume: OBVIOUS_QUADRUPLET_BOX_GAME,
-    profileSetting: OBVIOUS_QUADRUPLET_PROFILE,
+    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -702,7 +702,7 @@ test.describe("board HIDDEN_SINGLE", () => {
 test.describe("board HIDDEN_SINGLE", () => {
   test.use({
     gameToResume: HIDDEN_SINGLE_BOX_GAME,
-    profileSetting: HIDDEN_SINGLE_PROFILE,
+    profileStorage: HIDDEN_SINGLE_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -733,7 +733,7 @@ test.describe("board HIDDEN_SINGLE", () => {
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
     gameToResume: HIDDEN_PAIR_ROW_GAME,
-    profileSetting: HIDDEN_PAIR_PROFILE,
+    profileStorage: HIDDEN_PAIR_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -764,7 +764,7 @@ test.describe("board HIDDEN_PAIR", () => {
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
     gameToResume: HIDDEN_PAIR_COLUMN_GAME,
-    profileSetting: HIDDEN_PAIR_PROFILE,
+    profileStorage: HIDDEN_PAIR_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -806,7 +806,7 @@ test.describe("board HIDDEN_PAIR", () => {
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
     gameToResume: HIDDEN_PAIR_BOX_GAME,
-    profileSetting: HIDDEN_PAIR_PROFILE,
+    profileStorage: HIDDEN_PAIR_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -833,7 +833,7 @@ test.describe("board HIDDEN_PAIR", () => {
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
     gameToResume: HIDDEN_TRIPLET_ROW_GAME,
-    profileSetting: HIDDEN_TRIPLET_PROFILE,
+    profileStorage: HIDDEN_TRIPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -877,7 +877,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
     gameToResume: HIDDEN_TRIPLET_COLUMN_GAME,
-    profileSetting: HIDDEN_TRIPLET_PROFILE,
+    profileStorage: HIDDEN_TRIPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -913,7 +913,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
     gameToResume: HIDDEN_TRIPLET_BOX_GAME,
-    profileSetting: HIDDEN_TRIPLET_PROFILE,
+    profileStorage: HIDDEN_TRIPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -957,7 +957,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
     gameToResume: HIDDEN_QUADRUPLET_ROW_GAME,
-    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -988,7 +988,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
     gameToResume: HIDDEN_QUADRUPLET_COLUMN_GAME,
-    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -1027,7 +1027,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
     gameToResume: HIDDEN_QUADRUPLET_BOX_GAME,
-    profileSetting: HIDDEN_QUADRUPLET_PROFILE,
+    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -1063,7 +1063,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 test.describe("board POINTING_PAIR", () => {
   test.use({
     gameToResume: POINTING_PAIR_ROW_GAME,
-    profileSetting: POINTING_PAIR_PROFILE,
+    profileStorage: POINTING_PAIR_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -1090,7 +1090,7 @@ test.describe("board POINTING_PAIR", () => {
 test.describe("board POINTING_PAIR", () => {
   test.use({
     gameToResume: POINTING_PAIR_COLUMN_GAME,
-    profileSetting: POINTING_PAIR_PROFILE,
+    profileStorage: POINTING_PAIR_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -1119,7 +1119,7 @@ test.describe("board POINTING_PAIR", () => {
 test.describe("board POINTING_TRIPLET", () => {
   test.use({
     gameToResume: POINTING_TRIPLET_ROW_GAME,
-    profileSetting: POINTING_TRIPLET_PROFILE,
+    profileStorage: POINTING_TRIPLET_PROFILE,
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
@@ -1159,7 +1159,7 @@ test.describe("board POINTING_TRIPLET", () => {
 test.describe("board POINTING_TRIPLET", () => {
   test.use({
     gameToResume: POINTING_TRIPLET_COLUMN_GAME,
-    profileSetting: POINTING_TRIPLET_PROFILE,
+    profileStorage: POINTING_TRIPLET_PROFILE,
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {

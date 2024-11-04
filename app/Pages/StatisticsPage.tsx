@@ -23,6 +23,7 @@ const StatisticsPage = () => {
 
   const [isLoading, setLoading] = React.useState<boolean>(true);
   const [totalStatistics, setTotalStatistics] = React.useState<Statistics>({
+    version: 1,
     totalScore: 0,
     averageSolveTime: 0,
     fastestSolveTime: 0,

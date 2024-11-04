@@ -24,19 +24,21 @@ const PlayPage = () => {
 
   const theme = useTheme();
 
+  // This determines if user has active game and displays resume button conditionally.
+  async function showOrHideResumeButton() {
+    const game: SudokuObjectProps[] = await getGame();
+    if (game != null) {
+      showResumeButton();
+      return true;
+    } else {
+      hideResumeButton();
+      return false;
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
-      // This determines if user has active game and displays resume button conditionally.
-      async function grabCurrentGame() {
-        await getGame().then((game: SudokuObjectProps[]) => {
-          if (game != null) {
-            showResumeButton();
-          } else {
-            hideResumeButton();
-          }
-        });
-      }
-      grabCurrentGame();
+      showOrHideResumeButton();
     }, [])
   );
 
@@ -99,11 +101,14 @@ const PlayPage = () => {
               <Button
                 style={{ margin: newSize / 4 }}
                 mode="outlined"
-                onPress={() =>
-                  navigation.navigate("SudokuPage", {
-                    action: "ResumeGame",
-                  })
-                }
+                onPress={async function handlePress() {
+                  const game = await showOrHideResumeButton();
+                  if (game) {
+                    navigation.navigate("SudokuPage", {
+                      action: "ResumeGame",
+                    });
+                  }
+                }}
               >
                 Resume Puzzle
               </Button>

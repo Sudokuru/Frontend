@@ -7,9 +7,8 @@
   "highlightIdenticalValues": true,
   "previewMode": false,
   "strategyHintOrder": [
+    "banana",
     "HIDDEN_SINGLE",
-    "SIMPLIFY_NOTES",
-    "OBVIOUS_SINGLE",
     "OBVIOUS_PAIR",
     "HIDDEN_PAIR",
     "POINTING_PAIR",
