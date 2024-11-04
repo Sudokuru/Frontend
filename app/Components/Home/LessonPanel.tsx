@@ -200,17 +200,21 @@ const LessonPanel = (props: any) => {
           </View>
         ))}
         <Portal>
-          <Dialog visible={lockedWarningVisible} onDismiss={hideLockedWarning}>
+          <Dialog
+            visible={lockedWarningVisible}
+            onDismiss={hideLockedWarning}
+            style={{ alignSelf: "center", alignItems: "center" }}
+          >
             <Dialog.Title>Warning</Dialog.Title>
             <Dialog.Content>
-              <Text variant="bodyLarge">
+              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
                 You have selected a lesson that is locked.{"\n"}
                 Locked lessons build on knowledge gained from previous lessons.
                 {"\n"}
                 It is recommended that you complete the previous lessons before
                 attempting this one.
               </Text>
-              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
+              <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
                 Are you sure you want to continue?
               </Text>
               <View
@@ -220,8 +224,8 @@ const LessonPanel = (props: any) => {
                   alignSelf: "center",
                 }}
               >
-                <Button>No</Button>
-                <Button>Yes</Button>
+                <Button labelStyle={{ fontSize: 20 }}>No</Button>
+                <Button labelStyle={{ fontSize: 20 }}>Yes</Button>
               </View>
             </Dialog.Content>
           </Dialog>
