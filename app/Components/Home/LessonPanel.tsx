@@ -6,6 +6,7 @@ import {
   Card,
   useTheme,
   Dialog,
+  Portal,
 } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
@@ -197,9 +198,19 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
-        <Dialog visible={lockedWarningVisible} onDismiss={hideLockedWarning}>
-          <Dialog.Title>Warning</Dialog.Title>
-        </Dialog>
+        <Portal>
+          <Dialog visible={lockedWarningVisible} onDismiss={hideLockedWarning}>
+            <Dialog.Title>Warning</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyLarge">
+                You have selected a lesson that is locked. Locked lessons build
+                on knowledge gained from previous lessons. It is recommended
+                that you complete the previous lessons before attempting this
+                one. Are you sure you want to continue?
+              </Text>
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
         {/*
         <Alert
           show={lockedWarningVisible}
