@@ -7,6 +7,7 @@ import {
   useTheme,
   Dialog,
   Portal,
+  Button,
 } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
@@ -212,6 +213,16 @@ const LessonPanel = (props: any) => {
               <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
                 Are you sure you want to continue?
               </Text>
+              <View
+                style={{
+                  flexWrap: "wrap",
+                  flexDirection: "row",
+                  alignSelf: "center",
+                }}
+              >
+                <Button>No</Button>
+                <Button>Yes</Button>
+              </View>
             </Dialog.Content>
           </Dialog>
         </Portal>
