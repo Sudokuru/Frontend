@@ -224,36 +224,27 @@ const LessonPanel = (props: any) => {
                   alignSelf: "center",
                 }}
               >
-                <Button labelStyle={{ fontSize: 20 }}>No</Button>
-                <Button labelStyle={{ fontSize: 20 }}>Yes</Button>
+                <Button
+                  onPress={hideLockedWarning}
+                  labelStyle={{ fontSize: 20 }}
+                >
+                  No
+                </Button>
+                <Button
+                  onPress={() => {
+                    hideLockedWarning;
+                    navigation.navigate("Lesson", {
+                      params: availableLessons[lockedLesson],
+                    });
+                  }}
+                  labelStyle={{ fontSize: 20 }}
+                >
+                  Yes
+                </Button>
               </View>
             </Dialog.Content>
           </Dialog>
         </Portal>
-        {/*
-        <Alert
-          messageStyle={{ maxWidth: 500 }}
-          alertContainerStyle={{
-            backgroundColor: rgba(theme.colors.background, 0.3),
-          }}
-          showCancelButton={true}
-          showConfirmButton={true}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          cancelText={"No"}
-          confirmText={"Yes"}
-          confirmButtonColor={theme.colors.primary}
-          onCancelPressed={() => {
-            hideLockedWarning();
-          }}
-          onConfirmPressed={() => {
-            hideLockedWarning();
-            navigation.navigate("Lesson", {
-              params: availableLessons[lockedLesson],
-            });
-          }}
-          overlayStyle={{ backgroundColor: "transparent" }}
-        /> */}
       </View>
     );
   }
