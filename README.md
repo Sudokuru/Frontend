@@ -67,10 +67,6 @@
 
 6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
 
-7. 
-  ```shell
-  npm run pre-commit
-  ```
 
 ## 📲 Mobile Setup (not needed to run website):
 

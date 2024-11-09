@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "workspaces": [
-    "sudokuru", 
+    "sudokuru",
     "e2e/web"
   ],
   "version": "1.0.0",

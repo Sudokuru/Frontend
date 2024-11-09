@@ -25,3 +25,8 @@ web-build/
 .DS_Store
 
 .vercel
+
+# playwright
+test-results/
+playwright-report/
+playwright-coverage/
