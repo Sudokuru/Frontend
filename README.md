@@ -63,6 +63,14 @@
 2. Install Node.js `v19.5.0` or later
 3. Install npm `9.3.1` or later
 4. Run `npm i` in the root folder
+5. [Install pre-commit hooks](https://pre-commit.com/#install)
+
+6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
+
+7. 
+  ```shell
+  npm run pre-commit
+  ```
 
 ## 📲 Mobile Setup (not needed to run website):
 
@@ -74,14 +82,14 @@
 
 1. Run `npm run start` from this repositories root folder
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
-3. For Web, hit the w key to start up the website at `localhost:19000`
+3. For Web, hit the w key to start up the website at `localhost:8081`
 
 ## 🧭 Navigating the Codebase
 
 <details>
 <summary>app</summary>
 
-📂 app/ is the parent folder for all the application code
+📂 sudokuru/app/ is the parent folder for all the application code
 
 - 📡 Api/ contains classes to make it easier to interact with LocalStorage state data
 
@@ -148,8 +156,8 @@
 
 ### ⚙️ Setup
 
-1. Run `npx playwright install` to install playwright dependencies
-2. Create a `.env` file in for local development based on values in `.env.example`
+2. Run `npm run playwright:init` to install playwright dependencies
+3. Inside of e2e/web folder, create a `.env` file in for local development based on values in `.env.example`
 
 ### 🏃‍♂️ Running the Tests
 
@@ -160,7 +168,7 @@
 
 ### 🔧 Setup to use a Single Puzzle for Debugging
 
-- In the `app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
+- In the `sudokuru/app/Api/Puzzles.ts` file, the `startGame` function can be modified so that only a single game is used.
 - Replace `returnGameOfDifficulty(difficulty)` with `returnGameOfDifficulty("dev")` and the dev puzzle will be retrieved.
 - The `returnGameOfDifficulty` function can also be modified to return a desired puzzle. By default, it returns the first `novice` puzzle.
 

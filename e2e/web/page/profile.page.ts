@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { formatOneLessonName } from "../../../app/Functions/learnedLessons";
+import { formatOneLessonName } from "../../../sudokuru/app/Functions/learnedLessons";
 import { SudokuStrategy } from "sudokuru";
 
 export class ProfilePage {

@@ -1,11 +1,11 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { SudokuStrategy } from "sudokuru";
-import { toTitle } from "../../../app/Components/SudokuBoard/sudoku";
+import { toTitle } from "../../../sudokuru/app/Components/SudokuBoard/sudoku";
 import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   HINT_NOT_HIGHLIGHTED_COLOR_RGB,
   HINT_SELECTED_COLOR_RGB,
-} from "../../../app/Styling/HighlightColors";
+} from "../../../sudokuru/app/Styling/HighlightColors";
 
 export class SudokuBoardComponent {
   readonly page: Page;

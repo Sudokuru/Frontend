@@ -1,8 +1,8 @@
 import { ReleaseNotesPage } from "./../page/releasenotes.page";
 import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
-import json from "../../../Changelog.json";
-import { ReleaseNoteInterface } from "../../../app/Components/ReleaseNotes/ReleaseNote";
+import json from "../../../sudokuru/Changelog.json";
+import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
 const releaseNotes: ReleaseNoteInterface[] = json;
 
 test.describe("release notes", () => {
