@@ -67,7 +67,6 @@
 
 6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
 
-
 ## 📲 Mobile Setup (not needed to run website):
 
 1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
