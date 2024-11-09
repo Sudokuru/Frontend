@@ -4,9 +4,6 @@
     "sudokuru",
     "e2e/web"
   ],
-  "version": "1.0.0",
-  "description": "![Sudokuru Logo](https://sudokuru.s3.amazonaws.com/goldLogoText.png)",
-  "main": "index.js",
   "directories": {
     "doc": "docs"
   },
@@ -16,6 +13,7 @@
     "playwright:test:chrome": "npm run playwright:test:chrome --workspace=e2e/web",
     "playwright:ui": "npm run playwright:ui --workspace=e2e/web",
     "playwright:report": "npm run playwright:report --workspace=e2e/web",
+    "playwright:monocart:report": "npm run playwright:monocart:report --workspace=e2e/web",
     "playwright:init": "npm run playwright:init --workspace=e2e/web",
     "start": "npm run start --workspace=sudokuru",
     "start:tunnel": "npm run start:tunnel --workspace=sudokuru",
@@ -35,8 +33,6 @@
   "lint-staged": {
     "**/*": "npx prettier --write --ignore-unknown"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "lint-staged": "^15.2.10",
     "prettier": "2.8.8",

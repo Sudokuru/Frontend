@@ -1,17 +1,13 @@
 {
   "name": "playwright-web",
-  "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "playwright:test": "npx playwright test",
     "playwright:test:chrome": "npx playwright test --project=chromium",
     "playwright:ui": "npx playwright test --ui",
     "playwright:report": "npx playwright show-report playwright-report",
+    "playwright:monocart:report": "npx monocart show-report test-results/report.html",
     "playwright:init": "npx playwright install"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@playwright/test": "^1.48.2",
     "dotenv-safe": "^9.1.0"
