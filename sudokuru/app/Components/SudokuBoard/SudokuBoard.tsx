@@ -37,6 +37,7 @@ import {
   PEER_SELECTED_COLOR,
   SELECTED_COLOR,
   SELECTED_CONFLICT_COLOR,
+  SELECTED_IDENTICAL_VALUE_COLOR,
 } from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Components/Hint";
@@ -643,6 +644,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
     } else if (conflict && selected) {
       cellBackgroundColor = SELECTED_CONFLICT_COLOR;
+    } else if (selected && identicalValue) {
+      cellBackgroundColor = SELECTED_IDENTICAL_VALUE_COLOR;
     } else if (selected) {
       cellBackgroundColor = SELECTED_COLOR;
     } else if (identicalValue) {
