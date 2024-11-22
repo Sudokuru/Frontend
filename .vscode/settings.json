@@ -3,7 +3,7 @@
   "json.schemas": [
     {
       "fileMatch": ["Changelog.json"],
-      "url": "./changelog.schema.json"
+      "url": "./sudokuru/changelog.schema.json"
     }
   ]
 }

@@ -6,12 +6,12 @@ import {
   PEER_SELECTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
   SELECTED_CONFLICT_COLOR_RGB,
-} from "../../../app/Styling/HighlightColors";
+} from "../../../sudokuru/app/Styling/HighlightColors";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { HeaderComponent } from "../components/header.component";
 import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
-import { getSingleMultiSelectKey } from "../../../playwright.config";
+import { getSingleMultiSelectKey } from "../playwright.config";
 import { PlayPage } from "../page/play.page";
 
 test.describe("board highlighting", () => {

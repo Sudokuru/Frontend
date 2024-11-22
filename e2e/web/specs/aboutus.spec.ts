@@ -1,6 +1,6 @@
 import { test } from "../fixture";
 import { AboutUsPage } from "../page/aboutus.page";
-import { contributors, teamMembers } from "../../../app/Data/members";
+import { contributors, teamMembers } from "../../../sudokuru/app/Data/members";
 
 test.describe("about us page", () => {
   test("team member cards have text and buttons work", async ({ aboutUs }) => {

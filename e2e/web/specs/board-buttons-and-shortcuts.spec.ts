@@ -2,9 +2,9 @@ import { test } from "../fixture";
 import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
-import { SELECTED_COLOR_RGB } from "../../../app/Styling/HighlightColors";
+import { SELECTED_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
 import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME } from "../data";
-import { getSingleMultiSelectKey } from "../../../playwright.config";
+import { getSingleMultiSelectKey } from "../playwright.config";
 
 test.describe("hint", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });

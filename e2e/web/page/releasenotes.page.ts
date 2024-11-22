@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { ReleaseNoteInterface } from "../../../app/Components/ReleaseNotes/ReleaseNote";
+import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
 
 export class ReleaseNotesPage {
   readonly page: Page;
