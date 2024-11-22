@@ -6,6 +6,7 @@ import {
   PEER_SELECTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
   SELECTED_CONFLICT_COLOR_RGB,
+  SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../sudokuru/app/Styling/HighlightColors";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { HeaderComponent } from "../components/header.component";
@@ -353,7 +354,7 @@ test.describe("board multiselect highlighting", () => {
       },
       {
         condition: (row, column) => row === 0 && column === 0,
-        color: SELECTED_COLOR_RGB,
+        color: SELECTED_IDENTICAL_VALUE_COLOR_RGB,
       },
       {
         condition: (row, column) =>

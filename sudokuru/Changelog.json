@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.27.3",
+    "date": "November 21st, 2024",
+    "summary": "Enhanced visual feedback by changing selected cell colors to improve visibility of identical values.",
+    "features": [
+      "Selected cells now turn green when they contain valid values and the 'highlight identical values' setting is enabled, making it easier to identify cells with matching values."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.27.2",
     "date": "November 3rd, 2024",
     "summary": "The website / app no longer crashes if the user's data becomes corrupted.",
