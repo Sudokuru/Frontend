@@ -137,8 +137,6 @@ jobs:
         run: npm run playwright:init --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
-        env:
-          CI: true
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
