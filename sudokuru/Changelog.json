@@ -2,9 +2,9 @@
   {
     "version": "1.27.3",
     "date": "November 21st, 2024",
-    "summary": "Changing selected cell color to green if it is a valid value. This change makes it easier to see all cells of a specific value when highlight identical values setting is enabled.",
+    "summary": "Enhanced visual feedback by changing selected cell colors to improve visibility of identical values.",
     "features": [
-      "Changing selected cell color to green if it is a valid value. This change makes it easier to see all cells of a specific value when highlight identical values setting is enabled."
+      "Selected cells now turn green when they contain valid values and the 'highlight identical values' setting is enabled, making it easier to identify cells with matching values."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
