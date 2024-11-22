@@ -137,6 +137,7 @@ jobs:
         run: npm run playwright:init --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
+        working-directory: e2e/web
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
