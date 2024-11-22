@@ -1,7 +1,7 @@
 import { test } from "../fixture";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
-import {  SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
+import {  SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/sudokuru/app/Styling/HighlightColors";
 import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME } from "../data";
 import { getSingleMultiSelectKey } from "../playwright.config";
 
