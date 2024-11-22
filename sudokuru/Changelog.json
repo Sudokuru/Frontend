@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.27.3",
+    "date": "November 21st, 2024",
+    "summary": "Changing selected cell color to green if it is a valid value. This change makes it easier to see all cells of a specific value when highlight identical values setting is enabled.",
+    "features": [
+      "Changing selected cell color to green if it is a valid value. This change makes it easier to see all cells of a specific value when highlight identical values setting is enabled."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.27.2",
     "date": "November 3rd, 2024",
     "summary": "The website / app no longer crashes if the user's data becomes corrupted.",
