@@ -1,7 +1,7 @@
 import { test } from "../fixture";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
-import {  SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/sudokuru/app/Styling/HighlightColors";
+import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/sudokuru/app/Styling/HighlightColors";
 import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME } from "../data";
 import { getSingleMultiSelectKey } from "../playwright.config";
 
@@ -389,7 +389,11 @@ test.describe("navigate board", () => {
     const keys = ["ArrowRight", "d", "D"];
     for (const key of keys) {
       for (let col = 0; col < 9; col++) {
-        await sudokuBoard.cellHasColor(0, col, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
+        await sudokuBoard.cellHasColor(
+          0,
+          col,
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+        );
         await sudokuBoard.page.keyboard.press(key);
       }
       await sudokuBoard.cellHasColor(0, 0, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
@@ -402,7 +406,11 @@ test.describe("navigate board", () => {
     const keys = ["ArrowLeft", "a", "A"];
     for (const key of keys) {
       for (let col = 8; col >= 0; col--) {
-        await sudokuBoard.cellHasColor(0, col, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
+        await sudokuBoard.cellHasColor(
+          0,
+          col,
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+        );
         await sudokuBoard.page.keyboard.press(key);
       }
       await sudokuBoard.cellHasColor(0, 8, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
@@ -415,7 +423,11 @@ test.describe("navigate board", () => {
     const keys = ["ArrowDown", "s", "S"];
     for (const key of keys) {
       for (let row = 0; row < 9; row++) {
-        await sudokuBoard.cellHasColor(row, 0, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
+        await sudokuBoard.cellHasColor(
+          row,
+          0,
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+        );
         await sudokuBoard.page.keyboard.press(key);
       }
       await sudokuBoard.cellHasColor(0, 0, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
@@ -428,7 +440,11 @@ test.describe("navigate board", () => {
     const keys = ["ArrowUp", "w", "W"];
     for (const key of keys) {
       for (let row = 8; row >= 0; row--) {
-        await sudokuBoard.cellHasColor(row, 0, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
+        await sudokuBoard.cellHasColor(
+          row,
+          0,
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+        );
         await sudokuBoard.page.keyboard.press(key);
       }
       await sudokuBoard.cellHasColor(8, 0, SELECTED_IDENTICAL_VALUE_COLOR_RGB);
