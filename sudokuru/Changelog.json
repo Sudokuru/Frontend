@@ -1,7 +1,7 @@
 [
   {
     "version": "1.27.4",
-    "date": "November 30th, 2024",
+    "date": "December 1st, 2024",
     "summary": "Reverted change that made sudoku board text selectable, as well as other areas in the app.",
     "bug fixes": [
       "Reverted the change that made the sudoku board text selectable which made playing the game more difficult."
