@@ -7,6 +7,7 @@ export default {
   platform: ["ios", "android", "web"],
   icon: ".assets/goldLogoNoText.png",
   orientation: "portrait",
+  newArchEnabled: true,
   splash: {
     backgroundColor: "#000000",
   },
