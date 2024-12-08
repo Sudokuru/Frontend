@@ -10,7 +10,7 @@ export default {
   newArchEnabled: true,
   splash: {
     backgroundColor: "#000000",
-    image: "./.assets/goldLogoNoText.png",
+    image: ".assets/goldLogoNoText.png",
   },
   updates: {
     url: "https://u.expo.dev/23c4c607-ead6-4786-9a9c-03f57a97dac7",
@@ -24,11 +24,11 @@ export default {
     bundler: "metro",
   },
   ios: {
-    bundleIdentifier: "sudokuru.ogo.app",
+    bundleIdentifier: "sudokuru.vercel.app",
     supportsTablet: true,
   },
   android: {
-    package: "sudokuru.ogo.app",
+    package: "sudokuru.vercel.app",
   },
   extra: {
     eas: {
