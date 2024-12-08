@@ -24,11 +24,11 @@ export default {
     bundler: "metro",
   },
   ios: {
-    bundleIdentifier: "sudokuru.app",
+    bundleIdentifier: "sudokuru.ogo.app",
     supportsTablet: true,
   },
   android: {
-    package: "sudokuru.app",
+    package: "sudokuru.ogo.app",
   },
   extra: {
     eas: {
