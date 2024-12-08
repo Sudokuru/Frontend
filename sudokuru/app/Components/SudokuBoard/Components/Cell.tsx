@@ -45,7 +45,7 @@ const Cell = (props: RenderCellProps) => {
         fontFamily: "Inter_200ExtraLight",
         color: noteColor[noteIndex - 1],
       };
-      return <Text style={styleVal}>{noteIndex}</Text>;
+      return <Text style={styleVal} selectable={false}>{noteIndex}</Text>;
     }
   };
 
@@ -138,6 +138,7 @@ const Cell = (props: RenderCellProps) => {
             textAlign: "center",
             lineHeight: cellSize ? cellSize : fallbackHeight,
           }}
+          selectable={false}
         >
           {entry}
         </Text>
