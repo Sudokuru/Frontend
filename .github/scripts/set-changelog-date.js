@@ -27,7 +27,7 @@ const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
 console.log(formattedDate);
 
-const firstDate = Object.keys(changelog)[0];
+const firstDate = changelog[0].date;
 const isFirstDateReplaced = firstDate === "#{date}#";
 
 const vars = { DATE: formattedDate };
