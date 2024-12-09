@@ -9,6 +9,9 @@ runs:
       run: | 
         npm install -g @qetza/replacetokens
         npm install -g bun
+    - name: Set Timezone to EST
+      shell: bash
+      run: sudo timedatectl set-timezone EST
     - name: Get date
       shell: bash
       id: get-date
