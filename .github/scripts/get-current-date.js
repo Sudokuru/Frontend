@@ -15,8 +15,8 @@ function getDaySuffix(day) {
       return "th";
   }
 }
-const utcDate = new Date().toLocaleString("en-US", { timeZone: 'America/New_York' });
 
+const utcDate = new Date().toLocaleString("en-US", { timeZone: 'America/New_York' });
 const date = new Date(utcDate);
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const day = date.getDate();
