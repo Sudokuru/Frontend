@@ -13,7 +13,7 @@ runs:
       id: get-date
       with:
         script: |
-          import { $ } from "bun";
+          const $ = require('bun').$;
 
           function getDaySuffix(day) {
             if (day >= 11 && day <= 13) {
