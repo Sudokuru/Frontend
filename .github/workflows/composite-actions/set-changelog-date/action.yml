@@ -12,7 +12,7 @@ runs:
     - name: Get date
       shell: bash
       id: get-date
-      run: npx bun ./.github/scrips/get-current-date.js
+      run: npx bun ./.github/scripts/get-current-date.js
     - name: Update Changelog date
       shell: bash
       run: | 
