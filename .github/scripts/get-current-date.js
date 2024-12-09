@@ -19,7 +19,8 @@ function getDaySuffix(day) {
 const date = new Date();
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const day = date.getDate();
+console.log(date);
 const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
-await $`::set-output name=DATE::${formattedDate}`;
+await $`echo "DATE=${formattedDate}" >> $GITHUB_OUTPUT`;
 console.log(formattedDate);
