@@ -1,6 +1,6 @@
 import { $ } from "bun";
 import { replaceTokens } from '@qetza/replacetokens';
-import * as fs from 'fs';
+import changelog from "../../sudokuru/Changelog.json";
 
 function getDaySuffix(day) {
   if (day >= 11 && day <= 13) {
@@ -27,7 +27,6 @@ const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
 console.log(formattedDate);
 
-const changelog = JSON.parse(fs.readFileSync('sudokuru/Changelog.json', 'utf8'));
 const firstDate = Object.keys(changelog)[0];
 const isFirstDateReplaced = firstDate === "#{date}#";
 
