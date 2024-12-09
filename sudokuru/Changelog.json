@@ -1,7 +1,7 @@
 ﻿[
   {
     "version": "1.27.5",
-    "date": "December 8th, 2024",
+    "date": "#{date}#",
     "summary": "Text is now selectable on web and desktop",
     "features": [
       "Text on the sudoku board is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
@@ -11,7 +11,7 @@
   },
   {
     "version": "1.27.4",
-    "date": "#{date}#",
+    "date": "December 1st, 2024",
     "summary": "Reverted change that made sudoku board text selectable, as well as other areas in the app.",
     "bug fixes": [
       "Reverted the change that made the sudoku board text selectable which made playing the game more difficult."
