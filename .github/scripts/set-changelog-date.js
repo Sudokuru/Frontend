@@ -39,18 +39,18 @@ const result = await replaceTokens(
 
 if(result.replaced > 1) {
   const errorMessage = "Changelog.json file has multiple dates replaced!";
-  if (process.env.CI){
-    await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::${errorMessage}"`;
-    process.exit(0);
-  }
+  // if (process.env.CI){
+  //   await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::${errorMessage}"`;
+  //   process.exit(0);
+  // }
   throw new Error(errorMessage);
 }
 
 if(!isFirstDateReplaced && result.replaced >= 1) {
   const errorMessage = "Changelog.json file has incorrect #{date}# configuration!";
-  if (process.env.CI){
-    await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::${errorMessage}"`;
-    process.exit(0);
-  }
+  // if (process.env.CI){
+  //   await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::${errorMessage}"`;
+  //   process.exit(0);
+  // }
   throw new Error(errorMessage);
 }
