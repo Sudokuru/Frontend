@@ -1,5 +1,6 @@
 import { $ } from "bun";
 import { replaceTokens } from '@qetza/replacetokens';
+import * as fs from 'fs';
 
 function getDaySuffix(day) {
   if (day >= 11 && day <= 13) {
@@ -24,8 +25,11 @@ const day = date.getDate();
 console.log(utcDate);
 const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
-
 console.log(formattedDate);
+
+const changelog = JSON.parse(fs.readFileSync('sudokuru/Changelog.json', 'utf8'));
+const firstDate = Object.keys(changelog)[0];
+const isFirstDateReplaced = firstDate === "#{date}#";
 
 const vars = { DATE: formattedDate };
 
@@ -35,10 +39,11 @@ const result = await replaceTokens(
 );
 
 if(result.replaced > 1) {
-  if (process.env.CI){
-    await $`::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::Changelog.json file has multiple dates replaced!`;
-  }
+  await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::Changelog.json file has multiple dates replaced!"`;
   throw new Error('Changelog.json file has multiple dates replaced!');
 }
 
-// todo add some code to verify that only the latest change can have #{date}# set and not any other changes, fail pipeline if that is the case
+if(!isFirstDateReplaced && result.replaced >= 1) {
+  await $`echo "::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::Changelog.json file has incorrect #{date}# configuration!"`;
+  throw new Error('Changelog.json file has incorrect #{date}# configuration!');
+}
