@@ -74,6 +74,8 @@ jobs:
       - name: Typescript Check
         working-directory: sudokuru
         run: npx tsc
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
 
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
