@@ -1,0 +1,19 @@
+name: Set Changelog Date
+description: Sets changelog date in changelog.json
+
+runs:
+  using: composite
+  steps:
+    - name: Install script dependencies
+      shell: bash
+      run: | 
+        npm install -g @qetza/replacetokens
+        npm install -g bun
+    - name: Get date
+      shell: bash
+      id: get-date
+      run: npx bun ./.github/scripts/get-current-date.js
+    - name: Update Changelog date
+      shell: bash
+      run: | 
+        npx replacetokens --sources '**/Changelog.json' --variables '{"date": "${{steps.get-date.outputs.DATE}}"}'

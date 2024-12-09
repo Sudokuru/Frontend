@@ -1,12 +1,11 @@
 import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
-import { ScrollView } from "react-native-gesture-handler";
 import { NumHintsUsedPerStrategy } from "../../NumHintsUsedPerStrategy";
 
 interface EndGameModalProps {
