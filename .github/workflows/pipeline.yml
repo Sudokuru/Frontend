@@ -87,6 +87,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
         uses: expo/expo-github-action@v8
         with:
@@ -126,6 +128,8 @@ jobs:
           node-version: 18.x
       - name: install dependencies
         run: npm i
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: JarvusInnovations/background-action@v1
         name: Bootstrap System Under Test (SUT)
         with:
@@ -173,6 +177,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -209,6 +215,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
@@ -289,6 +297,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
@@ -306,6 +316,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment

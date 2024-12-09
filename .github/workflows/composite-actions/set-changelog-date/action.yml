@@ -1,0 +1,42 @@
+name: Set Changelog Date
+description: Sets changelog date in changelog.json
+
+runs:
+  using: composite
+  steps:
+    - name: Install script dependencies
+      run: | 
+        npm install -g @qetza/replacetokens
+        npm install -g bun
+    - uses: actions/github-script@v7
+      id: get-date
+      with:
+        script: |
+          import { $ } from "bun";
+
+          function getDaySuffix(day) {
+            if (day >= 11 && day <= 13) {
+              return "th";
+            }
+            switch (day % 10) {
+              case 1:
+                return "st";
+              case 2:
+                return "nd";
+              case 3:
+                return "rd";
+              default:
+                return "th";
+            }
+          }
+
+          const date = new Date();
+          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+          const day = date.getDate();
+          const suffix = getDaySuffix(day);
+          const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
+          await $`::set-output name=DATE::${formattedDate}`;
+          console.log(formattedDate);
+    - name: Update Changelog date
+      run: | 
+        npx replacetokens --sources '**/Changelog.json' --variables '{"date": "${{steps.get-date.outputs.DATE}}"}'
