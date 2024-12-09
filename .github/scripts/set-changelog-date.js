@@ -25,10 +25,6 @@ console.log(utcDate);
 const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
 
-if (process.env.CI) {
-  await $`echo "DATE=${formattedDate}" >> $GITHUB_OUTPUT`;
-}
-
 console.log(formattedDate);
 
 const vars = { DATE: formattedDate };
@@ -39,6 +35,9 @@ const result = await replaceTokens(
 );
 
 if(result.replaced > 1) {
+  if (process.env.CI){
+    await $`::error file=sudokuru/changelog.json,title=INVALID-CHANGELOG::Changelog.json file has multiple dates replaced!`;
+  }
   throw new Error('Changelog.json file has multiple dates replaced!');
 }
 
