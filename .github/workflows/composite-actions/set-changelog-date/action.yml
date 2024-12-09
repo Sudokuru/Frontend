@@ -5,6 +5,7 @@ runs:
   using: composite
   steps:
     - name: Install script dependencies
+      shell: bash
       run: | 
         npm install -g @qetza/replacetokens
         npm install -g bun
@@ -38,5 +39,6 @@ runs:
           await $`::set-output name=DATE::${formattedDate}`;
           console.log(formattedDate);
     - name: Update Changelog date
+      shell: bash
       run: | 
         npx replacetokens --sources '**/Changelog.json' --variables '{"date": "${{steps.get-date.outputs.DATE}}"}'
