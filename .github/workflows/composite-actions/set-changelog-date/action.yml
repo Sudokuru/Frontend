@@ -4,11 +4,12 @@ description: Sets changelog date in changelog.json
 runs:
   using: composite
   steps:
-    - name: Install script dependencies
+    - name: Install replacetokens
       shell: bash
-      run: | 
-        npm install -g @qetza/replacetokens
-        npm install -g bun
+      run: npm install -g @qetza/replacetokens
+    - name: Install bun
+      shell: bash
+      run: npm install -g bun
     - uses: actions/github-script@v7
       id: get-date
       with:
