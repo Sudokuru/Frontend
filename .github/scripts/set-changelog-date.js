@@ -38,7 +38,6 @@ const result = await replaceTokens(
   (name) => vars[name],
 );
 
-console.log(result.replaced)
 if(result.replaced > 1) {
   throw new Error('Changelog.json file has multiple dates replaced!');
 }
