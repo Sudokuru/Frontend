@@ -1,13 +1,11 @@
 import React from "react";
-import { FlatList } from "react-native";
-
 import json from "../../Changelog.json";
 import {
   ReleaseNoteInterface,
   ReleaseNote,
 } from "../Components/ReleaseNotes/ReleaseNote";
 import { useTheme, Text } from "react-native-paper";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, FlatList } from "react-native";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
