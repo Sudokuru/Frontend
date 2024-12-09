@@ -7,8 +7,10 @@ export default {
   platform: ["ios", "android", "web"],
   icon: ".assets/goldLogoNoText.png",
   orientation: "portrait",
+  newArchEnabled: true,
   splash: {
     backgroundColor: "#000000",
+    image: ".assets/goldLogoNoText.png",
   },
   updates: {
     url: "https://u.expo.dev/23c4c607-ead6-4786-9a9c-03f57a97dac7",
