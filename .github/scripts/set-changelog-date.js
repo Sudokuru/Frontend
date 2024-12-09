@@ -25,7 +25,7 @@ console.log(utcDate);
 const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
 
-if (CI) {
+if (process.env.CI) {
   await $`echo "DATE=${formattedDate}" >> $GITHUB_OUTPUT`;
 }
 
@@ -41,3 +41,5 @@ const result = await replaceTokens(
 if(result.replaced > 1) {
   throw new Error('Changelog.json file has multiple dates replaced!');
 }
+
+// todo add some code to verify that only the latest change can have #{date}# set and not any other changes, fail pipeline if that is the case
