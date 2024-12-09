@@ -1,4 +1,5 @@
 import { $ } from "bun";
+import { replaceTokens } from '@qetza/replacetokens';
 
 function getDaySuffix(day) {
   if (day >= 11 && day <= 13) {
@@ -23,5 +24,21 @@ const day = date.getDate();
 console.log(utcDate);
 const suffix = getDaySuffix(day);
 const formattedDate = `${monthNames[date.getMonth()]} ${day}${suffix}, ${date.getFullYear()}`;
-await $`echo "DATE=${formattedDate}" >> $GITHUB_OUTPUT`;
+
+if (CI) {
+  await $`echo "DATE=${formattedDate}" >> $GITHUB_OUTPUT`;
+}
+
 console.log(formattedDate);
+
+const vars = { DATE: formattedDate };
+
+const result = await replaceTokens(
+  ['**/Changelog.json'],
+  (name) => vars[name],
+);
+
+console.log(result.replaced)
+if(result.replaced > 1) {
+  throw new Error('Changelog.json file has multiple dates replaced!');
+}

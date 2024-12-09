@@ -6,14 +6,8 @@ runs:
   steps:
     - name: Install script dependencies
       shell: bash
-      run: | 
-        npm install -g @qetza/replacetokens
-        npm install -g bun
-    - name: Get date
+      working-directory: .github/scripts
+      run: npm i
+    - name: Update Changelog Date
       shell: bash
-      id: get-date
-      run: npx bun ./.github/scripts/get-current-date.js
-    - name: Update Changelog date
-      shell: bash
-      run: | 
-        npx replacetokens --sources '**/Changelog.json' --variables '{"date": "${{steps.get-date.outputs.DATE}}"}'
+      run: npx bun ./.github/scripts/set-changelog-date.js
