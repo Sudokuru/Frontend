@@ -4,9 +4,9 @@ import { expect } from "@playwright/test";
 import {
   GOLD_COLOR_RGB,
   PURPLE_COLOR_RGB,
-} from "../../../app/Styling/HighlightColors";
+} from "../../../sudokuru/app/Styling/HighlightColors";
 import { HeaderComponent } from "../components/header.component";
-import { returnSudokuStrategyArray } from "../../../app/Contexts/PreferencesContext";
+import { returnSudokuStrategyArray } from "../../../sudokuru/app/Contexts/PreferencesContext";
 
 const SUDOKU_STRATEGY_ARRAY = returnSudokuStrategyArray();
 

@@ -1,4 +1,34 @@
-[
+﻿[
+  {
+    "version": "1.27.5",
+    "date": "#{date}#",
+    "summary": "Text is now selectable on web and desktop",
+    "features": [
+      "Text on the sudoku board is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
+    ],
+    "targets": ["web", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.27.4",
+    "date": "December 1st, 2024",
+    "summary": "Reverted change that made sudoku board text selectable, as well as other areas in the app.",
+    "bug fixes": [
+      "Reverted the change that made the sudoku board text selectable which made playing the game more difficult."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.27.3",
+    "date": "November 21st, 2024",
+    "summary": "Enhanced visual feedback by changing selected cell colors to improve visibility of identical values.",
+    "features": [
+      "Selected cells now turn green when they contain valid values and the 'highlight identical values' setting is enabled, making it easier to identify cells with matching values."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
   {
     "version": "1.27.2",
     "date": "November 3rd, 2024",

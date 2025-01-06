@@ -39,4 +39,4 @@ runs:
         apiToken: ${{ inputs.api-token }}
         accountId: ${{ inputs.account-id }}
         projectName: ${{ inputs.project-name }}
-        directory: dist
+        directory: sudokuru/dist

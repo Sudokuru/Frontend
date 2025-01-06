@@ -47,7 +47,7 @@ import { test } from "../fixture";
 import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
-} from "../../../app/Styling/HighlightColors";
+} from "../../../sudokuru/app/Styling/HighlightColors";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });

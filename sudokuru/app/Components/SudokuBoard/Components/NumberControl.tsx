@@ -59,6 +59,7 @@ const NumberControl = (props: NumberControlProps) => {
                   : fallbackHeight * (3 / 4) + 1,
                 color: theme.colors.onPrimaryContainer,
               }}
+              selectable={false}
             >
               {number}
             </Text>

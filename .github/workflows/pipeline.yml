@@ -13,7 +13,6 @@ on:
       - ".gitignore"
       - ".prettierignore"
       - ".prettierrc.json"
-      - "playwright.config.ts"
     branches:
       - main
   pull_request:
@@ -72,13 +71,17 @@ jobs:
         run: |
           npm i prettier@2.8.8
           npx prettier --check .
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Typescript Check
+        working-directory: sudokuru
         run: npx tsc
 
   app_preview_dev:
     if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze ]
+
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
@@ -86,6 +89,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
         uses: expo/expo-github-action@v8
         with:
@@ -96,6 +101,7 @@ jobs:
       - name: 🚀 Publish App preview
         uses: expo/expo-github-action/preview@v8
         with:
+          working-directory: sudokuru
           command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
       - name: Cloudflare dev preview deployment
         id: deployment
@@ -124,6 +130,8 @@ jobs:
           node-version: 18.x
       - name: install dependencies
         run: npm i
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: JarvusInnovations/background-action@v1
         name: Bootstrap System Under Test (SUT)
         with:
@@ -132,20 +140,21 @@ jobs:
           wait-for: 5m
           log-output-if: true
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npm run playwright:init --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
+        working-directory: e2e/web
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: playwright-report/results.xml
+          files: e2e/web/playwright-report/results.xml
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: PlaywrightTestResults
-          path: test-results/*
+          path: e2e/web/test-results/*
       - name: Upload coverage reports to Codecov
         if: always()
         uses: codecov/codecov-action@v3
@@ -170,6 +179,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -184,13 +195,14 @@ jobs:
         run: npm ci
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
+        working-directory: sudokuru
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
       - name: Upload binary Artifact
         uses: actions/upload-artifact@v3
         with:
           name: android binary
-          path: Build/*.apk
+          path: sudokuru/Build/*.apk
 
   app_build_desktop:
     strategy:
@@ -205,6 +217,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
@@ -285,6 +299,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
@@ -302,6 +318,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - run: npm ci
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
