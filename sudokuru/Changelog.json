@@ -1,10 +1,21 @@
 ﻿[
   {
-    "version": "1.27.5",
+    "version": "1.27.6",
     "date": "#{date}#",
+    "summary": "User can see how many remaining cells of a particular value are left.",
+    "features": [
+      "Numpad now has a gradient showing the user how many remaining cells of a particular value are left.",
+      "Numpad will now be completely grey and disabled when all cells of a particular value have been played."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.27.5",
+    "date": "December 10th, 2024",
     "summary": "Text is now selectable on web and desktop",
     "features": [
-      "Text on the sudoku board is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
+      "All text excluding the sudoku board text is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
     ],
     "targets": ["web", "desktop"],
     "contributors": ["Thomas-Gallant"]
