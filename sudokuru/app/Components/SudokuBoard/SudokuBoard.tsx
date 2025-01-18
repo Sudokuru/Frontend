@@ -514,12 +514,12 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
       for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
         if (
-          sudokuBoard.puzzle[r][c].type !== "note" &&
-          sudokuBoard.puzzle[r][c].entry !== 0
-        ) continue;
-
-        if (sudokuBoard.puzzleSolution[r][c] === value) {
-          cellCountOfValue++;
+          sudokuBoard.puzzle[r][c].type === "note" ||
+          sudokuBoard.puzzle[r][c].entry === 0 || doesCellHaveConflict(r, c, sudokuBoard.puzzle[r][c])
+        ) {
+          if (sudokuBoard.puzzleSolution[r][c] === value) {
+            cellCountOfValue++;
+          }
         }
       }
     }
