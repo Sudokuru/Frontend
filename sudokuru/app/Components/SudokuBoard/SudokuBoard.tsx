@@ -502,6 +502,30 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     sudokuBoard.selectedCells = newSelectedCells;
   };
 
+
+
+  /**
+   * Counts the total number of remaining playable cells for a given value.
+   * @param value The value to look for.
+   * @returns The number of cells found that match the value and are playable.
+   */
+  const getRemainingCellCountOfValue = (value: number) => {
+    let cellCountOfValue = 0;
+    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
+      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+        if (
+          sudokuBoard.puzzle[r][c].type !== "note" &&
+          sudokuBoard.puzzle[r][c].entry !== 0
+        ) continue;
+
+        if (sudokuBoard.puzzleSolution[r][c] === value) {
+          cellCountOfValue++;
+        }
+      }
+    }
+    return cellCountOfValue;
+  };
+
   /**
    * Checks if a given cell in the puzzle has a conflict with the solution.
    *
@@ -960,6 +984,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       <NumberControl
         areNumberButtonsDisabled={!enableNumberButtons}
         updateEntry={updateCellEntry}
+        getRemainingCellCountOfValue={getRemainingCellCountOfValue}
       />
     );
   };
