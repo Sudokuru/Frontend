@@ -28,6 +28,8 @@ const ProfilePage = () => {
     highlightColumnSetting,
     toggleHighlightRow,
     highlightRowSetting,
+    progressIndicatorSetting,
+    toggleProgressIndicator,
     toggleFeaturePreview,
     featurePreviewSetting,
   } = React.useContext(PreferencesContext);
@@ -141,6 +143,12 @@ const ProfilePage = () => {
             value={highlightColumnSetting}
             valueToggle={toggleHighlightColumn}
             testIdPrefix="HighlightColumn"
+          ></ProfileToggle>
+          <ProfileToggle
+            name="Progress Indicator"
+            value={progressIndicatorSetting}
+            valueToggle={toggleProgressIndicator}
+            testIdPrefix="ProgressIndicator"
           ></ProfileToggle>
           <ProfileToggle
             name="Feature Preview"

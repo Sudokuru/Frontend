@@ -1,3 +1,5 @@
+export { default as PROGRESS_INDICATOR_DISABLED_PROFILE } from "./data/progress-indicator-disabled-profile.json";
+
 // Generic puzzle data
 export { default as NEW_EMPTY_GAME } from "./data/new-empty-game.json";
 export { default as ALMOST_FINISHED_GAME } from "./data/almost-finished-game.json";
