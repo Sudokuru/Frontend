@@ -5,7 +5,7 @@
   "highlightColumn": true,
   "highlightRow": true,
   "highlightIdenticalValues": true,
-  "progressionIndicator": true,
+  "progressIndicator": true,
   "previewMode": false,
   "strategyHintOrder": [
     "HIDDEN_PAIR",

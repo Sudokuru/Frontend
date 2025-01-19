@@ -2,10 +2,9 @@
   {
     "version": "1.27.6",
     "date": "#{date}#",
-    "summary": "User can see how many remaining cells of a particular value are left.",
+    "summary": "Adding a progress indicator to the Sudoku board. By default, the user can see how many remaining cells of a particular value are left.",
     "features": [
-      "Numpad now has a gradient showing the user how many remaining cells of a particular value are left.",
-      "Numpad will now be completely grey and disabled when all cells of a particular value have been played."
+      "User has new profile option - Progress Indicator. When enabled, the numpad will have a gradient showing the user how many remaining cells of a particular value are left."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]

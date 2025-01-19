@@ -43,7 +43,7 @@ const NumberControl = (props: NumberControlProps) => {
           <Pressable
             key={number}
             onPress={onClick}
-            disabled={areNumberButtonsDisabled || getRemainingCellCountOfValue(number) === 0} // disable also if cell is correct.
+            disabled={areNumberButtonsDisabled} // disable also if cell is correct.
             testID={"numberControl" + number}
           >
             <LinearGradient

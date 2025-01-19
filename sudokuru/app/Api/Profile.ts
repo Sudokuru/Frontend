@@ -9,7 +9,7 @@ type profileValue =
   | "highlightColumn"
   | "highlightIdenticalValues"
   | "highlightRow"
-  | "progressionIndicator"
+  | "progressIndicator"
   | "previewMode"
   | "strategyHintOrder";
 
@@ -26,7 +26,7 @@ export const getProfile = async (): Promise<Profile> => {
     highlightColumn: true,
     highlightRow: true,
     highlightIdenticalValues: true,
-    progressionIndicator: true,
+    progressIndicator: true,
     previewMode: false,
     strategyHintOrder: sudokuStrategyArray,
   };
@@ -73,8 +73,8 @@ export const setProfileValue = async (
     case "highlightRow":
       value.highlightRow = !value.highlightRow;
       break;
-    case "progressionIndicator":
-      value.progressionIndicator = !value.progressionIndicator;
+    case "progressIndicator":
+      value.progressIndicator = !value.progressIndicator;
       break;
     case "previewMode":
       value.previewMode = !value.previewMode;
