@@ -18,6 +18,8 @@ const InitializeContext = () => {
   const [highlightColumnSetting, setHighlightColumnSetting] =
     React.useState(true);
 
+  const [progressionIndicatorSetting, setProgressionIndicatorSetting] = React.useState(true);
+
   const [featurePreviewSetting, setFeaturePreviewSetting] =
     React.useState(false);
 
@@ -34,6 +36,7 @@ const InitializeContext = () => {
       setHighlightColumnSetting(data.highlightColumn);
       setFeaturePreviewSetting(data.previewMode);
       setStrategyHintOrderSetting(data.strategyHintOrder);
+      setProgressionIndicatorSetting(data.progressionIndicator)
     });
   }, []);
 
@@ -78,6 +81,11 @@ const InitializeContext = () => {
     return setHighlightColumnSetting(!highlightColumnSetting);
   }, [highlightColumnSetting]);
 
+  const toggleProgressionIndicator = React.useCallback(() => {
+    setProfileValue("progressionIndicator");
+    return setProgressionIndicatorSetting(!progressionIndicatorSetting);
+  }, [progressionIndicatorSetting]);
+
   const toggleFeaturePreview = React.useCallback(() => {
     setProfileValue("previewMode");
     return setFeaturePreviewSetting(!featurePreviewSetting);
@@ -107,6 +115,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleProgressionIndicator,
+      progressionIndicatorSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
       updateStrategyHintOrder,
@@ -127,6 +137,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleProgressionIndicator,
+      progressionIndicatorSetting,
       toggleFeaturePreview,
       featurePreviewSetting,
       updateStrategyHintOrder,

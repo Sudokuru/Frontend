@@ -5,6 +5,7 @@
   "highlightColumn": true,
   "highlightRow": true,
   "highlightIdenticalValues": true,
+  "progressionIndicator": true,
   "previewMode": false,
   "strategyHintOrder": [
     "OBVIOUS_TRIPLET",

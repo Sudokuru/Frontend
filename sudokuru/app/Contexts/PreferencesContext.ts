@@ -21,6 +21,8 @@ export const PreferencesContext = React.createContext({
   highlightRowSetting: true,
   toggleHighlightColumn: () => {},
   highlightColumnSetting: true,
+  toggleProgressionIndicator: () => {},
+  progressionIndicatorSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
   updateStrategyHintOrder: (props: SudokuStrategy[]) => {},
