@@ -32,7 +32,7 @@ const NumberControl = (props: NumberControlProps) => {
     <View
       style={{
         width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize : fallbackHeight,
+        height: cellSize || fallbackHeight,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -66,7 +66,7 @@ const NumberControl = (props: NumberControlProps) => {
                   width: cellSize
                     ? cellSize * (50 / 60)
                     : fallbackHeight * (50 / 60),
-                  height: cellSize ? cellSize : fallbackHeight,
+                  height: cellSize || fallbackHeight,
                   alignItems: "center",
                   borderRadius: cellSize
                     ? cellSize * (10 / 60)
@@ -98,7 +98,7 @@ const NumberControl = (props: NumberControlProps) => {
                 width: cellSize
                   ? cellSize * (50 / 60)
                   : fallbackHeight * (50 / 60),
-                height: cellSize ? cellSize : fallbackHeight,
+                height: cellSize || fallbackHeight,
                 alignItems: "center",
                 backgroundColor: theme.colors.primaryContainer,
                 borderRadius: cellSize
