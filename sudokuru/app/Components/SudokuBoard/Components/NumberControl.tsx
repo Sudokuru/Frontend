@@ -114,41 +114,4 @@ const NumberControl = (props: NumberControlProps) => {
   );
 };
 
-export const NumberKeysComponent = () => {
-  return (
-    <Pressable
-      key={number}
-      onPress={onClick}
-      disabled={areNumberButtonsDisabled} // disable also if cell is correct.
-      testID={"numberControl" + number}
-    >
-      <LinearGradient
-        // Button Linear Gradient
-        colors={[darkThemeSetting ? "white" : "grey", theme.colors.primaryContainer]}
-        locations={[1 - (getRemainingCellCountOfValue(number) / 9), 1 - (getRemainingCellCountOfValue(number) / 9)]}
-        style={{              width: cellSize
-          ? cellSize * (50 / 60)
-          : fallbackHeight * (50 / 60),
-        height: cellSize ? cellSize : fallbackHeight,
-        alignItems: "center",
-        borderRadius: cellSize
-        ? cellSize * (10 / 60)
-        : fallbackHeight * (10 / 60)}}>
-        <Text
-          style={{
-            fontFamily: "Inter_400Regular",
-            fontSize: cellSize
-              ? cellSize * (3 / 4) + 1
-              : fallbackHeight * (3 / 4) + 1,
-            color: theme.colors.onPrimaryContainer,
-          }}
-          selectable={false}
-        >
-          {number}
-        </Text>
-      </LinearGradient>
-    </Pressable>
-  )
-}
-
 export default NumberControl;
