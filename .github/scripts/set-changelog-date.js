@@ -33,7 +33,7 @@ const isFirstDateReplaced = firstDate === "#{date}#";
 const vars = { DATE: formattedDate };
 
 const result = await replaceTokens(
-  ['**/Changelog.json'],
+  ['**/Changelog.json', "!**/node_modules/**"],
   (name) => vars[name],
 );
 
