@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "theme": true,
+  "highlightBox": true,
+  "highlightColumn": true,
+  "highlightRow": true,
+  "highlightIdenticalValues": true,
+  "progressIndicator": false,
+  "previewMode": false,
+  "strategyHintOrder": [
+    "OBVIOUS_SINGLE",
+    "HIDDEN_SINGLE",
+    "OBVIOUS_PAIR",
+    "HIDDEN_PAIR",
+    "POINTING_PAIR",
+    "OBVIOUS_TRIPLET",
+    "HIDDEN_TRIPLET",
+    "POINTING_TRIPLET",
+    "OBVIOUS_QUADRUPLET",
+    "HIDDEN_QUADRUPLET"
+  ]
+}

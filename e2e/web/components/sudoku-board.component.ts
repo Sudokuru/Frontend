@@ -75,6 +75,18 @@ export class SudokuBoardComponent {
     await expect(this.sudokuBoard).toContainText(text);
   }
 
+  async progressIndicatorRendersCorrectly(progress: string[]){
+    for (let i = 0; i < this.numNumPads; i++) {
+      await expect(this.numPad[i].locator("div").first()).toHaveCSS("background-image", `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`);
+    }
+  }
+
+  async progressIndicatorIsDisabled(progress: string[]) {
+    for (let i = 0; i < this.numNumPads; i++) {
+      await expect(this.numPad[i].locator("div").first()).not.toHaveCSS("background-image", `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`);
+    }
+  }
+
   async cellHasColor(row: number, column: number, color: string) {
     await expect(this.cell[row][column]).toHaveCSS("background-color", color);
   }

@@ -1,7 +1,7 @@
 import { test } from "../fixture";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { PlayPage } from "../page/play.page";
-import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME } from "../data";
+import { AMEND_NOTES_EMPTY_CELL_GAME, NEW_EMPTY_GAME, PROGRESS_INDICATOR_DISABLED_PROFILE } from "../data";
 import { getSingleMultiSelectKey } from "../playwright.config";
 import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
 
@@ -96,6 +96,52 @@ test.describe("numpad", () => {
       await sudokuBoard.cellHasNotes(7, 7, i.toString());
     });
   }
+});
+
+test.describe("progress indicator", () => {
+
+  const initialProgressIndicator = ["77.7778%", "77.7778%", "88.8889%", "66.6667%", "77.7778%", "77.7778%", "77.7778%", "77.7778%", "44.4444%"];
+
+  test.use({ 
+    gameToResume: NEW_EMPTY_GAME
+  });
+
+  test("should be visible when enabled", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.progressIndicatorRendersCorrectly(initialProgressIndicator);
+  });
+
+  test("should not change when incorrect cells are added or removed", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[1][1].click();
+    await sudokuBoard.cell[1][1].press("1");
+    await sudokuBoard.progressIndicatorRendersCorrectly(initialProgressIndicator);
+    await sudokuBoard.undo.click();
+    await sudokuBoard.progressIndicatorRendersCorrectly(initialProgressIndicator);
+  });
+
+  test("should change when correct cells are added or removed", async ({ resumeGame }) => {
+    const updatedProgressIndicator = ["77.7778%", "77.7778%", "88.8889%", "66.6667%", "77.7778%", "77.7778%", "77.7778%", "88.8889%", "44.4444%"];
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[1][1].click();
+    await sudokuBoard.cell[1][1].press("8");
+    await sudokuBoard.progressIndicatorRendersCorrectly(updatedProgressIndicator);
+  });
+});
+
+test.describe("progress indicator", () => {
+
+  const initialProgressIndicator = ["77.7778%", "77.7778%", "88.8889%", "66.6667%", "77.7778%", "77.7778%", "77.7778%", "77.7778%", "44.4444%"];
+
+  test.use({ 
+    gameToResume: NEW_EMPTY_GAME,
+    profileStorage: PROGRESS_INDICATOR_DISABLED_PROFILE
+  });
+  
+  test("should not be visible when disabled", async ({ resumeGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.progressIndicatorIsDisabled(initialProgressIndicator);
+  });
 });
 
 test.describe("undo", () => {
