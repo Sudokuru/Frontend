@@ -1,6 +1,6 @@
 ﻿[
   {
-    "version": "1.27.6",
+    "version": "1.28.0",
     "date": "#{date}#",
     "summary": "Adding a progress indicator to the Sudoku board. By default, the user can see how many remaining cells of a particular value are left.",
     "features": [
