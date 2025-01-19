@@ -49,7 +49,6 @@ const NumberControl = (props: NumberControlProps) => {
               testID={"numberControl" + number}
             >
               <LinearGradient
-                // Button Linear Gradient
                 colors={[darkThemeSetting ? "white" : "grey", theme.colors.primaryContainer]}
                 locations={[1 - (getRemainingCellCountOfValue(number) / 9), 1 - (getRemainingCellCountOfValue(number) / 9)]}
                 style={{              width: cellSize
