@@ -18,7 +18,8 @@ const InitializeContext = () => {
   const [highlightColumnSetting, setHighlightColumnSetting] =
     React.useState(true);
 
-  const [progressIndicatorSetting, setProgressIndicatorSetting] = React.useState(true);
+  const [progressIndicatorSetting, setProgressIndicatorSetting] =
+    React.useState(true);
 
   const [featurePreviewSetting, setFeaturePreviewSetting] =
     React.useState(false);
@@ -36,7 +37,7 @@ const InitializeContext = () => {
       setHighlightColumnSetting(data.highlightColumn);
       setFeaturePreviewSetting(data.previewMode);
       setStrategyHintOrderSetting(data.strategyHintOrder);
-      setProgressIndicatorSetting(data.progressIndicator)
+      setProgressIndicatorSetting(data.progressIndicator);
     });
   }, []);
 

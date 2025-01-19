@@ -17,11 +17,16 @@ interface NumberControlProps {
 }
 
 const NumberControl = (props: NumberControlProps) => {
-  const { areNumberButtonsDisabled, updateEntry, getRemainingCellCountOfValue } = props;
+  const {
+    areNumberButtonsDisabled,
+    updateEntry,
+    getRemainingCellCountOfValue,
+  } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
 
-  const { darkThemeSetting, progressIndicatorSetting } = React.useContext(PreferencesContext);  
+  const { darkThemeSetting, progressIndicatorSetting } =
+    React.useContext(PreferencesContext);
 
   return (
     <View
@@ -39,7 +44,7 @@ const NumberControl = (props: NumberControlProps) => {
           updateEntry(number);
         };
 
-        if (progressIndicatorSetting){
+        if (progressIndicatorSetting) {
           return (
             // Number Keys
             <Pressable
@@ -49,16 +54,25 @@ const NumberControl = (props: NumberControlProps) => {
               testID={"numberControl" + number}
             >
               <LinearGradient
-                colors={[darkThemeSetting ? "white" : "grey", theme.colors.primaryContainer]}
-                locations={[1 - (getRemainingCellCountOfValue(number) / 9), 1 - (getRemainingCellCountOfValue(number) / 9)]}
-                style={{              width: cellSize
-                  ? cellSize * (50 / 60)
-                  : fallbackHeight * (50 / 60),
-                height: cellSize ? cellSize : fallbackHeight,
-                alignItems: "center",
-                borderRadius: cellSize
-                ? cellSize * (10 / 60)
-                : fallbackHeight * (10 / 60)}}>
+                colors={[
+                  darkThemeSetting ? "white" : "grey",
+                  theme.colors.primaryContainer,
+                ]}
+                locations={[
+                  1 - getRemainingCellCountOfValue(number) / 9,
+                  1 - getRemainingCellCountOfValue(number) / 9,
+                ]}
+                style={{
+                  width: cellSize
+                    ? cellSize * (50 / 60)
+                    : fallbackHeight * (50 / 60),
+                  height: cellSize ? cellSize : fallbackHeight,
+                  alignItems: "center",
+                  borderRadius: cellSize
+                    ? cellSize * (10 / 60)
+                    : fallbackHeight * (10 / 60),
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: "Inter_400Regular",

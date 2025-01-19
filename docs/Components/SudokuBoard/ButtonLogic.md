@@ -15,10 +15,10 @@
 | Correct cell is selected    |   ❌    |  ❌   |
 | Incorrect cell is selected  |   ✅    |  ✅   |
 
-| Multi-Select Scenario                                                                       | NumKeys | Erase |
-| :------------------------------------------------------------------------------------------ | :-----: | :---: |
-| Multiple cells selected, with at least once cell matching single-select acceptance critiera |   ✅ (If in note mode)    |  ✅   |
-| Multiple cells selected, with none of the cells matching single-select acceptance criteria  |   ❌    |  ❌   |
+| Multi-Select Scenario                                                                       |       NumKeys        | Erase |
+| :------------------------------------------------------------------------------------------ | :------------------: | :---: |
+| Multiple cells selected, with at least once cell matching single-select acceptance critiera | ✅ (If in note mode) |  ✅   |
+| Multiple cells selected, with none of the cells matching single-select acceptance criteria  |          ❌          |  ❌   |
 
 Undo button is always enabled unless the history stack is empty.
 

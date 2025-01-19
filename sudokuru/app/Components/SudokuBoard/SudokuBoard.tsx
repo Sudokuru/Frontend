@@ -502,8 +502,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     sudokuBoard.selectedCells = newSelectedCells;
   };
 
-
-
   /**
    * Counts the total number of remaining playable cells for a given value.
    * @param value The value to look for.
@@ -515,7 +513,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
         if (
           sudokuBoard.puzzle[r][c].type === "note" ||
-          sudokuBoard.puzzle[r][c].entry === 0 || doesCellHaveConflict(r, c, sudokuBoard.puzzle[r][c])
+          sudokuBoard.puzzle[r][c].entry === 0 ||
+          doesCellHaveConflict(r, c, sudokuBoard.puzzle[r][c])
         ) {
           if (sudokuBoard.puzzleSolution[r][c] === value) {
             cellCountOfValue++;
