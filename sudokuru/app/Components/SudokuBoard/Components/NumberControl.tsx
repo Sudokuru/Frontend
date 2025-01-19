@@ -4,6 +4,7 @@ import { range } from "../sudoku";
 import React from "react";
 import { getCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
+import { PreferencesContext } from "../../../Contexts/PreferencesContext";
 
 let fallbackHeight = 30;
 
@@ -19,6 +20,9 @@ const NumberControl = (props: NumberControlProps) => {
   const { areNumberButtonsDisabled, updateEntry, getRemainingCellCountOfValue } = props;
   const cellSize = getCellSize();
   const theme = useTheme();
+
+  const { darkThemeSetting } = React.useContext(PreferencesContext);  
+
   return (
     <View
       style={{
@@ -44,7 +48,7 @@ const NumberControl = (props: NumberControlProps) => {
           >
             <LinearGradient
               // Button Linear Gradient
-              colors={["grey", theme.colors.primaryContainer]}
+              colors={[darkThemeSetting ? "white" : "grey", theme.colors.primaryContainer]}
               locations={[1 - (getRemainingCellCountOfValue(number) / 9), 1 - (getRemainingCellCountOfValue(number) / 9)]}
               style={{              width: cellSize
                 ? cellSize * (50 / 60)
