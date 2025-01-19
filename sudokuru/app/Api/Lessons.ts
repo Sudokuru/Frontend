@@ -18,7 +18,7 @@ export const getStrategies = (): string[] => {
 };
 
 /**
- * Given a strategy string (from getLessonStrategies()) returns a 2d string array of steps for the strategy
+ * Given a strategy string (from getStrategies()) returns a 2d string array of steps for the strategy
  * @param strategy - name of the strategy
  * @returns 2d string array of steps with first value in each array being text and second being link to s3 image
  */
