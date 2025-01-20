@@ -31,7 +31,7 @@
     "snyk:code": "npx snyk code test --org=sudokuru"
   },
   "lint-staged": {
-    "**/*": "npx prettier --write --ignore-unknown"
+    "**/*": "npx prettier --write --ignore-unknown ."
   },
   "devDependencies": {
     "lint-staged": "^15.2.10",
