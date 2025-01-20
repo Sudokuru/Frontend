@@ -11,6 +11,7 @@ import {
 import { ALMOST_FINISHED_GAME } from "./data";
 import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
+import { LearnPage } from "./page/learn.page";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -21,6 +22,7 @@ interface MyFixtures {
   profile: Page;
   featurePreview: Page;
   aboutUs: Page;
+  learn: Page;
 }
 
 interface MyOptions {
@@ -159,6 +161,16 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
     await profilePage.featurePreviewSwitchDisabled.click();
+    await use(page);
+  },
+  // Navigates to the learn page.
+  learn: async ({ page }, use) => {
+    await page.goto("");
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerLearn.click();
+    const learnPage = new LearnPage(page);
+    await learnPage.learnPageIsRendered();
     await use(page);
   },
 });
