@@ -39,6 +39,13 @@ test.describe("profile", () => {
     await profilePage.verifyAllHighlightSwitchesAreEnabled();
   });
 
+  test("should display None strategies learned at start", async ({
+    profile,
+  }) => {
+    const profilePage = new ProfilePage(profile);
+    await profilePage.verifyLearnedLessonsMatch(["None"]);
+  });
+
   test.describe("strategy hint order", () => {
     test("strategies render correctly", async ({ profile }) => {
       const profilePage = new ProfilePage(profile);

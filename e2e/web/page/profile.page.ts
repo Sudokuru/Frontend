@@ -1,10 +1,13 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { formatOneLessonName } from "../../../sudokuru/app/Functions/learnedLessons";
 import { SudokuStrategy } from "sudokuru";
+import { getStrategies } from "../../../sudokuru/app/Api/Lessons";
+import { toTitle } from "../../../sudokuru/app/Components/SudokuBoard/sudoku"
 
 export class ProfilePage {
   readonly page: Page;
   readonly title: Locator;
+  readonly learnedLessons: Locator;
   readonly themeSwitchEnabled: Locator;
   readonly themeSwitchDisabled: Locator;
   readonly highlightSwitchEnabled: Locator;
@@ -27,6 +30,7 @@ export class ProfilePage {
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Profile");
+    this.learnedLessons = page.getByTestId("LearnedLessons");
     this.themeSwitchEnabled = page.getByTestId("DarkThemeEnabled");
     this.themeSwitchDisabled = page.getByTestId("DarkThemeDisabled");
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
@@ -61,6 +65,19 @@ export class ProfilePage {
 
   async profilePageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
+  }
+
+  async verifyLearnedLessonsMatch(learnedLessons: string[]) {
+    const profileLessons = await this.learnedLessons.textContent();
+    let lessons: string[] = getStrategies().map(toTitle);
+    lessons.push("None");
+    lessons.forEach((lesson) => {
+      if (learnedLessons.includes(lesson)) {
+        expect(profileLessons?.includes(lesson)).toBeTruthy();
+      } else {
+        expect(profileLessons?.includes(lesson)).toBeFalsy();
+      }
+    });
   }
 
   async verifyAllHighlightSwitchesAreEnabled() {
