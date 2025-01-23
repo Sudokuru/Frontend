@@ -30,4 +30,11 @@ export class LearnPage {
     await lessonLocator.scrollIntoViewIfNeeded();
     await expect(lessonLocator).toBeInViewport({ ratio: 1 });
   }
+
+  async verifyLessonDifficultyText(lesson: number, lessonType: string, text: string) {
+    const lessonLocator = this.page.getByTestId(lessonType + lesson);
+    const lessonTextLocator = lessonLocator.getByText(text);
+    await lessonTextLocator.scrollIntoViewIfNeeded();
+    await expect(lessonTextLocator).toBeInViewport({ ratio: 1 });
+  }
 }

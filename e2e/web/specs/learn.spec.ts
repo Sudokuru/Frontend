@@ -13,4 +13,25 @@ test.describe("learn", () => {
       await learnPage.verifyLessonLocked(i);
     }
   });
+
+  test("should display correct difficulty text", async ({
+    learn,
+  }) => {
+    const learnPage = new LearnPage(learn);
+    for (let i: number = 0; i < 8; i++) {
+      if (i == 0) {
+        await learnPage.verifyLessonDifficultyText(i, "lesson", "Very Easy");
+      } else if (i < 4) {
+        await learnPage.verifyLessonDifficultyText(i, "locked", "Very Easy");
+      } else if (i == 4) {
+        await learnPage.verifyLessonDifficultyText(i, "locked", "Easy");
+      } else if (i == 5) {
+        await learnPage.verifyLessonDifficultyText(i, "locked", "Intermediate");
+      } else if (i == 6) {
+        await learnPage.verifyLessonDifficultyText(i, "locked", "Hard");
+      } else {
+        await learnPage.verifyLessonDifficultyText(i, "locked", "Very Hard");
+      }
+    }
+  });
 });
