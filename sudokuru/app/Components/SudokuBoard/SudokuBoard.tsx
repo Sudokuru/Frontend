@@ -785,7 +785,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const currentSelectedCell = getSelectedCells();
     let currentEntry = cell.entry;
     // for the purposes of highlighting identical values, a cell with notes is treated as an empty cell
-    if (cell.type === "note"){
+    if (cell.type === "note") {
       currentEntry = 0;
     }
     const selectedEntry = currentSelectedCell[0].entry;
