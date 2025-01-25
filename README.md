@@ -16,7 +16,7 @@
 
 <!--- Note: The following text is duplicated in the AboutUsPage.tsx file -->
 
-## Sudokuru is an open-source project focused on developing a world-class, cross-platform Sudoku app. We aim to provide a delightful user experience while also contributing to the community by building a collection of reusable software modules. These modules are designed to be free, well-documented, modern, and interoperable, allowing developers to easily incorporate them into their own Sudoku-related projects.
+## Sudokuru is an open-source project focused on developing a world-class, cross-platform Sudoku app. We aim to provide a delightful user experience while also contributing to the community by building a collection of reusable software modules. These modules are designed to be free, well-documented, modern, and interoperable, allowing the open source community to easily incorporate them into their own Sudoku-related projects.
 
 ### This frontend module is the primary user interface for Sudokuru, providing a cross-platform Sudoku experience built with React Native Web and TypeScript. It offers a clean, intuitive design with features such as:
 
