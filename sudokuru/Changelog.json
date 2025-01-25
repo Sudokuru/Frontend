@@ -1,7 +1,17 @@
 ﻿[
   {
-    "version": "1.28.0",
+    "version": "1.28.1",
     "date": "#{date}#",
+    "summary": "A selected cell with notes was incorrectly highlighted as green instead of blue when identical values setting was enabled.",
+    "bug fixes": [
+      "A selected cell with notes now is always highlighted as blue even when the identical values setting is enabled."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.28.0",
+    "date": "January 19th, 2025",
     "summary": "Adding a progress indicator to the Sudoku board. By default, the user can see how many remaining cells of a particular value are left.",
     "features": [
       "User has new profile option - Progress Indicator. When enabled, the numpad will have a gradient showing the user how many remaining cells of a particular value are left."
