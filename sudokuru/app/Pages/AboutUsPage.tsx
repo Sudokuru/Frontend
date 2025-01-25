@@ -106,8 +106,8 @@ const AboutUsPage = () => {
           user experience while also contributing to the community by building a
           collection of reusable software modules. These modules are designed to
           be free, well-documented, modern, and interoperable, allowing
-          developers to easily incorporate them into their own Sudoku-related
-          projects.
+          the open source community to easily incorporate them into their own
+          Sudoku-related projects.
         </Text>
         <Text variant="headlineSmall">History</Text>
         <Text variant="bodyLarge">
