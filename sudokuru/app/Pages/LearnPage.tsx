@@ -33,10 +33,6 @@ const LearnPage = () => {
             if (learnedLessons != lessons && !areLessonsLoaded) {
               updateLearnedLessons(lessons);
             }
-
-            setLessonsLoaded(true);
-          } else {
-            // User has not learned any lessons!
             setLessonsLoaded(true);
           }
         });
