@@ -19,18 +19,21 @@ test.describe("learn", () => {
 
   test("should display correct difficulty text", async ({ learn }) => {
     const LESSON_DIFFICULTIES = [
-      { index: 0, state: "lesson", difficulty: "Very Easy" },
-      { index: 1, state: "locked", difficulty: "Very Easy" },
-      { index: 2, state: "locked", difficulty: "Very Easy" },
-      { index: 3, state: "locked", difficulty: "Very Easy" },
-      { index: 4, state: "locked", difficulty: "Easy" },
-      { index: 5, state: "locked", difficulty: "Intermediate" },
-      { index: 6, state: "locked", difficulty: "Hard" },
-      { index: 7, state: "locked", difficulty: "Very Hard" },
+      { state: "lesson", difficulty: "Very Easy" },
+      { state: "locked", difficulty: "Very Easy" },
+      { state: "locked", difficulty: "Very Easy" },
+      { state: "locked", difficulty: "Very Easy" },
+      { state: "locked", difficulty: "Easy" },
+      { state: "locked", difficulty: "Intermediate" },
+      { state: "locked", difficulty: "Hard" },
+      { state: "locked", difficulty: "Very Hard" },
     ];
     const learnPage = new LearnPage(learn);
 
-    for (const { index, state, difficulty } of LESSON_DIFFICULTIES) {
+    for (const [
+      index,
+      { state, difficulty },
+    ] of LESSON_DIFFICULTIES.entries()) {
       await learnPage.verifyLessonDifficultyText(index, state, difficulty);
     }
   });
