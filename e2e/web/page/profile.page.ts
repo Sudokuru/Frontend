@@ -72,10 +72,11 @@ export class ProfilePage {
     let lessons: string[] = getStrategies().map(toTitle);
     lessons.push("None");
     lessons.forEach((lesson) => {
+      // splits remaining array in half at every occurrence so 2 means 1 occurrence total
       if (learnedLessons.includes(lesson)) {
-        expect(profileLessons?.includes(lesson)).toBeTruthy();
+        expect(profileLessons?.split(lesson).length === 2).toBeTruthy();
       } else {
-        expect(profileLessons?.includes(lesson)).toBeFalsy();
+        expect(profileLessons?.split(lesson).length === 2).toBeFalsy();
       }
     });
   }
