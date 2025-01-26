@@ -40,7 +40,7 @@ const StatisticsPage = () => {
 
   async function deleteUserStatistics() {
     await deleteStatistics().then(() => {
-      updateLearnedLessons([]);
+      updateLearnedLessons(["NONE"]);
     });
   }
 
