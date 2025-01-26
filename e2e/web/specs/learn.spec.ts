@@ -56,6 +56,11 @@ test.describe("learn", () => {
       await finishLocator.click();
       lessons.push(lessonName);
     }
+
+    // Verify lessons now appear as learned in learn page
+    for (let i: number = 0; i < getStrategies().length; i++) {
+      await learnPage.verifyLessonLearned(i);
+    }
  
     // Verify learned lessons appear in profile page
     const headerComponent = new HeaderComponent(learn);
