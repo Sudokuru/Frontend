@@ -3,6 +3,7 @@ import { test } from "../fixture";
 import { expect } from "@playwright/test";
 import { getStrategies } from "../../../sudokuru/app/Api/Lessons";
 import { ProfilePage } from "../page/profile.page";
+import { StatisticsPage } from "../page/statistics.page";
 import { HeaderComponent } from "../components/header.component";
 
 test.describe("learn", () => {
@@ -67,5 +68,18 @@ test.describe("learn", () => {
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(learn);
     await profilePage.verifyLearnedLessonsMatch(lessons);
+    
+    // Click delete statistics button then cancel on the popup and verify not deleted
+    await headerComponent.statistics.click();
+    const statsPage = new StatisticsPage(learn);
+    await statsPage.clickDeleteStatsAndPopupButtons(false);
+    await headerComponent.profile.click();
+    await profilePage.verifyLearnedLessonsMatch(lessons);
+
+    // Click delete statistics button then confirm on popup and verify deleted
+    await headerComponent.statistics.click();
+    await statsPage.clickDeleteStatsAndPopupButtons(true);
+    await headerComponent.profile.click();
+    await profilePage.verifyLearnedLessonsMatch(["None"]);
   });
 });

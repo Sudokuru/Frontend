@@ -88,6 +88,7 @@ const StatisticsPage = () => {
             onPress={() => {
               showWarningButton();
             }}
+            testID="deleteStatsButton"
           >
             Delete Statistics
           </Button>
