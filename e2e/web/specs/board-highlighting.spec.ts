@@ -44,6 +44,9 @@ test.describe("board highlighting", () => {
       },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
+
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.cellHasColor(7, 8, SELECTED_COLOR_RGB);
   });
 
   test("should render correctly when cell is unselected", async ({
