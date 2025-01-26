@@ -107,4 +107,27 @@ test.describe("learn", () => {
     const titleLocator = learn.getByText("Amend Notes Lesson");
     await expect(titleLocator).toBeInViewport({ ratio: 1 });
   });
+
+  test("should learn same lesson twice and display only once in profile", async ({
+    learn,
+  }) => {
+    const learnPage = new LearnPage(learn);
+    let lessonType: string = "lesson"
+
+    for (let i: number = 0; i < 2; i++) {
+      await learnPage.getAndClickLesson(0, lessonType);
+      const titleLocator = learn.getByText("Sudoku 101 Lesson");
+      await expect(titleLocator).toBeInViewport({ ratio: 1 });
+      const finishLocator = learn.getByTestId("finishLesson");
+      await finishLocator.scrollIntoViewIfNeeded();
+      await expect(finishLocator).toBeInViewport({ ratio: 1 });
+      await finishLocator.click();
+      lessonType = "learned";
+    }
+
+    const headerComponent = new HeaderComponent(learn);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(learn);
+    await profilePage.verifyLearnedLessonsMatch(["Sudoku 101"]);
+  });
 });
