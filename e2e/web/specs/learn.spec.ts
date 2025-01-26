@@ -94,4 +94,17 @@ test.describe("learn", () => {
     await cancel.click();
     await learnPage.learnPageIsRendered();
   });
+
+  test("should click on locked lesson and able to proceed", async ({
+    learn,
+  }) => {
+    const learnPage = new LearnPage(learn);
+    await learnPage.getAndClickLesson(1, "locked");
+    const confirm = learn.getByTestId("awesome-alert-confirm-btn");
+    await confirm.scrollIntoViewIfNeeded();
+    await expect(confirm).toBeInViewport({ ratio: 1 });
+    await confirm.click();
+    const titleLocator = learn.getByText("Amend Notes Lesson");
+    await expect(titleLocator).toBeInViewport({ ratio: 1 });
+  });
 });
