@@ -32,7 +32,11 @@ export class LearnPage {
     await expect(lessonLocator).toBeInViewport({ ratio: 1 });
   }
 
-  async verifyLessonDifficultyText(lesson: number, lessonType: string, text: string) {
+  async verifyLessonDifficultyText(
+    lesson: number,
+    lessonType: string,
+    text: string
+  ) {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
     const lessonTextLocator = lessonLocator.getByText(text);
     await lessonTextLocator.scrollIntoViewIfNeeded();
@@ -41,7 +45,8 @@ export class LearnPage {
 
   async getAndClickLesson(lesson: number, lessonType: string) {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
-    const lessonName = (await lessonLocator.getByTestId("lessonName")?.textContent()) ?? 'Error';
+    const lessonName =
+      (await lessonLocator.getByTestId("lessonName")?.textContent()) ?? "Error";
     await lessonLocator.click();
     return lessonName;
   }

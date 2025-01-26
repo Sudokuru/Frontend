@@ -17,9 +17,7 @@ test.describe("learn", () => {
     }
   });
 
-  test("should display correct difficulty text", async ({
-    learn,
-  }) => {
+  test("should display correct difficulty text", async ({ learn }) => {
     const learnPage = new LearnPage(learn);
     for (let i: number = 0; i < 8; i++) {
       if (i == 0) {
@@ -62,13 +60,13 @@ test.describe("learn", () => {
     for (let i: number = 0; i < getStrategies().length; i++) {
       await learnPage.verifyLessonLearned(i);
     }
- 
+
     // Verify learned lessons appear in profile page
     const headerComponent = new HeaderComponent(learn);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(learn);
     await profilePage.verifyLearnedLessonsMatch(lessons);
-    
+
     // Click delete statistics button then cancel on the popup and verify not deleted
     await headerComponent.statistics.click();
     const statsPage = new StatisticsPage(learn);
@@ -112,7 +110,7 @@ test.describe("learn", () => {
     learn,
   }) => {
     const learnPage = new LearnPage(learn);
-    let lessonType: string = "lesson"
+    let lessonType: string = "lesson";
 
     for (let i: number = 0; i < 2; i++) {
       await learnPage.getAndClickLesson(0, lessonType);
