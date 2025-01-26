@@ -18,21 +18,20 @@ test.describe("learn", () => {
   });
 
   test("should display correct difficulty text", async ({ learn }) => {
+    const LESSON_DIFFICULTIES = [
+      { index: 0, state: "lesson", difficulty: "Very Easy" },
+      { index: 1, state: "locked", difficulty: "Very Easy" },
+      { index: 2, state: "locked", difficulty: "Very Easy" },
+      { index: 3, state: "locked", difficulty: "Very Easy" },
+      { index: 4, state: "locked", difficulty: "Easy" },
+      { index: 5, state: "locked", difficulty: "Intermediate" },
+      { index: 6, state: "locked", difficulty: "Hard" },
+      { index: 7, state: "locked", difficulty: "Very Hard" },
+    ];
     const learnPage = new LearnPage(learn);
-    for (let i: number = 0; i < 8; i++) {
-      if (i == 0) {
-        await learnPage.verifyLessonDifficultyText(i, "lesson", "Very Easy");
-      } else if (i < 4) {
-        await learnPage.verifyLessonDifficultyText(i, "locked", "Very Easy");
-      } else if (i == 4) {
-        await learnPage.verifyLessonDifficultyText(i, "locked", "Easy");
-      } else if (i == 5) {
-        await learnPage.verifyLessonDifficultyText(i, "locked", "Intermediate");
-      } else if (i == 6) {
-        await learnPage.verifyLessonDifficultyText(i, "locked", "Hard");
-      } else {
-        await learnPage.verifyLessonDifficultyText(i, "locked", "Very Hard");
-      }
+
+    for (const { index, state, difficulty } of LESSON_DIFFICULTIES) {
+      await learnPage.verifyLessonDifficultyText(index, state, difficulty);
     }
   });
 
