@@ -140,7 +140,7 @@ const LessonPanel = (props: any) => {
             }}
           >
             <Card mode="outlined">
-              <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+              <Text variant="headlineMedium" testID="lessonName" style={{ alignSelf: "center" }}>
                 {formatOneLessonName(availableLessons[i])}
               </Text>
               <Text

@@ -37,4 +37,11 @@ export class LearnPage {
     await lessonTextLocator.scrollIntoViewIfNeeded();
     await expect(lessonTextLocator).toBeInViewport({ ratio: 1 });
   }
+
+  async getAndClickLesson(lesson: number, lessonType: string) {
+    const lessonLocator = this.page.getByTestId(lessonType + lesson);
+    const lessonName = (await lessonLocator.getByTestId("lessonName")?.textContent()) ?? 'Error';
+    await lessonLocator.click();
+    return lessonName;
+  }
 }
