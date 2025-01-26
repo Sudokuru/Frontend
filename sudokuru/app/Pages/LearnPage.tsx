@@ -36,7 +36,7 @@ const LearnPage = () => {
 
             setLessonsLoaded(true);
           } else {
-            console.log("User has not learned any lessons!");
+            // User has not learned any lessons!
             setLessonsLoaded(true);
           }
         });
