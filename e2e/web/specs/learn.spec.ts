@@ -82,4 +82,16 @@ test.describe("learn", () => {
     await headerComponent.profile.click();
     await profilePage.verifyLearnedLessonsMatch(["None"]);
   });
+
+  test("should click on locked lesson and able to cancel", async ({
+    learn,
+  }) => {
+    const learnPage = new LearnPage(learn);
+    await learnPage.getAndClickLesson(1, "locked");
+    const cancel = learn.getByTestId("awesome-alert-cancel-btn");
+    await cancel.scrollIntoViewIfNeeded();
+    await expect(cancel).toBeInViewport({ ratio: 1 });
+    await cancel.click();
+    await learnPage.learnPageIsRendered();
+  });
 });

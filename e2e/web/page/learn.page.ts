@@ -10,6 +10,7 @@ export class LearnPage {
   }
 
   async learnPageIsRendered() {
+    await this.title.scrollIntoViewIfNeeded();
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
 
