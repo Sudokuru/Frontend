@@ -46,7 +46,7 @@ export class LearnPage {
   async getAndClickLesson(lesson: number, lessonType: string) {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
     const lessonName =
-      (await lessonLocator.getByTestId("lessonName")?.textContent()) ?? "Error";
+      (await lessonLocator.getByTestId("lessonName")?.innerText()) ?? "Error";
     await lessonLocator.click();
     return lessonName;
   }
