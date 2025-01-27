@@ -5,6 +5,7 @@ import { SudokuStrategy } from "sudokuru";
 export class ProfilePage {
   readonly page: Page;
   readonly title: Locator;
+  readonly learnedLessons: Locator;
   readonly themeSwitchEnabled: Locator;
   readonly themeSwitchDisabled: Locator;
   readonly highlightSwitchEnabled: Locator;
@@ -27,6 +28,7 @@ export class ProfilePage {
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Profile");
+    this.learnedLessons = page.getByTestId("LearnedLessons");
     this.themeSwitchEnabled = page.getByTestId("DarkThemeEnabled");
     this.themeSwitchDisabled = page.getByTestId("DarkThemeDisabled");
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
@@ -61,6 +63,11 @@ export class ProfilePage {
 
   async profilePageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
+  }
+
+  async verifyLearnedLessonsMatch(learnedLessons: string[]) {
+    const lessons: string = learnedLessons.join(" ");
+    await expect(this.learnedLessons).toHaveText(lessons);
   }
 
   async verifyAllHighlightSwitchesAreEnabled() {

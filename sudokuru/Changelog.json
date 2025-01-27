@@ -1,7 +1,17 @@
 ﻿[
   {
-    "version": "1.28.1",
+    "version": "1.28.2",
     "date": "#{date}#",
+    "summary": "When deleting statistics, learned lessons would temporarily display nothing on profile page instead of 'None'.",
+    "bug fixes": [
+      "After deleting statistics, learned lessons immediately display as 'None' on profile page."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "1.28.1",
+    "date": "January 25th, 2025",
     "summary": "A selected cell with notes was incorrectly highlighted as green instead of blue when identical values setting was enabled.",
     "bug fixes": [
       "A selected cell with notes now is always highlighted as blue even when the identical values setting is enabled."

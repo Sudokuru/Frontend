@@ -99,6 +99,7 @@ const ProfilePage = () => {
               Strategies Learned:
             </Text>
             <Text
+              testID="LearnedLessons"
               style={{
                 fontSize: 20,
                 fontWeight: "bold",
