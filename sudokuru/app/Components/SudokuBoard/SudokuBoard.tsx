@@ -12,7 +12,6 @@ import {
 } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Core/Components/NumberControl";
-import Cell from "./Core/Components/Cell";
 import ActionRow from "./Core/Components/ActionRow";
 import { generateGame } from "./Core/Functions/generateGame";
 import Puzzle from "./Core/Components/Puzzle";
