@@ -68,17 +68,8 @@ export class ProfilePage {
   }
 
   async verifyLearnedLessonsMatch(learnedLessons: string[]) {
-    const profileLessons = await this.learnedLessons.textContent();
-    let lessons: string[] = getStrategies().map(toTitle);
-    lessons.push("None");
-    lessons.forEach((lesson) => {
-      // splits remaining array in half at every occurrence so 2 means 1 occurrence total
-      if (learnedLessons.includes(lesson)) {
-        expect(profileLessons?.split(lesson).length === 2).toBeTruthy();
-      } else {
-        expect(profileLessons?.split(lesson).length === 2).toBeFalsy();
-      }
-    });
+    const lessons: string = learnedLessons.join(" ");
+    await expect(this.learnedLessons).toHaveText(lessons);
   }
 
   async verifyAllHighlightSwitchesAreEnabled() {
