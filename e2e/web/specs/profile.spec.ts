@@ -39,7 +39,7 @@ test.describe("profile", () => {
     await profilePage.verifyAllHighlightSwitchesAreEnabled();
   });
 
-  test("should display None strategies learned at start", async ({
+  test("should display 'None' as learned strategies when profile is initialized", async ({
     profile,
   }) => {
     const profilePage = new ProfilePage(profile);
