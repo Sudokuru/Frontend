@@ -2,9 +2,9 @@
   {
     "version": "1.28.2",
     "date": "#{date}#",
-    "summary": "When deleting statistics learned lessons would temporarily display nothing on profile page instead of None.",
+    "summary": "When deleting statistics, learned lessons would temporarily display nothing on profile page instead of 'None'.",
     "bug fixes": [
-      "After deleting statistics learned lessons immediately display as None on profile page."
+      "After deleting statistics, learned lessons immediately display as 'None' on profile page."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Gregory711"]
