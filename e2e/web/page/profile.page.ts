@@ -1,8 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { formatOneLessonName } from "../../../sudokuru/app/Functions/learnedLessons";
 import { SudokuStrategy } from "sudokuru";
-import { getStrategies } from "../../../sudokuru/app/Api/Lessons";
-import { toTitle } from "../../../sudokuru/app/Components/SudokuBoard/sudoku";
 
 export class ProfilePage {
   readonly page: Page;

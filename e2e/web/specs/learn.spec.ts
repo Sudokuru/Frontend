@@ -11,9 +11,9 @@ test.describe("learn", () => {
     learn,
   }) => {
     const learnPage = new LearnPage(learn);
-    await learnPage.verifyLessonNext(0);
+    await learnPage.verifyLessonState(0, "lesson");
     for (let i: number = 1; i < getStrategies().length; i++) {
-      await learnPage.verifyLessonLocked(i);
+      await learnPage.verifyLessonState(i, "locked");
     }
   });
 
@@ -60,7 +60,7 @@ test.describe("learn", () => {
 
     // Verify lessons now appear as learned in learn page
     for (let i: number = 0; i < getStrategies().length; i++) {
-      await learnPage.verifyLessonLearned(i);
+      await learnPage.verifyLessonState(i, "learned");
     }
 
     // Verify learned lessons appear in profile page

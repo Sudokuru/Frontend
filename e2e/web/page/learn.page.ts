@@ -14,20 +14,12 @@ export class LearnPage {
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
 
-  async verifyLessonLearned(lesson: number) {
-    const lessonLocator = this.page.getByTestId("learned" + lesson);
-    await lessonLocator.scrollIntoViewIfNeeded();
-    await expect(lessonLocator).toBeInViewport({ ratio: 1 });
-  }
-
-  async verifyLessonLocked(lesson: number) {
-    const lessonLocator = this.page.getByTestId("locked" + lesson);
-    await lessonLocator.scrollIntoViewIfNeeded();
-    await expect(lessonLocator).toBeInViewport({ ratio: 1 });
-  }
-
-  async verifyLessonNext(lesson: number) {
-    const lessonLocator = this.page.getByTestId("lesson" + lesson);
+  async verifyLessonState(
+    lesson: number,
+    state: "learned" | "locked" | "lesson"
+  ) {
+    const testId = state + lesson;
+    const lessonLocator = this.page.getByTestId(testId);
     await lessonLocator.scrollIntoViewIfNeeded();
     await expect(lessonLocator).toBeInViewport({ ratio: 1 });
   }
