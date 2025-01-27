@@ -1,10 +1,10 @@
 import { useTheme } from "react-native-paper";
 import { Pressable, Text, View } from "react-native";
-import { range } from "../sudoku";
+import { range } from "../../SudokuBoardFunctions";
 import React from "react";
 import { getCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
-import { PreferencesContext } from "../../../Contexts/PreferencesContext";
+import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 
 let fallbackHeight = 30;
 

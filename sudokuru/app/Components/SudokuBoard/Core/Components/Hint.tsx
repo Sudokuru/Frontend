@@ -1,6 +1,6 @@
 import { Text, useTheme } from "react-native-paper";
-import { HintObjectProps } from "../SudokuBoard";
-import { formatOneLessonName } from "../../../Functions/learnedLessons";
+import { HintObjectProps } from "../../SudokuBoard";
+import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Platform, Pressable, View } from "react-native";
 import { getCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

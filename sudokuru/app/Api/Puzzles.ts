@@ -6,7 +6,7 @@ import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import {
   GameDifficulty,
   returnGameOfDifficulty,
-} from "../Components/SudokuBoard/Functions/Difficulty";
+} from "../Components/SudokuBoard/Core/Functions/Difficulty";
 import { Statistics } from "./Puzzle.Types";
 import { getStatistics, saveStatisitics } from "./Statistics";
 import { SudokuStrategy } from "sudokuru";

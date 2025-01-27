@@ -1,4 +1,4 @@
-import { GameDifficulty } from "../Components/SudokuBoard/Functions/Difficulty";
+import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/Difficulty";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 

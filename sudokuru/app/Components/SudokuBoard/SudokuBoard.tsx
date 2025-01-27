@@ -4,20 +4,20 @@ import {
   finishSudokuGame,
   handlePause,
   isValueCorrect,
-} from "./Functions/BoardFunctions";
+} from "./Core/Functions/BoardFunctions";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
   generateBoxIndex,
   wrapDigit,
-} from "./sudoku";
+} from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
-import NumberControl from "./Components/NumberControl";
-import Cell from "./Components/Cell";
-import ActionRow from "./Components/ActionRow";
-import { generateGame } from "./Functions/generateGame";
-import Puzzle from "./Components/Puzzle";
+import NumberControl from "./Core/Components/NumberControl";
+import Cell from "./Core/Components/Cell";
+import ActionRow from "./Core/Components/ActionRow";
+import { generateGame } from "./Core/Functions/generateGame";
+import Puzzle from "./Core/Components/Puzzle";
 import {
   CellLocation,
   CellProps,
@@ -26,9 +26,9 @@ import {
   SudokuObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import HeaderRow from "./Components/HeaderRow";
-import EndGameModal from "./Components/EndGameModal";
-import { getSudokuHint } from "./Functions/HintFunctions";
+import HeaderRow from "./Core/Components/HeaderRow";
+import EndGameModal from "./Core/Components/EndGameModal";
+import { getSudokuHint } from "./Core/Functions/HintFunctions";
 import {
   HINT_NOT_HIGHLIGHTED_COLOR,
   HINT_SELECTED_COLOR,
@@ -40,8 +40,8 @@ import {
   SELECTED_IDENTICAL_VALUE_COLOR,
 } from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
-import Hint from "./Components/Hint";
-import { GameDifficulty } from "./Functions/Difficulty";
+import Hint from "./Core/Components/Hint";
+import { GameDifficulty } from "./Core/Functions/Difficulty";
 import { SudokuStrategy } from "sudokuru";
 import { saveGame } from "../../Api/Puzzles";
 

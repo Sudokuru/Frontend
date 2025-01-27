@@ -14,7 +14,7 @@ import Alert from "react-native-awesome-alerts";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { CARD_PADDING } from "../Components/Home/Cards";
-import { toTitle } from "../Components/SudokuBoard/sudoku";
+import { toTitle } from "../Components/SudokuBoard/SudokuBoardFunctions";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
 
