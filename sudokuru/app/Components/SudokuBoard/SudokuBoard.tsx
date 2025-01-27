@@ -6,10 +6,8 @@ import {
   isValueCorrect,
 } from "./Core/Functions/BoardFunctions";
 import {
-  areCellsInSameBox,
-  areCellsInSameColumn,
-  areCellsInSameRow,
-  generateBoxIndex,
+  doesCellHaveConflict,
+  getSelectedCells,
   wrapDigit,
 } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
@@ -29,21 +27,12 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
 import EndGameModal from "./Core/Components/EndGameModal";
 import { getSudokuHint } from "./Core/Functions/HintFunctions";
-import {
-  HINT_NOT_HIGHLIGHTED_COLOR,
-  HINT_SELECTED_COLOR,
-  IDENTICAL_VALUE_COLOR,
-  NOT_SELECTED_CONFLICT_COLOR,
-  PEER_SELECTED_COLOR,
-  SELECTED_COLOR,
-  SELECTED_CONFLICT_COLOR,
-  SELECTED_IDENTICAL_VALUE_COLOR,
-} from "../../Styling/HighlightColors";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
 import { GameDifficulty } from "./Core/Functions/Difficulty";
 import { SudokuStrategy } from "sudokuru";
 import { saveGame } from "../../Api/Puzzles";
+import RenderCell from "./Core/Components/RenderCell";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -237,7 +226,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
-    const currentSelectedCells = getSelectedCells();
+    const currentSelectedCells = getSelectedCells(sudokuBoard);
 
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
@@ -407,102 +396,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   /**
-   * Toggles whether or not a cell is selected on click
-   * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
-   * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
-   * https://github.com/necolas/react-native-web/issues/1684
-   * @param r The row of a given cell 0-8
-   * @param c the column of a given cell 0-8
-   * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
-   */
-  const toggleSelectCell = (r: number, c: number, event: any) => {
-    if (isBoardDisabled()) {
-      return;
-    }
-    if (sudokuBoard.selectedCells.length === 0) {
-      sudokuBoard.selectedCells.push({ r: r, c: c });
-    } else if (event.ctrlKey || event.metaKey) {
-      toggleSelectCellWithControlRules(r, c);
-    } else if (event.shiftKey) {
-      toggleSelectCellWithShiftRules(r, c);
-    } else {
-      toggleSelectCellWithDefaultRules(r, c);
-    }
-
-    setSudokuBoard({
-      ...sudokuBoard,
-      selectedCells: sudokuBoard.selectedCells,
-    });
-  };
-
-  /**
-   * Determines what deselect / select actions should take place.
-   * This function is run when default behavior is desired, which is when
-   * no modifier keys are pressed.
-   * @param r The row of the cell where select toggle action is taking place.
-   * @param c The column of the cell where select toggle action is taking place.
-   */
-  const toggleSelectCellWithDefaultRules = (r: number, c: number) => {
-    let addCell = true;
-    for (const cell of sudokuBoard.selectedCells) {
-      if (cell.c === c && cell.r === r) {
-        addCell = false;
-      }
-    }
-    sudokuBoard.selectedCells = [];
-    if (addCell) {
-      sudokuBoard.selectedCells.push({ r: r, c: c });
-    }
-  };
-
-  /**
-   * Determines what deselect / select actions should take place when control/meta key is held down.
-   * @param r The row of the cell where select toggle action is taking place.
-   * @param c The column of the cell where select toggle action is taking place.
-   */
-  const toggleSelectCellWithControlRules = (r: number, c: number) => {
-    let addCell = true;
-    for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
-      if (
-        sudokuBoard.selectedCells[i].c === c &&
-        sudokuBoard.selectedCells[i].r === r
-      ) {
-        addCell = false;
-        sudokuBoard.selectedCells.splice(i, 1);
-      }
-    }
-    if (addCell) {
-      sudokuBoard.selectedCells.push({ r: r, c: c });
-    }
-  };
-
-  /**
-   * Determines what deselect / select actions should take place when shift key is held down.
-   * @param r The row of the cell where select toggle action is taking place.
-   * @param c The column of the cell where select toggle action is taking place.
-   */
-  const toggleSelectCellWithShiftRules = (r: number, c: number) => {
-    const pointOneRow = sudokuBoard.selectedCells[0].r;
-    const pointOneColumn = sudokuBoard.selectedCells[0].c;
-
-    const selectionRowLength = r - pointOneRow;
-    const selectionColumnLength = c - pointOneColumn;
-
-    const newSelectedCells = [];
-    for (let i = 0; i <= Math.abs(selectionRowLength); i++) {
-      for (let j = 0; j <= Math.abs(selectionColumnLength); j++) {
-        newSelectedCells.push({
-          r: sudokuBoard.selectedCells[0].r + i * Math.sign(selectionRowLength),
-          c:
-            sudokuBoard.selectedCells[0].c +
-            j * Math.sign(selectionColumnLength),
-        });
-      }
-    }
-    sudokuBoard.selectedCells = newSelectedCells;
-  };
-
-  /**
    * Counts the total number of remaining playable cells for a given value.
    * @param value The value to look for.
    * @returns The number of cells found that match the value and are playable.
@@ -514,7 +407,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         if (
           sudokuBoard.puzzle[r][c].type === "note" ||
           sudokuBoard.puzzle[r][c].entry === 0 ||
-          doesCellHaveConflict(r, c, sudokuBoard.puzzle[r][c])
+          doesCellHaveConflict(sudokuBoard, r, c)
         ) {
           if (sudokuBoard.puzzleSolution[r][c] === value) {
             cellCountOfValue++;
@@ -523,27 +416,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
     }
     return cellCountOfValue;
-  };
-
-  /**
-   * Checks if a given cell in the puzzle has a conflict with the solution.
-   *
-   * @param r - The row index of the cell.
-   * @param c - The column index of the cell.
-   * @param cell - The cell object containing its type and entry.
-   * @returns True if the cell's entry is incorrect; false otherwise.
-   */
-  const doesCellHaveConflict = (
-    r: number,
-    c: number,
-    cell: CellProps
-  ): boolean => {
-    if (cell.type == "note" || cell.entry == 0) {
-      return false;
-    }
-    return !(
-      sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]
-    );
   };
 
   /**
@@ -559,11 +431,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
           sudokuBoard.puzzle[r][c].entry === 0
         )
           continue;
-        const isCellIncorrect = doesCellHaveConflict(
-          r,
-          c,
-          sudokuBoard.puzzle[r][c]
-        );
+        const isCellIncorrect = doesCellHaveConflict(sudokuBoard, r, c);
         if (isCellIncorrect === true) {
           return true;
         }
@@ -572,282 +440,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     return false;
   };
 
-  const isBoardDisabled = () => {
-    if (sudokuHint != null) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const renderCell = (cell: CellProps, r: number, c: number) => {
-    const cellBackgroundColor = getCellBackgroundColor(cell, r, c);
-    const disable: boolean = isBoardDisabled();
-    const noteColor: string[] = getCellNotesColor(r, c);
-    const backgroundNotesColor: string[] =
-      getCellBackgroundNotesColor(cellBackgroundColor);
-
-    return (
-      <Cell
-        disable={disable}
-        onClick={(r: number, c: number, event: any) => {
-          toggleSelectCell(r, c, event);
-        }}
-        backgroundColor={cellBackgroundColor}
-        noteColor={noteColor}
-        backgroundNoteColor={backgroundNotesColor}
-        type={cell.type}
-        entry={cell.entry}
-        key={r + ":" + c}
-        c={c}
-        r={r}
-      />
-    );
-  };
-
-  /**
-   * This function returns an array of 9 strings representing the colors of the
-   * notes for the cell at row r and column c. The colors returned are black
-   * unless the cell is part of a note removal hint and the hint is currently
-   * being displayed. In the case of a note removal hint, the color of the
-   * removed note will be red. The inputs r and c are the row and column of the
-   * cell for which the note colors should be determined.
-   * @param r the row of the cell for which the note colors should be determined
-   * @param c the column of the cell for which the note colors should be
-   * determined
-   */
-  const getCellNotesColor = (r: number, c: number) => {
-    const notesToReturn = Array(9).fill("black");
-    // change note color to red for note removals as part of hint
-    if (sudokuHint && sudokuHint.stage === 4) {
-      const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
-      for (const notes of hintNotes) {
-        if (notes[0] === r && notes[1] === c) {
-          notes.splice(0, 2);
-          for (const note of notes) {
-            notesToReturn[note - 1] = "red";
-          }
-        }
-      }
-    }
-    return notesToReturn;
-  };
-
-  const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
-    return Array(9).fill(cellBackgroundColor);
-  };
-
-  /**
-   * Determines the background color of a cell based on its state and properties.
-   *
-   * @param cell - The cell properties including its value and notes.
-   * @param r - The row index of the cell.
-   * @param c - The column index of the cell.
-   * @returns The background color as a string based on the cell's selection, conflict status,
-   *          peer relationship, identical value presence, and hint associations.
-   *
-   * The function evaluates the cell's state to set the background color. It considers
-   * if the cell is selected, in conflict, a peer to the selected cell, or has identical
-   * values with another cell, and assigns a color accordingly. Additionally, it checks
-   * if the cell is part of a hint, adjusting the color to reflect its role in the hint.
-   */
-  const getCellBackgroundColor = (
-    cell: CellProps,
-    r: number,
-    c: number
-  ): string => {
-    const selectedCell = sudokuBoard.selectedCells;
-    const selected: boolean = isCellSelected(r, c, selectedCell);
-    const conflict: boolean = doesCellHaveConflict(r, c, cell);
-    const peer: boolean = isCellPeer(r, c, selectedCell);
-    const identicalValue: boolean = doesCellHaveIdenticalValue(cell);
-
-    let cellBackgroundColor;
-    if (conflict && !selected) {
-      cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
-    } else if (conflict && selected) {
-      cellBackgroundColor = SELECTED_CONFLICT_COLOR;
-    } else if (selected && identicalValue) {
-      cellBackgroundColor = SELECTED_IDENTICAL_VALUE_COLOR;
-    } else if (selected) {
-      cellBackgroundColor = SELECTED_COLOR;
-    } else if (identicalValue) {
-      cellBackgroundColor = IDENTICAL_VALUE_COLOR;
-    } else if (peer) {
-      cellBackgroundColor = PEER_SELECTED_COLOR;
-    } else {
-      cellBackgroundColor = "white";
-    }
-
-    if (sudokuHint) {
-      const hintCause = isCellAHintCause(r, c);
-      const hintFocus = isCellAHintFocus(r, c);
-
-      if (hintCause) {
-        cellBackgroundColor = HINT_SELECTED_COLOR;
-      } else if (!hintFocus) {
-        cellBackgroundColor = HINT_NOT_HIGHLIGHTED_COLOR;
-      }
-    }
-
-    return cellBackgroundColor;
-  };
-
-  /**
-   * Determines if a cell is a cause of a hint. A cause is a cell that is relevant to the hint and is highlighted in the hint.
-   * @param r The row coordinate of the cell to check
-   * @param c The column coordinate of the cell to check
-   * @returns True if the cell is a cause of the hint, false otherwise
-   */
-  const isCellAHintCause = (r: number, c: number): boolean => {
-    if (!sudokuHint) {
-      return false;
-    }
-
-    for (const cause of sudokuHint.hint.cause) {
-      if (cause[0] === r && cause[1] === c && sudokuHint.stage >= 4) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  /**
-   * Determines if a cell is a focus of a hint. A focus is the region the user should be focused on during a hint.
-   * @param r The row coordinate of the cell to check.
-   * @param c The column coordinate of the cell to check.
-   * @returns True if the cell is a focus of the hint, false otherwise.
-   */
-  const isCellAHintFocus = (r: number, c: number): boolean => {
-    if (!sudokuHint) {
-      return false;
-    }
-
-    if (sudokuHint.stage < 3) {
-      return true;
-    }
-
-    let hintFocused = false;
-    for (const group of sudokuHint.hint.groups) {
-      const cellSharesGroupRow = group[0] === 0 && group[1] === r;
-      const cellSharesGroupColumn = group[0] === 1 && group[1] === c;
-      const cellSharesGroupBox =
-        group[0] === 2 && generateBoxIndex(r, c) === group[1];
-
-      if (cellSharesGroupRow || cellSharesGroupColumn || cellSharesGroupBox) {
-        return true;
-      }
-    }
-
-    return hintFocused;
-  };
-
-  /**
-   * Determines if the coordinates provided match with the selected cell
-   * @param r The row coordinate of a cell
-   * @param c The column coordinate of a cell
-   * @param selectedCell The selected cell
-   * @returns false if selectedCell is empty or does not match the coordinates provided
-   */
-  const isCellSelected = (
-    r: number,
-    c: number,
-    selectedCell: CellLocation[]
-  ): boolean => {
-    if (selectedCell.length === 0) {
-      return false;
-    } else {
-      let isCellSelected = false;
-      for (const cell of selectedCell) {
-        if (c === cell.c && r === cell.r) {
-          isCellSelected = true;
-        }
-      }
-      return isCellSelected;
-    }
-  };
-
-  /**
-   * Determines if a cell should be highlighted as having an identical value to the selected cell.
-   * @param cell The cell to check
-   * @returns True if the cell should be highlighted as having an identical value, false otherwise
-   * @remarks
-   * This function will return false if no cells are selected, more than one cell is selected, or if the cell is empty.
-   * This function will also return false if the user has disabled highlighting of identical values in their preferences.
-   */
-  const doesCellHaveIdenticalValue = (cell: CellProps): boolean => {
-    // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
-    if (sudokuBoard.selectedCells.length !== 1) {
-      return false;
-    }
-    const { highlightIdenticalValuesSetting } =
-      React.useContext(PreferencesContext);
-    const currentSelectedCell = getSelectedCells();
-    let currentEntry = cell.entry;
-    // for the purposes of highlighting identical values, a cell with notes is treated as an empty cell
-    if (cell.type === "note") {
-      currentEntry = 0;
-    }
-    const selectedEntry = currentSelectedCell[0].entry;
-    const identicalValue = selectedEntry === currentEntry;
-
-    return (
-      highlightIdenticalValuesSetting && identicalValue && currentEntry != 0
-    );
-  };
-
-  /**
-   * Determines if a cell should be highlighted as a peer of the selected cell.
-   * Definition of peer can be found here: http://sudopedia.enjoysudoku.com/Peer.html
-   * @param r The row of the cell to check.
-   * @param c The column of the cell to check.
-   * @param selectedCells The selected cells.
-   * @returns True if the cell should be highlighted as a peer, false otherwise.
-   * @remarks
-   * This function will return false if no cells are selected or more than 1 cell is selected.
-   * This function will also return false if the user has disabled highlighting of peers in their preferences.
-   */
-  const isCellPeer = (
-    r: number,
-    c: number,
-    selectedCells: CellLocation[]
-  ): boolean => {
-    // disable highlighting peers if no cells selected or more than 1 cell is selected.
-    if (selectedCells.length !== 1) {
-      return false;
-    }
-
-    const selectedCell = selectedCells[0];
-
-    const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
-      React.useContext(PreferencesContext);
-
-    const sameBox = areCellsInSameBox({ r: r, c: c }, selectedCell);
-    const sameRow = areCellsInSameRow({ r: r, c: c }, selectedCell);
-    const sameColumn = areCellsInSameColumn({ r: r, c: c }, selectedCell);
-
-    return (
-      (sameBox && highlightBoxSetting) ||
-      (sameRow && highlightRowSetting) ||
-      (sameColumn && highlightColumnSetting)
-    );
-  };
-
   const renderTopBar = () => {
     return (
       <HeaderRow sudokuBoard={sudokuBoard} setSudokuBoard={setSudokuBoard} />
     );
-  };
-
-  const getSelectedCells = (): CellProps[] => {
-    if (sudokuBoard.selectedCells.length === 0) {
-      return [];
-    }
-    const selectedCells: CellProps[] = [];
-    for (const selectedCell of sudokuBoard.selectedCells) {
-      selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
-    }
-    return selectedCells;
   };
 
   /**
@@ -946,7 +542,14 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   };
 
   const renderPuzzle = () => {
-    return <Puzzle renderCell={renderCell} sudokuBoard={sudokuBoard} />;
+    return (
+      <Puzzle
+        RenderCell={RenderCell}
+        sudokuBoard={sudokuBoard}
+        sudokuHint={sudokuHint}
+        setSudokuBoard={setSudokuBoard}
+      />
+    );
   };
 
   /**
@@ -962,7 +565,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     let enableNumberButtons = false;
 
     if (sudokuBoard.selectedCells.length > 0) {
-      currentSelectedCells = getSelectedCells();
+      currentSelectedCells = getSelectedCells(sudokuBoard);
     }
 
     if (currentSelectedCells.length != 0) {
@@ -1071,7 +674,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * 2. All selected cells are either given, empty, or correct.
    */
   const isEraseButtonDisabled = () => {
-    const currentSelectedCells: CellProps[] = getSelectedCells();
+    const currentSelectedCells: CellProps[] = getSelectedCells(sudokuBoard);
     if (sudokuBoard.selectedCells.length === 0) {
       return true;
     }
