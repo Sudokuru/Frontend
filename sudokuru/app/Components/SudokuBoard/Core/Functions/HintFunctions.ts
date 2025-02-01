@@ -1,7 +1,7 @@
 import { getHint, SudokuStrategy } from "sudokuru";
 import { CellProps } from "../../../../Functions/LocalDatabase";
 import { Hint } from "../../SudokuBoard";
-import { generateBoxIndex } from "../../SudokuBoardFunctions";
+import { generateBoxIndex } from "./CellFunctions";
 
 /**
  * Retrieves a hint for the current sudoku puzzle state based on the specified strategy order.

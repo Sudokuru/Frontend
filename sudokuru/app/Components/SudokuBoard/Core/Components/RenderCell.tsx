@@ -10,7 +10,8 @@ import {
   getCellNotesColor,
 } from "../Functions/RenderCellFunctions";
 import { HintObjectProps } from "../../SudokuBoard";
-import { isBoardDisabled, toggleSelectCell } from "../../SudokuBoardFunctions";
+import { isBoardDisabled } from "../../SudokuBoardFunctions";
+import { toggleSelectCell } from "../Functions/CellFunctions";
 
 const RenderCell = (
   sudokuBoard: SudokuObjectProps,

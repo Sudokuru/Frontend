@@ -17,13 +17,13 @@ import {
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps } from "../../SudokuBoard";
 import {
-  generateBoxIndex,
   areCellsInSameBox,
-  areCellsInSameRow,
   areCellsInSameColumn,
+  areCellsInSameRow,
   doesCellHaveConflict,
+  generateBoxIndex,
   getSelectedCells,
-} from "../../SudokuBoardFunctions";
+} from "./CellFunctions";
 
 /**
  * This function returns an array of 9 strings representing the colors of the

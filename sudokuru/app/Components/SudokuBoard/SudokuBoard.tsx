@@ -6,8 +6,8 @@ import {
   isValueCorrect,
 } from "./Core/Functions/BoardFunctions";
 import {
-  doesCellHaveConflict,
-  getSelectedCells,
+  doesBoardHaveConflict,
+  isGameSolved,
   wrapDigit,
 } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
@@ -32,6 +32,12 @@ import { GameDifficulty } from "./Core/Functions/Difficulty";
 import { SudokuStrategy } from "sudokuru";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
+import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
+import {
+  areCellUpdatesDisabled,
+  getRemainingCellCountOfValue,
+  getSelectedCells,
+} from "./Core/Functions/CellFunctions";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -276,7 +282,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     // Saving current game status
     saveGame(sudokuBoard);
 
-    if (!sudokuBoard.inNoteMode && isGameSolved()) {
+    if (!sudokuBoard.inNoteMode && isGameSolved(sudokuBoard)) {
       const score = finishSudokuGame(
         sudokuBoard.statistics.difficulty,
         sudokuBoard.statistics.numHintsUsed,
@@ -371,81 +377,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     });
   };
 
-  /**
-   * Determines if the game has been solved by iterating through the
-   * puzzle board and checking if the values entered in the cells are
-   * correct. If any cells are incorrect, or if any cells have notes or
-   * are empty, the function returns false. If all cells are correct and
-   * the game has been solved, the function returns true.
-   * @returns {boolean} True if the game has been solved, false otherwise.
-   */
-  const isGameSolved = (): boolean => {
-    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-        if (sudokuBoard.puzzle[r][c].type === "given") continue;
-        if (
-          sudokuBoard.puzzle[r][c].type === "note" ||
-          sudokuBoard.puzzle[r][c].entry === 0
-        ) {
-          return false;
-        }
-        const isValueCorrectResult = isValueCorrect(
-          sudokuBoard.puzzleSolution[r][c],
-          sudokuBoard.puzzle[r][c].entry as number
-        );
-        if (isValueCorrectResult === false) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
-  /**
-   * Counts the total number of remaining playable cells for a given value.
-   * @param value The value to look for.
-   * @returns The number of cells found that match the value and are playable.
-   */
-  const getRemainingCellCountOfValue = (value: number) => {
-    let cellCountOfValue = 0;
-    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-        if (
-          sudokuBoard.puzzle[r][c].type === "note" ||
-          sudokuBoard.puzzle[r][c].entry === 0 ||
-          doesCellHaveConflict(sudokuBoard, r, c)
-        ) {
-          if (sudokuBoard.puzzleSolution[r][c] === value) {
-            cellCountOfValue++;
-          }
-        }
-      }
-    }
-    return cellCountOfValue;
-  };
-
-  /**
-   * Determines if there are any incorrect values in the board
-   * @returns True if there are no correct values in board, False otherwise
-   */
-  const doesBoardHaveConflict = (): boolean => {
-    for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-      for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-        if (sudokuBoard.puzzle[r][c].type === "given") continue;
-        if (
-          sudokuBoard.puzzle[r][c].type === "note" ||
-          sudokuBoard.puzzle[r][c].entry === 0
-        )
-          continue;
-        const isCellIncorrect = doesCellHaveConflict(sudokuBoard, r, c);
-        if (isCellIncorrect === true) {
-          return true;
-        }
-      }
-    }
-    return false;
-  };
-
   const renderTopBar = () => {
     return (
       <HeaderRow sudokuBoard={sudokuBoard} setSudokuBoard={setSudokuBoard} />
@@ -479,7 +410,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         return;
       case "H":
       case "h":
-        if (!doesBoardHaveConflict()) {
+        if (!doesBoardHaveConflict(sudokuBoard)) {
           if (sudokuHint) {
             updateHintStage(1);
           } else {
@@ -580,6 +511,9 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         if (
           !areCellUpdatesDisabled(
             currentSelectedCells[i],
+            sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
+              sudokuBoard.selectedCells[i].c
+            ],
             sudokuBoard.selectedCells[i].r,
             sudokuBoard.selectedCells[i].c
           )
@@ -596,30 +530,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       <NumberControl
         areNumberButtonsDisabled={!enableNumberButtons}
         updateEntry={updateCellEntry}
+        sudokuBoard={sudokuBoard}
         getRemainingCellCountOfValue={getRemainingCellCountOfValue}
       />
     );
-  };
-
-  /**
-   * Checks if the given cell is disabled from being updated.
-   * A cell is disabled from being updated if it is a given cell or if it is a value cell with a correct value.
-   * @param cell The cell to check.
-   * @param r The row index of the cell.
-   * @param c The column index of the cell.
-   * @returns True if the cell is disabled from being updated, false otherwise.
-   */
-  const areCellUpdatesDisabled = (cell: CellProps, r: number, c: number) => {
-    if (cell.type === "given") {
-      return true;
-    } else if (
-      cell.type === "value" &&
-      isValueCorrect(sudokuBoard.puzzleSolution[r][c], cell.entry)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
   };
 
   /**
@@ -633,8 +547,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
     const inNoteMode = sudokuBoard.inNoteMode;
-    const boardHasConflict = doesBoardHaveConflict();
-    const eraseButtonDisabled = isEraseButtonDisabled();
+    const boardHasConflict = doesBoardHaveConflict(sudokuBoard);
+    const eraseButtonDisabled = isEraseButtonDisabled(sudokuBoard);
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
 
     return (
@@ -671,38 +585,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         incrementStage={updateHintStage}
       />
     );
-  };
-
-  /**
-   * @returns true if the erase button should be disabled, false otherwise.
-   * The erase button is disabled if either:
-   * 1. No cells are selected.
-   * 2. All selected cells are either given, empty, or correct.
-   */
-  const isEraseButtonDisabled = () => {
-    const currentSelectedCells: CellProps[] = getSelectedCells(sudokuBoard);
-    if (sudokuBoard.selectedCells.length === 0) {
-      return true;
-    }
-    for (let i = 0; i < currentSelectedCells.length; i++) {
-      const isCellGiven = currentSelectedCells[i].type === "given";
-      const isCellEmpty =
-        currentSelectedCells[i].type === "value" &&
-        currentSelectedCells[i].entry === 0;
-      const isCellCorrect =
-        currentSelectedCells[i].type === "value" &&
-        isValueCorrect(
-          sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
-            sudokuBoard.selectedCells[i].c
-          ],
-          currentSelectedCells[i].entry as number
-        );
-      // disable erase button if value === 0 or is given
-      if (!isCellGiven && !isCellEmpty && !isCellCorrect) {
-        return false;
-      }
-    }
-    return true;
   };
 
   /**
@@ -763,7 +645,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
       case sudokuHint.maxStage + 1: {
         setSudokuHint(undefined);
-        if (isGameSolved()) {
+        if (isGameSolved(sudokuBoard)) {
           const score = finishSudokuGame(
             sudokuBoard.statistics.difficulty,
             sudokuBoard.statistics.numHintsUsed,
