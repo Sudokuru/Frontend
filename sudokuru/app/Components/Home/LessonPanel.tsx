@@ -223,8 +223,9 @@ const LessonPanel = (props: any) => {
               style={{
                 backgroundColor: theme.colors.onSurface,
                 alignSelf: "center",
-                width: CARD_WIDTH,
-                height: CARD_IMAGE_HEIGHT,
+                width: CARD_WIDTH * 1.08,
+                height: CARD_IMAGE_HEIGHT * 1.15,
+                padding: CARD_WIDTH / 10,
               }}
             >
               <Text
