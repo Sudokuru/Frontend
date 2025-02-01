@@ -230,6 +230,16 @@ const LessonPanel = (props: any) => {
               <Text variant="headlineLarge" style={{ alignSelf: "center" }}>
                 Warning
               </Text>
+              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
+                You have selected a lesson that is locked.{"\n"}
+                Locked lessons build on knowledge gained from previous lessons.
+                {"\n"}
+                It is recommended that you complete the previous lessons before
+                attempting this one.
+              </Text>
+              <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+                Are you sure you want to continue?
+              </Text>
               <View
                 style={{
                   flexWrap: "wrap",
