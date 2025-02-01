@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
+import {
+  ImageURISource,
+  Image,
+  TouchableOpacity,
+  View,
+  Modal,
+} from "react-native";
 import {
   ActivityIndicator,
   Text,
   Card,
   useTheme,
-  Dialog,
-  Portal,
   Button,
 } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -25,7 +29,6 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import { rgba } from "polished";
 import { getStrategies } from "../../Api/Lessons";
 
 let lessonImages: ImageURISource[] = [
@@ -203,23 +206,29 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
-        <Portal>
-          <Dialog
-            visible={lockedWarningVisible}
-            onDismiss={hideLockedWarning}
-            style={{ alignSelf: "center", alignItems: "center" }}
+        <Modal
+          visible={lockedWarningVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={hideLockedWarning}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Dialog.Title>Warning</Dialog.Title>
-            <Dialog.Content>
-              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
-                You have selected a lesson that is locked.{"\n"}
-                Locked lessons build on knowledge gained from previous lessons.
-                {"\n"}
-                It is recommended that you complete the previous lessons before
-                attempting this one.
-              </Text>
-              <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
-                Are you sure you want to continue?
+            <View
+              style={{
+                backgroundColor: "white",
+                alignSelf: "center",
+                width: "30%",
+                height: "30%",
+              }}
+            >
+              <Text variant="headlineLarge" style={{ alignSelf: "center" }}>
+                Warning
               </Text>
               <View
                 style={{
@@ -246,9 +255,9 @@ const LessonPanel = (props: any) => {
                   Yes
                 </Button>
               </View>
-            </Dialog.Content>
-          </Dialog>
-        </Portal>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
