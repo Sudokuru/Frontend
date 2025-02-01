@@ -269,13 +269,21 @@ const LessonPanel = (props: any) => {
                       params: availableLessons[lockedLesson],
                     });
                   }}
-                  labelStyle={{ fontSize: 20 }}
+                  labelStyle={{
+                    fontSize: 20,
+                    color: theme.colors.surface,
+                    fontWeight: "bold",
+                  }}
                 >
                   Yes
                 </Button>
                 <Button
                   onPress={hideLockedWarning}
-                  labelStyle={{ fontSize: 20 }}
+                  labelStyle={{
+                    fontSize: 20,
+                    color: theme.colors.surface,
+                    fontWeight: "bold",
+                  }}
                 >
                   No
                 </Button>
