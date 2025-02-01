@@ -1,10 +1,40 @@
 ﻿[
   {
-    "version": "1.27.5",
+    "version": "1.28.2",
     "date": "#{date}#",
+    "summary": "When deleting statistics, learned lessons would temporarily display nothing on profile page instead of 'None'.",
+    "bug fixes": [
+      "After deleting statistics, learned lessons immediately display as 'None' on profile page."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "1.28.1",
+    "date": "January 25th, 2025",
+    "summary": "A selected cell with notes was incorrectly highlighted as green instead of blue when identical values setting was enabled.",
+    "bug fixes": [
+      "A selected cell with notes now is always highlighted as blue even when the identical values setting is enabled."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.28.0",
+    "date": "January 19th, 2025",
+    "summary": "Adding a progress indicator to the Sudoku board. By default, the user can see how many remaining cells of a particular value are left.",
+    "features": [
+      "User has new profile option - Progress Indicator. When enabled, the numpad will have a gradient showing the user how many remaining cells of a particular value are left."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.27.5",
+    "date": "December 10th, 2024",
     "summary": "Text is now selectable on web and desktop",
     "features": [
-      "Text on the sudoku board is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
+      "All text excluding the sudoku board text is now selectable on the web and desktop versions of the app. This allows copy and paste functionality, as well as helps for those who prefer to select text as they read."
     ],
     "targets": ["web", "desktop"],
     "contributors": ["Thomas-Gallant"]

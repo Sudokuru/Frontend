@@ -32,8 +32,9 @@ const isFirstDateReplaced = firstDate === "#{date}#";
 
 const vars = { DATE: formattedDate };
 
+// found issue describing working syntax: https://github.com/qetza/replacetokens-task/issues/66
 const result = await replaceTokens(
-  ['**/Changelog.json'],
+  ['**/Changelog.json;!**/node_modules/**'],
   (name) => vars[name],
 );
 

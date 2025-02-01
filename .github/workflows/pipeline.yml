@@ -157,9 +157,10 @@ jobs:
           path: e2e/web/test-results/*
       - name: Upload coverage reports to Codecov
         if: always()
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
       # https://github.com/codacy/codacy-coverage-reporter/issues/506
       # codacy does not allow uploading of codacy.json files directly without API endpoint
       # - name: Run codacy-coverage-reporter

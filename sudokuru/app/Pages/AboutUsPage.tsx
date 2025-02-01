@@ -105,9 +105,9 @@ const AboutUsPage = () => {
           world-class, cross-platform Sudoku app. We aim to provide a delightful
           user experience while also contributing to the community by building a
           collection of reusable software modules. These modules are designed to
-          be free, well-documented, modern, and interoperable, allowing
-          developers to easily incorporate them into their own Sudoku-related
-          projects.
+          be free, well-documented, modern, and interoperable, allowing the open
+          source community to easily incorporate them into their own
+          Sudoku-related projects.
         </Text>
         <Text variant="headlineSmall">History</Text>
         <Text variant="bodyLarge">

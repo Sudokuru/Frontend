@@ -5,6 +5,7 @@
   "highlightColumn": true,
   "highlightRow": true,
   "highlightIdenticalValues": true,
+  "progressIndicator": true,
   "previewMode": false,
   "strategyHintOrder": [
     "HIDDEN_QUADRUPLET",
