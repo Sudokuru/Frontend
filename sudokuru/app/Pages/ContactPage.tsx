@@ -13,8 +13,6 @@ import {
   CARD_PADDING,
   CARD_WIDTH,
 } from "../Components/Home/Cards";
-import Alert from "react-native-awesome-alerts";
-import { rgba } from "polished";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
@@ -85,6 +83,15 @@ const ContactPage = () => {
     });
     updateCurrentPage("HomePage");
     navigation.navigate("HomePage");
+  };
+
+  const closeThankYouErrorModal = async () => {
+    setContactPage({
+      ...contactPage,
+      buttonDisabled: false,
+      buttonText: "Submit*",
+      errorVisible: false,
+    });
   };
 
   return (
@@ -245,32 +252,59 @@ const ContactPage = () => {
           </View>
         </View>
       </Modal>
-      <Alert
-        show={contactPage.errorVisible}
-        title="Error"
-        message={
-          `There was an error submitting your feedback.\n\n` +
-          `Please try again later.`
-        }
-        messageStyle={{ maxWidth: 500 }}
-        showConfirmButton={true}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={false}
-        confirmText={"OK"}
-        confirmButtonColor={theme.colors.primary}
-        onConfirmPressed={() => {
-          setContactPage({
-            ...contactPage,
-            buttonDisabled: false,
-            buttonText: "Submit*",
-            errorVisible: false,
-          });
-        }}
-        overlayStyle={{ backgroundColor: "transparent" }}
-        alertContainerStyle={{
-          backgroundColor: rgba(theme.colors.background, 0.3),
-        }}
-      />
+      <Modal
+        visible={contactPage.errorVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={closeThankYouErrorModal}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: theme.colors.onSurface,
+              alignSelf: "center",
+              width: CARD_WIDTH * 1.08,
+              height: CARD_IMAGE_HEIGHT * 0.7,
+              padding: CARD_WIDTH / 10,
+              borderRadius: CARD_WIDTH / 8,
+              borderWidth: CARD_WIDTH / 80,
+              borderColor: theme.colors.primary,
+            }}
+          >
+            <Text
+              variant="headlineSmall"
+              style={{ alignSelf: "center" }}
+              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+            >
+              Error
+            </Text>
+            <Text
+              variant="bodyLarge"
+              style={{ alignSelf: "center" }}
+              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+            >
+              There was an error submitting your feedback.{"\n"}
+              Please try again later.
+            </Text>
+            <Button
+              onPress={closeThankYouErrorModal}
+              labelStyle={{
+                fontSize: 20,
+                color: theme.colors.surface,
+                fontWeight: "bold",
+              }}
+            >
+              Ok
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
