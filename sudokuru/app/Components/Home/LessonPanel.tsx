@@ -223,8 +223,8 @@ const LessonPanel = (props: any) => {
               style={{
                 backgroundColor: "white",
                 alignSelf: "center",
-                width: "30%",
-                height: "30%",
+                width: CARD_WIDTH,
+                height: CARD_IMAGE_HEIGHT,
               }}
             >
               <Text variant="headlineLarge" style={{ alignSelf: "center" }}>
