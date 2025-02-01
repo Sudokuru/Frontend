@@ -250,10 +250,10 @@ const LessonPanel = (props: any) => {
               </Text>
               <Text
                 variant="headlineSmall"
-                style={{ alignSelf: "center" }}
+                style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
                 theme={{ colors: { onSurface: theme.colors.onPrimary } }}
               >
-                Are you sure you want to continue?
+                Continue?
               </Text>
               <View
                 style={{
@@ -262,12 +262,6 @@ const LessonPanel = (props: any) => {
                   alignSelf: "center",
                 }}
               >
-                <Button
-                  onPress={hideLockedWarning}
-                  labelStyle={{ fontSize: 20 }}
-                >
-                  No
-                </Button>
                 <Button
                   onPress={() => {
                     hideLockedWarning;
@@ -278,6 +272,12 @@ const LessonPanel = (props: any) => {
                   labelStyle={{ fontSize: 20 }}
                 >
                   Yes
+                </Button>
+                <Button
+                  onPress={hideLockedWarning}
+                  labelStyle={{ fontSize: 20 }}
+                >
+                  No
                 </Button>
               </View>
             </View>
