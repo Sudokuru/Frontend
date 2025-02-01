@@ -246,6 +246,7 @@ const ContactPage = () => {
                 color: theme.colors.surface,
                 fontWeight: "bold",
               }}
+              testID="confirmSubmitButton"
             >
               Ok
             </Button>
@@ -299,6 +300,7 @@ const ContactPage = () => {
                 color: theme.colors.surface,
                 fontWeight: "bold",
               }}
+              testID="confirmErrorButton"
             >
               Ok
             </Button>

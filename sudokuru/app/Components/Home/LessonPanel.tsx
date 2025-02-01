@@ -274,6 +274,7 @@ const LessonPanel = (props: any) => {
                     color: theme.colors.surface,
                     fontWeight: "bold",
                   }}
+                  testID="confirmContinueButton"
                 >
                   Yes
                 </Button>
@@ -284,6 +285,7 @@ const LessonPanel = (props: any) => {
                     color: theme.colors.surface,
                     fontWeight: "bold",
                   }}
+                  testID="cancelContinueButton"
                 >
                   No
                 </Button>

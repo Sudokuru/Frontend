@@ -40,7 +40,7 @@ test.describe("contact page", () => {
           )
       ).toBeTruthy();
       await contactPage.thankYouIsVisible();
-      await contactPage.closeAlert();
+      await contactPage.closeSubmitAlert();
       const homePage = new HomePage(contact);
       await homePage.homePageIsRendered();
     });
@@ -72,7 +72,7 @@ test.describe("contact page", () => {
         .includes("feedbackType=Feature%20Request&feedbackText=")
     ).toBeTruthy();
     await contactPage.errorIsVisible();
-    await contactPage.closeAlert();
+    await contactPage.closeErrorAlert();
     await contactPage.errorIsNotVisible();
     await contactPage.submitFeedbackButtonIsEnabled();
   });

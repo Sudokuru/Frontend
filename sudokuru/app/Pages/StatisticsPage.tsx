@@ -146,6 +146,7 @@ const StatisticsPage = () => {
                   style={{
                     marginRight: CARD_WIDTH / 10,
                   }}
+                  testID="cancelDeleteButton"
                 >
                   Cancel
                 </Button>
@@ -162,6 +163,7 @@ const StatisticsPage = () => {
                     color: "white",
                     fontWeight: "bold",
                   }}
+                  testID="confirmDeleteButton"
                 >
                   Delete
                 </Button>

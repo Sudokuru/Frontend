@@ -2,9 +2,9 @@ default_stages: [pre-commit, pre-push]
 repos:
   - repo: local
     hooks:
-      - id: lint-staged
-        name: lint-staged
-        entry: npx lint-staged
+      - id: prettier
+        name: prettier
+        entry: npx prettier --write --ignore-unknown .
         always_run: true
         language: system
         verbose: false
