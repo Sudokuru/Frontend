@@ -226,6 +226,9 @@ const LessonPanel = (props: any) => {
                 width: CARD_WIDTH * 1.08,
                 height: CARD_IMAGE_HEIGHT * 1.15,
                 padding: CARD_WIDTH / 10,
+                borderRadius: CARD_WIDTH / 8,
+                borderWidth: CARD_WIDTH / 80,
+                borderColor: theme.colors.primary,
               }}
             >
               <Text
