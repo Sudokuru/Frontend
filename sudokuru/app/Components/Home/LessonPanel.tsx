@@ -243,11 +243,10 @@ const LessonPanel = (props: any) => {
                 style={{ alignSelf: "center" }}
                 theme={{ colors: { onSurface: theme.colors.onPrimary } }}
               >
-                You have selected a lesson that is locked.{"\n"}
-                Locked lessons build on knowledge gained from previous lessons.
-                {"\n"}
-                It is recommended that you complete the previous lessons before
-                attempting this one.
+                You have selected a lesson that is locked. Locked lessons build
+                on knowledge gained from previous lessons. It is recommended
+                that you complete the previous lessons before attempting this
+                one.
               </Text>
               <Text
                 variant="headlineSmall"
