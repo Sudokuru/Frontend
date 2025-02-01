@@ -223,7 +223,7 @@ const ContactPage = () => {
               backgroundColor: theme.colors.onSurface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
-              height: CARD_IMAGE_HEIGHT * 0.8,
+              height: CARD_IMAGE_HEIGHT * 0.9,
               padding: CARD_WIDTH / 10,
               borderRadius: CARD_WIDTH / 8,
               borderWidth: CARD_WIDTH / 80,
@@ -231,8 +231,15 @@ const ContactPage = () => {
             }}
           >
             <Text
-              variant="bodyLarge"
+              variant="headlineSmall"
               style={{ alignSelf: "center" }}
+              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+            >
+              Thank You!
+            </Text>
+            <Text
+              variant="bodyLarge"
+              style={{ alignSelf: "center", textAlign: "center" }}
               theme={{ colors: { onSurface: theme.colors.onPrimary } }}
             >
               Your feedback has been submitted.{"\n"}
