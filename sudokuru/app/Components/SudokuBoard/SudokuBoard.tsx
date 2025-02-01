@@ -364,6 +364,13 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     sudokuBoard.puzzle[r][c].entry = newCellEntry;
   };
 
+  const setBoardSelectedCells = (cells: CellLocation[]) => {
+    setSudokuBoard({
+      ...sudokuBoard,
+      selectedCells: cells,
+    });
+  };
+
   /**
    * Determines if the game has been solved by iterating through the
    * puzzle board and checking if the values entered in the cells are
@@ -546,7 +553,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         RenderCell={RenderCell}
         sudokuBoard={sudokuBoard}
         sudokuHint={sudokuHint}
-        setSudokuBoard={setSudokuBoard}
+        setBoardSelectedCells={setBoardSelectedCells}
       />
     );
   };

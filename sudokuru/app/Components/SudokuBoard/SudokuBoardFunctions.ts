@@ -58,9 +58,7 @@ export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
  */
 export const toggleSelectCell = (
   sudokuBoard: SudokuObjectProps,
-  setSudokuBoard: React.Dispatch<
-    React.SetStateAction<SudokuObjectProps | undefined>
-  >,
+  setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
@@ -79,10 +77,7 @@ export const toggleSelectCell = (
     toggleSelectCellWithDefaultRules(sudokuBoard, r, c);
   }
 
-  setSudokuBoard({
-    ...sudokuBoard,
-    selectedCells: sudokuBoard.selectedCells,
-  });
+  setBoardSelectedCells(sudokuBoard.selectedCells);
 };
 
 /**

@@ -1,5 +1,8 @@
 import React from "react";
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import {
+  CellLocation,
+  SudokuObjectProps,
+} from "../../../../Functions/LocalDatabase";
 import Cell from "./Cell";
 import {
   getCellBackgroundColor,
@@ -11,9 +14,7 @@ import { isBoardDisabled, toggleSelectCell } from "../../SudokuBoardFunctions";
 
 const RenderCell = (
   sudokuBoard: SudokuObjectProps,
-  setSudokuBoard: React.Dispatch<
-    React.SetStateAction<SudokuObjectProps | undefined>
-  >,
+  setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number
@@ -34,7 +35,14 @@ const RenderCell = (
     <Cell
       disable={disable}
       onClick={(r: number, c: number, event: any) => {
-        toggleSelectCell(sudokuBoard, setSudokuBoard, sudokuHint, r, c, event);
+        toggleSelectCell(
+          sudokuBoard,
+          setBoardSelectedCells,
+          sudokuHint,
+          r,
+          c,
+          event
+        );
       }}
       backgroundColor={cellBackgroundColor}
       noteColor={noteColor}
