@@ -221,23 +221,35 @@ const LessonPanel = (props: any) => {
           >
             <View
               style={{
-                backgroundColor: "white",
+                backgroundColor: theme.colors.onSurface,
                 alignSelf: "center",
                 width: CARD_WIDTH,
                 height: CARD_IMAGE_HEIGHT,
               }}
             >
-              <Text variant="headlineLarge" style={{ alignSelf: "center" }}>
+              <Text
+                variant="headlineLarge"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
                 Warning
               </Text>
-              <Text variant="bodyLarge" style={{ alignSelf: "center" }}>
+              <Text
+                variant="bodyLarge"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
                 You have selected a lesson that is locked.{"\n"}
                 Locked lessons build on knowledge gained from previous lessons.
                 {"\n"}
                 It is recommended that you complete the previous lessons before
                 attempting this one.
               </Text>
-              <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+              <Text
+                variant="headlineSmall"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
                 Are you sure you want to continue?
               </Text>
               <View
