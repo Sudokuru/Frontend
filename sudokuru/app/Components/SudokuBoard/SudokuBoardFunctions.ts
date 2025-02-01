@@ -47,7 +47,6 @@ export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
 };
 
 /**
- * todo all updates to sudokuru state should be done inside of SudokuBoard.tsx, this may need to be moved depending on how things go
  * Toggles whether or not a cell is selected on click
  * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
  * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
