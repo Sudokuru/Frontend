@@ -34,7 +34,6 @@
     "**/*": "npx prettier --write --ignore-unknown ."
   },
   "devDependencies": {
-    "lint-staged": "^15.2.10",
     "prettier": "2.8.8",
     "snyk": "^1.1294.0",
     "typescript": "~5.3.3"
