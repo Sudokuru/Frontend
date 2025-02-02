@@ -88,7 +88,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
@@ -127,7 +127,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x
       - name: install dependencies
         run: npm i
       - name: Setup Changelog
@@ -179,7 +179,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v4
@@ -217,7 +217,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
