@@ -110,6 +110,8 @@ jobs:
           project-name: sudokuru-dev
           account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      - name: Validate URL
+        run: echo "${{ steps.deployment.outputs.deployment-url }}"
       - name: Post comment with preview link
         uses: KeisukeYamashita/create-comment@v1
         with:
