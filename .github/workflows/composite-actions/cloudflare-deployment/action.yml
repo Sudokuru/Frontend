@@ -13,7 +13,7 @@ inputs:
 outputs:
   url:
     description: URL of deployed Cloudflare site
-    value: ${{ steps.deployment.outputs.url }}
+    value: ${{ steps.deployment.outputs.deployment-url }}
 
 runs:
   using: composite
