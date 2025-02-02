@@ -7,4 +7,4 @@ repos:
         entry: npx prettier --write --ignore-unknown .
         always_run: true
         language: system
-        verbose: false
+        verbose: true
