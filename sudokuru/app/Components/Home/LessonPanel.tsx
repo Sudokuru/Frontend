@@ -264,7 +264,7 @@ const LessonPanel = (props: any) => {
               >
                 <Button
                   onPress={() => {
-                    hideLockedWarning;
+                    hideLockedWarning();
                     navigation.navigate("Lesson", {
                       params: availableLessons[lockedLesson],
                     });
