@@ -11,7 +11,7 @@ inputs:
     description: Cloudflare API token
     required: true
 outputs:
-  url:
+  deployment-url:
     description: URL of deployed Cloudflare site
     value: ${{ steps.deployment.outputs.deployment-url }}
 
