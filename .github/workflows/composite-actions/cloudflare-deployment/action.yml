@@ -34,9 +34,8 @@ runs:
       shell: bash
     - name: Cloudflare Deployment
       id: deployment
-      uses: cloudflare/pages-action@v1
+      uses: cloudflare/wrangler-action@v3
       with:
         apiToken: ${{ inputs.api-token }}
         accountId: ${{ inputs.account-id }}
-        projectName: ${{ inputs.project-name }}
-        directory: sudokuru/dist
+        command: pages deploy sudokuru/dist --project-name=${{ inputs.project-name }}
