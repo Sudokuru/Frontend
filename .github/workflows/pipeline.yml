@@ -116,7 +116,7 @@ jobs:
           check-only-first-line: true
           comment: |
             Preview Website for PR: 
-            ${{ steps.deployment.outputs.url }}
+            ${{ steps.deployment.outputs.deployment-url }}
 
   website_test_dev:
     runs-on: ubuntu-latest
