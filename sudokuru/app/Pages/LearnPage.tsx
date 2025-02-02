@@ -1,11 +1,9 @@
 import React, { useCallback, useContext, useState } from "react";
-import { View, Pressable, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/core";
-import Alert from "react-native-awesome-alerts";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
-import { rgba } from "polished";
 import { getLearnedLessons } from "../Api/Statistics";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
@@ -18,10 +16,6 @@ const LearnPage = () => {
     useContext(PreferencesContext);
 
   const [areLessonsLoaded, setLessonsLoaded] = useState(false);
-
-  const [learnHelpVisible, setLearnHelpVisible] = useState(false);
-  const showLearnHelp = () => setLearnHelpVisible(true);
-  const hideLearnHelp = () => setLearnHelpVisible(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -70,21 +64,6 @@ const LearnPage = () => {
                 new strategies
               </Text>
             </Text>
-            <Pressable
-              onPress={() => showLearnHelp()}
-              style={{ alignSelf: "flex-start" }}
-            >
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  lineHeight: 16,
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-              >
-                ?
-              </Text>
-            </Pressable>
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
             {areLessonsLoaded ? (
@@ -98,28 +77,6 @@ const LearnPage = () => {
           </View>
         </View>
       </View>
-      <Alert
-        show={learnHelpVisible}
-        title="Learning Help"
-        message={
-          `Select a strategy to learn by clicking on a lesson card.\n\n` +
-          `It is recommended you do unlocked lessons first as locked lessons build upon the knowledge gained from prior ones.\n\n` +
-          `Strategies you have already learned will be greyed out, but you will still have access to them.`
-        }
-        messageStyle={{ maxWidth: 500 }}
-        alertContainerStyle={{
-          backgroundColor: rgba(theme.colors.background, 0.3),
-        }}
-        showConfirmButton={true}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={false}
-        confirmText={"OK"}
-        confirmButtonColor={theme.colors.primary}
-        onConfirmPressed={() => {
-          hideLearnHelp();
-        }}
-        overlayStyle={{ backgroundColor: "transparent" }}
-      />
     </ScrollView>
   );
 };

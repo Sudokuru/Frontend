@@ -1,7 +1,21 @@
 ﻿[
   {
-    "version": "1.28.2",
+    "version": "1.28.3",
     "date": "#{date}#",
+    "summary": "Updated popup styling, removed outdated question mark popups, and fixed bug where popups would appear out of view.",
+    "features": [
+      "Updated popup styling including sizing, borders, and buttons.",
+      "Removed outdated popups accessible from question marks which were also removed."
+    ],
+    "bug fixes": [
+      "Fixed a bug where the popup appeared in the center of the entire scroll view instead of the center of the visible screen area."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "1.28.2",
+    "date": "January 26th, 2025",
     "summary": "When deleting statistics, learned lessons would temporarily display nothing on profile page instead of 'None'.",
     "bug fixes": [
       "After deleting statistics, learned lessons immediately display as 'None' on profile page."

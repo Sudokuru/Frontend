@@ -64,10 +64,11 @@ export class ContactPage {
     });
   }
 
-  async closeAlert() {
-    await this.page
-      .getByTestId("awesome-alert-confirm-btn")
-      .getByText("OK")
-      .click();
+  async closeSubmitAlert() {
+    await this.page.getByTestId("confirmSubmitButton").getByText("OK").click();
+  }
+
+  async closeErrorAlert() {
+    await this.page.getByTestId("confirmErrorButton").getByText("OK").click();
   }
 }

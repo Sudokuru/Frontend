@@ -1,6 +1,18 @@
 import React, { useState } from "react";
-import { ImageURISource, Image, TouchableOpacity, View } from "react-native";
-import { ActivityIndicator, Text, Card, useTheme } from "react-native-paper";
+import {
+  ImageURISource,
+  Image,
+  TouchableOpacity,
+  View,
+  Modal,
+} from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  Card,
+  useTheme,
+  Button,
+} from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import {
@@ -17,8 +29,6 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import Alert from "react-native-awesome-alerts";
-import { rgba } from "polished";
 import { getStrategies } from "../../Api/Lessons";
 
 let lessonImages: ImageURISource[] = [
@@ -196,37 +206,93 @@ const LessonPanel = (props: any) => {
             {subArray}
           </View>
         ))}
-        <Alert
-          show={lockedWarningVisible}
-          title="Warning"
-          message={
-            `You have selected a lesson that is locked. \n\n` +
-            `Locked lessons build on knowledge gained from previous lessons. \n\n` +
-            `It is recommended that you complete the previous lessons before attempting this one. \n\n` +
-            `Are you sure you want to continue?`
-          }
-          messageStyle={{ maxWidth: 500 }}
-          alertContainerStyle={{
-            backgroundColor: rgba(theme.colors.background, 0.3),
-          }}
-          showCancelButton={true}
-          showConfirmButton={true}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          cancelText={"No"}
-          confirmText={"Yes"}
-          confirmButtonColor={theme.colors.primary}
-          onCancelPressed={() => {
-            hideLockedWarning();
-          }}
-          onConfirmPressed={() => {
-            hideLockedWarning();
-            navigation.navigate("Lesson", {
-              params: availableLessons[lockedLesson],
-            });
-          }}
-          overlayStyle={{ backgroundColor: "transparent" }}
-        />
+        <Modal
+          visible={lockedWarningVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={hideLockedWarning}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: theme.colors.onSurface,
+                alignSelf: "center",
+                width: CARD_WIDTH * 1.08,
+                height: CARD_IMAGE_HEIGHT * 1.15,
+                padding: CARD_WIDTH / 10,
+                borderRadius: CARD_WIDTH / 8,
+                borderWidth: CARD_WIDTH / 80,
+                borderColor: theme.colors.primary,
+              }}
+            >
+              <Text
+                variant="headlineLarge"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
+                Warning
+              </Text>
+              <Text
+                variant="bodyLarge"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
+                You have selected a lesson that is locked. Locked lessons build
+                on knowledge gained from previous lessons. It is recommended
+                that you complete the previous lessons before attempting this
+                one.
+              </Text>
+              <Text
+                variant="headlineSmall"
+                style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
+                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              >
+                Continue?
+              </Text>
+              <View
+                style={{
+                  flexWrap: "wrap",
+                  flexDirection: "row",
+                  alignSelf: "center",
+                }}
+              >
+                <Button
+                  onPress={() => {
+                    hideLockedWarning();
+                    navigation.navigate("Lesson", {
+                      params: availableLessons[lockedLesson],
+                    });
+                  }}
+                  labelStyle={{
+                    fontSize: 20,
+                    color: theme.colors.surface,
+                    fontWeight: "bold",
+                  }}
+                  testID="confirmContinueButton"
+                >
+                  Yes
+                </Button>
+                <Button
+                  onPress={hideLockedWarning}
+                  labelStyle={{
+                    fontSize: 20,
+                    color: theme.colors.surface,
+                    fontWeight: "bold",
+                  }}
+                  testID="cancelContinueButton"
+                >
+                  No
+                </Button>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
