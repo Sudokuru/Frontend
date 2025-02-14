@@ -1,9 +1,7 @@
 import React from "react";
-import { View, Pressable, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import Alert from "react-native-awesome-alerts";
-import { rgba } from "polished";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
@@ -42,10 +40,6 @@ const PlayPage = () => {
     }, [])
   );
 
-  const [playHelpVisible, setPlayHelpVisible] = React.useState(false);
-  const showPlayHelp = () => setPlayHelpVisible(true);
-  const hidePlayHelp = () => setPlayHelpVisible(false);
-
   const [resumeVisible, setResumeVisible] = React.useState(false);
   const showResumeButton = () => setResumeVisible(true);
   const hideResumeButton = () => setResumeVisible(false);
@@ -80,21 +74,6 @@ const PlayPage = () => {
                 {titleText}
               </Text>
             </Text>
-            <Pressable
-              onPress={() => showPlayHelp()}
-              style={{ alignSelf: "flex-start" }}
-            >
-              <Text
-                style={{
-                  color: theme.colors.onBackground,
-                  lineHeight: 16,
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-              >
-                ?
-              </Text>
-            </Pressable>
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
             {resumeVisible ? (
@@ -131,28 +110,6 @@ const PlayPage = () => {
           </View>
         </View>
       </View>
-      <Alert
-        show={playHelpVisible}
-        title="Play Help"
-        message={
-          `To play a puzzle, select a difficulty using the difficulty slider and press the "Play Puzzle" button.\n\n` +
-          `You will only be served puzzles with strategies that you have already learned! This will ensure that you will not encounter a puzzle that you don't have the skills and knowledge to solve.` +
-          `If you have a game currently in progress, you can resume the game by clicking the "Resume Puzzle" button`
-        }
-        messageStyle={{ maxWidth: 500 }}
-        alertContainerStyle={{
-          backgroundColor: rgba(theme.colors.background, 0.3),
-        }}
-        showConfirmButton={true}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={false}
-        confirmText={"OK"}
-        confirmButtonColor={theme.colors.primary}
-        onConfirmPressed={() => {
-          hidePlayHelp();
-        }}
-        overlayStyle={{ backgroundColor: "transparent" }}
-      />
     </ScrollView>
   );
 };

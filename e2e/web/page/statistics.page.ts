@@ -18,9 +18,9 @@ export class StatisticsPage {
   async clickDeleteStatsAndPopupButtons(popupButton: boolean) {
     await expect(this.deleteStatsButton).toBeInViewport({ ratio: 1 });
     await this.deleteStatsButton.click();
-    const confirmLocator = this.page.getByTestId("awesome-alert-confirm-btn");
+    const confirmLocator = this.page.getByTestId("confirmDeleteButton");
     await expect(confirmLocator).toBeInViewport({ ratio: 1 });
-    const cancelLocator = this.page.getByTestId("awesome-alert-cancel-btn");
+    const cancelLocator = this.page.getByTestId("cancelDeleteButton");
     await expect(cancelLocator).toBeInViewport({ ratio: 1 });
     if (popupButton) {
       await confirmLocator.click();
