@@ -88,7 +88,7 @@ test.describe("learn", () => {
   }) => {
     const learnPage = new LearnPage(learn);
     await learnPage.getAndClickLesson(1, "locked");
-    const cancel = learn.getByTestId("awesome-alert-cancel-btn");
+    const cancel = learn.getByTestId("cancelContinueButton");
     await cancel.scrollIntoViewIfNeeded();
     await expect(cancel).toBeInViewport({ ratio: 1 });
     await cancel.click();
@@ -100,7 +100,7 @@ test.describe("learn", () => {
   }) => {
     const learnPage = new LearnPage(learn);
     await learnPage.getAndClickLesson(1, "locked");
-    const confirm = learn.getByTestId("awesome-alert-confirm-btn");
+    const confirm = learn.getByTestId("confirmContinueButton");
     await confirm.scrollIntoViewIfNeeded();
     await expect(confirm).toBeInViewport({ ratio: 1 });
     await confirm.click();

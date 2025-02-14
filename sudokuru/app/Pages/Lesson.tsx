@@ -3,14 +3,11 @@ import {
   View,
   Image,
   useWindowDimensions,
-  Pressable,
   ScrollView,
   ImageURISource,
 } from "react-native";
 import { Text, useTheme, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Alert from "react-native-awesome-alerts";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { CARD_PADDING } from "../Components/Home/Cards";
@@ -30,10 +27,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const { updateLearnedLessons, learnedLessons } =
     React.useContext(PreferencesContext);
-
-  const [learnHelpVisible, setLearnHelpVisible] = React.useState(false);
-  const showLearnHelp = () => setLearnHelpVisible(true);
-  const hideLearnHelp = () => setLearnHelpVisible(false);
 
   const [steps, setSteps] = React.useState<[string, ImageURISource][]>([]);
 
@@ -118,12 +111,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             >
               {title + " Lesson"}
             </Text>
-            <Pressable onPress={() => showLearnHelp()}>
-              <MaterialCommunityIcons
-                color={theme.colors.onBackground}
-                name="help"
-              />
-            </Pressable>
           </View>
 
           {cards}
@@ -140,28 +127,6 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             <Text variant="headlineMedium">Finish Lesson</Text>
           </Button>
         </View>
-        <Alert
-          show={learnHelpVisible}
-          title="Learning Help"
-          message={
-            `This is the ` +
-            title +
-            " lesson page.\n\n" +
-            "Navigate through the lesson by scrolling up and down.\n\n" +
-            "Each page of the lesson will contain a board as well as a description to help you understand the process for using the " +
-            title +
-            " strategy"
-          }
-          messageStyle={{ maxWidth: 500 }}
-          showConfirmButton={true}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          confirmText={"OK"}
-          confirmButtonColor={theme.colors.primary}
-          onConfirmPressed={() => {
-            hideLearnHelp();
-          }}
-        />
       </View>
     </ScrollView>
   );
