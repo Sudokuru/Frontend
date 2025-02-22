@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { CARD_PADDING } from "../Components/Home/Cards";
-import { toTitle } from "../Components/SudokuBoard/SudokuBoardFunctions";
+import { toTitle } from "../Components/SudokuBoard/SudokuBoardSharedFunctions";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
 

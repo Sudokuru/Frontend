@@ -20,10 +20,10 @@ import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
-  doesCellHaveConflict,
   generateBoxIndex,
   getSelectedCells,
 } from "./CellFunctions";
+import { doesCellHaveConflict } from "../../SudokuBoardFunctions";
 
 /**
  * This function returns an array of 9 strings representing the colors of the

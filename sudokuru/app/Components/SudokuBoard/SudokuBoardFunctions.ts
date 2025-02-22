@@ -1,6 +1,5 @@
 import { SudokuObjectProps } from "../../Functions/LocalDatabase";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
-import { doesCellHaveConflict } from "./Core/Functions/CellFunctions";
 import { HintObjectProps } from "./SudokuBoard";
 
 /**
@@ -57,6 +56,26 @@ export const doesBoardHaveConflict = (
   return false;
 };
 
+/**
+ * Checks if a given cell in the puzzle has a conflict with the solution.
+ *
+ * @param r - The row index of the cell.
+ * @param c - The column index of the cell.
+ * @param cell - The cell object containing its type and entry.
+ * @returns True if the cell's entry is incorrect; false otherwise.
+ */
+export const doesCellHaveConflict = (
+  sudokuBoard: SudokuObjectProps,
+  r: number,
+  c: number
+): boolean => {
+  const cell = sudokuBoard.puzzle[r][c];
+  if (cell.type == "note" || cell.entry == 0) {
+    return false;
+  }
+  return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
+};
+
 export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
   if (sudokuHint != null) {
     return true;
@@ -69,19 +88,6 @@ export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
 export function range(n: number) {
   return Array.from(Array(n).keys());
 }
-
-/**
- * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
- * @param str - the string to convert
- * @returns the converted string
- */
-export const toTitle = (str: string) => {
-  return str
-    .toLowerCase()
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
 
 /**
  * Wraps a number around a range so if the number is outside the range, it wraps around to the other side
