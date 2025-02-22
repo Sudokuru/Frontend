@@ -1,4 +1,4 @@
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native-web";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore, GameDifficulty } from "./Difficulty";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
