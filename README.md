@@ -175,6 +175,29 @@ The command to run a Snyk code scan is `npm run snyk:code`
 
 Existing issues in the main branch can be [viewed here](https://app.snyk.io/org/sudokuru)
 
+## 📦 Analyzing Bundle size with Atlas
+
+To see the dev bundle size, run `npm run start:atlas`
+
+To see the production bundle size, run `npm run start:atlas:prod`
+
+Note - I was not able to get the `--no-dev` flag working with android, but it works for web and ios.
+
+Connect to expo with the desired device to see the bundle size and package ratios.
+
+You will need to navigate to the following url: http://localhost:8081/\_expo/atlas
+
+It is possible to switch between multiple bundle types in the atlas UI for comparison.
+
+iOS Example:  
+![alt text](docs/img/atlas-ios.png)
+
+Android Example:  
+![alt text](docs/img/atlas-android.png)
+
+Web Example:  
+![alt text](docs/img/atlas-web.png)
+
 # 🛣️ Roadmap
 
 ## Github Project Kanban Boards
