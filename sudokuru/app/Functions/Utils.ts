@@ -1,5 +1,3 @@
-// This file is for shared functions outside of SudokuBoard component
-
 /**
  * Returns the string converted to a title format i.e. replaces _ with spaces and capitalizes only the first letter of each word
  * @param str - the string to convert

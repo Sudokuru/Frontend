@@ -1,6 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { SudokuStrategy } from "sudokuru";
-import { toTitle } from "../../../sudokuru/app/Components/SudokuBoard/SudokuBoardSharedFunctions";
+import { toTitle } from "../../../sudokuru/app/Functions/Utils";
 import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   HINT_NOT_HIGHLIGHTED_COLOR_RGB,
