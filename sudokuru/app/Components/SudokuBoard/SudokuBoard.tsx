@@ -13,7 +13,7 @@ import {
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Core/Components/NumberControl";
 import ActionRow from "./Core/Components/ActionRow";
-import { generateGame } from "./Core/Functions/generateGame";
+import { generateGame } from "./Core/Functions/GenerateGameFunctions";
 import Puzzle from "./Core/Components/Puzzle";
 import {
   CellLocation,
@@ -28,7 +28,7 @@ import EndGameModal from "./Core/Components/EndGameModal";
 import { getSudokuHint } from "./Core/Functions/HintFunctions";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
-import { GameDifficulty } from "./Core/Functions/Difficulty";
+import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
 import { SudokuStrategy } from "sudokuru";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
