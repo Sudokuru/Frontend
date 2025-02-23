@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { useWindowDimensions } from "react-native";
 import Statistic from "./Statistic";
-import { formatTime } from "../SudokuBoard/Functions/BoardFunctions";
+import { formatTime } from "../SudokuBoard/Core/Functions/BoardFunctions";
 import { SudokuStrategy } from "sudokuru";
 import React from "react";
 import { NumHintsUsedPerStrategy } from "../NumHintsUsedPerStrategy";

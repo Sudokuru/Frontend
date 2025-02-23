@@ -1,6 +1,6 @@
-import { getGame, startGame } from "../../../Api/Puzzles";
-import { SudokuObjectProps } from "../../../Functions/LocalDatabase";
-import { SudokuBoardProps } from "../SudokuBoard";
+import { getGame, startGame } from "../../../../Api/Puzzles";
+import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { SudokuBoardProps } from "../../SudokuBoard";
 
 export async function generateGame(props: SudokuBoardProps) {
   let gameData = null;

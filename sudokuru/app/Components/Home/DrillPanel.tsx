@@ -19,7 +19,7 @@ import {
   difficulty,
   getDifficultyColor,
 } from "./Cards";
-import { toTitle } from "../SudokuBoard/sudoku";
+import { toTitle } from "../../Functions/Utils";
 import {
   getKeyJSON,
   removeData,

@@ -2,11 +2,11 @@ import { View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useWindowDimensions, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Statistic from "../../Statistics/Statistic";
+import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
-import { NumHintsUsedPerStrategy } from "../../NumHintsUsedPerStrategy";
+import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
 
 interface EndGameModalProps {
   time: number;

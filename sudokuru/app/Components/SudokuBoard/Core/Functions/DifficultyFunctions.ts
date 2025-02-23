@@ -1,17 +1,17 @@
-import { AMATEUR_PUZZLES } from "../../../Data/puzzles/amateur_puzzles";
-import { GRANDMASTER_PUZZLES } from "../../../Data/puzzles/grandmaster_puzzles";
-import { LAYMAN_PUZZLES } from "../../../Data/puzzles/layman_puzzles";
-import { MASTER_PUZZLES } from "../../../Data/puzzles/master_puzzles";
-import { NOVICE_PUZZLES } from "../../../Data/puzzles/novice_puzzles";
-import { PROFESSIONAL_PUZZLES } from "../../../Data/puzzles/professional_puzzles";
-import { PROTEGE_PUZZLES } from "../../../Data/puzzles/protege_puzzles";
-import { PUNDIT_PUZZLES } from "../../../Data/puzzles/pundit_puzzles";
-import { TRAINEE_PUZZLES } from "../../../Data/puzzles/trainee_puzzles";
+import { AMATEUR_PUZZLES } from "../../../../Data/puzzles/amateur_puzzles";
+import { GRANDMASTER_PUZZLES } from "../../../../Data/puzzles/grandmaster_puzzles";
+import { LAYMAN_PUZZLES } from "../../../../Data/puzzles/layman_puzzles";
+import { MASTER_PUZZLES } from "../../../../Data/puzzles/master_puzzles";
+import { NOVICE_PUZZLES } from "../../../../Data/puzzles/novice_puzzles";
+import { PROFESSIONAL_PUZZLES } from "../../../../Data/puzzles/professional_puzzles";
+import { PROTEGE_PUZZLES } from "../../../../Data/puzzles/protege_puzzles";
+import { PUNDIT_PUZZLES } from "../../../../Data/puzzles/pundit_puzzles";
+import { TRAINEE_PUZZLES } from "../../../../Data/puzzles/trainee_puzzles";
 import {
   convertPuzzleToSudokuObject,
   InputPuzzle,
   SudokuObjectProps,
-} from "../../../Functions/LocalDatabase";
+} from "../../../../Functions/LocalDatabase";
 
 export type GameDifficulty =
   | "novice"

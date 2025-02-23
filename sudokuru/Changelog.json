@@ -1,7 +1,7 @@
 ﻿[
   {
     "version": "1.28.3",
-    "date": "#{date}#",
+    "date": "February 13th, 2025",
     "summary": "Updated popup styling, removed outdated question mark popups, and fixed bug where popups would appear out of view.",
     "features": [
       "Updated popup styling including sizing, borders, and buttons.",
