@@ -163,7 +163,6 @@ const isCellAHintFocus = (
     return true;
   }
 
-  let hintFocused = false;
   for (const group of sudokuHint.hint.groups) {
     const cellSharesGroupRow = group[0] === 0 && group[1] === r;
     const cellSharesGroupColumn = group[0] === 1 && group[1] === c;
@@ -175,7 +174,7 @@ const isCellAHintFocus = (
     }
   }
 
-  return hintFocused;
+  return false;
 };
 
 /**
