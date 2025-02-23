@@ -4,6 +4,8 @@
   "main": "./app/App.tsx",
   "scripts": {
     "start": "expo start --clear",
+    "start:atlas": "cross-env EXPO_UNSTABLE_ATLAS=true expo start --clear",
+    "start:atlas:prod": "cross-env EXPO_UNSTABLE_ATLAS=true expo start --clear --no-dev",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
     "ios": "expo start --ios --clear",
@@ -50,7 +52,8 @@
     "babel-plugin-istanbul": "^6.1.1",
     "cross-env": "^7.0.3",
     "expo-doctor": "1.12.4",
-    "metro": "0.81.0"
+    "metro": "0.81.0",
+    "expo-atlas": "^0.4.0"
   },
   "private": true
 }
