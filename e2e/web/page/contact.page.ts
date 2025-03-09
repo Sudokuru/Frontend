@@ -29,7 +29,7 @@ export class ContactPage {
     await expect(
       this.page
         .getByTestId("FeedbackTextInput-label-active")
-        .getByText(`${x}/1000`)
+        .getByText(`${x}/1000`),
     ).toBeInViewport({
       ratio: 1,
     });

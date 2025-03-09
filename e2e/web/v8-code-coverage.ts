@@ -20,7 +20,7 @@ function browserSupportsV8CodeCoverage(browserType: BrowserType): boolean {
 // This instruments code using v8 and then attaches the code coverage data
 // to the monocart-reporter.
 export async function collectV8CodeCoverageAsync(
-  options: CollectV8CodeCoverageOptions
+  options: CollectV8CodeCoverageOptions,
 ): Promise<void> {
   // prettier-ignore
   const v8CodeCoverageSupported = browserSupportsV8CodeCoverage(options.browserType);

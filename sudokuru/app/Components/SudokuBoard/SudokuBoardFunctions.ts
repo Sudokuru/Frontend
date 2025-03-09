@@ -22,7 +22,7 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
       }
       const isValueCorrectResult = isValueCorrect(
         sudokuBoard.puzzleSolution[r][c],
-        sudokuBoard.puzzle[r][c].entry as number
+        sudokuBoard.puzzle[r][c].entry as number,
       );
       if (isValueCorrectResult === false) {
         return false;
@@ -37,7 +37,7 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
  * @returns True if there are no correct values in board, False otherwise
  */
 export const doesBoardHaveConflict = (
-  sudokuBoard: SudokuObjectProps
+  sudokuBoard: SudokuObjectProps,
 ): boolean => {
   for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
     for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
@@ -67,10 +67,10 @@ export const doesBoardHaveConflict = (
 export const doesCellHaveConflict = (
   sudokuBoard: SudokuObjectProps,
   r: number,
-  c: number
+  c: number,
 ): boolean => {
   const cell = sudokuBoard.puzzle[r][c];
-  if (cell.type == "note" || cell.entry == 0) {
+  if (cell.type === "note" || cell.entry === 0) {
     return false;
   }
   return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
@@ -99,7 +99,7 @@ export function range(n: number) {
 export function wrapNumber(
   number: number,
   lowerBound: number,
-  upperBound: number
+  upperBound: number,
 ): number {
   const range: number = upperBound - lowerBound + 1; // Calculate the total range
   return ((number + range) % range) + lowerBound; // Wrap around using modulo

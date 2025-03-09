@@ -25,7 +25,7 @@ export const formatOneLessonName = (lessonName: string) => {
  */
 export const getLockedLessons = (
   learnedLessons: string[],
-  avaliableLessons: string[]
+  avaliableLessons: string[],
 ): string[] => {
   let unLearnedLessons = arrayDifference(learnedLessons, avaliableLessons);
 
@@ -44,7 +44,7 @@ export const getLockedLessons = (
 // https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
 export const arrayDifference = (
   learnedLessons: string[],
-  avaliableLessons: string[]
+  avaliableLessons: string[],
 ) => {
   return avaliableLessons.filter((x) => !learnedLessons.includes(x));
 };

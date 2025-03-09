@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import {
-  getCellSize,
+  useCellSize,
   formatTime,
   handlePause,
 } from "../Functions/BoardFunctions";
@@ -22,7 +22,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const difficulty = sudokuBoard.statistics.difficulty;
 
   const currentTime = sudokuBoard.statistics.time;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const navigation = useNavigation();
 
   const theme = useTheme();
@@ -37,7 +37,8 @@ const HeaderRow = (props: HeaderRowProps) => {
         }));
       }, 1000);
       return () => clearInterval(interval);
-    }, [sudokuBoard.statistics.time])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sudokuBoard.statistics.time]),
   );
 
   return (

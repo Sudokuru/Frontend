@@ -24,12 +24,12 @@ test.describe("release notes", () => {
     await releaseNotesPage.isReleaseNoteTextPresent("1.16.1", "Features:");
     await releaseNotesPage.isReleaseNoteTextPresent(
       "1.16.1",
-      "•A placeholder 'Contact Us' page is added."
+      "•A placeholder 'Contact Us' page is added.",
     );
     await releaseNotesPage.isReleaseNoteTextPresentWithCount(
       "1.16.1",
       "•None",
-      2
+      2,
     );
   });
 
@@ -42,12 +42,12 @@ test.describe("release notes", () => {
     await releaseNotesPage.isReleaseNoteTextPresent("1.19.2", "Bug Fixes:");
     await releaseNotesPage.isReleaseNoteTextPresent(
       "1.19.2",
-      "•Sudoku board hotkeys now work when board is not selected. However, the board needs to have been selected at least once."
+      "•Sudoku board hotkeys now work when board is not selected. However, the board needs to have been selected at least once.",
     );
     await releaseNotesPage.isReleaseNoteTextPresentWithCount(
       "1.19.2",
       "•None",
-      2
+      2,
     );
   });
 });

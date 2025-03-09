@@ -67,7 +67,7 @@ test.describe("profile", () => {
       // click last sudoku strategy
       await profilePage.clickHintStrategy(
         SUDOKU_STRATEGY_ARRAY.length,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1],
       );
 
       await expect(profilePage.hintStrategyMenuUp).toBeEnabled();
@@ -110,7 +110,7 @@ test.describe("profile", () => {
       await reloadedProfilePage.hintStrategyReset.click();
       await reloadedProfilePage.isHintStrategyVisible(
         1,
-        SUDOKU_STRATEGY_ARRAY[0]
+        SUDOKU_STRATEGY_ARRAY[0],
       );
     });
 
@@ -128,7 +128,7 @@ test.describe("profile", () => {
 
       await profilePage.clickHintStrategy(
         SUDOKU_STRATEGY_ARRAY.length,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1],
       );
       await profilePage.hintStrategyMenuUp.click();
       await profilePage.hintStrategyMenuUp.click();
@@ -136,11 +136,11 @@ test.describe("profile", () => {
 
       await profilePage.isHintStrategyVisible(
         SUDOKU_STRATEGY_ARRAY.length - 3,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1],
       );
       await profilePage.isHintStrategyVisible(
         SUDOKU_STRATEGY_ARRAY.length,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 2]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 2],
       );
 
       await profile.reload();
@@ -151,19 +151,19 @@ test.describe("profile", () => {
 
       await reloadedProfilePage.isHintStrategyVisible(
         4,
-        SUDOKU_STRATEGY_ARRAY[0]
+        SUDOKU_STRATEGY_ARRAY[0],
       );
       await reloadedProfilePage.isHintStrategyVisible(
         1,
-        SUDOKU_STRATEGY_ARRAY[1]
+        SUDOKU_STRATEGY_ARRAY[1],
       );
       await reloadedProfilePage.isHintStrategyVisible(
         SUDOKU_STRATEGY_ARRAY.length - 3,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 1],
       );
       await reloadedProfilePage.isHintStrategyVisible(
         SUDOKU_STRATEGY_ARRAY.length,
-        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 2]
+        SUDOKU_STRATEGY_ARRAY[SUDOKU_STRATEGY_ARRAY.length - 2],
       );
     });
   });

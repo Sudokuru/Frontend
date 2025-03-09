@@ -30,11 +30,17 @@
     "tauri:build": "npm run tauri:build --workspace=sudokuru",
     "expo:check": "npm run expo:check --workspace=sudokuru",
     "snyk:opensource": "npx snyk test --all-projects --exclude=.vercel --org=sudokuru",
-    "snyk:code": "npx snyk code test --org=sudokuru"
+    "snyk:code": "npx snyk code test --org=sudokuru",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
-    "prettier": "2.8.8",
+    "eslint": "8.57.0",
+    "eslint-config-expo": "8.0.1",
+    "eslint-config-prettier": "10.1.1",
+    "eslint-plugin-prettier": "5.2.3",
+    "prettier": "3.5.3",
     "snyk": "^1.1294.0",
-    "typescript": "~5.3.3"
+    "typescript": "5.3.3"
   }
 }

@@ -39,7 +39,7 @@ import { doesCellHaveConflict } from "../../SudokuBoardFunctions";
 export const getCellNotesColor = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
-  c: number
+  c: number,
 ) => {
   const notesToReturn = Array(9).fill("black");
   // change note color to red for note removals as part of hint
@@ -75,19 +75,19 @@ export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
  * values with another cell, and assigns a color accordingly. Additionally, it checks
  * if the cell is part of a hint, adjusting the color to reflect its role in the hint.
  */
-export const getCellBackgroundColor = (
+export const useCellBackgroundColor = (
   sudokuBoard: SudokuObjectProps,
   sudokuHint: HintObjectProps | undefined,
   r: number,
-  c: number
+  c: number,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);
   const conflict: boolean = doesCellHaveConflict(sudokuBoard, r, c);
-  const peer: boolean = isCellPeer(r, c, selectedCell);
-  const identicalValue: boolean = doesCellHaveIdenticalValue(
+  const peer: boolean = useIsCellPeer(r, c, selectedCell);
+  const identicalValue: boolean = useDoesCellHaveIdenticalValue(
     sudokuBoard,
-    sudokuBoard.puzzle[r][c]
+    sudokuBoard.puzzle[r][c],
   );
 
   let cellBackgroundColor;
@@ -130,7 +130,7 @@ export const getCellBackgroundColor = (
 const isCellAHintCause = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
-  c: number
+  c: number,
 ): boolean => {
   if (!sudokuHint) {
     return false;
@@ -153,7 +153,7 @@ const isCellAHintCause = (
 const isCellAHintFocus = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
-  c: number
+  c: number,
 ): boolean => {
   if (!sudokuHint) {
     return false;
@@ -187,7 +187,7 @@ const isCellAHintFocus = (
 const isCellSelected = (
   selectedCell: CellLocation[],
   r: number,
-  c: number
+  c: number,
 ): boolean => {
   if (selectedCell.length === 0) {
     return false;
@@ -210,16 +210,17 @@ const isCellSelected = (
  * This function will return false if no cells are selected, more than one cell is selected, or if the cell is empty.
  * This function will also return false if the user has disabled highlighting of identical values in their preferences.
  */
-const doesCellHaveIdenticalValue = (
+const useDoesCellHaveIdenticalValue = (
   sudokuBoard: SudokuObjectProps,
-  cell: CellProps
+  cell: CellProps,
 ): boolean => {
+  const { highlightIdenticalValuesSetting } =
+    React.useContext(PreferencesContext);
+
   // disable highlighting of identical values if no cells are selected or more than 1 cell is selected
   if (sudokuBoard.selectedCells.length !== 1) {
     return false;
   }
-  const { highlightIdenticalValuesSetting } =
-    React.useContext(PreferencesContext);
   const currentSelectedCell = getSelectedCells(sudokuBoard);
   let currentEntry = cell.entry;
   // for the purposes of highlighting identical values, a cell with notes is treated as an empty cell
@@ -229,7 +230,9 @@ const doesCellHaveIdenticalValue = (
   const selectedEntry = currentSelectedCell[0].entry;
   const identicalValue = selectedEntry === currentEntry;
 
-  return highlightIdenticalValuesSetting && identicalValue && currentEntry != 0;
+  return (
+    highlightIdenticalValuesSetting && identicalValue && currentEntry !== 0
+  );
 };
 
 /**
@@ -243,20 +246,20 @@ const doesCellHaveIdenticalValue = (
  * This function will return false if no cells are selected or more than 1 cell is selected.
  * This function will also return false if the user has disabled highlighting of peers in their preferences.
  */
-const isCellPeer = (
+const useIsCellPeer = (
   r: number,
   c: number,
-  selectedCells: CellLocation[]
+  selectedCells: CellLocation[],
 ): boolean => {
+  const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
+    React.useContext(PreferencesContext);
+
   // disable highlighting peers if no cells selected or more than 1 cell is selected.
   if (selectedCells.length !== 1) {
     return false;
   }
 
   const selectedCell = selectedCells[0];
-
-  const { highlightBoxSetting, highlightRowSetting, highlightColumnSetting } =
-    React.useContext(PreferencesContext);
 
   const sameBox = areCellsInSameBox({ r: r, c: c }, selectedCell);
   const sameRow = areCellsInSameRow({ r: r, c: c }, selectedCell);

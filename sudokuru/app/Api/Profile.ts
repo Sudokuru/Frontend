@@ -54,7 +54,7 @@ export const setProfile = (profile: Profile) => {
 
 export const setProfileValue = async (
   profileValue: profileValue,
-  newValue?: any
+  newValue?: any,
 ) => {
   let value: Profile = await getProfile();
   switch (profileValue) {

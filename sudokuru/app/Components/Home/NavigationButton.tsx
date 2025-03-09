@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useNewWindowDimensions } from "../../Functions/WindowDimensions";
 
-interface NavigationButton {
+interface NavigationButtonProps {
   navigationPage: string;
   image: ImageURISource;
   widthFactor?: number;
@@ -13,7 +13,7 @@ interface NavigationButton {
   testID: string;
 }
 
-const NavigationButton = (props: NavigationButton) => {
+const NavigationButton = (props: NavigationButtonProps) => {
   const minWindowSize = useNewWindowDimensions();
   const theme = useTheme();
   const navigation: any = useNavigation();

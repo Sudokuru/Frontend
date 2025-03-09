@@ -28,7 +28,7 @@ const Header = () => {
   const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
 
   const statisticsButton = (currentPage: string) => {
-    if (currentPage != "StatisticsPage") {
+    if (currentPage !== "StatisticsPage") {
       return <StatisticsButton />;
     } else {
       return <HomeButton />;
@@ -36,7 +36,7 @@ const Header = () => {
   };
 
   const profileButton = (currentPage: string) => {
-    if (currentPage != "ProfilePage") {
+    if (currentPage !== "ProfilePage") {
       return <ProfileButton />;
     } else {
       return <HomeButton />;
@@ -60,7 +60,7 @@ const Header = () => {
        * If we are on any other page, Logo will navigate to the Home page
        */}
       <Pressable
-        disabled={currentPage == "HomePage"}
+        disabled={currentPage === "HomePage"}
         onPress={() => {
           updateCurrentPage("HomePage");
           navigation.navigate("HomePage");

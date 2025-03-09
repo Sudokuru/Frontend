@@ -37,7 +37,8 @@ const PlayPage = () => {
   useFocusEffect(
     React.useCallback(() => {
       showOrHideResumeButton();
-    }, [])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
   );
 
   const [resumeVisible, setResumeVisible] = React.useState(false);

@@ -16,7 +16,7 @@ export class LearnPage {
 
   async verifyLessonState(
     lesson: number,
-    state: "learned" | "locked" | "lesson"
+    state: "learned" | "locked" | "lesson",
   ) {
     const testId = state + lesson;
     const lessonLocator = this.page.getByTestId(testId);
@@ -27,7 +27,7 @@ export class LearnPage {
   async verifyLessonDifficultyText(
     lesson: number,
     lessonType: string,
-    text: string
+    text: string,
   ) {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
     const lessonTextLocator = lessonLocator.getByText(text);

@@ -17,7 +17,7 @@ import { isValueCorrect } from "./BoardFunctions";
  */
 export const getRemainingCellCountOfValue = (
   sudokuBoard: SudokuObjectProps,
-  value: number
+  value: number,
 ) => {
   let cellCountOfValue = 0;
   for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
@@ -48,7 +48,7 @@ export const areCellUpdatesDisabled = (
   cell: CellProps,
   cellSolution: number,
   r: number,
-  c: number
+  c: number,
 ) => {
   if (cell.type === "given") {
     return true;
@@ -63,7 +63,7 @@ export const areCellUpdatesDisabled = (
 };
 
 export const getSelectedCells = (
-  sudokuBoard: SudokuObjectProps
+  sudokuBoard: SudokuObjectProps,
 ): CellProps[] => {
   if (sudokuBoard.selectedCells.length === 0) {
     return [];
@@ -90,7 +90,7 @@ export const toggleSelectCell = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
-  event: any
+  event: any,
 ) => {
   if (isBoardDisabled(sudokuHint)) {
     return;
@@ -118,7 +118,7 @@ export const toggleSelectCell = (
 const toggleSelectCellWithDefaultRules = (
   sudokuBoard: SudokuObjectProps,
   r: number,
-  c: number
+  c: number,
 ) => {
   let addCell = true;
   for (const cell of sudokuBoard.selectedCells) {
@@ -140,7 +140,7 @@ const toggleSelectCellWithDefaultRules = (
 const toggleSelectCellWithControlRules = (
   sudokuBoard: SudokuObjectProps,
   r: number,
-  c: number
+  c: number,
 ) => {
   let addCell = true;
   for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
@@ -165,7 +165,7 @@ const toggleSelectCellWithControlRules = (
 const toggleSelectCellWithShiftRules = (
   sudokuBoard: SudokuObjectProps,
   r: number,
-  c: number
+  c: number,
 ) => {
   const pointOneRow = sudokuBoard.selectedCells[0].r;
   const pointOneColumn = sudokuBoard.selectedCells[0].c;
@@ -194,15 +194,15 @@ const toggleSelectCellWithShiftRules = (
  */
 export function areCellsInSameBox(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   const currentBoxIndex = generateBoxIndex(
     currentCellCoordinate.r,
-    currentCellCoordinate.c
+    currentCellCoordinate.c,
   );
   const selectedBoxIndex = generateBoxIndex(
     selectedCellCoordinate.r,
-    selectedCellCoordinate.c
+    selectedCellCoordinate.c,
   );
   return currentBoxIndex === selectedBoxIndex;
 }
@@ -224,7 +224,7 @@ export function generateBoxIndex(row: number, column: number): number {
  */
 export function areCellsInSameRow(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.r === selectedCellCoordinate.r;
 }
@@ -237,7 +237,7 @@ export function areCellsInSameRow(
  */
 export function areCellsInSameColumn(
   currentCellCoordinate: CellLocation,
-  selectedCellCoordinate: CellLocation
+  selectedCellCoordinate: CellLocation,
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }

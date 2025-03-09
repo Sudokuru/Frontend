@@ -92,12 +92,15 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
-    await page.evaluate((INVALID_ACTIVE_GAME_DATA: JSON) => {
-      window.localStorage.setItem(
-        "active_game",
-        JSON.stringify(INVALID_ACTIVE_GAME_DATA)
-      );
-    }, INVALID_ACTIVE_GAME_DATA as unknown as JSON);
+    await page.evaluate(
+      (INVALID_ACTIVE_GAME_DATA: JSON) => {
+        window.localStorage.setItem(
+          "active_game",
+          JSON.stringify(INVALID_ACTIVE_GAME_DATA),
+        );
+      },
+      INVALID_ACTIVE_GAME_DATA as unknown as JSON,
+    );
 
     await expect(playPage.resume).toBeInViewport({ ratio: 1 });
     await playPage.resume.click();

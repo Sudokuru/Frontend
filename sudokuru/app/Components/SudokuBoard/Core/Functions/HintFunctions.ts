@@ -1,6 +1,6 @@
 import { getHint, SudokuStrategy } from "sudokuru";
 import { CellProps } from "../../../../Functions/LocalDatabase";
-import { Hint } from "../../SudokuBoard";
+import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 
 /**
@@ -15,16 +15,16 @@ import { generateBoxIndex } from "./CellFunctions";
 export const getSudokuHint = (
   puzzle: CellProps[][],
   solution: number[][],
-  strategies: SudokuStrategy[]
-): Hint => {
+  strategies: SudokuStrategy[],
+): HintProps => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
   const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
   let hint = getHint(
     puzzleState.puzzleValues,
     puzzleState.puzzleNotes,
     strategies,
-    puzzleSolution
-  ) as unknown as Hint;
+    puzzleSolution,
+  ) as unknown as HintProps;
   hint = hintInjections(hint);
   return hint;
 };
@@ -36,8 +36,8 @@ export const getSudokuHint = (
  * @param hint Hint object returned from sudokuru package
  * @returns Updated Hint object
  */
-export const hintInjections = (hint: Hint) => {
-  if (hint.strategy == "OBVIOUS_SINGLE") {
+export const hintInjections = (hint: HintProps) => {
+  if (hint.strategy === "OBVIOUS_SINGLE") {
     hint.groups.push([2, generateBoxIndex(hint.cause[0][0], hint.cause[0][1])]);
   }
   return hint;
@@ -50,7 +50,7 @@ export const hintInjections = (hint: Hint) => {
  * @returns Sudoku puzzle solution in Sudokuru package format
  */
 const convertPuzzleSolutionToSudokuruFormat = (
-  puzzleSolution: number[][]
+  puzzleSolution: number[][],
 ): string[][] => {
   const convertedPuzzleSolution: string[][] = [];
   puzzleSolution.forEach(function (value, index) {

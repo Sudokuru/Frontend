@@ -8,7 +8,7 @@ import { StatisticsSchema } from "../Functions/LocalDatabase";
  */
 export const getLearnedLessons = async (): Promise<JSON> => {
   const value = await getKeyJSON("learned_lessons");
-  if (value == undefined) {
+  if (!value) {
     return JSON.parse(JSON.stringify(["NONE"]));
   } else {
     return value;

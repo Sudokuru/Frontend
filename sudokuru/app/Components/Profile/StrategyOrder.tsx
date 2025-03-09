@@ -33,7 +33,7 @@ const StrategyOrder = () => {
     key: number | string,
     order: number,
     selected: boolean,
-    bullet = "•"
+    bullet = "•",
   ) => {
     let borderColor = "grey";
     if (selected) {
@@ -80,7 +80,7 @@ const StrategyOrder = () => {
    */
   const StrategyHintListComponent = (
     strategies: SudokuStrategy[],
-    selected: number
+    selected: number,
   ) => {
     const component: React.JSX.Element[] = [];
 
@@ -92,8 +92,8 @@ const StrategyOrder = () => {
           strategy,
           index,
           selected === index,
-          `${index}.`
-        )
+          `${index}.`,
+        ),
       );
     }
     return component;

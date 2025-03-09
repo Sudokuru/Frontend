@@ -23,7 +23,7 @@ export const getStrategies = (): string[] => {
  * @returns 2d string array of steps with first value in each array being text and second being link to s3 image
  */
 export const getLessonSteps = (
-  strategy: string
+  strategy: string,
 ): [string, ImageURISource][] => {
   if (strategy === "SUDOKU_101") {
     return [

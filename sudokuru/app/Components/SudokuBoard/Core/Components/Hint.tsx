@@ -2,7 +2,7 @@ import { Text, useTheme } from "react-native-paper";
 import { HintObjectProps } from "../../SudokuBoard";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Platform, Pressable, View } from "react-native";
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 
@@ -13,10 +13,10 @@ interface HintProps extends HintObjectProps {
 const Hint = (hintProps: HintProps) => {
   const { stage, hint, maxStage, incrementStage } = hintProps;
 
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const theme = useTheme();
 
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   let FALLBACK_HEIGHT = 30;
 
   const STRATEGY_FONT_SIZE = 30;
@@ -78,7 +78,7 @@ const Hint = (hintProps: HintProps) => {
 
   const getButtonConfigs = (
     stage: number,
-    maxStage: number
+    maxStage: number,
   ): [ButtonConfig, ButtonConfig] => [
     // left button
     stage === 1

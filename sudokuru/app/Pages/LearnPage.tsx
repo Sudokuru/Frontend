@@ -24,7 +24,7 @@ const LearnPage = () => {
         await getLearnedLessons().then((lessons: any) => {
           if (lessons !== null) {
             // prevent the infinite loop
-            if (learnedLessons != lessons && !areLessonsLoaded) {
+            if (learnedLessons !== lessons && !areLessonsLoaded) {
               updateLearnedLessons(lessons);
             }
             setLessonsLoaded(true);
@@ -32,7 +32,8 @@ const LearnPage = () => {
         });
       }
       getUserLearnedLessons();
-    }, [learnedLessons])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [learnedLessons]),
   );
 
   return (

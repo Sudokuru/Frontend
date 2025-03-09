@@ -14,7 +14,7 @@ export interface InputPuzzle {
  */
 export const convertPuzzleToSudokuObject = (
   puzzle: InputPuzzle,
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
 ): SudokuObjectProps => {
   let game: SudokuObjectProps = {
     variant: "classic",
@@ -74,6 +74,7 @@ export interface GameAction {
 
 // todo remove erase, and just use 0 value to signify erase
 // then can remove ActionType as a type needed
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type ActionType = "note" | "value";
 
 export interface CellLocation {
@@ -115,6 +116,7 @@ export type CellType = "note" | "value" | "given";
 export const SUDOKU_CELL_TYPES: CellType[] = ["note", "value", "given"];
 
 // This will be exported from Sudokuru package
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Hint {
   hint: {
     strategy: any;
@@ -167,17 +169,17 @@ export const SudokuBoardSchema = z.object({
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
     difficulty: z.enum(
-      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]]
+      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]],
     ),
     internalDifficulty: z.number().int().finite().safe(),
     numHintsUsed: z.number().int().nonnegative().finite().safe(),
     numHintsUsedPerStrategy: z.array(
       z.object({
         hintStrategy: z.enum(
-          Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]
+          Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
         ),
         numHintsUsed: z.number().int().nonnegative().finite().safe(),
-      })
+      }),
     ),
     numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
     score: z.number().int().gte(0).lte(100),
@@ -192,8 +194,8 @@ export const SudokuBoardSchema = z.object({
       z.object({
         cellLocation: SudokuBoardCellLocationSchema,
         cell: SudokuBoardCellSchema,
-      })
-    )
+      }),
+    ),
   ),
   inNoteMode: z.boolean(),
 });
@@ -210,7 +212,7 @@ export const ProfileSchema = z.object({
   progressIndicator: z.boolean(),
   previewMode: z.boolean(),
   strategyHintOrder: z.array(
-    z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]])
+    z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]),
   ),
 });
 
@@ -224,10 +226,10 @@ export const StatisticsSchema = z.object({
   numHintsUsedPerStrategy: z.array(
     z.object({
       hintStrategy: z.enum(
-        Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]
+        Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
       ),
       numHintsUsed: z.number().int().nonnegative().finite().safe(),
-    })
+    }),
   ),
   numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
 });

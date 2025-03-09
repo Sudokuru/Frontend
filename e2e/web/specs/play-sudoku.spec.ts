@@ -42,16 +42,16 @@ test.describe("complete game", () => {
       ratio: 1,
     });
     await expect(
-      endGameModal.page.getByText("Time Spent: 06:1")
+      endGameModal.page.getByText("Time Spent: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Number of Hints Used: 0")
+      endGameModal.page.getByText("Number of Hints Used: 0"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Mistakes Made: 235")
+      endGameModal.page.getByText("Mistakes Made: 235"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Difficulty: novice")
+      endGameModal.page.getByText("Difficulty: novice"),
     ).toBeInViewport({ ratio: 1 });
   });
 
@@ -71,22 +71,22 @@ test.describe("complete game", () => {
       ratio: 1,
     });
     await expect(
-      endGameModal.page.getByText("Time Spent: 06:1")
+      endGameModal.page.getByText("Time Spent: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Number of Hints Used: 2")
+      endGameModal.page.getByText("Number of Hints Used: 2"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Simplify Notes: 1")
+      endGameModal.page.getByText("Simplify Notes: 1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Obvious Single: 1")
+      endGameModal.page.getByText("Obvious Single: 1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Mistakes Made: 235")
+      endGameModal.page.getByText("Mistakes Made: 235"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Difficulty: novice")
+      endGameModal.page.getByText("Difficulty: novice"),
     ).toBeInViewport({ ratio: 1 });
   });
 
@@ -113,19 +113,19 @@ test.describe("complete game", () => {
       ratio: 1,
     });
     await expect(
-      statistics.page.getByText("Fastest Solve Time: 06:1")
+      statistics.page.getByText("Fastest Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Average Solve Time: 06:1")
+      statistics.page.getByText("Average Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Solve Time: 06:1")
+      statistics.page.getByText("Total Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Hints Used: 0")
+      statistics.page.getByText("Total Hints Used: 0"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Mistakes Made: 235")
+      statistics.page.getByText("Total Mistakes Made: 235"),
     ).toBeInViewport({ ratio: 1 });
   });
 
@@ -153,27 +153,27 @@ test.describe("complete game", () => {
       ratio: 1,
     });
     await expect(
-      statistics.page.getByText("Fastest Solve Time: 06:1")
+      statistics.page.getByText("Fastest Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Average Solve Time: 06:1")
+      statistics.page.getByText("Average Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Solve Time: 06:1")
+      statistics.page.getByText("Total Solve Time: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      statistics.page.getByText("Total Hints Used: 2")
+      statistics.page.getByText("Total Hints Used: 2"),
     ).toBeInViewport({ ratio: 1 });
     await expect(statistics.page.getByText("Simplify Notes: 1")).toBeInViewport(
-      { ratio: 1 }
+      { ratio: 1 },
     );
     await expect(statistics.page.getByText("Obvious Single: 1")).toBeInViewport(
       {
         ratio: 1,
-      }
+      },
     );
     await expect(
-      statistics.page.getByText("Total Mistakes Made: 235")
+      statistics.page.getByText("Total Mistakes Made: 235"),
     ).toBeInViewport({ ratio: 1 });
   });
 });

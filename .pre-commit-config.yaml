@@ -2,9 +2,9 @@ default_stages: [pre-commit, pre-push]
 repos:
   - repo: local
     hooks:
-      - id: prettier
-        name: prettier
-        entry: npx prettier --write --ignore-unknown .
+      - id: lint
+        name: lint
+        entry: npx eslint . --fix --quiet
         always_run: true
         language: system
         verbose: false

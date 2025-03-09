@@ -67,7 +67,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
   initalizeLocalStorageFixture: [
     async (
       { page, activeGameStorage, profileStorage, statisticsStorage },
-      use
+      use,
     ) => {
       const storageItems = [
         { key: "active_game", value: activeGameStorage },
@@ -81,7 +81,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
             ({ key, value }) => {
               window.localStorage.setItem(key, JSON.stringify(value));
             },
-            { key: item.key, value: item.value }
+            { key: item.key, value: item.value },
           );
         }
       }

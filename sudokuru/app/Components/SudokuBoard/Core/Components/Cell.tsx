@@ -1,4 +1,4 @@
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Pressable, StyleProp, Text, TextStyle, View } from "react-native";
 import { CellType } from "../../../../Functions/LocalDatabase";
@@ -29,7 +29,7 @@ const Cell = (props: RenderCellProps) => {
     noteColor,
     backgroundNoteColor,
   } = props;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
 
   /**
    * Generates a styled text component for a note index within a cell.
@@ -132,7 +132,7 @@ const Cell = (props: RenderCellProps) => {
     >
       {type === "note" ? (
         <NoteGrid />
-      ) : entry != 0 ? (
+      ) : entry !== 0 ? (
         <Text
           style={{
             fontFamily: "Inter_400Regular",
