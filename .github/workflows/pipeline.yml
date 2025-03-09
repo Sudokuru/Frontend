@@ -67,10 +67,10 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
-      - name: Prettier Check
-        run: |
-          npm i prettier@2.8.8
-          npx prettier --check .
+      - name: 📦 Install dependencies
+        run: npm ci
+      - name: Lint Check
+        run: npx eslint .
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Typescript Check
