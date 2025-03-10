@@ -18,13 +18,13 @@ interface NumHintsUsedPerStrategyProps {
  * @returns An array of JSX elements representing the number of hints used per strategy.
  */
 export const NumHintsUsedPerStrategy = (
-  props: NumHintsUsedPerStrategyProps
+  props: NumHintsUsedPerStrategyProps,
 ) => {
   // sort by most number of hints
   const numHintsUsedPerStrategyClone = [...props.numHintsUsedPerStrategy].sort(
     (a, b) => {
       return b.numHintsUsed - a.numHintsUsed;
-    }
+    },
   );
 
   // Generates the JSX elements for the number of hints used per strategy
@@ -38,7 +38,7 @@ export const NumHintsUsedPerStrategy = (
         statisticValue={strategyHint.numHintsUsed}
         testID={"hintsUsed" + strategyHint.hintStrategy}
         key={strategyHint.hintStrategy}
-      />
+      />,
     );
   }
 

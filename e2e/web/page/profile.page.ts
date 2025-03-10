@@ -34,26 +34,26 @@ export class ProfilePage {
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
     this.highlightSwitchDisabled = page.getByTestId("HighlightDisabled");
     this.highlightIdenticalValuesSwitchEnabled = page.getByTestId(
-      "HighlightIdenticalValuesEnabled"
+      "HighlightIdenticalValuesEnabled",
     );
     this.highlightIdenticalValuesSwitchDisabled = page.getByTestId(
-      "HighlightIdenticalValuesDisabled"
+      "HighlightIdenticalValuesDisabled",
     );
     this.highlightBoxSwitchEnabled = page.getByTestId("HighlightBoxEnabled");
     this.highlightBoxSwitchDisabled = page.getByTestId("HighlightBoxDisabled");
     this.highlightRowSwitchEnabled = page.getByTestId("HighlightRowEnabled");
     this.highlightRowSwitchDisabled = page.getByTestId("HighlightRowDisabled");
     this.highlightColumnSwitchEnabled = page.getByTestId(
-      "HighlightColumnEnabled"
+      "HighlightColumnEnabled",
     );
     this.highlightColumnSwitchDisabled = page.getByTestId(
-      "HighlightColumnDisabled"
+      "HighlightColumnDisabled",
     );
     this.featurePreviewSwitchEnabled = page.getByTestId(
-      "FeaturePreviewEnabled"
+      "FeaturePreviewEnabled",
     );
     this.featurePreviewSwitchDisabled = page.getByTestId(
-      "FeaturePreviewDisabled"
+      "FeaturePreviewDisabled",
     );
 
     this.hintStrategyMenuUp = page.getByTestId("HintStrategyMenuUp");
@@ -97,7 +97,7 @@ export class ProfilePage {
   async isHintStrategyVisible(priority: number, strategy: SudokuStrategy) {
     const formattedStrategy = formatOneLessonName(strategy);
     const strategyButton = this.page.getByText(
-      `${priority}.${formattedStrategy}`
+      `${priority}.${formattedStrategy}`,
     );
     await expect(strategyButton).toBeInViewport({ ratio: 1 });
   }
@@ -105,7 +105,7 @@ export class ProfilePage {
   async clickHintStrategy(priority: number, strategy: SudokuStrategy) {
     const formattedStrategy = formatOneLessonName(strategy);
     const strategyButton = this.page.getByText(
-      `${priority}.${formattedStrategy}`
+      `${priority}.${formattedStrategy}`,
     );
     await strategyButton.click();
   }
@@ -114,7 +114,7 @@ export class ProfilePage {
     for (const strategy of strategies) {
       await this.isHintStrategyVisible(
         strategies.indexOf(strategy) + 1,
-        strategy
+        strategy,
       );
     }
   }

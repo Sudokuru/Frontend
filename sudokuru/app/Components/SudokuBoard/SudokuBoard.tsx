@@ -47,9 +47,9 @@ export interface SudokuBoardProps {
 export interface HintObjectProps {
   stage: number;
   maxStage: number;
-  hint: Hint;
+  hint: HintProps;
 }
-export interface Hint {
+export interface HintProps {
   strategy: any;
   cause: any;
   groups: any;
@@ -75,6 +75,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
       setSudokuBoard(game);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // if we are loading then we return the loading icon
@@ -143,7 +144,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzle,
       sudokuBoard.puzzleSolution,
-      updatedArray
+      updatedArray,
     );
 
     // unselect board and increment hint statistics
@@ -153,7 +154,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       i,
       strategies,
     ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
-      if (strategies.hintStrategy == returnedHint.strategy) {
+      if (strategies.hintStrategy === returnedHint.strategy) {
         sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
         incrementedStrategy = true;
         break;
@@ -288,7 +289,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         sudokuBoard.statistics.numHintsUsed,
         sudokuBoard.statistics.numHintsUsedPerStrategy,
         sudokuBoard.statistics.numWrongCellsPlayed,
-        sudokuBoard.statistics.time
+        sudokuBoard.statistics.time,
       );
       sudokuBoard.statistics.score = score;
       setSudokuBoard({
@@ -322,7 +323,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     currentType: CellType,
     currentEntry: number | number[],
     r: number,
-    c: number
+    c: number,
   ) => {
     if (sudokuBoard.selectedCells.length === 0) {
       return;
@@ -358,7 +359,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
       if (currentEntryCopy.includes(inputValue)) {
         newCellEntry = currentEntryCopy.filter(
-          (note: number) => note != inputValue
+          (note: number) => note !== inputValue,
         );
       } else {
         currentEntryCopy.push(inputValue);
@@ -505,7 +506,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       currentSelectedCells = getSelectedCells(sudokuBoard);
     }
 
-    if (currentSelectedCells.length != 0) {
+    if (currentSelectedCells.length !== 0) {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         // if there is at least one cell that can be updated, we enable number buttons
         if (
@@ -515,7 +516,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
               sudokuBoard.selectedCells[i].c
             ],
             sudokuBoard.selectedCells[i].r,
-            sudokuBoard.selectedCells[i].c
+            sudokuBoard.selectedCells[i].c,
           )
         ) {
           enableNumberButtons = true;
@@ -600,7 +601,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    */
   const replaceSudokuBoardCells = (
     cells: CellProps[],
-    locations: CellLocation[]
+    locations: CellLocation[],
   ) => {
     const actionHistory: GameAction[] = [];
     for (const [i, location] of locations.entries()) {
@@ -631,7 +632,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
    * @returns void
    */
   const updateHintStage = (stageOffset: number) => {
-    if (stageOffset != -1 && stageOffset != 1) {
+    if (stageOffset !== -1 && stageOffset !== 1) {
       return;
     }
     if (!sudokuHint) {
@@ -651,7 +652,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
             sudokuBoard.statistics.numHintsUsed,
             sudokuBoard.statistics.numHintsUsedPerStrategy,
             sudokuBoard.statistics.numWrongCellsPlayed,
-            sudokuBoard.statistics.time
+            sudokuBoard.statistics.time,
           );
           sudokuBoard.statistics.score = score;
           setSudokuBoard({
@@ -686,7 +687,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
 
     const removals: number[][] = JSON.parse(
-      JSON.stringify(sudokuHint.hint.removals)
+      JSON.stringify(sudokuHint.hint.removals),
     );
 
     if (
@@ -702,7 +703,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
       const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
       let newNotes: number[] = [];
-      if (sudokuBoard.puzzle[r][c].type == "note") {
+      if (sudokuBoard.puzzle[r][c].type === "note") {
         newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
       }
       // Insert missing notes due to AMEND_NOTES hint
@@ -715,7 +716,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         }
       }
       // Remove unnecessary notes due to AMEND_NOTES hint
-      else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type == "note") {
+      else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type === "note") {
         newNotes = sudokuBoard.puzzle[r][c].entry as number[];
         for (const note of removals) {
           if (newNotes.includes(note)) {
@@ -728,7 +729,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       if (notesWereUpdated) {
         replaceSudokuBoardCells(
           [{ type: "note", entry: newNotes }],
-          [{ c: c, r: r }]
+          [{ c: c, r: r }],
         );
       }
     } else if (
@@ -742,7 +743,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
       replaceSudokuBoardCells(
         [{ type: "value", entry: placements[0] }],
-        [{ c: c, r: r }]
+        [{ c: c, r: r }],
       );
     } else if (currentStage === 5) {
       const cells: CellProps[] = [];

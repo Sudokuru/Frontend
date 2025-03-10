@@ -12,13 +12,13 @@ test.describe("about us page", () => {
         if (member.activeSince) {
           await aboutUsPage.teamMemberCardHasText(
             member.name,
-            member.activeSince
+            member.activeSince,
           );
         }
         if (member.specialty) {
           await aboutUsPage.teamMemberCardHasText(
             member.name,
-            member.specialty
+            member.specialty,
           );
         }
         await aboutUsPage.linkButtonWorks(member.name, member.github);

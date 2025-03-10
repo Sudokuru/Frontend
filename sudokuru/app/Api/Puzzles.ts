@@ -60,7 +60,7 @@ export const finishGame = async (
   }[],
   numWrongCellsPlayed: number,
   time: number,
-  score: number
+  score: number,
 ) => {
   // remove the game from storage
   await removeData("active_game");
@@ -77,14 +77,14 @@ export const finishGame = async (
   statistics.numHintsUsed += numHintsUsed;
   statistics.numWrongCellsPlayed += numWrongCellsPlayed;
   statistics.averageSolveTime = Math.round(
-    statistics.totalSolveTime / statistics.numGamesPlayed
+    statistics.totalSolveTime / statistics.numGamesPlayed,
   );
 
   // Create or update user's total number of hints used per strategy statistics
   for (const newHintStrategies of numHintsUsedPerStrategy) {
     const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
       (strategy: { hintStrategy: SudokuStrategy; numHintsUsed: number }) =>
-        strategy.hintStrategy === newHintStrategies.hintStrategy
+        strategy.hintStrategy === newHintStrategies.hintStrategy,
     );
     if (existingHintStrategies) {
       existingHintStrategies.numHintsUsed += newHintStrategies.numHintsUsed;

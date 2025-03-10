@@ -12,7 +12,7 @@ interface PuzzleProps {
     setBoardSelectedCells: (cells: CellLocation[]) => void,
     sudokuHint: HintObjectProps | undefined,
     r: number,
-    c: number
+    c: number,
   ) => JSX.Element | undefined;
   sudokuBoard: SudokuObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
@@ -27,7 +27,7 @@ const Puzzle = (props: PuzzleProps) => {
     const rows = [];
     for (let c = 0; c < 9; c++) {
       rows.push(
-        RenderCell(sudokuBoard, setBoardSelectedCells, sudokuHint, r, c)
+        RenderCell(sudokuBoard, setBoardSelectedCells, sudokuHint, r, c),
       );
     }
     renderAllRows.push(rows);

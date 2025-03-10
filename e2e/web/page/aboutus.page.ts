@@ -32,7 +32,7 @@ export class AboutUsPage {
   async mediaButtonsWork() {
     await this.linkButtonWorks(
       "source-code",
-      "https://github.com/Sudokuru/Frontend"
+      "https://github.com/Sudokuru/Frontend",
     );
     await this.linkButtonWorks("youtube", "https://www.youtube.com/@SudoKuru");
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";

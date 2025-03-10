@@ -27,7 +27,7 @@ export const isEraseButtonDisabled = (sudokuBoard: SudokuObjectProps) => {
         sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
           sudokuBoard.selectedCells[i].c
         ],
-        currentSelectedCells[i].entry as number
+        currentSelectedCells[i].entry as number,
       );
     // disable erase button if value === 0 or is given
     if (!isCellGiven && !isCellEmpty && !isCellCorrect) {

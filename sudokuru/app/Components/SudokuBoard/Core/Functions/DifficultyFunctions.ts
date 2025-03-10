@@ -32,7 +32,7 @@ export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
  * @returns A number representing the difficulty score from the puzzle
  */
 function calculateDifficultyScore(
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
 ): GameDifficultyScore {
   switch (difficulty) {
     case "novice":
@@ -65,7 +65,7 @@ function calculateDifficultyScore(
  */
 function calculateHintAndIncorrectCellScore(
   numWrongCellsPlayed: number,
-  numHintsUsed: number
+  numHintsUsed: number,
 ): number {
   // hints and incorrect cell placements are weighted equally
   const totalScrewups = (numWrongCellsPlayed + numHintsUsed) * 5;
@@ -104,13 +104,13 @@ export function calculateGameScore(
   numHintsUsed: number,
   numWrongCellsPlayed: number,
   time: number,
-  difficulty: GameDifficulty
+  difficulty: GameDifficulty,
 ): number {
   const difficultyScore: GameDifficultyScore =
     calculateDifficultyScore(difficulty);
   const hintAndIncorrectCellsScore: number = calculateHintAndIncorrectCellScore(
     numWrongCellsPlayed,
-    numHintsUsed
+    numHintsUsed,
   );
   const timeScore: number = calculateTimeScore(time);
   return difficultyScore + hintAndIncorrectCellsScore + timeScore;
@@ -131,7 +131,7 @@ const retrieveRandomPuzzle = (PUZZLES: InputPuzzle[]): InputPuzzle => {
  * @returns A Puzzle object
  */
 export const returnPuzzleOfDifficulty = (
-  difficulty: GameDifficulty | "dev"
+  difficulty: GameDifficulty | "dev",
 ): InputPuzzle => {
   switch (difficulty) {
     // "dev" difficulty is a custom difficulty that always returns the same puzzle.
@@ -164,7 +164,7 @@ export const returnPuzzleOfDifficulty = (
  * @returns A puzzle object that is readable by the Sudoku component.
  */
 export const returnGameOfDifficulty = (
-  difficulty: GameDifficulty | "dev"
+  difficulty: GameDifficulty | "dev",
 ): SudokuObjectProps => {
   const puzzles = returnPuzzleOfDifficulty(difficulty);
   if (difficulty === "dev") {

@@ -99,7 +99,7 @@ test.describe("board AMEND_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "value", content: "0", row: 0, column: 0 }],
       [{ contentType: "notes", content: "1", row: 0, column: 0 }],
-      [{ contentType: "notes", content: "1", row: 0, column: 0 }]
+      [{ contentType: "notes", content: "1", row: 0, column: 0 }],
     );
   });
 });
@@ -130,7 +130,7 @@ test.describe("board AMEND_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "27", row: 0, column: 5 }],
       [{ contentType: "notes", content: "125678", row: 0, column: 5 }],
-      [{ contentType: "notes", content: "1568", row: 0, column: 5 }]
+      [{ contentType: "notes", content: "1568", row: 0, column: 5 }],
     );
   });
 });
@@ -162,7 +162,7 @@ test.describe("board AMEND_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "25", row: 0, column: 6 }],
       [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
-      [{ contentType: "notes", content: "25689", row: 0, column: 6 }]
+      [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
     );
   });
 });
@@ -196,7 +196,7 @@ test.describe("board AMEND_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "124", row: 0, column: 8 }],
       [{ contentType: "notes", content: "12489", row: 0, column: 8 }],
-      [{ contentType: "notes", content: "289", row: 0, column: 8 }]
+      [{ contentType: "notes", content: "289", row: 0, column: 8 }],
     );
   });
 });
@@ -220,7 +220,7 @@ test.describe("board SIMPLIFY_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "1568", row: 0, column: 5 }],
       [{ contentType: "notes", content: "1568", row: 0, column: 5 }],
-      [{ contentType: "notes", content: "568", row: 0, column: 5 }]
+      [{ contentType: "notes", content: "568", row: 0, column: 5 }],
     );
   });
 });
@@ -244,7 +244,7 @@ test.describe("board SIMPLIFY_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "147", row: 2, column: 0 }],
       [{ contentType: "notes", content: "147", row: 2, column: 0 }],
-      [{ contentType: "notes", content: "47", row: 2, column: 0 }]
+      [{ contentType: "notes", content: "47", row: 2, column: 0 }],
     );
   });
 });
@@ -268,7 +268,7 @@ test.describe("board SIMPLIFY_NOTES", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "2349", row: 3, column: 8 }],
       [{ contentType: "notes", content: "2349", row: 3, column: 8 }],
-      [{ contentType: "notes", content: "239", row: 3, column: 8 }]
+      [{ contentType: "notes", content: "239", row: 3, column: 8 }],
     );
   });
 });
@@ -292,7 +292,7 @@ test.describe("board OBVIOUS_SINGLE", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "1", row: 0, column: 0 }],
       [{ contentType: "notes", content: "1", row: 0, column: 0 }],
-      [{ contentType: "value", content: "1", row: 0, column: 0 }]
+      [{ contentType: "value", content: "1", row: 0, column: 0 }],
     );
   });
 });
@@ -337,7 +337,7 @@ test.describe("board OBVIOUS_PAIR", () => {
         { contentType: "notes", content: "89", row: 1, column: 4 },
         { contentType: "notes", content: "79", row: 1, column: 7 },
         { contentType: "notes", content: "7", row: 2, column: 0 },
-      ]
+      ],
     );
   });
 });
@@ -379,7 +379,7 @@ test.describe("board OBVIOUS_PAIR", () => {
         { contentType: "notes", content: "369", row: 3, column: 0 },
         { contentType: "notes", content: "368", row: 7, column: 0 },
         { contentType: "notes", content: "368", row: 8, column: 0 },
-      ]
+      ],
     );
   });
 });
@@ -412,7 +412,7 @@ test.describe("board OBVIOUS_PAIR", () => {
       [
         { contentType: "notes", content: "56", row: 0, column: 3 },
         { contentType: "notes", content: "56", row: 0, column: 5 },
-      ]
+      ],
     );
   });
 });
@@ -443,7 +443,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "579", row: 1, column: 7 }],
       [{ contentType: "notes", content: "579", row: 1, column: 7 }],
-      [{ contentType: "notes", content: "7", row: 1, column: 7 }]
+      [{ contentType: "notes", content: "7", row: 1, column: 7 }],
     );
   });
 });
@@ -483,7 +483,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       [
         { contentType: "notes", content: "59", row: 5, column: 4 },
         { contentType: "notes", content: "59", row: 3, column: 4 },
-      ]
+      ],
     );
   });
 });
@@ -514,7 +514,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "2", row: 0, column: 1 }]
+      [{ contentType: "notes", content: "2", row: 0, column: 1 }],
     );
   });
 });
@@ -558,7 +558,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
         { contentType: "notes", content: "256", row: 2, column: 6 },
         { contentType: "notes", content: "256", row: 2, column: 7 },
         { contentType: "notes", content: "2", row: 2, column: 8 },
-      ]
+      ],
     );
   });
 });
@@ -590,7 +590,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "45", row: 1, column: 1 }],
       [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "5", row: 1, column: 1 }]
+      [{ contentType: "notes", content: "5", row: 1, column: 1 }],
     );
   });
 });
@@ -634,7 +634,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
         { contentType: "notes", content: "3", row: 2, column: 3 },
         { contentType: "notes", content: "13", row: 2, column: 4 },
         { contentType: "notes", content: "134", row: 2, column: 5 },
-      ]
+      ],
     );
   });
 });
@@ -663,7 +663,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "249", row: 4, column: 6 }],
       [{ contentType: "notes", content: "249", row: 4, column: 6 }],
-      [{ contentType: "notes", content: "4", row: 4, column: 6 }]
+      [{ contentType: "notes", content: "4", row: 4, column: 6 }],
     );
   });
 });
@@ -694,7 +694,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "2389", row: 4, column: 3 }],
       [{ contentType: "notes", content: "2389", row: 4, column: 3 }],
-      [{ contentType: "notes", content: "2", row: 4, column: 3 }]
+      [{ contentType: "notes", content: "2", row: 4, column: 3 }],
     );
   });
 });
@@ -725,7 +725,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
       [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "2", row: 0, column: 1 }]
+      [{ contentType: "notes", content: "2", row: 0, column: 1 }],
     );
   });
 });
@@ -756,7 +756,7 @@ test.describe("board HIDDEN_PAIR", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "579", row: 1, column: 7 }],
       [{ contentType: "notes", content: "579", row: 1, column: 7 }],
-      [{ contentType: "notes", content: "7", row: 1, column: 7 }]
+      [{ contentType: "notes", content: "7", row: 1, column: 7 }],
     );
   });
 });
@@ -798,7 +798,7 @@ test.describe("board HIDDEN_PAIR", () => {
       [
         { contentType: "notes", content: "9", row: 1, column: 3 },
         { contentType: "notes", content: "29", row: 4, column: 3 },
-      ]
+      ],
     );
   });
 });
@@ -825,7 +825,7 @@ test.describe("board HIDDEN_PAIR", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "45", row: 1, column: 1 }],
       [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "5", row: 1, column: 1 }]
+      [{ contentType: "notes", content: "5", row: 1, column: 1 }],
     );
   });
 });
@@ -869,7 +869,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
         { contentType: "notes", content: "256", row: 2, column: 6 },
         { contentType: "notes", content: "256", row: 2, column: 7 },
         { contentType: "notes", content: "2", row: 2, column: 8 },
-      ]
+      ],
     );
   });
 });
@@ -905,7 +905,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
       [
         { contentType: "notes", content: "346", row: 3, column: 1 },
         { contentType: "notes", content: "36", row: 5, column: 1 },
-      ]
+      ],
     );
   });
 });
@@ -949,7 +949,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
         { contentType: "notes", content: "3", row: 2, column: 3 },
         { contentType: "notes", content: "13", row: 2, column: 4 },
         { contentType: "notes", content: "134", row: 2, column: 5 },
-      ]
+      ],
     );
   });
 });
@@ -980,7 +980,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "47", row: 2, column: 0 }],
       [{ contentType: "notes", content: "47", row: 2, column: 0 }],
-      [{ contentType: "notes", content: "7", row: 2, column: 0 }]
+      [{ contentType: "notes", content: "7", row: 2, column: 0 }],
     );
   });
 });
@@ -1019,7 +1019,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
         { contentType: "notes", content: "369", row: 3, column: 0 },
         { contentType: "notes", content: "368", row: 7, column: 0 },
         { contentType: "notes", content: "368", row: 8, column: 0 },
-      ]
+      ],
     );
   });
 });
@@ -1055,7 +1055,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       [
         { contentType: "notes", content: "289", row: 0, column: 6 },
         { contentType: "notes", content: "79", row: 1, column: 7 },
-      ]
+      ],
     );
   });
 });
@@ -1082,7 +1082,7 @@ test.describe("board POINTING_PAIR", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
       [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
-      [{ contentType: "notes", content: "2589", row: 0, column: 6 }]
+      [{ contentType: "notes", content: "2589", row: 0, column: 6 }],
     );
   });
 });
@@ -1111,7 +1111,7 @@ test.describe("board POINTING_PAIR", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "89", row: 1, column: 4 }],
       [{ contentType: "notes", content: "89", row: 1, column: 4 }],
-      [{ contentType: "notes", content: "8", row: 1, column: 4 }]
+      [{ contentType: "notes", content: "8", row: 1, column: 4 }],
     );
   });
 });
@@ -1151,7 +1151,7 @@ test.describe("board POINTING_TRIPLET", () => {
       [
         { contentType: "notes", content: "14569", row: 0, column: 3 },
         { contentType: "notes", content: "134569", row: 0, column: 4 },
-      ]
+      ],
     );
   });
 });
@@ -1184,7 +1184,7 @@ test.describe("board POINTING_TRIPLET", () => {
       notHighlightedColor,
       [{ contentType: "notes", content: "89", row: 1, column: 4 }],
       [{ contentType: "notes", content: "89", row: 1, column: 4 }],
-      [{ contentType: "notes", content: "8", row: 1, column: 4 }]
+      [{ contentType: "notes", content: "8", row: 1, column: 4 }],
     );
   });
 });

@@ -1,6 +1,6 @@
 import { Pressable, Platform } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import { useTheme } from "react-native-paper";
 import React from "react";
 
@@ -11,8 +11,8 @@ interface PauseButtonProps {
 
 const PauseButton = (props: PauseButtonProps) => {
   const { handlePause, isPaused } = props;
-  const cellSize = getCellSize();
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
+  const cellSize = useCellSize();
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   const theme = useTheme();
 
   return (

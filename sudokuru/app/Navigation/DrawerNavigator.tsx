@@ -1,7 +1,6 @@
 import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Header from "../Components/Header";
-import { useWindowDimensions } from "react-native";
 import NavigationSideBar from "../Components/NavigationSideBar";
 import { useTheme } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +20,6 @@ import AboutUsPage from "../Pages/AboutUsPage";
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  const size = useWindowDimensions();
   const theme = useTheme();
 
   return (

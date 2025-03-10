@@ -64,7 +64,7 @@ function getRowCount(cardCount: number, columnCount: number): number {
 function getTotalCardsHeight(
   rowCount: number,
   cardHeight: number,
-  shrinkage: number
+  shrinkage: number,
 ): number {
   let fromCards: number = rowCount * cardHeight;
   let fromPadding: number = (rowCount - 1) * CARD_PADDING;
@@ -186,7 +186,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
             )}
           </Card>
         </TouchableOpacity>
-      </View>
+      </View>,
     );
 
     // Add row

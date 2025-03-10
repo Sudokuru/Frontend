@@ -12,18 +12,18 @@ import { SudokuStrategy } from "sudokuru";
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions of 1 x 1.44444
  */
-export function getCellSize(): number {
+export function useCellSize(): number {
   const size = useWindowDimensions();
   return Math.min(size.width * 1.44444, size.height) / 15;
 }
 
-export function getBoardSize(): number {
-  return getCellSize() * 9;
+export function useBoardSize(): number {
+  return useCellSize() * 9;
 }
 
 export const isValueCorrect = (
   solution: number,
-  inputValue: number
+  inputValue: number,
 ): boolean => {
   return solution === inputValue;
 };
@@ -40,21 +40,21 @@ export const formatTime = (inputSeconds: number) => {
   const paddedHours =
     hours > 0
       ? (hours < 10 ? "0" : "") + hours + ":"
-      : hours == 0 && days != 0
-      ? "00:"
-      : "";
+      : hours === 0 && days !== 0
+        ? "00:"
+        : "";
   const paddedMinutes =
     minutes > 0
       ? (minutes < 10 ? "0" : "") + minutes + ":"
-      : minutes == 0 && hours != 0
-      ? "00:"
-      : "";
+      : minutes === 0 && hours !== 0
+        ? "00:"
+        : "";
   const paddedSeconds =
     seconds > 0
       ? (seconds < 10 ? "0" : "") + seconds
-      : seconds == 0 && minutes != 0
-      ? "00"
-      : "0";
+      : seconds === 0 && minutes !== 0
+        ? "00"
+        : "0";
 
   // Return formatted string
   return `${paddedDays}${paddedHours}${paddedMinutes}${paddedSeconds}`;
@@ -77,14 +77,14 @@ export function finishSudokuGame(
     numHintsUsed: number;
   }[],
   numWrongCellsPlayed: number,
-  time: number
+  time: number,
 ): number {
   // calculate score
   const score = calculateGameScore(
     numHintsUsed,
     numWrongCellsPlayed,
     time,
-    difficulty
+    difficulty,
   );
 
   // removes game from localstorage and updates statistics page
@@ -93,7 +93,7 @@ export function finishSudokuGame(
     numHintsUsedPerStrategy,
     numWrongCellsPlayed,
     time,
-    score
+    score,
   );
   return score;
 }

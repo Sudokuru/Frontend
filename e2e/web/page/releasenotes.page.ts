@@ -25,7 +25,7 @@ export class ReleaseNotesPage {
    */
   async loadNecessaryReleaseNotes(
     notes: ReleaseNoteInterface[],
-    version: string
+    version: string,
   ) {
     let index = 0;
     const LOADED_RELEASE_NOTES = 9;
@@ -38,7 +38,7 @@ export class ReleaseNotesPage {
 
     for (let i = 0; i < numberOfLoads; i++) {
       const loaderLocator = this.page.getByTestId(
-        notes[LOADED_RELEASE_NOTES + LOADED_RELEASE_NOTES * i].version
+        notes[LOADED_RELEASE_NOTES + LOADED_RELEASE_NOTES * i].version,
       );
       await loaderLocator.scrollIntoViewIfNeeded();
     }
@@ -66,7 +66,7 @@ export class ReleaseNotesPage {
   async isReleaseNoteTextPresentWithCount(
     version: string,
     text: string,
-    count: number
+    count: number,
   ) {
     const releaseNoteText: Locator = this.page
       .getByTestId(version)

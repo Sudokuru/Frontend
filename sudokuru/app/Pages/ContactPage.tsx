@@ -67,7 +67,7 @@ const ContactPage = () => {
       } else {
         throw new Error();
       }
-    } catch (error) {
+    } catch {
       setContactPage({ ...contactPage, errorVisible: true });
     }
   };

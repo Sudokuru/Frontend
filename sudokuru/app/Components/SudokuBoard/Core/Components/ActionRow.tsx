@@ -1,4 +1,4 @@
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import { useTheme } from "react-native-paper";
 import { Platform, Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -26,10 +26,10 @@ const ActionRow = (props: ActionRowProps) => {
     getHint,
     boardHasConflict,
   } = props;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const theme = useTheme();
 
-  const sizeConst = Platform.OS == "web" ? 1.5 : 1;
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   let fallbackHeight = 30;
 
   const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";

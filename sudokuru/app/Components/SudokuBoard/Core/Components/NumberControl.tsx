@@ -2,7 +2,7 @@ import { useTheme } from "react-native-paper";
 import { Pressable, Text, View } from "react-native";
 import { range } from "../../SudokuBoardFunctions";
 import React from "react";
-import { getCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
@@ -16,7 +16,7 @@ interface NumberControlProps {
   updateEntry: (inputValue: number) => void;
   getRemainingCellCountOfValue: (
     sudokuBoard: SudokuObjectProps,
-    inputValue: number
+    inputValue: number,
   ) => number;
   sudokuBoard: SudokuObjectProps;
 }
@@ -28,7 +28,7 @@ const NumberControl = (props: NumberControlProps) => {
     getRemainingCellCountOfValue,
     sudokuBoard,
   } = props;
-  const cellSize = getCellSize();
+  const cellSize = useCellSize();
   const theme = useTheme();
 
   const { darkThemeSetting, progressIndicatorSetting } =

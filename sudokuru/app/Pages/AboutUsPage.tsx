@@ -12,7 +12,7 @@ const openLink = (url: string) => {
 function getCardArray(
   teamMembers: Member[],
   columnCount: number,
-  theme: MD3Theme
+  theme: MD3Theme,
 ): any[] {
   let teamCards = [];
   let subArray = [];
@@ -55,7 +55,7 @@ function getCardArray(
             Specialty: {teamMembers[i].specialty}
           </Text>
         )}
-      </View>
+      </View>,
     );
 
     // Add row
@@ -78,7 +78,7 @@ const AboutUsPage = () => {
 
   let columnCount: number = calculateCardsPerRow(
     windowSize.width,
-    teamMembers.length
+    teamMembers.length,
   );
 
   let teamCards = getCardArray(teamMembers, columnCount, theme);

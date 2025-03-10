@@ -52,14 +52,16 @@ const InitializeContext = () => {
     (props: React.SetStateAction<string>) => {
       return setCurrentPage(props);
     },
-    [currentPage]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentPage],
   );
 
   const updateLearnedLessons = React.useCallback(
     (props: React.SetStateAction<string[]>) => {
       return setLearnedLessons(props);
     },
-    [learnedLessons]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [learnedLessons],
   );
 
   const toggleHighlightIdenticalValues = React.useCallback(() => {
@@ -97,7 +99,8 @@ const InitializeContext = () => {
       setProfileValue("strategyHintOrder", props);
       return setStrategyHintOrderSetting(props);
     },
-    [strategyHintOrderSetting]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [strategyHintOrderSetting],
   );
 
   const preferences = React.useMemo(
@@ -144,7 +147,7 @@ const InitializeContext = () => {
       featurePreviewSetting,
       updateStrategyHintOrder,
       strategyHintOrderSetting,
-    ]
+    ],
   );
 
   return {

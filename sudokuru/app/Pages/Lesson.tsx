@@ -39,7 +39,8 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   useFocusEffect(
     React.useCallback(() => {
       setSteps(getLessonSteps(name));
-    }, [])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
   );
 
   const clickCheckMark = () => {
@@ -90,7 +91,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             <Text variant="headlineSmall">{steps[i][0]}</Text>
           </View>
         </Card>
-      </View>
+      </View>,
     );
   }
 

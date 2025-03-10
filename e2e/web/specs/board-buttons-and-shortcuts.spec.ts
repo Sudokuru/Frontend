@@ -122,7 +122,7 @@ test.describe("progress indicator", () => {
   test("should be visible when enabled", async ({ resumeGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator
+      initialProgressIndicator,
     );
   });
 
@@ -133,11 +133,11 @@ test.describe("progress indicator", () => {
     await sudokuBoard.cell[1][1].click();
     await sudokuBoard.cell[1][1].press("1");
     await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator
+      initialProgressIndicator,
     );
     await sudokuBoard.undo.click();
     await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator
+      initialProgressIndicator,
     );
   });
 
@@ -159,7 +159,7 @@ test.describe("progress indicator", () => {
     await sudokuBoard.cell[1][1].click();
     await sudokuBoard.cell[1][1].press("8");
     await sudokuBoard.progressIndicatorRendersCorrectly(
-      updatedProgressIndicator
+      updatedProgressIndicator,
     );
   });
 });
@@ -207,7 +207,7 @@ test.describe("undo", () => {
           await sudokuBoard.page.keyboard.press(key);
         }
         await sudokuBoard.cellHasValue(7, 7, "0");
-      }
+      },
     );
   }
 
@@ -482,7 +482,7 @@ test.describe("navigate board", () => {
         await sudokuBoard.cellHasColor(
           0,
           col,
-          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB,
         );
         await sudokuBoard.page.keyboard.press(key);
       }
@@ -499,7 +499,7 @@ test.describe("navigate board", () => {
         await sudokuBoard.cellHasColor(
           0,
           col,
-          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB,
         );
         await sudokuBoard.page.keyboard.press(key);
       }
@@ -516,7 +516,7 @@ test.describe("navigate board", () => {
         await sudokuBoard.cellHasColor(
           row,
           0,
-          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB,
         );
         await sudokuBoard.page.keyboard.press(key);
       }
@@ -533,7 +533,7 @@ test.describe("navigate board", () => {
         await sudokuBoard.cellHasColor(
           row,
           0,
-          SELECTED_IDENTICAL_VALUE_COLOR_RGB
+          SELECTED_IDENTICAL_VALUE_COLOR_RGB,
         );
         await sudokuBoard.page.keyboard.press(key);
       }

@@ -2,9 +2,16 @@ default_stages: [pre-commit, pre-push]
 repos:
   - repo: local
     hooks:
-      - id: prettier
-        name: prettier
-        entry: npx prettier --write --ignore-unknown .
+      - id: lint
+        name: lint
+        entry: npx eslint . --fix --quiet
+        # Explanation for the --quiet flag (which silences warnings)
+        # When eslint is ran in files that are on the eslint ignore list, a warning is generated.
+        # This happens because pre-commit runs these pre-commit hooks on all staged files.
+        # There is an option eslint provides --no-warn-ignored which silences these warnings.
+        # However, https://github.com/eslint/eslint/discussions/18019 it is only avalible for v9+ and not v8 which we are using.
+        # Expo is in the process of supporting v9 https://github.com/expo/expo/issues/28144#issuecomment-
+        # In our pipeline we can run without --quiet flag since it is not running on staged files.
         always_run: true
         language: system
         verbose: false

@@ -33,7 +33,7 @@ export class SudokuBoardComponent {
     page: Page,
     numNumPads?: number,
     numRows?: number,
-    numColumns?: number
+    numColumns?: number,
   ) {
     this.page = page;
 
@@ -79,7 +79,7 @@ export class SudokuBoardComponent {
     for (let i = 0; i < this.numNumPads; i++) {
       await expect(this.numPad[i].locator("div").first()).toHaveCSS(
         "background-image",
-        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`
+        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`,
       );
     }
   }
@@ -88,7 +88,7 @@ export class SudokuBoardComponent {
     for (let i = 0; i < this.numNumPads; i++) {
       await expect(this.numPad[i].locator("div").first()).not.toHaveCSS(
         "background-image",
-        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`
+        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`,
       );
     }
   }
@@ -99,13 +99,13 @@ export class SudokuBoardComponent {
 
   async cellHasValue(row: number, column: number, value: string) {
     await expect(
-      this.page.getByTestId(`cellr${row}c${column}value:${value}`)
+      this.page.getByTestId(`cellr${row}c${column}value:${value}`),
     ).toBeInViewport({ ratio: 1 });
   }
 
   async cellHasNotes(row: number, column: number, notes: string) {
     await expect(
-      this.page.getByTestId(`cellr${row}c${column}notes:${notes}`)
+      this.page.getByTestId(`cellr${row}c${column}notes:${notes}`),
     ).toBeInViewport({ ratio: 1 });
   }
 
@@ -113,24 +113,24 @@ export class SudokuBoardComponent {
     row: number,
     column: number,
     content: string,
-    contentType: "notes" | "value"
+    contentType: "notes" | "value",
   ) {
     await expect(
-      this.page.getByTestId(`cellr${row}c${column}${contentType}:${content}`)
+      this.page.getByTestId(`cellr${row}c${column}${contentType}:${content}`),
     ).toBeInViewport({ ratio: 1 });
   }
 
   async cellIsDisabled(row: number, column: number) {
     await expect(this.cell[row][column]).toHaveAttribute(
       "aria-disabled",
-      "true"
+      "true",
     );
   }
 
   async cellIsEnabled(row: number, column: number) {
     await expect(this.cell[row][column]).not.toHaveAttribute(
       "aria-disabled",
-      "true"
+      "true",
     );
   }
 
@@ -146,7 +146,7 @@ export class SudokuBoardComponent {
     conditions: {
       condition: (row: number, column: number) => boolean;
       color: string;
-    }[]
+    }[],
   ) {
     for (let row = 0; row < this.numRows; row++) {
       for (let column = 0; column < this.numColumns; column++) {
@@ -203,16 +203,16 @@ export class SudokuBoardComponent {
       content: string;
       row: number;
       column: number;
-    }[]
+    }[],
   ) {
     await this.hint.click();
 
     await this.sudokuBoardContainsText(
-      this.getHintMessageForStage(1, strategy)
+      this.getHintMessageForStage(1, strategy),
     );
     await this.hintArrowRight.click();
     await this.sudokuBoardContainsText(
-      this.getHintMessageForStage(2, strategy)
+      this.getHintMessageForStage(2, strategy),
     );
     await this.hintArrowRight.click();
 
@@ -252,7 +252,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
     await this.hintArrowRight.click();
@@ -261,7 +261,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -271,7 +271,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -281,7 +281,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
     await this.hintArrowLeft.click();
@@ -290,7 +290,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -300,7 +300,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -310,7 +310,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -340,7 +340,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
 
@@ -351,7 +351,7 @@ export class SudokuBoardComponent {
         state.row,
         state.column,
         state.content,
-        state.contentType
+        state.contentType,
       );
     }
   }

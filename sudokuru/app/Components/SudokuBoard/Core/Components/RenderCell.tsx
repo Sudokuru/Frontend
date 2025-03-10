@@ -5,7 +5,7 @@ import {
 } from "../../../../Functions/LocalDatabase";
 import Cell from "./Cell";
 import {
-  getCellBackgroundColor,
+  useCellBackgroundColor,
   getCellBackgroundNotesColor,
   getCellNotesColor,
 } from "../Functions/RenderCellFunctions";
@@ -18,14 +18,14 @@ const RenderCell = (
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
-  c: number
+  c: number,
 ) => {
   const cell = sudokuBoard.puzzle[r][c];
-  const cellBackgroundColor = getCellBackgroundColor(
+  const cellBackgroundColor = useCellBackgroundColor(
     sudokuBoard,
     sudokuHint,
     r,
-    c
+    c,
   );
   const disable: boolean = isBoardDisabled(sudokuHint);
   const noteColor: string[] = getCellNotesColor(sudokuHint, r, c);
@@ -42,7 +42,7 @@ const RenderCell = (
           sudokuHint,
           r,
           c,
-          event
+          event,
         );
       }}
       backgroundColor={cellBackgroundColor}

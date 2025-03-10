@@ -98,7 +98,7 @@ test.describe("board highlighting", () => {
       },
       {
         condition: (row, column) =>
-          row === 7 || column == 7 || (row > 5 && column > 5),
+          row === 7 || column === 7 || (row > 5 && column > 5),
         color: PEER_SELECTED_COLOR_RGB,
       },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
@@ -137,7 +137,7 @@ test.describe("board highlighting", () => {
       },
       {
         condition: (row, column) =>
-          row === 7 || column == 7 || (row > 5 && column > 5),
+          row === 7 || column === 7 || (row > 5 && column > 5),
         color: PEER_SELECTED_COLOR_RGB,
       },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
@@ -166,7 +166,7 @@ test.describe("board highlighting", () => {
         color: SELECTED_COLOR_RGB,
       },
       {
-        condition: (row, column) => row === 7 || column == 7,
+        condition: (row, column) => row === 7 || column === 7,
         color: PEER_SELECTED_COLOR_RGB,
       },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
@@ -195,7 +195,7 @@ test.describe("board highlighting", () => {
         color: SELECTED_COLOR_RGB,
       },
       {
-        condition: (row, column) => column == 7 || (row > 5 && column > 5),
+        condition: (row, column) => column === 7 || (row > 5 && column > 5),
         color: PEER_SELECTED_COLOR_RGB,
       },
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },

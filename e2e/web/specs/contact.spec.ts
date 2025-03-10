@@ -36,8 +36,8 @@ test.describe("contact page", () => {
         capturedRequest
           .url()
           .includes(
-            "feedbackType=" + feedbackType + "&feedbackText=Ban%20Cheaters!"
-          )
+            "feedbackType=" + feedbackType + "&feedbackText=Ban%20Cheaters!",
+          ),
       ).toBeTruthy();
       await contactPage.thankYouIsVisible();
       await contactPage.closeSubmitAlert();
@@ -69,7 +69,7 @@ test.describe("contact page", () => {
     expect(
       capturedRequest
         .url()
-        .includes("feedbackType=Feature%20Request&feedbackText=")
+        .includes("feedbackType=Feature%20Request&feedbackText="),
     ).toBeTruthy();
     await contactPage.errorIsVisible();
     await contactPage.closeErrorAlert();
