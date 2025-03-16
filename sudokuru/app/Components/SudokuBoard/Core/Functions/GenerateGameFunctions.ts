@@ -2,10 +2,11 @@ import { getGame, startGame } from "../../../../Api/Puzzles";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import { SudokuBoardProps } from "../../SudokuBoard";
 
-export async function generateGame(props: SudokuBoardProps) {
+export async function generateGame(
+  props: SudokuBoardProps,
+  initializeNotes: boolean,
+) {
   let gameData = null;
-
-  const initializeNotes = true;
 
   if (props.action === "StartGame") {
     return startGame(props.difficulty, initializeNotes);

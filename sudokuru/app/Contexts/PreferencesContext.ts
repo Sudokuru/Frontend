@@ -25,6 +25,8 @@ export const PreferencesContext = React.createContext({
   progressIndicatorSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
+  toggleInitializeNotes: () => {},
+  initializeNotesSetting: true,
   updateStrategyHintOrder: (props: SudokuStrategy[]) => {},
   strategyHintOrderSetting: returnSudokuStrategyArray(),
 });

@@ -30,6 +30,8 @@ const ProfilePage = () => {
     highlightRowSetting,
     progressIndicatorSetting,
     toggleProgressIndicator,
+    initializeNotesSetting,
+    toggleInitializeNotes,
     toggleFeaturePreview,
     featurePreviewSetting,
   } = React.useContext(PreferencesContext);
@@ -151,6 +153,14 @@ const ProfilePage = () => {
             valueToggle={toggleProgressIndicator}
             testIdPrefix="ProgressIndicator"
           ></ProfileToggle>
+          {featurePreviewSetting && (
+            <ProfileToggle
+              name="Initialize Notes"
+              value={initializeNotesSetting}
+              valueToggle={toggleInitializeNotes}
+              testIdPrefix="InitializeNotes"
+            ></ProfileToggle>
+          )}
           <ProfileToggle
             name="Feature Preview"
             value={featurePreviewSetting}
