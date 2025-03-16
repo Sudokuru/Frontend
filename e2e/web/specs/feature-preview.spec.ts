@@ -1,6 +1,6 @@
 import { ProfilePage } from "./../page/profile.page";
 import { test } from "../fixture";
-import { devices } from "@playwright/test";
+import { devices, expect } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
 
 test.describe("feature preview", () => {
@@ -23,5 +23,26 @@ test.describe("feature preview", () => {
     const profilePage = new ProfilePage(page);
     await profilePage.featurePreviewSwitchDisabled.click();
     await headerComponent.partialFeaturePreviewTextIsVisible();
+  });
+
+  test.only("Initialze Notes profile setting appears in feature preview", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new ProfilePage(featurePreview);
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+  });
+
+  test.only("Initialize Notes profile setting does not appear when feature preview is disabled", async ({
+    profile,
+  }) => {
+    const profilePage = new ProfilePage(profile);
+    await expect(profilePage.initializeNotesSwitchDisabled).not.toBeInViewport({
+      ratio: 1,
+    });
+    await expect(profilePage.initializeNotesSwitchEnabled).not.toBeInViewport({
+      ratio: 1,
+    });
   });
 });
