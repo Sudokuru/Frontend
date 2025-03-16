@@ -36,7 +36,7 @@ test.describe("Offline Storage", () => {
 
 test.describe("Offline Storage", () => {
   test.use({ activeGameStorage: {} });
-  test("Resume Game buton does not show with invalid active game object", async ({
+  test("Resume Game button does not show with invalid active game object", async ({
     page,
   }) => {
     await page.reload();
