@@ -70,7 +70,7 @@ export const convertPuzzleToSudokuObject = (
           type: "note",
           entry: notesToAdd,
         };
-      } catch (e) {
+      } catch {
         break;
       }
     }
