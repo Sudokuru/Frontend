@@ -25,7 +25,7 @@ test.describe("feature preview", () => {
     await headerComponent.partialFeaturePreviewTextIsVisible();
   });
 
-  test.only("Initialze Notes profile setting appears in feature preview", async ({
+  test("Initialze Notes profile setting appears in feature preview", async ({
     featurePreview,
   }) => {
     const profilePage = new ProfilePage(featurePreview);
@@ -34,7 +34,7 @@ test.describe("feature preview", () => {
     });
   });
 
-  test.only("Initialize Notes profile setting does not appear when feature preview is disabled", async ({
+  test("Initialize Notes profile setting does not appear when feature preview is disabled", async ({
     profile,
   }) => {
     const profilePage = new ProfilePage(profile);
