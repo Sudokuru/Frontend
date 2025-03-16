@@ -165,10 +165,11 @@ export const returnPuzzleOfDifficulty = (
  */
 export const returnGameOfDifficulty = (
   difficulty: GameDifficulty | "dev",
+  initializeNotes: boolean,
 ): SudokuObjectProps => {
   const puzzles = returnPuzzleOfDifficulty(difficulty);
   if (difficulty === "dev") {
     difficulty = "novice";
   }
-  return convertPuzzleToSudokuObject(puzzles, difficulty);
+  return convertPuzzleToSudokuObject(puzzles, difficulty, initializeNotes);
 };

@@ -17,8 +17,11 @@ import { SudokuStrategy } from "sudokuru";
  * @param strategies - new game can have subset of these strategies
  * @returns promise of puzzle JSON object
  */
-export const startGame = (difficulty: GameDifficulty): SudokuObjectProps => {
-  return returnGameOfDifficulty(difficulty);
+export const startGame = (
+  difficulty: GameDifficulty,
+  initializeNotes: boolean,
+): SudokuObjectProps => {
+  return returnGameOfDifficulty(difficulty, initializeNotes);
   // !uncomment below for dev testing
   // return returnGameOfDifficulty("dev");
 };
