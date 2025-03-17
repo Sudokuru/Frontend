@@ -158,6 +158,16 @@ export class SudokuBoardComponent {
     );
   }
 
+  async verifyAllCellsInBoard(
+    verificationFunction: (row: number, column: number) => Promise<void>,
+  ) {
+    for (let r = 0; r < this.numRows; r++) {
+      for (let c = 0; c < this.numColumns; c++) {
+        await verificationFunction(r, c);
+      }
+    }
+  }
+
   /**
    * For each cell in the puzzle, checks each condition starting from the first.
    * If the condition is valid then checks that the cell matches the expected color.

@@ -161,6 +161,7 @@ export const returnPuzzleOfDifficulty = (
 /**
  * This function takes in the requested difficulty and returns a puzzle matching the difficulty.
  * @param difficulty The difficulty classification of the puzzle. (string)
+ * @param initializeNotes Boolean to determine if notes should be initialized.
  * @returns A puzzle object that is readable by the Sudoku component.
  */
 export const returnGameOfDifficulty = (

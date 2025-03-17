@@ -204,11 +204,9 @@ test.describe("Initialize Notes", () => {
     await headerComponent.drawerPlay.click();
     await featurePreview.getByText("Novice").click();
     const sudokuBoardComponent = new SudokuBoardComponent(featurePreview);
-    for (let r = 0; r < sudokuBoardComponent.numRows; r++) {
-      for (let c = 0; c < sudokuBoardComponent.numColumns; c++) {
-        await sudokuBoardComponent.cellDoesNotHaveValue(r, c, "0");
-      }
-    }
+    await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
+      await sudokuBoardComponent.cellDoesNotHaveValue(r, c, "0");
+    });
   });
 
   test("should not initialize notes for all cells when disabled", async ({
@@ -216,11 +214,9 @@ test.describe("Initialize Notes", () => {
   }) => {
     await play.getByText("Novice").click();
     const sudokuBoardComponent = new SudokuBoardComponent(play);
-    for (let r = 0; r < sudokuBoardComponent.numRows; r++) {
-      for (let c = 0; c < sudokuBoardComponent.numColumns; c++) {
-        await sudokuBoardComponent.cellIsNotNote(r, c);
-      }
-    }
+    await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
+      await sudokuBoardComponent.cellIsNotNote(r, c);
+    });
   });
 });
 

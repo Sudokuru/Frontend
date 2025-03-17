@@ -153,6 +153,8 @@ const ProfilePage = () => {
             valueToggle={toggleProgressIndicator}
             testIdPrefix="ProgressIndicator"
           ></ProfileToggle>
+          {/* Initialize Notes is in feature preview as it's a new feature 
+            that may affect game statistics and difficulty perception */}
           {featurePreviewSetting && (
             <ProfileToggle
               name="Initialize Notes"

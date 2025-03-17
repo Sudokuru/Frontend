@@ -63,6 +63,9 @@ export const convertPuzzleToSudokuObject = (
         let hint = getSudokuHint(game.puzzle, game.puzzleSolution, [
           "AMEND_NOTES",
         ]);
+        // hint.removals structure: [row, col, note1, note2, ...]
+        // slice(2) skips row and col to get just the notes to remove
+        // Filter to keep only notes that shouldn't be removed
         const notesToAdd = ALL_NOTES.filter(
           (x) => !hint.removals[0].slice(2).includes(x),
         );
@@ -71,6 +74,8 @@ export const convertPuzzleToSudokuObject = (
           entry: notesToAdd,
         };
       } catch {
+        // If getSudokuHint throws an exception, we've initialized
+        // all possible notes and can exit the loop
         break;
       }
     }

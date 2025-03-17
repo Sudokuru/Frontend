@@ -25,7 +25,7 @@ test.describe("feature preview", () => {
     await headerComponent.partialFeaturePreviewTextIsVisible();
   });
 
-  test("Initialze Notes profile setting appears in feature preview", async ({
+  test("Initialize Notes profile setting appears in feature preview", async ({
     featurePreview,
   }) => {
     const profilePage = new ProfilePage(featurePreview);
