@@ -199,6 +199,8 @@ test.describe("Initialize Notes", () => {
     await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
       ratio: 1,
     });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
     const headerComponent = new HeaderComponent(featurePreview);
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
