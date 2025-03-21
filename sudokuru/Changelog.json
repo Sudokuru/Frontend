@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.29.0",
+    "date": "#{date}#",
+    "summary": "Added initialize notes setting as a preview feature to be able to start a game with the notes already filled in.",
+    "preview features": [
+      "Added initialize notes setting to be able to start a game with the notes already filled in."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.28.3",
     "date": "February 13th, 2025",
     "summary": "Updated popup styling, removed outdated question mark popups, and fixed bug where popups would appear out of view.",

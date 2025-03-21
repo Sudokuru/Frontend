@@ -8,6 +8,9 @@ import {
 } from "../data";
 import { getSingleMultiSelectKey } from "../playwright.config";
 import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
+import { ProfilePage } from "../page/profile.page";
+import { expect } from "@playwright/test";
+import { HeaderComponent } from "../components/header.component";
 
 test.describe("hint", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -185,6 +188,37 @@ test.describe("progress indicator", () => {
   test("should not be visible when disabled", async ({ resumeGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
     await sudokuBoard.progressIndicatorIsDisabled(initialProgressIndicator);
+  });
+});
+
+test.describe("Initialize Notes", () => {
+  test("should initialize notes for all cells when enabled", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new ProfilePage(featurePreview);
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    await featurePreview.getByText("Novice").click();
+    const sudokuBoardComponent = new SudokuBoardComponent(featurePreview);
+    await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
+      await sudokuBoardComponent.cellIsNotEmpty(r, c);
+    });
+  });
+
+  test("should not initialize notes for all cells when disabled", async ({
+    play,
+  }) => {
+    await play.getByText("Novice").click();
+    const sudokuBoardComponent = new SudokuBoardComponent(play);
+    await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
+      await sudokuBoardComponent.cellIsNotNote(r, c);
+    });
   });
 });
 

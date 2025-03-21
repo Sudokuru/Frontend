@@ -1,6 +1,7 @@
 import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
+import { getSudokuHint } from "../Components/SudokuBoard/Core/Functions/HintFunctions";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
@@ -15,6 +16,7 @@ export interface InputPuzzle {
 export const convertPuzzleToSudokuObject = (
   puzzle: InputPuzzle,
   difficulty: GameDifficulty,
+  initializeNotes: boolean,
 ): SudokuObjectProps => {
   let game: SudokuObjectProps = {
     variant: "classic",
@@ -52,6 +54,33 @@ export const convertPuzzleToSudokuObject = (
       game.puzzleSolution[i][j] = numValueSolution;
     }
   }
+
+  // Initialize the board with notes filled in
+  if (initializeNotes) {
+    const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    while (true) {
+      try {
+        let hint = getSudokuHint(game.puzzle, game.puzzleSolution, [
+          "AMEND_NOTES",
+        ]);
+        // hint.removals structure: [row, col, note1, note2, ...]
+        // slice(2) skips row and col to get just the notes to remove
+        // Filter to keep only notes that shouldn't be removed
+        const notesToAdd = ALL_NOTES.filter(
+          (x) => !hint.removals[0].slice(2).includes(x),
+        );
+        game.puzzle[hint.removals[0][0]][hint.removals[0][1]] = {
+          type: "note",
+          entry: notesToAdd,
+        };
+      } catch {
+        // If getSudokuHint throws an exception, we've initialized
+        // all possible notes and can exit the loop
+        break;
+      }
+    }
+  }
+
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
 };

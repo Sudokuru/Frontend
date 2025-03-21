@@ -103,6 +103,34 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
+  async cellDoesNotHaveValue(row: number, column: number, value: string) {
+    await expect(
+      this.page.getByTestId(`cellr${row}c${column}value:${value}`),
+    ).not.toBeInViewport({ ratio: 1 });
+  }
+
+  // We can take advantage of an empty cell not having any child elements
+  async cellIsEmpty(row: number, column: number) {
+    const cell = await this.page.locator(
+      `[data-testid^="cellr${row}c${column}"]`,
+    );
+    await expect(await cell.locator("*")).toHaveCount(0);
+  }
+
+  async cellIsNotEmpty(row: number, column: number) {
+    await this.cellDoesNotHaveValue(row, column, "0");
+  }
+
+  // we can take advantage of an empty cell having 0 child elements
+  // and a cell with a value having 1 child element
+  // therefore a cell with notes must have more than 1 child element
+  async cellIsNotNote(row: number, column: number) {
+    const cell = await this.page.locator(
+      `[data-testid^="cellr${row}c${column}"]`,
+    );
+    await expect(await cell.locator("*").count()).toBeLessThanOrEqual(1);
+  }
+
   async cellHasNotes(row: number, column: number, notes: string) {
     await expect(
       this.page.getByTestId(`cellr${row}c${column}notes:${notes}`),
@@ -132,6 +160,16 @@ export class SudokuBoardComponent {
       "aria-disabled",
       "true",
     );
+  }
+
+  async verifyAllCellsInBoard(
+    verificationFunction: (row: number, column: number) => Promise<void>,
+  ) {
+    for (let r = 0; r < this.numRows; r++) {
+      for (let c = 0; c < this.numColumns; c++) {
+        await verificationFunction(r, c);
+      }
+    }
   }
 
   /**
