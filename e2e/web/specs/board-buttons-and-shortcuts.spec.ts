@@ -205,7 +205,7 @@ test.describe("Initialize Notes", () => {
     await featurePreview.getByText("Novice").click();
     const sudokuBoardComponent = new SudokuBoardComponent(featurePreview);
     await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
-      await sudokuBoardComponent.cellDoesNotHaveValue(r, c, "0");
+      await sudokuBoardComponent.cellIsNotEmpty(r, c);
     });
   });
 

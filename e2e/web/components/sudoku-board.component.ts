@@ -117,6 +117,10 @@ export class SudokuBoardComponent {
     await expect(await cell.locator("*")).toHaveCount(0);
   }
 
+  async cellIsNotEmpty(row: number, column: number) {
+    await this.cellDoesNotHaveValue(row, column, "0");
+  }
+
   // we can take advantage of an empty cell having 0 child elements
   // and a cell with a value having 1 child element
   // therefore a cell with notes must have more than 1 child element
