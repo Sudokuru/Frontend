@@ -66,10 +66,21 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   const [sudokuHint, setSudokuHint] = useState<HintObjectProps>();
 
-  const { strategyHintOrderSetting } = React.useContext(PreferencesContext);
+  const {
+    strategyHintOrderSetting,
+    featurePreviewSetting,
+    initializeNotesSetting,
+  } = React.useContext(PreferencesContext);
 
   useEffect(() => {
-    generateGame(props).then((game) => {
+    let initializeNotes = false;
+
+    // Enabling initialize notes is under feature preview
+    if (initializeNotesSetting && featurePreviewSetting) {
+      initializeNotes = true;
+    }
+
+    generateGame(props, initializeNotes).then((game) => {
       if (game == null) {
         return;
       }

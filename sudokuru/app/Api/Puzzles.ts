@@ -15,12 +15,16 @@ import { SudokuStrategy } from "sudokuru";
  * Given a difficulty and an user auth token retrieves a random puzzle close to the difficulty that the user hasn't solved before
  * @param difficulty - difficulty number (between 0 and 1)
  * @param strategies - new game can have subset of these strategies
+ * @param initializeNotes - boolean to determine if notes should be initialized.
  * @returns promise of puzzle JSON object
  */
-export const startGame = (difficulty: GameDifficulty): SudokuObjectProps => {
-  return returnGameOfDifficulty(difficulty);
+export const startGame = (
+  difficulty: GameDifficulty,
+  initializeNotes: boolean,
+): SudokuObjectProps => {
+  return returnGameOfDifficulty(difficulty, initializeNotes);
   // !uncomment below for dev testing
-  // return returnGameOfDifficulty("dev");
+  // return returnGameOfDifficulty("dev", initializeNotes);
 };
 
 /**

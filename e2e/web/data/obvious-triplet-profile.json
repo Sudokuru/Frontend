@@ -6,6 +6,7 @@
   "highlightRow": true,
   "highlightIdenticalValues": true,
   "progressIndicator": true,
+  "initializeNotes": true,
   "previewMode": false,
   "strategyHintOrder": [
     "OBVIOUS_TRIPLET",
