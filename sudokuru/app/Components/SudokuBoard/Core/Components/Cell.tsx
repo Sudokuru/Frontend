@@ -5,31 +5,22 @@ import { CellType } from "../../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
 
-interface RenderCellProps {
-  disable: boolean;
-  entry: any; // todo find some way to derive this from type instad of duplicate
-  type: CellType;
-  onClick: (r: number, c: number, event: any) => void;
-  backgroundColor: string;
-  noteColor: string[];
+/**
+ * Generates a styled text component for a note index within a cell.
+ *
+ * @param props.cellSize - The size of the cell.
+ * @param props.entry - An array of numbers representing the notes in the cell.
+ * @param props.backgroundNoteColor - An array of colors corresponding to each note index.
+ * @param props.noteColor - An array of colors corresponding to each note index.
+ * @returns A View component with a styled Text component for each note index.
+ */
+const NoteGrid = (props: {
+  cellSize: number;
+  entry: number[];
   backgroundNoteColor: string[];
-  c: number;
-  r: number;
-}
-
-const Cell = (props: RenderCellProps) => {
-  const {
-    disable,
-    entry,
-    type,
-    onClick,
-    backgroundColor,
-    c,
-    r,
-    noteColor,
-    backgroundNoteColor,
-  } = props;
-  const cellSize = useCellSize();
+  noteColor: string[];
+}) => {
+  const { cellSize, entry, noteColor, backgroundNoteColor } = props;
 
   /**
    * Generates a styled text component for a note index within a cell.
@@ -38,7 +29,12 @@ const Cell = (props: RenderCellProps) => {
    * @param noteColor - An array of colors corresponding to each note index.
    * @returns A Text component with the specified style if the note index is present in the entry.
    */
-  const getNoteContents = (noteIndex: number, noteColor: string[]) => {
+  const getNoteContents = (
+    cellSize: number,
+    entry: number[],
+    noteIndex: number,
+    noteColor: string[],
+  ) => {
     if (entry.includes(noteIndex)) {
       const styleVal: StyleProp<TextStyle> = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
@@ -52,6 +48,80 @@ const Cell = (props: RenderCellProps) => {
       );
     }
   };
+
+  const rows = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ];
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {rows.map((row, rowIndex) => (
+        <View key={rowIndex} style={{ flexDirection: "row" }}>
+          {row.map((noteIndex) => (
+            <View
+              key={noteIndex}
+              style={{
+                width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+                height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
+                paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
+                backgroundColor: backgroundNoteColor[noteIndex - 1],
+              }}
+              testID={`note${noteIndex}`}
+            >
+              {getNoteContents(cellSize, entry, noteIndex, noteColor)}
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
+
+/**
+ * Renders a Sudoku cell which can display either notes or a single value.
+ *
+ * This component utilizes a pressable area for interaction, allowing users
+ * to click on cells to perform actions like selection. The cell can be
+ * displayed in different styles based on its type (note or value), whether it
+ * is disabled, and its position on the board.
+ *
+ * @param props - The properties for rendering the cell.
+ * @param props.disable - Indicates if the cell is disabled from interaction.
+ * @param props.entry - The content of the cell, either a value or list of notes.
+ * @param props.type - The type of the cell, determining its display style.
+ * @param props.onClick - Callback function to handle cell click events.
+ * @param props.backgroundColor - The background color of the cell.
+ * @param props.c - The column index of the cell.
+ * @param props.r - The row index of the cell.
+ * @param props.noteColor - Array of colors for the notes, if applicable.
+ * @param props.backgroundNoteColor - Array of background colors for each note.
+ * @returns A React component representing a single cell in the Sudoku board.
+ */
+const Cell = (props: {
+  disable: boolean;
+  entry: any;
+  type: CellType;
+  onClick: (r: number, c: number, event: any) => void;
+  backgroundColor: string;
+  c: number;
+  r: number;
+  noteColor: string[];
+  backgroundNoteColor: string[];
+}) => {
+  const {
+    disable,
+    entry,
+    type,
+    onClick,
+    backgroundColor,
+    c,
+    r,
+    noteColor,
+    backgroundNoteColor,
+  } = props;
+
+  const cellSize = useCellSize();
 
   /**
    * This generates a string used for testid to determine the contents of a cell
@@ -75,36 +145,6 @@ const Cell = (props: RenderCellProps) => {
 
   const getOutsideBorderWidth = () => {
     return cellSize ? cellSize * (3 / 40) : 40;
-  };
-
-  const NoteGrid = () => {
-    const rows = [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-    ];
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        {rows.map((row, rowIndex) => (
-          <View key={rowIndex} style={{ flexDirection: "row" }}>
-            {row.map((noteIndex) => (
-              <View
-                key={noteIndex}
-                style={{
-                  width: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-                  height: cellSize ? cellSize / 4 + 1 : fallbackHeight / 4 + 1,
-                  paddingLeft: cellSize ? cellSize / 20 : fallbackHeight / 20,
-                  backgroundColor: backgroundNoteColor[noteIndex - 1],
-                }}
-                testID={`note${noteIndex}`}
-              >
-                {getNoteContents(noteIndex, noteColor)}
-              </View>
-            ))}
-          </View>
-        ))}
-      </View>
-    );
   };
 
   return (
@@ -131,7 +171,12 @@ const Cell = (props: RenderCellProps) => {
       disabled={disable}
     >
       {type === "note" ? (
-        <NoteGrid />
+        <NoteGrid
+          cellSize={cellSize}
+          entry={entry}
+          backgroundNoteColor={backgroundNoteColor}
+          noteColor={noteColor}
+        />
       ) : entry !== 0 ? (
         <Text
           style={{
