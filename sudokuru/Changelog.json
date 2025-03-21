@@ -1,7 +1,7 @@
 [
   {
     "version": "1.29.0",
-    "date": "#{date}#",
+    "date": "March 20th, 2025",
     "summary": "Added initialize notes setting as a preview feature to be able to start a game with the notes already filled in.",
     "preview features": [
       "Added initialize notes setting to be able to start a game with the notes already filled in."
