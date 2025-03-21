@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.29.1",
+    "date": "March 20th, 2025",
+    "summary": "Fixed a rare issue where clicking on a cell would not register the selection.",
+    "bug fixes": [
+      "Fixed a rare issue where clicking on a cell would not register the cell selection. This would occur for selections of a cell with notes if the click lined up with a 1 second interval refresh loop. This was a regression that was introduced in version 🎃 1.26.0"
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.29.0",
     "date": "March 20th, 2025",
     "summary": "Added initialize notes setting as a preview feature to be able to start a game with the notes already filled in.",
