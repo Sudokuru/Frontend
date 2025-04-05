@@ -8,15 +8,17 @@ declare const process: {
   env: {
     CI: string;
     WORKERS: string;
+    CODE_COVERAGE: string;
   };
 };
 
 // Converting environment variable into number for easy boolean comparisons
-const CI = Number(process.env.CI);
+const CI = process.env.CI === "true";
 const WORKERS = Number(process.env.WORKERS);
+export const CODE_COVERAGE = process.env.CODE_COVERAGE === "true";
 
 // determines how many playwright parallel workers there should be
-const workerValue = (CI: number, WORKERS: number) => {
+const workerValue = (CI: boolean, WORKERS: number) => {
   if (WORKERS) {
     return WORKERS;
   } else if (CI) {

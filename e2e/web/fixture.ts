@@ -12,6 +12,7 @@ import { ALMOST_FINISHED_GAME } from "./data";
 import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
+import { CODE_COVERAGE } from "./playwright.config";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -54,16 +55,33 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
     { activeGameStorage, profileStorage, statisticsStorage, baseURL },
     use,
   ) => {
+    const localStorage: { name: string; value: string }[] = [];
+
+    if (activeGameStorage) {
+      localStorage.push({
+        name: "active_game",
+        value: JSON.stringify(activeGameStorage),
+      });
+    }
+    if (profileStorage) {
+      localStorage.push({
+        name: "profile",
+        value: JSON.stringify(profileStorage),
+      });
+    }
+    if (statisticsStorage) {
+      localStorage.push({
+        name: "statistics",
+        value: JSON.stringify(statisticsStorage),
+      });
+    }
+
     await use({
       cookies: [],
       origins: [
         {
           origin: baseURL ? baseURL : "http://127.0.0.1:8081",
-          localStorage: [
-            { name: "active_game", value: JSON.stringify(activeGameStorage) },
-            { name: "profile", value: JSON.stringify(profileStorage) },
-            { name: "statistics", value: JSON.stringify(statisticsStorage) },
-          ],
+          localStorage: [...localStorage],
         },
       ],
     });
@@ -81,7 +99,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       await collectV8CodeCoverageAsync(options);
     },
     {
-      auto: true,
+      auto: CODE_COVERAGE,
     },
   ],
 });
