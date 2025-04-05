@@ -9,6 +9,7 @@ declare const process: {
     CI: string;
     WORKERS: string;
     CODE_COVERAGE: string;
+    BASE_URL: string;
   };
 };
 
@@ -16,10 +17,11 @@ declare const process: {
 const CI = process.env.CI === "true";
 const WORKERS = Number(process.env.WORKERS);
 export const CODE_COVERAGE = process.env.CODE_COVERAGE === "true";
+const BASE_URL = process.env.BASE_URL;
 
 // determines how many playwright parallel workers there should be
 const workerValue = (CI: boolean, WORKERS: number) => {
-  if (WORKERS) {
+  if (WORKERS >= 1) {
     return WORKERS;
   } else if (CI) {
     return 1;
@@ -83,7 +85,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://127.0.0.1:8081",
+    baseURL: BASE_URL,
     ignoreHTTPSErrors: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
