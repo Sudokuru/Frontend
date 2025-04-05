@@ -80,7 +80,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       cookies: [],
       origins: [
         {
-          origin: baseURL ? baseURL : "http://127.0.0.1:8081",
+          origin: baseURL || "http://127.0.0.1:8081",
           localStorage: [...localStorage],
         },
       ],
