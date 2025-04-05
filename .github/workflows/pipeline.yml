@@ -78,10 +78,10 @@ jobs:
         run: npx tsc
 
   app_preview_dev:
-    if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze ]
-
+    outputs:
+      deployment-url: ${{ steps.deployment.outputs.deployment-url }}
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -92,6 +92,7 @@ jobs:
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
+        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -99,6 +100,7 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
       - name: 🚀 Publish App preview
+        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@v8
         with:
           working-directory: sudokuru
@@ -111,6 +113,7 @@ jobs:
           account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - name: Post comment with preview link
+        if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: KeisukeYamashita/create-comment@v1
         with:
           check-only-first-line: true
@@ -120,7 +123,7 @@ jobs:
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan, analyze ]
+    needs: [ code_scan, analyze, app_preview_dev ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -130,20 +133,16 @@ jobs:
           node-version: 22.x
       - name: install dependencies
         run: npm i
-      - name: Setup Changelog
-        uses: ./.github/workflows/composite-actions/set-changelog-date
-      - uses: JarvusInnovations/background-action@v1
-        name: Bootstrap System Under Test (SUT)
-        with:
-          run: npm run web &
-          wait-on: http://localhost:8081
-          wait-for: 5m
-          log-output-if: true
       - name: Install Playwright Browsers
         run: npm run playwright:init --with-deps
       - name: Playwright run
         run: npm run playwright:test:chrome
         working-directory: e2e/web
+        env:
+          BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
+          CI: 'true'
+          CODE_COVERAGE: 'true'
+          WORKERS: 0
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()

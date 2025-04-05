@@ -23,8 +23,6 @@ const BASE_URL = process.env.BASE_URL;
 const workerValue = (CI: boolean, WORKERS: number) => {
   if (WORKERS >= 1) {
     return WORKERS;
-  } else if (CI) {
-    return 1;
   } else {
     return undefined;
   }
