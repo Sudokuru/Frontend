@@ -11,7 +11,7 @@
     "ios": "expo start --ios --clear",
     "web": "npx expo start --web --clear",
     "web:dev": "cross-env ENV=development npx expo start --web --clear",
-    "build:metro-web": "npx expo export --platform web",
+    "build:metro-web": "npx expo export --platform web --dump-sourcemap",
     "tauri:run": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",

@@ -12,6 +12,7 @@ import { ALMOST_FINISHED_GAME } from "./data";
 import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
+import { CODE_COVERAGE } from "./playwright.config";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -49,6 +50,39 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
   profileStorage: [null, { option: true }],
   statisticsStorage: [null, { option: true }],
 
+  // this article saving the day: https://testomat.io/blog/what-is-the-use-of-fixtures-in-playwright/
+  storageState: async (
+    { activeGameStorage, profileStorage, statisticsStorage, baseURL },
+    use,
+  ) => {
+    const localStorage: { name: string; value: string }[] = [];
+
+    const storageItems = [
+      { key: "active_game", value: activeGameStorage },
+      { key: "profile", value: profileStorage },
+      { key: "statistics", value: statisticsStorage },
+    ];
+
+    for (const item of storageItems) {
+      if (item.value) {
+        localStorage.push({
+          name: item.key,
+          value: JSON.stringify(item.value),
+        });
+      }
+    }
+
+    await use({
+      cookies: [],
+      origins: [
+        {
+          origin: baseURL || "http://127.0.0.1:8081",
+          localStorage: [...localStorage],
+        },
+      ],
+    });
+  },
+
   codeCoverageAutoTestFixture: [
     async ({ browser, page }, use): Promise<void> => {
       const options: CollectV8CodeCoverageOptions = {
@@ -61,35 +95,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       await collectV8CodeCoverageAsync(options);
     },
     {
-      auto: true,
-    },
-  ],
-  initalizeLocalStorageFixture: [
-    async (
-      { page, activeGameStorage, profileStorage, statisticsStorage },
-      use,
-    ) => {
-      const storageItems = [
-        { key: "active_game", value: activeGameStorage },
-        { key: "profile", value: profileStorage },
-        { key: "statistics", value: statisticsStorage },
-      ];
-
-      for (const item of storageItems) {
-        if (item.value) {
-          await page.evaluate(
-            ({ key, value }) => {
-              window.localStorage.setItem(key, JSON.stringify(value));
-            },
-            { key: item.key, value: item.value },
-          );
-        }
-      }
-
-      await use();
-    },
-    {
-      auto: true,
+      auto: CODE_COVERAGE,
     },
   ],
 });
@@ -108,7 +114,6 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     await page.evaluate((gameToResume: JSON) => {
       window.localStorage.setItem("active_game", JSON.stringify(gameToResume));
     }, gameToResume as JSON);
-    await page.goto("");
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
@@ -119,7 +124,6 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   },
   // Navigates to the contact page.
   contact: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
     await headerComponent.drawerContact.click();
@@ -129,7 +133,6 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   },
   // Navigates to the play page.
   play: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
@@ -139,7 +142,6 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   },
   // Navigates to the about us page.
   aboutUs: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
     await headerComponent.drawerAboutUs.click();
@@ -149,14 +151,12 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   },
   // Navigates to the profile page.
   profile: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     await use(page);
   },
   // Turns on feature preview
   featurePreview: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
@@ -165,7 +165,6 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   },
   // Navigates to the learn page.
   learn: async ({ page }, use) => {
-    await page.goto("");
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
     await headerComponent.drawerLearn.click();
