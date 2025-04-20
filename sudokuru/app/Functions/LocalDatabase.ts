@@ -240,6 +240,8 @@ export const ProfileSchema = z.object({
   highlightIdenticalValues: z.boolean(),
   progressIndicator: z.boolean(),
   previewMode: z.boolean(),
+  initializeNotes: z.boolean(),
+  simplifyNotes: z.boolean(),
   strategyHintOrder: z.array(
     z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]),
   ),

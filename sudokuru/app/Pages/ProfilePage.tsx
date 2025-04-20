@@ -32,6 +32,8 @@ const ProfilePage = () => {
     toggleProgressIndicator,
     initializeNotesSetting,
     toggleInitializeNotes,
+    simplifyNotesSetting,
+    toggleSimplifyNotes,
     toggleFeaturePreview,
     featurePreviewSetting,
   } = React.useContext(PreferencesContext);
@@ -167,6 +169,16 @@ const ProfilePage = () => {
               value={initializeNotesSetting}
               valueToggle={toggleInitializeNotes}
               testIdPrefix="InitializeNotes"
+            ></ProfileToggle>
+          )}
+          {/* Initialize Notes is in feature preview as it's a new feature 
+            that may affect game statistics and difficulty perception */}
+          {featurePreviewSetting && (
+            <ProfileToggle
+              name="  Simplify Notes"
+              value={simplifyNotesSetting}
+              valueToggle={toggleSimplifyNotes}
+              testIdPrefix="SimplifyNotes"
             ></ProfileToggle>
           )}
         </View>
