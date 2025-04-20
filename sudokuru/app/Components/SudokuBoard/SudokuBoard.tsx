@@ -336,8 +336,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       return;
     }
 
-    console.log(newActionHistory);
-
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push(newActionHistory);
 
