@@ -171,7 +171,7 @@ const ProfilePage = () => {
               testIdPrefix="InitializeNotes"
             ></ProfileToggle>
           )}
-          {/* Initialize Notes is in feature preview as it's a new feature 
+          {/* Simplify Notes is in feature preview as it's a new feature 
             that may affect game statistics and difficulty perception */}
           {featurePreviewSetting && (
             <ProfileToggle
