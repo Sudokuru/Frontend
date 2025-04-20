@@ -287,6 +287,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       });
 
       // Simplify Notes if setting is enabled and value is correct
+      // This isn't the most performant way to do this but it is easy to read
       if (
         simplifyNotesSetting &&
         currentType === "note" &&
