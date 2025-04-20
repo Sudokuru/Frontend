@@ -801,14 +801,52 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
       placements.splice(0, 2);
 
+      const cellsToReplace: CellProps[] = [
+        { type: "value", entry: placements[0] },
+      ];
+      const cellLocationsToReplace: CellLocation[] = [{ c: c, r: r }];
+
       // Remove unnecessary notes due to OBVIOUS_SINGLE hint
+      // This isn't the most performant way to do this but it is easy to read
+      // We are looping through a bunch of cells we don't need to loop through
       if (simplifyNotesSetting) {
+        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+          for (const [columnIndex, cell] of row.entries()) {
+            if (!(r === rowIndex && c === columnIndex)) {
+              if (
+                areCellsInSameRow(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                ) ||
+                areCellsInSameColumn(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                ) ||
+                areCellsInSameBox(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                )
+              ) {
+                if (
+                  cell.type === "note" &&
+                  cell.entry.includes(placements[0])
+                ) {
+                  const updatedNotesArray = cell.entry.filter(
+                    (entry: number) => entry !== placements[0],
+                  );
+                  cellsToReplace.push({
+                    type: "note",
+                    entry: updatedNotesArray,
+                  });
+                  cellLocationsToReplace.push({ c: columnIndex, r: rowIndex });
+                }
+              }
+            }
+          }
+        }
       }
 
-      replaceSudokuBoardCells(
-        [{ type: "value", entry: placements[0] }],
-        [{ c: c, r: r }],
-      );
+      replaceSudokuBoardCells(cellsToReplace, cellLocationsToReplace);
     } else if (currentStage === 5) {
       const cells: CellProps[] = [];
       const locations: CellLocation[] = [];
