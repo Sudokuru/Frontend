@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.30.0",
+    "date": "#{date}#",
+    "summary": "Added simplify notes setting as a preview feature to auto simplify notes after value has been correctly inserted.",
+    "preview features": [
+      "Added simplify notes setting to auto simplify notes after value has been correctly inserted."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.29.1",
     "date": "March 20th, 2025",
     "summary": "Fixed a rare issue where clicking on a cell would not register the selection.",
