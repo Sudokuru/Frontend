@@ -291,6 +291,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       // We are looping through a bunch of cells we don't need to loop through
       if (
         simplifyNotesSetting &&
+        featurePreviewSetting &&
         currentType === "note" &&
         !sudokuBoard.inNoteMode &&
         isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
@@ -809,7 +810,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       // Remove unnecessary notes due to OBVIOUS_SINGLE hint
       // This isn't the most performant way to do this but it is easy to read
       // We are looping through a bunch of cells we don't need to loop through
-      if (simplifyNotesSetting) {
+      if (simplifyNotesSetting && featurePreviewSetting) {
         for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
             if (!(r === rowIndex && c === columnIndex)) {
