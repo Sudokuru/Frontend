@@ -34,6 +34,9 @@ import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
 import {
+  areCellsInSameBox,
+  areCellsInSameColumn,
+  areCellsInSameRow,
   areCellUpdatesDisabled,
   getRemainingCellCountOfValue,
   getSelectedCells,
@@ -70,6 +73,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     strategyHintOrderSetting,
     featurePreviewSetting,
     initializeNotesSetting,
+    simplifyNotesSetting,
   } = React.useContext(PreferencesContext);
 
   useEffect(() => {
@@ -281,12 +285,55 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
         cellLocation: { c: c, r: r },
       });
+
+      // Simplify Notes if setting is enabled and value is correct
+      if (
+        simplifyNotesSetting &&
+        currentType === "note" &&
+        !sudokuBoard.inNoteMode &&
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+      ) {
+        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+          for (const [columnIndex, cell] of row.entries()) {
+            if (
+              areCellsInSameRow(
+                { r: rowIndex, c: columnIndex },
+                { r: r, c: c },
+              ) ||
+              areCellsInSameColumn(
+                { r: rowIndex, c: columnIndex },
+                { r: r, c: c },
+              ) ||
+              areCellsInSameBox({ r: rowIndex, c: columnIndex }, { r: r, c: c })
+            ) {
+              if (cell.type === "note" && cell.entry.includes(inputValue)) {
+                const updatedNotesArray = cell.entry.filter(
+                  (entry: number) => entry !== inputValue,
+                );
+                const existingNotesArray =
+                  sudokuBoard.puzzle[rowIndex][columnIndex].entry;
+                sudokuBoard.puzzle[rowIndex][columnIndex].entry =
+                  updatedNotesArray;
+                newActionHistory.push({
+                  cell: {
+                    entry: existingNotesArray,
+                    type: "note",
+                  } as CellProps, // annoying typescript casting workaround
+                  cellLocation: { c: columnIndex, r: rowIndex },
+                });
+              }
+            }
+          }
+        }
+      }
     }
 
     // selected values are all correct values or givens
     if (!cellsHaveUpdates) {
       return;
     }
+
+    console.log(newActionHistory);
 
     // Storing old value in actionHistory
     sudokuBoard.actionHistory.push(newActionHistory);
@@ -751,6 +798,10 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const c = sudokuHint.hint.placements[0][1];
       const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
       placements.splice(0, 2);
+
+      // Remove unnecessary notes due to OBVIOUS_SINGLE hint
+      if (simplifyNotesSetting) {
+      }
 
       replaceSudokuBoardCells(
         [{ type: "value", entry: placements[0] }],
