@@ -247,6 +247,29 @@ test.describe("Simplify Notes", () => {
     await sudokuBoard.cellHasContent(0, 5, "568", "notes");
   });
 
+  test("should simplify notes after an incorrect then correct value insertion when enabled", async ({
+    resumeGame,
+  }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(resumeGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("2");
+    await sudokuBoard.cell[0][0].press("1");
+    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+  });
+
   test("should not simplify notes after incorrect value insertion when enabled", async ({
     resumeGame,
   }) => {
