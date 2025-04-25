@@ -245,6 +245,18 @@ test.describe("Simplify Notes", () => {
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("1");
     await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+
+    await sudokuBoard.cellHasContent(2, 4, "13456", "notes");
+    await sudokuBoard.cellHasContent(2, 5, "13456", "notes");
+    await sudokuBoard.cellHasContent(5, 6, "12579", "notes");
+    await sudokuBoard.cellHasContent(5, 7, "123579", "notes");
+    await sudokuBoard.cellHasContent(7, 4, "13468", "notes");
+    await sudokuBoard.cellHasContent(7, 5, "13468", "notes");
+    await sudokuBoard.cellHasContent(7, 6, "124678", "notes");
+    await sudokuBoard.cellHasContent(7, 7, "12367", "notes");
+    await sudokuBoard.cellHasContent(8, 5, "134568", "notes");
+    await sudokuBoard.cellHasContent(8, 6, "146789", "notes");
+    await sudokuBoard.cellHasContent(8, 7, "13679", "notes");
   });
 
   test("should simplify notes after an incorrect then correct value insertion when enabled", async ({
