@@ -292,7 +292,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       if (
         simplifyNotesSetting &&
         featurePreviewSetting &&
-        currentType === "note" &&
         !sudokuBoard.inNoteMode &&
         isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
       ) {
