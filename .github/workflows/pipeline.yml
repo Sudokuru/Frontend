@@ -208,7 +208,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [linux, ubuntu-latest], [windows, windows-latest] ]
+        platform: [ [linux, ubuntu-22.04], [windows, windows-latest] ]
     runs-on: ${{ matrix.platform[1] }}
     needs: [ code_scan, analyze ]
     steps:
@@ -222,7 +222,7 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
-        if: matrix.platform[1] == 'ubuntu-latest'
+        if: matrix.platform[1] == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
