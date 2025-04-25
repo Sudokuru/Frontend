@@ -48,6 +48,10 @@ import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
 } from "../../../sudokuru/app/Styling/HighlightColors";
+import { ProfilePage } from "../page/profile.page";
+import { HeaderComponent } from "../components/header.component";
+import { PlayPage } from "../page/play.page";
+import { expect } from "@playwright/test";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -294,6 +298,38 @@ test.describe("board OBVIOUS_SINGLE", () => {
       [{ contentType: "notes", content: "1", row: 0, column: 0 }],
       [{ contentType: "value", content: "1", row: 0, column: 0 }],
     );
+  });
+
+  test("OBVIOUS_SINGLE with simplify notes enabled", async ({ resumeGame }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(resumeGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.solveHint();
+    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+  });
+
+  test("OBVIOUS_SINGLE with simplify notes disabled", async ({
+    resumeGame,
+  }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.solveHint();
+    await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
   });
 });
 

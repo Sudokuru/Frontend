@@ -4,6 +4,7 @@ import { PlayPage } from "../page/play.page";
 import {
   AMEND_NOTES_EMPTY_CELL_GAME,
   NEW_EMPTY_GAME,
+  OBVIOUS_SINGLE_GAME,
   PROGRESS_INDICATOR_DISABLED_PROFILE,
 } from "../data";
 import { getSingleMultiSelectKey } from "../playwright.config";
@@ -219,6 +220,97 @@ test.describe("Initialize Notes", () => {
     await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
       await sudokuBoardComponent.cellIsNotNote(r, c);
     });
+  });
+});
+
+test.describe("Simplify Notes", () => {
+  test.use({ gameToResume: OBVIOUS_SINGLE_GAME });
+  test("should simplify notes after correct value insertion when enabled", async ({
+    resumeGame,
+  }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(resumeGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("1");
+    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+
+    await sudokuBoard.cellHasContent(2, 4, "13456", "notes");
+    await sudokuBoard.cellHasContent(2, 5, "13456", "notes");
+    await sudokuBoard.cellHasContent(5, 6, "12579", "notes");
+    await sudokuBoard.cellHasContent(5, 7, "123579", "notes");
+    await sudokuBoard.cellHasContent(7, 4, "13468", "notes");
+    await sudokuBoard.cellHasContent(7, 5, "13468", "notes");
+    await sudokuBoard.cellHasContent(7, 6, "124678", "notes");
+    await sudokuBoard.cellHasContent(7, 7, "12367", "notes");
+    await sudokuBoard.cellHasContent(8, 5, "134568", "notes");
+    await sudokuBoard.cellHasContent(8, 6, "146789", "notes");
+    await sudokuBoard.cellHasContent(8, 7, "13679", "notes");
+  });
+
+  test("should simplify notes after an incorrect then correct value insertion when enabled", async ({
+    resumeGame,
+  }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(resumeGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("2");
+    await sudokuBoard.cell[0][0].press("1");
+    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+  });
+
+  test("should not simplify notes after incorrect value insertion when enabled", async ({
+    resumeGame,
+  }) => {
+    const headerComponent = new HeaderComponent(resumeGame);
+    await headerComponent.profile.click();
+    const profilePage = new ProfilePage(resumeGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await profilePage.initializeNotesSwitchDisabled.click();
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playPage = new PlayPage(resumeGame);
+    await playPage.resume.click();
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("2");
+    await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
+  });
+
+  test("should not simplify notes after correct value insertion when disabled", async ({
+    resumeGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    await sudokuBoard.cell[0][0].click();
+    await sudokuBoard.cell[0][0].press("1");
+    await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
   });
 });
 

@@ -34,6 +34,9 @@ import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
 import {
+  areCellsInSameBox,
+  areCellsInSameColumn,
+  areCellsInSameRow,
   areCellUpdatesDisabled,
   getRemainingCellCountOfValue,
   getSelectedCells,
@@ -70,6 +73,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     strategyHintOrderSetting,
     featurePreviewSetting,
     initializeNotesSetting,
+    simplifyNotesSetting,
   } = React.useContext(PreferencesContext);
 
   useEffect(() => {
@@ -281,6 +285,49 @@ const SudokuBoard = (props: SudokuBoardProps) => {
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
         cellLocation: { c: c, r: r },
       });
+
+      // Simplify Notes if setting is enabled and value is correct
+      // This isn't the most performant way to do this but it is easy to read
+      // We are looping through a bunch of cells we don't need to loop through
+      if (
+        simplifyNotesSetting &&
+        featurePreviewSetting &&
+        !sudokuBoard.inNoteMode &&
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+      ) {
+        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+          for (const [columnIndex, cell] of row.entries()) {
+            if (
+              areCellsInSameRow(
+                { r: rowIndex, c: columnIndex },
+                { r: r, c: c },
+              ) ||
+              areCellsInSameColumn(
+                { r: rowIndex, c: columnIndex },
+                { r: r, c: c },
+              ) ||
+              areCellsInSameBox({ r: rowIndex, c: columnIndex }, { r: r, c: c })
+            ) {
+              if (cell.type === "note" && cell.entry.includes(inputValue)) {
+                const updatedNotesArray = cell.entry.filter(
+                  (entry: number) => entry !== inputValue,
+                );
+                const existingNotesArray =
+                  sudokuBoard.puzzle[rowIndex][columnIndex].entry;
+                sudokuBoard.puzzle[rowIndex][columnIndex].entry =
+                  updatedNotesArray;
+                newActionHistory.push({
+                  cell: {
+                    entry: existingNotesArray,
+                    type: "note",
+                  } as CellProps, // annoying typescript casting workaround
+                  cellLocation: { c: columnIndex, r: rowIndex },
+                });
+              }
+            }
+          }
+        }
+      }
     }
 
     // selected values are all correct values or givens
@@ -752,10 +799,52 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       const placements = [...sudokuHint.hint.placements[0]]; // deep clone to prevent sudokuHint state update
       placements.splice(0, 2);
 
-      replaceSudokuBoardCells(
-        [{ type: "value", entry: placements[0] }],
-        [{ c: c, r: r }],
-      );
+      const cellsToReplace: CellProps[] = [
+        { type: "value", entry: placements[0] },
+      ];
+      const cellLocationsToReplace: CellLocation[] = [{ c: c, r: r }];
+
+      // Remove unnecessary notes due to OBVIOUS_SINGLE hint
+      // This isn't the most performant way to do this but it is easy to read
+      // We are looping through a bunch of cells we don't need to loop through
+      if (simplifyNotesSetting && featurePreviewSetting) {
+        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+          for (const [columnIndex, cell] of row.entries()) {
+            if (!(r === rowIndex && c === columnIndex)) {
+              if (
+                areCellsInSameRow(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                ) ||
+                areCellsInSameColumn(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                ) ||
+                areCellsInSameBox(
+                  { r: rowIndex, c: columnIndex },
+                  { r: r, c: c },
+                )
+              ) {
+                if (
+                  cell.type === "note" &&
+                  cell.entry.includes(placements[0])
+                ) {
+                  const updatedNotesArray = cell.entry.filter(
+                    (entry: number) => entry !== placements[0],
+                  );
+                  cellsToReplace.push({
+                    type: "note",
+                    entry: updatedNotesArray,
+                  });
+                  cellLocationsToReplace.push({ c: columnIndex, r: rowIndex });
+                }
+              }
+            }
+          }
+        }
+      }
+
+      replaceSudokuBoardCells(cellsToReplace, cellLocationsToReplace);
     } else if (currentStage === 5) {
       const cells: CellProps[] = [];
       const locations: CellLocation[] = [];

@@ -45,4 +45,25 @@ test.describe("feature preview", () => {
       ratio: 1,
     });
   });
+
+  test("Simplify Notes profile setting appears in feature preview", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new ProfilePage(featurePreview);
+    await expect(profilePage.simplifyNotesSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+  });
+
+  test("Simplify Notes profile setting does not appear when feature preview is disabled", async ({
+    profile,
+  }) => {
+    const profilePage = new ProfilePage(profile);
+    await expect(profilePage.simplifyNotesSwitchDisabled).not.toBeInViewport({
+      ratio: 1,
+    });
+    await expect(profilePage.simplifyNotesSwitchEnabled).not.toBeInViewport({
+      ratio: 1,
+    });
+  });
 });

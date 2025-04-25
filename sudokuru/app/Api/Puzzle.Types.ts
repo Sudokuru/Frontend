@@ -63,6 +63,7 @@ export interface Profile {
   highlightColumn: boolean;
   progressIndicator: boolean;
   initializeNotes: boolean;
+  simplifyNotes: boolean;
   previewMode: boolean;
   strategyHintOrder: SudokuStrategy[];
 }
