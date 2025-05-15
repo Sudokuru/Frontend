@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@expo/metro-config": "0.20.0",
+    "@expo/metro-config": "0.20.14",
     "@tauri-apps/cli": "^1.5.5",
     "@types/node": "^20.11.17",
     "@types/react": "19.0.10",
@@ -52,7 +52,7 @@
     "babel-plugin-istanbul": "^6.1.1",
     "cross-env": "^7.0.3",
     "expo-doctor": "1.13.3",
-    "metro": "0.82.0",
+    "metro": "0.82.3",
     "expo-atlas": "^0.4.0"
   },
   "private": true
