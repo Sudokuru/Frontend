@@ -9,7 +9,7 @@ module.exports = defineConfig([
     extends: [expoConfig, eslintPluginPrettierRecommended],
   },
   {
-    files: ["e2e/web/**", "eslint.config.js"],
+    files: ["e2e/**", "eslint.config.js"],
     extends: [expoConfig, eslintPluginPrettierRecommended],
     rules: {
       "react-hooks/rules-of-hooks": "off",
