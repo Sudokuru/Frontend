@@ -186,9 +186,9 @@ const DrillPanel = (props: any) => {
             <Text variant="bodyLarge">
               Drills are like do it yourself hints. Just alter the board to
               match what you think would happen if you applied the hint for the
-              given strategy and then click submit to check your work. Can't
-              figure it out? No worries, just click the hint ? button to get the
-              solution.
+              given strategy and then click submit to check your work.
+              Can&apos;t figure it out? No worries, just click the hint ? button
+              to get the solution.
             </Text>
             <Checkbox.Item
               label="Don't show this again"

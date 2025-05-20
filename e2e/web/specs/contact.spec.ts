@@ -1,8 +1,7 @@
 import { test } from "../fixture";
 import { ContactPage } from "../page/contact.page";
-import { expect } from "@playwright/test";
+import { expect, Request } from "@playwright/test";
 import { HomePage } from "../page/home.page";
-import { Request } from "@playwright/test";
 
 const contactTypes = [
   ["Feature", "Feature%20Request"],
