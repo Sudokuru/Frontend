@@ -198,6 +198,11 @@ Android Example:
 Web Example:  
 ![alt text](docs/img/atlas-web.png)
 
+# Tips for updating Expo version
+
+1. Read through the Expo release blog post.
+2. When updating dependencies, ensure that there are no nested `node_modules` folders - there should only be one `node_module` folder inside of root. Try running commands `npm dedupe` and `npm list <package_name>` to help debug issues, as a likely cause of multiple `node_modules` folders generating is multiple versions of the same package. 
+
 # 🛣️ Roadmap
 
 ## Github Project Kanban Boards
