@@ -4,11 +4,20 @@ const expoConfig = require("eslint-config-expo/flat");
 const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommended");
 
 module.exports = defineConfig([
-  expoConfig,
-  eslintPluginPrettierRecommended,
+  {
+    files: ["sudokuru/**"],
+    extends: [expoConfig, eslintPluginPrettierRecommended],
+  },
+  {
+    files: ["e2e/web/**", "eslint.config.js"],
+    extends: [expoConfig, eslintPluginPrettierRecommended],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+      "@typescript-eslint/no-require-imports": "off", // todo turn this back on
+    },
+  },
   {
     ignores: [
-      "e2e/web/**", // todo figure out how to allow eslint to work with this directory, may need to make new config
       "**/node_modules/",
       ".idea/",
       ".dccache",
