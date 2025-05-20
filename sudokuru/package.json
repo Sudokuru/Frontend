@@ -4,8 +4,8 @@
   "main": "./app/App.tsx",
   "scripts": {
     "start": "expo start --clear",
-    "start:atlas": "cross-env EXPO_UNSTABLE_ATLAS=true expo start --clear",
-    "start:atlas:prod": "cross-env EXPO_UNSTABLE_ATLAS=true expo start --clear --no-dev",
+    "start:atlas": "cross-env EXPO_ATLAS=true expo start --clear",
+    "start:atlas:prod": "cross-env EXPO_ATLAS=true expo start --clear --no-dev",
     "start:tunnel": "expo start --tunnel --clear",
     "android": "expo start --android --clear",
     "ios": "expo start --ios --clear",
@@ -53,7 +53,7 @@
     "cross-env": "^7.0.3",
     "expo-doctor": "1.13.3",
     "metro": "0.82.3",
-    "expo-atlas": "^0.4.0"
+    "expo-atlas": "0.4.0"
   },
   "private": true
 }
