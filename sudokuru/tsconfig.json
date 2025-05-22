@@ -4,7 +4,7 @@
     "jsx": "react",
     "strict": true,
     "target": "es6",
-    "module": "commonjs",
+    "module": "ES6",
     "outDir": "dist",
     "rootDir": ".",
     "types": ["node", "react-native-web"],

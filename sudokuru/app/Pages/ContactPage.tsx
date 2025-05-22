@@ -43,7 +43,7 @@ const ContactPage = () => {
   });
 
   const submit = async () => {
-    var feedbackType = "Other";
+    let feedbackType = "Other";
     if (contactPage.value === "feature") {
       feedbackType = "Feature Request";
     } else if (contactPage.value === "bug") {
