@@ -20,6 +20,7 @@ import {
   CellProps,
   CellType,
   GameAction,
+  GameVariant,
   SudokuObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -42,16 +43,29 @@ import {
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
 
-export interface SudokuBoardProps {
+export interface DrillBoard extends CoreBoard<"drill"> {
+  action: "StartGame";
+  strategy: SudokuStrategy;
+}
+
+export interface ClassicBoard extends CoreBoard<"classic"> {
   action: "StartGame" | "ResumeGame";
   difficulty: GameDifficulty;
 }
+
+// Shared properties between all boards
+export interface CoreBoard<T extends GameVariant> {
+  readonly type: T;
+}
+
+export type Board = DrillBoard | ClassicBoard;
 
 export interface HintObjectProps {
   stage: number;
   maxStage: number;
   hint: HintProps;
 }
+
 export interface HintProps {
   strategy: any;
   cause: any;
@@ -62,7 +76,7 @@ export interface HintProps {
   action: string;
 }
 
-const SudokuBoard = (props: SudokuBoardProps) => {
+const SudokuBoard = (props: Board) => {
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
