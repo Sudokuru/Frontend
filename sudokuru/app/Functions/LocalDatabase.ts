@@ -1,89 +1,12 @@
 import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
-import { getSudokuHint } from "../Components/SudokuBoard/Core/Functions/HintFunctions";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
   s: string; // solution string
   d: number; // difficulty
 }
-
-/**
- * This function takes in a Puzzle object and returns a SudokuObjectProps object.
- * @param puzzle Puzzle object
- */
-export const convertPuzzleToSudokuObject = (
-  puzzle: InputPuzzle,
-  difficulty: GameDifficulty,
-  initializeNotes: boolean,
-): SudokuObjectProps => {
-  let game: SudokuObjectProps = {
-    variant: "classic",
-    version: 1,
-    selectedCells: [],
-    puzzleState: [],
-    puzzleSolution: [],
-    statistics: {
-      difficulty: difficulty,
-      internalDifficulty: puzzle.d,
-      numHintsUsed: 0,
-      numHintsUsedPerStrategy: [],
-      numWrongCellsPlayed: 0,
-      score: 0,
-      time: 0,
-    },
-    inNoteMode: false,
-    actionHistory: [],
-  };
-
-  for (let i = 0; i < 9; i++) {
-    game.puzzleState.push([]);
-    game.puzzleSolution.push([]);
-    for (let j = 0; j < 9; j++) {
-      let charValuePuzzle = puzzle.p.charAt(i * 9 + j);
-      let numValuePuzzle = Number(charValuePuzzle);
-      if (numValuePuzzle === 0) {
-        game.puzzleState[i][j] = { type: "value", entry: 0 };
-      } else {
-        game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
-      }
-
-      let charValueSolution = puzzle.s.charAt(i * 9 + j);
-      let numValueSolution = Number(charValueSolution);
-      game.puzzleSolution[i][j] = numValueSolution;
-    }
-  }
-
-  // Initialize the board with notes filled in
-  if (initializeNotes) {
-    const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    while (true) {
-      try {
-        let hint = getSudokuHint(game.puzzleState, game.puzzleSolution, [
-          "AMEND_NOTES",
-        ]);
-        // hint.removals structure: [row, col, note1, note2, ...]
-        // slice(2) skips row and col to get just the notes to remove
-        // Filter to keep only notes that shouldn't be removed
-        const notesToAdd = ALL_NOTES.filter(
-          (x) => !hint.removals[0].slice(2).includes(x),
-        );
-        game.puzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
-          type: "note",
-          entry: notesToAdd,
-        };
-      } catch {
-        // If getSudokuHint throws an exception, we've initialized
-        // all possible notes and can exit the loop
-        break;
-      }
-    }
-  }
-
-  // Return a clone here so that this is a clone.
-  return JSON.parse(JSON.stringify(game));
-};
 
 export interface SudokuObjectProps {
   variant: GameVariant;
