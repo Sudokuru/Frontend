@@ -4,7 +4,6 @@ import { range } from "../../SudokuBoardFunctions";
 import React from "react";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
-import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 
 let fallbackHeight = 30;
@@ -19,6 +18,8 @@ interface NumberControlProps {
     inputValue: number,
   ) => number;
   sudokuBoard: SudokuObjectProps;
+  darkThemeSetting: boolean;
+  progressIndicatorSetting: boolean;
 }
 
 const NumberControl = (props: NumberControlProps) => {
@@ -27,12 +28,11 @@ const NumberControl = (props: NumberControlProps) => {
     updateEntry,
     getRemainingCellCountOfValue,
     sudokuBoard,
+    darkThemeSetting,
+    progressIndicatorSetting,
   } = props;
   const cellSize = useCellSize();
   const theme = useTheme();
-
-  const { darkThemeSetting, progressIndicatorSetting } =
-    React.useContext(PreferencesContext);
 
   return (
     <View

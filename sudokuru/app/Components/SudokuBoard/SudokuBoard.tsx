@@ -88,6 +88,8 @@ const SudokuBoard = (props: Board) => {
     featurePreviewSetting,
     initializeNotesSetting,
     simplifyNotesSetting,
+    darkThemeSetting,
+    progressIndicatorSetting,
   } = React.useContext(PreferencesContext);
 
   useEffect(() => {
@@ -608,6 +610,8 @@ const SudokuBoard = (props: Board) => {
         updateEntry={updateCellEntry}
         sudokuBoard={sudokuBoard}
         getRemainingCellCountOfValue={getRemainingCellCountOfValue}
+        darkThemeSetting={darkThemeSetting}
+        progressIndicatorSetting={progressIndicatorSetting}
       />
     );
   };
