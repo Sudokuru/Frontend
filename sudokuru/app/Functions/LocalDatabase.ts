@@ -22,7 +22,7 @@ export const convertPuzzleToSudokuObject = (
     variant: "classic",
     version: 1,
     selectedCells: [],
-    puzzle: [],
+    puzzleState: [],
     puzzleSolution: [],
     statistics: {
       difficulty: difficulty,
@@ -38,15 +38,15 @@ export const convertPuzzleToSudokuObject = (
   };
 
   for (let i = 0; i < 9; i++) {
-    game.puzzle.push([]);
+    game.puzzleState.push([]);
     game.puzzleSolution.push([]);
     for (let j = 0; j < 9; j++) {
       let charValuePuzzle = puzzle.p.charAt(i * 9 + j);
       let numValuePuzzle = Number(charValuePuzzle);
       if (numValuePuzzle === 0) {
-        game.puzzle[i][j] = { type: "value", entry: 0 };
+        game.puzzleState[i][j] = { type: "value", entry: 0 };
       } else {
-        game.puzzle[i][j] = { type: "given", entry: numValuePuzzle };
+        game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
       }
 
       let charValueSolution = puzzle.s.charAt(i * 9 + j);
@@ -60,7 +60,7 @@ export const convertPuzzleToSudokuObject = (
     const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     while (true) {
       try {
-        let hint = getSudokuHint(game.puzzle, game.puzzleSolution, [
+        let hint = getSudokuHint(game.puzzleState, game.puzzleSolution, [
           "AMEND_NOTES",
         ]);
         // hint.removals structure: [row, col, note1, note2, ...]
@@ -69,7 +69,7 @@ export const convertPuzzleToSudokuObject = (
         const notesToAdd = ALL_NOTES.filter(
           (x) => !hint.removals[0].slice(2).includes(x),
         );
-        game.puzzle[hint.removals[0][0]][hint.removals[0][1]] = {
+        game.puzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
           type: "note",
           entry: notesToAdd,
         };
@@ -90,7 +90,7 @@ export interface SudokuObjectProps {
   version: number;
   selectedCells: CellLocation[];
   statistics: GameStatistics;
-  puzzle: CellProps[][];
+  puzzleState: CellProps[][];
   puzzleSolution: number[][];
   actionHistory: GameAction[][];
   inNoteMode: boolean;

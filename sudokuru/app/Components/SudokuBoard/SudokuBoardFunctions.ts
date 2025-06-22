@@ -11,18 +11,18 @@ import { HintObjectProps } from "./SudokuBoard";
  * @returns {boolean} True if the game has been solved, false otherwise.
  */
 export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-      if (sudokuBoard.puzzle[r][c].type === "given") continue;
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
+      if (sudokuBoard.puzzleState[r][c].type === "given") continue;
       if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0
+        sudokuBoard.puzzleState[r][c].type === "note" ||
+        sudokuBoard.puzzleState[r][c].entry === 0
       ) {
         return false;
       }
       const isValueCorrectResult = isValueCorrect(
         sudokuBoard.puzzleSolution[r][c],
-        sudokuBoard.puzzle[r][c].entry as number,
+        sudokuBoard.puzzleState[r][c].entry as number,
       );
       if (isValueCorrectResult === false) {
         return false;
@@ -44,9 +44,9 @@ export const doesBoardHaveConflict = (
     c: number,
   ) => boolean,
 ): boolean => {
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-      if (sudokuBoard.puzzle[r][c].type === "given") continue;
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
+      if (sudokuBoard.puzzleState[r][c].type === "given") continue;
       const isCellIncorrect = doesCellHaveConflict(sudokuBoard, r, c);
       if (isCellIncorrect === true) {
         return true;

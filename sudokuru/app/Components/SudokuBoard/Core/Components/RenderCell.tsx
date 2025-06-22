@@ -22,7 +22,7 @@ const RenderCell = (
   c: number,
   boardMethods: SudokuVariantMethods,
 ) => {
-  const cell = sudokuBoard.puzzle[r][c];
+  const cell = sudokuBoard.puzzleState[r][c];
   const cellBackgroundColor = useCellBackgroundColor(
     sudokuBoard,
     sudokuHint,

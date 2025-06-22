@@ -91,7 +91,7 @@ export const useCellBackgroundColor = (
   const peer: boolean = useIsCellPeer(r, c, selectedCell);
   const identicalValue: boolean = useDoesCellHaveIdenticalValue(
     sudokuBoard,
-    sudokuBoard.puzzle[r][c],
+    sudokuBoard.puzzleState[r][c],
   );
 
   let cellBackgroundColor;

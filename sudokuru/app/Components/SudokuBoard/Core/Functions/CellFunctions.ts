@@ -17,11 +17,11 @@ export const getRemainingCellCountOfValue = (
   value: number,
 ) => {
   let cellCountOfValue = 0;
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
       if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0 ||
+        sudokuBoard.puzzleState[r][c].type === "note" ||
+        sudokuBoard.puzzleState[r][c].entry === 0 ||
         doesCellHaveConflict(sudokuBoard, r, c)
       ) {
         if (sudokuBoard.puzzleSolution[r][c] === value) {
@@ -67,7 +67,7 @@ export const getSelectedCells = (
   }
   const selectedCells: CellProps[] = [];
   for (const selectedCell of sudokuBoard.selectedCells) {
-    selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
+    selectedCells.push(sudokuBoard.puzzleState[selectedCell.r][selectedCell.c]);
   }
   return selectedCells;
 };
@@ -252,9 +252,11 @@ export const doesCellHaveConflict = (
   r: number,
   c: number,
 ): boolean => {
-  const cell = sudokuBoard.puzzle[r][c];
+  const cell = sudokuBoard.puzzleState[r][c];
   if (cell.type === "note" || cell.entry === 0) {
     return false;
   }
-  return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
+  return !(
+    sudokuBoard.puzzleState[r][c].entry === sudokuBoard.puzzleSolution[r][c]
+  );
 };

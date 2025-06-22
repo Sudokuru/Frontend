@@ -168,9 +168,9 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     for (const move of moves) {
-      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].type =
+      sudokuBoard.puzzleState[move.cellLocation.r][move.cellLocation.c].type =
         move.cell.type;
-      sudokuBoard.puzzle[move.cellLocation.r][move.cellLocation.c].entry =
+      sudokuBoard.puzzleState[move.cellLocation.r][move.cellLocation.c].entry =
         move.cell.entry;
     }
     // remove from move history
@@ -199,7 +199,7 @@ const SudokuBoard = (props: Board) => {
     updatedArray.unshift("AMEND_NOTES");
 
     const returnedHint = getSudokuHint(
-      sudokuBoard.puzzle,
+      sudokuBoard.puzzleState,
       sudokuBoard.puzzleSolution,
       updatedArray,
     );
@@ -337,7 +337,7 @@ const SudokuBoard = (props: Board) => {
         !sudokuBoard.inNoteMode &&
         isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
       ) {
-        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+        for (const [rowIndex, row] of sudokuBoard.puzzleState.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
             if (
               areCellsInSameRow(
@@ -355,8 +355,8 @@ const SudokuBoard = (props: Board) => {
                   (entry: number) => entry !== inputValue,
                 );
                 const existingNotesArray =
-                  sudokuBoard.puzzle[rowIndex][columnIndex].entry;
-                sudokuBoard.puzzle[rowIndex][columnIndex].entry =
+                  sudokuBoard.puzzleState[rowIndex][columnIndex].entry;
+                sudokuBoard.puzzleState[rowIndex][columnIndex].entry =
                   updatedNotesArray;
                 newActionHistory.push({
                   cell: {
@@ -394,7 +394,7 @@ const SudokuBoard = (props: Board) => {
       sudokuBoard.statistics.score = score;
       setSudokuBoard({
         ...sudokuBoard,
-        puzzle: sudokuBoard.puzzle,
+        puzzleState: sudokuBoard.puzzleState,
         actionHistory: sudokuBoard.actionHistory,
         statistics: sudokuBoard.statistics,
       });
@@ -402,7 +402,7 @@ const SudokuBoard = (props: Board) => {
     } else {
       setSudokuBoard({
         ...sudokuBoard,
-        puzzle: sudokuBoard.puzzle,
+        puzzleState: sudokuBoard.puzzleState,
         actionHistory: sudokuBoard.actionHistory,
         statistics: sudokuBoard.statistics,
       });
@@ -436,11 +436,11 @@ const SudokuBoard = (props: Board) => {
       (!sudokuBoard.inNoteMode && currentType === "note") ||
       inputValue === 0
     ) {
-      sudokuBoard.puzzle[r][c].type = "value";
+      sudokuBoard.puzzleState[r][c].type = "value";
     }
     // update type and newCellEntry of selected cell
     else if (sudokuBoard.inNoteMode && currentType === "value") {
-      sudokuBoard.puzzle[r][c].type = "note";
+      sudokuBoard.puzzleState[r][c].type = "note";
       newCellEntry = [inputValue];
     }
     // handling case where there is one note remaining
@@ -451,7 +451,7 @@ const SudokuBoard = (props: Board) => {
       (currentEntry as number[]).length === 1 &&
       (currentEntry as number[])[0] === inputValue
     ) {
-      sudokuBoard.puzzle[r][c].type = "value";
+      sudokuBoard.puzzleState[r][c].type = "value";
       newCellEntry = 0;
     }
     // set new note value
@@ -468,7 +468,7 @@ const SudokuBoard = (props: Board) => {
     }
 
     // updating board entry
-    sudokuBoard.puzzle[r][c].entry = newCellEntry;
+    sudokuBoard.puzzleState[r][c].entry = newCellEntry;
   };
 
   const setBoardSelectedCells = (cells: CellLocation[]) => {
@@ -722,19 +722,19 @@ const SudokuBoard = (props: Board) => {
     for (const [i, location] of locations.entries()) {
       actionHistory.push({
         cell: {
-          entry: sudokuBoard.puzzle[location.r][location.c].entry,
-          type: sudokuBoard.puzzle[location.r][location.c].type,
+          entry: sudokuBoard.puzzleState[location.r][location.c].entry,
+          type: sudokuBoard.puzzleState[location.r][location.c].type,
         } as CellProps,
         cellLocation: { c: location.c, r: location.r },
       });
-      sudokuBoard.puzzle[location.r][location.c].type = cells[i].type;
-      sudokuBoard.puzzle[location.r][location.c].entry = cells[i].entry;
+      sudokuBoard.puzzleState[location.r][location.c].type = cells[i].type;
+      sudokuBoard.puzzleState[location.r][location.c].entry = cells[i].entry;
     }
     sudokuBoard.actionHistory.push(actionHistory);
     saveGame(sudokuBoard);
     setSudokuBoard({
       ...sudokuBoard,
-      puzzle: sudokuBoard.puzzle,
+      puzzleState: sudokuBoard.puzzleState,
       actionHistory: sudokuBoard.actionHistory,
     });
   };
@@ -772,7 +772,7 @@ const SudokuBoard = (props: Board) => {
           sudokuBoard.statistics.score = score;
           setSudokuBoard({
             ...sudokuBoard,
-            puzzle: sudokuBoard.puzzle,
+            puzzleState: sudokuBoard.puzzleState,
             actionHistory: sudokuBoard.actionHistory,
             statistics: sudokuBoard.statistics,
           });
@@ -818,8 +818,8 @@ const SudokuBoard = (props: Board) => {
 
       const allNotes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
       let newNotes: number[] = [];
-      if (sudokuBoard.puzzle[r][c].type === "note") {
-        newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+      if (sudokuBoard.puzzleState[r][c].type === "note") {
+        newNotes = [...(sudokuBoard.puzzleState[r][c].entry as number[])];
       }
       // Insert missing notes due to AMEND_NOTES hint
       if (currentStage === 4) {
@@ -831,8 +831,11 @@ const SudokuBoard = (props: Board) => {
         }
       }
       // Remove unnecessary notes due to AMEND_NOTES hint
-      else if (currentStage === 5 && sudokuBoard.puzzle[r][c].type === "note") {
-        newNotes = sudokuBoard.puzzle[r][c].entry as number[];
+      else if (
+        currentStage === 5 &&
+        sudokuBoard.puzzleState[r][c].type === "note"
+      ) {
+        newNotes = sudokuBoard.puzzleState[r][c].entry as number[];
         for (const note of removals) {
           if (newNotes.includes(note)) {
             const index = newNotes.indexOf(note);
@@ -865,7 +868,7 @@ const SudokuBoard = (props: Board) => {
       // This isn't the most performant way to do this but it is easy to read
       // We are looping through a bunch of cells we don't need to loop through
       if (simplifyNotesSetting && featurePreviewSetting) {
-        for (const [rowIndex, row] of sudokuBoard.puzzle.entries()) {
+        for (const [rowIndex, row] of sudokuBoard.puzzleState.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
             if (!(r === rowIndex && c === columnIndex)) {
               if (
@@ -910,7 +913,7 @@ const SudokuBoard = (props: Board) => {
         const c = removal[1];
         removal.splice(0, 2);
 
-        let newNotes = [...(sudokuBoard.puzzle[r][c].entry as number[])];
+        let newNotes = [...(sudokuBoard.puzzleState[r][c].entry as number[])];
         for (const note of removal) {
           if (newNotes.includes(note)) {
             const index = newNotes.indexOf(note);
