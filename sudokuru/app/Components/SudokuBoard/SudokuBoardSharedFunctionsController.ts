@@ -3,7 +3,6 @@ import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functio
 import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
 
 interface MethodSet {
-  calculate(): number;
   doesCellHaveConflict(
     sudokuBoard: SudokuObjectProps,
     r: number,
@@ -13,10 +12,6 @@ interface MethodSet {
 
 // 3) Default methods for all variants
 const defaultMethods: MethodSet = {
-  calculate() {
-    console.log(">>> default calculate");
-    return 42;
-  },
   doesCellHaveConflict(sudokuBoard: SudokuObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
   },
@@ -25,11 +20,6 @@ const defaultMethods: MethodSet = {
 // 4) Any per‐variant overrides (only override what you really need)
 const overrides: Partial<Record<GameVariant, Partial<MethodSet>>> = {
   drill: {
-    // if you omit calculate here, `drill` will get the default
-    calculate() {
-      console.log(">>> drill calculate");
-      return 0;
-    },
     doesCellHaveConflict(sudokuBoard: SudokuObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
