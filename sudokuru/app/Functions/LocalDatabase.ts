@@ -214,7 +214,7 @@ export const SudokuBoardSchema = z.object({
     score: z.number().int().gte(0).lte(100),
     time: z.number().int().nonnegative().finite().safe(),
   }),
-  puzzle: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
+  puzzleState: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
   puzzleSolution: z
     .array(z.array(z.number().int().gte(1).lte(9)).length(9))
     .length(9),
