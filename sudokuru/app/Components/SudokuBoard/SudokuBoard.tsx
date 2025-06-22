@@ -58,6 +58,15 @@ export interface CoreBoard<T extends GameVariant> {
   readonly type: T;
 }
 
+// interface BoardMethods {
+//   drill: {
+//     calculate: () => number;
+//   };
+//   classic: {
+//     calculate: () => number;
+//   };
+// }
+
 export type Board = DrillBoard | ClassicBoard;
 
 export interface HintObjectProps {
@@ -130,6 +139,62 @@ const SudokuBoard = (props: Board) => {
       />
     );
   }
+
+  // const boardMethods: BoardMethods = {
+  //   drill: {
+  //     calculate: () => {
+  //       return 0;
+  //     },
+  //   },
+  //   classic: {
+  //     calculate: () => {
+  //       return 1;
+  //     },
+  //   },
+  // };
+
+  // boardMethods[props.type].calculate();
+
+  interface MethodSet {
+    calculate(): number;
+    // …you can add more methods here…
+  }
+
+  // 3) Default methods for all variants
+  const defaultMethods: MethodSet = {
+    calculate() {
+      console.log(">>> default calculate");
+      return 42;
+    },
+  };
+
+  // 4) Any per‐variant overrides (only override what you really need)
+  const overrides: Partial<Record<GameVariant, Partial<MethodSet>>> = {
+    drill: {
+      // if you omit calculate here, `drill` will get the default
+      calculate() {
+        console.log(">>> drill calculate");
+        return 0;
+      },
+    },
+    // classic: {}    // no entry → will get full defaultMethods
+  };
+
+  // 5) Build the final runtime lookup by merging defaults + overrides
+  const boardMethods: Record<GameVariant, MethodSet> = (
+    ["drill", "classic"] as const
+  ).reduce(
+    (acc, variant) => {
+      acc[variant] = {
+        ...defaultMethods,
+        ...overrides[variant],
+      };
+      return acc;
+    },
+    {} as Record<GameVariant, MethodSet>,
+  );
+
+  boardMethods[props.type].calculate();
 
   /**
    * Adds the previous move (most recent move stored in action history) to board
