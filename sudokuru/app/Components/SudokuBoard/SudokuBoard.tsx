@@ -154,10 +154,6 @@ const SudokuBoard = (props: Board) => {
   //   },
   // };
 
-  // boardMethods[props.type].calculate();
-
-  boardMethods[props.type].calculate();
-
   /**
    * Adds the previous move (most recent move stored in action history) to board
    * Example:

@@ -34,7 +34,8 @@ const overrides: Partial<Record<GameVariant, Partial<MethodSet>>> = {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
   },
-  // classic: {}    // no entry → will get full defaultMethods
+  // classic has no overrides since classic is the default
+  classic: {},
 };
 
 // 5) Build the final runtime lookup by merging defaults + overrides
