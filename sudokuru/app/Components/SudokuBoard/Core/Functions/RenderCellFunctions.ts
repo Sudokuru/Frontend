@@ -1,9 +1,9 @@
 import React from "react";
 import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import {
-  SudokuObjectProps,
   CellProps,
   CellLocation,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import {
   NOT_SELECTED_CONFLICT_COLOR,
@@ -75,12 +75,12 @@ export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
  * if the cell is part of a hint, adjusting the color to reflect its role in the hint.
  */
 export const useCellBackgroundColor = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
   doesCellHaveConflict: (
-    sudokuBoard: SudokuObjectProps,
+    sudokuBoard: BoardObjectProps,
     r: number,
     c: number,
   ) => boolean,
@@ -215,7 +215,7 @@ const isCellSelected = (
  * This function will also return false if the user has disabled highlighting of identical values in their preferences.
  */
 const useDoesCellHaveIdenticalValue = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   cell: CellProps,
 ): boolean => {
   const { highlightIdenticalValuesSetting } =

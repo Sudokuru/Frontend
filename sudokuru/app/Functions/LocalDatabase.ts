@@ -8,8 +8,20 @@ export interface InputPuzzle {
   d: number; // difficulty
 }
 
-export interface SudokuObjectProps {
-  variant: GameVariant;
+export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
+  variant: "drill";
+  version: number;
+  selectedCells: CellLocation[];
+  statistics: GameStatistics;
+  puzzleInitialState: CellProps[][];
+  puzzleState: CellProps[][];
+  puzzleSolution: CellProps[][];
+  actionHistory: GameAction[][];
+  inNoteMode: boolean;
+}
+
+export interface ClassicObjectProps extends SudokuObjectProps<"classic"> {
+  variant: "classic";
   version: number;
   selectedCells: CellLocation[];
   statistics: GameStatistics;
@@ -18,6 +30,24 @@ export interface SudokuObjectProps {
   actionHistory: GameAction[][];
   inNoteMode: boolean;
 }
+
+// Shared properties between all boards
+export interface SudokuObjectProps<T extends GameVariant> {
+  readonly variant: T;
+}
+
+export type BoardObjectProps = DrillObjectProps | ClassicObjectProps;
+
+// export interface SudokuObjectProps {
+//   variant: GameVariant;
+//   version: number;
+//   selectedCells: CellLocation[];
+//   statistics: GameStatistics;
+//   puzzleState: CellProps[][];
+//   puzzleSolution: number[][];
+//   actionHistory: GameAction[][];
+//   inNoteMode: boolean;
+// }
 
 export interface GameAction {
   cellLocation: CellLocation;

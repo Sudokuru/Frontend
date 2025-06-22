@@ -1,4 +1,4 @@
-import { SudokuObjectProps } from "../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
 import { HintObjectProps } from "./SudokuBoard";
 
@@ -10,7 +10,7 @@ import { HintObjectProps } from "./SudokuBoard";
  * the game has been solved, the function returns true.
  * @returns {boolean} True if the game has been solved, false otherwise.
  */
-export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
+export const isGameSolved = (sudokuBoard: BoardObjectProps): boolean => {
   for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
     for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
       if (sudokuBoard.puzzleState[r][c].type === "given") continue;
@@ -21,7 +21,7 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
         return false;
       }
       const isValueCorrectResult = isValueCorrect(
-        sudokuBoard.puzzleSolution[r][c],
+        sudokuBoard.puzzleSolution[r][c] as number,
         sudokuBoard.puzzleState[r][c].entry as number,
       );
       if (isValueCorrectResult === false) {
@@ -37,9 +37,9 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
  * @returns True if there are no correct values in board, False otherwise
  */
 export const doesBoardHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   doesCellHaveConflict: (
-    sudokuBoard: SudokuObjectProps,
+    sudokuBoard: BoardObjectProps,
     r: number,
     c: number,
   ) => boolean,

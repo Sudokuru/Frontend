@@ -1,4 +1,4 @@
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 
 /**
  * Checks if a given cell in the puzzle has a conflict with the solution.
@@ -9,7 +9,7 @@ import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
  * @returns True if the cell's entry is incorrect; false otherwise.
  */
 export const doesCellHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ): boolean => {

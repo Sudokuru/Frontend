@@ -2,7 +2,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import {
   useCellSize,
   formatTime,
@@ -13,9 +13,9 @@ import PauseButton from "./PauseButton";
 let fallbackHeight = 30;
 
 interface HeaderRowProps {
-  sudokuBoard: SudokuObjectProps;
+  sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
-  headerRowTitle: (sudokuBoard: SudokuObjectProps) => string;
+  headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
 }
 
 const HeaderRow = (props: HeaderRowProps) => {
@@ -31,7 +31,7 @@ const HeaderRow = (props: HeaderRowProps) => {
     React.useCallback(() => {
       let interval = setInterval(() => {
         sudokuBoard.statistics.time = sudokuBoard.statistics.time + 1;
-        setSudokuBoard((prevState: SudokuObjectProps) => ({
+        setSudokuBoard((prevState: BoardObjectProps) => ({
           ...prevState,
           statistics: sudokuBoard.statistics,
         }));

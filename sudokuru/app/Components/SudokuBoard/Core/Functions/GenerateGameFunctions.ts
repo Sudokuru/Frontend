@@ -10,7 +10,8 @@ import { PUNDIT_PUZZLES } from "../../../../Data/puzzles/pundit_puzzles";
 import { TRAINEE_PUZZLES } from "../../../../Data/puzzles/trainee_puzzles";
 import {
   InputPuzzle,
-  SudokuObjectProps,
+  BoardObjectProps,
+  ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { Board } from "../../SudokuBoard";
 import { GameDifficulty } from "./DifficultyFunctions";
@@ -26,7 +27,7 @@ export async function generateGame(props: Board, initializeNotes: boolean) {
       // !uncomment below for dev testing
       // return returnGameOfDifficulty("dev", initializeNotes);
     } else if (props.action === "ResumeGame") {
-      const gameData: SudokuObjectProps[] = await getGame();
+      const gameData: BoardObjectProps[] = await getGame();
       // If game object is not returned, you get redirected to Main Page
       if (gameData == null) {
         // If resume game data is invalid, we start a novice game
@@ -92,7 +93,7 @@ export const returnPuzzleOfDifficulty = (
 export const returnGameOfDifficulty = (
   difficulty: GameDifficulty | "dev",
   initializeNotes: boolean,
-): SudokuObjectProps => {
+): BoardObjectProps => {
   const puzzles = returnPuzzleOfDifficulty(difficulty);
   if (difficulty === "dev") {
     difficulty = "novice";
@@ -101,15 +102,15 @@ export const returnGameOfDifficulty = (
 };
 
 /**
- * This function takes in a Puzzle object and returns a SudokuObjectProps object.
+ * This function takes in a Puzzle object and returns a BoardObjectProps object.
  * @param puzzle Puzzle object
  */
 export const convertPuzzleToSudokuObject = (
   puzzle: InputPuzzle,
   difficulty: GameDifficulty,
   initializeNotes: boolean,
-): SudokuObjectProps => {
-  let game: SudokuObjectProps = {
+): ClassicObjectProps => {
+  let game: ClassicObjectProps = {
     variant: "classic",
     version: 1,
     selectedCells: [],

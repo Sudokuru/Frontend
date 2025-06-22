@@ -1,7 +1,7 @@
 import React from "react";
 import {
   CellLocation,
-  SudokuObjectProps,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import Cell from "./Cell";
 import {
@@ -15,7 +15,7 @@ import { toggleSelectCell } from "../Functions/CellFunctions";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 
 const RenderCell = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,

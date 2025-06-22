@@ -1,5 +1,5 @@
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 
-export const headerRowTitle = (sudokuBoard: SudokuObjectProps): string => {
+export const headerRowTitle = (sudokuBoard: BoardObjectProps): string => {
   return `Drill: todo finish this`;
 };

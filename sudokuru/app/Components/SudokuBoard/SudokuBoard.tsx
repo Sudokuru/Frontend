@@ -21,7 +21,7 @@ import {
   CellType,
   GameAction,
   GameVariant,
-  SudokuObjectProps,
+  BoardObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
@@ -87,7 +87,7 @@ export interface HintProps {
 }
 
 const SudokuBoard = (props: Board) => {
-  const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
+  const [sudokuBoard, setSudokuBoard] = useState<BoardObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
 
@@ -200,7 +200,7 @@ const SudokuBoard = (props: Board) => {
 
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzleState,
-      sudokuBoard.puzzleSolution,
+      sudokuBoard.puzzleSolution as number[][],
       updatedArray,
     );
 
@@ -305,7 +305,10 @@ const SudokuBoard = (props: Board) => {
       // We do not need to take action if value is correct
       if (
         currentType === "value" &&
-        isValueCorrect(sudokuBoard.puzzleSolution[r][c], currentEntry as number)
+        isValueCorrect(
+          sudokuBoard.puzzleSolution[r][c] as number,
+          currentEntry as number,
+        )
       ) {
         continue;
       }
@@ -315,7 +318,7 @@ const SudokuBoard = (props: Board) => {
       // Incrementing numWrongCellsPlayed value
       if (
         !sudokuBoard.inNoteMode &&
-        !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+        !isValueCorrect(sudokuBoard.puzzleSolution[r][c] as number, inputValue)
       ) {
         sudokuBoard.statistics.numWrongCellsPlayed++;
       }
@@ -335,7 +338,7 @@ const SudokuBoard = (props: Board) => {
         simplifyNotesSetting &&
         featurePreviewSetting &&
         !sudokuBoard.inNoteMode &&
-        isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c] as number, inputValue)
       ) {
         for (const [rowIndex, row] of sudokuBoard.puzzleState.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
@@ -624,7 +627,7 @@ const SudokuBoard = (props: Board) => {
             currentSelectedCells[i],
             sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
               sudokuBoard.selectedCells[i].c
-            ],
+            ] as number,
             sudokuBoard.selectedCells[i].r,
             sudokuBoard.selectedCells[i].c,
           )

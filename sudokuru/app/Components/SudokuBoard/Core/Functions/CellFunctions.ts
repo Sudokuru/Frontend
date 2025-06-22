@@ -1,5 +1,5 @@
 import {
-  SudokuObjectProps,
+  BoardObjectProps,
   CellProps,
   CellLocation,
 } from "../../../../Functions/LocalDatabase";
@@ -13,7 +13,7 @@ import { isValueCorrect } from "./BoardFunctions";
  * @returns The number of cells found that match the value and are playable.
  */
 export const getRemainingCellCountOfValue = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   value: number,
 ) => {
   let cellCountOfValue = 0;
@@ -60,7 +60,7 @@ export const areCellUpdatesDisabled = (
 };
 
 export const getSelectedCells = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
 ): CellProps[] => {
   if (sudokuBoard.selectedCells.length === 0) {
     return [];
@@ -82,7 +82,7 @@ export const getSelectedCells = (
  * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
  */
 export const toggleSelectCell = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
@@ -113,7 +113,7 @@ export const toggleSelectCell = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithDefaultRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -135,7 +135,7 @@ const toggleSelectCellWithDefaultRules = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithControlRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -160,7 +160,7 @@ const toggleSelectCellWithControlRules = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithShiftRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -248,7 +248,7 @@ export function areCellsInSameColumn(
  * @returns True if the cell's entry is incorrect; false otherwise.
  */
 export const doesCellHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ): boolean => {

@@ -1,6 +1,6 @@
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 
-export const headerRowTitle = (sudokuBoard: SudokuObjectProps): string => {
+export const headerRowTitle = (sudokuBoard: BoardObjectProps): string => {
   const difficulty = sudokuBoard.statistics.difficulty;
   return `Difficulty: ${difficulty}`;
 };

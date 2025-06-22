@@ -1,5 +1,5 @@
 import { useWindowDimensions } from "react-native";
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore, GameDifficulty } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
 import { SudokuStrategy } from "sudokuru";
@@ -103,7 +103,7 @@ export function finishSudokuGame(
  * @param sudokuBoard The current state of the game
  * @param navigation The navigation object
  */
-export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
+export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
   navigation.navigate("PlayPage");
 }

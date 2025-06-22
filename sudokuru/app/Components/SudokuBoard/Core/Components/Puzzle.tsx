@@ -2,21 +2,21 @@ import { View } from "react-native";
 import React, { JSX } from "react";
 import {
   CellLocation,
-  SudokuObjectProps,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { HintObjectProps } from "../../SudokuBoard";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 
 interface PuzzleProps {
   RenderCell: (
-    sudokuBoard: SudokuObjectProps,
+    sudokuBoard: BoardObjectProps,
     setBoardSelectedCells: (cells: CellLocation[]) => void,
     sudokuHint: HintObjectProps | undefined,
     r: number,
     c: number,
     boardMethods: SudokuVariantMethods,
   ) => JSX.Element | undefined;
-  sudokuBoard: SudokuObjectProps;
+  sudokuBoard: BoardObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
   sudokuHint: HintObjectProps | undefined;
   boardMethods: SudokuVariantMethods;
