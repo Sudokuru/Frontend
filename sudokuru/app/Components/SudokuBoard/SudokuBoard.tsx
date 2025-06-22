@@ -98,12 +98,15 @@ const SudokuBoard = (props: Board) => {
       initializeNotes = true;
     }
 
-    generateGame(props, initializeNotes).then((game) => {
+    async function loadGame() {
+      const game = await generateGame(props, initializeNotes);
       if (game == null) {
         return;
       }
       setSudokuBoard(game);
-    });
+    }
+
+    loadGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
