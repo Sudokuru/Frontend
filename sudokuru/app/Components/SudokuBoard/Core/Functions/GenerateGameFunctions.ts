@@ -22,38 +22,24 @@ export async function generateGame(props: Board, initializeNotes: boolean) {
 
   if (props.type === "classic") {
     if (props.action === "StartGame") {
-      return startGame(props.difficulty, initializeNotes);
+      return returnGameOfDifficulty(props.difficulty, initializeNotes);
+      // !uncomment below for dev testing
+      // return returnGameOfDifficulty("dev", initializeNotes);
     } else if (props.action === "ResumeGame") {
       const gameData: SudokuObjectProps[] = await getGame();
       // If game object is not returned, you get redirected to Main Page
       if (gameData == null) {
         // If resume game data is invalid, we start a novice game
-        return startGame("novice", initializeNotes);
+        return returnGameOfDifficulty("novice", initializeNotes);
       }
       return gameData[0];
     }
   } else {
     // temporary, will fix later.
-    return startGame("novice", initializeNotes);
+    return returnGameOfDifficulty("novice", initializeNotes);
   }
   return gameData;
 }
-
-/**
- * Given a difficulty and an user auth token retrieves a random puzzle close to the difficulty that the user hasn't solved before
- * @param difficulty - difficulty number (between 0 and 1)
- * @param strategies - new game can have subset of these strategies
- * @param initializeNotes - boolean to determine if notes should be initialized.
- * @returns promise of puzzle JSON object
- */
-export const startGame = (
-  difficulty: GameDifficulty,
-  initializeNotes: boolean,
-): SudokuObjectProps => {
-  return returnGameOfDifficulty(difficulty, initializeNotes);
-  // !uncomment below for dev testing
-  // return returnGameOfDifficulty("dev", initializeNotes);
-};
 
 /**
  * Returns a random puzzle from an array of puzzles
