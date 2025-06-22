@@ -42,6 +42,7 @@ import {
   getRemainingCellCountOfValue,
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
+import { boardMethods } from "./SudokuBoardSharedFunctionsController";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame";
@@ -154,39 +155,6 @@ const SudokuBoard = (props: Board) => {
   // };
 
   // boardMethods[props.type].calculate();
-
-  interface MethodSet {
-    calculate(): number;
-    // …you can add more methods here…
-  }
-
-  // 3) Default methods for all variants
-  const defaultMethods: MethodSet = {
-    calculate() {
-      console.log(">>> default calculate");
-      return 42;
-    },
-  };
-
-  // 4) Any per‐variant overrides (only override what you really need)
-  const overrides: Partial<Record<GameVariant, Partial<MethodSet>>> = {
-    drill: {
-      // if you omit calculate here, `drill` will get the default
-      calculate() {
-        console.log(">>> drill calculate");
-        return 0;
-      },
-    },
-    // classic: {}    // no entry → will get full defaultMethods
-  };
-
-  // 5) Build the final runtime lookup by merging defaults + overrides
-  const boardMethods: { [V in GameVariant]: MethodSet } = Object.fromEntries(
-    (Object.keys(overrides) as GameVariant[]).map((v) => [
-      v,
-      { ...defaultMethods, ...overrides[v] },
-    ]),
-  ) as { [V in GameVariant]: MethodSet };
 
   boardMethods[props.type].calculate();
 
@@ -547,7 +515,12 @@ const SudokuBoard = (props: Board) => {
         return;
       case "H":
       case "h":
-        if (!doesBoardHaveConflict(sudokuBoard)) {
+        if (
+          !doesBoardHaveConflict(
+            sudokuBoard,
+            boardMethods[props.type].doesCellHaveConflict,
+          )
+        ) {
           if (sudokuHint) {
             updateHintStage(1);
           } else {
@@ -686,7 +659,10 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     const inNoteMode = sudokuBoard.inNoteMode;
-    const boardHasConflict = doesBoardHaveConflict(sudokuBoard);
+    const boardHasConflict = doesBoardHaveConflict(
+      sudokuBoard,
+      boardMethods[props.type].doesCellHaveConflict,
+    );
     const eraseButtonDisabled = isEraseButtonDisabled(sudokuBoard);
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
 

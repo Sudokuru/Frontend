@@ -38,6 +38,11 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
  */
 export const doesBoardHaveConflict = (
   sudokuBoard: SudokuObjectProps,
+  doesCellHaveConflict: (
+    sudokuBoard: SudokuObjectProps,
+    r: number,
+    c: number,
+  ) => boolean,
 ): boolean => {
   for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
     for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
@@ -49,26 +54,6 @@ export const doesBoardHaveConflict = (
     }
   }
   return false;
-};
-
-/**
- * Checks if a given cell in the puzzle has a conflict with the solution.
- *
- * @param r - The row index of the cell.
- * @param c - The column index of the cell.
- * @param cell - The cell object containing its type and entry.
- * @returns True if the cell's entry is incorrect; false otherwise.
- */
-export const doesCellHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
-  r: number,
-  c: number,
-): boolean => {
-  const cell = sudokuBoard.puzzle[r][c];
-  if (cell.type === "note" || cell.entry === 0) {
-    return false;
-  }
-  return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
 };
 
 export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
