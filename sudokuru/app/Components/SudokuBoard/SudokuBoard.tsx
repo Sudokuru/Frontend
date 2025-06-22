@@ -181,18 +181,12 @@ const SudokuBoard = (props: Board) => {
   };
 
   // 5) Build the final runtime lookup by merging defaults + overrides
-  const boardMethods: Record<GameVariant, MethodSet> = (
-    ["drill", "classic"] as const
-  ).reduce(
-    (acc, variant) => {
-      acc[variant] = {
-        ...defaultMethods,
-        ...overrides[variant],
-      };
-      return acc;
-    },
-    {} as Record<GameVariant, MethodSet>,
-  );
+  const boardMethods: { [V in GameVariant]: MethodSet } = Object.fromEntries(
+    (Object.keys(overrides) as GameVariant[]).map((v) => [
+      v,
+      { ...defaultMethods, ...overrides[v] },
+    ]),
+  ) as { [V in GameVariant]: MethodSet };
 
   boardMethods[props.type].calculate();
 
