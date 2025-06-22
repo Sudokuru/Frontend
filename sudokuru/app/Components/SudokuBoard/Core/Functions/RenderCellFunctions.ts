@@ -20,7 +20,6 @@ import {
   areCellsInSameBox,
   areCellsInSameColumn,
   areCellsInSameRow,
-  doesCellHaveConflict,
   generateBoxIndex,
   getSelectedCells,
 } from "./CellFunctions";
@@ -80,6 +79,11 @@ export const useCellBackgroundColor = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
+  doesCellHaveConflict: (
+    sudokuBoard: SudokuObjectProps,
+    r: number,
+    c: number,
+  ) => boolean,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);

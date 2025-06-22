@@ -2,6 +2,7 @@ import { getGame, startGame } from "../../../../Api/Puzzles";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import { Board } from "../../SudokuBoard";
 
+// todo break this up into multiple functions instead of the if statement based on board type
 export async function generateGame(props: Board, initializeNotes: boolean) {
   let gameData = null;
 
@@ -17,6 +18,9 @@ export async function generateGame(props: Board, initializeNotes: boolean) {
       }
       return gameData[0];
     }
+  } else {
+    // temporary, will fix later.
+    return startGame("novice", initializeNotes);
   }
   return gameData;
 }

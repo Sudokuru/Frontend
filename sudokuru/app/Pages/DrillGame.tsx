@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
+import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 
 const Drill = (props: any) => {
   let strategy = props.route.params
@@ -16,11 +17,7 @@ const Drill = (props: any) => {
     <View style={homeScreenStyles.home}>
       <View style={styles.statisticsTitle}>
         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-        {/* <SudokuBoard
-          gameType={"StartDrill"}
-          strategies={strategy}
-          navigation={navigation}
-        /> */}
+        <SudokuBoard type="drill" action="StartGame" strategy={strategy} />
         <StatusBar style="auto" />
       </View>
     </View>

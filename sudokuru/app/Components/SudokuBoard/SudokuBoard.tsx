@@ -591,6 +591,7 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard={sudokuBoard}
         sudokuHint={sudokuHint}
         setBoardSelectedCells={setBoardSelectedCells}
+        boardMethods={boardMethods[props.type]}
       />
     );
   };
