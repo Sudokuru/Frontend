@@ -1,8 +1,10 @@
 import { useWindowDimensions } from "react-native";
-import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
-import { calculateGameScore, GameDifficulty } from "./DifficultyFunctions";
+import {
+  BoardObjectProps,
+  ClassicGameStatistics,
+} from "../../../../Functions/LocalDatabase";
+import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
-import { SudokuStrategy } from "sudokuru";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -70,32 +72,36 @@ export const formatTime = (inputSeconds: number) => {
  * @returns
  */
 export function finishSudokuGame(
-  difficulty: GameDifficulty,
-  numHintsUsed: number,
-  numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
-    numHintsUsed: number;
-  }[],
-  numWrongCellsPlayed: number,
-  time: number,
-): number {
+  statistics: ClassicGameStatistics,
+): ClassicGameStatistics {
   // calculate score
   const score = calculateGameScore(
-    numHintsUsed,
-    numWrongCellsPlayed,
-    time,
-    difficulty,
+    statistics.numHintsUsed,
+    statistics.numWrongCellsPlayed,
+    statistics.time,
+    statistics.difficulty,
   );
 
   // removes game from localstorage and updates statistics page
   finishGame(
-    numHintsUsed,
-    numHintsUsedPerStrategy,
-    numWrongCellsPlayed,
-    time,
+    statistics.numHintsUsed,
+    statistics.numHintsUsedPerStrategy,
+    statistics.numWrongCellsPlayed,
+    statistics.time,
     score,
   );
-  return score;
+
+  statistics.score = score;
+
+  return {
+    numHintsUsed: statistics.numHintsUsed,
+    numHintsUsedPerStrategy: statistics.numHintsUsedPerStrategy,
+    numWrongCellsPlayed: statistics.numWrongCellsPlayed,
+    time: statistics.time,
+    score: statistics.score,
+    difficulty: statistics.difficulty,
+    internalDifficulty: statistics.internalDifficulty,
+  };
 }
 
 /**

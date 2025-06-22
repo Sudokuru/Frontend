@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import {
-  finishSudokuGame,
-  handlePause,
-  isValueCorrect,
-} from "./Core/Functions/BoardFunctions";
+import { handlePause, isValueCorrect } from "./Core/Functions/BoardFunctions";
 import {
   doesBoardHaveConflict,
   isGameSolved,
@@ -42,7 +38,10 @@ import {
   getRemainingCellCountOfValue,
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
-import { boardMethods } from "./SudokuBoardSharedFunctionsController";
+import {
+  boardMethods,
+  SudokuVariantMethods,
+} from "./SudokuBoardSharedFunctionsController";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame";
@@ -386,20 +385,15 @@ const SudokuBoard = (props: Board) => {
     // Saving current game status
     saveGame(sudokuBoard);
 
-    if (!sudokuBoard.inNoteMode && isGameSolved(sudokuBoard)) {
-      const score = finishSudokuGame(
-        sudokuBoard.statistics.difficulty,
-        sudokuBoard.statistics.numHintsUsed,
-        sudokuBoard.statistics.numHintsUsedPerStrategy,
-        sudokuBoard.statistics.numWrongCellsPlayed,
-        sudokuBoard.statistics.time,
-      );
-      sudokuBoard.statistics.score = score;
+    if (isGameSolved(sudokuBoard)) {
       setSudokuBoard({
         ...sudokuBoard,
         puzzleState: sudokuBoard.puzzleState,
         actionHistory: sudokuBoard.actionHistory,
-        statistics: sudokuBoard.statistics,
+        // @ts-ignore
+        statistics: boardMethods[props.type].finishSudokuGame(
+          sudokuBoard.statistics,
+        ),
       });
       setGameOver(true);
     } else {
@@ -407,6 +401,7 @@ const SudokuBoard = (props: Board) => {
         ...sudokuBoard,
         puzzleState: sudokuBoard.puzzleState,
         actionHistory: sudokuBoard.actionHistory,
+        // @ts-ignore
         statistics: sudokuBoard.statistics,
       });
     }
@@ -525,7 +520,7 @@ const SudokuBoard = (props: Board) => {
           )
         ) {
           if (sudokuHint) {
-            updateHintStage(1);
+            updateHintStage(1, boardMethods[props.type].finishSudokuGame);
           } else {
             getHint();
           }
@@ -702,6 +697,7 @@ const SudokuBoard = (props: Board) => {
         stage={sudokuHint.stage}
         maxStage={sudokuHint.maxStage}
         incrementStage={updateHintStage}
+        finishSudokuGame={boardMethods[props.type].finishSudokuGame}
       />
     );
   };
@@ -749,7 +745,10 @@ const SudokuBoard = (props: Board) => {
    * @param stageOffset A number (-1) or (1) that represents how to alter hint stage
    * @returns void
    */
-  const updateHintStage = (stageOffset: number) => {
+  const updateHintStage = (
+    stageOffset: number,
+    finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
+  ) => {
     if (stageOffset !== -1 && stageOffset !== 1) {
       return;
     }
@@ -765,19 +764,12 @@ const SudokuBoard = (props: Board) => {
       case sudokuHint.maxStage + 1: {
         setSudokuHint(undefined);
         if (isGameSolved(sudokuBoard)) {
-          const score = finishSudokuGame(
-            sudokuBoard.statistics.difficulty,
-            sudokuBoard.statistics.numHintsUsed,
-            sudokuBoard.statistics.numHintsUsedPerStrategy,
-            sudokuBoard.statistics.numWrongCellsPlayed,
-            sudokuBoard.statistics.time,
-          );
-          sudokuBoard.statistics.score = score;
           setSudokuBoard({
             ...sudokuBoard,
             puzzleState: sudokuBoard.puzzleState,
             actionHistory: sudokuBoard.actionHistory,
-            statistics: sudokuBoard.statistics,
+            //@ts-ignore
+            statistics: finishSudokuGame(sudokuBoard.statistics),
           });
           setGameOver(true);
         }

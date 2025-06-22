@@ -12,7 +12,7 @@ export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
   version: number;
   selectedCells: CellLocation[];
-  statistics: GameStatistics;
+  statistics: DrillGameStatistics;
   puzzleInitialState: CellProps[][];
   puzzleState: CellProps[][];
   puzzleSolution: CellProps[][];
@@ -20,11 +20,18 @@ export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   inNoteMode: boolean;
 }
 
+export interface DrillGameStatistics {
+  difficulty: SudokuStrategy;
+  time: number;
+  numWrongCellsPlayed: number;
+  hintUsed: boolean;
+}
+
 export interface ClassicObjectProps extends SudokuObjectProps<"classic"> {
   variant: "classic";
   version: number;
   selectedCells: CellLocation[];
-  statistics: GameStatistics;
+  statistics: ClassicGameStatistics;
   puzzleState: CellProps[][];
   puzzleSolution: number[][];
   actionHistory: GameAction[][];
@@ -64,7 +71,7 @@ export interface CellLocation {
   c: number;
 }
 
-export interface GameStatistics {
+export interface ClassicGameStatistics {
   difficulty: GameDifficulty;
   internalDifficulty: number;
   time: number;
@@ -145,7 +152,7 @@ const SudokuBoardCellLocationSchema = z.object({
 
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
 // todo make custom schemas perhaps?
-export const SudokuBoardSchema = z.object({
+export const SudokuBoardClassicSchema = z.object({
   variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
   version: z.literal(1),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
@@ -182,7 +189,37 @@ export const SudokuBoardSchema = z.object({
   inNoteMode: z.boolean(),
 });
 
-export const SudokuBoardActiveGameSchema = z.array(SudokuBoardSchema);
+// https://github.com/colinhacks/zod/discussions/3115 for workaround used
+// todo make custom schemas perhaps?
+export const SudokuBoardDrillSchema = z.object({
+  variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
+  version: z.literal(1),
+  selectedCells: z.array(SudokuBoardCellLocationSchema),
+  statistics: z.object({
+    difficulty: z.enum(
+      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]],
+    ),
+    hintUsed: z.boolean(),
+    numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
+    time: z.number().int().nonnegative().finite().safe(),
+  }),
+  puzzleInitialState: z
+    .array(z.array(SudokuBoardCellSchema).length(9))
+    .length(9),
+  puzzleState: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
+  puzzleSolution: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
+  actionHistory: z.array(
+    z.array(
+      z.object({
+        cellLocation: SudokuBoardCellLocationSchema,
+        cell: SudokuBoardCellSchema,
+      }),
+    ),
+  ),
+  inNoteMode: z.boolean(),
+});
+
+export const SudokuBoardActiveGameSchema = z.array(SudokuBoardClassicSchema);
 
 export const ProfileSchema = z.object({
   version: z.literal(1),
