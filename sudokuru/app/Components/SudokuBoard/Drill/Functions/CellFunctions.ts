@@ -13,5 +13,7 @@ export const doesCellHaveConflict = (
   r: number,
   c: number,
 ): boolean => {
+  // todo there is an issue with this, will immediately show the user what cell is incorrect
+  // todo need to do some sort of check to see if its not equal the initial state or the solution
   return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
 };

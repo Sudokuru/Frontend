@@ -15,11 +15,11 @@ let fallbackHeight = 30;
 interface HeaderRowProps {
   sudokuBoard: SudokuObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
+  headerRowTitle: (sudokuBoard: SudokuObjectProps) => string;
 }
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard } = props;
-  const difficulty = sudokuBoard.statistics.difficulty;
+  const { sudokuBoard, setSudokuBoard, headerRowTitle } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
@@ -76,7 +76,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             color: theme.colors.onBackground,
           }}
         >
-          Difficulty: {difficulty}
+          {headerRowTitle(sudokuBoard)}
         </Text>
       </View>
       <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>

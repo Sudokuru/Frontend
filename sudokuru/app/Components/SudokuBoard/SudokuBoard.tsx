@@ -480,7 +480,11 @@ const SudokuBoard = (props: Board) => {
 
   const renderTopBar = () => {
     return (
-      <HeaderRow sudokuBoard={sudokuBoard} setSudokuBoard={setSudokuBoard} />
+      <HeaderRow
+        sudokuBoard={sudokuBoard}
+        setSudokuBoard={setSudokuBoard}
+        headerRowTitle={boardMethods[props.type].headerRowTitle}
+      />
     );
   };
 
