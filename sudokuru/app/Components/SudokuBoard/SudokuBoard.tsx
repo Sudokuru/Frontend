@@ -195,6 +195,7 @@ const SudokuBoard = (props: Board) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
+    // todo create new function called getSudokuBoardHint in boardMethods
     let strategyArray: SudokuStrategy[] = [...strategyHintOrderSetting];
 
     // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
