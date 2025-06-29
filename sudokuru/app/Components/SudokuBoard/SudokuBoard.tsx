@@ -216,7 +216,10 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard.puzzleSolution as number[][],
       );
     } else {
-      returnedHint = getSudokuHint(sudokuBoard.puzzleState, strategyArray);
+      returnedHint = getSudokuHint(
+        sudokuBoard.initialPuzzleState,
+        strategyArray,
+      );
     }
 
     // unselect board and increment hint statistics
