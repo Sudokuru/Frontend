@@ -14,17 +14,27 @@ import { generateBoxIndex } from "./CellFunctions";
  */
 export const getSudokuHint = (
   puzzle: CellProps[][],
-  solution: number[][],
   strategies: SudokuStrategy[],
+  solution?: number[][],
 ): HintProps => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
-  const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
-  let hint = getHint(
-    puzzleState.puzzleValues,
-    puzzleState.puzzleNotes,
-    strategies,
-    puzzleSolution,
-  ) as unknown as HintProps;
+
+  let hint: HintProps;
+  if (solution) {
+    const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
+    hint = getHint(
+      puzzleState.puzzleValues,
+      puzzleState.puzzleNotes,
+      strategies,
+      puzzleSolution,
+    ) as unknown as HintProps;
+  } else {
+    hint = getHint(
+      puzzleState.puzzleValues,
+      puzzleState.puzzleNotes,
+      strategies,
+    ) as unknown as HintProps;
+  }
   hint = hintInjections(hint);
   return hint;
 };

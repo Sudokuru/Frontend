@@ -199,8 +199,8 @@ const SudokuBoard = (props: Board) => {
 
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzleState,
-      sudokuBoard.puzzleSolution as number[][],
       updatedArray,
+      sudokuBoard.puzzleSolution as number[][],
     );
 
     // unselect board and increment hint statistics

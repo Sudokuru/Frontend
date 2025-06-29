@@ -2,11 +2,11 @@ import { SudokuStrategy } from "sudokuru";
 import { OBVIOUS_SINGLE_DRILLS } from "../../../../Data/drills/obvious_single_drills";
 import { HIDDEN_SINGLE_DRILLS } from "./../../../../Data/drills/hidden_single_drills";
 import {
-  InputPuzzle,
   BoardObjectProps,
   DrillObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { DrillBoard } from "../../SudokuBoard";
+import { getSudokuHint } from "../../Core/Functions/HintFunctions";
 
 export async function generateGame(props: DrillBoard) {
   let gameData = null;
@@ -78,7 +78,7 @@ export const returnDrillOfStrategy = (
   if (strategy === "dev") {
     strategy = "OBVIOUS_SINGLE";
   }
-  return convertPuzzleToSudokuObject(puzzles, difficulty, initializeNotes);
+  return convertPuzzleToSudokuObject(puzzles, strategy, initializeNotes);
 };
 
 /**
@@ -86,7 +86,7 @@ export const returnDrillOfStrategy = (
  * @param puzzle Puzzle object
  */
 export const convertPuzzleToSudokuObject = (
-  puzzle: InputPuzzle,
+  puzzle: string,
   strategy: SudokuStrategy,
   initializeNotes: boolean,
 ): DrillObjectProps => {
@@ -111,7 +111,7 @@ export const convertPuzzleToSudokuObject = (
     game.puzzleState.push([]);
     game.puzzleSolution.push([]);
     for (let j = 0; j < 9; j++) {
-      let charValuePuzzle = puzzle.p.charAt(i * 9 + j);
+      let charValuePuzzle = puzzle.charAt(i * 9 + j);
       let numValuePuzzle = Number(charValuePuzzle);
       if (numValuePuzzle === 0) {
         game.puzzleState[i][j] = { type: "value", entry: 0 };
@@ -131,9 +131,7 @@ export const convertPuzzleToSudokuObject = (
     const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     while (true) {
       try {
-        let hint = getSudokuHint(game.puzzleState, game.puzzleSolution, [
-          "AMEND_NOTES",
-        ]);
+        let hint = getSudokuHint(game.puzzleState, ["AMEND_NOTES"]);
         // hint.removals structure: [row, col, note1, note2, ...]
         // slice(2) skips row and col to get just the notes to remove
         // Filter to keep only notes that shouldn't be removed

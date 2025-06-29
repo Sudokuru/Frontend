@@ -152,9 +152,11 @@ export const convertPuzzleToSudokuObject = (
     const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     while (true) {
       try {
-        let hint = getSudokuHint(game.puzzleState, game.puzzleSolution, [
-          "AMEND_NOTES",
-        ]);
+        let hint = getSudokuHint(
+          game.puzzleState,
+          ["AMEND_NOTES"],
+          game.puzzleSolution,
+        );
         // hint.removals structure: [row, col, note1, note2, ...]
         // slice(2) skips row and col to get just the notes to remove
         // Filter to keep only notes that shouldn't be removed
