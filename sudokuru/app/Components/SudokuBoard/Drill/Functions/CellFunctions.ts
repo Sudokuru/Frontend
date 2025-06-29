@@ -13,12 +13,44 @@ export const doesCellHaveConflict = (
   r: number,
   c: number,
 ): boolean => {
-  // todo there is an issue with this, will immediately show the user what cell is incorrect
-  // todo need to do some sort of check to see if its not equal the initial state or the solution
-  return !isEqual(
-    sudokuBoard.puzzleState[r][c].entry,
-    sudokuBoard.puzzleSolution[r][c].entry,
-  );
+  if (
+    isEqual(
+      sudokuBoard.puzzleState[r][c].entry,
+      sudokuBoard.puzzleSolution[r][c].entry,
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    isEqual(
+      sudokuBoard.puzzleState[r][c].entry,
+      sudokuBoard.initialPuzzleState[r][c].entry,
+    )
+  ) {
+    return false;
+  }
+
+  if (
+    sudokuBoard.puzzleState[r][c].type === "note" &&
+    sudokuBoard.puzzleSolution[r][c].type === "note" &&
+    sudokuBoard.initialPuzzleState[r][c].type === "note"
+  ) {
+    for (const note of sudokuBoard.puzzleState[r][c].entry) {
+      if (
+        !(
+          note in sudokuBoard.puzzleSolution[r][c].entry ||
+          note in sudokuBoard.initialPuzzleState[r][c].entry
+        )
+      ) {
+        return true;
+      }
+    }
+  }
+
+  // we shouldn't reach this case
+  // todo refactor this function so that we don't need this fallback
+  return false;
 };
 
 const isEqual = (a: any, b: any) => {

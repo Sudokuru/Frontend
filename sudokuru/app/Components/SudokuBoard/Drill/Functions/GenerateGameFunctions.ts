@@ -94,6 +94,7 @@ export const convertPuzzleToSudokuObject = (
     variant: "drill",
     version: 1,
     selectedCells: [],
+    initialPuzzleState: [],
     puzzleState: [],
     puzzleSolution: [],
     statistics: {
@@ -111,15 +112,21 @@ export const convertPuzzleToSudokuObject = (
   for (let i = 0; i < 9; i++) {
     game.puzzleState.push([]);
     game.puzzleSolution.push([]);
+    game.initialPuzzleState.push([]);
     for (let j = 0; j < 9; j++) {
       let charValuePuzzle = puzzle.charAt(i * 9 + j);
       let numValuePuzzle = Number(charValuePuzzle);
       if (numValuePuzzle === 0) {
         game.puzzleState[i][j] = { type: "value", entry: 0 };
         game.puzzleSolution[i][j] = { type: "value", entry: 0 };
+        game.initialPuzzleState[i][j] = { type: "value", entry: 0 };
       } else {
         game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
         game.puzzleSolution[i][j] = { type: "given", entry: numValuePuzzle };
+        game.initialPuzzleState[i][j] = {
+          type: "given",
+          entry: numValuePuzzle,
+        };
       }
     }
   }
@@ -165,6 +172,10 @@ export const convertPuzzleToSudokuObject = (
           entry: notes,
         };
         game.puzzleSolution[hint.removals[0][0]][hint.removals[0][1]] = {
+          type: "note",
+          entry: notes,
+        };
+        game.initialPuzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
           type: "note",
           entry: notes,
         };
