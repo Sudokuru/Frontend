@@ -195,6 +195,23 @@ export const convertPuzzleToSudokuObject = (
       type: "value",
       entry: hint.placements[0][2],
     };
+    while (true) {
+      try {
+        let hint = getSudokuHint(game.puzzleSolution, ["SIMPLIFY_NOTES"]);
+        for (const removals of hint.removals) {
+          let notes = (
+            game.puzzleSolution[removals[0]][removals[1]].entry as number[]
+          ).filter((x) => !removals.slice(2).includes(x));
+          console.log("HELLO", notes);
+          game.puzzleSolution[removals[0]][removals[1]] = {
+            type: "note",
+            entry: notes,
+          };
+        }
+      } catch {
+        break;
+      }
+    }
   } else {
     let notes: number[] = [];
     if (
