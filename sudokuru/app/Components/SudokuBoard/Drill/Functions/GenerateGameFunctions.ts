@@ -94,7 +94,6 @@ export const convertPuzzleToSudokuObject = (
     variant: "drill",
     version: 1,
     selectedCells: [],
-    puzzleInitialState: [],
     puzzleState: [],
     puzzleSolution: [],
     statistics: {
@@ -115,13 +114,8 @@ export const convertPuzzleToSudokuObject = (
       let numValuePuzzle = Number(charValuePuzzle);
       if (numValuePuzzle === 0) {
         game.puzzleState[i][j] = { type: "value", entry: 0 };
-        game.puzzleInitialState[i][j] = { type: "value", entry: 0 };
       } else {
         game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
-        game.puzzleInitialState[i][j] = {
-          type: "given",
-          entry: numValuePuzzle,
-        };
       }
     }
   }

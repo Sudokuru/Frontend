@@ -13,7 +13,6 @@ export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   version: number;
   selectedCells: CellLocation[];
   statistics: DrillGameStatistics;
-  puzzleInitialState: CellProps[][];
   puzzleState: CellProps[][];
   puzzleSolution: CellProps[][];
   actionHistory: GameAction[][];
@@ -203,9 +202,6 @@ export const SudokuBoardDrillSchema = z.object({
     numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
     time: z.number().int().nonnegative().finite().safe(),
   }),
-  puzzleInitialState: z
-    .array(z.array(SudokuBoardCellSchema).length(9))
-    .length(9),
   puzzleState: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
   puzzleSolution: z.array(z.array(SudokuBoardCellSchema).length(9)).length(9),
   actionHistory: z.array(
