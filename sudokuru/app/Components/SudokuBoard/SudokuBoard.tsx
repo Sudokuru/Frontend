@@ -110,7 +110,11 @@ const SudokuBoard = (props: Board) => {
     }
 
     async function loadGame() {
-      const game = await generateGame(props, initializeNotes);
+      // const game = await generateGame(props, initializeNotes);
+      const game = await boardMethods[props.type].generateGame(
+        props,
+        initializeNotes,
+      );
       if (game == null) {
         return;
       }

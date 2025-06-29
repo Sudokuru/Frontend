@@ -1,4 +1,4 @@
-import { SudokuStrategy } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { OBVIOUS_SINGLE_DRILLS } from "../../../../Data/drills/obvious_single_drills";
 import { HIDDEN_SINGLE_DRILLS } from "./../../../../Data/drills/hidden_single_drills";
 import {
@@ -8,11 +8,11 @@ import {
 import { DrillBoard } from "../../SudokuBoard";
 import { getSudokuHint } from "../../Core/Functions/HintFunctions";
 
-export async function generateGame(props: DrillBoard) {
+export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
 
   if (props.action === "StartGame") {
-    return returnDrillOfType(props.strategy);
+    return returnDrillOfStrategy(props.strategy);
     // !uncomment below for dev testing
     // return returnDrillOfType("dev");
   }
@@ -34,6 +34,7 @@ const retrieveRandomDrillPuzzle = (PUZZLES: string[]): string => {
  * @returns A Puzzle object
  */
 export const returnDrillOfType = (strategy: SudokuStrategy | "dev"): string => {
+  console.log(strategy);
   switch (strategy) {
     case "dev":
       return retrieveRandomDrillPuzzle(OBVIOUS_SINGLE_DRILLS);
@@ -72,13 +73,13 @@ export const returnDrillOfType = (strategy: SudokuStrategy | "dev"): string => {
  */
 export const returnDrillOfStrategy = (
   strategy: SudokuStrategy | "dev",
-  initializeNotes: boolean,
 ): BoardObjectProps => {
   const puzzles = returnDrillOfType(strategy);
   if (strategy === "dev") {
     strategy = "OBVIOUS_SINGLE";
   }
-  return convertPuzzleToSudokuObject(puzzles, strategy, initializeNotes);
+  console.log("Hello, strategies ", strategy, " puzzles ", puzzles);
+  return convertPuzzleToSudokuObject(puzzles, strategy);
 };
 
 /**
@@ -88,7 +89,6 @@ export const returnDrillOfStrategy = (
 export const convertPuzzleToSudokuObject = (
   puzzle: string,
   strategy: SudokuStrategy,
-  initializeNotes: boolean,
 ): DrillObjectProps => {
   let game: DrillObjectProps = {
     variant: "drill",
@@ -106,6 +106,8 @@ export const convertPuzzleToSudokuObject = (
     actionHistory: [],
   };
 
+  console.log(puzzle);
+
   for (let i = 0; i < 9; i++) {
     game.puzzleState.push([]);
     game.puzzleSolution.push([]);
@@ -114,27 +116,57 @@ export const convertPuzzleToSudokuObject = (
       let numValuePuzzle = Number(charValuePuzzle);
       if (numValuePuzzle === 0) {
         game.puzzleState[i][j] = { type: "value", entry: 0 };
+        game.puzzleSolution[i][j] = { type: "value", entry: 0 };
       } else {
         game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
+        game.puzzleSolution[i][j] = { type: "given", entry: numValuePuzzle };
       }
     }
   }
 
   // Initialize the board with notes filled in
-  if (initializeNotes) {
+  if (strategy !== "AMEND_NOTES") {
     const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     while (true) {
       try {
-        let hint = getSudokuHint(game.puzzleState, ["AMEND_NOTES"]);
+        let hint = getSudokuHint(game.puzzleState, SUDOKU_STRATEGY_ARRAY);
+
+        if (hint.strategy === strategy) {
+          break;
+        }
+
         // hint.removals structure: [row, col, note1, note2, ...]
         // slice(2) skips row and col to get just the notes to remove
         // Filter to keep only notes that shouldn't be removed
-        const notesToAdd = ALL_NOTES.filter(
-          (x) => !hint.removals[0].slice(2).includes(x),
-        );
+
+        let notes: number[] = [];
+
+        if (hint.strategy === "AMEND_NOTES") {
+          notes = ALL_NOTES.filter(
+            (x) => !hint.removals[0].slice(2).includes(x),
+          );
+        } else {
+          if (
+            game.puzzleState[hint.removals[0][0]][hint.removals[0][1]].type ===
+            "note"
+          ) {
+            //
+            notes = (
+              game.puzzleState[hint.removals[0][0]][hint.removals[0][1]]
+                .entry as number[]
+            ).filter((x) => !hint.removals[0].slice(2).includes(x));
+          } else {
+            console.log("This shouldn't happen");
+          }
+        }
+
         game.puzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
           type: "note",
-          entry: notesToAdd,
+          entry: notes,
+        };
+        game.puzzleSolution[hint.removals[0][0]][hint.removals[0][1]] = {
+          type: "note",
+          entry: notes,
         };
       } catch {
         // If getSudokuHint throws an exception, we've initialized
@@ -143,6 +175,34 @@ export const convertPuzzleToSudokuObject = (
       }
     }
   }
+
+  // Finalize solution
+  let hint = getSudokuHint(game.puzzleState, [strategy]);
+
+  if (strategy === "OBVIOUS_SINGLE") {
+    game.puzzleSolution[hint.placements[0][0]][hint.placements[0][1]] = {
+      type: "value",
+      entry: hint.placements[0][2],
+    };
+  } else {
+    let notes: number[] = [];
+    if (
+      game.puzzleState[hint.removals[0][0]][hint.removals[0][1]].type === "note"
+    ) {
+      notes = (
+        game.puzzleState[hint.removals[0][0]][hint.removals[0][1]]
+          .entry as number[]
+      ).filter((x) => !hint.removals[0].slice(2).includes(x));
+    } else {
+      console.log("This shouldn't happen");
+    }
+    game.puzzleSolution[hint.removals[0][0]][hint.removals[0][1]] = {
+      type: "note",
+      entry: notes,
+    };
+  }
+
+  console.log(game);
 
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
