@@ -36,21 +36,32 @@ export const doesCellHaveConflict = (
     sudokuBoard.puzzleSolution[r][c].type === "note" &&
     sudokuBoard.initialPuzzleState[r][c].type === "note"
   ) {
+    let foundInvalidNote = false;
+
     for (const note of sudokuBoard.puzzleState[r][c].entry) {
-      if (
-        !(
-          note in sudokuBoard.puzzleSolution[r][c].entry ||
-          note in sudokuBoard.initialPuzzleState[r][c].entry
-        )
-      ) {
-        return true;
+      const inSolution = sudokuBoard.puzzleSolution[r][c].entry.includes(note);
+      const inInitial =
+        sudokuBoard.initialPuzzleState[r][c].entry.includes(note);
+
+      if (!inSolution && !inInitial) {
+        console.log(!inSolution, !inInitial);
+        foundInvalidNote = true;
+        break;
       }
     }
+
+    for (const note of sudokuBoard.puzzleSolution[r][c].entry) {
+      if (!sudokuBoard.puzzleState[r][c].entry.includes(note)) {
+        foundInvalidNote = true;
+        break;
+      }
+    }
+
+    return foundInvalidNote;
   }
 
-  // we shouldn't reach this case
-  // todo refactor this function so that we don't need this fallback
-  return false;
+  console.log("FALLBACK");
+  return true;
 };
 
 const isEqual = (a: any, b: any) => {
