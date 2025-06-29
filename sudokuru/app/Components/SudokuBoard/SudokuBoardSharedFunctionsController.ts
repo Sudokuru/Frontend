@@ -1,9 +1,11 @@
 import {
+  DrillObjectProps,
   BoardObjectProps,
   ClassicGameStatistics,
   DrillGameStatistics,
   GameVariant,
-} from "../../Functions/LocalDatabase";
+} from "./../../Functions/LocalDatabase";
+
 import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
 import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
 import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
@@ -52,10 +54,10 @@ const defaultMethods: SudokuVariantMethods = {
 // 4) Any per‐variant overrides (only override what you really need)
 const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   drill: {
-    doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
+    doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
-    headerRowTitle(sudokuBoard: BoardObjectProps) {
+    headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },
     finishSudokuGame(statistics: DrillGameStatistics): DrillGameStatistics {

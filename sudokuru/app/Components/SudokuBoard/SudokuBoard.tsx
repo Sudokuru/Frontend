@@ -204,7 +204,7 @@ const SudokuBoard = (props: Board) => {
     const returnedHint = getSudokuHint(
       sudokuBoard.puzzleState,
       updatedArray,
-      sudokuBoard.puzzleSolution as number[][],
+      sudokuBoard.puzzleSolution,
     );
 
     // unselect board and increment hint statistics
@@ -308,10 +308,7 @@ const SudokuBoard = (props: Board) => {
       // We do not need to take action if value is correct
       if (
         currentType === "value" &&
-        isValueCorrect(
-          sudokuBoard.puzzleSolution[r][c] as number,
-          currentEntry as number,
-        )
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], currentEntry as number)
       ) {
         continue;
       }
@@ -321,7 +318,7 @@ const SudokuBoard = (props: Board) => {
       // Incrementing numWrongCellsPlayed value
       if (
         !sudokuBoard.inNoteMode &&
-        !isValueCorrect(sudokuBoard.puzzleSolution[r][c] as number, inputValue)
+        !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
       ) {
         sudokuBoard.statistics.numWrongCellsPlayed++;
       }
@@ -341,7 +338,7 @@ const SudokuBoard = (props: Board) => {
         simplifyNotesSetting &&
         featurePreviewSetting &&
         !sudokuBoard.inNoteMode &&
-        isValueCorrect(sudokuBoard.puzzleSolution[r][c] as number, inputValue)
+        isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
       ) {
         for (const [rowIndex, row] of sudokuBoard.puzzleState.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
@@ -626,7 +623,7 @@ const SudokuBoard = (props: Board) => {
             currentSelectedCells[i],
             sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
               sudokuBoard.selectedCells[i].c
-            ] as number,
+            ],
             sudokuBoard.selectedCells[i].r,
             sudokuBoard.selectedCells[i].c,
           )
