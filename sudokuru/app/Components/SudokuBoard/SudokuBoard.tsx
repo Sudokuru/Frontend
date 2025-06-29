@@ -195,39 +195,58 @@ const SudokuBoard = (props: Board) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
-    const updatedArray: SudokuStrategy[] = [...strategyHintOrderSetting];
+    let strategyArray: SudokuStrategy[] = [...strategyHintOrderSetting];
 
     // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
-    updatedArray.unshift("SIMPLIFY_NOTES");
-    updatedArray.unshift("AMEND_NOTES");
+    strategyArray.unshift("SIMPLIFY_NOTES");
+    strategyArray.unshift("AMEND_NOTES");
 
-    const returnedHint = getSudokuHint(
-      sudokuBoard.puzzleState,
-      updatedArray,
-      sudokuBoard.puzzleSolution,
-    );
+    if (props.type === "drill") {
+      strategyArray = [props.strategy];
+    }
+
+    let returnedHint: HintProps;
+
+    // drill variant does not provide puzzleSolution
+    // todo change puzzleSolution to drillSolution in the schema, so we can do if checks and simpler implementation
+    if (typeof sudokuBoard.puzzleSolution[0][0] === "number") {
+      returnedHint = getSudokuHint(
+        sudokuBoard.puzzleState,
+        strategyArray,
+        sudokuBoard.puzzleSolution as number[][],
+      );
+    } else {
+      returnedHint = getSudokuHint(sudokuBoard.puzzleState, strategyArray);
+    }
 
     // unselect board and increment hint statistics
-    sudokuBoard.statistics.numHintsUsed++;
-    let incrementedStrategy = false;
-    for (const [
-      i,
-      strategies,
-    ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
-      if (strategies.hintStrategy === returnedHint.strategy) {
-        sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
-        incrementedStrategy = true;
-        break;
+    if ("numHintsUsed" in sudokuBoard.statistics) {
+      sudokuBoard.statistics.numHintsUsed++;
+    }
+
+    if ("numHintsUsedPerStrategy" in sudokuBoard.statistics) {
+      let incrementedStrategy = false;
+      for (const [
+        i,
+        strategies,
+      ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
+        if (strategies.hintStrategy === returnedHint.strategy) {
+          sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
+          incrementedStrategy = true;
+          break;
+        }
+      }
+      if (!incrementedStrategy) {
+        sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+          hintStrategy: returnedHint.strategy,
+          numHintsUsed: 1,
+        });
       }
     }
-    if (!incrementedStrategy) {
-      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-        hintStrategy: returnedHint.strategy,
-        numHintsUsed: 1,
-      });
-    }
+
     setSudokuBoard({
       ...sudokuBoard,
+      // @ts-ignore
       statistics: sudokuBoard.statistics,
       selectedCells: [],
     });
@@ -316,6 +335,7 @@ const SudokuBoard = (props: Board) => {
       cellsHaveUpdates = true;
 
       // Incrementing numWrongCellsPlayed value
+      // todo turn this into function
       if (
         !sudokuBoard.inNoteMode &&
         !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
@@ -334,6 +354,7 @@ const SudokuBoard = (props: Board) => {
       // Simplify Notes if setting is enabled and value is correct
       // This isn't the most performant way to do this but it is easy to read
       // We are looping through a bunch of cells we don't need to loop through
+      // todo turn this into function
       if (
         simplifyNotesSetting &&
         featurePreviewSetting &&
