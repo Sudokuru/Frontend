@@ -10,14 +10,19 @@ const Drill = (props: any) => {
     ? props.route.params.params
     : "no props.route.params in DrillPage";
 
+  let action = props.route.params
+    ? props.route.params.action
+    : "no props.route.action in DrillPage";
+
   strategy = strategy;
+  action = action;
   const navigation: any = useNavigation();
 
   return (
     <View style={homeScreenStyles.home}>
       <View style={styles.statisticsTitle}>
         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-        <SudokuBoard type="drill" action="StartGame" strategy={strategy} />
+        <SudokuBoard type="drill" action={action} strategy={strategy} />
         <StatusBar style="auto" />
       </View>
     </View>

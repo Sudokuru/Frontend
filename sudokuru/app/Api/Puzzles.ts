@@ -2,6 +2,7 @@ import {
   SudokuBoardActiveGameSchema,
   BoardObjectProps,
   GameVariant,
+  SudokuBoardDrillGameSchema,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
@@ -13,8 +14,13 @@ import { SudokuStrategy } from "sudokuru";
  * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
+// todo clean this up
 export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
-  return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
+  if (variant === "classic") {
+    return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
+  } else {
+    return getKeyJSON(`active_${variant}_game`, SudokuBoardDrillGameSchema);
+  }
 };
 
 /**

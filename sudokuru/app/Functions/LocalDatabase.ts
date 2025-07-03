@@ -197,7 +197,7 @@ export const SudokuBoardDrillSchema = z.object({
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
     difficulty: z.enum(
-      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]],
+      Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
     ),
     hintUsed: z.boolean(),
     numWrongCellsPlayed: z.number().int().nonnegative().finite().safe(),
@@ -220,6 +220,7 @@ export const SudokuBoardDrillSchema = z.object({
 });
 
 export const SudokuBoardActiveGameSchema = z.array(SudokuBoardClassicSchema);
+export const SudokuBoardDrillGameSchema = z.array(SudokuBoardDrillSchema);
 
 export const ProfileSchema = z.object({
   version: z.literal(1),

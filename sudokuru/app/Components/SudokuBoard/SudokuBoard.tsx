@@ -9,7 +9,6 @@ import {
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Core/Components/NumberControl";
 import ActionRow from "./Core/Components/ActionRow";
-import { generateGame } from "./Core/Functions/GenerateGameFunctions";
 import Puzzle from "./Core/Components/Puzzle";
 import {
   CellLocation,
@@ -45,7 +44,7 @@ import {
 import { DrillStrategy } from "../Home/DrillPanel";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
-  action: "StartGame";
+  action: "StartGame" | "ResumeGame";
   strategy: DrillStrategy;
 }
 
@@ -203,8 +202,8 @@ const SudokuBoard = (props: Board) => {
     strategyArray.unshift("SIMPLIFY_NOTES");
     strategyArray.unshift("AMEND_NOTES");
 
-    if (props.type === "drill") {
-      strategyArray = [props.strategy];
+    if (sudokuBoard.variant === "drill") {
+      strategyArray = [sudokuBoard.statistics.difficulty];
     }
 
     let returnedHint: HintProps;

@@ -13,6 +13,7 @@ import { OBVIOUS_TRIPLET_DRILLS } from "../../../../Data/drills/obvious_triplet_
 import { OBVIOUS_QUADRUPLET_DRILLS } from "../../../../Data/drills/obvious_quadruplet_drills";
 import { HIDDEN_TRIPLET_DRILLS } from "../../../../Data/drills/hidden_triplet_drills";
 import { HIDDEN_QUADRUPLET_DRILLS } from "../../../../Data/drills/hidden_quadruplet_drills";
+import { getGame } from "../../../../Api/Puzzles";
 
 export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
@@ -21,6 +22,14 @@ export async function generateGame(props: DrillBoard, initializeNotes = true) {
     return returnDrillOfStrategy(props.strategy);
     // !uncomment below for dev testing
     // return returnDrillOfType("dev");
+  } else if (props.action === "ResumeGame") {
+    const gameData: BoardObjectProps[] = await getGame(props.type);
+    // If game object is not returned, you get redirected to Main Page
+    if (gameData == null) {
+      // If resume game data is invalid, we start a novice game
+      return returnDrillOfStrategy("OBVIOUS_SINGLE");
+    }
+    return gameData[0];
   }
   return gameData;
 }

@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import {
@@ -25,6 +25,9 @@ import {
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
+import { BoardObjectProps } from "../../Functions/LocalDatabase";
+import { getGame } from "../../Api/Puzzles";
+import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 
 function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
   return arr;
@@ -68,6 +71,33 @@ const DrillPanel = (props: any) => {
   const hideDialog = () => setVisible(false);
 
   const [checked, setChecked] = React.useState(false);
+
+  const minWindowSize = useMinWindowDimensions();
+  const newSize = minWindowSize / 25;
+
+  // This determines if user has active game and displays resume button conditionally.
+  async function showOrHideResumeButton() {
+    const game: BoardObjectProps[] = await getGame("drill");
+    console.log("HELLO ", game);
+    if (game != null) {
+      showResumeButton();
+      return true;
+    } else {
+      hideResumeButton();
+      return false;
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      showOrHideResumeButton();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  const [resumeVisible, setResumeVisible] = React.useState(false);
+  const showResumeButton = () => setResumeVisible(true);
+  const hideResumeButton = () => setResumeVisible(false);
 
   async function showTutorialIfNotDismissed() {
     await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
@@ -118,6 +148,7 @@ const DrillPanel = (props: any) => {
             showTutorialIfNotDismissed().then(() => {
               navigation.navigate("DrillGame", {
                 params: DRILL_STRATEGIES[i],
+                action: "StartGame",
               });
             });
           }}
@@ -162,6 +193,24 @@ const DrillPanel = (props: any) => {
   // render each sub-array as a row
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
+      {resumeVisible ? (
+        <Button
+          style={{ margin: newSize / 4 }}
+          mode="outlined"
+          onPress={async function handlePress() {
+            const game = await showOrHideResumeButton();
+            if (game) {
+              navigation.navigate("DrillGame", {
+                action: "ResumeGame",
+              });
+            }
+          }}
+        >
+          Resume Puzzle
+        </Button>
+      ) : (
+        <></>
+      )}
       {drillButtonArray.map((subArray, index) => (
         <View
           style={{

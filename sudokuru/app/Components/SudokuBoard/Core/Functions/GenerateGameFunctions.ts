@@ -13,31 +13,29 @@ import {
   BoardObjectProps,
   ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";
-import { Board } from "../../SudokuBoard";
+import { Board, ClassicBoard } from "../../SudokuBoard";
 import { GameDifficulty } from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
 
 // todo break this up into multiple functions instead of the if statement based on board type
-export async function generateGame(props: Board, initializeNotes: boolean) {
+export async function generateGame(
+  props: ClassicBoard,
+  initializeNotes: boolean,
+) {
   let gameData = null;
 
-  if (props.type === "classic") {
-    if (props.action === "StartGame") {
-      return returnGameOfDifficulty(props.difficulty, initializeNotes);
-      // !uncomment below for dev testing
-      // return returnGameOfDifficulty("dev", initializeNotes);
-    } else if (props.action === "ResumeGame") {
-      const gameData: BoardObjectProps[] = await getGame(props.type);
-      // If game object is not returned, you get redirected to Main Page
-      if (gameData == null) {
-        // If resume game data is invalid, we start a novice game
-        return returnGameOfDifficulty("novice", initializeNotes);
-      }
-      return gameData[0];
+  if (props.action === "StartGame") {
+    return returnGameOfDifficulty(props.difficulty, initializeNotes);
+    // !uncomment below for dev testing
+    // return returnGameOfDifficulty("dev", initializeNotes);
+  } else if (props.action === "ResumeGame") {
+    const gameData: BoardObjectProps[] = await getGame(props.type);
+    // If game object is not returned, you get redirected to Main Page
+    if (gameData == null) {
+      // If resume game data is invalid, we start a novice game
+      return returnGameOfDifficulty("novice", initializeNotes);
     }
-  } else {
-    // temporary, will fix later.
-    return returnGameOfDifficulty("novice", initializeNotes);
+    return gameData[0];
   }
   return gameData;
 }
