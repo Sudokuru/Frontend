@@ -14,12 +14,6 @@ export const isGameSolved = (sudokuBoard: BoardObjectProps): boolean => {
   for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
     for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
       if (sudokuBoard.puzzleState[r][c].type === "given") continue;
-      if (
-        sudokuBoard.puzzleState[r][c].type === "note" ||
-        sudokuBoard.puzzleState[r][c].entry === 0
-      ) {
-        return false;
-      }
       const isValueCorrectResult = isValueCorrect(
         sudokuBoard.puzzleSolution[r][c] as number,
         sudokuBoard.puzzleState[r][c].entry as number,

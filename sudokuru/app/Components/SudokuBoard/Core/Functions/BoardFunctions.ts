@@ -1,12 +1,14 @@
 import { useWindowDimensions } from "react-native";
 import {
   BoardObjectProps,
+  CellProps,
   ClassicGameStatistics,
   ClassicObjectProps,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
+import { isEqual } from "../../Drill/Functions/CellFunctions";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -26,9 +28,12 @@ export function useBoardSize(): number {
 }
 
 export const isValueCorrect = (
-  solution: number,
+  solution: CellProps | number,
   inputValue: number,
 ): boolean => {
+  if (typeof solution === "object" && "entry" in solution) {
+    return isEqual(solution.entry, inputValue);
+  }
   return solution === inputValue;
 };
 
