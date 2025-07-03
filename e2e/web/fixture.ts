@@ -58,7 +58,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
     const localStorage: { name: string; value: string }[] = [];
 
     const storageItems = [
-      { key: "active_game", value: activeGameStorage },
+      { key: "active_classic_game", value: activeGameStorage },
       { key: "profile", value: profileStorage },
       { key: "statistics", value: statisticsStorage },
     ];
@@ -112,7 +112,10 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
   // Loads a game from local storage and navigates to resume the game.
   resumeGame: async ({ page, gameToResume }, use) => {
     await page.evaluate((gameToResume: JSON) => {
-      window.localStorage.setItem("active_game", JSON.stringify(gameToResume));
+      window.localStorage.setItem(
+        "active_classic_game",
+        JSON.stringify(gameToResume),
+      );
     }, gameToResume as JSON);
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
