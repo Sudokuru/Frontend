@@ -11,6 +11,8 @@ import { DrillStrategy } from "../../../Home/DrillPanel";
 import { OBVIOUS_PAIR_DRILLS } from "../../../../Data/drills/obvious_pair_drills";
 import { OBVIOUS_TRIPLET_DRILLS } from "../../../../Data/drills/obvious_triplet_drills";
 import { OBVIOUS_QUADRUPLET_DRILLS } from "../../../../Data/drills/obvious_quadruplet_drills";
+import { HIDDEN_TRIPLET_DRILLS } from "../../../../Data/drills/hidden_triplet_drills";
+import { HIDDEN_QUADRUPLET_DRILLS } from "../../../../Data/drills/hidden_quadruplet_drills";
 
 export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
@@ -57,8 +59,8 @@ export const returnDrillOfType = (strategy: DrillStrategy | "dev"): string => {
     //   return retrieveRandomDrillPuzzle(HIDDEN_PAIR_DRILLS);
     // case "HIDDEN_TRIPLET":
     //   return retrieveRandomDrillPuzzle(HIDDEN_TRIPLET_DRILLS);
-    // case "HIDDEN_QUADRUPLET":
-    //   return retrieveRandomDrillPuzzle(HIDDEN_QUADRUPLET_DRILLS);
+    case "HIDDEN_QUADRUPLET":
+      return retrieveRandomDrillPuzzle(HIDDEN_QUADRUPLET_DRILLS);
     // case "POINTING_PAIR":
     //   return retrieveRandomDrillPuzzle(POINTING_PAIR_DRILLS);
     // case "POINTING_TRIPLET":
