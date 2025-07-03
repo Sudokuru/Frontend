@@ -21,7 +21,7 @@ import {
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
 
-import { Board, DrillBoard } from "./SudokuBoard";
+import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
@@ -56,7 +56,7 @@ const defaultMethods: SudokuVariantMethods = {
     return coreFinishGameStatistics(statistics, variant);
   },
   generateGame(
-    board: Board,
+    board: ClassicBoard,
     initializeNotes: boolean,
   ): Promise<BoardObjectProps | null> {
     return coreGenerateGame(board, initializeNotes);

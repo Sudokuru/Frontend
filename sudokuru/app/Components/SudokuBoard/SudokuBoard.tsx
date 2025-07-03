@@ -252,7 +252,7 @@ const SudokuBoard = (props: Board) => {
       setSudokuBoard({
         ...sudokuBoard,
         // @ts-ignore
-        puzzleState: sudokuBoard.initialPuzzleState,
+        puzzleState: JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState)),
         statistics: sudokuBoard.statistics,
         selectedCells: [],
       });
