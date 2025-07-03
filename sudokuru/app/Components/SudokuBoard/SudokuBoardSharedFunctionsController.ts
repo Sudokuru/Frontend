@@ -29,7 +29,12 @@ import {
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
 
+import { EndGameModal as CoreEndGameModal } from "./Core/Components/EndGameModal";
+import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameModal";
+
 import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
+import { Component, JSX } from "react";
+import Drill from "../../Pages/DrillGame";
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
@@ -48,6 +53,10 @@ export interface SudokuVariantMethods {
     initializeNotes: boolean,
   ): Promise<BoardObjectProps | null>;
   handlePause(sudokuBoard: BoardObjectProps, navigation: any): void;
+  //renderEndGameModal(statistics: ClassicGameStatistics | DrillGameStatistics): JSX.Element;
+  getEndGameModal(): React.ComponentType<{
+    statistics: ClassicGameStatistics | DrillGameStatistics;
+  }>;
 }
 
 // 3) Default methods for all variants
@@ -75,6 +84,12 @@ const defaultMethods: SudokuVariantMethods = {
   },
   handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
     return coreHandlePause(sudokuBoard, navigation);
+  },
+  // renderEndGameModal(statistics: ClassicGameStatistics) {
+  //   return CoreEndGameModal(statistics);
+  // },
+  getEndGameModal() {
+    return CoreEndGameModal;
   },
 };
 
@@ -104,6 +119,12 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     },
     handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
       return drillHandlePause(sudokuBoard, navigation);
+    },
+    // renderEndGameModal(statistics: DrillGameStatistics) {
+    //   return DrillEndGameModal(statistics);
+    // },
+    getEndGameModal() {
+      return DrillEndGameModal;
     },
   },
   // classic has no overrides since classic is the default

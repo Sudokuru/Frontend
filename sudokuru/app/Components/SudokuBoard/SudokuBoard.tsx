@@ -132,16 +132,15 @@ const SudokuBoard = (props: Board) => {
 
   // Render EndGame screen when game has ended
   if (gameOver) {
-    return (
-      <EndGameModal
-        score={sudokuBoard.statistics.score}
-        time={sudokuBoard.statistics.time}
-        difficulty={sudokuBoard.statistics.difficulty}
-        numHintsUsed={sudokuBoard.statistics.numHintsUsed}
-        numHintsUsedPerStrategy={sudokuBoard.statistics.numHintsUsedPerStrategy}
-        numWrongCellsPlayed={sudokuBoard.statistics.numWrongCellsPlayed}
-      />
-    );
+    console.log(sudokuBoard.statistics);
+    const EndGameComponent = boardMethods[props.type].getEndGameModal();
+    return <EndGameComponent statistics={sudokuBoard.statistics} />;
+    // const EndGameComponent = boardMethods[props.type].renderEndGameModal(sudokuBoard.statistics);
+    // return (
+    //   boardMethods[props.type].renderEndGameModal(
+    //     sudokuBoard.statistics
+    //   )
+    // );
   }
 
   // const boardMethods: BoardMethods = {
