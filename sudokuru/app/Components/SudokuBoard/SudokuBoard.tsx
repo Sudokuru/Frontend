@@ -218,6 +218,8 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard.puzzleSolution as number[][],
       );
     } else {
+      // todo for drills this needs to also reset the sudokuBoard state before calling the hint
+
       returnedHint = getSudokuHint(
         sudokuBoard.initialPuzzleState,
         strategyArray,
@@ -249,12 +251,22 @@ const SudokuBoard = (props: Board) => {
       }
     }
 
-    setSudokuBoard({
-      ...sudokuBoard,
-      // @ts-ignore
-      statistics: sudokuBoard.statistics,
-      selectedCells: [],
-    });
+    if ("initialPuzzleState" in sudokuBoard) {
+      setSudokuBoard({
+        ...sudokuBoard,
+        // @ts-ignore
+        puzzleState: sudokuBoard.initialPuzzleState,
+        statistics: sudokuBoard.statistics,
+        selectedCells: [],
+      });
+    } else {
+      setSudokuBoard({
+        ...sudokuBoard,
+        // @ts-ignore
+        statistics: sudokuBoard.statistics,
+        selectedCells: [],
+      });
+    }
 
     setSudokuHint({
       stage: 1,
