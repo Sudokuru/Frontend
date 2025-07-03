@@ -9,6 +9,8 @@ import { DrillBoard } from "../../SudokuBoard";
 import { getSudokuHint } from "../../Core/Functions/HintFunctions";
 import { DrillStrategy } from "../../../Home/DrillPanel";
 import { OBVIOUS_PAIR_DRILLS } from "../../../../Data/drills/obvious_pair_drills";
+import { OBVIOUS_TRIPLET_DRILLS } from "../../../../Data/drills/obvious_triplet_drills";
+import { OBVIOUS_QUADRUPLET_DRILLS } from "../../../../Data/drills/obvious_quadruplet_drills";
 
 export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
@@ -45,10 +47,10 @@ export const returnDrillOfType = (strategy: DrillStrategy | "dev"): string => {
       return retrieveRandomDrillPuzzle(OBVIOUS_SINGLE_DRILLS);
     case "OBVIOUS_PAIR":
       return retrieveRandomDrillPuzzle(OBVIOUS_PAIR_DRILLS);
-    // case "OBVIOUS_TRIPLET":
-    //   return retrieveRandomDrillPuzzle(OBVIOUS_TRIPLET_DRILLS);
-    // case "OBVIOUS_QUADRUPLET":
-    //   return retrieveRandomDrillPuzzle(OBVIOUS_QUADRUPLET_DRILLS);
+    case "OBVIOUS_TRIPLET":
+      return retrieveRandomDrillPuzzle(OBVIOUS_TRIPLET_DRILLS);
+    case "OBVIOUS_QUADRUPLET":
+      return retrieveRandomDrillPuzzle(OBVIOUS_QUADRUPLET_DRILLS);
     case "HIDDEN_SINGLE":
       return retrieveRandomDrillPuzzle(HIDDEN_SINGLE_DRILLS);
     // case "HIDDEN_PAIR":
@@ -87,7 +89,7 @@ export const returnDrillOfStrategy = (
  */
 export const convertPuzzleToSudokuObject = (
   puzzle: string,
-  strategy: SudokuStrategy,
+  strategy: DrillStrategy,
 ): DrillObjectProps => {
   let game: DrillObjectProps = {
     variant: "drill",
@@ -131,58 +133,54 @@ export const convertPuzzleToSudokuObject = (
   }
 
   // Initialize the board with notes filled in
-  if (strategy !== "AMEND_NOTES") {
-    const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    while (true) {
-      try {
-        let hint = getSudokuHint(game.puzzleState, SUDOKU_STRATEGY_ARRAY);
+  const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  while (true) {
+    try {
+      let hint = getSudokuHint(game.puzzleState, SUDOKU_STRATEGY_ARRAY);
 
-        if (hint.strategy === strategy) {
-          break;
-        }
-
-        // hint.removals structure: [row, col, note1, note2, ...]
-        // slice(2) skips row and col to get just the notes to remove
-        // Filter to keep only notes that shouldn't be removed
-
-        let notes: number[] = [];
-
-        if (hint.strategy === "AMEND_NOTES") {
-          notes = ALL_NOTES.filter(
-            (x) => !hint.removals[0].slice(2).includes(x),
-          );
-        } else {
-          for (const removal of hint.removals) {
-            if (game.puzzleState[removal[0]][removal[1]].type === "note") {
-              //
-              notes = (
-                game.puzzleState[removal[0]][removal[1]].entry as number[]
-              ).filter((x) => !removal.slice(2).includes(x));
-            } else {
-              console.log("This shouldn't happen");
-            }
-          }
-        }
-
-        for (const removal of hint.removals) {
-          game.puzzleState[removal[0]][removal[1]] = {
-            type: "note",
-            entry: notes,
-          };
-          game.puzzleSolution[removal[0]][removal[1]] = {
-            type: "note",
-            entry: notes,
-          };
-          game.initialPuzzleState[removal[0]][removal[1]] = {
-            type: "note",
-            entry: notes,
-          };
-        }
-      } catch {
-        // If getSudokuHint throws an exception, we've initialized
-        // all possible notes and can exit the loop
+      if (hint.strategy === strategy) {
         break;
       }
+
+      // hint.removals structure: [row, col, note1, note2, ...]
+      // slice(2) skips row and col to get just the notes to remove
+      // Filter to keep only notes that shouldn't be removed
+
+      let notes: number[] = [];
+
+      if (hint.strategy === "AMEND_NOTES") {
+        notes = ALL_NOTES.filter((x) => !hint.removals[0].slice(2).includes(x));
+      } else {
+        for (const removal of hint.removals) {
+          if (game.puzzleState[removal[0]][removal[1]].type === "note") {
+            //
+            notes = (
+              game.puzzleState[removal[0]][removal[1]].entry as number[]
+            ).filter((x) => !removal.slice(2).includes(x));
+          } else {
+            console.log("This shouldn't happen");
+          }
+        }
+      }
+
+      for (const removal of hint.removals) {
+        game.puzzleState[removal[0]][removal[1]] = {
+          type: "note",
+          entry: notes,
+        };
+        game.puzzleSolution[removal[0]][removal[1]] = {
+          type: "note",
+          entry: notes,
+        };
+        game.initialPuzzleState[removal[0]][removal[1]] = {
+          type: "note",
+          entry: notes,
+        };
+      }
+    } catch {
+      // If getSudokuHint throws an exception, we've initialized
+      // all possible notes and can exit the loop
+      break;
     }
   }
 
