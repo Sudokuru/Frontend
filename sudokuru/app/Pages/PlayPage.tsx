@@ -24,7 +24,7 @@ const PlayPage = () => {
 
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
-    const game: BoardObjectProps[] = await getGame();
+    const game: BoardObjectProps[] = await getGame("classic");
     if (game != null) {
       showResumeButton();
       return true;

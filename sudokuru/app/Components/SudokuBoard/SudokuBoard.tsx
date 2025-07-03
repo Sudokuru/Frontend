@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { handlePause, isValueCorrect } from "./Core/Functions/BoardFunctions";
+import { isValueCorrect } from "./Core/Functions/BoardFunctions";
 import {
   doesBoardHaveConflict,
   isGameSolved,
@@ -430,6 +430,7 @@ const SudokuBoard = (props: Board) => {
         // @ts-ignore
         statistics: boardMethods[props.type].finishSudokuGame(
           sudokuBoard.statistics,
+          props.type,
         ),
       });
       setGameOver(true);
@@ -519,6 +520,7 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard={sudokuBoard}
         setSudokuBoard={setSudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
+        handlePause={boardMethods[props.type].handlePause}
       />
     );
   };
@@ -540,7 +542,7 @@ const SudokuBoard = (props: Board) => {
         return;
       case "p":
       case "P":
-        handlePause(sudokuBoard, navigation);
+        boardMethods[props.type].handlePause(sudokuBoard, navigation);
         return;
       case "t":
       case "T":
@@ -806,7 +808,7 @@ const SudokuBoard = (props: Board) => {
             puzzleState: sudokuBoard.puzzleState,
             actionHistory: sudokuBoard.actionHistory,
             //@ts-ignore
-            statistics: finishSudokuGame(sudokuBoard.statistics),
+            statistics: finishSudokuGame(sudokuBoard.statistics, props.type),
           });
           setGameOver(true);
         }

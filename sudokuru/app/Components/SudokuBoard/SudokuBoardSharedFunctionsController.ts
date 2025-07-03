@@ -10,10 +10,17 @@ import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functio
 import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
 import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
 import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderRowFunctions";
-import { finishSudokuGame as coreFinishGameStatistics } from "./Core/Functions/BoardFunctions";
-import { finishSudokuGame as drillFinishGameStatistics } from "./Drill/Functions/BoardFunctions";
+import {
+  finishSudokuGame as coreFinishGameStatistics,
+  handlePause as coreHandlePause,
+} from "./Core/Functions/BoardFunctions";
+import {
+  finishSudokuGame as drillFinishGameStatistics,
+  handlePause as drillHandlePause,
+} from "./Drill/Functions/BoardFunctions";
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
+
 import { Board, DrillBoard } from "./SudokuBoard";
 
 export interface SudokuVariantMethods {
@@ -25,11 +32,13 @@ export interface SudokuVariantMethods {
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
+    variant: GameVariant,
   ): ClassicGameStatistics | DrillGameStatistics;
   generateGame(
     board: Board,
     initializeNotes: boolean,
   ): Promise<BoardObjectProps | null>;
+  handlePause(sudokuBoard: BoardObjectProps, navigation: any): void;
 }
 
 // 3) Default methods for all variants
@@ -40,14 +49,20 @@ const defaultMethods: SudokuVariantMethods = {
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
   },
-  finishSudokuGame(statistics: ClassicGameStatistics): ClassicGameStatistics {
-    return coreFinishGameStatistics(statistics);
+  finishSudokuGame(
+    statistics: ClassicGameStatistics,
+    variant: GameVariant,
+  ): ClassicGameStatistics {
+    return coreFinishGameStatistics(statistics, variant);
   },
   generateGame(
     board: Board,
     initializeNotes: boolean,
   ): Promise<BoardObjectProps | null> {
     return coreGenerateGame(board, initializeNotes);
+  },
+  handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
+    return coreHandlePause(sudokuBoard, navigation);
   },
 };
 
@@ -60,14 +75,20 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },
-    finishSudokuGame(statistics: DrillGameStatistics): DrillGameStatistics {
-      return drillFinishGameStatistics(statistics);
+    finishSudokuGame(
+      statistics: DrillGameStatistics,
+      variant: GameVariant,
+    ): DrillGameStatistics {
+      return drillFinishGameStatistics(statistics, variant);
     },
     generateGame(
       board: DrillBoard,
       initializeNotes: boolean,
     ): Promise<BoardObjectProps | null> {
       return drillGenerateGame(board, initializeNotes);
+    },
+    handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
+      return drillHandlePause(sudokuBoard, navigation);
     },
   },
   // classic has no overrides since classic is the default

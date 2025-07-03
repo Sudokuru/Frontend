@@ -3,11 +3,7 @@ import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
-import {
-  useCellSize,
-  formatTime,
-  handlePause,
-} from "../Functions/BoardFunctions";
+import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
 
 let fallbackHeight = 30;
@@ -16,10 +12,11 @@ interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
   headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
+  handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
 }
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard, headerRowTitle } = props;
+  const { sudokuBoard, setSudokuBoard, headerRowTitle, handlePause } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();

@@ -2,6 +2,7 @@ import { useWindowDimensions } from "react-native";
 import {
   BoardObjectProps,
   ClassicGameStatistics,
+  GameVariant,
 } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
@@ -73,6 +74,7 @@ export const formatTime = (inputSeconds: number) => {
  */
 export function finishSudokuGame(
   statistics: ClassicGameStatistics,
+  variant: GameVariant,
 ): ClassicGameStatistics {
   // calculate score
   const score = calculateGameScore(
@@ -89,6 +91,7 @@ export function finishSudokuGame(
     statistics.numWrongCellsPlayed,
     statistics.time,
     score,
+    variant,
   );
 
   statistics.score = score;

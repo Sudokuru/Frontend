@@ -1,6 +1,7 @@
 import {
   SudokuBoardActiveGameSchema,
   BoardObjectProps,
+  GameVariant,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
@@ -12,8 +13,8 @@ import { SudokuStrategy } from "sudokuru";
  * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
-export const getGame = (): Promise<BoardObjectProps[]> => {
-  return getKeyJSON("active_game", SudokuBoardActiveGameSchema);
+export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
+  return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
 };
 
 /**
@@ -21,7 +22,7 @@ export const getGame = (): Promise<BoardObjectProps[]> => {
  * @param game - activeGame JSON object
  */
 export const saveGame = (game: BoardObjectProps) => {
-  storeData("active_game", JSON.stringify([game]));
+  storeData(`active_${game.variant}_game`, JSON.stringify([game]));
 };
 
 /**
@@ -46,9 +47,10 @@ export const finishGame = async (
   numWrongCellsPlayed: number,
   time: number,
   score: number,
+  variant: GameVariant,
 ) => {
   // remove the game from storage
-  await removeData("active_game");
+  await removeData(`active_${variant}_game`);
 
   // Create or update user's statistics
   let statistics: Statistics = await getStatistics();

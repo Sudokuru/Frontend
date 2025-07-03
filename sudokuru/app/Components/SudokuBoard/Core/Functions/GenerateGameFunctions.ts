@@ -27,7 +27,7 @@ export async function generateGame(props: Board, initializeNotes: boolean) {
       // !uncomment below for dev testing
       // return returnGameOfDifficulty("dev", initializeNotes);
     } else if (props.action === "ResumeGame") {
-      const gameData: BoardObjectProps[] = await getGame();
+      const gameData: BoardObjectProps[] = await getGame(props.type);
       // If game object is not returned, you get redirected to Main Page
       if (gameData == null) {
         // If resume game data is invalid, we start a novice game
