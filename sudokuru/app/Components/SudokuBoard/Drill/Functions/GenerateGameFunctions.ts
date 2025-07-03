@@ -7,6 +7,8 @@ import {
 } from "../../../../Functions/LocalDatabase";
 import { DrillBoard } from "../../SudokuBoard";
 import { getSudokuHint } from "../../Core/Functions/HintFunctions";
+import { DrillStrategy } from "../../../Home/DrillPanel";
+import { OBVIOUS_PAIR_DRILLS } from "../../../../Data/drills/obvious_pair_drills";
 
 export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
@@ -33,19 +35,16 @@ const retrieveRandomDrillPuzzle = (PUZZLES: string[]): string => {
  * @param difficulty The difficulty classification of the puzzle. (string)
  * @returns A Puzzle object
  */
-export const returnDrillOfType = (strategy: SudokuStrategy | "dev"): string => {
+export const returnDrillOfType = (strategy: DrillStrategy | "dev"): string => {
   console.log(strategy);
+
   switch (strategy) {
     case "dev":
       return retrieveRandomDrillPuzzle(OBVIOUS_SINGLE_DRILLS);
-    // case "AMEND_NOTES":
-    //   return retrieveRandomDrillPuzzle(AMEND_NOTES_DRILLS);
-    // case "SIMPLIFY_NOTES":
-    //   return retrieveRandomDrillPuzzle(SIMPLIFY_NOTES_DRILLS);
     case "OBVIOUS_SINGLE":
       return retrieveRandomDrillPuzzle(OBVIOUS_SINGLE_DRILLS);
-    // case "OBVIOUS_PAIR":
-    //   return retrieveRandomDrillPuzzle(OBVIOUS_PAIR_DRILLS);
+    case "OBVIOUS_PAIR":
+      return retrieveRandomDrillPuzzle(OBVIOUS_PAIR_DRILLS);
     // case "OBVIOUS_TRIPLET":
     //   return retrieveRandomDrillPuzzle(OBVIOUS_TRIPLET_DRILLS);
     // case "OBVIOUS_QUADRUPLET":
@@ -72,7 +71,7 @@ export const returnDrillOfType = (strategy: SudokuStrategy | "dev"): string => {
  * @returns A puzzle object that is readable by the Sudoku component.
  */
 export const returnDrillOfStrategy = (
-  strategy: SudokuStrategy | "dev",
+  strategy: DrillStrategy | "dev",
 ): BoardObjectProps => {
   const puzzles = returnDrillOfType(strategy);
   if (strategy === "dev") {
@@ -153,32 +152,32 @@ export const convertPuzzleToSudokuObject = (
             (x) => !hint.removals[0].slice(2).includes(x),
           );
         } else {
-          if (
-            game.puzzleState[hint.removals[0][0]][hint.removals[0][1]].type ===
-            "note"
-          ) {
-            //
-            notes = (
-              game.puzzleState[hint.removals[0][0]][hint.removals[0][1]]
-                .entry as number[]
-            ).filter((x) => !hint.removals[0].slice(2).includes(x));
-          } else {
-            console.log("This shouldn't happen");
+          for (const removal of hint.removals) {
+            if (game.puzzleState[removal[0]][removal[1]].type === "note") {
+              //
+              notes = (
+                game.puzzleState[removal[0]][removal[1]].entry as number[]
+              ).filter((x) => !removal.slice(2).includes(x));
+            } else {
+              console.log("This shouldn't happen");
+            }
           }
         }
 
-        game.puzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
-          type: "note",
-          entry: notes,
-        };
-        game.puzzleSolution[hint.removals[0][0]][hint.removals[0][1]] = {
-          type: "note",
-          entry: notes,
-        };
-        game.initialPuzzleState[hint.removals[0][0]][hint.removals[0][1]] = {
-          type: "note",
-          entry: notes,
-        };
+        for (const removal of hint.removals) {
+          game.puzzleState[removal[0]][removal[1]] = {
+            type: "note",
+            entry: notes,
+          };
+          game.puzzleSolution[removal[0]][removal[1]] = {
+            type: "note",
+            entry: notes,
+          };
+          game.initialPuzzleState[removal[0]][removal[1]] = {
+            type: "note",
+            entry: notes,
+          };
+        }
       } catch {
         // If getSudokuHint throws an exception, we've initialized
         // all possible notes and can exit the loop
@@ -214,20 +213,19 @@ export const convertPuzzleToSudokuObject = (
     }
   } else {
     let notes: number[] = [];
-    if (
-      game.puzzleState[hint.removals[0][0]][hint.removals[0][1]].type === "note"
-    ) {
-      notes = (
-        game.puzzleState[hint.removals[0][0]][hint.removals[0][1]]
-          .entry as number[]
-      ).filter((x) => !hint.removals[0].slice(2).includes(x));
-    } else {
-      console.log("This shouldn't happen");
+    for (const removal of hint.removals) {
+      if (game.puzzleState[removal[0]][removal[1]].type === "note") {
+        notes = (
+          game.puzzleState[removal[0]][removal[1]].entry as number[]
+        ).filter((x) => !removal.slice(2).includes(x));
+      } else {
+        console.log("This shouldn't happen");
+      }
+      game.puzzleSolution[removal[0]][removal[1]] = {
+        type: "note",
+        entry: notes,
+      };
     }
-    game.puzzleSolution[hint.removals[0][0]][hint.removals[0][1]] = {
-      type: "note",
-      entry: notes,
-    };
   }
 
   console.log(game);

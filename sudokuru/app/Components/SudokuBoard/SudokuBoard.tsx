@@ -42,10 +42,11 @@ import {
   boardMethods,
   SudokuVariantMethods,
 } from "./SudokuBoardSharedFunctionsController";
+import { DrillStrategy } from "../Home/DrillPanel";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame";
-  strategy: SudokuStrategy;
+  strategy: DrillStrategy;
 }
 
 export interface ClassicBoard extends CoreBoard<"classic"> {

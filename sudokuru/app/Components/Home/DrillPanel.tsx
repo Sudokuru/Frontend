@@ -26,7 +26,11 @@ import {
   storeData,
 } from "../../Functions/AsyncStorage";
 
-let drillStrategies: SudokuStrategy[] = [
+function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
+  return arr;
+}
+
+export const DRILL_STRATEGIES = defineDrillStrategies([
   "OBVIOUS_SINGLE",
   "OBVIOUS_PAIR",
   "OBVIOUS_TRIPLET",
@@ -37,7 +41,9 @@ let drillStrategies: SudokuStrategy[] = [
   "HIDDEN_QUADRUPLET",
   "POINTING_PAIR",
   "POINTING_TRIPLET",
-];
+] as const);
+
+export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
 let drillImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
@@ -75,12 +81,12 @@ const DrillPanel = (props: any) => {
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
     props.width,
-    drillStrategies.length,
+    DRILL_STRATEGIES.length,
   );
-  for (let i = 0; i < drillStrategies.length; i++) {
+  for (let i = 0; i < DRILL_STRATEGIES.length; i++) {
     let img: ImageURISource = drillImages[i];
     let difficulty: difficulty;
-    switch (drillStrategies[i]) {
+    switch (DRILL_STRATEGIES[i]) {
       case "OBVIOUS_SINGLE":
         difficulty = "Very Easy";
         break;
@@ -101,7 +107,7 @@ const DrillPanel = (props: any) => {
     let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
-        key={drillStrategies[i]}
+        key={DRILL_STRATEGIES[i]}
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING,
@@ -111,14 +117,14 @@ const DrillPanel = (props: any) => {
           onPress={() => {
             showTutorialIfNotDismissed().then(() => {
               navigation.navigate("DrillGame", {
-                params: drillStrategies[i],
+                params: DRILL_STRATEGIES[i],
               });
             });
           }}
         >
           <Card mode="outlined">
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
-              {toTitle(drillStrategies[i])}
+              {toTitle(DRILL_STRATEGIES[i])}
             </Text>
             <Text
               variant="headlineSmall"
