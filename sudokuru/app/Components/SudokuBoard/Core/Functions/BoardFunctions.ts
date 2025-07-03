@@ -2,6 +2,7 @@ import { useWindowDimensions } from "react-native";
 import {
   BoardObjectProps,
   ClassicGameStatistics,
+  ClassicObjectProps,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore } from "./DifficultyFunctions";
@@ -29,6 +30,22 @@ export const isValueCorrect = (
   inputValue: number,
 ): boolean => {
   return solution === inputValue;
+};
+
+export const isCellCorrect = (
+  sudokuBoard: ClassicObjectProps,
+  r: number,
+  c: number,
+): boolean => {
+  if (
+    sudokuBoard.puzzleState[r][c].type === "note" ||
+    sudokuBoard.puzzleState[r][c].entry === 0
+  ) {
+    return false;
+  }
+  return (
+    sudokuBoard.puzzleState[r][c].entry === sudokuBoard.puzzleSolution[r][c]
+  );
 };
 
 // https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds

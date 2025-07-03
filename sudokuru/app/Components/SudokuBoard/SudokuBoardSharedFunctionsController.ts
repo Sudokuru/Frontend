@@ -4,10 +4,18 @@ import {
   ClassicGameStatistics,
   DrillGameStatistics,
   GameVariant,
+  ClassicObjectProps,
 } from "./../../Functions/LocalDatabase";
 
-import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
-import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
+import {
+  doesCellHaveConflict as coreDoesCellHaveConflict,
+  isCellCorrect as coreIsCellCorrect,
+} from "./Core/Functions/CellFunctions";
+import {
+  doesCellHaveConflict as drillDoesCellHaveConflict,
+  isCellCorrect as drillIsCellCorrect,
+} from "./Drill/Functions/CellFunctions";
+
 import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
 import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderRowFunctions";
 import {
@@ -29,6 +37,7 @@ export interface SudokuVariantMethods {
     r: number,
     c: number,
   ): boolean;
+  isCellCorrect(sudokuBoard: BoardObjectProps, r: number, c: number): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
@@ -45,6 +54,9 @@ export interface SudokuVariantMethods {
 const defaultMethods: SudokuVariantMethods = {
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
+  },
+  isCellCorrect(sudokuBoard: ClassicObjectProps, r: number, c: number) {
+    return coreIsCellCorrect(sudokuBoard, r, c);
   },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
@@ -71,6 +83,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   drill: {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
+    },
+    isCellCorrect(sudokuBoard: DrillObjectProps, r: number, c: number) {
+      return coreIsCellCorrect(sudokuBoard, r, c);
     },
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
