@@ -218,8 +218,6 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard.puzzleSolution as number[][],
       );
     } else {
-      // todo for drills this needs to also reset the sudokuBoard state before calling the hint
-
       returnedHint = getSudokuHint(
         sudokuBoard.initialPuzzleState,
         strategyArray,
