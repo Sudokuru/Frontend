@@ -20,7 +20,6 @@ import {
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
-import EndGameModal from "./Core/Components/EndGameModal";
 import { getSudokuHint } from "./Core/Functions/HintFunctions";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
@@ -57,15 +56,6 @@ export interface ClassicBoard extends CoreBoard<"classic"> {
 export interface CoreBoard<T extends GameVariant> {
   readonly type: T;
 }
-
-// interface BoardMethods {
-//   drill: {
-//     calculate: () => number;
-//   };
-//   classic: {
-//     calculate: () => number;
-//   };
-// }
 
 export type Board = DrillBoard | ClassicBoard;
 
@@ -142,19 +132,6 @@ const SudokuBoard = (props: Board) => {
     //   )
     // );
   }
-
-  // const boardMethods: BoardMethods = {
-  //   drill: {
-  //     calculate: () => {
-  //       return 0;
-  //     },
-  //   },
-  //   classic: {
-  //     calculate: () => {
-  //       return 1;
-  //     },
-  //   },
-  // };
 
   /**
    * Adds the previous move (most recent move stored in action history) to board
