@@ -5,6 +5,7 @@ import Statistic from "../../../Statistics/Statistic";
 import React from "react";
 import { DrillGameStatistics } from "../../../../Functions/LocalDatabase";
 import { formatTime } from "../../Core/Functions/BoardFunctions";
+import { toTitle } from "../../../../Functions/Utils";
 
 export const EndGameModal = (props: DrillGameStatistics) => {
   const size = useWindowDimensions();
@@ -42,7 +43,7 @@ export const EndGameModal = (props: DrillGameStatistics) => {
         />
         <Statistic
           statisticName="Strategy: "
-          statisticValue={props.difficulty}
+          statisticValue={toTitle(props.difficulty)}
           testID="strategy"
         />
         <Statistic
@@ -51,8 +52,8 @@ export const EndGameModal = (props: DrillGameStatistics) => {
           testID="numWrongCellsPlayed"
         />
         <Statistic
-          statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
+          statisticName="Hint Used: "
+          statisticValue={props.hintUsed ? "Yes" : "No"}
           testID="numHintsUsed"
         />
       </View>

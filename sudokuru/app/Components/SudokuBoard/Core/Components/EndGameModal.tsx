@@ -4,24 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
-import { SudokuStrategy } from "sudokuru";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
-import {
-  ClassicGameStatistics,
-  DrillGameStatistics,
-} from "../../../../Functions/LocalDatabase";
-
-interface EndGameModalProps {
-  time: number;
-  numHintsUsed: number;
-  numWrongCellsPlayed: number;
-  numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
-    numHintsUsed: number;
-  }[];
-  score: number;
-  difficulty: string;
-}
+import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
 export const EndGameModal = (props: ClassicGameStatistics) => {
   const size = useWindowDimensions();
