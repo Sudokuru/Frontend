@@ -29,10 +29,9 @@ const NumberControl = (props: NumberControlProps) => {
     sudokuBoard,
   } = props;
   const cellSize = useCellSize();
-  const { theme } = useTheme();
+  const { themeName, theme } = useTheme();
 
-  const { darkThemeSetting, progressIndicatorSetting } =
-    React.useContext(PreferencesContext);
+  const { progressIndicatorSetting } = React.useContext(PreferencesContext);
 
   return (
     <View
@@ -61,7 +60,9 @@ const NumberControl = (props: NumberControlProps) => {
             >
               <LinearGradient
                 colors={[
-                  darkThemeSetting ? theme.colors.text : theme.colors.textMuted,
+                  themeName === "dark"
+                    ? theme.colors.text
+                    : theme.colors.textMuted,
                   theme.colors.accent,
                 ]}
                 locations={[
@@ -119,7 +120,7 @@ const NumberControl = (props: NumberControlProps) => {
                   fontSize: cellSize
                     ? cellSize * (3 / 4) + 1
                     : fallbackHeight * (3 / 4) + 1,
-                  color: theme.colors.onPrimaryContainer,
+                  color: theme.colors.text,
                 }}
                 selectable={false}
               >

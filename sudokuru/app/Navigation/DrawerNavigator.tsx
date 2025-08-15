@@ -20,7 +20,7 @@ import AboutUsPage from "../Pages/AboutUsPage";
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <SafeAreaProvider>

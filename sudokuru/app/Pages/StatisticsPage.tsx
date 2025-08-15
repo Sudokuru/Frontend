@@ -101,7 +101,7 @@ const StatisticsPage = () => {
           >
             <View
               style={{
-                backgroundColor: theme.colors.onSurface,
+                backgroundColor: theme.colors.surface,
                 alignSelf: "center",
                 width: CARD_WIDTH * 1.2,
                 height: CARD_IMAGE_HEIGHT * 1,
@@ -113,15 +113,21 @@ const StatisticsPage = () => {
             >
               <Text
                 variant="headlineMedium"
-                style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                style={{
+                  alignSelf: "center",
+                  margin: CARD_IMAGE_HEIGHT / 50,
+                  color: theme.colors.text,
+                }}
               >
                 Are you sure?
               </Text>
               <Text
                 variant="bodyLarge"
-                style={{ alignSelf: "center", textAlign: "center" }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                style={{
+                  alignSelf: "center",
+                  textAlign: "center",
+                  color: theme.colors.text,
+                }}
               >
                 Do you really want to delete your progress?{"\n"}
                 This includes lesson completions.{"\n"}
