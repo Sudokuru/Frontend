@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Divider, Text } from "react-native-paper";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 export interface ReleaseNoteInterface {
   version: string;
@@ -74,10 +75,11 @@ export const ReleaseNote = (
   const targetPlatformsString = BulletedListComponent(props.targets);
   const contributorsString = BulletedListComponent(props.contributors);
 
+  const { theme } = useTheme();
   return (
     <View
       style={{
-        backgroundColor: "#012D39",
+        backgroundColor: theme.colors.surfaceAlt,
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,

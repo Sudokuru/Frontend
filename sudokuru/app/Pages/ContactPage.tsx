@@ -6,8 +6,8 @@ import {
   SegmentedButtons,
   Text,
   TextInput,
-  useTheme,
 } from "react-native-paper";
+import { useTheme } from "../Contexts/ThemeContext";
 import {
   CARD_IMAGE_HEIGHT,
   CARD_PADDING,
@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const ContactPage = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const navigation: any = useNavigation();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const size = useWindowDimensions();
@@ -162,8 +162,11 @@ const ContactPage = () => {
               label={contactPage.label}
               value={contactPage.text}
               placeholder={contactPage.placeholder}
-              style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
-              textColor="black"
+              style={{
+                backgroundColor: theme.colors.surface,
+                height: CARD_IMAGE_HEIGHT,
+              }}
+              textColor={theme.colors.text}
               multiline={true}
               onChangeText={(text) => {
                 let disableButton: boolean = true;

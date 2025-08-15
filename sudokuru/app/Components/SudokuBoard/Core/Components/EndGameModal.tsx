@@ -1,5 +1,6 @@
 import { Button, Text } from "react-native-paper";
 import { useWindowDimensions, ScrollView, View } from "react-native";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
@@ -24,6 +25,7 @@ const EndGameModal = (props: EndGameModalProps) => {
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
+  const { theme } = useTheme();
 
   return (
     <ScrollView
@@ -36,14 +38,20 @@ const EndGameModal = (props: EndGameModalProps) => {
       <Text
         style={{
           fontSize: reSize ? reSize / 20 : 20,
-          color: "#D9A05B",
+          color: theme.colors.accent,
           fontWeight: "bold",
           marginBottom: 10,
         }}
       >
         Game Results
       </Text>
-      <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
+      <View
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderRadius: 10,
+          padding: 20,
+        }}
+      >
         <Statistic
           statisticName="Score: "
           statisticValue={props.score}

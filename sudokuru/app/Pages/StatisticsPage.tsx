@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, ScrollView, View } from "react-native";
-import { Button, useTheme, ActivityIndicator, Text } from "react-native-paper";
+import { Button, ActivityIndicator, Text } from "react-native-paper";
+import { useTheme } from "../Contexts/ThemeContext";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
@@ -9,7 +10,7 @@ import { Statistics } from "../Api/Puzzle.Types";
 import { CARD_IMAGE_HEIGHT, CARD_WIDTH } from "../Components/Home/Cards";
 
 const StatisticsPage = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const { updateLearnedLessons } = React.useContext(PreferencesContext);
 
@@ -136,11 +137,11 @@ const StatisticsPage = () => {
               >
                 <Button
                   mode="contained"
-                  buttonColor="grey"
+                  buttonColor={theme.colors.border}
                   onPress={hideWarningButton}
                   labelStyle={{
                     fontSize: 20,
-                    color: "white",
+                    color: theme.colors.surface,
                     fontWeight: "bold",
                   }}
                   style={{
@@ -152,7 +153,7 @@ const StatisticsPage = () => {
                 </Button>
                 <Button
                   mode="contained"
-                  buttonColor="red"
+                  buttonColor={theme.colors.danger}
                   onPress={() => {
                     deleteUserStatistics().then(() => {
                       hideWarningButton();
@@ -160,7 +161,7 @@ const StatisticsPage = () => {
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: "white",
+                    color: theme.colors.surface,
                     fontWeight: "bold",
                   }}
                   testID="confirmDeleteButton"

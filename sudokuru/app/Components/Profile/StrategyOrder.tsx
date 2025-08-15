@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { IconButton, Text } from "react-native-paper";
+import { useTheme } from "../../Contexts/ThemeContext";
 import { SudokuStrategy } from "sudokuru";
 import { formatOneLessonName } from "../../Functions/learnedLessons";
 import {
@@ -12,6 +13,7 @@ import {
  * This is a component for the user to select what order hints for strategies should be given in
  */
 const StrategyOrder = () => {
+  const { theme } = useTheme();
   const { updateStrategyHintOrder, strategyHintOrderSetting } =
     React.useContext(PreferencesContext);
 
@@ -35,9 +37,9 @@ const StrategyOrder = () => {
     selected: boolean,
     bullet = "•",
   ) => {
-    let borderColor = "grey";
+    let borderColor = theme.colors.border;
     if (selected) {
-      borderColor = "#D9A05B";
+      borderColor = theme.colors.accent;
     }
 
     const updateSelectedElement = (order: number) => {
@@ -62,10 +64,12 @@ const StrategyOrder = () => {
         key={key}
         onPress={() => setSelectedElement(updateSelectedElement(order))}
       >
-        <Text style={{ fontSize: 14, color: "#025E73", minWidth: 20 }}>
+        <Text style={{ fontSize: 14, color: theme.colors.text, minWidth: 20 }}>
           {bullet}
         </Text>
-        <Text style={{ fontSize: 14, paddingLeft: 5, color: "#025E73" }}>
+        <Text
+          style={{ fontSize: 14, paddingLeft: 5, color: theme.colors.text }}
+        >
           {point}
         </Text>
       </TouchableOpacity>
@@ -141,9 +145,9 @@ const StrategyOrder = () => {
   const incrementButtonColor = (index: number, button: "up" | "down") => {
     const disabled = isIncrementButtonDisabled(index, button);
     if (disabled) {
-      return "grey";
+      return theme.colors.textMuted;
     } else {
-      return "#025E73";
+      return theme.colors.text;
     }
   };
 
@@ -167,14 +171,16 @@ const StrategyOrder = () => {
 
   return (
     <>
-      <Text style={{ color: "#025E73", fontSize: 25, alignSelf: "center" }}>
+      <Text
+        style={{ color: theme.colors.text, fontSize: 25, alignSelf: "center" }}
+      >
         Strategy Hint Order
       </Text>
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <IconButton
           icon="arrow-up"
           iconColor={incrementButtonColor(selectedElement, "up")}
-          theme={{ colors: { onSurfaceDisabled: "grey" } }}
+          theme={{ colors: { onSurfaceDisabled: theme.colors.textMuted } }}
           testID={"HintStrategyMenuUp"}
           size={20}
           style={{
@@ -187,24 +193,24 @@ const StrategyOrder = () => {
         <View style={{ flexDirection: "column", alignItems: "center" }}>
           <IconButton
             icon="refresh"
-            iconColor="#025E73"
+            iconColor={theme.colors.text}
             testID={"HintStrategyMenuReset"}
             size={20}
             style={{
               borderWidth: 2,
-              borderColor: "#025E73",
+              borderColor: theme.colors.text,
             }}
             // need a deep copy of SUDOKU_STRATEGY_ARRAY otherwise it becomes mutated
             onPress={() => {
               updateStrategyHintOrder(returnSudokuStrategyArray());
             }}
           />
-          <Text style={{ color: "#025E73" }}>RESET</Text>
+          <Text style={{ color: theme.colors.text }}>RESET</Text>
         </View>
         <IconButton
           icon="arrow-down"
           iconColor={incrementButtonColor(selectedElement, "down")}
-          theme={{ colors: { onSurfaceDisabled: "grey" } }}
+          theme={{ colors: { onSurfaceDisabled: theme.colors.textMuted } }}
           testID={"HintStrategyMenuDown"}
           size={20}
           style={{

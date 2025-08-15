@@ -124,6 +124,50 @@
 
 </details>
 
+## 🎨 Theme Architecture
+
+All application colors are defined in `sudokuru/app/Styling/theme.ts`. Three themes are
+available:
+
+| Theme name | Description |
+|------------|-------------|
+| `classic`  | Original teal/gold style |
+| `light`    | Newspaper style with dark text on light background |
+| `dark`     | Traditional dark mode |
+
+Each theme exposes the following color tokens:
+
+| Token | Purpose |
+|-------|---------|
+| `bg` | Application background |
+| `surface` | Card and surface backgrounds |
+| `surfaceAlt` | Alternate surface |
+| `text` | Primary text |
+| `textMuted` | Muted text |
+| `border` | Borders and dividers |
+| `accent`/`primary` | Accent elements and buttons |
+| `danger`/`warn`/`success` | Status colors |
+| `overlay` | Backdrops and overlays |
+| `focus` | Focus outlines |
+| `selection` | Selected state |
+
+To add a new theme:
+
+1. Define the theme in `sudokuru/app/Styling/theme.ts` with the tokens above.
+2. Export the theme via the `themes` object.
+3. The new theme will be automatically available in the `ThemeProvider` and can be
+   cycled using the Profile page control.
+
+### Linting for color literals
+
+Run `npm run lint:colors` to ensure no hard coded colors exist outside the styling
+directory.
+
+### Theme tests
+
+End‑to‑end tests verifying the theme system live under `e2e/web/specs/theme.spec.ts` and
+can be executed with `npm run playwright:test`.
+
 <details>
 <summary>docs</summary>
 

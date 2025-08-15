@@ -1,5 +1,6 @@
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useWindowDimensions, View } from "react-native";
+import { useTheme } from "../../Contexts/ThemeContext";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Core/Functions/BoardFunctions";
 import { SudokuStrategy } from "sudokuru";
@@ -24,7 +25,7 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <View
@@ -37,14 +38,20 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
       <Text
         style={{
           fontSize: reSize ? reSize / 20 : 20,
-          color: theme.colors.primary,
+          color: theme.colors.accent,
           fontWeight: "bold",
           marginBottom: 10,
         }}
       >
         Total Game Statistics
       </Text>
-      <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
+      <View
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderRadius: 10,
+          padding: 20,
+        }}
+      >
         <Statistic
           statisticName="Total Score: "
           statisticValue={props.totalScore}

@@ -2,7 +2,7 @@ import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Header from "../Components/Header";
 import NavigationSideBar from "../Components/NavigationSideBar";
-import { useTheme } from "react-native-paper";
+import { useTheme } from "../Contexts/ThemeContext";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StatisticsPage from "../Pages/StatisticsPage";
 import ProfilePage from "../Pages/ProfilePage";
@@ -25,7 +25,8 @@ const DrawerNavigator = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: theme.colors.background }}
+        testID="AppRoot"
+        style={{ flex: 1, backgroundColor: theme.colors.bg }}
       >
         <Drawer.Navigator
           drawerContent={({ navigation }) => {
@@ -34,7 +35,7 @@ const DrawerNavigator = () => {
           screenOptions={{
             drawerStyle: {
               width: 230,
-              backgroundColor: theme.colors.background,
+              backgroundColor: theme.colors.bg,
               overflow: "hidden", //white space was being caused during some resizes
             },
             headerShown: true,

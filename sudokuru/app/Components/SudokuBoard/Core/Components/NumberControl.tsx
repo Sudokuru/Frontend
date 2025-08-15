@@ -1,4 +1,4 @@
-import { useTheme } from "react-native-paper";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 import { Pressable, Text, View } from "react-native";
 import { range } from "../../SudokuBoardFunctions";
 import React from "react";
@@ -29,7 +29,7 @@ const NumberControl = (props: NumberControlProps) => {
     sudokuBoard,
   } = props;
   const cellSize = useCellSize();
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const { darkThemeSetting, progressIndicatorSetting } =
     React.useContext(PreferencesContext);
@@ -61,8 +61,8 @@ const NumberControl = (props: NumberControlProps) => {
             >
               <LinearGradient
                 colors={[
-                  darkThemeSetting ? "white" : "grey",
-                  theme.colors.primaryContainer,
+                  darkThemeSetting ? theme.colors.text : theme.colors.textMuted,
+                  theme.colors.accent,
                 ]}
                 locations={[
                   1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
@@ -85,7 +85,7 @@ const NumberControl = (props: NumberControlProps) => {
                     fontSize: cellSize
                       ? cellSize * (3 / 4) + 1
                       : fallbackHeight * (3 / 4) + 1,
-                    color: theme.colors.onPrimaryContainer,
+                    color: theme.colors.text,
                   }}
                   selectable={false}
                 >
@@ -106,7 +106,7 @@ const NumberControl = (props: NumberControlProps) => {
                   : fallbackHeight * (50 / 60),
                 height: cellSize || fallbackHeight,
                 alignItems: "center",
-                backgroundColor: theme.colors.primaryContainer,
+                backgroundColor: theme.colors.accent,
                 borderRadius: cellSize
                   ? cellSize * (10 / 60)
                   : fallbackHeight * (10 / 60),

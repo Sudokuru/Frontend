@@ -2,11 +2,10 @@ import React from "react";
 import { View } from "react-native";
 import { Switch, Text } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 const PreferencesToggles = () => {
   const {
-    toggleTheme,
-    darkThemeSetting,
     toggleHighlightIdenticalValues,
     highlightIdenticalValuesSetting,
     highlightBoxSetting,
@@ -16,19 +15,13 @@ const PreferencesToggles = () => {
     toggleHighlightRow,
     highlightRowSetting,
   } = React.useContext(PreferencesContext);
+  const { theme } = useTheme();
 
   return (
     <View>
-      <Text>Theme</Text>
-      <Switch
-        color={"#025E73"}
-        value={darkThemeSetting}
-        onValueChange={toggleTheme}
-        testID={darkThemeSetting ? "DarkThemeEnabled" : "DarkThemeDisabled"}
-      />
       <Text>Highlight Peers</Text>
       <Switch
-        color={"#025E73"}
+        color={theme.colors.accent}
         value={highlightIdenticalValuesSetting}
         onValueChange={toggleHighlightIdenticalValues}
         testID={
@@ -39,7 +32,7 @@ const PreferencesToggles = () => {
       />
       <Text>Highlight Box</Text>
       <Switch
-        color={"#025E73"}
+        color={theme.colors.accent}
         value={highlightBoxSetting}
         onValueChange={toggleHighlightBox}
         testID={
@@ -48,7 +41,7 @@ const PreferencesToggles = () => {
       />
       <Text>Highlight Row</Text>
       <Switch
-        color={"#025E73"}
+        color={theme.colors.accent}
         value={highlightRowSetting}
         onValueChange={toggleHighlightRow}
         testID={
@@ -57,7 +50,7 @@ const PreferencesToggles = () => {
       />
       <Text>Highlight Column</Text>
       <Switch
-        color={"#025E73"}
+        color={theme.colors.accent}
         value={highlightColumnSetting}
         onValueChange={toggleHighlightColumn}
         testID={

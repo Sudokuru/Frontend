@@ -1,6 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Switch, Text } from "react-native-paper";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 const ProfileToggle = (props: {
   name: string;
@@ -10,6 +11,7 @@ const ProfileToggle = (props: {
   testIdPrefix: string;
 }) => {
   const { fontSize = 25 } = props;
+  const { theme } = useTheme();
 
   return (
     <View
@@ -19,11 +21,11 @@ const ProfileToggle = (props: {
         justifyContent: "space-between",
       }}
     >
-      <Text style={{ fontSize: fontSize, color: "#025E73" }}>
+      <Text style={{ fontSize: fontSize, color: theme.colors.text }}>
         {props.name}:{" "}
       </Text>
       <Switch
-        color={"#025E73"}
+        color={theme.colors.accent}
         value={props.value}
         onValueChange={props.valueToggle}
         testID={
