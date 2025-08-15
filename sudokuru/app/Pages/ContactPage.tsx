@@ -6,8 +6,8 @@ import {
   SegmentedButtons,
   Text,
   TextInput,
-  useTheme,
 } from "react-native-paper";
+import { useTheme } from "../Contexts/ThemeContext";
 import {
   CARD_IMAGE_HEIGHT,
   CARD_PADDING,
@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 
 const ContactPage = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const navigation: any = useNavigation();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const size = useWindowDimensions();
@@ -162,8 +162,11 @@ const ContactPage = () => {
               label={contactPage.label}
               value={contactPage.text}
               placeholder={contactPage.placeholder}
-              style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
-              textColor="black"
+              style={{
+                backgroundColor: theme.colors.surface,
+                height: CARD_IMAGE_HEIGHT,
+              }}
+              textColor={theme.colors.text}
               multiline={true}
               onChangeText={(text) => {
                 let disableButton: boolean = true;
@@ -220,7 +223,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.9,
@@ -232,15 +235,17 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{ alignSelf: "center", color: theme.colors.text }}
             >
               Thank You!
             </Text>
             <Text
               variant="bodyLarge"
-              style={{ alignSelf: "center", textAlign: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{
+                alignSelf: "center",
+                textAlign: "center",
+                color: theme.colors.text,
+              }}
             >
               Your feedback has been submitted.{"\n"}
               We appreciate the time you took to help us improve our app.{"\n"}
@@ -275,7 +280,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.7,
@@ -287,15 +292,13 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{ alignSelf: "center", color: theme.colors.text }}
             >
               Error
             </Text>
             <Text
               variant="bodyLarge"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{ alignSelf: "center", color: theme.colors.text }}
             >
               There was an error submitting your feedback.{"\n"}
               Please try again later.

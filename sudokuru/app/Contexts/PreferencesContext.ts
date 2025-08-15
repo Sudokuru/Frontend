@@ -7,8 +7,6 @@ export const returnSudokuStrategyArray = () => {
 };
 
 export const PreferencesContext = React.createContext({
-  toggleTheme: () => {},
-  darkThemeSetting: false,
   updateCurrentPage: (props: any) => {},
   currentPage: "Home",
   updateLearnedLessons: (props: any) => {},

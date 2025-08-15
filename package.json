@@ -32,7 +32,8 @@
     "snyk:opensource": "npx snyk test --all-projects --exclude=.vercel --org=sudokuru",
     "snyk:code": "npx snyk code test --org=sudokuru",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "lint:colors": "node scripts/lint-colors.js"
   },
   "devDependencies": {
     "eslint": "9.27.0",

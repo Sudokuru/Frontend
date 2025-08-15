@@ -14,6 +14,9 @@ import {
   PEER_SELECTED_COLOR,
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
+  NOTE_TEXT_COLOR,
+  REMOVE_NOTE_TEXT_COLOR,
+  NOT_HIGHLIGHTED_COLOR,
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps } from "../../SudokuBoard";
 import {
@@ -41,7 +44,7 @@ export const getCellNotesColor = (
   r: number,
   c: number,
 ) => {
-  const notesToReturn = Array(9).fill("black");
+  const notesToReturn = Array(9).fill(NOTE_TEXT_COLOR);
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
     const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
@@ -49,7 +52,7 @@ export const getCellNotesColor = (
       if (notes[0] === r && notes[1] === c) {
         notes.splice(0, 2);
         for (const note of notes) {
-          notesToReturn[note - 1] = "red";
+          notesToReturn[note - 1] = REMOVE_NOTE_TEXT_COLOR;
         }
       }
     }
@@ -104,7 +107,7 @@ export const useCellBackgroundColor = (
   } else if (peer) {
     cellBackgroundColor = PEER_SELECTED_COLOR;
   } else {
-    cellBackgroundColor = "white";
+    cellBackgroundColor = NOT_HIGHLIGHTED_COLOR;
   }
 
   if (sudokuHint) {

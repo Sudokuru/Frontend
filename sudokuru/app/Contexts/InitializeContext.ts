@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  CombinedDarkTheme,
-  CombinedDefaultTheme,
-} from "../Styling/ThemeColors";
 import { getProfile, setProfileValue } from "../Api/Profile";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { Profile } from "../Api/Puzzle.Types";
 
 const InitializeContext = () => {
-  const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState("Home");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [highlightIdenticalValuesSetting, setHighlightIdenticalValuesSetting] =
@@ -35,7 +30,6 @@ const InitializeContext = () => {
   // set initial values of theme
   React.useEffect(() => {
     getProfile().then((data: Profile) => {
-      setDarkThemeSetting(data.theme);
       setHighlightIdenticalValuesSetting(data.highlightIdenticalValues);
       setHighlightBoxSetting(data.highlightBox);
       setHighlightRowSetting(data.highlightRow);
@@ -47,13 +41,6 @@ const InitializeContext = () => {
       setSimplifyNotesSetting(data.simplifyNotes);
     });
   }, []);
-
-  const theme = darkThemeSetting ? CombinedDarkTheme : CombinedDefaultTheme;
-
-  const toggleTheme = React.useCallback(() => {
-    setProfileValue("theme");
-    return setDarkThemeSetting(!darkThemeSetting);
-  }, [darkThemeSetting]);
 
   const updateCurrentPage = React.useCallback(
     (props: React.SetStateAction<string>) => {
@@ -122,8 +109,6 @@ const InitializeContext = () => {
 
   const preferences = React.useMemo(
     () => ({
-      toggleTheme,
-      darkThemeSetting,
       updateCurrentPage,
       currentPage,
       updateLearnedLessons,
@@ -148,8 +133,6 @@ const InitializeContext = () => {
       strategyHintOrderSetting,
     }),
     [
-      toggleTheme,
-      darkThemeSetting,
       updateCurrentPage,
       currentPage,
       updateLearnedLessons,
@@ -176,7 +159,6 @@ const InitializeContext = () => {
   );
 
   return {
-    theme,
     preferences,
   };
 };

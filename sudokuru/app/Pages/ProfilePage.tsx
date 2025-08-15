@@ -5,21 +5,21 @@ import {
   useWindowDimensions,
   ScaledSize,
 } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
+import { useTheme as useAppTheme } from "../Contexts/ThemeContext";
+import { ThemeName } from "../Styling/theme";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
 import ProfileToggle from "../Components/Profile/ProfileToggle";
 import StrategyOrder from "../Components/Profile/StrategyOrder";
 
 const ProfilePage = () => {
-  const theme = useTheme();
+  const { theme, themeName, setTheme } = useAppTheme();
 
   const size = useWindowDimensions();
 
   const {
     learnedLessons,
-    toggleTheme,
-    darkThemeSetting,
     toggleHighlightIdenticalValues,
     highlightIdenticalValuesSetting,
     highlightBoxSetting,
@@ -81,7 +81,7 @@ const ProfilePage = () => {
       <Text
         style={{
           fontSize: 40,
-          color: theme.colors.primary,
+          color: theme.colors.accent,
           fontWeight: "bold",
           marginBottom: 10,
         }}
@@ -91,7 +91,7 @@ const ProfilePage = () => {
       <View style={{ flexDirection: profileFlexDirection(size) }}>
         <View
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: theme.colors.surface,
             borderRadius: 10,
             padding: 20,
             margin: 20,
@@ -99,7 +99,7 @@ const ProfilePage = () => {
           }}
         >
           <View style={{ marginBottom: 10 }}>
-            <Text style={{ fontSize: 25, color: "#025E73" }}>
+            <Text style={{ fontSize: 25, color: theme.colors.text }}>
               Strategies Learned:
             </Text>
             <Text
@@ -107,18 +107,37 @@ const ProfilePage = () => {
               style={{
                 fontSize: 20,
                 fontWeight: "bold",
-                color: "#D9A05B",
+                color: theme.colors.accent,
               }}
             >
               {formatLessonNameArray(learnedLessons)}
             </Text>
           </View>
-          <ProfileToggle
-            name="Theme"
-            value={darkThemeSetting}
-            valueToggle={toggleTheme}
-            testIdPrefix="DarkTheme"
-          ></ProfileToggle>
+          <View
+            style={{
+              marginBottom: 10,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={{ fontSize: 25, color: theme.colors.text }}>
+              Theme: {themeName}
+            </Text>
+            <Button
+              mode="contained"
+              buttonColor={theme.colors.accent}
+              textColor={theme.colors.text}
+              onPress={() => {
+                const names: ThemeName[] = ["classic", "light", "dark"];
+                const next =
+                  names[(names.indexOf(themeName) + 1) % names.length];
+                setTheme(next);
+              }}
+              testID="ThemeToggle"
+            >
+              Change
+            </Button>
+          </View>
           <ProfileToggle
             name="Highlight"
             value={highlightMode()}
@@ -184,7 +203,7 @@ const ProfilePage = () => {
         </View>
         <View
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: theme.colors.surface,
             borderRadius: 10,
             padding: 20,
             margin: 20,

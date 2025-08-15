@@ -6,8 +6,6 @@ export class ProfilePage {
   readonly page: Page;
   readonly title: Locator;
   readonly learnedLessons: Locator;
-  readonly themeSwitchEnabled: Locator;
-  readonly themeSwitchDisabled: Locator;
   readonly highlightSwitchEnabled: Locator;
   readonly highlightSwitchDisabled: Locator;
   readonly highlightIdenticalValuesSwitchEnabled: Locator;
@@ -33,8 +31,6 @@ export class ProfilePage {
     this.page = page;
     this.title = page.getByText("Profile");
     this.learnedLessons = page.getByTestId("LearnedLessons");
-    this.themeSwitchEnabled = page.getByTestId("DarkThemeEnabled");
-    this.themeSwitchDisabled = page.getByTestId("DarkThemeDisabled");
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
     this.highlightSwitchDisabled = page.getByTestId("HighlightDisabled");
     this.highlightIdenticalValuesSwitchEnabled = page.getByTestId(

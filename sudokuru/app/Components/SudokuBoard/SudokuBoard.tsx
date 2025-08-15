@@ -11,6 +11,7 @@ import {
   wrapDigit,
 } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
+import { useTheme } from "../../Contexts/ThemeContext";
 import NumberControl from "./Core/Components/NumberControl";
 import ActionRow from "./Core/Components/ActionRow";
 import { generateGame } from "./Core/Functions/GenerateGameFunctions";
@@ -67,6 +68,8 @@ const SudokuBoard = (props: SudokuBoardProps) => {
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
 
+  const { theme } = useTheme();
+
   const [sudokuHint, setSudokuHint] = useState<HintObjectProps>();
 
   const {
@@ -95,7 +98,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
-    return <ActivityIndicator animating={true} color="red" />;
+    return <ActivityIndicator animating={true} color={theme.colors.danger} />;
   }
 
   // Render EndGame screen when game has ended
