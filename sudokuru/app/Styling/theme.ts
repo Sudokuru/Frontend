@@ -26,7 +26,7 @@ const classic: Theme = {
   useDarkTheme: true,
   colors: {
     bg: "#025E73",
-    border: "#025E73",
+    border: "#D9A05B",
     primary: "#D9A05B",
     surface: "#FFFFFF",
     text: "#025E73",

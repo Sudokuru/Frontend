@@ -61,6 +61,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       elevation: theme.colors.bg,
       onPrimary: theme.colors.text,
       onSurface: theme.colors.surface,
+      outline: theme.colors.border,
       primary: theme.colors.primary,
       surface: theme.colors.surface,
     },
