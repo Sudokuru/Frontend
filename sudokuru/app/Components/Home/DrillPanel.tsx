@@ -25,6 +25,7 @@ import {
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 let drillStrategies: SudokuStrategy[] = [
   "OBVIOUS_SINGLE",
@@ -54,6 +55,8 @@ let drillImages: ImageURISource[] = [
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
+
+  const { theme } = useTheme();
 
   const [visible, setVisible] = React.useState(false);
 
@@ -116,7 +119,14 @@ const DrillPanel = (props: any) => {
             });
           }}
         >
-          <Card mode="outlined">
+          <Card
+            mode="outlined"
+            theme={{
+              colors: {
+                surface: theme.colors.surfaceAlt,
+              },
+            }}
+          >
             <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
               {toTitle(drillStrategies[i])}
             </Text>
