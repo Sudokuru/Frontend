@@ -58,6 +58,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     colors: {
       ...md3Theme.colors,
       primary: theme.colors.primary,
+      elevation: theme.colors.bg,
       background: theme.colors.bg,
       surface: theme.colors.surface,
       onPrimary: theme.colors.text,
