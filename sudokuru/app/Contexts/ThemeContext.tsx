@@ -64,6 +64,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       outline: theme.colors.border,
       primary: theme.colors.primary,
       surface: theme.colors.surface,
+      // Following three colors are for the react navigation bar
+      secondaryContainer: theme.colors.surface,
+      onSecondaryContainer: theme.colors.primary,
+      onSurfaceVariant: theme.colors.primary,
     },
   } as any;
 

@@ -2,7 +2,6 @@ import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Header from "../Components/Header";
 import NavigationSideBar from "../Components/NavigationSideBar";
-import { useTheme } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import StatisticsPage from "../Pages/StatisticsPage";
 import ProfilePage from "../Pages/ProfilePage";
@@ -16,17 +15,16 @@ import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView
-        style={{ flex: 1, backgroundColor: theme.colors.background }}
-      >
+      <SafeAreaView style={{ flex: 1 }}>
         <Drawer.Navigator
           drawerContent={({ navigation }) => {
             return <NavigationSideBar navigation={navigation} />;
@@ -34,7 +32,7 @@ const DrawerNavigator = () => {
           screenOptions={{
             drawerStyle: {
               width: 230,
-              backgroundColor: theme.colors.background,
+              backgroundColor: theme.colors.bg,
               overflow: "hidden", //white space was being caused during some resizes
             },
             headerShown: true,
