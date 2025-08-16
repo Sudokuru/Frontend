@@ -6,13 +6,7 @@ import {
   View,
   Modal,
 } from "react-native";
-import {
-  ActivityIndicator,
-  Text,
-  Card,
-  useTheme,
-  Button,
-} from "react-native-paper";
+import { ActivityIndicator, Text, Card, Button } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import {
@@ -30,6 +24,7 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import { getStrategies } from "../../Api/Lessons";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 let lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
@@ -65,7 +60,7 @@ let lockedLessonImages: ImageURISource[] = [
 ];
 
 const LessonPanel = (props: any) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const navigation: any = useNavigation();
 
@@ -149,7 +144,14 @@ const LessonPanel = (props: any) => {
               }
             }}
           >
-            <Card mode="outlined">
+            <Card
+              mode="outlined"
+              theme={{
+                colors: {
+                  surface: theme.colors.surfaceAlt,
+                },
+              }}
+            >
               <Text
                 variant="headlineMedium"
                 testID="lessonName"
@@ -221,7 +223,7 @@ const LessonPanel = (props: any) => {
           >
             <View
               style={{
-                backgroundColor: theme.colors.onSurface,
+                backgroundColor: theme.colors.surface,
                 alignSelf: "center",
                 width: CARD_WIDTH * 1.08,
                 height: CARD_IMAGE_HEIGHT * 1.15,
@@ -234,14 +236,14 @@ const LessonPanel = (props: any) => {
               <Text
                 variant="headlineLarge"
                 style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                theme={{ colors: { onSurface: theme.colors.textAlt } }}
               >
                 Warning
               </Text>
               <Text
                 variant="bodyLarge"
                 style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                theme={{ colors: { onSurface: theme.colors.textAlt } }}
               >
                 You have selected a lesson that is locked. Locked lessons build
                 on knowledge gained from previous lessons. It is recommended
@@ -251,7 +253,7 @@ const LessonPanel = (props: any) => {
               <Text
                 variant="headlineSmall"
                 style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                theme={{ colors: { onSurface: theme.colors.textAlt } }}
               >
                 Continue?
               </Text>
@@ -271,7 +273,7 @@ const LessonPanel = (props: any) => {
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.colors.surface,
+                    color: theme.colors.textAlt,
                     fontWeight: "bold",
                   }}
                   testID="confirmContinueButton"
@@ -282,7 +284,7 @@ const LessonPanel = (props: any) => {
                   onPress={hideLockedWarning}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.colors.surface,
+                    color: theme.colors.textAlt,
                     fontWeight: "bold",
                   }}
                   testID="cancelContinueButton"

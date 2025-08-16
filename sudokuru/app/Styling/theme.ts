@@ -6,8 +6,9 @@ export type Theme = {
     border: string;
     primary: string;
     surface: string;
+    surfaceAlt: string;
     text: string;
-    //surfaceAlt: string;
+    textAlt: string;
     //textMuted: string;
     //accent: string;
     //accentMuted: string;
@@ -29,8 +30,9 @@ const classic: Theme = {
     border: "#D9A05B",
     primary: "#D9A05B",
     surface: "#FFFFFF",
+    surfaceAlt: "#012D39",
     text: "#025E73",
-    //surfaceAlt: "#012D39",
+    textAlt: "#000000",
     //textMuted: "#D9A05B",
     //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
@@ -52,8 +54,9 @@ const light: Theme = {
     border: "#CCCCCC",
     primary: "#025E73",
     surface: "#FFFFFF",
+    surfaceAlt: "#F5F5F5",
     text: "#111111",
-    //surfaceAlt: "#F5F5F5",
+    textAlt: "#FFFFFF",
     //textMuted: "#555555",
     //accent: "#025E73",
     //accentMuted: "#025E7399",
@@ -75,8 +78,9 @@ const dark: Theme = {
     border: "#333333",
     primary: "#D9A05B",
     surface: "#1E1E1E",
+    surfaceAlt: "#2C2C2C",
     text: "#E0E0E0",
-    //surfaceAlt: "#2C2C2C",
+    textAlt: "#FFFFFF",
     //textMuted: "#AAAAAA",
     //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
