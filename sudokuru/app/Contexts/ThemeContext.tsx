@@ -59,7 +59,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       ...md3Theme.colors,
       background: theme.colors.bg,
       elevation: theme.colors.bg,
-      onPrimary: theme.colors.text,
+      onPrimary: theme.semantic.text.secondary,
       onSurface: theme.colors.surface,
       outline: theme.colors.border,
       primary: theme.colors.primary,
@@ -79,7 +79,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       border: theme.colors.border,
       card: theme.colors.surface,
       primary: theme.colors.primary,
-      text: theme.colors.text,
+      text: theme.semantic.text.secondary,
     },
   };
 

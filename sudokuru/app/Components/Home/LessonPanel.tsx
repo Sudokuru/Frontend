@@ -236,14 +236,14 @@ const LessonPanel = (props: any) => {
               <Text
                 variant="headlineLarge"
                 style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: theme.colors.textAlt } }}
+                theme={{ colors: { onSurface: theme.semantic.text.warning } }}
               >
                 Warning
               </Text>
               <Text
                 variant="bodyLarge"
                 style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: theme.colors.textAlt } }}
+                theme={{ colors: { onSurface: theme.semantic.text.warning } }}
               >
                 You have selected a lesson that is locked. Locked lessons build
                 on knowledge gained from previous lessons. It is recommended
@@ -253,7 +253,7 @@ const LessonPanel = (props: any) => {
               <Text
                 variant="headlineSmall"
                 style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
-                theme={{ colors: { onSurface: theme.colors.textAlt } }}
+                theme={{ colors: { onSurface: theme.semantic.text.warning } }}
               >
                 Continue?
               </Text>
@@ -273,7 +273,7 @@ const LessonPanel = (props: any) => {
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.colors.textAlt,
+                    color: theme.semantic.text.warning,
                     fontWeight: "bold",
                   }}
                   testID="confirmContinueButton"
@@ -284,7 +284,7 @@ const LessonPanel = (props: any) => {
                   onPress={hideLockedWarning}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.colors.textAlt,
+                    color: theme.semantic.text.warning,
                     fontWeight: "bold",
                   }}
                   testID="cancelContinueButton"

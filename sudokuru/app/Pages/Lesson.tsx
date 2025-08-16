@@ -6,7 +6,7 @@ import {
   ScrollView,
   ImageURISource,
 } from "react-native";
-import { Text, useTheme, Button, Card } from "react-native-paper";
+import { Text, Button, Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/core";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -14,6 +14,7 @@ import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Functions/Utils";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -30,7 +31,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const [steps, setSteps] = React.useState<[string, ImageURISource][]>([]);
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   let title = toTitle(name);
 
@@ -65,7 +66,14 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           paddingVertical: CARD_PADDING / 2,
         }}
       >
-        <Card mode="outlined">
+        <Card
+          mode="outlined"
+          theme={{
+            colors: {
+              surface: theme.colors.surfaceAlt,
+            },
+          }}
+        >
           <View
             style={{
               flexDirection: size.width > 800 ? "row" : "column",
@@ -108,7 +116,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           <View style={{ alignSelf: "center", flexDirection: "row" }}>
             <Text
               variant="headlineLarge"
-              style={{ color: theme.colors.primary, fontWeight: "bold" }}
+              style={{ color: theme.semantic.text.primary, fontWeight: "bold" }}
             >
               {title + " Lesson"}
             </Text>

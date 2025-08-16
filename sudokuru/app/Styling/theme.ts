@@ -7,9 +7,6 @@ export type Theme = {
     primary: string;
     surface: string;
     surfaceAlt: string;
-    text: string;
-    textAlt: string;
-    //textMuted: string;
     //accent: string;
     //accentMuted: string;
     //link: string;
@@ -21,6 +18,14 @@ export type Theme = {
     //selection: string;
     //shadow: string;
   };
+  semantic: {
+    text: {
+      inverse: string;
+      primary: string;
+      secondary: string;
+      warning: string;
+    };
+  };
 };
 
 const classic: Theme = {
@@ -31,9 +36,6 @@ const classic: Theme = {
     primary: "#D9A05B",
     surface: "#FFFFFF",
     surfaceAlt: "#012D39",
-    text: "#025E73",
-    textAlt: "#000000",
-    //textMuted: "#D9A05B",
     //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
     //link: "#D9A05B",
@@ -45,6 +47,14 @@ const classic: Theme = {
     //selection: "#9CC4EC",
     //shadow: "#00000033",
   },
+  semantic: {
+    text: {
+      inverse: "#FFFFFF",
+      primary: "#D9A05B",
+      secondary: "#025E73",
+      warning: "#000000",
+    },
+  },
 };
 
 const light: Theme = {
@@ -55,9 +65,6 @@ const light: Theme = {
     primary: "#025E73",
     surface: "#FFFFFF",
     surfaceAlt: "#F5F5F5",
-    text: "#111111",
-    textAlt: "#FFFFFF",
-    //textMuted: "#555555",
     //accent: "#025E73",
     //accentMuted: "#025E7399",
     //link: "#025E73",
@@ -69,6 +76,14 @@ const light: Theme = {
     //selection: "#BBDEFB",
     //shadow: "#00000033",
   },
+  semantic: {
+    text: {
+      inverse: "#FFFFFF",
+      primary: "#D9A05B",
+      secondary: "#025E73",
+      warning: "#000000",
+    },
+  },
 };
 
 const dark: Theme = {
@@ -79,9 +94,6 @@ const dark: Theme = {
     primary: "#D9A05B",
     surface: "#1E1E1E",
     surfaceAlt: "#2C2C2C",
-    text: "#E0E0E0",
-    textAlt: "#FFFFFF",
-    //textMuted: "#AAAAAA",
     //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
     //link: "#8AB4F8",
@@ -92,6 +104,14 @@ const dark: Theme = {
     //focus: "#BB86FC",
     //selection: "#333333",
     //shadow: "#00000066",
+  },
+  semantic: {
+    text: {
+      inverse: "#FFFFFF",
+      primary: "#D9A05B",
+      secondary: "#025E73",
+      warning: "#000000",
+    },
   },
 };
 
