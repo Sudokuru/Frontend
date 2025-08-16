@@ -57,12 +57,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     ...md3Theme,
     colors: {
       ...md3Theme.colors,
-      primary: theme.colors.primary,
-      elevation: theme.colors.bg,
       background: theme.colors.bg,
-      surface: theme.colors.surface,
+      elevation: theme.colors.bg,
       onPrimary: theme.colors.text,
       onSurface: theme.colors.surface,
+      primary: theme.colors.primary,
+      surface: theme.colors.surface,
     },
   } as any;
 
@@ -71,10 +71,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     colors: {
       ...navTheme.colors,
       background: theme.colors.bg,
+      border: theme.colors.border,
+      card: theme.colors.surface,
       primary: theme.colors.primary,
       text: theme.colors.text,
-      card: theme.colors.surface,
-      border: theme.colors.border,
     },
   };
 

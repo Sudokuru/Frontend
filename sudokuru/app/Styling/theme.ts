@@ -1,14 +1,15 @@
+// For simplicity keep theme colors alphabetized everywhere
 export type Theme = {
   useDarkTheme: boolean;
   colors: {
     bg: string;
-    surface: string;
-    //surfaceAlt: string;
-    text: string;
-    //textMuted: string;
     border: string;
-    //accent: string;
     primary: string;
+    surface: string;
+    text: string;
+    //surfaceAlt: string;
+    //textMuted: string;
+    //accent: string;
     //accentMuted: string;
     //link: string;
     //danger: string;
@@ -25,13 +26,13 @@ const classic: Theme = {
   useDarkTheme: true,
   colors: {
     bg: "#025E73",
-    surface: "#FFFFFF",
-    //surfaceAlt: "#012D39",
-    text: "#025E73",
-    //textMuted: "#D9A05B",
     border: "#025E73",
-    //accent: "#D9A05B",
     primary: "#D9A05B",
+    surface: "#FFFFFF",
+    text: "#025E73",
+    //surfaceAlt: "#012D39",
+    //textMuted: "#D9A05B",
+    //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
     //link: "#D9A05B",
     //danger: "#FF0000",
@@ -48,13 +49,13 @@ const light: Theme = {
   useDarkTheme: false,
   colors: {
     bg: "#FFFFFF",
-    surface: "#FFFFFF",
-    //surfaceAlt: "#F5F5F5",
-    text: "#111111",
-    //textMuted: "#555555",
     border: "#CCCCCC",
-    //accent: "#025E73",
     primary: "#025E73",
+    surface: "#FFFFFF",
+    text: "#111111",
+    //surfaceAlt: "#F5F5F5",
+    //textMuted: "#555555",
+    //accent: "#025E73",
     //accentMuted: "#025E7399",
     //link: "#025E73",
     //danger: "#B00020",
@@ -71,13 +72,13 @@ const dark: Theme = {
   useDarkTheme: true,
   colors: {
     bg: "#121212",
-    surface: "#1E1E1E",
-    //surfaceAlt: "#2C2C2C",
-    text: "#E0E0E0",
-    //textMuted: "#AAAAAA",
     border: "#333333",
-    //accent: "#D9A05B",
     primary: "#D9A05B",
+    surface: "#1E1E1E",
+    text: "#E0E0E0",
+    //surfaceAlt: "#2C2C2C",
+    //textMuted: "#AAAAAA",
+    //accent: "#D9A05B",
     //accentMuted: "#D9A05B99",
     //link: "#8AB4F8",
     //danger: "#CF6679",
