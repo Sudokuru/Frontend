@@ -20,10 +20,10 @@ export type Theme = {
   };
   semantic: {
     text: {
+      info: string;
       inverse: string;
       primary: string;
       secondary: string;
-      warning: string;
     };
   };
 };
@@ -49,10 +49,10 @@ const classic: Theme = {
   },
   semantic: {
     text: {
+      info: "#000000",
       inverse: "#FFFFFF",
       primary: "#D9A05B",
       secondary: "#025E73",
-      warning: "#000000",
     },
   },
 };
@@ -78,10 +78,10 @@ const light: Theme = {
   },
   semantic: {
     text: {
+      info: "#000000",
       inverse: "#FFFFFF",
       primary: "#D9A05B",
       secondary: "#025E73",
-      warning: "#000000",
     },
   },
 };
@@ -107,10 +107,10 @@ const dark: Theme = {
   },
   semantic: {
     text: {
+      info: "#000000",
       inverse: "#FFFFFF",
       primary: "#D9A05B",
       secondary: "#025E73",
-      warning: "#000000",
     },
   },
 };
