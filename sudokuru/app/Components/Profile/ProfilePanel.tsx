@@ -75,6 +75,15 @@ const ProfilePanel = (props: any) => {
           key={key}
           selected={key === themeName}
           onPress={() => setTheme(key)}
+          style={{
+            paddingVertical: 6,
+            marginVertical: 8,
+            borderColor: theme.semantic.text.primary,
+            borderRadius: 16,
+            borderWidth: 3,
+            backgroundColor: theme.colors.bg,
+          }}
+          textStyle={{ fontSize: 16, color: theme.semantic.text.primary }}
         >
           {label}
         </Chip>

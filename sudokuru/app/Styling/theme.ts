@@ -89,7 +89,7 @@ const light: Theme = {
     text: {
       info: "#000000",
       inverse: "#FFFFFF",
-      primary: "#D9A05B",
+      primary: "#025E73",
       secondary: "#025E73",
     },
   },
