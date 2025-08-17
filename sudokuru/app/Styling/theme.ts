@@ -66,14 +66,14 @@ const classic: Theme = {
 const light: Theme = {
   useDarkTheme: false,
   colors: {
-    bg: "#FFFFFF",
-    border: "#CCCCCC",
+    bg: "#F2F2F2",
+    border: "#025E73",
     error: "#FF0000",
     onError: "#FFFFFF",
     onSurface: "#808080",
     primary: "#025E73",
     surface: "#FFFFFF",
-    surfaceAlt: "#F5F5F5",
+    surfaceAlt: "#012D39",
     //accent: "#025E73",
     //accentMuted: "#025E7399",
     //link: "#025E73",

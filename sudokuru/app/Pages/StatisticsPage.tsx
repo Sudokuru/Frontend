@@ -82,7 +82,7 @@ const StatisticsPage = () => {
               showWarningButton();
             }}
             testID="deleteStatsButton"
-            textColor={theme.semantic.text.info}
+            textColor={theme.semantic.text.inverse}
           >
             Delete Statistics
           </Button>

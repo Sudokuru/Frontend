@@ -15,11 +15,14 @@ import {
 } from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { useTheme } from "../Contexts/ThemeContext";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
 
 const HomePage = () => {
+  const { theme } = useTheme();
+
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
@@ -28,6 +31,10 @@ const HomePage = () => {
   const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
   const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
+
+  const DARK_BLUE_PLAY_SUDOKU_LOGO = require("../../.assets/darkBluePlaySudokuLogo.png");
+  const DARK_BLUE_START_LESSONS_LOGO = require("../../.assets/darkBlueStartLessonsLogo.png");
+  const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/darkBlueStartDrillsLogo.png");
 
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -61,19 +68,29 @@ const HomePage = () => {
         }}
       >
         <NavigationButton
-          image={START_LESSONS_LOGO}
+          image={
+            theme.useDarkTheme
+              ? START_LESSONS_LOGO
+              : DARK_BLUE_START_LESSONS_LOGO
+          }
           navigationPage="LearnPage"
           testID="HomeLearnButton"
         />
         {featurePreviewSetting && (
           <NavigationButton
-            image={START_DRILLS_LOGO}
+            image={
+              theme.useDarkTheme
+                ? START_DRILLS_LOGO
+                : DARK_BLUE_START_DRILLS_LOGO
+            }
             navigationPage="DrillPage"
             testID="HomeDrillButton"
           />
         )}
         <NavigationButton
-          image={PLAY_SUDOKU_LOGO}
+          image={
+            theme.useDarkTheme ? PLAY_SUDOKU_LOGO : DARK_BLUE_PLAY_SUDOKU_LOGO
+          }
           navigationPage="PlayPage"
           testID="HomePlayButton"
         />
