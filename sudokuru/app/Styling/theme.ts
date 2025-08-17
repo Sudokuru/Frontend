@@ -58,7 +58,7 @@ const classic: Theme = {
       info: "#000000",
       inverse: "#FFFFFF",
       primary: "#D9A05B",
-      secondary: "#025E73",
+      secondary: "#FFFFFF",
     },
   },
 };
