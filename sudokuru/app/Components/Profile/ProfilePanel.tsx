@@ -1,11 +1,13 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { Chip, Text } from "react-native-paper";
 import { formatLessonNameArray } from "../../Functions/learnedLessons";
 import ProfileToggle from "./ProfileToggle";
 import StrategyOrder from "./StrategyOrder";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { calculateCardsPerRow } from "../Home/Cards";
+import { useTheme as useAppTheme } from "../../Contexts/ThemeContext";
+import { THEME_OPTIONS } from "../../Styling/theme";
 
 const ProfilePanel = (props: any) => {
   const {
@@ -52,6 +54,8 @@ const ProfilePanel = (props: any) => {
     }
   };
 
+  const { themeName, setTheme } = useAppTheme();
+
   let paneArray = [];
 
   // App Theme Pane
@@ -66,6 +70,15 @@ const ProfilePanel = (props: any) => {
       }}
     >
       <Text style={{ fontSize: 25, color: "#025E73" }}>App Theme:</Text>
+      {THEME_OPTIONS.map(({ key, label, theme }) => (
+        <Chip
+          key={key}
+          selected={key === themeName}
+          onPress={() => setTheme(key)}
+        >
+          {label}
+        </Chip>
+      ))}
     </View>,
   );
 

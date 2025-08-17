@@ -134,3 +134,15 @@ export const themes = {
 };
 
 export type ThemeName = keyof typeof themes;
+
+export type ThemeOption = {
+  key: ThemeName;
+  label: string;
+  theme: Theme;
+};
+
+export const THEME_OPTIONS: readonly ThemeOption[] = [
+  { key: "classic", label: "Classic", theme: classic },
+  { key: "light", label: "Light Mode", theme: light },
+  { key: "dark", label: "Dark Mode", theme: dark },
+];
