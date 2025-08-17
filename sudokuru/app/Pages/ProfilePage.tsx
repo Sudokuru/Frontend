@@ -98,6 +98,17 @@ const ProfilePage = () => {
             minWidth: 280,
           }}
         >
+          <Text style={{ fontSize: 25, color: "#025E73" }}>App Theme:</Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 10,
+            padding: 20,
+            margin: 20,
+            minWidth: 280,
+          }}
+        >
           <View style={{ marginBottom: 10 }}>
             <Text style={{ fontSize: 25, color: "#025E73" }}>
               Strategies Learned:
