@@ -1,15 +1,16 @@
 import React from "react";
 import { Modal, ScrollView, View } from "react-native";
-import { Button, useTheme, ActivityIndicator, Text } from "react-native-paper";
+import { Button, ActivityIndicator, Text } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect } from "@react-navigation/core";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { Statistics } from "../Api/Puzzle.Types";
 import { CARD_IMAGE_HEIGHT, CARD_WIDTH } from "../Components/Home/Cards";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const StatisticsPage = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const { updateLearnedLessons } = React.useContext(PreferencesContext);
 
@@ -81,6 +82,7 @@ const StatisticsPage = () => {
               showWarningButton();
             }}
             testID="deleteStatsButton"
+            textColor={theme.semantic.text.info}
           >
             Delete Statistics
           </Button>
@@ -100,27 +102,27 @@ const StatisticsPage = () => {
           >
             <View
               style={{
-                backgroundColor: theme.colors.onSurface,
+                backgroundColor: theme.colors.surface,
                 alignSelf: "center",
                 width: CARD_WIDTH * 1.2,
                 height: CARD_IMAGE_HEIGHT * 1,
                 padding: CARD_WIDTH / 10,
                 borderRadius: CARD_WIDTH / 8,
                 borderWidth: CARD_WIDTH / 80,
-                borderColor: theme.colors.primary,
+                borderColor: theme.colors.border,
               }}
             >
               <Text
                 variant="headlineMedium"
                 style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                theme={{ colors: { onSurface: theme.semantic.text.info } }}
               >
                 Are you sure?
               </Text>
               <Text
                 variant="bodyLarge"
                 style={{ alignSelf: "center", textAlign: "center" }}
-                theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+                theme={{ colors: { onSurface: theme.semantic.text.info } }}
               >
                 Do you really want to delete your progress?{"\n"}
                 This includes lesson completions.{"\n"}
@@ -136,11 +138,11 @@ const StatisticsPage = () => {
               >
                 <Button
                   mode="contained"
-                  buttonColor="grey"
+                  buttonColor={theme.colors.onSurface}
                   onPress={hideWarningButton}
                   labelStyle={{
                     fontSize: 20,
-                    color: "white",
+                    color: theme.colors.onError,
                     fontWeight: "bold",
                   }}
                   style={{
@@ -152,7 +154,7 @@ const StatisticsPage = () => {
                 </Button>
                 <Button
                   mode="contained"
-                  buttonColor="red"
+                  buttonColor={theme.colors.error}
                   onPress={() => {
                     deleteUserStatistics().then(() => {
                       hideWarningButton();
@@ -160,7 +162,7 @@ const StatisticsPage = () => {
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: "white",
+                    color: theme.colors.onError,
                     fontWeight: "bold",
                   }}
                   testID="confirmDeleteButton"

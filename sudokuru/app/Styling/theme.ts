@@ -4,6 +4,9 @@ export type Theme = {
   colors: {
     bg: string;
     border: string;
+    error: string;
+    onError: string;
+    onSurface: string;
     primary: string;
     surface: string;
     surfaceAlt: string;
@@ -33,6 +36,9 @@ const classic: Theme = {
   colors: {
     bg: "#025E73",
     border: "#D9A05B",
+    error: "#FF0000",
+    onError: "#FFFFFF",
+    onSurface: "#808080",
     primary: "#D9A05B",
     surface: "#FFFFFF",
     surfaceAlt: "#012D39",
@@ -62,6 +68,9 @@ const light: Theme = {
   colors: {
     bg: "#FFFFFF",
     border: "#CCCCCC",
+    error: "#FF0000",
+    onError: "#FFFFFF",
+    onSurface: "#808080",
     primary: "#025E73",
     surface: "#FFFFFF",
     surfaceAlt: "#F5F5F5",
@@ -91,6 +100,9 @@ const dark: Theme = {
   colors: {
     bg: "#121212",
     border: "#333333",
+    error: "#FF0000",
+    onError: "#FFFFFF",
+    onSurface: "#808080",
     primary: "#D9A05B",
     surface: "#1E1E1E",
     surfaceAlt: "#2C2C2C",
