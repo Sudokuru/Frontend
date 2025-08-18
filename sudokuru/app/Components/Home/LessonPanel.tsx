@@ -155,7 +155,10 @@ const LessonPanel = (props: any) => {
               <Text
                 variant="headlineMedium"
                 testID="lessonName"
-                style={{ alignSelf: "center" }}
+                style={{
+                  alignSelf: "center",
+                  color: theme.semantic.text.inverse,
+                }}
               >
                 {formatOneLessonName(availableLessons[i])}
               </Text>

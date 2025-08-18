@@ -127,7 +127,13 @@ const DrillPanel = (props: any) => {
               },
             }}
           >
-            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+            <Text
+              variant="headlineMedium"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.inverse,
+              }}
+            >
               {toTitle(drillStrategies[i])}
             </Text>
             <Text

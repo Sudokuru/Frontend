@@ -164,7 +164,13 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
               },
             }}
           >
-            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+            <Text
+              variant="headlineMedium"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.inverse,
+              }}
+            >
               {difficulty}
             </Text>
             {shrinkage < 0.6 ? (

@@ -96,7 +96,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
                 alignSelf: "center",
               }}
             />
-            <Text variant="headlineSmall">{steps[i][0]}</Text>
+            <Text
+              variant="headlineSmall"
+              style={{ color: theme.semantic.text.inverse }}
+            >
+              {steps[i][0]}
+            </Text>
           </View>
         </Card>
       </View>,
@@ -133,7 +138,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
               marginHorizontal: size.width > 800 ? "30%" : "10%",
             }}
           >
-            <Text variant="headlineMedium">Finish Lesson</Text>
+            <Text
+              variant="headlineMedium"
+              style={{ color: theme.semantic.text.inverse }}
+            >
+              Finish Lesson
+            </Text>
           </Button>
         </View>
       </View>
