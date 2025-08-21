@@ -25,6 +25,27 @@ test.describe("feature preview", () => {
     await headerComponent.partialFeaturePreviewTextIsVisible();
   });
 
+  test("Drills profile setting appears in feature preview", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new ProfilePage(featurePreview);
+    await expect(profilePage.drillsSwitchEnabled).toBeInViewport({
+      ratio: 1,
+    });
+  });
+
+  test("Drills profile setting does not appear when feature preview is disabled", async ({
+    profile,
+  }) => {
+    const profilePage = new ProfilePage(profile);
+    await expect(profilePage.drillsSwitchEnabled).not.toBeInViewport({
+      ratio: 1,
+    });
+    await expect(profilePage.drillsSwitchDisabled).not.toBeInViewport({
+      ratio: 1,
+    });
+  });
+
   test("Initialize Notes profile setting appears in feature preview", async ({
     featurePreview,
   }) => {

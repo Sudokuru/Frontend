@@ -28,6 +28,8 @@ const ProfilePage = () => {
     highlightColumnSetting,
     toggleHighlightRow,
     highlightRowSetting,
+    drillModeSetting,
+    toggleDrillMode,
     progressIndicatorSetting,
     toggleProgressIndicator,
     initializeNotesSetting,
@@ -73,6 +75,8 @@ const ProfilePage = () => {
       return "column";
     }
   };
+
+  console.log(drillModeSetting);
 
   return (
     <ScrollView
@@ -163,6 +167,14 @@ const ProfilePage = () => {
           ></ProfileToggle>
           {/* Initialize Notes is in feature preview as it's a new feature 
             that may affect game statistics and difficulty perception */}
+          {featurePreviewSetting && (
+            <ProfileToggle
+              name="  Drill Mode"
+              value={drillModeSetting}
+              valueToggle={toggleDrillMode}
+              testIdPrefix="Drills"
+            ></ProfileToggle>
+          )}
           {featurePreviewSetting && (
             <ProfileToggle
               name="  Initialize Notes"

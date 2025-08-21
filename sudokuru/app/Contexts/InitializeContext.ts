@@ -18,6 +18,8 @@ const InitializeContext = () => {
   const [highlightColumnSetting, setHighlightColumnSetting] =
     React.useState(true);
 
+  const [drillModeSetting, setDrillModeSetting] = React.useState(true);
+
   const [progressIndicatorSetting, setProgressIndicatorSetting] =
     React.useState(true);
 
@@ -42,6 +44,7 @@ const InitializeContext = () => {
       setHighlightColumnSetting(data.highlightColumn);
       setFeaturePreviewSetting(data.previewMode);
       setStrategyHintOrderSetting(data.strategyHintOrder);
+      setDrillModeSetting(data.drillMode);
       setProgressIndicatorSetting(data.progressIndicator);
       setInitializeNotesSetting(data.initializeNotes);
       setSimplifyNotesSetting(data.simplifyNotes);
@@ -91,6 +94,11 @@ const InitializeContext = () => {
     return setHighlightColumnSetting(!highlightColumnSetting);
   }, [highlightColumnSetting]);
 
+  const toggleDrillMode = React.useCallback(() => {
+    setProfileValue("drillMode");
+    return setDrillModeSetting(!drillModeSetting);
+  }, [drillModeSetting]);
+
   const toggleProgressIndicator = React.useCallback(() => {
     setProfileValue("progressIndicator");
     return setProgressIndicatorSetting(!progressIndicatorSetting);
@@ -136,6 +144,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleDrillMode,
+      drillModeSetting,
       toggleProgressIndicator,
       progressIndicatorSetting,
       toggleInitializeNotes,
@@ -162,6 +172,8 @@ const InitializeContext = () => {
       highlightRowSetting,
       toggleHighlightColumn,
       highlightColumnSetting,
+      toggleDrillMode,
+      drillModeSetting,
       toggleProgressIndicator,
       progressIndicatorSetting,
       toggleInitializeNotes,
