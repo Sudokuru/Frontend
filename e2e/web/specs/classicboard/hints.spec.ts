@@ -41,16 +41,16 @@ import {
   SIMPLIFY_NOTES_BOX_GAME,
   SIMPLIFY_NOTES_COLUMN_GAME,
   SIMPLIFY_NOTES_ROW_GAME,
-} from "../data";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { test } from "../fixture";
+} from "../../data";
+import { SudokuBoardComponent } from "../../components/sudoku-board.component";
+import { test } from "../../fixture";
 import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   SELECTED_COLOR_RGB,
-} from "../../../sudokuru/app/Styling/HighlightColors";
-import { ProfilePage } from "../page/profile.page";
-import { HeaderComponent } from "../components/header.component";
-import { PlayPage } from "../page/play.page";
+} from "../../../../sudokuru/app/Styling/HighlightColors";
+import { ProfilePage } from "../../page/profile.page";
+import { HeaderComponent } from "../../components/header.component";
+import { PlayPage } from "../../page/play.page";
 import { expect } from "@playwright/test";
 
 test.describe("hint mode operates correctly", () => {

@@ -1,10 +1,10 @@
-import { test } from "../fixture";
+import { test } from "../../fixture";
 import { devices, expect } from "@playwright/test";
-import { PlayPage } from "../page/play.page";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { EndGameModalComponent } from "../components/end-game-modal.component";
-import { HeaderComponent } from "../components/header.component";
-import { StatisticsPage } from "../page/statistics.page";
+import { PlayPage } from "../../page/play.page";
+import { SudokuBoardComponent } from "../../components/sudoku-board.component";
+import { EndGameModalComponent } from "../../components/end-game-modal.component";
+import { HeaderComponent } from "../../components/header.component";
+import { StatisticsPage } from "../../page/statistics.page";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
