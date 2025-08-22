@@ -47,20 +47,20 @@ const light: Theme = {
   useDarkTheme: false,
   colors: {
     bg: "#F2F2F2",
-    border: "#025E73",
+    border: "#06A2C7",
     error: "#FF0000",
     onError: "#FFFFFF",
     onSurface: "#808080",
-    primary: "#025E73",
+    primary: "#06A2C7",
     surface: "#FFFFFF",
-    surfaceAlt: "#012D39",
+    surfaceAlt: "#025E73",
   },
   semantic: {
     text: {
       info: "#000000",
       inverse: "#FFFFFF",
-      primary: "#025E73",
-      secondary: "#025E73",
+      primary: "#06A2C7",
+      secondary: "#06A2C7",
     },
   },
 };
