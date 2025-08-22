@@ -16,10 +16,15 @@ export const CARD_IMAGE_HEIGHT: number = CARD_HEIGHT / 2;
  * Given window width calculates how many cards should be on each row
  * @param width - window width
  * @param count - number of cards
+ * @param cardWidth - width of cards, defaults to CARD_WIDTH const
  * @returns number of cards that can fit on each row
  */
-export function calculateCardsPerRow(width: number, count: number): number {
-  let columnCount: number = Math.floor(width / (CARD_WIDTH + 100));
+export function calculateCardsPerRow(
+  width: number,
+  count: number,
+  cardWidth: number = CARD_WIDTH,
+): number {
+  let columnCount: number = Math.floor(width / (cardWidth + 100));
   // If we cannot fix a single card fully per row we just try to best we can anyways
   if (columnCount === 0) {
     return 1;

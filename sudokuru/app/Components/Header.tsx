@@ -5,18 +5,15 @@ import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { IconButton, Text, useTheme } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const Header = () => {
   const navigation: any = useNavigation();
-  const theme = useTheme();
+  const { theme } = useTheme();
 
-  const {
-    darkThemeSetting,
-    currentPage,
-    updateCurrentPage,
-    featurePreviewSetting,
-  } = React.useContext(PreferencesContext);
+  const { currentPage, updateCurrentPage, featurePreviewSetting } =
+    React.useContext(PreferencesContext);
 
   const size = useWindowDimensions();
   const minSize = Math.min(size.width, size.height);
@@ -25,7 +22,7 @@ const Header = () => {
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
 
-  const logoUrl = darkThemeSetting ? DARK_LOGO : LIGHT_LOGO;
+  const logoUrl = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
 
   const statisticsButton = (currentPage: string) => {
     if (currentPage !== "StatisticsPage") {
