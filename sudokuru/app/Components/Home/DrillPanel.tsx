@@ -206,7 +206,7 @@ const DrillPanel = (props: any) => {
             }
           }}
         >
-          Resume Puzzle
+          Resume Drill
         </Button>
       ) : (
         <></>
