@@ -146,6 +146,7 @@ export const convertPuzzleToSudokuObject = (
     }
   }
 
+  // drill strategy is immediatly after AMEND_NOTES and SIMPLIFY_NOTES in priority.
   const DRILL_ARRAY = SUDOKU_STRATEGY_ARRAY.filter((s) => s !== strategy);
   const index = DRILL_ARRAY.indexOf("OBVIOUS_SINGLE");
   DRILL_ARRAY.splice(index, 0, strategy);
@@ -165,12 +166,10 @@ export const convertPuzzleToSudokuObject = (
       // Filter to keep only notes that shouldn't be removed
 
       let notes: number[] = [];
-      let value: number = 0;
+      //let value: number = 0;
 
       if (hint.strategy === "AMEND_NOTES") {
         notes = ALL_NOTES.filter((x) => !hint.removals[0].slice(2).includes(x));
-      } else if (hint.strategy === "OBVIOUS_SINGLE") {
-        value = hint.placements[0].slice(2)[0];
       } else {
         for (const removal of hint.removals) {
           if (game.puzzleState[removal[0]][removal[1]].type === "note") {
@@ -197,24 +196,6 @@ export const convertPuzzleToSudokuObject = (
           type: "note",
           entry: notes,
         };
-      }
-
-      if (hint.strategy === "OBVIOUS_SINGLE") {
-        for (const placements of hint.placements) {
-          console.log("HINT.PLACEMENTS: ", value, placements[0], placements[1]);
-          game.puzzleState[placements[0]][placements[1]] = {
-            type: "value",
-            entry: value,
-          };
-          game.puzzleSolution[placements[0]][placements[1]] = {
-            type: "value",
-            entry: value,
-          };
-          game.initialPuzzleState[placements[0]][placements[1]] = {
-            type: "value",
-            entry: value,
-          };
-        }
       }
     } catch (e) {
       // If getSudokuHint throws an exception, we've initialized
