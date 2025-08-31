@@ -14,6 +14,9 @@ import { OBVIOUS_QUADRUPLET_DRILLS } from "../../../../Data/drills/obvious_quadr
 import { HIDDEN_TRIPLET_DRILLS } from "../../../../Data/drills/hidden_triplet_drills";
 import { HIDDEN_QUADRUPLET_DRILLS } from "../../../../Data/drills/hidden_quadruplet_drills";
 import { getGame } from "../../../../Api/Puzzles";
+import { HIDDEN_PAIR_DRILLS } from "../../../../Data/drills/hidden_pair_drills";
+import { POINTING_PAIR_DRILLS } from "../../../../Data/drills/pointing_pair_drills";
+import { POINTING_TRIPLET_DRILLS } from "../../../../Data/drills/pointing_triplet_drills";
 
 export async function generateGame(props: DrillBoard, initializeNotes = true) {
   let gameData = null;
@@ -64,16 +67,16 @@ export const returnDrillOfType = (strategy: DrillStrategy | "dev"): string => {
       return retrieveRandomDrillPuzzle(OBVIOUS_QUADRUPLET_DRILLS);
     case "HIDDEN_SINGLE":
       return retrieveRandomDrillPuzzle(HIDDEN_SINGLE_DRILLS);
-    // case "HIDDEN_PAIR":
-    //   return retrieveRandomDrillPuzzle(HIDDEN_PAIR_DRILLS);
-    // case "HIDDEN_TRIPLET":
-    //   return retrieveRandomDrillPuzzle(HIDDEN_TRIPLET_DRILLS);
+    case "HIDDEN_PAIR":
+      return retrieveRandomDrillPuzzle(HIDDEN_PAIR_DRILLS);
+    case "HIDDEN_TRIPLET":
+      return retrieveRandomDrillPuzzle(HIDDEN_TRIPLET_DRILLS);
     case "HIDDEN_QUADRUPLET":
       return retrieveRandomDrillPuzzle(HIDDEN_QUADRUPLET_DRILLS);
-    // case "POINTING_PAIR":
-    //   return retrieveRandomDrillPuzzle(POINTING_PAIR_DRILLS);
-    // case "POINTING_TRIPLET":
-    //   return retrieveRandomDrillPuzzle(POINTING_TRIPLET_DRILLS);
+    case "POINTING_PAIR":
+      return retrieveRandomDrillPuzzle(POINTING_PAIR_DRILLS);
+    case "POINTING_TRIPLET":
+      return retrieveRandomDrillPuzzle(POINTING_TRIPLET_DRILLS);
   }
 };
 
@@ -143,11 +146,15 @@ export const convertPuzzleToSudokuObject = (
     }
   }
 
+  const DRILL_ARRAY = SUDOKU_STRATEGY_ARRAY.filter((s) => s !== strategy);
+  const index = DRILL_ARRAY.indexOf("OBVIOUS_SINGLE");
+  DRILL_ARRAY.splice(index, 0, strategy);
+
   // Initialize the board with notes filled in
   const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   while (true) {
     try {
-      let hint = getSudokuHint(game.puzzleState, SUDOKU_STRATEGY_ARRAY);
+      let hint = getSudokuHint(game.puzzleState, DRILL_ARRAY);
 
       if (hint.strategy === strategy) {
         break;
@@ -158,9 +165,12 @@ export const convertPuzzleToSudokuObject = (
       // Filter to keep only notes that shouldn't be removed
 
       let notes: number[] = [];
+      let value: number = 0;
 
       if (hint.strategy === "AMEND_NOTES") {
         notes = ALL_NOTES.filter((x) => !hint.removals[0].slice(2).includes(x));
+      } else if (hint.strategy === "OBVIOUS_SINGLE") {
+        value = hint.placements[0].slice(2)[0];
       } else {
         for (const removal of hint.removals) {
           if (game.puzzleState[removal[0]][removal[1]].type === "note") {
@@ -188,7 +198,25 @@ export const convertPuzzleToSudokuObject = (
           entry: notes,
         };
       }
-    } catch {
+
+      if (hint.strategy === "OBVIOUS_SINGLE") {
+        for (const placements of hint.placements) {
+          console.log("HINT.PLACEMENTS: ", value, placements[0], placements[1]);
+          game.puzzleState[placements[0]][placements[1]] = {
+            type: "value",
+            entry: value,
+          };
+          game.puzzleSolution[placements[0]][placements[1]] = {
+            type: "value",
+            entry: value,
+          };
+          game.initialPuzzleState[placements[0]][placements[1]] = {
+            type: "value",
+            entry: value,
+          };
+        }
+      }
+    } catch (e) {
       // If getSudokuHint throws an exception, we've initialized
       // all possible notes and can exit the loop
       break;
