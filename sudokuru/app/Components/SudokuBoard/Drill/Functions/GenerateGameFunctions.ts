@@ -166,7 +166,6 @@ export const convertPuzzleToSudokuObject = (
       // Filter to keep only notes that shouldn't be removed
 
       let notes: number[] = [];
-      //let value: number = 0;
 
       if (hint.strategy === "AMEND_NOTES") {
         notes = ALL_NOTES.filter((x) => !hint.removals[0].slice(2).includes(x));
