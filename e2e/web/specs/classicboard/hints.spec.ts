@@ -340,11 +340,11 @@ test.describe("board OBVIOUS_PAIR", () => {
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return (row <= 2 && column <= 2) || row === 1;
+      return row === 8;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 1 && column === 0) || (row === 1 && column === 1);
+      return (row === 8 && column === 4) || (row === 8 && column === 7);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -354,25 +354,16 @@ test.describe("board OBVIOUS_PAIR", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "25", row: 0, column: 1 },
-        { contentType: "notes", content: "589", row: 1, column: 3 },
-        { contentType: "notes", content: "589", row: 1, column: 4 },
-        { contentType: "notes", content: "579", row: 1, column: 7 },
-        { contentType: "notes", content: "47", row: 2, column: 0 },
+        { contentType: "notes", content: "469", row: 8, column: 5 },
+        { contentType: "notes", content: "279", row: 8, column: 8 },
       ],
       [
-        { contentType: "notes", content: "25", row: 0, column: 1 },
-        { contentType: "notes", content: "589", row: 1, column: 3 },
-        { contentType: "notes", content: "589", row: 1, column: 4 },
-        { contentType: "notes", content: "579", row: 1, column: 7 },
-        { contentType: "notes", content: "47", row: 2, column: 0 },
+        { contentType: "notes", content: "469", row: 8, column: 5 },
+        { contentType: "notes", content: "279", row: 8, column: 8 },
       ],
       [
-        { contentType: "notes", content: "2", row: 0, column: 1 },
-        { contentType: "notes", content: "89", row: 1, column: 3 },
-        { contentType: "notes", content: "89", row: 1, column: 4 },
-        { contentType: "notes", content: "79", row: 1, column: 7 },
-        { contentType: "notes", content: "7", row: 2, column: 0 },
+        { contentType: "notes", content: "46", row: 8, column: 5 },
+        { contentType: "notes", content: "2", row: 8, column: 8 },
       ],
     );
   });
