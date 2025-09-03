@@ -553,15 +553,15 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 2;
+      return row === 7;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 2 && column === 0) ||
-        (row === 2 && column === 3) ||
-        (row === 2 && column === 4) ||
-        (row === 2 && column === 5)
+        (row === 7 && column === 0) ||
+        (row === 7 && column === 1) ||
+        (row === 7 && column === 2) ||
+        (row === 7 && column === 3)
       );
     };
 
@@ -572,19 +572,16 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "2567", row: 2, column: 6 },
-        { contentType: "notes", content: "2567", row: 2, column: 7 },
-        { contentType: "notes", content: "27", row: 2, column: 8 },
+        { contentType: "notes", content: "249", row: 7, column: 4 },
+        { contentType: "notes", content: "157", row: 7, column: 6 },
       ],
       [
-        { contentType: "notes", content: "2567", row: 2, column: 6 },
-        { contentType: "notes", content: "2567", row: 2, column: 7 },
-        { contentType: "notes", content: "27", row: 2, column: 8 },
+        { contentType: "notes", content: "249", row: 7, column: 4 },
+        { contentType: "notes", content: "157", row: 7, column: 6 },
       ],
       [
-        { contentType: "notes", content: "256", row: 2, column: 6 },
-        { contentType: "notes", content: "256", row: 2, column: 7 },
-        { contentType: "notes", content: "2", row: 2, column: 8 },
+        { contentType: "notes", content: "9", row: 7, column: 4 },
+        { contentType: "notes", content: "1", row: 7, column: 6 },
       ],
     );
   });
