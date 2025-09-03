@@ -522,14 +522,14 @@ test.describe("board OBVIOUS_TRIPLET", () => {
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row <= 2 && column <= 2;
+      return row > 2 && column > 2 && row < 6 && column < 6;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 1 && column === 0) ||
-        (row === 1 && column === 1) ||
-        (row === 2 && column === 0)
+        (row === 3 && column === 4) ||
+        (row === 4 && column === 4) ||
+        (row === 5 && column === 5)
       );
     };
 
@@ -539,9 +539,9 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "2", row: 0, column: 1 }],
+      [{ contentType: "notes", content: "23468", row: 3, column: 5 }],
+      [{ contentType: "notes", content: "23468", row: 3, column: 5 }],
+      [{ contentType: "notes", content: "68", row: 3, column: 5 }],
     );
   });
 });
