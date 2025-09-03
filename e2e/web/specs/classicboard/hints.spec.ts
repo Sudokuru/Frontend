@@ -803,17 +803,11 @@ test.describe("board HIDDEN_PAIR", () => {
   });
   test("with column group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column === 3;
+      return column === 1;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 0 && column === 3) ||
-        (row === 2 && column === 3) ||
-        (row === 6 && column === 3) ||
-        (row === 7 && column === 3) ||
-        (row === 8 && column === 3)
-      );
+      return (row === 6 && column === 1) || (row === 8 && column === 1);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -823,16 +817,16 @@ test.describe("board HIDDEN_PAIR", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "89", row: 1, column: 3 },
-        { contentType: "notes", content: "2389", row: 4, column: 3 },
+        { contentType: "notes", content: "1568", row: 1, column: 1 },
+        { contentType: "notes", content: "158", row: 2, column: 1 },
       ],
       [
-        { contentType: "notes", content: "89", row: 1, column: 3 },
-        { contentType: "notes", content: "2389", row: 4, column: 3 },
+        { contentType: "notes", content: "1568", row: 1, column: 1 },
+        { contentType: "notes", content: "158", row: 2, column: 1 },
       ],
       [
-        { contentType: "notes", content: "9", row: 1, column: 3 },
-        { contentType: "notes", content: "29", row: 4, column: 3 },
+        { contentType: "notes", content: "58", row: 1, column: 1 },
+        { contentType: "notes", content: "58", row: 2, column: 1 },
       ],
     );
   });
