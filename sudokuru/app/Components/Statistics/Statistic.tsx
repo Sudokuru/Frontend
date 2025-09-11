@@ -27,7 +27,7 @@ const Statistic = (props: StatisticProps) => {
         style={{
           fontSize: reSize ? reSize / 20 : 20,
           fontWeight: "bold",
-          color: theme.semantic.text.quaternary,
+          color: theme.semantic.text.primary,
         }}
         testID={props.testID}
       >

@@ -18,7 +18,6 @@ export type Theme = {
       primary: string;
       secondary: string;
       tertiary: string;
-      quaternary: string;
     };
   };
 };
@@ -42,7 +41,6 @@ const classic: Theme = {
       primary: "#D9A05B",
       secondary: "#FFFFFF",
       tertiary: "#025E73",
-      quaternary: "#D9A05B",
     },
   },
 };
@@ -66,7 +64,6 @@ const light: Theme = {
       primary: "#06A2C7",
       secondary: "#06A2C7",
       tertiary: "#025E73",
-      quaternary: "#D9A05B",
     },
   },
 };
@@ -90,7 +87,6 @@ const dark: Theme = {
       primary: "#D9A05B",
       secondary: "#025E73",
       tertiary: "#000000",
-      quaternary: "#D9A05B",
     },
   },
 };
