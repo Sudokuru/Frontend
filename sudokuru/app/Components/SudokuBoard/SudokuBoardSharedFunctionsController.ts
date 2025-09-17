@@ -7,24 +7,20 @@ import {
   ClassicObjectProps,
 } from "./../../Functions/LocalDatabase";
 
-import {
-  doesCellHaveConflict as coreDoesCellHaveConflict,
-  isCellCorrect as coreIsCellCorrect,
-} from "./Core/Functions/CellFunctions";
-import {
-  doesCellHaveConflict as drillDoesCellHaveConflict,
-  isCellCorrect as drillIsCellCorrect,
-} from "./Drill/Functions/CellFunctions";
+import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
+import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
 
 import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
 import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderRowFunctions";
 import {
   finishSudokuGame as coreFinishGameStatistics,
   handlePause as coreHandlePause,
+  isCellCorrect as coreIsCellCorrect,
 } from "./Core/Functions/BoardFunctions";
 import {
   finishSudokuGame as drillFinishGameStatistics,
   handlePause as drillHandlePause,
+  isCellCorrect as drillIsCellCorrect,
 } from "./Drill/Functions/BoardFunctions";
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
