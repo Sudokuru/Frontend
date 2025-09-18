@@ -14,12 +14,12 @@ import {
   Button,
 } from "react-native-paper";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
-import { useFocusEffect } from "@react-navigation/core";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   formatOneLessonName,
   getLockedLessons,
 } from "../../Functions/learnedLessons";
-import { useNavigation } from "@react-navigation/native";
+
 import {
   CARD_IMAGE_HEIGHT,
   CARD_IMAGE_WIDTH,

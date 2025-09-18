@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { Button, useTheme, ActivityIndicator, Text } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { useFocusEffect } from "@react-navigation/core";
+import { useFocusEffect } from "@react-navigation/native";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { Statistics } from "../Api/Puzzle.Types";

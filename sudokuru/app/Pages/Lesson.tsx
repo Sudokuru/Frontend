@@ -7,8 +7,8 @@ import {
   ImageURISource,
 } from "react-native";
 import { Text, useTheme, Button, Card } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { useFocusEffect } from "@react-navigation/core";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Functions/Utils";
