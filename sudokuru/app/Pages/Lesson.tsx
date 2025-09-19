@@ -14,6 +14,7 @@ import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Functions/Utils";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
+import { safeNavigate } from "../Navigation/navigation";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   //Brings in name of strategy from carousel
@@ -49,7 +50,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveLearnedLessons(learnedLessons);
     }
-    navigation.navigate("LearnPage");
+    safeNavigate(navigation, "LearnPage");
   };
 
   // Create lesson content cards

@@ -30,6 +30,7 @@ import {
   getDifficultyColor,
 } from "./Cards";
 import { getStrategies } from "../../Api/Lessons";
+import { safeNavigate } from "../../Navigation/navigation";
 
 let lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
@@ -145,7 +146,9 @@ const LessonPanel = (props: any) => {
                 setLockedLesson(i);
                 showLockedWarning();
               } else {
-                navigation.navigate("Lesson", { params: availableLessons[i] });
+                safeNavigate(navigation, "Lesson", {
+                  params: availableLessons[i],
+                });
               }
             }}
           >

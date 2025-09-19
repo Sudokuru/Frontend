@@ -2,6 +2,7 @@ import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import { safeNavigate } from "../../Navigation/navigation";
 
 const HomeButton = () => {
   const navigation: any = useNavigation();
@@ -14,7 +15,7 @@ const HomeButton = () => {
       size={20}
       onPress={() => {
         updateCurrentPage("HomePage");
-        navigation.navigate("HomePage");
+        safeNavigate(navigation, "HomePage");
       }}
     />
   );

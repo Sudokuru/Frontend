@@ -2,6 +2,7 @@ import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
+import { safeNavigate } from "../../Navigation/navigation";
 
 const ProfileButton = () => {
   const navigation: any = useNavigation();
@@ -14,7 +15,7 @@ const ProfileButton = () => {
       size={20}
       onPress={() => {
         updateCurrentPage("ProfilePage");
-        navigation.navigate("ProfilePage");
+        safeNavigate(navigation, "ProfilePage");
       }}
     />
   );

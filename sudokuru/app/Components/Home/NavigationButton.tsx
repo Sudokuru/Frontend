@@ -4,6 +4,7 @@ import { Surface, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useNewWindowDimensions } from "../../Functions/WindowDimensions";
+import { safeNavigate } from "../../Navigation/navigation";
 
 interface NavigationButtonProps {
   navigationPage: string;
@@ -30,7 +31,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
     <Pressable
       onPress={() => {
         updateCurrentPage(props.navigationPage);
-        navigation.navigate(props.navigationPage);
+        safeNavigate(navigation, props.navigationPage);
       }}
     >
       {({ hovered }: any) => {
