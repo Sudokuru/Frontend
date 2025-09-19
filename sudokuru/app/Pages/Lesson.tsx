@@ -99,7 +99,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   }
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>

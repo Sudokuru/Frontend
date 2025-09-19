@@ -15,7 +15,7 @@ const DrillPage = () => {
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>

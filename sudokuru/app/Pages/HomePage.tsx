@@ -41,7 +41,7 @@ const HomePage = () => {
   });
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   if (!fontsLoaded) {
     return null;

@@ -3,13 +3,12 @@ import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
 import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import HomeButton from "./Home/HomeButton";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton, Text, useTheme } from "react-native-paper";
-import { DrawerHeaderProps } from "@react-navigation/drawer";
-import { useIsFocused } from "@react-navigation/native";
 
-const Header = ({ navigation }: DrawerHeaderProps) => {
-  // const navigation: any = useNavigation();
+const Header = () => {
+  const navigation: any = useNavigation();
   const theme = useTheme();
 
   const {
@@ -45,7 +44,7 @@ const Header = ({ navigation }: DrawerHeaderProps) => {
   };
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <View

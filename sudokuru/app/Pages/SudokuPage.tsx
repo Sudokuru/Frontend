@@ -9,7 +9,7 @@ const SudokuPage = ({ route }: any) => {
   const { difficulty } = route.params;
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <>

@@ -15,7 +15,7 @@ const Drill = (props: any) => {
   const navigation: any = useNavigation();
 
   const isFocused = useIsFocused();
-  if (!isFocused) return <Text>Loading...</Text>;
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <View style={homeScreenStyles.home}>
