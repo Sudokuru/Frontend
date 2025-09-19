@@ -7,7 +7,11 @@ import {
   ImageURISource,
 } from "react-native";
 import { Text, useTheme, Button, Card } from "react-native-paper";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from "@react-navigation/native";
 
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { CARD_PADDING } from "../Components/Home/Cards";
@@ -17,7 +21,6 @@ import { saveLearnedLessons } from "../Api/Statistics";
 import { safeNavigate } from "../Navigation/navigation";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
-  //Brings in name of strategy from carousel
   let name = props.route.params
     ? props.route.params.params
     : "no props.route.params in LessonPage";
@@ -95,6 +98,9 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       </View>,
     );
   }
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Loading...</Text>;
 
   return (
     <ScrollView>

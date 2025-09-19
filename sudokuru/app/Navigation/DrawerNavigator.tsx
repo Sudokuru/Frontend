@@ -1,5 +1,8 @@
 import * as React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerHeaderProps,
+} from "@react-navigation/drawer";
 import Header from "../Components/Header";
 import NavigationSideBar from "../Components/NavigationSideBar";
 import { useTheme } from "react-native-paper";
@@ -16,11 +19,22 @@ import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
+import { useIsFocused } from "@react-navigation/native";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const theme = useTheme();
+
+  function UnmountOnBlur({ children }: any) {
+    const isFocused = useIsFocused();
+
+    if (!isFocused) {
+      return null;
+    }
+
+    return children;
+  }
 
   return (
     <SafeAreaProvider>
@@ -38,11 +52,13 @@ const DrawerNavigator = () => {
               overflow: "hidden", //white space was being caused during some resizes
             },
             headerShown: true,
-            header: ({ navigation, route, options }) => {
-              return <Header />;
+            header: (props: DrawerHeaderProps) => {
+              return <Header {...props} />;
             },
             title: "Sudokuru",
           }}
+          //screenLayout={({ children }) => <UnmountOnBlur>{children}</UnmountOnBlur>}
+          detachInactiveScreens={true}
         >
           <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />

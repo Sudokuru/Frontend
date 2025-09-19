@@ -7,9 +7,10 @@ import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton, Text, useTheme } from "react-native-paper";
 import { safeNavigate } from "../Navigation/navigation";
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 
-const Header = () => {
-  const navigation: any = useNavigation();
+const Header = ({ navigation }: DrawerHeaderProps) => {
+  // const navigation: any = useNavigation();
   const theme = useTheme();
 
   const {

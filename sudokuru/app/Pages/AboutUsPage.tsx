@@ -4,6 +4,7 @@ import { Button, Icon, MD3Theme, Text, useTheme } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { Member, contributors, teamMembers } from "../Data/members";
+import { useIsFocused } from "@react-navigation/native";
 
 const openLink = (url: string) => {
   Linking.openURL(url);
@@ -83,6 +84,9 @@ const AboutUsPage = () => {
 
   let teamCards = getCardArray(teamMembers, columnCount, theme);
   let contributorCards = getCardArray(contributors, columnCount, theme);
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Loading...</Text>;
 
   return (
     <ScrollView>
