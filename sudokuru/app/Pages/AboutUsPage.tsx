@@ -53,7 +53,7 @@ function getCardArray(
         {teamMembers[i].activeSince && (
           <Text
             variant="bodyMedium"
-            style={{ color: theme.semantic.text.secondary }}
+            style={{ color: theme.semantic.text.tertiary }}
           >
             Active Since: {teamMembers[i].activeSince}
           </Text>
@@ -61,7 +61,7 @@ function getCardArray(
         {teamMembers[i].specialty && (
           <Text
             variant="bodyMedium"
-            style={{ color: theme.semantic.text.secondary }}
+            style={{ color: theme.semantic.text.tertiary }}
           >
             Specialty: {teamMembers[i].specialty}
           </Text>
@@ -111,13 +111,13 @@ const AboutUsPage = () => {
       <View style={{ marginHorizontal: "1%" }}>
         <Text
           variant="headlineSmall"
-          style={{ color: theme.semantic.text.secondary }}
+          style={{ color: theme.semantic.text.tertiary }}
         >
           Mission
         </Text>
         <Text
           variant="bodyLarge"
-          style={{ color: theme.semantic.text.secondary }}
+          style={{ color: theme.semantic.text.tertiary }}
         >
           {/* Note: The following text is duplicated in the README.md file */}
           Sudokuru is an open-source project focused on developing a
@@ -130,13 +130,13 @@ const AboutUsPage = () => {
         </Text>
         <Text
           variant="headlineSmall"
-          style={{ color: theme.semantic.text.secondary }}
+          style={{ color: theme.semantic.text.tertiary }}
         >
           History
         </Text>
         <Text
           variant="bodyLarge"
-          style={{ color: theme.semantic.text.secondary }}
+          style={{ color: theme.semantic.text.tertiary }}
         >
           Sudokuru was founded in 2022 by a group of computer science students
           at the University of Central Florida for a senior design project.
@@ -146,7 +146,7 @@ const AboutUsPage = () => {
         </Text>
         <Text
           variant="headlineSmall"
-          style={{ alignSelf: "center", color: theme.semantic.text.secondary }}
+          style={{ alignSelf: "center", color: theme.semantic.text.tertiary }}
         >
           Team
         </Text>
@@ -172,7 +172,7 @@ const AboutUsPage = () => {
         </View>
         <Text
           variant="headlineSmall"
-          style={{ alignSelf: "center", color: theme.semantic.text.secondary }}
+          style={{ alignSelf: "center", color: theme.semantic.text.tertiary }}
         >
           Contributors
         </Text>
