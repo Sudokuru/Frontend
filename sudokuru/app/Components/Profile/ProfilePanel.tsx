@@ -82,10 +82,14 @@ const ProfilePanel = (props: any) => {
             marginVertical: 8,
             borderColor: theme.semantic.text.primary,
             borderRadius: 16,
-            borderWidth: 3,
+            borderWidth: key === themeName ? 4 : 2,
             backgroundColor: theme.colors.bg,
           }}
-          textStyle={{ fontSize: 16, color: theme.semantic.text.primary }}
+          textStyle={{
+            fontSize: 16,
+            color: theme.semantic.text.primary,
+            fontWeight: key === themeName ? 700 : 400,
+          }}
         >
           {label}
         </Chip>
