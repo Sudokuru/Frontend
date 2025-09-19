@@ -20,7 +20,7 @@ const Header = () => {
   const featurePreviewText = minSize >= 500 ? "Feature Preview" : "FP";
 
   const DARK_LOGO = require("../../.assets/goldLogoText.png");
-  const LIGHT_LOGO = require("../../.assets/darkBlueLogoText.png");
+  const LIGHT_LOGO = require("../../.assets/lightBlueLogoText.png");
 
   const logoUrl = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
 
