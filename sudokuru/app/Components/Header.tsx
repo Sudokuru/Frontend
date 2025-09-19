@@ -5,7 +5,6 @@ import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import HomeButton from "./Home/HomeButton";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton, Text, useTheme } from "react-native-paper";
-import { safeNavigate } from "../Navigation/navigation";
 import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -68,7 +67,7 @@ const Header = ({ navigation }: DrawerHeaderProps) => {
         disabled={currentPage === "HomePage"}
         onPress={() => {
           updateCurrentPage("HomePage");
-          safeNavigate("HomePage");
+          navigation.navigate("HomePage");
         }}
       >
         <Image

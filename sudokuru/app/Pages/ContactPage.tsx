@@ -15,7 +15,6 @@ import {
 } from "../Components/Home/Cards";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { safeNavigate } from "../Navigation/navigation";
 
 const ContactPage = () => {
   const theme = useTheme();
@@ -83,7 +82,7 @@ const ContactPage = () => {
       buttonText: "Submit*",
     });
     updateCurrentPage("HomePage");
-    safeNavigate("HomePage");
+    navigation.navigate("HomePage");
   };
 
   const closeThankYouErrorModal = async () => {

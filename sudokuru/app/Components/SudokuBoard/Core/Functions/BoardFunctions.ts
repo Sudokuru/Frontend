@@ -3,7 +3,6 @@ import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore, GameDifficulty } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
 import { SudokuStrategy } from "sudokuru";
-import { safeNavigate } from "../../../../Navigation/navigation";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -106,5 +105,5 @@ export function finishSudokuGame(
  */
 export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
   saveGame(sudokuBoard);
-  safeNavigate("PlayPage");
+  navigation.navigate("PlayPage");
 }

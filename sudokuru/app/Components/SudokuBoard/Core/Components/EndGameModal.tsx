@@ -6,7 +6,6 @@ import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
-import { safeNavigate } from "../../../../Navigation/navigation";
 
 interface EndGameModalProps {
   time: number;
@@ -77,7 +76,7 @@ const EndGameModal = (props: EndGameModalProps) => {
       <Button
         mode="contained"
         testID="StartNewGameButton"
-        onPress={() => safeNavigate("PlayPage")}
+        onPress={() => navigation.navigate("PlayPage")}
         style={{ marginTop: 20 }}
       >
         Play New Game

@@ -18,7 +18,6 @@ import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Functions/Utils";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
-import { safeNavigate } from "../Navigation/navigation";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   let name = props.route.params
@@ -53,7 +52,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveLearnedLessons(learnedLessons);
     }
-    safeNavigate("LearnPage");
+    navigation.navigate("LearnPage");
   };
 
   // Create lesson content cards

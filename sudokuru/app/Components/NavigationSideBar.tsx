@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Drawer } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { safeNavigate } from "../Navigation/navigation";
 
 const NavigationSideBar = (props: any) => {
   const navigation: any = useNavigation();
@@ -28,7 +27,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "HomePage"}
         onPress={() => {
           updateCurrentPage("HomePage");
-          safeNavigate("HomePage");
+          navigation.navigate("HomePage");
         }}
       />
       <Drawer.Item
@@ -38,7 +37,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "LearnPage"}
         onPress={() => {
           updateCurrentPage("LearnPage");
-          safeNavigate("LearnPage");
+          navigation.navigate("LearnPage");
         }}
       />
       {featurePreviewSetting && (
@@ -49,7 +48,7 @@ const NavigationSideBar = (props: any) => {
           active={currentPage === "DrillPage"}
           onPress={() => {
             updateCurrentPage("DrillPage");
-            safeNavigate("DrillPage");
+            navigation.navigate("DrillPage");
           }}
         />
       )}
@@ -60,7 +59,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "PlayPage"}
         onPress={() => {
           updateCurrentPage("PlayPage");
-          safeNavigate("PlayPage");
+          navigation.navigate("PlayPage");
         }}
       />
       <Drawer.Item
@@ -70,7 +69,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "AboutUsPage"}
         onPress={() => {
           updateCurrentPage("AboutUsPage");
-          safeNavigate("AboutUsPage");
+          navigation.navigate("AboutUsPage");
         }}
       />
       <Drawer.Item
@@ -80,7 +79,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "ReleaseNotesPage"}
         onPress={() => {
           updateCurrentPage("ReleaseNotesPage");
-          safeNavigate("ReleaseNotesPage");
+          navigation.navigate("ReleaseNotesPage");
         }}
       />
       <Drawer.Item
@@ -90,7 +89,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "ContactPage"}
         onPress={() => {
           updateCurrentPage("ContactPage");
-          safeNavigate("ContactPage");
+          navigation.navigate("ContactPage");
         }}
       />
     </Drawer.Section>
