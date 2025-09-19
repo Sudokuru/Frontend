@@ -6,7 +6,7 @@ import ProfileToggle from "./ProfileToggle";
 import StrategyOrder from "./StrategyOrder";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { calculateCardsPerRow } from "../Home/Cards";
-import { useTheme as useAppTheme } from "../../Contexts/ThemeContext";
+import { useTheme } from "../../Contexts/ThemeContext";
 import { THEME_OPTIONS } from "../../Styling/theme";
 
 const ProfilePanel = (props: any) => {
@@ -54,7 +54,7 @@ const ProfilePanel = (props: any) => {
     }
   };
 
-  const { themeName, setTheme } = useAppTheme();
+  const { theme, themeName, setTheme } = useTheme();
 
   let paneArray = [];
 
@@ -62,14 +62,16 @@ const ProfilePanel = (props: any) => {
   paneArray.push(
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: theme.colors.surface,
         borderRadius: 10,
         padding: 20,
         margin: 20,
         minWidth: 280,
       }}
     >
-      <Text style={{ fontSize: 25, color: "#025E73" }}>App Theme:</Text>
+      <Text style={{ fontSize: 25, color: theme.semantic.text.quaternary }}>
+        App Theme:
+      </Text>
       {THEME_OPTIONS.map(({ key, label, theme }) => (
         <Chip
           key={key}
@@ -95,7 +97,7 @@ const ProfilePanel = (props: any) => {
   paneArray.push(
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: theme.colors.surface,
         borderRadius: 10,
         padding: 20,
         margin: 20,
@@ -103,7 +105,7 @@ const ProfilePanel = (props: any) => {
       }}
     >
       <View style={{ marginBottom: 10 }}>
-        <Text style={{ fontSize: 25, color: "#025E73" }}>
+        <Text style={{ fontSize: 25, color: theme.semantic.text.quaternary }}>
           Strategies Learned:
         </Text>
         <Text
@@ -111,7 +113,7 @@ const ProfilePanel = (props: any) => {
           style={{
             fontSize: 20,
             fontWeight: "bold",
-            color: "#D9A05B",
+            color: theme.semantic.text.primary,
           }}
         >
           {formatLessonNameArray(learnedLessons)}
@@ -186,7 +188,7 @@ const ProfilePanel = (props: any) => {
   paneArray.push(
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: theme.colors.surface,
         borderRadius: 10,
         padding: 20,
         margin: 20,

@@ -18,6 +18,7 @@ export type Theme = {
       primary: string;
       secondary: string;
       tertiary: string;
+      quaternary: string;
     };
   };
 };
@@ -29,7 +30,7 @@ const classic: Theme = {
     border: "#D9A05B",
     error: "#FF0000",
     onError: "#FFFFFF",
-    onSurface: "#F2F2F2",
+    onSurface: "#DEDEDE",
     primary: "#D9A05B",
     surface: "#FFFFFF",
     surfaceAlt: "#012D39",
@@ -41,6 +42,7 @@ const classic: Theme = {
       primary: "#D9A05B",
       secondary: "#FFFFFF",
       tertiary: "#025E73",
+      quaternary: "#025E73",
     },
   },
 };
@@ -64,6 +66,7 @@ const light: Theme = {
       primary: "#06A2C7",
       secondary: "#06A2C7",
       tertiary: "#025E73",
+      quaternary: "#025E73",
     },
   },
 };
@@ -87,6 +90,7 @@ const dark: Theme = {
       primary: "#D9A05B",
       secondary: "#025E73",
       tertiary: "#000000",
+      quaternary: "#FFFFFF",
     },
   },
 };
