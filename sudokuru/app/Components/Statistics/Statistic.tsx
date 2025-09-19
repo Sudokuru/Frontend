@@ -18,7 +18,7 @@ const Statistic = (props: StatisticProps) => {
       <Text
         style={{
           fontSize: reSize ? reSize / 20 : 20,
-          color: theme.semantic.text.tertiary,
+          color: theme.semantic.text.quaternary,
         }}
       >
         {props.statisticName}

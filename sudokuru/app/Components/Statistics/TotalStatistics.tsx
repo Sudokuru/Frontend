@@ -47,7 +47,7 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
       </Text>
       <View
         style={{
-          backgroundColor: theme.semantic.text.inverse,
+          backgroundColor: theme.colors.surface,
           borderRadius: 10,
           padding: 20,
         }}
