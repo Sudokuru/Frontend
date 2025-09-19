@@ -4,12 +4,13 @@ import {
   ReleaseNoteInterface,
   ReleaseNote,
 } from "../Components/ReleaseNotes/ReleaseNote";
-import { useTheme, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useWindowDimensions, FlatList } from "react-native";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
-  const theme = useTheme();
+  const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
   const width = size.width;
@@ -40,7 +41,7 @@ const ReleaseNotesPage = () => {
       }
       data={releaseNotes}
       renderItem={({ item }) =>
-        ReleaseNote(item, item.version, componentWidth(width))
+        ReleaseNote(item, item.version, componentWidth(width), theme)
       }
     />
   );
