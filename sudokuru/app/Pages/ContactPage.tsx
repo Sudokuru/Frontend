@@ -115,9 +115,18 @@ const ContactPage = () => {
           paddingVertical: CARD_PADDING / 2,
         }}
       >
-        <Card mode="outlined" style={{ background: theme.colors.surfaceAlt }}>
+        <Card
+          mode="outlined"
+          style={{
+            background: theme.colors.surfaceAlt,
+            borderColor: theme.colors.primary,
+          }}
+        >
           <View style={{ flexDirection: "column", padding: CARD_PADDING }}>
-            <Text variant="headlineSmall">
+            <Text
+              variant="headlineSmall"
+              style={{ color: theme.semantic.text.inverse }}
+            >
               Why are you contacting us today?
             </Text>
             <SegmentedButtons
@@ -144,6 +153,7 @@ const ContactPage = () => {
                 });
               }}
               style={{ width: "100%", paddingVertical: CARD_PADDING }}
+              theme={{ colors: { onSurface: theme.semantic.text.inverse } }}
               buttons={[
                 {
                   value: "feature",
@@ -196,9 +206,17 @@ const ContactPage = () => {
               }}
               testID={"SubmitFeedbackButton"}
             >
-              <Text variant="headlineSmall">{contactPage.buttonText}</Text>
+              <Text
+                variant="headlineSmall"
+                style={{ color: theme.semantic.text.inverse }}
+              >
+                {contactPage.buttonText}
+              </Text>
             </Button>
-            <Text variant="titleMedium">
+            <Text
+              variant="titleMedium"
+              style={{ color: theme.semantic.text.inverse }}
+            >
               *Please help us respect your privacy by not including any
               personally identifiable information in your feedback.
             </Text>
