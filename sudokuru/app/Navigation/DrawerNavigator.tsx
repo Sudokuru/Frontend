@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-  createDrawerNavigator,
-  DrawerHeaderProps,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import Header from "../Components/Header";
 import NavigationSideBar from "../Components/NavigationSideBar";
 import { useTheme } from "react-native-paper";
@@ -41,7 +38,7 @@ const DrawerNavigator = () => {
               overflow: "hidden", //white space was being caused during some resizes
             },
             headerShown: true,
-            header: () => {
+            header: ({ navigation, route, options }) => {
               return <Header />;
             },
             title: "Sudokuru",
