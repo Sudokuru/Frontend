@@ -53,7 +53,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
       updateLearnedLessons(learnedLessons);
       saveLearnedLessons(learnedLessons);
     }
-    safeNavigate(navigation, "LearnPage");
+    safeNavigate("LearnPage");
   };
 
   // Create lesson content cards

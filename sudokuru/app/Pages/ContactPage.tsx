@@ -83,7 +83,7 @@ const ContactPage = () => {
       buttonText: "Submit*",
     });
     updateCurrentPage("HomePage");
-    safeNavigate(navigation, "HomePage");
+    safeNavigate("HomePage");
   };
 
   const closeThankYouErrorModal = async () => {

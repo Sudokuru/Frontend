@@ -7,14 +7,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import InitializeContext from "./Contexts/InitializeContext";
 import DrawerNavigator from "./Navigation/DrawerNavigator";
 import { registerRootComponent } from "expo";
+import { navigationRef } from "./Navigation/navigationRef";
+import { enableScreens } from "react-native-screens";
 
 function App() {
   const { theme, preferences } = InitializeContext();
+  enableScreens();
 
   return (
     <PreferencesContext.Provider value={preferences}>
       <PaperProvider theme={theme}>
-        <NavigationContainer theme={theme}>
+        <NavigationContainer theme={theme} ref={navigationRef}>
           <DrawerNavigator />
         </NavigationContainer>
       </PaperProvider>

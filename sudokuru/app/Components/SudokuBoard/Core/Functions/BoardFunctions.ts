@@ -106,5 +106,5 @@ export function finishSudokuGame(
  */
 export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
   saveGame(sudokuBoard);
-  safeNavigate(navigation, "PlayPage");
+  safeNavigate("PlayPage");
 }

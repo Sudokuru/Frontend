@@ -15,7 +15,7 @@ const ProfileButton = () => {
       size={20}
       onPress={() => {
         updateCurrentPage("ProfilePage");
-        safeNavigate(navigation, "ProfilePage");
+        safeNavigate("ProfilePage");
       }}
     />
   );

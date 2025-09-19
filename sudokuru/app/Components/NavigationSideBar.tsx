@@ -28,7 +28,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "HomePage"}
         onPress={() => {
           updateCurrentPage("HomePage");
-          safeNavigate(navigation, "HomePage");
+          safeNavigate("HomePage");
         }}
       />
       <Drawer.Item
@@ -38,7 +38,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "LearnPage"}
         onPress={() => {
           updateCurrentPage("LearnPage");
-          safeNavigate(navigation, "LearnPage");
+          safeNavigate("LearnPage");
         }}
       />
       {featurePreviewSetting && (
@@ -49,7 +49,7 @@ const NavigationSideBar = (props: any) => {
           active={currentPage === "DrillPage"}
           onPress={() => {
             updateCurrentPage("DrillPage");
-            safeNavigate(navigation, "DrillPage");
+            safeNavigate("DrillPage");
           }}
         />
       )}
@@ -60,7 +60,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "PlayPage"}
         onPress={() => {
           updateCurrentPage("PlayPage");
-          safeNavigate(navigation, "PlayPage");
+          safeNavigate("PlayPage");
         }}
       />
       <Drawer.Item
@@ -70,7 +70,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "AboutUsPage"}
         onPress={() => {
           updateCurrentPage("AboutUsPage");
-          safeNavigate(navigation, "AboutUsPage");
+          safeNavigate("AboutUsPage");
         }}
       />
       <Drawer.Item
@@ -80,7 +80,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "ReleaseNotesPage"}
         onPress={() => {
           updateCurrentPage("ReleaseNotesPage");
-          safeNavigate(navigation, "ReleaseNotesPage");
+          safeNavigate("ReleaseNotesPage");
         }}
       />
       <Drawer.Item
@@ -90,7 +90,7 @@ const NavigationSideBar = (props: any) => {
         active={currentPage === "ContactPage"}
         onPress={() => {
           updateCurrentPage("ContactPage");
-          safeNavigate(navigation, "ContactPage");
+          safeNavigate("ContactPage");
         }}
       />
     </Drawer.Section>

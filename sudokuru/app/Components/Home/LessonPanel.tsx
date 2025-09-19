@@ -146,7 +146,7 @@ const LessonPanel = (props: any) => {
                 setLockedLesson(i);
                 showLockedWarning();
               } else {
-                safeNavigate(navigation, "Lesson", {
+                safeNavigate("Lesson", {
                   params: availableLessons[i],
                 });
               }

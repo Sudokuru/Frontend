@@ -15,7 +15,7 @@ const HomeButton = () => {
       size={20}
       onPress={() => {
         updateCurrentPage("HomePage");
-        safeNavigate(navigation, "HomePage");
+        safeNavigate("HomePage");
       }}
     />
   );

@@ -31,7 +31,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
     <Pressable
       onPress={() => {
         updateCurrentPage(props.navigationPage);
-        safeNavigate(navigation, props.navigationPage);
+        safeNavigate(props.navigationPage);
       }}
     >
       {({ hovered }: any) => {

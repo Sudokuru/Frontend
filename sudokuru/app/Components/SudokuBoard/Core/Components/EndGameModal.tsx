@@ -77,7 +77,7 @@ const EndGameModal = (props: EndGameModalProps) => {
       <Button
         mode="contained"
         testID="StartNewGameButton"
-        onPress={() => safeNavigate(navigation, "PlayPage")}
+        onPress={() => safeNavigate("PlayPage")}
         style={{ marginTop: 20 }}
       >
         Play New Game
