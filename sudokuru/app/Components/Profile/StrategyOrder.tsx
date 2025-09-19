@@ -40,7 +40,7 @@ const StrategyOrder = () => {
   ) => {
     let borderColor = "grey";
     if (selected) {
-      borderColor = theme.colors.border;
+      borderColor = theme.semantic.text.primary;
     }
 
     const updateSelectedElement = (order: number) => {
