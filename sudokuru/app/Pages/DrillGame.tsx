@@ -2,7 +2,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+
+import { Text } from "react-native-paper";
 
 const Drill = (props: any) => {
   let strategy = props.route.params
@@ -11,6 +13,9 @@ const Drill = (props: any) => {
 
   strategy = [strategy];
   const navigation: any = useNavigation();
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <View style={homeScreenStyles.home}>

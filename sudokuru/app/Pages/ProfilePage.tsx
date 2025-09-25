@@ -10,6 +10,7 @@ import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { formatLessonNameArray } from "../Functions/learnedLessons";
 import ProfileToggle from "../Components/Profile/ProfileToggle";
 import StrategyOrder from "../Components/Profile/StrategyOrder";
+import { useIsFocused } from "@react-navigation/native";
 
 const ProfilePage = () => {
   const theme = useTheme();
@@ -73,6 +74,9 @@ const ProfilePage = () => {
       return "column";
     }
   };
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView

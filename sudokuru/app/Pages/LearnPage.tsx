@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { View, ScrollView } from "react-native";
 import { Text, useTheme, ActivityIndicator } from "react-native-paper";
-import { useFocusEffect } from "@react-navigation/core";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
@@ -35,6 +35,9 @@ const LearnPage = () => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [learnedLessons]),
   );
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>
