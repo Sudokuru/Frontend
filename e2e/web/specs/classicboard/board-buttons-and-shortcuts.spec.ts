@@ -1,17 +1,17 @@
-import { test } from "../fixture";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { PlayPage } from "../page/play.page";
+import { test } from "../../fixture";
+import { SudokuBoardComponent } from "../../components/sudoku-board.component";
+import { PlayPage } from "../../page/play.page";
 import {
   AMEND_NOTES_EMPTY_CELL_GAME,
   NEW_EMPTY_GAME,
   OBVIOUS_SINGLE_GAME,
   PROGRESS_INDICATOR_DISABLED_PROFILE,
-} from "../data";
-import { getSingleMultiSelectKey } from "../playwright.config";
-import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
-import { ProfilePage } from "../page/profile.page";
+} from "../../data";
+import { getSingleMultiSelectKey } from "../../playwright.config";
+import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../../sudokuru/app/Styling/HighlightColors";
+import { ProfilePage } from "../../page/profile.page";
 import { expect } from "@playwright/test";
-import { HeaderComponent } from "../components/header.component";
+import { HeaderComponent } from "../../components/header.component";
 
 test.describe("hint", () => {
   test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });

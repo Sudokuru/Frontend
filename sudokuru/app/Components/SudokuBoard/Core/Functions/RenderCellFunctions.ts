@@ -1,9 +1,9 @@
 import React from "react";
 import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import {
-  SudokuObjectProps,
   CellProps,
   CellLocation,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import {
   NOT_SELECTED_CONFLICT_COLOR,
@@ -23,7 +23,6 @@ import {
   generateBoxIndex,
   getSelectedCells,
 } from "./CellFunctions";
-import { doesCellHaveConflict } from "../../SudokuBoardFunctions";
 
 /**
  * This function returns an array of 9 strings representing the colors of the
@@ -76,10 +75,15 @@ export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
  * if the cell is part of a hint, adjusting the color to reflect its role in the hint.
  */
 export const useCellBackgroundColor = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
+  doesCellHaveConflict: (
+    sudokuBoard: BoardObjectProps,
+    r: number,
+    c: number,
+  ) => boolean,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);
@@ -87,7 +91,7 @@ export const useCellBackgroundColor = (
   const peer: boolean = useIsCellPeer(r, c, selectedCell);
   const identicalValue: boolean = useDoesCellHaveIdenticalValue(
     sudokuBoard,
-    sudokuBoard.puzzle[r][c],
+    sudokuBoard.puzzleState[r][c],
   );
 
   let cellBackgroundColor;
@@ -211,7 +215,7 @@ const isCellSelected = (
  * This function will also return false if the user has disabled highlighting of identical values in their preferences.
  */
 const useDoesCellHaveIdenticalValue = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   cell: CellProps,
 ): boolean => {
   const { highlightIdenticalValuesSetting } =

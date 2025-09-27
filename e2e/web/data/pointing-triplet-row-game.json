@@ -3,7 +3,7 @@
     "variant": "classic",
     "version": 1,
     "selectedCells": [],
-    "puzzle": [
+    "puzzleState": [
       [
         {
           "type": "note",

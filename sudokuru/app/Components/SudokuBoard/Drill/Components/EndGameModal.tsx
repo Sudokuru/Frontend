@@ -2,16 +2,18 @@ import { Button, Text } from "react-native-paper";
 import { useWindowDimensions, ScrollView, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
-import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
-import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
-import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
+import { DrillGameStatistics } from "../../../../Functions/LocalDatabase";
+import { formatTime } from "../../Core/Functions/BoardFunctions";
+import { toTitle } from "../../../../Functions/Utils";
 
-export const EndGameModal = (props: ClassicGameStatistics) => {
+export const EndGameModal = (props: DrillGameStatistics) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
+
+  console.log(props);
 
   props = props.statistics;
 
@@ -35,14 +37,14 @@ export const EndGameModal = (props: ClassicGameStatistics) => {
       </Text>
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
         <Statistic
-          statisticName="Score: "
-          statisticValue={props.score}
-          testID="score"
-        />
-        <Statistic
           statisticName="Time Spent: "
           statisticValue={formatTime(props.time)}
           testID="time"
+        />
+        <Statistic
+          statisticName="Strategy: "
+          statisticValue={toTitle(props.difficulty)}
+          testID="strategy"
         />
         <Statistic
           statisticName="Mistakes Made: "
@@ -50,26 +52,18 @@ export const EndGameModal = (props: ClassicGameStatistics) => {
           testID="numWrongCellsPlayed"
         />
         <Statistic
-          statisticName="Difficulty: "
-          statisticValue={props.difficulty}
-          testID="difficulty"
-        />
-        <Statistic
-          statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
+          statisticName="Hint Used: "
+          statisticValue={props.hintUsed ? "Yes" : "No"}
           testID="numHintsUsed"
-        />
-        <NumHintsUsedPerStrategy
-          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
         />
       </View>
       <Button
         mode="contained"
-        testID="StartNewGameButton"
-        onPress={() => navigation.navigate("PlayPage")}
+        testID="StartNewDrillGame"
+        onPress={() => navigation.navigate("DrillPage")}
         style={{ marginTop: 20 }}
       >
-        Play New Game
+        Start New Drill
       </Button>
     </ScrollView>
   );

@@ -1,8 +1,14 @@
 import { useWindowDimensions } from "react-native";
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
-import { calculateGameScore, GameDifficulty } from "./DifficultyFunctions";
+import {
+  BoardObjectProps,
+  CellProps,
+  ClassicGameStatistics,
+  ClassicObjectProps,
+  GameVariant,
+} from "../../../../Functions/LocalDatabase";
+import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
-import { SudokuStrategy } from "sudokuru";
+import { isEqual } from "../../Drill/Functions/CellFunctions";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -22,10 +28,29 @@ export function useBoardSize(): number {
 }
 
 export const isValueCorrect = (
-  solution: number,
+  solution: CellProps | number,
   inputValue: number,
 ): boolean => {
+  if (typeof solution === "object" && "entry" in solution) {
+    return isEqual(solution.entry, inputValue);
+  }
   return solution === inputValue;
+};
+
+export const isCellCorrect = (
+  sudokuBoard: ClassicObjectProps,
+  r: number,
+  c: number,
+): boolean => {
+  if (
+    sudokuBoard.puzzleState[r][c].type === "note" ||
+    sudokuBoard.puzzleState[r][c].entry === 0
+  ) {
+    return false;
+  }
+  return (
+    sudokuBoard.puzzleState[r][c].entry === sudokuBoard.puzzleSolution[r][c]
+  );
 };
 
 // https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds
@@ -70,32 +95,38 @@ export const formatTime = (inputSeconds: number) => {
  * @returns
  */
 export function finishSudokuGame(
-  difficulty: GameDifficulty,
-  numHintsUsed: number,
-  numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
-    numHintsUsed: number;
-  }[],
-  numWrongCellsPlayed: number,
-  time: number,
-): number {
+  statistics: ClassicGameStatistics,
+  variant: GameVariant,
+): ClassicGameStatistics {
   // calculate score
   const score = calculateGameScore(
-    numHintsUsed,
-    numWrongCellsPlayed,
-    time,
-    difficulty,
+    statistics.numHintsUsed,
+    statistics.numWrongCellsPlayed,
+    statistics.time,
+    statistics.difficulty,
   );
 
   // removes game from localstorage and updates statistics page
   finishGame(
-    numHintsUsed,
-    numHintsUsedPerStrategy,
-    numWrongCellsPlayed,
-    time,
+    statistics.numHintsUsed,
+    statistics.numHintsUsedPerStrategy,
+    statistics.numWrongCellsPlayed,
+    statistics.time,
     score,
+    variant,
   );
-  return score;
+
+  statistics.score = score;
+
+  return {
+    numHintsUsed: statistics.numHintsUsed,
+    numHintsUsedPerStrategy: statistics.numHintsUsedPerStrategy,
+    numWrongCellsPlayed: statistics.numWrongCellsPlayed,
+    time: statistics.time,
+    score: statistics.score,
+    difficulty: statistics.difficulty,
+    internalDifficulty: statistics.internalDifficulty,
+  };
 }
 
 /**
@@ -103,7 +134,7 @@ export function finishSudokuGame(
  * @param sudokuBoard The current state of the game
  * @param navigation The navigation object
  */
-export function handlePause(sudokuBoard: SudokuObjectProps, navigation: any) {
+export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
   navigation.navigate("PlayPage");
 }

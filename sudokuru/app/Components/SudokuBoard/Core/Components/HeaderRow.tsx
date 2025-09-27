@@ -2,24 +2,21 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
-import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
-import {
-  useCellSize,
-  formatTime,
-  handlePause,
-} from "../Functions/BoardFunctions";
+import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
+import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
 
 let fallbackHeight = 30;
 
 interface HeaderRowProps {
-  sudokuBoard: SudokuObjectProps;
+  sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
+  headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
+  handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
 }
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard } = props;
-  const difficulty = sudokuBoard.statistics.difficulty;
+  const { sudokuBoard, setSudokuBoard, headerRowTitle, handlePause } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
@@ -31,7 +28,7 @@ const HeaderRow = (props: HeaderRowProps) => {
     React.useCallback(() => {
       let interval = setInterval(() => {
         sudokuBoard.statistics.time = sudokuBoard.statistics.time + 1;
-        setSudokuBoard((prevState: SudokuObjectProps) => ({
+        setSudokuBoard((prevState: BoardObjectProps) => ({
           ...prevState,
           statistics: sudokuBoard.statistics,
         }));
@@ -76,7 +73,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             color: theme.colors.onBackground,
           }}
         >
-          Difficulty: {difficulty}
+          {headerRowTitle(sudokuBoard)}
         </Text>
       </View>
       <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>
