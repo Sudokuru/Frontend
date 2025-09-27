@@ -2,7 +2,9 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+
+import { Text } from "react-native-paper";
 import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 
 const Drill = (props: any) => {
@@ -17,6 +19,9 @@ const Drill = (props: any) => {
   strategy = strategy;
   action = action;
   const navigation: any = useNavigation();
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <View style={homeScreenStyles.home}>

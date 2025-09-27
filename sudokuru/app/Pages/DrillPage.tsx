@@ -2,7 +2,7 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, useTheme } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
@@ -13,6 +13,9 @@ const DrillPage = () => {
 
   const windowSize = useNewWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>

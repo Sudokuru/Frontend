@@ -1,7 +1,11 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text, useTheme, Button } from "react-native-paper";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useIsFocused,
+} from "@react-navigation/native";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
@@ -44,6 +48,9 @@ const PlayPage = () => {
   const [resumeVisible, setResumeVisible] = React.useState(false);
   const showResumeButton = () => setResumeVisible(true);
   const hideResumeButton = () => setResumeVisible(false);
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
