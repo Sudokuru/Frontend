@@ -16,6 +16,8 @@ import {
 import NavigationButton from "../Components/Home/NavigationButton";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useIsFocused } from "@react-navigation/native";
+import { Text } from "react-native-paper";
 
 // Example of how to use PressableStates
 // https://github.com/necolas/react-native-web/issues/1708
@@ -44,6 +46,9 @@ const HomePage = () => {
     Inter_500Medium,
     Inter_700Bold,
   });
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   if (!fontsLoaded) {
     return null;

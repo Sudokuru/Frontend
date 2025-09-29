@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, ScrollView, View } from "react-native";
 import { Button, ActivityIndicator, Text } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
-import { useFocusEffect } from "@react-navigation/core";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
 import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { Statistics } from "../Api/Puzzle.Types";
@@ -53,6 +53,9 @@ const StatisticsPage = () => {
       getUserStatistics();
     }, []),
   );
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   if (isLoading) {
     return <ActivityIndicator animating={true} color={theme.colors.primary} />;

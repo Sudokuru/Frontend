@@ -12,7 +12,7 @@ import {
   CARD_PADDING,
   CARD_WIDTH,
 } from "../Components/Home/Cards";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 
@@ -93,6 +93,9 @@ const ContactPage = () => {
       errorVisible: false,
     });
   };
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>

@@ -3,7 +3,7 @@ import ProfileButton from "./Profile/ProfileButton";
 import StatisticsButton from "./Statistics/StatisticsButton";
 import { Image, Pressable, View, useWindowDimensions } from "react-native";
 import HomeButton from "./Home/HomeButton";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton, Text } from "react-native-paper";
 import { useTheme } from "../Contexts/ThemeContext";
@@ -39,6 +39,9 @@ const Header = () => {
       return <HomeButton />;
     }
   };
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <View

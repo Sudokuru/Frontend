@@ -7,6 +7,7 @@ import {
 import { Text } from "react-native-paper";
 import { useWindowDimensions, FlatList } from "react-native";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useIsFocused } from "@react-navigation/native";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -22,6 +23,9 @@ const ReleaseNotesPage = () => {
       return width;
     }
   };
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <FlatList

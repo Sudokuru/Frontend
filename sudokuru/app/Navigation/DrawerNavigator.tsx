@@ -39,10 +39,7 @@ const DrawerNavigator = () => {
             header: ({ navigation, route, options }) => {
               return <Header />;
             },
-            unmountOnBlur: true,
             title: "Sudokuru",
-            // turning unmountOnBlur means useHeaderHeight is never zero anymore... no idea why.
-            // also I believe it may have sped up the playwright test execution, which makes sense as less html to parse through.
           }}
         >
           <Drawer.Screen name="HomePage" component={HomePage} />

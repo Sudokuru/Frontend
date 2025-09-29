@@ -6,6 +6,7 @@ import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { Member, contributors, teamMembers } from "../Data/members";
 import { useTheme } from "../Contexts/ThemeContext";
 import { Theme } from "../Styling/theme";
+import { useIsFocused } from "@react-navigation/native";
 
 const openLink = (url: string) => {
   Linking.openURL(url);
@@ -94,6 +95,9 @@ const AboutUsPage = () => {
 
   let teamCards = getCardArray(teamMembers, columnCount, theme);
   let contributorCards = getCardArray(contributors, columnCount, theme);
+
+  const isFocused = useIsFocused();
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
     <ScrollView>
