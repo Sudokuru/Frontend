@@ -9,7 +9,7 @@ import {
   MD3LightTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
-import { Theme, themes, ThemeName } from "../Styling/theme";
+import { Theme, themes, ThemeName, THEME_OPTIONS } from "../Styling/theme";
 import { getStoredTheme, setStoredTheme } from "../Api/Theme";
 
 interface ThemeContextValue {
@@ -19,13 +19,13 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  themeName: "classic",
-  theme: themes.classic,
+  themeName: THEME_OPTIONS[0].key,
+  theme: THEME_OPTIONS[0].theme,
   setTheme: () => {},
 });
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [themeName, setThemeName] = useState<ThemeName>("classic");
+  const [themeName, setThemeName] = useState<ThemeName>(THEME_OPTIONS[0].key);
 
   useEffect(() => {
     getStoredTheme().then((stored) => {

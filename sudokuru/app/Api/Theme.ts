@@ -1,9 +1,10 @@
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
+import { ThemeSchema } from "../Functions/LocalDatabase";
 
 const THEME_KEY = "theme";
 
 export const getStoredTheme = async (): Promise<string | undefined> => {
-  const value = await getKeyJSON(THEME_KEY);
+  const value = await getKeyJSON(THEME_KEY, ThemeSchema);
   return value ?? undefined;
 };
 

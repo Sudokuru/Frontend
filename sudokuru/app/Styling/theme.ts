@@ -103,6 +103,8 @@ export const themes = {
 
 export type ThemeName = keyof typeof themes;
 
+export const ThemeNames = Object.keys(themes) as ThemeName[];
+
 export type ThemeOption = {
   key: ThemeName;
   label: string;
