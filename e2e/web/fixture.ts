@@ -13,6 +13,7 @@ import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
 import { CODE_COVERAGE } from "./playwright.config";
+import { DrillPage } from "./page/drill.page";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -24,6 +25,7 @@ interface MyFixtures {
   featurePreview: Page;
   aboutUs: Page;
   learn: Page;
+  drill: Page;
 }
 
 interface MyOptions {
@@ -174,5 +176,13 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     const learnPage = new LearnPage(page);
     await learnPage.learnPageIsRendered();
     await use(page);
+  },
+  drill: async ({ featurePreview }, use) => {
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerDrill.click();
+    const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
+    await use(featurePreview);
   },
 });

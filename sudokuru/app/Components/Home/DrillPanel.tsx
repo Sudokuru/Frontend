@@ -138,6 +138,7 @@ const DrillPanel = (props: any) => {
     subArray.push(
       <View
         key={DRILL_STRATEGIES[i]}
+        testID={DRILL_STRATEGIES[i]}
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING,
