@@ -839,11 +839,11 @@ test.describe("board HIDDEN_PAIR", () => {
   });
   test("with box group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row < 3 && column < 3;
+      return row > 2 && row < 6 && column > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 1 && column === 0) || (row === 2 && column === 0);
+      return row === 4 && column === 8;
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -852,9 +852,9 @@ test.describe("board HIDDEN_PAIR", () => {
       "HIDDEN_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "5", row: 1, column: 1 }],
+      [{ contentType: "notes", content: "389", row: 4, column: 7 }],
+      [{ contentType: "notes", content: "389", row: 4, column: 7 }],
+      [{ contentType: "notes", content: "89", row: 4, column: 7 }],
     );
   });
 });

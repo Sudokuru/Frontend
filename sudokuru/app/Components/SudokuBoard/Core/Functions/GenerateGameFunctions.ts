@@ -25,9 +25,9 @@ export async function generateGame(
   let gameData = null;
 
   if (props.action === "StartGame") {
-    return returnGameOfDifficulty(props.difficulty, initializeNotes);
     // !uncomment below for dev testing
-    // return returnGameOfDifficulty("dev", initializeNotes);
+    return returnGameOfDifficulty("dev", initializeNotes);
+    return returnGameOfDifficulty(props.difficulty, initializeNotes);
   } else if (props.action === "ResumeGame") {
     const gameData: BoardObjectProps[] = await getGame(props.type);
     // If game object is not returned, you get redirected to Main Page

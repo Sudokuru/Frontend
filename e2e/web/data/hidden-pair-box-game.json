@@ -6,62 +6,20 @@
     "puzzleState": [
       [
         {
-          "type": "value",
-          "entry": 1
+          "type": "given",
+          "entry": 9
         },
         {
-          "type": "note",
-          "entry": [2, 5]
+          "type": "given",
+          "entry": 1
         },
         {
           "type": "given",
           "entry": 3
         },
         {
-          "type": "note",
-          "entry": [5, 6, 8, 9]
-        },
-        {
           "type": "given",
-          "entry": 7
-        },
-        {
-          "type": "note",
-          "entry": [5, 6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [2, 5, 6, 8, 9]
-        },
-        {
-          "type": "given",
-          "entry": 4
-        },
-        {
-          "type": "note",
-          "entry": [2, 8, 9]
-        }
-      ],
-      [
-        {
-          "type": "note",
-          "entry": [4, 7]
-        },
-        {
-          "type": "note",
-          "entry": [4, 5]
-        },
-        {
-          "type": "given",
-          "entry": 6
-        },
-        {
-          "type": "note",
-          "entry": [5, 8, 9]
-        },
-        {
-          "type": "note",
-          "entry": [5, 8, 9]
+          "entry": 8
         },
         {
           "type": "given",
@@ -69,21 +27,67 @@
         },
         {
           "type": "given",
-          "entry": 3
-        },
-        {
-          "type": "note",
-          "entry": [5, 7, 9]
+          "entry": 6
         },
         {
           "type": "given",
-          "entry": 1
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
         }
       ],
       [
         {
-          "type": "note",
-          "entry": [4, 7]
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 9
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 5
         },
         {
           "type": "given",
@@ -94,100 +98,20 @@
           "entry": 9
         },
         {
-          "type": "note",
-          "entry": [3, 5, 6]
-        },
-        {
-          "type": "note",
-          "entry": [1, 3, 5, 6]
-        },
-        {
-          "type": "note",
-          "entry": [1, 3, 4, 5, 6]
-        },
-        {
-          "type": "note",
-          "entry": [2, 5, 6, 7]
-        },
-        {
-          "type": "note",
-          "entry": [2, 5, 6, 7]
-        },
-        {
-          "type": "note",
-          "entry": [2, 7]
-        }
-      ],
-      [
-        {
-          "type": "note",
-          "entry": [3, 4, 6, 9]
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 4, 6]
-        },
-        {
-          "type": "note",
-          "entry": [2, 4]
-        },
-        {
           "type": "given",
-          "entry": 1
-        },
-        {
-          "type": "note",
-          "entry": [3, 5, 6, 9]
-        },
-        {
-          "type": "given",
-          "entry": 7
-        },
-        {
-          "type": "note",
-          "entry": [2, 5, 9]
-        },
-        {
-          "type": "given",
-          "entry": 8
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 9]
-        }
-      ],
-      [
-        {
-          "type": "given",
-          "entry": 5
-        },
-        {
-          "type": "given",
-          "entry": 1
-        },
-        {
-          "type": "given",
-          "entry": 7
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 8, 9]
-        },
-        {
-          "type": "note",
-          "entry": [3, 8, 9]
-        },
-        {
-          "type": "note",
-          "entry": [3, 8]
-        },
-        {
-          "type": "value",
           "entry": 4
         },
         {
-          "type": "note",
-          "entry": [2, 3, 9]
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 2
         },
         {
           "type": "given",
@@ -196,46 +120,16 @@
       ],
       [
         {
-          "type": "note",
-          "entry": [3, 6, 8, 9]
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 6]
-        },
-        {
-          "type": "note",
-          "entry": [2, 8]
+          "type": "given",
+          "entry": 1
         },
         {
           "type": "given",
-          "entry": 4
+          "entry": 8
         },
-        {
-          "type": "note",
-          "entry": [3, 5, 6, 8, 9]
-        },
-        {
-          "type": "note",
-          "entry": [3, 5, 6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [1, 2, 5, 7, 9]
-        },
-        {
-          "type": "note",
-          "entry": [1, 2, 3, 5, 7, 9]
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 7, 9]
-        }
-      ],
-      [
         {
           "type": "given",
-          "entry": 2
+          "entry": 9
         },
         {
           "type": "given",
@@ -243,87 +137,51 @@
         },
         {
           "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 4
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
           "entry": 1
         },
         {
           "type": "note",
-          "entry": [3, 6, 8]
+          "entry": [
+            9
+          ]
         },
         {
-          "type": "value",
+          "type": "given",
           "entry": 4
-        },
-        {
-          "type": "given",
-          "entry": 9
-        },
-        {
-          "type": "note",
-          "entry": [6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [3, 6]
-        },
-        {
-          "type": "given",
-          "entry": 5
-        }
-      ],
-      [
-        {
-          "type": "note",
-          "entry": [3, 4, 6, 8]
-        },
-        {
-          "type": "given",
-          "entry": 9
-        },
-        {
-          "type": "given",
-          "entry": 5
-        },
-        {
-          "type": "note",
-          "entry": [3, 6, 7, 8]
-        },
-        {
-          "type": "note",
-          "entry": [1, 3, 6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [1, 3, 6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [1, 2, 6, 7, 8]
-        },
-        {
-          "type": "note",
-          "entry": [1, 2, 3, 6, 7]
-        },
-        {
-          "type": "note",
-          "entry": [2, 3, 4, 7, 8]
-        }
-      ],
-      [
-        {
-          "type": "note",
-          "entry": [3, 4, 6, 8]
-        },
-        {
-          "type": "note",
-          "entry": [3, 4, 6]
-        },
-        {
-          "type": "note",
-          "entry": [4, 8]
-        },
-        {
-          "type": "note",
-          "entry": [3, 5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -331,41 +189,317 @@
         },
         {
           "type": "note",
-          "entry": [1, 3, 5, 6, 8]
+          "entry": [
+            3,
+            8,
+            9
+          ]
         },
         {
           "type": "note",
-          "entry": [1, 6, 7, 8, 9]
+          "entry": [
+            3
+          ]
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 6
         },
         {
           "type": "note",
-          "entry": [1, 3, 6, 7, 9]
+          "entry": [
+            8
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 1
         },
         {
           "type": "note",
-          "entry": [3, 4, 7, 8, 9]
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 7
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5,
+            7
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "note",
+          "entry": [
+            4,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            7,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 1
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "note",
+          "entry": [
+            4
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "note",
+          "entry": [
+            4,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            3,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            3
+          ]
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "note",
+          "entry": [
+            7
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 8
         }
       ]
     ],
     "puzzleSolution": [
-      [1, 2, 3, 6, 7, 5, 9, 4, 8],
-      [4, 5, 6, 9, 8, 2, 3, 7, 1],
-      [7, 8, 9, 3, 1, 4, 5, 6, 2],
-      [9, 6, 4, 1, 5, 7, 2, 8, 3],
-      [5, 1, 7, 2, 3, 8, 4, 9, 6],
-      [8, 3, 2, 4, 9, 6, 1, 5, 7],
-      [2, 7, 1, 8, 4, 9, 6, 3, 5],
-      [3, 9, 5, 7, 6, 1, 8, 2, 4],
-      [6, 4, 8, 5, 2, 3, 7, 1, 9]
+      [
+        9,
+        1,
+        3,
+        8,
+        2,
+        6,
+        7,
+        4,
+        5
+      ],
+      [
+        6,
+        2,
+        4,
+        3,
+        7,
+        5,
+        8,
+        1,
+        9
+      ],
+      [
+        7,
+        5,
+        8,
+        9,
+        4,
+        1,
+        3,
+        2,
+        6
+      ],
+      [
+        1,
+        8,
+        9,
+        7,
+        3,
+        2,
+        6,
+        5,
+        4
+      ],
+      [
+        5,
+        7,
+        6,
+        1,
+        9,
+        4,
+        2,
+        8,
+        3
+      ],
+      [
+        3,
+        4,
+        2,
+        5,
+        6,
+        8,
+        1,
+        9,
+        7
+      ],
+      [
+        2,
+        9,
+        5,
+        6,
+        8,
+        3,
+        4,
+        7,
+        1
+      ],
+      [
+        8,
+        6,
+        1,
+        4,
+        5,
+        7,
+        9,
+        3,
+        2
+      ],
+      [
+        4,
+        3,
+        7,
+        2,
+        1,
+        9,
+        5,
+        6,
+        8
+      ]
     ],
     "statistics": {
       "difficulty": "novice",
-      "internalDifficulty": 0,
-      "numHintsUsed": 0,
-      "numHintsUsedPerStrategy": [],
+      "internalDifficulty": -33820,
+      "numHintsUsed": 2,
+      "numHintsUsedPerStrategy": [
+        {
+          "hintStrategy": "HIDDEN_PAIR",
+          "numHintsUsed": 2
+        }
+      ],
       "numWrongCellsPlayed": 0,
       "score": 0,
-      "time": 6931
+      "time": 458
     },
     "inNoteMode": false,
     "actionHistory": []
