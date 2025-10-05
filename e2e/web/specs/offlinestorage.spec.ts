@@ -95,7 +95,7 @@ test.describe("Offline Storage", () => {
     await page.evaluate(
       (INVALID_ACTIVE_GAME_DATA: JSON) => {
         window.localStorage.setItem(
-          "active_game",
+          "active_classic_game",
           JSON.stringify(INVALID_ACTIVE_GAME_DATA),
         );
       },

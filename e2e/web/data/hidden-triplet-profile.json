@@ -11,7 +11,6 @@
   "previewMode": false,
   "strategyHintOrder": [
     "HIDDEN_TRIPLET",
-    "SIMPLIFY_NOTES",
     "OBVIOUS_SINGLE",
     "HIDDEN_SINGLE",
     "OBVIOUS_PAIR",
