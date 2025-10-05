@@ -866,16 +866,11 @@ test.describe("board HIDDEN_TRIPLET", () => {
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 2;
+      return row === 7;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 2 && column === 0) ||
-        (row === 2 && column === 3) ||
-        (row === 2 && column === 4) ||
-        (row === 2 && column === 5)
-      );
+      return row === 7 && column === 6;
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeGame);
@@ -884,21 +879,9 @@ test.describe("board HIDDEN_TRIPLET", () => {
       "HIDDEN_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "2567", row: 2, column: 6 },
-        { contentType: "notes", content: "2567", row: 2, column: 7 },
-        { contentType: "notes", content: "27", row: 2, column: 8 },
-      ],
-      [
-        { contentType: "notes", content: "2567", row: 2, column: 6 },
-        { contentType: "notes", content: "2567", row: 2, column: 7 },
-        { contentType: "notes", content: "27", row: 2, column: 8 },
-      ],
-      [
-        { contentType: "notes", content: "256", row: 2, column: 6 },
-        { contentType: "notes", content: "256", row: 2, column: 7 },
-        { contentType: "notes", content: "2", row: 2, column: 8 },
-      ],
+      [{ contentType: "notes", content: "59", row: 7, column: 0 }],
+      [{ contentType: "notes", content: "59", row: 7, column: 0 }],
+      [{ contentType: "notes", content: "9", row: 7, column: 0 }],
     );
   });
 });
