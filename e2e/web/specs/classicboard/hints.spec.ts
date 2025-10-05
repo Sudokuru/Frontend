@@ -1135,14 +1135,14 @@ test.describe("board POINTING_TRIPLET", () => {
   });
   test("with row group", async ({ resumeGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 0 || (row <= 2 && column <= 2);
+      return row === 5 || (row > 2 && column > 2 && column < 6 && row < 6);
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 0 && column === 0) ||
-        (row === 0 && column === 1) ||
-        (row === 0 && column === 2)
+        (row === 5 && column === 3) ||
+        (row === 5 && column === 4) ||
+        (row === 5 && column === 5)
       );
     };
 
@@ -1153,16 +1153,16 @@ test.describe("board POINTING_TRIPLET", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "124569", row: 0, column: 3 },
-        { contentType: "notes", content: "1234569", row: 0, column: 4 },
+        { contentType: "notes", content: "2567", row: 5, column: 1 },
+        { contentType: "notes", content: "23567", row: 5, column: 2 },
       ],
       [
-        { contentType: "notes", content: "124569", row: 0, column: 3 },
-        { contentType: "notes", content: "1234569", row: 0, column: 4 },
+        { contentType: "notes", content: "2567", row: 5, column: 1 },
+        { contentType: "notes", content: "23567", row: 5, column: 2 },
       ],
       [
-        { contentType: "notes", content: "14569", row: 0, column: 3 },
-        { contentType: "notes", content: "134569", row: 0, column: 4 },
+        { contentType: "notes", content: "267", row: 5, column: 1 },
+        { contentType: "notes", content: "2367", row: 5, column: 2 },
       ],
     );
   });
