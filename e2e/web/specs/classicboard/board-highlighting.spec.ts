@@ -17,9 +17,9 @@ import { PlayPage } from "../../page/play.page";
 
 test.describe("board highlighting", () => {
   test("should render correctly when a cell is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasColor(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
     await sudokuBoard.cellHasColor(7, 7, NOT_HIGHLIGHTED_COLOR_RGB);
     await sudokuBoard.cell[7][7].click();
@@ -50,9 +50,9 @@ test.describe("board highlighting", () => {
   });
 
   test("should render correctly when cell is unselected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasColor(7, 6, NOT_SELECTED_CONFLICT_COLOR_RGB);
     await sudokuBoard.cellHasColor(7, 7, NOT_HIGHLIGHTED_COLOR_RGB);
     await sudokuBoard.cell[7][7].click();
@@ -68,9 +68,9 @@ test.describe("board highlighting", () => {
   });
 
   test("should render correctly when cell value is entered", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][7].press("1");
 
@@ -106,24 +106,24 @@ test.describe("board highlighting", () => {
   });
 
   test("Selecting invalid cell should update highlighting of cell correctly", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cellHasColor(7, 6, SELECTED_CONFLICT_COLOR_RGB);
   });
 
-  test("disable identical values", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable identical values", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightIdenticalValuesSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][7].press("2");
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -144,17 +144,17 @@ test.describe("board highlighting", () => {
     ]);
   });
 
-  test("disable box", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable box", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightBoxSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
@@ -173,17 +173,17 @@ test.describe("board highlighting", () => {
     ]);
   });
 
-  test("disable rows", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable rows", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightRowSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
@@ -202,17 +202,17 @@ test.describe("board highlighting", () => {
     ]);
   });
 
-  test("disable column", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable column", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightColumnSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
@@ -231,19 +231,19 @@ test.describe("board highlighting", () => {
     ]);
   });
 
-  test("disable all", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable all", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightColumnSwitchEnabled.click();
     await profilePage.highlightBoxSwitchEnabled.click();
     await profilePage.highlightRowSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
@@ -258,18 +258,18 @@ test.describe("board highlighting", () => {
     ]);
   });
 
-  test("disable rows and columns", async ({ resumeGame }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+  test("disable rows and columns", async ({ resumeClassicGame }) => {
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.highlightRowSwitchEnabled.click();
     await profilePage.highlightColumnSwitchEnabled.click();
     await headerComponent.home.click();
-    const homePage = new HomePage(resumeGame);
+    const homePage = new HomePage(resumeClassicGame);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.page.getByText("Resume Puzzle").click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
       {
@@ -290,9 +290,11 @@ test.describe("board highlighting", () => {
 });
 
 test.describe("board multiselect highlighting", () => {
-  test("should select area when using shift key", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down("Shift");
+  test("should select area when using shift key", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[2][2].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -309,10 +311,10 @@ test.describe("board multiselect highlighting", () => {
   });
 
   test("Should select multiple cells when using control/meta key @os-specific", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey());
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await resumeClassicGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -330,10 +332,10 @@ test.describe("board multiselect highlighting", () => {
   });
 
   test("Should select and unselect cells correctly when using control/meta key @os-specific", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey());
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await resumeClassicGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][1].click();
     await sudokuBoard.cell[0][2].click();
@@ -381,10 +383,10 @@ test.describe("board multiselect highlighting", () => {
   });
 
   test("Should handle complex highlighting situation @os-specific", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down("Shift");
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[5][5].click();
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.isSudokuBoardHighlightedCorrectly([
@@ -442,9 +444,9 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await resumeGame.keyboard.up("Shift");
+    await resumeClassicGame.keyboard.up("Shift");
 
-    await resumeGame.keyboard.down(getSingleMultiSelectKey());
+    await resumeClassicGame.keyboard.down(getSingleMultiSelectKey());
 
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][8].click();
@@ -473,9 +475,9 @@ test.describe("board multiselect highlighting", () => {
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
     ]);
 
-    await resumeGame.keyboard.up(getSingleMultiSelectKey());
+    await resumeClassicGame.keyboard.up(getSingleMultiSelectKey());
 
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
 
     await sudokuBoard.cell[2][7].click();
 

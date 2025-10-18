@@ -18,7 +18,7 @@ import { DrillPage } from "./page/drill.page";
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
   page: Page;
-  resumeGame: Page;
+  resumeClassicGame: Page;
   contact: Page;
   play: Page;
   profile: Page;
@@ -112,7 +112,7 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     await use(page);
   },
   // Loads a game from local storage and navigates to resume the game.
-  resumeGame: async ({ page, gameToResume }, use) => {
+  resumeClassicGame: async ({ page, gameToResume }, use) => {
     await page.evaluate((gameToResume: JSON) => {
       window.localStorage.setItem(
         "active_classic_game",
