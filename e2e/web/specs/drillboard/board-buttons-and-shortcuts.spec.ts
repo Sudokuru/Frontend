@@ -723,55 +723,50 @@ test.describe("toggle notes", () => {
   }
 });
 
-// todo this test
-test.describe.skip("typing with multiple cells selected", () => {
-  test.use({ classicGametoResume: NEW_EMPTY_GAME });
-
+test.describe("typing with multiple cells selected", () => {
   test("inserting notes should succeed", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.cell[6][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
     await resumeDrillGame.keyboard.down("Shift");
 
-    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.cell[8][8].click();
     await sudokuBoard.page.keyboard.press("1");
 
-    await sudokuBoard.cellHasValue(3, 6, "0");
-    await sudokuBoard.cellHasNotes(3, 7, "1");
-    await sudokuBoard.cellHasNotes(3, 8, "1");
-    await sudokuBoard.cellHasNotes(4, 6, "1");
-    await sudokuBoard.cellHasNotes(4, 7, "1");
-    await sudokuBoard.cellHasValue(4, 8, "8");
-    await sudokuBoard.cellHasValue(5, 6, "5");
-    await sudokuBoard.cellHasValue(5, 7, "6");
-    await sudokuBoard.cellHasValue(5, 8, "4");
+    await sudokuBoard.cellHasNotes(6, 6, "3");
+    await sudokuBoard.cellHasValue(6, 7, "8");
+    await sudokuBoard.cellHasValue(6, 8, "7");
+    await sudokuBoard.cellHasNotes(7, 6, "1236");
+    await sudokuBoard.cellHasNotes(7, 7, "16");
+    await sudokuBoard.cellHasNotes(7, 8, "139");
+    await sudokuBoard.cellHasValue(8, 6, "5");
+    await sudokuBoard.cellHasValue(8, 7, "4");
+    await sudokuBoard.cellHasValue(8, 8, "1");
   });
-
-  test.use({ classicGametoResume: NEW_EMPTY_GAME });
 
   test("inserting values should fail", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[3][6].click();
+    await sudokuBoard.cell[6][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
     await sudokuBoard.page.keyboard.press("n");
     await resumeDrillGame.keyboard.down("Shift");
 
-    await sudokuBoard.cell[5][8].click();
+    await sudokuBoard.cell[8][8].click();
     await sudokuBoard.page.keyboard.press("1");
 
-    await sudokuBoard.cellHasNotes(3, 6, "1");
-    await sudokuBoard.cellHasValue(3, 7, "0");
-    await sudokuBoard.cellHasValue(3, 8, "0");
-    await sudokuBoard.cellHasValue(4, 6, "0");
-    await sudokuBoard.cellHasValue(4, 7, "0");
-    await sudokuBoard.cellHasValue(4, 8, "8");
-    await sudokuBoard.cellHasValue(5, 6, "5");
-    await sudokuBoard.cellHasValue(5, 7, "6");
-    await sudokuBoard.cellHasValue(5, 8, "4");
+    await sudokuBoard.cellHasNotes(6, 6, "13");
+    await sudokuBoard.cellHasValue(6, 7, "8");
+    await sudokuBoard.cellHasValue(6, 8, "7");
+    await sudokuBoard.cellHasNotes(7, 6, "236");
+    await sudokuBoard.cellHasNotes(7, 7, "6");
+    await sudokuBoard.cellHasNotes(7, 8, "39");
+    await sudokuBoard.cellHasValue(8, 6, "5");
+    await sudokuBoard.cellHasValue(8, 7, "4");
+    await sudokuBoard.cellHasValue(8, 8, "1");
   });
 });
 
