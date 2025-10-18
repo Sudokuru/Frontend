@@ -89,4 +89,5 @@ export { default as INVALID_ACTIVE_GAME_DATA } from "./data/invalid-active-game-
 
 // Generic Drill Game
 
-export { default as POINTING_PAIR_DRILL_GAME } from "./data/drill/pointing-pair-drill-game.json";
+export { default as POINTING_PAIR_DRILL_GAME } from "./data/drill/pointing-pair-drill-game-incorrect-cell.json";
+export { default as POINTING_PAIR_CORRECT_DRILL_GAME } from "./data/drill/pointing-pair-drill-game.json";

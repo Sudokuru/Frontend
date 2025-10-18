@@ -2,15 +2,14 @@ import { SudokuBoardComponent } from "./../../components/sudoku-board.component"
 import { test } from "../../fixture";
 import { PlayPage } from "../../page/play.page";
 import {
-  AMEND_NOTES_EMPTY_CELL_GAME,
   NEW_EMPTY_GAME,
   OBVIOUS_SINGLE_GAME,
+  POINTING_PAIR_CORRECT_DRILL_GAME,
   PROGRESS_INDICATOR_DISABLED_PROFILE,
 } from "../../data";
 import { getSingleMultiSelectKey } from "../../playwright.config";
 import {
   SELECTED_COLOR_RGB,
-  SELECTED_CONFLICT_COLOR_RGB,
   SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
 import { ProfilePage } from "../../page/profile.page";
@@ -20,7 +19,7 @@ import { EndGameDrillModalComponent } from "../../components/end-game-modal-dril
 import { DrillPage } from "../../page/drill.page";
 
 test.describe("hint", () => {
-  test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
+  test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
   const keys = ["h", "H"];
   for (const key of keys) {
     const capital = key === "H" ? "capital " : "";
@@ -590,7 +589,7 @@ test.describe("typing with multiple cells selected", () => {
     await sudokuBoard.cellHasNotes(6, 6, "3");
     await sudokuBoard.cellHasValue(6, 7, "8");
     await sudokuBoard.cellHasValue(6, 8, "7");
-    await sudokuBoard.cellHasNotes(7, 6, "1236");
+    await sudokuBoard.cellHasNotes(7, 6, "236");
     await sudokuBoard.cellHasNotes(7, 7, "16");
     await sudokuBoard.cellHasNotes(7, 8, "139");
     await sudokuBoard.cellHasValue(8, 6, "5");
@@ -613,7 +612,7 @@ test.describe("typing with multiple cells selected", () => {
     await sudokuBoard.cellHasNotes(6, 6, "13");
     await sudokuBoard.cellHasValue(6, 7, "8");
     await sudokuBoard.cellHasValue(6, 8, "7");
-    await sudokuBoard.cellHasNotes(7, 6, "236");
+    await sudokuBoard.cellHasNotes(7, 6, "1236");
     await sudokuBoard.cellHasNotes(7, 7, "6");
     await sudokuBoard.cellHasNotes(7, 8, "39");
     await sudokuBoard.cellHasValue(8, 6, "5");
@@ -637,7 +636,7 @@ test.describe("numpad with multiple cells selected", () => {
     await sudokuBoard.cellHasNotes(6, 6, "3");
     await sudokuBoard.cellHasValue(6, 7, "8");
     await sudokuBoard.cellHasValue(6, 8, "7");
-    await sudokuBoard.cellHasNotes(7, 6, "1236");
+    await sudokuBoard.cellHasNotes(7, 6, "236");
     await sudokuBoard.cellHasNotes(7, 7, "16");
     await sudokuBoard.cellHasNotes(7, 8, "139");
     await sudokuBoard.cellHasValue(8, 6, "5");
@@ -660,7 +659,7 @@ test.describe("numpad with multiple cells selected", () => {
     await sudokuBoard.cellHasNotes(6, 6, "13");
     await sudokuBoard.cellHasValue(6, 7, "8");
     await sudokuBoard.cellHasValue(6, 8, "7");
-    await sudokuBoard.cellHasNotes(7, 6, "236");
+    await sudokuBoard.cellHasNotes(7, 6, "1236");
     await sudokuBoard.cellHasNotes(7, 7, "6");
     await sudokuBoard.cellHasNotes(7, 8, "39");
     await sudokuBoard.cellHasValue(8, 6, "5");
