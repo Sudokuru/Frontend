@@ -23,6 +23,7 @@
     "ios": "npm run ios --workspace=sudokuru",
     "web": "npm run web --workspace=sudokuru",
     "web:dev": "npm run web:dev --workspace=sudokuru",
+    "web:prod": "npm run web:prod --workspace=sudokuru",
     "build:metro-web": "npm run build:metro-web --workspace=sudokuru",
     "prettier:run": "npx prettier --write .",
     "tauri:run": "npm run tauri:run --workspace=sudokuru",
