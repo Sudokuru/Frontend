@@ -14,7 +14,7 @@ import { expect } from "@playwright/test";
 import { HeaderComponent } from "../../components/header.component";
 
 test.describe("hint", () => {
-  test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
+  test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
   const keys = ["h", "H"];
   for (const key of keys) {
     const capital = key === "H" ? "capital " : "";
@@ -58,7 +58,7 @@ test.describe("pause", () => {
 
 test.describe("typing", () => {
   for (let i = 1; i <= 9; i++) {
-    test(`typing ${i} should fill cell with correct number`, async ({
+    test(`typing ${i} should fill cell with ${i} number`, async ({
       resumeClassicGame,
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -69,7 +69,7 @@ test.describe("typing", () => {
   }
 
   for (let i = 1; i <= 9; i++) {
-    test(`typing ${i} should fill cell with correct note`, async ({
+    test(`typing ${i} should fill cell with ${i} note`, async ({
       resumeClassicGame,
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -83,7 +83,7 @@ test.describe("typing", () => {
 
 test.describe("numpad", () => {
   for (let i = 1; i <= 9; i++) {
-    test(`clicking numpad ${i} should fill cell with correct number`, async ({
+    test(`clicking numpad ${i} should fill cell with ${i} number`, async ({
       resumeClassicGame,
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -94,7 +94,7 @@ test.describe("numpad", () => {
   }
 
   for (let i = 1; i <= 9; i++) {
-    test(`clicking numpad ${i} should fill cell with correct note`, async ({
+    test(`clicking numpad ${i} should fill cell with ${i} note`, async ({
       resumeClassicGame,
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -120,7 +120,7 @@ test.describe("progress indicator", () => {
   ];
 
   test.use({
-    gameToResume: NEW_EMPTY_GAME,
+    classicGametoResume: NEW_EMPTY_GAME,
   });
 
   test("should be visible when enabled", async ({ resumeClassicGame }) => {
@@ -182,7 +182,7 @@ test.describe("progress indicator", () => {
   ];
 
   test.use({
-    gameToResume: NEW_EMPTY_GAME,
+    classicGametoResume: NEW_EMPTY_GAME,
     profileStorage: PROGRESS_INDICATOR_DISABLED_PROFILE,
   });
 
@@ -224,7 +224,7 @@ test.describe("Initialize Notes", () => {
 });
 
 test.describe("Simplify Notes", () => {
-  test.use({ gameToResume: OBVIOUS_SINGLE_GAME });
+  test.use({ classicGametoResume: OBVIOUS_SINGLE_GAME });
   test("should simplify notes after correct value insertion when enabled", async ({
     resumeClassicGame,
   }) => {
@@ -697,7 +697,7 @@ test.describe("toggle notes", () => {
 });
 
 test.describe("typing with multiple cells selected", () => {
-  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
 
   test("inserting notes should succeed", async ({ resumeClassicGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -721,7 +721,7 @@ test.describe("typing with multiple cells selected", () => {
     await sudokuBoard.cellHasValue(5, 8, "4");
   });
 
-  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
 
   test("inserting values should fail", async ({ resumeClassicGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -748,7 +748,7 @@ test.describe("typing with multiple cells selected", () => {
 });
 
 test.describe("numpad with multiple cells selected", () => {
-  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
   test("inserting notes should succeed", async ({ resumeClassicGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[3][6].click();

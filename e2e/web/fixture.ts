@@ -8,7 +8,8 @@ import {
   collectV8CodeCoverageAsync,
   CollectV8CodeCoverageOptions,
 } from "./v8-code-coverage";
-import { ALMOST_FINISHED_GAME } from "./data";
+import { ALMOST_FINISHED_GAME, POINTING_PAIR_DRILL_GAME } from "./data";
+
 import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
@@ -19,6 +20,7 @@ import { DrillPage } from "./page/drill.page";
 interface MyFixtures {
   page: Page;
   resumeClassicGame: Page;
+  resumeDrillGame: Page;
   contact: Page;
   play: Page;
   profile: Page;
@@ -29,7 +31,8 @@ interface MyFixtures {
 }
 
 interface MyOptions {
-  gameToResume?: any;
+  classicGametoResume?: any;
+  drillGametoResume?: any;
 }
 
 interface MyStorageOptions {
@@ -105,20 +108,21 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
 export const test = newBase.extend<MyFixtures & MyOptions>({
-  gameToResume: [ALMOST_FINISHED_GAME, { option: true }],
+  classicGametoResume: [ALMOST_FINISHED_GAME, { option: true }],
+  drillGametoResume: [POINTING_PAIR_DRILL_GAME, { option: true }],
 
   page: async ({ page }, use) => {
     await page.goto("");
     await use(page);
   },
   // Loads a game from local storage and navigates to resume the game.
-  resumeClassicGame: async ({ page, gameToResume }, use) => {
-    await page.evaluate((gameToResume: JSON) => {
+  resumeClassicGame: async ({ page, classicGametoResume }, use) => {
+    await page.evaluate((classicGametoResume: JSON) => {
       window.localStorage.setItem(
         "active_classic_game",
-        JSON.stringify(gameToResume),
+        JSON.stringify(classicGametoResume),
       );
-    }, gameToResume as JSON);
+    }, classicGametoResume as JSON);
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
@@ -126,6 +130,22 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     const sudokuBoard = new SudokuBoardComponent(page);
     await sudokuBoard.sudokuBoardIsRendered();
     await use(page);
+  },
+  resumeDrillGame: async ({ featurePreview, drillGametoResume }, use) => {
+    await featurePreview.evaluate((drillGametoResume: JSON) => {
+      window.localStorage.setItem(
+        "active_drill_game",
+        JSON.stringify(drillGametoResume),
+      );
+    }, drillGametoResume as JSON);
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerDrill.click();
+    const drillPage = new DrillPage(featurePreview);
+    await drillPage.page.getByText("Resume Drill").click();
+    const sudokuDrillBoard = new SudokuBoardComponent(featurePreview);
+    await sudokuDrillBoard.sudokuBoardIsRendered();
+    await use(featurePreview);
   },
   // Navigates to the contact page.
   contact: async ({ page }, use) => {

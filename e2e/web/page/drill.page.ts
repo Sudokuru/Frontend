@@ -3,10 +3,12 @@ import { Locator, Page, expect } from "@playwright/test";
 export class DrillPage {
   readonly page: Page;
   readonly title: Locator;
+  readonly resume: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Train with a strategy");
+    this.resume = page.getByText("Resume Drill");
   }
 
   async drillPageIsRendered() {
@@ -30,5 +32,9 @@ export class DrillPage {
   async getAndClickDrill(drill: string) {
     const lessonLocator = this.page.getByTestId(drill);
     await lessonLocator.click();
+  }
+
+  async resumeButtonIsVisible() {
+    await expect(this.resume).toBeInViewport({ ratio: 1 });
   }
 }
