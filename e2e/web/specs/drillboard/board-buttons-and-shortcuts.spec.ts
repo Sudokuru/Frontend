@@ -363,29 +363,6 @@ test.describe("undo", () => {
     await sudokuBoard.cellHasNotes(8, 0, "7");
   });
 
-  test("Undo button should replace value erased on previous move from erase button", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[8][0].click();
-    await sudokuBoard.numPad[8].click();
-    await sudokuBoard.erase.click();
-    await sudokuBoard.cellHasValue(8, 0, "0");
-    await sudokuBoard.undo.click();
-    await sudokuBoard.cellHasValue(8, 0, "9");
-  });
-
-  test("Undo button should replace notes erased on previous move from erase button", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[8][0].click();
-    await sudokuBoard.erase.click();
-    await sudokuBoard.cellHasValue(8, 0, "0");
-    await sudokuBoard.undo.click();
-    await sudokuBoard.cellHasNotes(8, 0, "7");
-  });
-
   test("Undo button should replace value overridden on previous move with keypad", async ({
     resumeDrillGame,
   }) => {
@@ -476,146 +453,21 @@ test.describe("undo", () => {
     await sudokuBoard.cellHasValue(7, 7, "0");
     await sudokuBoard.cellHasNotes(7, 8, "45");
   });
-
-  // todo
-  test.skip("Undo button should function with an erase move spanning multiple cells", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[6][6].click();
-    await resumeDrillGame.keyboard.down("Shift");
-    await sudokuBoard.cell[8][8].click();
-    await resumeDrillGame.keyboard.up("Shift");
-
-    await sudokuBoard.erase.click();
-
-    await sudokuBoard.cellHasValue(7, 6, "0");
-    await sudokuBoard.cellHasValue(7, 7, "0");
-    await sudokuBoard.cellHasValue(7, 8, "0");
-
-    await sudokuBoard.undo.click();
-
-    await sudokuBoard.cellHasValue(7, 6, "1");
-    await sudokuBoard.cellHasValue(7, 7, "0");
-    await sudokuBoard.cellHasNotes(7, 8, "45");
-  });
 });
 
-// todo remove
-test.describe.skip("erase", () => {
-  test("Erase button should be disabled if a cell with a given is selected", async ({
-    resumeDrillGame,
-  }) => {
+test.describe("erase", () => {
+  test("Erase button should not exist", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasValue(0, 2, "3");
-    await sudokuBoard.cell[0][2].click();
-    await sudokuBoard.eraseButtonIsDisabled();
+    await expect(sudokuBoard.erase).not.toBeInViewport({ ratio: 1 });
   });
 
-  test("Erase hotkey should not work if a cell with a given is selected", async ({
-    resumeDrillGame,
-  }) => {
+  test("Erase hotkey should not work", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasValue(0, 2, "3");
-    await sudokuBoard.cell[0][2].click();
-    await sudokuBoard.cell[0][2].press("0");
-    await sudokuBoard.cellHasValue(0, 2, "3");
-  });
-
-  test("Erase button should be disabled if a cell with a correct value is selected", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasValue(0, 0, "1");
-    await sudokuBoard.cell[0][0].click();
-    await sudokuBoard.eraseButtonIsDisabled();
-  });
-
-  test("Erase hotkey should not work if a cell with a correct value is selected", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasValue(0, 0, "1");
-    await sudokuBoard.cell[0][0].click();
-    await sudokuBoard.cell[0][0].press("0");
-    await sudokuBoard.cellHasValue(0, 0, "1");
-  });
-
-  test("Erase button should be disabled if an empty cell is selected", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasValue(7, 7, "0");
-    await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.eraseButtonIsDisabled();
-  });
-
-  test("Erasing an incorrect value should succeed for button and all keyboard shortcuts", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[7][6].click();
-    await sudokuBoard.erase.click();
-    await sudokuBoard.cellHasValue(7, 6, "0");
-    // Use keyboard shortcuts to erase the value
-    const keys = ["Delete", "Backspace", "0", "e", "E"];
-    for (const key of keys) {
-      await sudokuBoard.undo.click();
-      await sudokuBoard.cellHasValue(7, 6, "1");
-      await sudokuBoard.cell[7][6].press(key);
-      await sudokuBoard.cellHasValue(7, 6, "0");
-    }
-  });
-
-  test("Erasing a cell with notes should succeed", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cellHasNotes(7, 8, "45");
-    await sudokuBoard.cell[7][8].click();
-    await sudokuBoard.erase.click();
-    await sudokuBoard.cellHasValue(7, 8, "0");
-  });
-
-  test("Erasing multiple cells with notes and incorrect values should succeed", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[6][6].click();
-    await resumeDrillGame.keyboard.down("Shift");
-    await sudokuBoard.cell[8][8].click();
-    await resumeDrillGame.keyboard.up("Shift");
-
-    await sudokuBoard.erase.click();
-
-    await sudokuBoard.cellHasValue(7, 6, "0");
-    await sudokuBoard.cellHasValue(7, 7, "0");
-    await sudokuBoard.cellHasValue(7, 8, "0");
-  });
-
-  test("Erase button should be disabled if only multiple correct values and givens are selected", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[0][0].click();
-    await resumeDrillGame.keyboard.down("Shift");
-    await sudokuBoard.cell[2][2].click();
-    await resumeDrillGame.keyboard.up("Shift");
-    await sudokuBoard.eraseButtonIsDisabled();
-  });
-
-  test("Erase hotkey should not work if only multiple correct values and givens are selected", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[0][0].click();
-    await resumeDrillGame.keyboard.down("Shift");
-    await sudokuBoard.cell[2][2].click();
-    await resumeDrillGame.keyboard.up("Shift");
-
-    await sudokuBoard.erase.click();
-
-    await sudokuBoard.cellHasValue(0, 0, "1");
+    await sudokuBoard.cell[8][0].click();
+    await sudokuBoard.cell[8][0].press("1");
+    await sudokuBoard.cellHasValue(8, 0, "1");
+    await sudokuBoard.page.keyboard.press("e");
+    await sudokuBoard.cellHasValue(8, 0, "1");
   });
 });
 
