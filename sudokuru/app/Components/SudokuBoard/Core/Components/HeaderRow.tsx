@@ -1,7 +1,7 @@
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { View } from "react-native";
-import { useTheme, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
 import {
   useCellSize,
@@ -9,6 +9,7 @@ import {
   handlePause,
 } from "../Functions/BoardFunctions";
 import PauseButton from "./PauseButton";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
 
@@ -25,7 +26,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const cellSize = useCellSize();
   const navigation = useNavigation();
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -60,7 +61,9 @@ const HeaderRow = (props: HeaderRowProps) => {
             fontSize: cellSize
               ? cellSize * (1 / 3) + 1
               : fallbackHeight * (1 / 3) + 1,
-            color: theme.colors.onBackground,
+            color: theme.useDarkTheme
+              ? theme.semantic.text.inverse
+              : theme.semantic.text.info,
           }}
         >
           Time: {formatTime(currentTime)}
@@ -73,7 +76,9 @@ const HeaderRow = (props: HeaderRowProps) => {
             fontSize: cellSize
               ? cellSize * (1 / 3.5) + 1
               : fallbackHeight * (1 / 3.5) + 1,
-            color: theme.colors.onBackground,
+            color: theme.useDarkTheme
+              ? theme.semantic.text.inverse
+              : theme.semantic.text.info,
           }}
         >
           Difficulty: {difficulty}
