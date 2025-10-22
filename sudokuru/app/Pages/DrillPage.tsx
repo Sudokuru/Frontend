@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const DrillPage = () => {
   const navigation: any = useNavigation();
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const windowSize = useNewWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
@@ -35,14 +36,20 @@ const DrillPage = () => {
           >
             <Text
               style={{
-                color: theme.colors.primary,
+                color: theme.semantic.text.primary,
                 fontSize: 50,
                 lineHeight: 50,
                 fontWeight: "bold",
               }}
             >
               Train{" "}
-              <Text style={{ color: theme.colors.onBackground }}>
+              <Text
+                style={{
+                  color: theme.useDarkTheme
+                    ? theme.semantic.text.inverse
+                    : theme.semantic.text.info,
+                }}
+              >
                 with a strategy
               </Text>
             </Text>
