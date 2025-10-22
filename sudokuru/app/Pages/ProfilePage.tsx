@@ -1,14 +1,15 @@
 import React from "react";
 import { ScrollView } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import ProfilePanel from "../Components/Profile/ProfilePanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useIsFocused } from "@react-navigation/native";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const ProfilePage = () => {
   const windowSize = useNewWindowDimensions();
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const isFocused = useIsFocused();
   if (!isFocused) return <Text>Error Loading Page</Text>;
@@ -20,7 +21,7 @@ const ProfilePage = () => {
       <Text
         style={{
           fontSize: 40,
-          color: theme.colors.primary,
+          color: theme.semantic.text.primary,
           fontWeight: "bold",
           marginBottom: 10,
         }}
