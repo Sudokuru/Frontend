@@ -207,6 +207,7 @@ const ProfilePanel = (props: any) => {
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
     props.width,
+    props.height,
     paneArray.length,
     280,
   );

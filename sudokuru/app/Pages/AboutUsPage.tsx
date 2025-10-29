@@ -90,6 +90,7 @@ const AboutUsPage = () => {
 
   let columnCount: number = calculateCardsPerRow(
     windowSize.width,
+    windowSize.height,
     teamMembers.length,
   );
 

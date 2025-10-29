@@ -28,7 +28,7 @@ const ProfilePage = () => {
       >
         Profile
       </Text>
-      <ProfilePanel width={windowSize.width} />
+      <ProfilePanel width={windowSize.width} height={windowSize.height} />
     </ScrollView>
   );
 };

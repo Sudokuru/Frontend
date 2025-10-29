@@ -92,7 +92,11 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
     rowCount;
   do {
     shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(props.width, difficulties.length);
+    columnCount = calculateCardsPerRow(
+      props.width,
+      props.height,
+      difficulties.length,
+    );
     rowCount = getRowCount(difficulties.length, columnCount);
   } while (
     getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >

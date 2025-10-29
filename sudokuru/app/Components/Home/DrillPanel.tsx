@@ -78,6 +78,7 @@ const DrillPanel = (props: any) => {
   let subArray = [];
   let columnCount: number = calculateCardsPerRow(
     props.width,
+    props.height,
     drillStrategies.length,
   );
   for (let i = 0; i < drillStrategies.length; i++) {

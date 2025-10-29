@@ -91,6 +91,7 @@ const LessonPanel = (props: any) => {
     let subArray = [];
     let columnCount: number = calculateCardsPerRow(
       props.width,
+      props.height,
       availableLessons.length,
     );
     for (let i = 0; i < availableLessons.length; i++) {

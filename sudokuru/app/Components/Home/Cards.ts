@@ -15,22 +15,34 @@ export const CARD_IMAGE_HEIGHT: number = CARD_HEIGHT / 2;
 /**
  * Given window width calculates how many cards should be on each row
  * @param width - window width
+ * @param height - window height
  * @param count - number of cards
  * @param cardWidth - width of cards, defaults to CARD_WIDTH const
  * @returns number of cards that can fit on each row
  */
 export function calculateCardsPerRow(
   width: number,
+  height: number,
   count: number,
   cardWidth: number = CARD_WIDTH,
 ): number {
+  // Starts out as max columns we can fit on single row based on window width and then decreased
   let columnCount: number = Math.floor(width / (cardWidth + 100));
   // If we cannot fix a single card fully per row we just try to best we can anyways
   if (columnCount === 0) {
     return 1;
   }
+  // Max rows we can have without having to scroll down to see rest of cards
+  // Assumes that space above and between cards probably takes up ballpark 20% of the screen
+  const maxRows: number = Math.floor((height * 0.8) / CARD_HEIGHT);
+  // Min columns we can have (per row, row with most cards if unevenly dvisible) without having
+  // to scroll (often have columns than this in order to fit all the cards on the page)
+  const minColumns: number = Math.ceil(count / maxRows);
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
-  while (columnCount - 1 >= Math.ceil(count / (columnCount - 1))) {
+  while (
+    columnCount > minColumns &&
+    columnCount - 1 >= Math.ceil(count / (columnCount - 1))
+  ) {
     columnCount--;
   }
   return columnCount;

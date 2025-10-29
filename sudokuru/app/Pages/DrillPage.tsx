@@ -56,7 +56,7 @@ const DrillPage = () => {
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
             <View style={{ padding: reSize / 4 }}>
-              <DrillPanel width={windowSize.width} />
+              <DrillPanel width={windowSize.width} height={windowSize.height} />
             </View>
           </View>
         </View>
