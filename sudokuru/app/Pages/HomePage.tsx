@@ -34,9 +34,9 @@ const HomePage = () => {
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
   const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
 
-  const DARK_BLUE_PLAY_SUDOKU_LOGO = require("../../.assets/darkBluePlaySudokuLogo.png");
-  const DARK_BLUE_START_LESSONS_LOGO = require("../../.assets/darkBlueStartLessonsLogo.png");
-  const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/darkBlueStartDrillsLogo.png");
+  const DARK_BLUE_PLAY_SUDOKU_LOGO = require("../../.assets/lightBluePlaySudokuLogo.png");
+  const DARK_BLUE_START_LESSONS_LOGO = require("../../.assets/lightBlueStartLessonsLogo.png");
+  const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/lightBlueStartDrillsLogo.png");
 
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
