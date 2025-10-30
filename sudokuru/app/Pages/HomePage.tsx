@@ -34,6 +34,8 @@ const HomePage = () => {
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
   const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
 
+  // To convert logos with imagemagick 6 from white to light blue:
+  // convert sudokuru/.assets/startLessonsLogo.png -channel RGB -fill "#06A2C7" -colorize 100 +channel sudokuru/.assets/lightBlueStartLessonsLogo.png
   const DARK_BLUE_PLAY_SUDOKU_LOGO = require("../../.assets/lightBluePlaySudokuLogo.png");
   const DARK_BLUE_START_LESSONS_LOGO = require("../../.assets/lightBlueStartLessonsLogo.png");
   const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/lightBlueStartDrillsLogo.png");
