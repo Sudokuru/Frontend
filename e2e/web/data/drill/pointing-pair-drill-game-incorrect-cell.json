@@ -1167,7 +1167,7 @@
     "statistics": {
       "difficulty": "POINTING_PAIR",
       "hintUsed": false,
-      "numWrongCellsPlayed": 0,
+      "numWrongCellsPlayed": 1,
       "time": 1
     },
     "inNoteMode": false,

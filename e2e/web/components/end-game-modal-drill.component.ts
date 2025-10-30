@@ -9,7 +9,7 @@ export class EndGameDrillModalComponent {
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Game Results");
-    this.newGame = page.getByText("Start new drill");
+    this.newGame = page.getByText("Start New Drill");
   }
 
   async endGameModalIsRendered() {
