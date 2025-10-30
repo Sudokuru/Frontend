@@ -60,7 +60,9 @@ const NumberControl = (props: NumberControlProps) => {
             >
               <LinearGradient
                 colors={[
-                  theme.useDarkTheme ? "white" : "grey",
+                  theme.useDarkTheme
+                    ? theme.semantic.text.inverse
+                    : theme.colors.onSurface,
                   theme.colors.primary,
                 ]}
                 locations={[

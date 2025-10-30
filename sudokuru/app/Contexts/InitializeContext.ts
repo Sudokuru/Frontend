@@ -2,7 +2,6 @@ import React from "react";
 import { getProfile, setProfileValue } from "../Api/Profile";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { Profile } from "../Api/Puzzle.Types";
-import { THEME_OPTIONS, ThemeName } from "../Styling/theme";
 
 // Example commit containing change to add context everywhere it needs to be:
 // https://github.com/Sudokuru/Frontend/commit/0e6470735ab4c75a21e2fa61878f207b08bd3995

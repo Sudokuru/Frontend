@@ -175,8 +175,11 @@ const ContactPage = () => {
               label={contactPage.label}
               value={contactPage.text}
               placeholder={contactPage.placeholder}
-              style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
-              textColor="black"
+              style={{
+                backgroundColor: theme.semantic.text.inverse,
+                height: CARD_IMAGE_HEIGHT,
+              }}
+              textColor={theme.semantic.text.info}
               multiline={true}
               onChangeText={(text) => {
                 let disableButton: boolean = true;

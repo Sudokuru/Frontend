@@ -1,6 +1,6 @@
 import React from "react";
 import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
-import { Button, Icon, MD3Theme, Text } from "react-native-paper";
+import { Button, Icon, Text } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { Member, contributors, teamMembers } from "../Data/members";
