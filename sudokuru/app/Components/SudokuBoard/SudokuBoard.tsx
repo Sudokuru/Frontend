@@ -88,6 +88,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       if (game == null) {
         return;
       }
+      saveGame(game);
       setSudokuBoard(game);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
