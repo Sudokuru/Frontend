@@ -29,12 +29,12 @@ test.describe("complete drill", () => {
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await sudokuBoard.cell[7][6].click();
-    await sudokuBoard.cell[7][6].press("8");
-    await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.numPad[2 - 1].click();
-    await sudokuBoard.cell[7][8].click();
-    await sudokuBoard.cell[7][8].press("4");
+    await sudokuBoard.note.click();
+    await sudokuBoard.cell[7][6].press("1");
+    await sudokuBoard.cell[7][3].click();
+    await sudokuBoard.numPad[6 - 1].click();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
+    await endGameModal.endGameModalIsRendered();
     await expect(endGameModal.page.getByText("Time Spent: 01")).toBeInViewport({
       ratio: 1,
     });
