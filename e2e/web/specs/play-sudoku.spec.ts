@@ -5,6 +5,7 @@ import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { EndGameModalComponent } from "../components/end-game-modal.component";
 import { HeaderComponent } from "../components/header.component";
 import { StatisticsPage } from "../page/statistics.page";
+import { HomePage } from "../page/home.page";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
@@ -207,6 +208,23 @@ test.describe("resume game", () => {
     await playPage.resumeButtonIsVisible();
     await playPage.resume.click();
     await expect(sudokuBoard.sudokuBoard).toContainText("novice");
+  });
+});
+
+test.describe("game is saved on start", () => {
+  test("Starting a game should save it to resume later", async ({ play }) => {
+    const playPage = new PlayPage(play);
+    await playPage.amateurDesc.click();
+    await expect(play.getByText("Difficulty: amateur")).toBeInViewport({
+      ratio: 1,
+    });
+    await play.reload();
+    const homePage = new HomePage(play);
+    await homePage.playSudoku.click();
+    const secondSessionPlayPage = new PlayPage(play);
+    await expect(
+      secondSessionPlayPage.page.getByText("Resume Puzzle"),
+    ).toBeInViewport({ ratio: 1 });
   });
 });
 

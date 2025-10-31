@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.30.1",
+    "date": "#{date}#",
+    "summary": "🎃 Fixed bug where starting a new game would not immediately save the game state.",
+    "bug fixes": [
+      "Starting a new game will now immediately save the game so it can be resumed later. Previously the game would save only after the player interacted with the Sudoku board."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.30.0",
     "date": "April 24th, 2025",
     "summary": "Added simplify notes setting as a preview feature to auto simplify notes after value has been correctly inserted.",
