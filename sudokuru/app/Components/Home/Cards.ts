@@ -35,7 +35,7 @@ export function calculateCardsPerRow(
   // Max rows we can have without having to scroll down to see rest of cards
   // Assumes that space above and between cards probably takes up ballpark 20% of the screen
   const maxRows: number = Math.floor((height * 0.8) / CARD_HEIGHT);
-  // Min columns we can have (per row, row with most cards if unevenly dvisible) without having
+  // Min columns we can have (per row, row with most cards if unevenly divisible) without having
   // to scroll (often have columns than this in order to fit all the cards on the page)
   const minColumns: number = Math.ceil(count / maxRows);
   // Decrease the number of columns to the smallest number that is greater than or equal to the number of rows
