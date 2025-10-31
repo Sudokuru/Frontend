@@ -70,6 +70,7 @@ const ActionRow = (props: ActionRowProps) => {
         />
       </Pressable>
       {/* Erase */}
+      {/* // TODO - Drill mode will have nuke instead of erase to reset */}
       <Pressable
         onPress={eraseSelected}
         disabled={isEraseButtonDisabled}

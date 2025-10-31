@@ -4,26 +4,16 @@ import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
-import { SudokuStrategy } from "sudokuru";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
+import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
-interface EndGameModalProps {
-  time: number;
-  numHintsUsed: number;
-  numWrongCellsPlayed: number;
-  numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
-    numHintsUsed: number;
-  }[];
-  score: number;
-  difficulty: string;
-}
-
-const EndGameModal = (props: EndGameModalProps) => {
+export const EndGameModal = (props: ClassicGameStatistics) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
+
+  props = props.statistics;
 
   return (
     <ScrollView

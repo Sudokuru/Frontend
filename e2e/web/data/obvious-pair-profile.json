@@ -12,7 +12,6 @@
   "strategyHintOrder": [
     "OBVIOUS_PAIR",
     "HIDDEN_SINGLE",
-    "SIMPLIFY_NOTES",
     "OBVIOUS_SINGLE",
     "HIDDEN_PAIR",
     "POINTING_PAIR",

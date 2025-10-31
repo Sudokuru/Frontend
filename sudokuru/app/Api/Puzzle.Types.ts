@@ -61,6 +61,7 @@ export interface Profile {
   highlightBox: boolean;
   highlightRow: boolean;
   highlightColumn: boolean;
+  drillMode: boolean;
   progressIndicator: boolean;
   initializeNotes: boolean;
   simplifyNotes: boolean;

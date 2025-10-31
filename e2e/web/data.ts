@@ -86,3 +86,8 @@ export { default as POINTING_TRIPLET_COLUMN_GAME } from "./data/pointing-triplet
 export { default as INVALID_STATISTICS_DATA } from "./data/invalid-statistics-data.json";
 export { default as INVALID_PROFILE_DATA } from "./data/invalid-profile-data.json";
 export { default as INVALID_ACTIVE_GAME_DATA } from "./data/invalid-active-game-data.json";
+
+// Generic Drill Game
+
+export { default as POINTING_PAIR_DRILL_GAME } from "./data/drill/pointing-pair-drill-game-incorrect-cell.json";
+export { default as POINTING_PAIR_CORRECT_DRILL_GAME } from "./data/drill/pointing-pair-drill-game.json";
