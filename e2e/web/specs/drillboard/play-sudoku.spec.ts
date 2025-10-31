@@ -1,6 +1,5 @@
 import { test } from "../../fixture";
 import { expect } from "@playwright/test";
-import { PlayPage } from "../../page/play.page";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { EndGameDrillModalComponent } from "../../components/end-game-modal-drill.component";
 import { DrillPage } from "../../page/drill.page";
@@ -75,32 +74,34 @@ test.describe("complete drill", () => {
 
 test.describe("start drill", () => {
   test("Clicking on novice button should start novice game", async ({
-    play,
+    drill,
   }) => {
-    await play.getByText("Novice").click();
-    await expect(play.getByText("Difficulty: novice")).toBeInViewport({
+    await drill.getByText("Obvious Single").click();
+    await expect(drill.getByText("Drill: Obvious Single")).toBeInViewport({
       ratio: 1,
     });
   });
 
   test("Clicking on button with intermediate text should start protege game", async ({
-    play,
+    drill,
   }) => {
-    await play.getByText("Intermediate").click();
-    await expect(play.getByText("Difficulty: protege")).toBeInViewport({
+    await drill.getByText("Obvious Pair").click();
+    await expect(drill.getByText("Drill: Obvious Pair")).toBeInViewport({
       ratio: 1,
     });
   });
 });
 
 test.describe("resume drill", () => {
-  test("user can pause and resume a game", async ({ play }) => {
-    const playPage = new PlayPage(play);
-    await playPage.noviceDesc.click();
-    const sudokuBoard = new SudokuBoardComponent(play);
+  test("user can pause and resume a game", async ({ drill }) => {
+    const drillPage = new DrillPage(drill);
+    await drill.getByText("Obvious Single").click();
+    const sudokuBoard = new SudokuBoardComponent(drill);
     await sudokuBoard.pause.click();
-    await playPage.resumeButtonIsVisible();
-    await playPage.resume.click();
-    await expect(sudokuBoard.sudokuBoard).toContainText("novice");
+    await drillPage.resumeButtonIsVisible();
+    await drillPage.resume.click();
+    await expect(drill.getByText("Drill: Obvious Single")).toBeInViewport({
+      ratio: 1,
+    });
   });
 });
