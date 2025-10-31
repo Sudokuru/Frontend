@@ -7,11 +7,11 @@ test.describe("navigation buttons", () => {
     const homePage = new HomePage(page);
     const buttons = [
       homePage.startLessons,
-      // homePage.startDrills,
+      // homePage.startDrills, // TODO: uncomment this once drills are out of feature preview
       homePage.playSudoku,
     ];
     for (const button of buttons) {
-      await expect(button).toHaveCSS("border-color", "rgb(242, 242, 242)");
+      await expect(button).toHaveCSS("border-color", "rgb(255, 255, 255)");
       await button.hover();
       await expect(button).toHaveCSS("border-color", "rgb(217, 160, 91)");
     }

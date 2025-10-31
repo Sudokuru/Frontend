@@ -1,10 +1,11 @@
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { HintObjectProps } from "../../SudokuBoard";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Platform, Pressable, View } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface HintProps extends HintObjectProps {
   incrementStage: (stageOffset: number) => void;
@@ -14,7 +15,7 @@ const Hint = (hintProps: HintProps) => {
   const { stage, hint, maxStage, incrementStage } = hintProps;
 
   const cellSize = useCellSize();
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   let FALLBACK_HEIGHT = 30;
@@ -27,7 +28,7 @@ const Hint = (hintProps: HintProps) => {
         textAlign: "center",
         fontSize: STRATEGY_FONT_SIZE,
         marginBottom: 10,
-        color: theme.colors.primary,
+        color: theme.semantic.text.primary,
       }}
     >
       {formatOneLessonName(hint.strategy)}
@@ -57,7 +58,9 @@ const Hint = (hintProps: HintProps) => {
             style={{
               textAlign: "center",
               fontSize: 16,
-              color: theme.colors.onBackground,
+              color: theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info,
             }}
           >
             {config.content}
@@ -111,7 +114,11 @@ const Hint = (hintProps: HintProps) => {
           testID={leftButton.testId}
         >
           <MaterialCommunityIcons
-            color={theme.colors.onBackground}
+            color={
+              theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info
+            }
             name={leftButton.icon}
             size={cellSize / sizeConst}
           />
@@ -121,7 +128,11 @@ const Hint = (hintProps: HintProps) => {
           testID={rightButton.testId}
         >
           <MaterialCommunityIcons
-            color={theme.colors.onBackground}
+            color={
+              theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info
+            }
             name={rightButton.icon}
             size={cellSize / sizeConst}
           />

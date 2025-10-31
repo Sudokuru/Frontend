@@ -2,6 +2,7 @@ import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/Difficu
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { getSudokuHint } from "../Components/SudokuBoard/Core/Functions/HintFunctions";
+import { ThemeName, ThemeNames } from "../Styling/theme";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
@@ -231,9 +232,10 @@ export const SudokuBoardSchema = z.object({
 
 export const SudokuBoardActiveGameSchema = z.array(SudokuBoardSchema);
 
+export const ThemeSchema = z.enum(ThemeNames as [ThemeName, ...ThemeName[]]);
+
 export const ProfileSchema = z.object({
   version: z.literal(1),
-  theme: z.boolean(),
   highlightBox: z.boolean(),
   highlightColumn: z.boolean(),
   highlightRow: z.boolean(),

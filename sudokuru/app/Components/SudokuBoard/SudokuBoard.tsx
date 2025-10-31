@@ -41,6 +41,8 @@ import {
   getRemainingCellCountOfValue,
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
+import { useTheme } from "../../Contexts/ThemeContext";
+import { Theme } from "../../Styling/theme";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -63,6 +65,7 @@ export interface HintProps {
 }
 
 const SudokuBoard = (props: SudokuBoardProps) => {
+  const { theme } = useTheme();
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
@@ -95,7 +98,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
-    return <ActivityIndicator animating={true} color="red" />;
+    return <ActivityIndicator animating={true} color={theme.colors.error} />;
   }
 
   // Render EndGame screen when game has ended
@@ -279,7 +282,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
 
       // Set new Cell Value
-      setCellEntryValue(inputValue, currentType, currentEntry, r, c);
+      setCellEntryValue(inputValue, currentType, currentEntry, r, c, theme);
 
       newActionHistory.push({
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
@@ -382,6 +385,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     currentEntry: number | number[],
     r: number,
     c: number,
+    theme: Theme,
   ) => {
     if (sudokuBoard.selectedCells.length === 0) {
       return;

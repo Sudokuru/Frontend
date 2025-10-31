@@ -6,7 +6,7 @@ import {
   ScrollView,
   ImageURISource,
 } from "react-native";
-import { Text, useTheme, Button, Card } from "react-native-paper";
+import { Text, Button, Card } from "react-native-paper";
 import {
   useNavigation,
   useFocusEffect,
@@ -18,6 +18,7 @@ import { CARD_PADDING } from "../Components/Home/Cards";
 import { toTitle } from "../Functions/Utils";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   let name = props.route.params
@@ -33,7 +34,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
 
   const [steps, setSteps] = React.useState<[string, ImageURISource][]>([]);
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   let title = toTitle(name);
 
@@ -68,7 +69,14 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           paddingVertical: CARD_PADDING / 2,
         }}
       >
-        <Card mode="outlined">
+        <Card
+          mode="outlined"
+          theme={{
+            colors: {
+              surface: theme.colors.surfaceAlt,
+            },
+          }}
+        >
           <View
             style={{
               flexDirection: size.width > 800 ? "row" : "column",
@@ -91,7 +99,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
                 alignSelf: "center",
               }}
             />
-            <Text variant="headlineSmall">{steps[i][0]}</Text>
+            <Text
+              variant="headlineSmall"
+              style={{ color: theme.semantic.text.inverse }}
+            >
+              {steps[i][0]}
+            </Text>
           </View>
         </Card>
       </View>,
@@ -114,7 +127,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           <View style={{ alignSelf: "center", flexDirection: "row" }}>
             <Text
               variant="headlineLarge"
-              style={{ color: theme.colors.primary, fontWeight: "bold" }}
+              style={{ color: theme.semantic.text.primary, fontWeight: "bold" }}
             >
               {title + " Lesson"}
             </Text>
@@ -131,7 +144,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
               marginHorizontal: size.width > 800 ? "30%" : "10%",
             }}
           >
-            <Text variant="headlineMedium">Finish Lesson</Text>
+            <Text
+              variant="headlineMedium"
+              style={{ color: theme.semantic.text.inverse }}
+            >
+              Finish Lesson
+            </Text>
           </Button>
         </View>
       </View>
