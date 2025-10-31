@@ -7,7 +7,7 @@ test.describe("navigation buttons", () => {
     const homePage = new HomePage(page);
     const buttons = [
       homePage.startLessons,
-      // homePage.startDrills,
+      // homePage.startDrills, // TODO: uncomment this once drills are out of feature preview
       homePage.playSudoku,
     ];
     for (const button of buttons) {
