@@ -241,14 +241,20 @@ const LessonPanel = (props: any) => {
             >
               <Text
                 variant="headlineLarge"
-                style={{ alignSelf: "center" }}
+                style={{
+                  alignSelf: "center",
+                  color: theme.semantic.text.quaternary,
+                }}
                 theme={{ colors: { onSurface: theme.semantic.text.info } }}
               >
                 Warning
               </Text>
               <Text
                 variant="bodyLarge"
-                style={{ alignSelf: "center" }}
+                style={{
+                  alignSelf: "center",
+                  color: theme.semantic.text.quaternary,
+                }}
                 theme={{ colors: { onSurface: theme.semantic.text.info } }}
               >
                 You have selected a lesson that is locked. Locked lessons build
@@ -258,7 +264,11 @@ const LessonPanel = (props: any) => {
               </Text>
               <Text
                 variant="headlineSmall"
-                style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
+                style={{
+                  alignSelf: "center",
+                  color: theme.semantic.text.quaternary,
+                  margin: CARD_IMAGE_HEIGHT / 50,
+                }}
                 theme={{ colors: { onSurface: theme.semantic.text.info } }}
               >
                 Continue?
@@ -279,7 +289,7 @@ const LessonPanel = (props: any) => {
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.semantic.text.info,
+                    color: theme.semantic.text.quaternary,
                     fontWeight: "bold",
                   }}
                   testID="confirmContinueButton"
@@ -290,7 +300,7 @@ const LessonPanel = (props: any) => {
                   onPress={hideLockedWarning}
                   labelStyle={{
                     fontSize: 20,
-                    color: theme.semantic.text.info,
+                    color: theme.semantic.text.quaternary,
                     fontWeight: "bold",
                   }}
                   testID="cancelContinueButton"
