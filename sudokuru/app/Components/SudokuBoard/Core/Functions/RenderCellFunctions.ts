@@ -43,7 +43,7 @@ export const getCellNotesColor = (
   c: number,
   theme: Theme,
 ) => {
-  const notesToReturn = Array(9).fill(theme.semantic.text.info);
+  const notesToReturn = new Array(9).fill(theme.semantic.text.info);
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
     const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
@@ -60,7 +60,7 @@ export const getCellNotesColor = (
 };
 
 export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
-  return Array(9).fill(cellBackgroundColor);
+  return new Array(9).fill(cellBackgroundColor);
 };
 
 /**
