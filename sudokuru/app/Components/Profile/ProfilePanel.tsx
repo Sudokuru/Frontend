@@ -61,6 +61,7 @@ const ProfilePanel = (props: any) => {
   // App Theme Pane
   paneArray.push(
     <View
+      key="appThemePane"
       style={{
         backgroundColor: theme.colors.surface,
         borderRadius: 10,
@@ -101,6 +102,7 @@ const ProfilePanel = (props: any) => {
   // Strategies/Highlight/Progress/Feature Preview Pane
   paneArray.push(
     <View
+      key="learnedLessonsPane"
       style={{
         backgroundColor: theme.colors.surface,
         borderRadius: 10,
@@ -192,6 +194,7 @@ const ProfilePanel = (props: any) => {
   // Strategy Hint Order Pane
   paneArray.push(
     <View
+      key="strategyHintOrderPane"
       style={{
         backgroundColor: theme.colors.surface,
         borderRadius: 10,
