@@ -119,14 +119,18 @@ const StatisticsPage = () => {
               <Text
                 variant="headlineMedium"
                 style={{ alignSelf: "center", margin: CARD_IMAGE_HEIGHT / 50 }}
-                theme={{ colors: { onSurface: theme.semantic.text.info } }}
+                theme={{
+                  colors: { onSurface: theme.semantic.text.quaternary },
+                }}
               >
                 Are you sure?
               </Text>
               <Text
                 variant="bodyLarge"
                 style={{ alignSelf: "center", textAlign: "center" }}
-                theme={{ colors: { onSurface: theme.semantic.text.info } }}
+                theme={{
+                  colors: { onSurface: theme.semantic.text.quaternary },
+                }}
               >
                 Do you really want to delete your progress?{"\n"}
                 This includes lesson completions.{"\n"}
