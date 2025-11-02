@@ -303,7 +303,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.7,
@@ -315,14 +315,20 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center", color: theme.semantic.text.info }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
               theme={{ colors: { onSurface: theme.colors.onSurface } }}
             >
               Error
             </Text>
             <Text
               variant="bodyLarge"
-              style={{ alignSelf: "center", color: theme.semantic.text.info }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
               theme={{ colors: { onSurface: theme.colors.onSurface } }}
             >
               There was an error submitting your feedback.{"\n"}
@@ -332,7 +338,7 @@ const ContactPage = () => {
               onPress={closeThankYouErrorModal}
               labelStyle={{
                 fontSize: 20,
-                color: theme.semantic.text.info,
+                color: theme.semantic.text.quaternary,
                 fontWeight: "bold",
               }}
               testID="confirmErrorButton"
