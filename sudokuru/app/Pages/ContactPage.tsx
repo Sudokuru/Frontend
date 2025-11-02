@@ -244,7 +244,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.9,
@@ -256,8 +256,11 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center", color: theme.semantic.text.info }}
-              theme={{ colors: { onSurface: theme.colors.onSurface } }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Thank You!
             </Text>
@@ -266,9 +269,9 @@ const ContactPage = () => {
               style={{
                 alignSelf: "center",
                 textAlign: "center",
-                color: theme.semantic.text.info,
+                color: theme.semantic.text.quaternary,
               }}
-              theme={{ colors: { onSurface: theme.colors.onSurface } }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Your feedback has been submitted.{"\n"}
               We appreciate the time you took to help us improve our app.{"\n"}
@@ -278,7 +281,7 @@ const ContactPage = () => {
               onPress={closeThankYouModal}
               labelStyle={{
                 fontSize: 20,
-                color: theme.semantic.text.info,
+                color: theme.semantic.text.quaternary,
                 fontWeight: "bold",
               }}
               testID="confirmSubmitButton"
@@ -319,7 +322,7 @@ const ContactPage = () => {
                 alignSelf: "center",
                 color: theme.semantic.text.quaternary,
               }}
-              theme={{ colors: { onSurface: theme.colors.onSurface } }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Error
             </Text>
@@ -329,7 +332,7 @@ const ContactPage = () => {
                 alignSelf: "center",
                 color: theme.semantic.text.quaternary,
               }}
-              theme={{ colors: { onSurface: theme.colors.onSurface } }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               There was an error submitting your feedback.{"\n"}
               Please try again later.
