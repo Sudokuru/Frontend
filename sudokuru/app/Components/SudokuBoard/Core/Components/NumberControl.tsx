@@ -120,7 +120,7 @@ const NumberControl = (props: NumberControlProps) => {
                   fontSize: cellSize
                     ? cellSize * (3 / 4) + 1
                     : fallbackHeight * (3 / 4) + 1,
-                  color: theme.colors.primary,
+                  color: theme.semantic.text.info,
                 }}
                 selectable={false}
               >
