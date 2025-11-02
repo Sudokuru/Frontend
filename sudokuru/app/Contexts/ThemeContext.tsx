@@ -69,7 +69,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       onSecondaryContainer: theme.colors.primary,
       onSurfaceVariant: theme.colors.primary,
     },
-  } as any;
+  };
 
   const navigationTheme = {
     ...navTheme,
