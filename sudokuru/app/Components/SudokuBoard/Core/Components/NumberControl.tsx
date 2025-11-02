@@ -49,6 +49,21 @@ const NumberControl = (props: NumberControlProps) => {
           updateEntry(number);
         };
 
+        const text = (
+          <Text
+            style={{
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize
+                ? cellSize * (3 / 4) + 1
+                : fallbackHeight * (3 / 4) + 1,
+              color: theme.semantic.text.info,
+            }}
+            selectable={false}
+          >
+            {number}
+          </Text>
+        );
+
         if (progressIndicatorSetting) {
           return (
             // Number Keys
@@ -80,18 +95,7 @@ const NumberControl = (props: NumberControlProps) => {
                     : fallbackHeight * (10 / 60),
                 }}
               >
-                <Text
-                  style={{
-                    fontFamily: "Inter_400Regular",
-                    fontSize: cellSize
-                      ? cellSize * (3 / 4) + 1
-                      : fallbackHeight * (3 / 4) + 1,
-                    color: theme.semantic.text.info,
-                  }}
-                  selectable={false}
-                >
-                  {number}
-                </Text>
+                {text}
               </LinearGradient>
             </Pressable>
           );
@@ -114,18 +118,7 @@ const NumberControl = (props: NumberControlProps) => {
               }}
               testID={"numberControl" + number}
             >
-              <Text
-                style={{
-                  fontFamily: "Inter_400Regular",
-                  fontSize: cellSize
-                    ? cellSize * (3 / 4) + 1
-                    : fallbackHeight * (3 / 4) + 1,
-                  color: theme.semantic.text.info,
-                }}
-                selectable={false}
-              >
-                {number}
-              </Text>
+              {text}
             </Pressable>
           );
         }
