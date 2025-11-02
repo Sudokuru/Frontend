@@ -33,12 +33,12 @@ export class ProfilePage {
     this.page = page;
     this.title = page.getByText("Profile");
     this.themeButtons = [];
-    THEME_OPTIONS.forEach(({ key }) =>
+    for (const theme of THEME_OPTIONS) {
       // uses regex to find buttons with test ids set to 'themeName' or 'themeName-selected'
       this.themeButtons.push(
-        page.getByTestId(new RegExp(`^${key}(?:-selected)?$`)),
-      ),
-    );
+        page.getByTestId(new RegExp(`^${theme.key}(?:-selected)?$`)),
+      );
+    }
     this.learnedLessons = page.getByTestId("LearnedLessons");
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
     this.highlightSwitchDisabled = page.getByTestId("HighlightDisabled");
