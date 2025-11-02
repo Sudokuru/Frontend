@@ -30,7 +30,7 @@ const classic: Theme = {
     border: "#D9A05B",
     error: "#FF0000",
     onError: "#FFFFFF",
-    onSurface: "#DEDEDE",
+    onSurface: "#808080",
     primary: "#D9A05B",
     surface: "#FFFFFF",
     surfaceAlt: "#012D39",
