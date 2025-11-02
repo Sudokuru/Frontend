@@ -38,8 +38,7 @@ const StrategyOrder = () => {
     selected: boolean,
     bullet = "•",
   ) => {
-    // TODO: replace "grey" with theme color when doing board theme ticket
-    let borderColor = "grey";
+    let borderColor = theme.colors.onSurface;
     if (selected) {
       borderColor = theme.semantic.text.primary;
     }
