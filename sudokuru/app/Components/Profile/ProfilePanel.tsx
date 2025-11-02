@@ -89,7 +89,7 @@ const ProfilePanel = (props: any) => {
           textStyle={{
             fontSize: 16,
             color: theme.semantic.text.primary,
-            fontWeight: key === themeName ? 700 : 400,
+            fontWeight: key === themeName ? "700" : "400",
           }}
           testID={key + (key === themeName ? "-selected" : "")}
         >

@@ -85,7 +85,7 @@ const EndGameModal = (props: EndGameModalProps) => {
         mode="contained"
         testID="StartNewGameButton"
         textColor={theme.semantic.text.inverse}
-        labelStyle={{ fontSize: 20, fontWeight: 700 }}
+        labelStyle={{ fontSize: 20, fontWeight: "700" }}
         onPress={() => navigation.navigate("PlayPage")}
         style={{ marginTop: 20 }}
       >
