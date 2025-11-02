@@ -49,7 +49,7 @@ const NumberControl = (props: NumberControlProps) => {
           updateEntry(number);
         };
 
-        const text = (
+        const numberText = (
           <Text
             style={{
               fontFamily: "Inter_400Regular",
@@ -95,7 +95,7 @@ const NumberControl = (props: NumberControlProps) => {
                     : fallbackHeight * (10 / 60),
                 }}
               >
-                {text}
+                {numberText}
               </LinearGradient>
             </Pressable>
           );
@@ -118,7 +118,7 @@ const NumberControl = (props: NumberControlProps) => {
               }}
               testID={"numberControl" + number}
             >
-              {text}
+              {numberText}
             </Pressable>
           );
         }
