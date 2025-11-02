@@ -90,6 +90,7 @@ const ProfilePanel = (props: any) => {
             color: theme.semantic.text.primary,
             fontWeight: key === themeName ? 700 : 400,
           }}
+          testID={key + (key === themeName ? "-selected" : "")}
         >
           {label}
         </Chip>

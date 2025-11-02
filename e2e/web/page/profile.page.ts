@@ -1,13 +1,13 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { formatOneLessonName } from "../../../sudokuru/app/Functions/learnedLessons";
 import { SudokuStrategy } from "sudokuru";
+import { THEME_OPTIONS } from "../../../sudokuru/app/Styling/theme";
 
 export class ProfilePage {
   readonly page: Page;
   readonly title: Locator;
+  readonly themeButtons: Locator[];
   readonly learnedLessons: Locator;
-  readonly themeSwitchEnabled: Locator;
-  readonly themeSwitchDisabled: Locator;
   readonly highlightSwitchEnabled: Locator;
   readonly highlightSwitchDisabled: Locator;
   readonly highlightIdenticalValuesSwitchEnabled: Locator;
@@ -32,9 +32,14 @@ export class ProfilePage {
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Profile");
+    this.themeButtons = [];
+    THEME_OPTIONS.forEach(({ key }) =>
+      // uses regex to find buttons with test ids set to 'themeName' or 'themeName-selected'
+      this.themeButtons.push(
+        page.getByTestId(new RegExp(`^${key}(?:-selected)?$`)),
+      ),
+    );
     this.learnedLessons = page.getByTestId("LearnedLessons");
-    this.themeSwitchEnabled = page.getByTestId("DarkThemeEnabled");
-    this.themeSwitchDisabled = page.getByTestId("DarkThemeDisabled");
     this.highlightSwitchEnabled = page.getByTestId("HighlightEnabled");
     this.highlightSwitchDisabled = page.getByTestId("HighlightDisabled");
     this.highlightIdenticalValuesSwitchEnabled = page.getByTestId(
@@ -77,6 +82,24 @@ export class ProfilePage {
 
   async profilePageIsRendered() {
     await expect(this.title).toBeInViewport({ ratio: 1 });
+  }
+
+  async verifySelectedTheme(theme: string) {
+    for (const button of this.themeButtons) {
+      const tid = await button.getAttribute("data-testid");
+      if (tid.includes(theme)) {
+        expect(tid).toContain("-selected");
+      } else {
+        expect(tid).not.toContain("-selected");
+      }
+    }
+  }
+
+  async verifyThemeInStorage(theme: string | null) {
+    const storedTheme: string = JSON.parse(
+      await this.page.evaluate(() => localStorage.getItem("theme")),
+    );
+    expect(storedTheme).toBe(theme);
   }
 
   async verifyLearnedLessonsMatch(learnedLessons: string[]) {
