@@ -28,7 +28,7 @@ function getCardArray(
         style={{
           width: CARD_WIDTH,
           borderWidth: 1,
-          borderColor: theme.colors.surface,
+          borderColor: theme.semantic.text.tertiary,
           padding: 5,
           margin: 10,
         }}
