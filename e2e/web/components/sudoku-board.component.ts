@@ -243,7 +243,7 @@ export class SudokuBoardComponent {
       row: number;
       column: number;
     }[],
-    endedGame?: boolean = false,
+    endedGame: boolean = false,
   ) {
     await this.hint.click();
 
