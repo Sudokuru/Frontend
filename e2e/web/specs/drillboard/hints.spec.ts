@@ -634,15 +634,11 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
   });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 2;
+      return row === 3;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 2 && column === 3) ||
-        (row === 2 && column === 4) ||
-        (row === 2 && column === 5)
-      );
+      return (row === 3 && column === 1) || (row === 3 && column === 5);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -651,9 +647,19 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       "HIDDEN_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "47", row: 2, column: 0 }],
-      [{ contentType: "notes", content: "47", row: 2, column: 0 }],
-      [{ contentType: "notes", content: "7", row: 2, column: 0 }],
+      [
+        { contentType: "notes", content: "156", row: 3, column: 4 },
+        { contentType: "notes", content: "135", row: 3, column: 7 },
+      ],
+      [
+        { contentType: "notes", content: "156", row: 3, column: 4 },
+        { contentType: "notes", content: "135", row: 3, column: 7 },
+      ],
+      [
+        { contentType: "notes", content: "16", row: 3, column: 4 },
+        { contentType: "notes", content: "1", row: 3, column: 7 },
+      ],
+      true,
     );
   });
 });
@@ -668,7 +674,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 1 && column === 0) || (row === 2 && column === 0);
+      return row === 5 && column === 0;
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -677,21 +683,10 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       "HIDDEN_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "3469", row: 3, column: 0 },
-        { contentType: "notes", content: "3468", row: 7, column: 0 },
-        { contentType: "notes", content: "3468", row: 8, column: 0 },
-      ],
-      [
-        { contentType: "notes", content: "3469", row: 3, column: 0 },
-        { contentType: "notes", content: "3468", row: 7, column: 0 },
-        { contentType: "notes", content: "3468", row: 8, column: 0 },
-      ],
-      [
-        { contentType: "notes", content: "369", row: 3, column: 0 },
-        { contentType: "notes", content: "368", row: 7, column: 0 },
-        { contentType: "notes", content: "368", row: 8, column: 0 },
-      ],
+      [{ contentType: "notes", content: "69", row: 4, column: 0 }],
+      [{ contentType: "notes", content: "69", row: 4, column: 0 }],
+      [{ contentType: "notes", content: "6", row: 4, column: 0 }],
+      true,
     );
   });
 });
@@ -702,11 +697,11 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
   });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column < 3 && row > 2 && row < 6;
+      return column < 3 && row > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return row === 3 && column === 2;
+      return row === 7 && column === 0;
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -715,18 +710,10 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       "HIDDEN_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "34", row: 3, column: 0 },
-        { contentType: "notes", content: "236", row: 4, column: 2 },
-      ],
-      [
-        { contentType: "notes", content: "34", row: 3, column: 0 },
-        { contentType: "notes", content: "236", row: 4, column: 2 },
-      ],
-      [
-        { contentType: "notes", content: "4", row: 3, column: 0 },
-        { contentType: "notes", content: "26", row: 4, column: 2 },
-      ],
+      [{ contentType: "notes", content: "46", row: 8, column: 0 }],
+      [{ contentType: "notes", content: "46", row: 8, column: 0 }],
+      [{ contentType: "notes", content: "4", row: 8, column: 0 }],
+      true,
     );
   });
 });
