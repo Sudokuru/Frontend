@@ -1,7 +1,21 @@
 [
   {
-    "version": "1.30.1",
+    "version": "1.30.2",
     "date": "#{date}#",
+    "summary": "Revamped the app theming to improve upon the look of the application, added a new dark theme, and replaced the light/dark mode toggle with three theme selection buttons in the profile page.",
+    "features": [
+      "Added a new dark theme option in the profile page.",
+      "Replaced light/dark mode toggle in the profile page with theme selection buttons."
+    ],
+    "bug fixes": [
+      "Fixed a dead link to a contributors GitHub profile in the about us page."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Gregory711"]
+  },
+  {
+    "version": "1.30.1",
+    "date": "October 31st, 2025",
     "summary": "🎃 Fixed bug where starting a new game would not immediately save the game state.",
     "bug fixes": [
       "Starting a new game will now immediately save the game so it can be resumed later. Previously the game would save only after the player interacted with the Sudoku board."
