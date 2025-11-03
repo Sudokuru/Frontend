@@ -372,16 +372,11 @@ test.describe("board HIDDEN_SINGLE", () => {
   test.use({ drillGametoResume: HIDDEN_SINGLE_DRILL_ROW_GAME });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 4;
+      return row === 3;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 4 && column === 3) ||
-        (row === 4 && column === 4) ||
-        (row === 4 && column === 5) ||
-        (row === 4 && column === 7)
-      );
+      return (row === 3 && column === 0) || (row === 3 && column === 3);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -390,9 +385,10 @@ test.describe("board HIDDEN_SINGLE", () => {
       "HIDDEN_SINGLE",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "249", row: 4, column: 6 }],
-      [{ contentType: "notes", content: "249", row: 4, column: 6 }],
-      [{ contentType: "notes", content: "4", row: 4, column: 6 }],
+      [{ contentType: "notes", content: "78", row: 3, column: 6 }],
+      [{ contentType: "notes", content: "78", row: 3, column: 6 }],
+      [{ contentType: "notes", content: "7", row: 3, column: 6 }],
+      true,
     );
   });
 });
@@ -401,18 +397,11 @@ test.describe("board HIDDEN_SINGLE", () => {
   test.use({ drillGametoResume: HIDDEN_SINGLE_DRILL_COLUMN_GAME });
   test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column === 3;
+      return column === 7;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 0 && column === 3) ||
-        (row === 1 && column === 3) ||
-        (row === 2 && column === 3) ||
-        (row === 6 && column === 3) ||
-        (row === 7 && column === 3) ||
-        (row === 8 && column === 3)
-      );
+      return (row === 4 && column === 7) || (row === 7 && column === 7);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -421,9 +410,10 @@ test.describe("board HIDDEN_SINGLE", () => {
       "HIDDEN_SINGLE",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "2389", row: 4, column: 3 }],
-      [{ contentType: "notes", content: "2389", row: 4, column: 3 }],
-      [{ contentType: "notes", content: "2", row: 4, column: 3 }],
+      [{ contentType: "notes", content: "59", row: 6, column: 7 }],
+      [{ contentType: "notes", content: "59", row: 6, column: 7 }],
+      [{ contentType: "notes", content: "5", row: 6, column: 7 }],
+      true,
     );
   });
 });
@@ -434,15 +424,11 @@ test.describe("board HIDDEN_SINGLE", () => {
   });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row < 3 && column < 3;
+      return row > 2 && row < 6 && column > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 1 && column === 0) ||
-        (row === 1 && column === 1) ||
-        (row === 2 && column === 0)
-      );
+      return (row === 3 && column === 8) || (row === 4 && column === 8);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -451,9 +437,10 @@ test.describe("board HIDDEN_SINGLE", () => {
       "HIDDEN_SINGLE",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "25", row: 0, column: 1 }],
-      [{ contentType: "notes", content: "2", row: 0, column: 1 }],
+      [{ contentType: "notes", content: "12", row: 4, column: 7 }],
+      [{ contentType: "notes", content: "12", row: 4, column: 7 }],
+      [{ contentType: "notes", content: "2", row: 4, column: 7 }],
+      true,
     );
   });
 });
