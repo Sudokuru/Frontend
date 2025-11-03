@@ -451,17 +451,11 @@ test.describe("board HIDDEN_PAIR", () => {
   });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 6;
+      return row === 4;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 6 && column === 0) ||
-        (row === 6 && column === 1) ||
-        (row === 6 && column === 3) ||
-        (row === 6 && column === 4) ||
-        (row === 6 && column === 5)
-      );
+      return row === 4 && column === 1;
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -470,18 +464,10 @@ test.describe("board HIDDEN_PAIR", () => {
       "HIDDEN_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "145678", row: 6, column: 7 },
-        { contentType: "notes", content: "14578", row: 6, column: 8 },
-      ],
-      [
-        { contentType: "notes", content: "145678", row: 6, column: 7 },
-        { contentType: "notes", content: "14578", row: 6, column: 8 },
-      ],
-      [
-        { contentType: "notes", content: "78", row: 6, column: 7 },
-        { contentType: "notes", content: "78", row: 6, column: 8 },
-      ],
+      [{ contentType: "notes", content: "145", row: 4, column: 2 }],
+      [{ contentType: "notes", content: "145", row: 4, column: 2 }],
+      [{ contentType: "notes", content: "14", row: 4, column: 2 }],
+      true,
     );
   });
 });
@@ -492,11 +478,11 @@ test.describe("board HIDDEN_PAIR", () => {
   });
   test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column === 1;
+      return column === 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 6 && column === 1) || (row === 8 && column === 1);
+      return (row === 1 && column === 5) || (row === 7 && column === 5);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -505,18 +491,10 @@ test.describe("board HIDDEN_PAIR", () => {
       "HIDDEN_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "1568", row: 1, column: 1 },
-        { contentType: "notes", content: "158", row: 2, column: 1 },
-      ],
-      [
-        { contentType: "notes", content: "1568", row: 1, column: 1 },
-        { contentType: "notes", content: "158", row: 2, column: 1 },
-      ],
-      [
-        { contentType: "notes", content: "58", row: 1, column: 1 },
-        { contentType: "notes", content: "58", row: 2, column: 1 },
-      ],
+      [{ contentType: "notes", content: "129", row: 8, column: 5 }],
+      [{ contentType: "notes", content: "129", row: 8, column: 5 }],
+      [{ contentType: "notes", content: "12", row: 8, column: 5 }],
+      true,
     );
   });
 });
@@ -527,11 +505,11 @@ test.describe("board HIDDEN_PAIR", () => {
   });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row > 2 && row < 6 && column > 5;
+      return row > 2 && row < 6 && column > 2 && column < 6;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return row === 4 && column === 8;
+      return (row === 4 && column === 3) || (row === 5 && column === 4);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -540,9 +518,19 @@ test.describe("board HIDDEN_PAIR", () => {
       "HIDDEN_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "389", row: 4, column: 7 }],
-      [{ contentType: "notes", content: "389", row: 4, column: 7 }],
-      [{ contentType: "notes", content: "89", row: 4, column: 7 }],
+      [
+        { contentType: "notes", content: "358", row: 3, column: 3 },
+        { contentType: "notes", content: "358", row: 5, column: 3 },
+      ],
+      [
+        { contentType: "notes", content: "358", row: 3, column: 3 },
+        { contentType: "notes", content: "358", row: 5, column: 3 },
+      ],
+      [
+        { contentType: "notes", content: "35", row: 3, column: 3 },
+        { contentType: "notes", content: "35", row: 5, column: 3 },
+      ],
+      true,
     );
   });
 });
