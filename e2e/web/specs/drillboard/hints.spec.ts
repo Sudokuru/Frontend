@@ -275,9 +275,9 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
     const hintSelectedColor = (row: number, column: number) => {
       return (
         (row === 7 && column === 0) ||
-        (row === 7 && column === 1) ||
         (row === 7 && column === 2) ||
-        (row === 7 && column === 3)
+        (row === 7 && column === 4) ||
+        (row === 7 && column === 6)
       );
     };
 
@@ -288,16 +288,16 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "249", row: 7, column: 4 },
-        { contentType: "notes", content: "157", row: 7, column: 6 },
+        { contentType: "notes", content: "68", row: 7, column: 7 },
+        { contentType: "notes", content: "49", row: 7, column: 8 },
       ],
       [
-        { contentType: "notes", content: "249", row: 7, column: 4 },
-        { contentType: "notes", content: "157", row: 7, column: 6 },
+        { contentType: "notes", content: "68", row: 7, column: 7 },
+        { contentType: "notes", content: "49", row: 7, column: 8 },
       ],
       [
-        { contentType: "notes", content: "9", row: 7, column: 4 },
-        { contentType: "notes", content: "1", row: 7, column: 6 },
+        { contentType: "notes", content: "6", row: 7, column: 7 },
+        { contentType: "notes", content: "9", row: 7, column: 8 },
       ],
       true,
     );
@@ -310,15 +310,15 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
   });
   test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column === 1;
+      return column === 0;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 0 && column === 1) ||
-        (row === 3 && column === 1) ||
-        (row === 5 && column === 1) ||
-        (row === 8 && column === 1)
+        (row === 4 && column === 0) ||
+        (row === 6 && column === 0) ||
+        (row === 7 && column === 0) ||
+        (row === 8 && column === 0)
       );
     };
 
@@ -328,9 +328,10 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       "OBVIOUS_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "45", row: 1, column: 1 }],
-      [{ contentType: "notes", content: "5", row: 1, column: 1 }],
+      [{ contentType: "notes", content: "58", row: 5, column: 0 }],
+      [{ contentType: "notes", content: "58", row: 5, column: 0 }],
+      [{ contentType: "notes", content: "8", row: 5, column: 0 }],
+      true,
     );
   });
 });
@@ -341,15 +342,15 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
   });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return column <= 5 && column >= 3 && row <= 2;
+      return column < 3 && row > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 0 && column === 3) ||
-        (row === 0 && column === 5) ||
-        (row === 1 && column === 3) ||
-        (row === 1 && column === 4)
+        (row === 7 && column === 0) ||
+        (row === 7 && column === 1) ||
+        (row === 7 && column === 2) ||
+        (row === 8 && column === 2)
       );
     };
 
@@ -359,21 +360,10 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       "OBVIOUS_QUADRUPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "356", row: 2, column: 3 },
-        { contentType: "notes", content: "1356", row: 2, column: 4 },
-        { contentType: "notes", content: "13456", row: 2, column: 5 },
-      ],
-      [
-        { contentType: "notes", content: "356", row: 2, column: 3 },
-        { contentType: "notes", content: "1356", row: 2, column: 4 },
-        { contentType: "notes", content: "13456", row: 2, column: 5 },
-      ],
-      [
-        { contentType: "notes", content: "3", row: 2, column: 3 },
-        { contentType: "notes", content: "13", row: 2, column: 4 },
-        { contentType: "notes", content: "134", row: 2, column: 5 },
-      ],
+      [{ contentType: "notes", content: "24", row: 8, column: 1 }],
+      [{ contentType: "notes", content: "24", row: 8, column: 1 }],
+      [{ contentType: "notes", content: "4", row: 8, column: 1 }],
+      true,
     );
   });
 });
