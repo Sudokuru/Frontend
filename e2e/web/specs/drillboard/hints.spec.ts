@@ -176,43 +176,13 @@ test.describe("board OBVIOUS_TRIPLET", () => {
   });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 1;
+      return row === 7;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 1 && column === 1) ||
-        (row === 1 && column === 3) ||
-        (row === 1 && column === 4)
-      );
-    };
-
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-
-    await sudokuBoard.hintBaseTest(
-      "OBVIOUS_TRIPLET",
-      hintSelectedColor,
-      notHighlightedColor,
-      [{ contentType: "notes", content: "579", row: 1, column: 7 }],
-      [{ contentType: "notes", content: "579", row: 1, column: 7 }],
-      [{ contentType: "notes", content: "7", row: 1, column: 7 }],
-    );
-  });
-});
-
-test.describe("board OBVIOUS_TRIPLET", () => {
-  test.use({
-    drillGametoResume: OBVIOUS_TRIPLET_DRILL_COLUMN_GAME,
-  });
-  test("with column group", async ({ resumeDrillGame }) => {
-    const notHighlightedColor = (row: number, column: number) => {
-      return column === 4;
-    };
-
-    const hintSelectedColor = (row: number, column: number) => {
-      return (
-        (row === 1 && column === 4) ||
-        (row === 4 && column === 4) ||
+        (row === 7 && column === 7) ||
+        (row === 7 && column === 5) ||
         (row === 7 && column === 4)
       );
     };
@@ -223,18 +193,41 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "35689", row: 5, column: 4 },
-        { contentType: "notes", content: "569", row: 3, column: 4 },
-      ],
-      [
-        { contentType: "notes", content: "35689", row: 5, column: 4 },
-        { contentType: "notes", content: "569", row: 3, column: 4 },
-      ],
-      [
-        { contentType: "notes", content: "59", row: 5, column: 4 },
-        { contentType: "notes", content: "59", row: 3, column: 4 },
-      ],
+      [{ contentType: "notes", content: "89", row: 7, column: 0 }],
+      [{ contentType: "notes", content: "89", row: 7, column: 0 }],
+      [{ contentType: "notes", content: "8", row: 7, column: 0 }],
+      true,
+    );
+  });
+});
+
+test.describe("board OBVIOUS_TRIPLET", () => {
+  test.use({
+    drillGametoResume: OBVIOUS_TRIPLET_DRILL_COLUMN_GAME,
+  });
+  test("with column group", async ({ resumeDrillGame }) => {
+    const notHighlightedColor = (row: number, column: number) => {
+      return column === 7;
+    };
+
+    const hintSelectedColor = (row: number, column: number) => {
+      return (
+        (row === 1 && column === 7) ||
+        (row === 2 && column === 7) ||
+        (row === 7 && column === 7)
+      );
+    };
+
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+
+    await sudokuBoard.hintBaseTest(
+      "OBVIOUS_TRIPLET",
+      hintSelectedColor,
+      notHighlightedColor,
+      [{ contentType: "notes", content: "49", row: 8, column: 7 }],
+      [{ contentType: "notes", content: "49", row: 8, column: 7 }],
+      [{ contentType: "notes", content: "4", row: 8, column: 7 }],
+      true,
     );
   });
 });
@@ -245,14 +238,14 @@ test.describe("board OBVIOUS_TRIPLET", () => {
   });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row > 2 && column > 2 && row < 6 && column < 6;
+      return row > 5 && column > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
       return (
-        (row === 3 && column === 4) ||
-        (row === 4 && column === 4) ||
-        (row === 5 && column === 5)
+        (row === 8 && column === 8) ||
+        (row === 8 && column === 7) ||
+        (row === 8 && column === 6)
       );
     };
 
@@ -262,9 +255,10 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       "OBVIOUS_TRIPLET",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "23468", row: 3, column: 5 }],
-      [{ contentType: "notes", content: "23468", row: 3, column: 5 }],
-      [{ contentType: "notes", content: "68", row: 3, column: 5 }],
+      [{ contentType: "notes", content: "58", row: 7, column: 8 }],
+      [{ contentType: "notes", content: "58", row: 7, column: 8 }],
+      [{ contentType: "notes", content: "5", row: 7, column: 8 }],
+      true,
     );
   });
 });
@@ -305,6 +299,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
         { contentType: "notes", content: "9", row: 7, column: 4 },
         { contentType: "notes", content: "1", row: 7, column: 6 },
       ],
+      true,
     );
   });
 });
