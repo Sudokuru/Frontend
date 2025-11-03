@@ -121,7 +121,7 @@ const ContactPage = () => {
         <Card
           mode="outlined"
           style={{
-            background: theme.colors.surfaceAlt,
+            backgroundColor: theme.colors.surfaceAlt,
             borderColor: theme.colors.primary,
           }}
         >
