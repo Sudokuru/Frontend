@@ -88,11 +88,11 @@ test.describe("board OBVIOUS_PAIR", () => {
   });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 8;
+      return row === 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 8 && column === 4) || (row === 8 && column === 7);
+      return (row === 5 && column === 0) || (row === 5 && column === 7);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -102,17 +102,18 @@ test.describe("board OBVIOUS_PAIR", () => {
       hintSelectedColor,
       notHighlightedColor,
       [
-        { contentType: "notes", content: "469", row: 8, column: 5 },
-        { contentType: "notes", content: "279", row: 8, column: 8 },
+        { contentType: "notes", content: "78", row: 5, column: 6 },
+        { contentType: "notes", content: "245", row: 5, column: 4 },
       ],
       [
-        { contentType: "notes", content: "469", row: 8, column: 5 },
-        { contentType: "notes", content: "279", row: 8, column: 8 },
+        { contentType: "notes", content: "78", row: 5, column: 6 },
+        { contentType: "notes", content: "245", row: 5, column: 4 },
       ],
       [
-        { contentType: "notes", content: "46", row: 8, column: 5 },
-        { contentType: "notes", content: "2", row: 8, column: 8 },
+        { contentType: "notes", content: "8", row: 5, column: 6 },
+        { contentType: "notes", content: "45", row: 5, column: 4 },
       ],
+      true,
     );
   });
 });
@@ -123,11 +124,11 @@ test.describe("board OBVIOUS_PAIR", () => {
   });
   test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return (row <= 2 && column <= 2) || column === 0;
+      return column === 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 1 && column === 0) || (row === 2 && column === 0);
+      return (row === 8 && column === 5) || (row === 6 && column === 5);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -136,24 +137,10 @@ test.describe("board OBVIOUS_PAIR", () => {
       "OBVIOUS_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "45", row: 1, column: 1 },
-        { contentType: "notes", content: "3469", row: 3, column: 0 },
-        { contentType: "notes", content: "3468", row: 7, column: 0 },
-        { contentType: "notes", content: "3468", row: 8, column: 0 },
-      ],
-      [
-        { contentType: "notes", content: "45", row: 1, column: 1 },
-        { contentType: "notes", content: "3469", row: 3, column: 0 },
-        { contentType: "notes", content: "3468", row: 7, column: 0 },
-        { contentType: "notes", content: "3468", row: 8, column: 0 },
-      ],
-      [
-        { contentType: "notes", content: "5", row: 1, column: 1 },
-        { contentType: "notes", content: "369", row: 3, column: 0 },
-        { contentType: "notes", content: "368", row: 7, column: 0 },
-        { contentType: "notes", content: "368", row: 8, column: 0 },
-      ],
+      [{ contentType: "notes", content: "37", row: 3, column: 5 }],
+      [{ contentType: "notes", content: "37", row: 3, column: 5 }],
+      [{ contentType: "notes", content: "7", row: 3, column: 5 }],
+      true,
     );
   });
 });
@@ -162,11 +149,11 @@ test.describe("board OBVIOUS_PAIR", () => {
   test.use({ drillGametoResume: OBVIOUS_PAIR_DRILL_BOX_GAME });
   test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row <= 2 && column > 2 && column < 6;
+      return row > 5 && column > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 1 && column === 3) || (row === 1 && column === 4);
+      return (row === 6 && column === 8) || (row === 7 && column === 8);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -175,18 +162,10 @@ test.describe("board OBVIOUS_PAIR", () => {
       "OBVIOUS_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [
-        { contentType: "notes", content: "5689", row: 0, column: 3 },
-        { contentType: "notes", content: "568", row: 0, column: 5 },
-      ],
-      [
-        { contentType: "notes", content: "5689", row: 0, column: 3 },
-        { contentType: "notes", content: "568", row: 0, column: 5 },
-      ],
-      [
-        { contentType: "notes", content: "56", row: 0, column: 3 },
-        { contentType: "notes", content: "56", row: 0, column: 5 },
-      ],
+      [{ contentType: "notes", content: "45", row: 6, column: 7 }],
+      [{ contentType: "notes", content: "45", row: 6, column: 7 }],
+      [{ contentType: "notes", content: "4", row: 6, column: 7 }],
+      true,
     );
   });
 });
