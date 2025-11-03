@@ -1,40 +1,31 @@
 import {
-  HIDDEN_PAIR_BOX_GAME,
-  HIDDEN_PAIR_COLUMN_GAME,
-  HIDDEN_PAIR_PROFILE,
-  HIDDEN_PAIR_ROW_GAME,
-  HIDDEN_QUADRUPLET_BOX_GAME,
-  HIDDEN_QUADRUPLET_COLUMN_GAME,
-  HIDDEN_QUADRUPLET_PROFILE,
-  HIDDEN_QUADRUPLET_ROW_GAME,
-  HIDDEN_SINGLE_BOX_GAME,
-  HIDDEN_SINGLE_COLUMN_GAME,
-  HIDDEN_SINGLE_PROFILE,
-  HIDDEN_SINGLE_ROW_GAME,
-  HIDDEN_TRIPLET_BOX_GAME,
-  HIDDEN_TRIPLET_COLUMN_GAME,
-  HIDDEN_TRIPLET_PROFILE,
-  HIDDEN_TRIPLET_ROW_GAME,
-  OBVIOUS_PAIR_BOX_GAME,
-  OBVIOUS_PAIR_COLUMN_GAME,
-  OBVIOUS_PAIR_PROFILE,
-  OBVIOUS_PAIR_ROW_GAME,
-  OBVIOUS_QUADRUPLET_BOX_GAME,
-  OBVIOUS_QUADRUPLET_COLUMN_GAME,
-  OBVIOUS_QUADRUPLET_PROFILE,
-  OBVIOUS_QUADRUPLET_ROW_GAME,
+  HIDDEN_PAIR_DRILL_BOX_GAME,
+  HIDDEN_PAIR_DRILL_COLUMN_GAME,
+  HIDDEN_PAIR_DRILL_ROW_GAME,
+  HIDDEN_QUADRUPLET_DRILL_BOX_GAME,
+  HIDDEN_QUADRUPLET_DRILL_COLUMN_GAME,
+  HIDDEN_QUADRUPLET_DRILL_ROW_GAME,
+  HIDDEN_SINGLE_DRILL_BOX_GAME,
+  HIDDEN_SINGLE_DRILL_COLUMN_GAME,
+  HIDDEN_SINGLE_DRILL_ROW_GAME,
+  HIDDEN_TRIPLET_DRILL_BOX_GAME,
+  HIDDEN_TRIPLET_DRILL_COLUMN_GAME,
+  HIDDEN_TRIPLET_DRILL_ROW_GAME,
+  OBVIOUS_PAIR_DRILL_BOX_GAME,
+  OBVIOUS_PAIR_DRILL_COLUMN_GAME,
+  OBVIOUS_PAIR_DRILL_ROW_GAME,
+  OBVIOUS_QUADRUPLET_DRILL_BOX_GAME,
+  OBVIOUS_QUADRUPLET_DRILL_COLUMN_GAME,
+  OBVIOUS_QUADRUPLET_DRILL_ROW_GAME,
   OBVIOUS_SINGLE_DRILL_GAME,
-  OBVIOUS_TRIPLET_BOX_GAME,
-  OBVIOUS_TRIPLET_COLUMN_GAME,
-  OBVIOUS_TRIPLET_PROFILE,
-  OBVIOUS_TRIPLET_ROW_GAME,
-  POINTING_PAIR_COLUMN_GAME,
+  OBVIOUS_TRIPLET_DRILL_BOX_GAME,
+  OBVIOUS_TRIPLET_DRILL_COLUMN_GAME,
+  OBVIOUS_TRIPLET_DRILL_ROW_GAME,
   POINTING_PAIR_CORRECT_DRILL_GAME,
-  POINTING_PAIR_PROFILE,
-  POINTING_PAIR_ROW_GAME,
-  POINTING_TRIPLET_COLUMN_GAME,
-  POINTING_TRIPLET_PROFILE,
-  POINTING_TRIPLET_ROW_GAME,
+  POINTING_PAIR_DRILL_COLUMN_GAME,
+  POINTING_PAIR_DRILL_ROW_GAME,
+  POINTING_TRIPLET_DRILL_COLUMN_GAME,
+  POINTING_TRIPLET_DRILL_ROW_GAME,
 } from "../../data";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { test } from "../../fixture";
@@ -42,10 +33,6 @@ import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
-import { ProfilePage } from "../../page/profile.page";
-import { HeaderComponent } from "../../components/header.component";
-import { PlayPage } from "../../page/play.page";
-import { expect } from "@playwright/test";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
@@ -97,10 +84,9 @@ test.describe("board OBVIOUS_SINGLE", () => {
 
 test.describe("board OBVIOUS_PAIR", () => {
   test.use({
-    classicGametoResume: OBVIOUS_PAIR_ROW_GAME,
-    profileStorage: OBVIOUS_PAIR_PROFILE,
+    drillGametoResume: OBVIOUS_PAIR_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 8;
     };
@@ -109,7 +95,7 @@ test.describe("board OBVIOUS_PAIR", () => {
       return (row === 8 && column === 4) || (row === 8 && column === 7);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_PAIR",
@@ -133,10 +119,9 @@ test.describe("board OBVIOUS_PAIR", () => {
 
 test.describe("board OBVIOUS_PAIR", () => {
   test.use({
-    classicGametoResume: OBVIOUS_PAIR_COLUMN_GAME,
-    profileStorage: OBVIOUS_PAIR_PROFILE,
+    drillGametoResume: OBVIOUS_PAIR_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return (row <= 2 && column <= 2) || column === 0;
     };
@@ -145,7 +130,7 @@ test.describe("board OBVIOUS_PAIR", () => {
       return (row === 1 && column === 0) || (row === 2 && column === 0);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_PAIR",
@@ -174,8 +159,8 @@ test.describe("board OBVIOUS_PAIR", () => {
 });
 
 test.describe("board OBVIOUS_PAIR", () => {
-  test.use({ classicGametoResume: OBVIOUS_PAIR_BOX_GAME });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test.use({ drillGametoResume: OBVIOUS_PAIR_DRILL_BOX_GAME });
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row <= 2 && column > 2 && column < 6;
     };
@@ -184,7 +169,7 @@ test.describe("board OBVIOUS_PAIR", () => {
       return (row === 1 && column === 3) || (row === 1 && column === 4);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_PAIR",
@@ -208,10 +193,9 @@ test.describe("board OBVIOUS_PAIR", () => {
 
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_TRIPLET_ROW_GAME,
-    profileStorage: OBVIOUS_TRIPLET_PROFILE,
+    drillGametoResume: OBVIOUS_TRIPLET_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 1;
     };
@@ -224,7 +208,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_TRIPLET",
@@ -239,10 +223,9 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_TRIPLET_COLUMN_GAME,
-    profileStorage: OBVIOUS_TRIPLET_PROFILE,
+    drillGametoResume: OBVIOUS_TRIPLET_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 4;
     };
@@ -255,7 +238,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_TRIPLET",
@@ -279,10 +262,9 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 
 test.describe("board OBVIOUS_TRIPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_TRIPLET_BOX_GAME,
-    profileStorage: OBVIOUS_TRIPLET_PROFILE,
+    drillGametoResume: OBVIOUS_TRIPLET_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row > 2 && column > 2 && row < 6 && column < 6;
     };
@@ -295,7 +277,7 @@ test.describe("board OBVIOUS_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_TRIPLET",
@@ -310,10 +292,9 @@ test.describe("board OBVIOUS_TRIPLET", () => {
 
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_QUADRUPLET_ROW_GAME,
-    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
+    drillGametoResume: OBVIOUS_QUADRUPLET_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 7;
     };
@@ -327,7 +308,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_QUADRUPLET",
@@ -351,10 +332,9 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
 
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_QUADRUPLET_COLUMN_GAME,
-    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
+    drillGametoResume: OBVIOUS_QUADRUPLET_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 1;
     };
@@ -368,7 +348,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_QUADRUPLET",
@@ -383,10 +363,9 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
 
 test.describe("board OBVIOUS_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: OBVIOUS_QUADRUPLET_BOX_GAME,
-    profileStorage: OBVIOUS_QUADRUPLET_PROFILE,
+    drillGametoResume: OBVIOUS_QUADRUPLET_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column <= 5 && column >= 3 && row <= 2;
     };
@@ -400,7 +379,7 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_QUADRUPLET",
@@ -426,8 +405,8 @@ test.describe("board OBVIOUS_QUADRUPLET", () => {
 });
 
 test.describe("board HIDDEN_SINGLE", () => {
-  test.use({ classicGametoResume: HIDDEN_SINGLE_ROW_GAME });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test.use({ drillGametoResume: HIDDEN_SINGLE_DRILL_ROW_GAME });
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 4;
     };
@@ -441,7 +420,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_SINGLE",
@@ -455,8 +434,8 @@ test.describe("board HIDDEN_SINGLE", () => {
 });
 
 test.describe("board HIDDEN_SINGLE", () => {
-  test.use({ classicGametoResume: HIDDEN_SINGLE_COLUMN_GAME });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test.use({ drillGametoResume: HIDDEN_SINGLE_DRILL_COLUMN_GAME });
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 3;
     };
@@ -472,7 +451,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_SINGLE",
@@ -487,10 +466,9 @@ test.describe("board HIDDEN_SINGLE", () => {
 
 test.describe("board HIDDEN_SINGLE", () => {
   test.use({
-    classicGametoResume: HIDDEN_SINGLE_BOX_GAME,
-    profileStorage: HIDDEN_SINGLE_PROFILE,
+    drillGametoResume: HIDDEN_SINGLE_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row < 3 && column < 3;
     };
@@ -503,7 +481,7 @@ test.describe("board HIDDEN_SINGLE", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_SINGLE",
@@ -518,10 +496,9 @@ test.describe("board HIDDEN_SINGLE", () => {
 
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
-    classicGametoResume: HIDDEN_PAIR_ROW_GAME,
-    profileStorage: HIDDEN_PAIR_PROFILE,
+    drillGametoResume: HIDDEN_PAIR_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 6;
     };
@@ -536,7 +513,7 @@ test.describe("board HIDDEN_PAIR", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_PAIR",
@@ -560,10 +537,9 @@ test.describe("board HIDDEN_PAIR", () => {
 
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
-    classicGametoResume: HIDDEN_PAIR_COLUMN_GAME,
-    profileStorage: HIDDEN_PAIR_PROFILE,
+    drillGametoResume: HIDDEN_PAIR_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 1;
     };
@@ -572,7 +548,7 @@ test.describe("board HIDDEN_PAIR", () => {
       return (row === 6 && column === 1) || (row === 8 && column === 1);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_PAIR",
@@ -596,10 +572,9 @@ test.describe("board HIDDEN_PAIR", () => {
 
 test.describe("board HIDDEN_PAIR", () => {
   test.use({
-    classicGametoResume: HIDDEN_PAIR_BOX_GAME,
-    profileStorage: HIDDEN_PAIR_PROFILE,
+    drillGametoResume: HIDDEN_PAIR_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row > 2 && row < 6 && column > 5;
     };
@@ -608,7 +583,7 @@ test.describe("board HIDDEN_PAIR", () => {
       return row === 4 && column === 8;
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_PAIR",
@@ -623,10 +598,9 @@ test.describe("board HIDDEN_PAIR", () => {
 
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_TRIPLET_ROW_GAME,
-    profileStorage: HIDDEN_TRIPLET_PROFILE,
+    drillGametoResume: HIDDEN_TRIPLET_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 7;
     };
@@ -635,7 +609,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
       return row === 7 && column === 6;
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_TRIPLET",
@@ -650,10 +624,9 @@ test.describe("board HIDDEN_TRIPLET", () => {
 
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_TRIPLET_COLUMN_GAME,
-    profileStorage: HIDDEN_TRIPLET_PROFILE,
+    drillGametoResume: HIDDEN_TRIPLET_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 1;
     };
@@ -662,7 +635,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
       return (row === 0 && column === 1) || (row === 1 && column === 1);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_TRIPLET",
@@ -686,10 +659,9 @@ test.describe("board HIDDEN_TRIPLET", () => {
 
 test.describe("board HIDDEN_TRIPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_TRIPLET_BOX_GAME,
-    profileStorage: HIDDEN_TRIPLET_PROFILE,
+    drillGametoResume: HIDDEN_TRIPLET_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column <= 5 && column >= 3 && row <= 2;
     };
@@ -703,7 +675,7 @@ test.describe("board HIDDEN_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_TRIPLET",
@@ -730,10 +702,9 @@ test.describe("board HIDDEN_TRIPLET", () => {
 
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_QUADRUPLET_ROW_GAME,
-    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
+    drillGametoResume: HIDDEN_QUADRUPLET_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 2;
     };
@@ -746,7 +717,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_QUADRUPLET",
@@ -761,10 +732,9 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_QUADRUPLET_COLUMN_GAME,
-    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
+    drillGametoResume: HIDDEN_QUADRUPLET_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 0;
     };
@@ -773,7 +743,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       return (row === 1 && column === 0) || (row === 2 && column === 0);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_QUADRUPLET",
@@ -800,10 +770,9 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 
 test.describe("board HIDDEN_QUADRUPLET", () => {
   test.use({
-    classicGametoResume: HIDDEN_QUADRUPLET_BOX_GAME,
-    profileStorage: HIDDEN_QUADRUPLET_PROFILE,
+    drillGametoResume: HIDDEN_QUADRUPLET_DRILL_BOX_GAME,
   });
-  test("with box group", async ({ resumeClassicGame }) => {
+  test("with box group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column < 3 && row > 2 && row < 6;
     };
@@ -812,7 +781,7 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
       return row === 3 && column === 2;
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "HIDDEN_QUADRUPLET",
@@ -836,10 +805,9 @@ test.describe("board HIDDEN_QUADRUPLET", () => {
 
 test.describe("board POINTING_PAIR", () => {
   test.use({
-    classicGametoResume: POINTING_PAIR_ROW_GAME,
-    profileStorage: POINTING_PAIR_PROFILE,
+    drillGametoResume: POINTING_PAIR_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 0 || (row <= 2 && column >= 3 && column <= 5);
     };
@@ -848,7 +816,7 @@ test.describe("board POINTING_PAIR", () => {
       return (row === 0 && column === 3) || (row === 0 && column === 5);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "POINTING_PAIR",
@@ -863,10 +831,9 @@ test.describe("board POINTING_PAIR", () => {
 
 test.describe("board POINTING_PAIR", () => {
   test.use({
-    classicGametoResume: POINTING_PAIR_COLUMN_GAME,
-    profileStorage: POINTING_PAIR_PROFILE,
+    drillGametoResume: POINTING_PAIR_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return (
         column === 4 || (row >= 3 && row <= 5 && column >= 3 && column <= 5)
@@ -877,7 +844,7 @@ test.describe("board POINTING_PAIR", () => {
       return (row === 3 && column === 4) || (row === 5 && column === 4);
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "POINTING_PAIR",
@@ -892,10 +859,9 @@ test.describe("board POINTING_PAIR", () => {
 
 test.describe("board POINTING_TRIPLET", () => {
   test.use({
-    classicGametoResume: POINTING_TRIPLET_ROW_GAME,
-    profileStorage: POINTING_TRIPLET_PROFILE,
+    drillGametoResume: POINTING_TRIPLET_DRILL_ROW_GAME,
   });
-  test("with row group", async ({ resumeClassicGame }) => {
+  test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row === 5 || (row > 2 && column > 2 && column < 6 && row < 6);
     };
@@ -908,7 +874,7 @@ test.describe("board POINTING_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "POINTING_TRIPLET",
@@ -932,10 +898,9 @@ test.describe("board POINTING_TRIPLET", () => {
 
 test.describe("board POINTING_TRIPLET", () => {
   test.use({
-    classicGametoResume: POINTING_TRIPLET_COLUMN_GAME,
-    profileStorage: POINTING_TRIPLET_PROFILE,
+    drillGametoResume: POINTING_TRIPLET_DRILL_COLUMN_GAME,
   });
-  test("with column group", async ({ resumeClassicGame }) => {
+  test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return column === 8 || (row <= 2 && column >= 6);
     };
@@ -948,7 +913,7 @@ test.describe("board POINTING_TRIPLET", () => {
       );
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "POINTING_TRIPLET",
