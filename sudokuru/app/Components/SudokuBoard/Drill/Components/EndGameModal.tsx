@@ -7,15 +7,15 @@ import { DrillGameStatistics } from "../../../../Functions/LocalDatabase";
 import { formatTime } from "../../Core/Functions/BoardFunctions";
 import { toTitle } from "../../../../Functions/Utils";
 
-export const EndGameModal = (props: DrillGameStatistics) => {
+export const EndGameModal = ({
+  statistics,
+}: {
+  statistics: DrillGameStatistics;
+}) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
-
-  console.log(props);
-
-  props = props.statistics;
 
   return (
     <ScrollView
@@ -38,22 +38,22 @@ export const EndGameModal = (props: DrillGameStatistics) => {
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
         <Statistic
           statisticName="Time Spent: "
-          statisticValue={formatTime(props.time)}
+          statisticValue={formatTime(statistics.time)}
           testID="time"
         />
         <Statistic
           statisticName="Strategy: "
-          statisticValue={toTitle(props.difficulty)}
+          statisticValue={toTitle(statistics.difficulty)}
           testID="strategy"
         />
         <Statistic
           statisticName="Mistakes Made: "
-          statisticValue={props.numWrongCellsPlayed}
+          statisticValue={statistics.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
         <Statistic
           statisticName="Hint Used: "
-          statisticValue={props.hintUsed ? "Yes" : "No"}
+          statisticValue={statistics.hintUsed ? "Yes" : "No"}
           testID="numHintsUsed"
         />
       </View>

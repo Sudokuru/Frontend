@@ -29,8 +29,7 @@ import { EndGameModal as CoreEndGameModal } from "./Core/Components/EndGameModal
 import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameModal";
 
 import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
-import { Component, JSX } from "react";
-import Drill from "../../Pages/DrillGame";
+import { JSX } from "react";
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
@@ -49,10 +48,11 @@ export interface SudokuVariantMethods {
     initializeNotes: boolean,
   ): Promise<BoardObjectProps | null>;
   handlePause(sudokuBoard: BoardObjectProps, navigation: any): void;
-  //renderEndGameModal(statistics: ClassicGameStatistics | DrillGameStatistics): JSX.Element;
-  getEndGameModal(): React.ComponentType<{
+  getEndGameModal({
+    statistics,
+  }: {
     statistics: ClassicGameStatistics | DrillGameStatistics;
-  }>;
+  }): JSX.Element;
 }
 
 // 3) Default methods for all variants
@@ -81,11 +81,8 @@ const defaultMethods: SudokuVariantMethods = {
   handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
     return coreHandlePause(sudokuBoard, navigation);
   },
-  // renderEndGameModal(statistics: ClassicGameStatistics) {
-  //   return CoreEndGameModal(statistics);
-  // },
-  getEndGameModal() {
-    return CoreEndGameModal;
+  getEndGameModal({ statistics }: { statistics: ClassicGameStatistics }) {
+    return CoreEndGameModal({ statistics });
   },
 };
 
@@ -116,11 +113,8 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
       return drillHandlePause(sudokuBoard, navigation);
     },
-    // renderEndGameModal(statistics: DrillGameStatistics) {
-    //   return DrillEndGameModal(statistics);
-    // },
-    getEndGameModal() {
-      return DrillEndGameModal;
+    getEndGameModal({ statistics }: { statistics: DrillGameStatistics }) {
+      return DrillEndGameModal({ statistics });
     },
   },
   // classic has no overrides since classic is the default

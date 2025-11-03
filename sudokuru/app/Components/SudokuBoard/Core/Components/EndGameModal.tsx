@@ -7,13 +7,15 @@ import React from "react";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
 import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
-export const EndGameModal = (props: ClassicGameStatistics) => {
+export const EndGameModal = ({
+  statistics,
+}: {
+  statistics: ClassicGameStatistics;
+}) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
   const navigation: any = useNavigation();
-
-  props = props.statistics;
 
   return (
     <ScrollView
@@ -36,31 +38,31 @@ export const EndGameModal = (props: ClassicGameStatistics) => {
       <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
         <Statistic
           statisticName="Score: "
-          statisticValue={props.score}
+          statisticValue={statistics.score}
           testID="score"
         />
         <Statistic
           statisticName="Time Spent: "
-          statisticValue={formatTime(props.time)}
+          statisticValue={formatTime(statistics.time)}
           testID="time"
         />
         <Statistic
           statisticName="Mistakes Made: "
-          statisticValue={props.numWrongCellsPlayed}
+          statisticValue={statistics.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
         <Statistic
           statisticName="Difficulty: "
-          statisticValue={props.difficulty}
+          statisticValue={statistics.difficulty}
           testID="difficulty"
         />
         <Statistic
           statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
+          statisticValue={statistics.numHintsUsed}
           testID="numHintsUsed"
         />
         <NumHintsUsedPerStrategy
-          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
+          numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
         />
       </View>
       <Button

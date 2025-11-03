@@ -17,6 +17,7 @@ import {
   GameAction,
   GameVariant,
   BoardObjectProps,
+  DrillObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
@@ -123,8 +124,9 @@ const SudokuBoard = (props: Board) => {
   // Render EndGame screen when game has ended
   if (gameOver) {
     console.log(sudokuBoard.statistics);
-    const EndGameComponent = boardMethods[props.type].getEndGameModal();
-    return <EndGameComponent statistics={sudokuBoard.statistics} />;
+    return boardMethods[props.type].getEndGameModal({
+      statistics: sudokuBoard.statistics,
+    });
     // const EndGameComponent = boardMethods[props.type].renderEndGameModal(sudokuBoard.statistics);
     // return (
     //   boardMethods[props.type].renderEndGameModal(
@@ -194,7 +196,7 @@ const SudokuBoard = (props: Board) => {
       );
     } else {
       returnedHint = getSudokuHint(
-        sudokuBoard.initialPuzzleState,
+        (sudokuBoard as DrillObjectProps).initialPuzzleState,
         strategyArray,
       );
     }
