@@ -724,11 +724,11 @@ test.describe("board POINTING_PAIR", () => {
   });
   test("with row group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row === 0 || (row <= 2 && column >= 3 && column <= 5);
+      return row === 4 || (row > 2 && row < 6 && column > 5);
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 0 && column === 3) || (row === 0 && column === 5);
+      return (row === 4 && column === 6) || (row === 4 && column === 7);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -737,9 +737,19 @@ test.describe("board POINTING_PAIR", () => {
       "POINTING_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
-      [{ contentType: "notes", content: "25689", row: 0, column: 6 }],
-      [{ contentType: "notes", content: "2589", row: 0, column: 6 }],
+      [
+        { contentType: "notes", content: "1279", row: 4, column: 1 },
+        { contentType: "notes", content: "12789", row: 4, column: 2 },
+      ],
+      [
+        { contentType: "notes", content: "1279", row: 4, column: 1 },
+        { contentType: "notes", content: "12789", row: 4, column: 2 },
+      ],
+      [
+        { contentType: "notes", content: "279", row: 4, column: 1 },
+        { contentType: "notes", content: "2789", row: 4, column: 2 },
+      ],
+      true,
     );
   });
 });
@@ -750,13 +760,11 @@ test.describe("board POINTING_PAIR", () => {
   });
   test("with column group", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return (
-        column === 4 || (row >= 3 && row <= 5 && column >= 3 && column <= 5)
-      );
+      return column === 2 || (row > 5 && column < 3);
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return (row === 3 && column === 4) || (row === 5 && column === 4);
+      return (row === 7 && column === 2) || (row === 8 && column === 2);
     };
 
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -765,9 +773,19 @@ test.describe("board POINTING_PAIR", () => {
       "POINTING_PAIR",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "89", row: 1, column: 4 }],
-      [{ contentType: "notes", content: "89", row: 1, column: 4 }],
-      [{ contentType: "notes", content: "8", row: 1, column: 4 }],
+      [
+        { contentType: "notes", content: "79", row: 2, column: 2 },
+        { contentType: "notes", content: "279", row: 5, column: 2 },
+      ],
+      [
+        { contentType: "notes", content: "79", row: 2, column: 2 },
+        { contentType: "notes", content: "279", row: 5, column: 2 },
+      ],
+      [
+        { contentType: "notes", content: "7", row: 2, column: 2 },
+        { contentType: "notes", content: "27", row: 5, column: 2 },
+      ],
+      true,
     );
   });
 });
