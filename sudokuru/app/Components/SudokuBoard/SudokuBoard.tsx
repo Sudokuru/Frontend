@@ -283,7 +283,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
       }
 
       // Set new Cell Value
-      setCellEntryValue(inputValue, currentType, currentEntry, r, c, theme);
+      setCellEntryValue(inputValue, currentType, currentEntry, r, c);
 
       newActionHistory.push({
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
@@ -386,7 +386,6 @@ const SudokuBoard = (props: SudokuBoardProps) => {
     currentEntry: number | number[],
     r: number,
     c: number,
-    theme: Theme,
   ) => {
     if (sudokuBoard.selectedCells.length === 0) {
       return;
