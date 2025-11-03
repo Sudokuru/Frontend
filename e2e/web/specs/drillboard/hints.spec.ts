@@ -23,7 +23,7 @@ import {
   OBVIOUS_QUADRUPLET_COLUMN_GAME,
   OBVIOUS_QUADRUPLET_PROFILE,
   OBVIOUS_QUADRUPLET_ROW_GAME,
-  OBVIOUS_SINGLE_GAME,
+  OBVIOUS_SINGLE_DRILL_GAME,
   OBVIOUS_TRIPLET_BOX_GAME,
   OBVIOUS_TRIPLET_COLUMN_GAME,
   OBVIOUS_TRIPLET_PROFILE,
@@ -71,60 +71,27 @@ test.describe("hint mode operates correctly", () => {
 });
 
 test.describe("board OBVIOUS_SINGLE", () => {
-  test.use({ classicGametoResume: OBVIOUS_SINGLE_GAME });
-  test("OBVIOUS_SINGLE", async ({ resumeClassicGame }) => {
+  test.use({ drillGametoResume: OBVIOUS_SINGLE_DRILL_GAME });
+  test("OBVIOUS_SINGLE", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
-      return row <= 2 && column <= 2;
+      return row > 5 && column > 5;
     };
 
     const hintSelectedColor = (row: number, column: number) => {
-      return row === 0 && column === 0;
+      return row === 8 && column === 7;
     };
 
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
 
     await sudokuBoard.hintBaseTest(
       "OBVIOUS_SINGLE",
       hintSelectedColor,
       notHighlightedColor,
-      [{ contentType: "notes", content: "1", row: 0, column: 0 }],
-      [{ contentType: "notes", content: "1", row: 0, column: 0 }],
-      [{ contentType: "value", content: "1", row: 0, column: 0 }],
+      [{ contentType: "notes", content: "9", row: 8, column: 7 }],
+      [{ contentType: "notes", content: "9", row: 8, column: 7 }],
+      [{ contentType: "value", content: "9", row: 8, column: 7 }],
+      true,
     );
-  });
-
-  test("OBVIOUS_SINGLE with simplify notes enabled", async ({
-    resumeClassicGame,
-  }) => {
-    const headerComponent = new HeaderComponent(resumeClassicGame);
-    await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeClassicGame);
-    await profilePage.featurePreviewSwitchDisabled.click();
-    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
-      ratio: 1,
-    });
-    await profilePage.initializeNotesSwitchEnabled.click();
-    await profilePage.initializeNotesSwitchDisabled.click();
-    await headerComponent.drawer.click();
-    await headerComponent.drawerPlay.click();
-    const playPage = new PlayPage(resumeClassicGame);
-    await playPage.resume.click();
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-    await sudokuBoard.solveHint();
-    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
-  });
-
-  test("OBVIOUS_SINGLE with simplify notes disabled", async ({
-    resumeClassicGame,
-  }) => {
-    const headerComponent = new HeaderComponent(resumeClassicGame);
-    await headerComponent.drawer.click();
-    await headerComponent.drawerPlay.click();
-    const playPage = new PlayPage(resumeClassicGame);
-    await playPage.resume.click();
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-    await sudokuBoard.solveHint();
-    await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
   });
 });
 

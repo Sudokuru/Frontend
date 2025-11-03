@@ -219,6 +219,7 @@ export class SudokuBoardComponent {
    * @param initialCellState This is an array containing the cell(s) content and cell(s) content type for initial cell(s) state.
    * @param stageFourCellNotes This is an array containing the cell(s) content and cell(s) content type for the target cell(s) for hint stage four.
    * @param stageFiveCellNotes This is an array containing the cell(s) content and cell(s) content type for the target cell(s) for hint stage five.
+   * @param endedGame Optional parameter to indicate if the hint will end the game upon completion. If true, the function will exit before checking post-hint states.
    */
   async hintBaseTest(
     strategy: SudokuStrategy,
@@ -242,6 +243,7 @@ export class SudokuBoardComponent {
       row: number;
       column: number;
     }[],
+    endedGame?: boolean = false,
   ) {
     await this.hint.click();
 
@@ -368,6 +370,10 @@ export class SudokuBoardComponent {
     ]);
 
     await this.hintFinish.click();
+
+    if (endedGame) {
+      return;
+    }
 
     await this.isSudokuBoardHighlightedCorrectly([
       { condition: (row, column) => true, color: NOT_HIGHLIGHTED_COLOR_RGB },
