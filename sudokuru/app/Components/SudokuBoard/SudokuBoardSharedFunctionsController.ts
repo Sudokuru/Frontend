@@ -29,7 +29,7 @@ import { EndGameModal as CoreEndGameModal } from "./Core/Components/EndGameModal
 import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameModal";
 
 import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
-import { JSX } from "react";
+import React, { JSX } from "react";
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
@@ -82,7 +82,7 @@ const defaultMethods: SudokuVariantMethods = {
     return coreHandlePause(sudokuBoard, navigation);
   },
   getEndGameModal({ statistics }: { statistics: ClassicGameStatistics }) {
-    return CoreEndGameModal({ statistics });
+    return React.createElement(CoreEndGameModal, { statistics });
   },
 };
 
@@ -114,7 +114,7 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
       return drillHandlePause(sudokuBoard, navigation);
     },
     getEndGameModal({ statistics }: { statistics: DrillGameStatistics }) {
-      return DrillEndGameModal({ statistics });
+      return React.createElement(DrillEndGameModal, { statistics });
     },
   },
   // classic has no overrides since classic is the default
