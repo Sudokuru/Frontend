@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ScrollView } from "react-native";
-import { Text, useTheme, Button } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 import {
   useFocusEffect,
   useNavigation,
@@ -13,6 +13,7 @@ import {
 import { getGame } from "../Api/Puzzles";
 import { SudokuObjectProps } from "../Functions/LocalDatabase";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
@@ -24,7 +25,7 @@ const PlayPage = () => {
 
   const titleText = windowSize.width > 500 ? "a Sudoku game" : "Sudoku";
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
@@ -71,14 +72,20 @@ const PlayPage = () => {
             <Text
               testID="playPageTitle"
               style={{
-                color: theme.colors.primary,
+                color: theme.semantic.text.primary,
                 fontSize: 50,
                 lineHeight: 50,
                 fontWeight: "bold",
               }}
             >
               Play{" "}
-              <Text style={{ color: theme.colors.onBackground }}>
+              <Text
+                style={{
+                  color: theme.useDarkTheme
+                    ? theme.semantic.text.inverse
+                    : theme.semantic.text.info,
+                }}
+              >
                 {titleText}
               </Text>
             </Text>

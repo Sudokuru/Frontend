@@ -41,6 +41,8 @@ import {
   getRemainingCellCountOfValue,
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
+import { useTheme } from "../../Contexts/ThemeContext";
+import { Theme } from "../../Styling/theme";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
@@ -63,6 +65,7 @@ export interface HintProps {
 }
 
 const SudokuBoard = (props: SudokuBoardProps) => {
+  const { theme } = useTheme();
   const [sudokuBoard, setSudokuBoard] = useState<SudokuObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
@@ -96,7 +99,7 @@ const SudokuBoard = (props: SudokuBoardProps) => {
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
-    return <ActivityIndicator animating={true} color="red" />;
+    return <ActivityIndicator animating={true} color={theme.colors.error} />;
   }
 
   // Render EndGame screen when game has ended

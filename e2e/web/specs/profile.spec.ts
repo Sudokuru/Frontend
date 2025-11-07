@@ -1,24 +1,29 @@
 import { ProfilePage } from "../page/profile.page";
 import { test } from "../fixture";
 import { expect } from "@playwright/test";
-import {
-  GOLD_COLOR_RGB,
-  PURPLE_COLOR_RGB,
-} from "../../../sudokuru/app/Styling/HighlightColors";
 import { HeaderComponent } from "../components/header.component";
 import { returnSudokuStrategyArray } from "../../../sudokuru/app/Contexts/PreferencesContext";
+import { THEME_OPTIONS } from "../../../sudokuru/app/Styling/theme";
 
 const SUDOKU_STRATEGY_ARRAY = returnSudokuStrategyArray();
 
 test.describe("profile", () => {
-  test("should toggle the theme and verify title color change", async ({
+  test("should try each theme and verify button is selected and theme is applied", async ({
     profile,
   }) => {
     const profilePage = new ProfilePage(profile);
-    const title = profile.getByText("Profile");
-    await expect(title).toHaveCSS("color", GOLD_COLOR_RGB);
-    await profilePage.themeSwitchEnabled.click();
-    await expect(title).toHaveCSS("color", PURPLE_COLOR_RGB);
+
+    // Verify default is set correctly then switch to a different
+    // theme so can test each button works in order
+    await profilePage.verifySelectedTheme(THEME_OPTIONS[0].key);
+    await profilePage.verifyThemeInStorage(null);
+    await profilePage.page.getByTestId(THEME_OPTIONS[1].key).click();
+
+    for (const theme of THEME_OPTIONS) {
+      await profilePage.page.getByTestId(theme.key).click();
+      await profilePage.verifySelectedTheme(theme.key);
+      await profilePage.verifyThemeInStorage(theme.key);
+    }
   });
 
   test("should toggle root highlight and verify all highlight switches' states", async ({

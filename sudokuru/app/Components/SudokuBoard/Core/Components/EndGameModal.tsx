@@ -6,6 +6,7 @@ import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { SudokuStrategy } from "sudokuru";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface EndGameModalProps {
   time: number;
@@ -20,6 +21,7 @@ interface EndGameModalProps {
 }
 
 const EndGameModal = (props: EndGameModalProps) => {
+  const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
@@ -36,14 +38,20 @@ const EndGameModal = (props: EndGameModalProps) => {
       <Text
         style={{
           fontSize: reSize ? reSize / 20 : 20,
-          color: "#D9A05B",
+          color: theme.semantic.text.primary,
           fontWeight: "bold",
           marginBottom: 10,
         }}
       >
         Game Results
       </Text>
-      <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
+      <View
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderRadius: 10,
+          padding: 20,
+        }}
+      >
         <Statistic
           statisticName="Score: "
           statisticValue={props.score}
@@ -76,6 +84,8 @@ const EndGameModal = (props: EndGameModalProps) => {
       <Button
         mode="contained"
         testID="StartNewGameButton"
+        textColor={theme.semantic.text.inverse}
+        labelStyle={{ fontSize: 20, fontWeight: "700" }}
         onPress={() => navigation.navigate("PlayPage")}
         style={{ marginTop: 20 }}
       >

@@ -1,9 +1,11 @@
 import React from "react";
 import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
-import { Button, Icon, MD3Theme, Text, useTheme } from "react-native-paper";
+import { Button, Icon, Text } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { Member, contributors, teamMembers } from "../Data/members";
+import { useTheme } from "../Contexts/ThemeContext";
+import { Theme } from "../Styling/theme";
 import { useIsFocused } from "@react-navigation/native";
 
 const openLink = (url: string) => {
@@ -13,7 +15,7 @@ const openLink = (url: string) => {
 function getCardArray(
   teamMembers: Member[],
   columnCount: number,
-  theme: MD3Theme,
+  theme: Theme,
 ): any[] {
   let teamCards = [];
   let subArray = [];
@@ -26,7 +28,7 @@ function getCardArray(
         style={{
           width: CARD_WIDTH,
           borderWidth: 1,
-          borderColor: theme.colors.secondary,
+          borderColor: theme.semantic.text.tertiary,
           padding: 5,
           margin: 10,
         }}
@@ -41,18 +43,27 @@ function getCardArray(
             marginBottom: "1%",
           }}
         >
-          <Icon source="github" size={30} color={theme.colors.primary} />
-          <Text variant="bodyLarge" style={{ color: theme.colors.primary }}>
+          <Icon source="github" size={30} color={theme.semantic.text.primary} />
+          <Text
+            variant="bodyLarge"
+            style={{ color: theme.semantic.text.primary }}
+          >
             {teamMembers[i].name}
           </Text>
         </TouchableOpacity>
         {teamMembers[i].activeSince && (
-          <Text variant="bodyMedium">
+          <Text
+            variant="bodyMedium"
+            style={{ color: theme.semantic.text.tertiary }}
+          >
             Active Since: {teamMembers[i].activeSince}
           </Text>
         )}
         {teamMembers[i].specialty && (
-          <Text variant="bodyMedium">
+          <Text
+            variant="bodyMedium"
+            style={{ color: theme.semantic.text.tertiary }}
+          >
             Specialty: {teamMembers[i].specialty}
           </Text>
         )}
@@ -74,11 +85,12 @@ function getCardArray(
 }
 
 const AboutUsPage = () => {
-  const theme: MD3Theme = useTheme();
+  const { theme } = useTheme();
   const windowSize = useNewWindowDimensions();
 
   let columnCount: number = calculateCardsPerRow(
     windowSize.width,
+    windowSize.height,
     teamMembers.length,
   );
 
@@ -102,8 +114,16 @@ const AboutUsPage = () => {
         About Us
       </Text>
       <View style={{ marginHorizontal: "1%" }}>
-        <Text variant="headlineSmall">Mission</Text>
-        <Text variant="bodyLarge">
+        <Text
+          variant="headlineSmall"
+          style={{ color: theme.semantic.text.tertiary }}
+        >
+          Mission
+        </Text>
+        <Text
+          variant="bodyLarge"
+          style={{ color: theme.semantic.text.tertiary }}
+        >
           {/* Note: The following text is duplicated in the README.md file */}
           Sudokuru is an open-source project focused on developing a
           world-class, cross-platform Sudoku app. We aim to provide a delightful
@@ -113,15 +133,26 @@ const AboutUsPage = () => {
           source community to easily incorporate them into their own
           Sudoku-related projects.
         </Text>
-        <Text variant="headlineSmall">History</Text>
-        <Text variant="bodyLarge">
+        <Text
+          variant="headlineSmall"
+          style={{ color: theme.semantic.text.tertiary }}
+        >
+          History
+        </Text>
+        <Text
+          variant="bodyLarge"
+          style={{ color: theme.semantic.text.tertiary }}
+        >
           Sudokuru was founded in 2022 by a group of computer science students
           at the University of Central Florida for a senior design project.
           Members of this original team have continued developing the app after
           graduation with a current goal of launching the official production
           website in early 2025 and on mobile appstores later that year.
         </Text>
-        <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+        <Text
+          variant="headlineSmall"
+          style={{ alignSelf: "center", color: theme.semantic.text.tertiary }}
+        >
           Team
         </Text>
         <View
@@ -144,7 +175,10 @@ const AboutUsPage = () => {
             </View>
           ))}
         </View>
-        <Text variant="headlineSmall" style={{ alignSelf: "center" }}>
+        <Text
+          variant="headlineSmall"
+          style={{ alignSelf: "center", color: theme.semantic.text.tertiary }}
+        >
           Contributors
         </Text>
         <View

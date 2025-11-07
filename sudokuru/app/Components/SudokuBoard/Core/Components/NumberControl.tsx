@@ -1,4 +1,3 @@
-import { useTheme } from "react-native-paper";
 import { Pressable, Text, View } from "react-native";
 import { range } from "../../SudokuBoardFunctions";
 import React from "react";
@@ -6,6 +5,7 @@ import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import { SudokuObjectProps } from "../../../../Functions/LocalDatabase";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
 
@@ -29,10 +29,9 @@ const NumberControl = (props: NumberControlProps) => {
     sudokuBoard,
   } = props;
   const cellSize = useCellSize();
-  const theme = useTheme();
+  const { theme } = useTheme();
 
-  const { darkThemeSetting, progressIndicatorSetting } =
-    React.useContext(PreferencesContext);
+  const { progressIndicatorSetting } = React.useContext(PreferencesContext);
 
   return (
     <View
@@ -50,6 +49,21 @@ const NumberControl = (props: NumberControlProps) => {
           updateEntry(number);
         };
 
+        const numberText = (
+          <Text
+            style={{
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize
+                ? cellSize * (3 / 4) + 1
+                : fallbackHeight * (3 / 4) + 1,
+              color: theme.semantic.text.info,
+            }}
+            selectable={false}
+          >
+            {number}
+          </Text>
+        );
+
         if (progressIndicatorSetting) {
           return (
             // Number Keys
@@ -61,8 +75,10 @@ const NumberControl = (props: NumberControlProps) => {
             >
               <LinearGradient
                 colors={[
-                  darkThemeSetting ? "white" : "grey",
-                  theme.colors.primaryContainer,
+                  theme.useDarkTheme
+                    ? theme.semantic.text.inverse
+                    : theme.colors.onSurface,
+                  theme.colors.primary,
                 ]}
                 locations={[
                   1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
@@ -79,18 +95,7 @@ const NumberControl = (props: NumberControlProps) => {
                     : fallbackHeight * (10 / 60),
                 }}
               >
-                <Text
-                  style={{
-                    fontFamily: "Inter_400Regular",
-                    fontSize: cellSize
-                      ? cellSize * (3 / 4) + 1
-                      : fallbackHeight * (3 / 4) + 1,
-                    color: theme.colors.onPrimaryContainer,
-                  }}
-                  selectable={false}
-                >
-                  {number}
-                </Text>
+                {numberText}
               </LinearGradient>
             </Pressable>
           );
@@ -106,25 +111,14 @@ const NumberControl = (props: NumberControlProps) => {
                   : fallbackHeight * (50 / 60),
                 height: cellSize || fallbackHeight,
                 alignItems: "center",
-                backgroundColor: theme.colors.primaryContainer,
+                backgroundColor: theme.colors.primary,
                 borderRadius: cellSize
                   ? cellSize * (10 / 60)
                   : fallbackHeight * (10 / 60),
               }}
               testID={"numberControl" + number}
             >
-              <Text
-                style={{
-                  fontFamily: "Inter_400Regular",
-                  fontSize: cellSize
-                    ? cellSize * (3 / 4) + 1
-                    : fallbackHeight * (3 / 4) + 1,
-                  color: theme.colors.onPrimaryContainer,
-                }}
-                selectable={false}
-              >
-                {number}
-              </Text>
+              {numberText}
             </Pressable>
           );
         }
