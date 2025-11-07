@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.30.2",
+    "version": "1.31.0",
     "date": "#{date}#",
     "summary": "Revamped the app theming to improve upon the look of the application, added a new dark theme, and replaced the light/dark mode toggle with three theme selection buttons in the profile page.",
     "features": [
