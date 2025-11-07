@@ -29,9 +29,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     getStoredTheme().then((stored) => {
-      if (stored && themes[stored as ThemeName]) {
-        setThemeName(stored as ThemeName);
-      }
+      setThemeName(stored);
     });
   }, []);
 
