@@ -42,12 +42,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   const theme = themes[themeName];
 
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      document.documentElement.dataset.theme = themeName;
-    }
-  }, [themeName]);
-
   const md3Theme = theme.useDarkTheme ? MD3DarkTheme : MD3LightTheme;
   const navTheme = theme.useDarkTheme
     ? NavigationDarkTheme
