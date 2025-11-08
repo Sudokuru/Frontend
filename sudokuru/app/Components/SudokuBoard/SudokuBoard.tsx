@@ -38,7 +38,6 @@ import {
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { Theme } from "../../Styling/theme";
 import {
   boardMethods,
   SudokuVariantMethods,
@@ -91,7 +90,6 @@ const SudokuBoard = (props: Board) => {
     featurePreviewSetting,
     initializeNotesSetting,
     simplifyNotesSetting,
-    darkThemeSetting,
     progressIndicatorSetting,
   } = React.useContext(PreferencesContext);
 
@@ -126,7 +124,6 @@ const SudokuBoard = (props: Board) => {
 
   // Render EndGame screen when game has ended
   if (gameOver) {
-    console.log(sudokuBoard.statistics);
     return boardMethods[props.type].getEndGameModal({
       statistics: sudokuBoard.statistics,
     });
@@ -654,7 +651,6 @@ const SudokuBoard = (props: Board) => {
         updateEntry={updateCellEntry}
         sudokuBoard={sudokuBoard}
         getRemainingCellCountOfValue={getRemainingCellCountOfValue}
-        darkThemeSetting={darkThemeSetting}
         progressIndicatorSetting={progressIndicatorSetting}
       />
     );

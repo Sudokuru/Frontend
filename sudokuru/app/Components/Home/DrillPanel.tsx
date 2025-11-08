@@ -81,7 +81,6 @@ const DrillPanel = (props: any) => {
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
     const game: BoardObjectProps[] = await getGame("drill");
-    console.log("HELLO ", game);
     if (game != null) {
       showResumeButton();
       return true;

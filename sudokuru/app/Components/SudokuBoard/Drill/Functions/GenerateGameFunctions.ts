@@ -52,8 +52,6 @@ const retrieveRandomDrillPuzzle = (PUZZLES: string[]): string => {
  * @returns A Puzzle object
  */
 export const returnDrillOfType = (strategy: DrillStrategy | "dev"): string => {
-  console.log(strategy);
-
   switch (strategy) {
     case "dev":
       return retrieveRandomDrillPuzzle(OBVIOUS_SINGLE_DRILLS);
@@ -93,7 +91,6 @@ export const returnDrillOfStrategy = (
   if (strategy === "dev") {
     strategy = "OBVIOUS_SINGLE";
   }
-  console.log("Hello, strategies ", strategy, " puzzles ", puzzles);
   return convertPuzzleToSudokuObject(puzzles, strategy);
 };
 
@@ -121,8 +118,6 @@ export const convertPuzzleToSudokuObject = (
     inNoteMode: false,
     actionHistory: [],
   };
-
-  console.log(puzzle);
 
   for (let i = 0; i < 9; i++) {
     game.puzzleState.push([]);
@@ -199,6 +194,7 @@ export const convertPuzzleToSudokuObject = (
     } catch (e) {
       // If getSudokuHint throws an exception, we've initialized
       // all possible notes and can exit the loop
+      console.log(e);
       break;
     }
   }
@@ -218,7 +214,6 @@ export const convertPuzzleToSudokuObject = (
           let notes = (
             game.puzzleSolution[removals[0]][removals[1]].entry as number[]
           ).filter((x) => !removals.slice(2).includes(x));
-          console.log("HELLO", notes);
           game.puzzleSolution[removals[0]][removals[1]] = {
             type: "note",
             entry: notes,
@@ -244,8 +239,6 @@ export const convertPuzzleToSudokuObject = (
       };
     }
   }
-
-  console.log(game);
 
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));

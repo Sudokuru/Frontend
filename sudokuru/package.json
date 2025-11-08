@@ -17,7 +17,8 @@
     "tauri:run": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
-    "expo:check": "npx expo install --check"
+    "expo:check": "npx expo install --check",
+    "tsc": "npx tsc --noEmit"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",

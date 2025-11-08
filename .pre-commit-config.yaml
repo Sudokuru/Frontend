@@ -8,3 +8,10 @@ repos:
         always_run: true
         language: system
         verbose: false
+      - id: compile
+        name: compile
+        entry: npm run tsc
+        always_run: true
+        pass_filenames: false
+        language: system
+        verbose: false

@@ -13,7 +13,7 @@ import {
   BoardObjectProps,
   ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";
-import { Board, ClassicBoard } from "../../SudokuBoard";
+import { ClassicBoard } from "../../SudokuBoard";
 import { GameDifficulty } from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
 
