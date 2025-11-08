@@ -1,9 +1,5 @@
-import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { DrillPage } from "./../page/drill.page";
 import { test } from "../fixture";
-import { expect } from "@playwright/test";
-import { getStrategies } from "../../../sudokuru/app/Api/Lessons";
-import { ProfilePage } from "../page/profile.page";
 
 test.describe("drill", () => {
   test("cards should display correct text", async ({ drill }) => {
