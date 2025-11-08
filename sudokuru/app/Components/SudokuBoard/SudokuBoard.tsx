@@ -634,15 +634,11 @@ const SudokuBoard = (props: Board) => {
       for (let i = 0; i < currentSelectedCells.length; i++) {
         // if there is at least one cell that can be updated, we enable number buttons
         if (
-          // todo areCellUpdatesDisabled is only being used once here - could probably remove this function and use existing functions
-          // todo also can probably replace isValueCorrect with existing doesCellHaveConflict function since those basically overlap
           !areCellUpdatesDisabled(
             currentSelectedCells[i],
             sudokuBoard.puzzleSolution[sudokuBoard.selectedCells[i].r][
               sudokuBoard.selectedCells[i].c
             ],
-            sudokuBoard.selectedCells[i].r,
-            sudokuBoard.selectedCells[i].c,
           )
         ) {
           enableNumberButtons = true;

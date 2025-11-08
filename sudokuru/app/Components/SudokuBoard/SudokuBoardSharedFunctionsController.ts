@@ -37,7 +37,7 @@ export interface SudokuVariantMethods {
     r: number,
     c: number,
   ): boolean;
-  isCellCorrect(sudokuBoard: BoardObjectProps, r: number, c: number): boolean;
+  // isCellCorrect(sudokuBoard: BoardObjectProps, r: number, c: number): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
@@ -60,9 +60,9 @@ const defaultMethods: SudokuVariantMethods = {
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
   },
-  isCellCorrect(sudokuBoard: ClassicObjectProps, r: number, c: number) {
-    return coreIsCellCorrect(sudokuBoard, r, c);
-  },
+  // isCellCorrect(sudokuBoard: ClassicObjectProps, r: number, c: number) {
+  //   return coreIsCellCorrect(sudokuBoard, r, c);
+  // },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
   },
@@ -92,9 +92,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
-    isCellCorrect(sudokuBoard: DrillObjectProps, r: number, c: number) {
-      return coreIsCellCorrect(sudokuBoard, r, c);
-    },
+    // isCellCorrect(sudokuBoard: DrillObjectProps, r: number, c: number) {
+    //   return coreIsCellCorrect(sudokuBoard, r, c);
+    // },
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },

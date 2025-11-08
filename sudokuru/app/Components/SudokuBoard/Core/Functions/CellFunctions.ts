@@ -43,12 +43,12 @@ export const getRemainingCellCountOfValue = (
  */
 export const areCellUpdatesDisabled = (
   cell: CellProps,
-  cellSolution: number,
-  r: number,
-  c: number,
+  cellSolution: CellProps | number,
 ) => {
   if (cell.type === "given") {
     return true;
+  } else if (typeof cellSolution === "object" && cellSolution.type === "note") {
+    return false;
   } else if (
     cell.type === "value" &&
     isValueCorrect(cellSolution, cell.entry)
