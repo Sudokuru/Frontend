@@ -200,6 +200,10 @@ const SudokuBoard = (props: Board) => {
       sudokuBoard.statistics.numHintsUsed++;
     }
 
+    if ("hintUsed" in sudokuBoard.statistics) {
+      sudokuBoard.statistics.hintUsed = true;
+    }
+
     if ("numHintsUsedPerStrategy" in sudokuBoard.statistics) {
       let incrementedStrategy = false;
       for (const [

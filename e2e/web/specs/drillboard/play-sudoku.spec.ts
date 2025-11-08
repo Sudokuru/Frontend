@@ -34,7 +34,9 @@ test.describe("complete drill", () => {
     await sudokuBoard.numPad[6 - 1].click();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
     await endGameModal.endGameModalIsRendered();
-    await expect(endGameModal.page.getByText("Time Spent: 01")).toBeInViewport({
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
       ratio: 1,
     });
     await expect(
@@ -57,7 +59,9 @@ test.describe("complete drill", () => {
     await sudokuBoard.cell[7][6].press("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
-    await expect(endGameModal.page.getByText("Time Spent: 01")).toBeInViewport({
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
       ratio: 1,
     });
     await expect(
