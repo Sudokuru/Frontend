@@ -127,12 +127,6 @@ const SudokuBoard = (props: Board) => {
     return boardMethods[props.type].getEndGameModal({
       statistics: sudokuBoard.statistics,
     });
-    // const EndGameComponent = boardMethods[props.type].renderEndGameModal(sudokuBoard.statistics);
-    // return (
-    //   boardMethods[props.type].renderEndGameModal(
-    //     sudokuBoard.statistics
-    //   )
-    // );
   }
 
   /**
