@@ -80,8 +80,6 @@ const ProfilePage = () => {
   const isFocused = useIsFocused();
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
-  console.log(drillModeSetting);
-
   return (
     <ScrollView
       contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
