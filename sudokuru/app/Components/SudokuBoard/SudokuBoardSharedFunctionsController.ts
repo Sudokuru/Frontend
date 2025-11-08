@@ -4,7 +4,6 @@ import {
   ClassicGameStatistics,
   DrillGameStatistics,
   GameVariant,
-  ClassicObjectProps,
 } from "./../../Functions/LocalDatabase";
 
 import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
@@ -15,12 +14,10 @@ import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderR
 import {
   finishSudokuGame as coreFinishGameStatistics,
   handlePause as coreHandlePause,
-  isCellCorrect as coreIsCellCorrect,
 } from "./Core/Functions/BoardFunctions";
 import {
   finishSudokuGame as drillFinishGameStatistics,
   handlePause as drillHandlePause,
-  isCellCorrect as drillIsCellCorrect,
 } from "./Drill/Functions/BoardFunctions";
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
@@ -37,7 +34,6 @@ export interface SudokuVariantMethods {
     r: number,
     c: number,
   ): boolean;
-  // isCellCorrect(sudokuBoard: BoardObjectProps, r: number, c: number): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
@@ -60,9 +56,6 @@ const defaultMethods: SudokuVariantMethods = {
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
   },
-  // isCellCorrect(sudokuBoard: ClassicObjectProps, r: number, c: number) {
-  //   return coreIsCellCorrect(sudokuBoard, r, c);
-  // },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
   },
@@ -92,9 +85,6 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
-    // isCellCorrect(sudokuBoard: DrillObjectProps, r: number, c: number) {
-    //   return coreIsCellCorrect(sudokuBoard, r, c);
-    // },
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },

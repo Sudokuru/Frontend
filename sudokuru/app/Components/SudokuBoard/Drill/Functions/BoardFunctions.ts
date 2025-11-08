@@ -17,21 +17,6 @@ export function finishSudokuGame(
   return statistics;
 }
 
-export const isCellCorrect = (
-  sudokuBoard: DrillObjectProps,
-  r: number,
-  c: number,
-): boolean => {
-  return (
-    sudokuBoard.puzzleState[r][c].type ===
-      sudokuBoard.puzzleSolution[r][c].type &&
-    isEqual(
-      sudokuBoard.puzzleState[r][c].entry,
-      sudokuBoard.puzzleSolution[r][c].entry,
-    )
-  );
-};
-
 export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
   navigation.navigate("DrillPage");
