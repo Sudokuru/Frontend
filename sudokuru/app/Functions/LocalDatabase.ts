@@ -45,17 +45,6 @@ export interface SudokuObjectProps<T extends GameVariant> {
 
 export type BoardObjectProps = DrillObjectProps | ClassicObjectProps;
 
-// export interface SudokuObjectProps {
-//   variant: GameVariant;
-//   version: number;
-//   selectedCells: CellLocation[];
-//   statistics: GameStatistics;
-//   puzzleState: CellProps[][];
-//   puzzleSolution: number[][];
-//   actionHistory: GameAction[][];
-//   inNoteMode: boolean;
-// }
-
 export interface GameAction {
   cellLocation: CellLocation;
   cell: CellProps;
