@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
 import { Text } from "react-native-paper";
 import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";

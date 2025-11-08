@@ -1,4 +1,4 @@
-import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY } from "sudokuru";
 import { OBVIOUS_SINGLE_DRILLS } from "../../../../Data/drills/obvious_single_drills";
 import { HIDDEN_SINGLE_DRILLS } from "./../../../../Data/drills/hidden_single_drills";
 import {

@@ -44,7 +44,6 @@ export const doesCellHaveConflict = (
         sudokuBoard.initialPuzzleState[r][c].entry.includes(note);
 
       if (!inSolution && !inInitial) {
-        console.log(!inSolution, !inInitial);
         foundInvalidNote = true;
         break;
       }
@@ -60,7 +59,6 @@ export const doesCellHaveConflict = (
     return foundInvalidNote;
   }
 
-  console.log("FALLBACK");
   return true;
 };
 

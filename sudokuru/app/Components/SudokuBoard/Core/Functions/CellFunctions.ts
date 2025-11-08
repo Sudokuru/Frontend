@@ -256,7 +256,7 @@ export const doesCellHaveConflict = (
   if (cell.type === "note" || cell.entry === 0) {
     return false;
   }
-  return !(
-    sudokuBoard.puzzleState[r][c].entry === sudokuBoard.puzzleSolution[r][c]
+  return (
+    sudokuBoard.puzzleState[r][c].entry !== sudokuBoard.puzzleSolution[r][c]
   );
 };

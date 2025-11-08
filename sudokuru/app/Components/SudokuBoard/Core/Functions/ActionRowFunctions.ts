@@ -1,7 +1,6 @@
 import {
   CellProps,
   BoardObjectProps,
-  ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { isValueCorrect } from "./BoardFunctions";
 import { getSelectedCells } from "./CellFunctions";

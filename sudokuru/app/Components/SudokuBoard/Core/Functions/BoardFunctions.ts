@@ -3,7 +3,6 @@ import {
   BoardObjectProps,
   CellProps,
   ClassicGameStatistics,
-  ClassicObjectProps,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
 import { calculateGameScore } from "./DifficultyFunctions";
