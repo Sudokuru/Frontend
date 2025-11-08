@@ -27,7 +27,7 @@ export const contributors: Member[] = [
   },
   {
     name: "Arthur",
-    github: "https://github.com/salmoncore",
+    github: "https://github.com/fieldswork",
   },
   {
     name: "Dahlia",

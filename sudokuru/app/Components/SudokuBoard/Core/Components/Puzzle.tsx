@@ -6,6 +6,8 @@ import {
 } from "../../../../Functions/LocalDatabase";
 import { HintObjectProps } from "../../SudokuBoard";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
+import { Theme } from "../../../../Styling/theme";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface PuzzleProps {
   RenderCell: (
@@ -15,6 +17,7 @@ interface PuzzleProps {
     r: number,
     c: number,
     boardMethods: SudokuVariantMethods,
+    theme: Theme,
   ) => JSX.Element | undefined;
   sudokuBoard: BoardObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
@@ -23,6 +26,7 @@ interface PuzzleProps {
 }
 
 const Puzzle = (props: PuzzleProps) => {
+  const { theme } = useTheme();
   const {
     RenderCell,
     sudokuBoard,
@@ -43,6 +47,7 @@ const Puzzle = (props: PuzzleProps) => {
           r,
           c,
           boardMethods,
+          theme,
         ),
       );
     }

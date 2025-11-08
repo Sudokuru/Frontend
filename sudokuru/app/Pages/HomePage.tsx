@@ -15,6 +15,7 @@ import {
 } from "../Functions/WindowDimensions";
 import NavigationButton from "../Components/Home/NavigationButton";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { useTheme } from "../Contexts/ThemeContext";
 import { useIsFocused } from "@react-navigation/native";
 import { Text } from "react-native-paper";
 
@@ -22,6 +23,8 @@ import { Text } from "react-native-paper";
 // https://github.com/necolas/react-native-web/issues/1708
 
 const HomePage = () => {
+  const { theme } = useTheme();
+
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
@@ -31,6 +34,12 @@ const HomePage = () => {
   const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
   const START_DRILLS_LOGO = require("../../.assets/startDrillsLogo.png");
+
+  // To convert logos with imagemagick 6 from white to light blue:
+  // convert sudokuru/.assets/startLessonsLogo.png -channel RGB -fill "#06A2C7" -colorize 100 +channel sudokuru/.assets/lightBlueStartLessonsLogo.png
+  const DARK_BLUE_PLAY_SUDOKU_LOGO = require("../../.assets/lightBluePlaySudokuLogo.png");
+  const DARK_BLUE_START_LESSONS_LOGO = require("../../.assets/lightBlueStartLessonsLogo.png");
+  const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/lightBlueStartDrillsLogo.png");
 
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -67,19 +76,29 @@ const HomePage = () => {
         }}
       >
         <NavigationButton
-          image={START_LESSONS_LOGO}
+          image={
+            theme.useDarkTheme
+              ? START_LESSONS_LOGO
+              : DARK_BLUE_START_LESSONS_LOGO
+          }
           navigationPage="LearnPage"
           testID="HomeLearnButton"
         />
         {featurePreviewSetting && drillModeSetting && (
           <NavigationButton
-            image={START_DRILLS_LOGO}
+            image={
+              theme.useDarkTheme
+                ? START_DRILLS_LOGO
+                : DARK_BLUE_START_DRILLS_LOGO
+            }
             navigationPage="DrillPage"
             testID="HomeDrillButton"
           />
         )}
         <NavigationButton
-          image={PLAY_SUDOKU_LOGO}
+          image={
+            theme.useDarkTheme ? PLAY_SUDOKU_LOGO : DARK_BLUE_PLAY_SUDOKU_LOGO
+          }
           navigationPage="PlayPage"
           testID="HomePlayButton"
         />

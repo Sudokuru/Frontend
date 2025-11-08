@@ -10,6 +10,7 @@ import {
 } from "./Cards";
 import React from "react";
 import { Card, Text } from "react-native-paper";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 let difficulties: string[] = [
   "Novice",
@@ -78,6 +79,8 @@ interface DifficultyPanelProps {
 }
 
 const DifficultyPanel = (props: DifficultyPanelProps) => {
+  const { theme } = useTheme();
+
   let difficultyButtonArray = [];
   let subArray = [];
 
@@ -89,7 +92,11 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
     rowCount;
   do {
     shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(props.width, difficulties.length);
+    columnCount = calculateCardsPerRow(
+      props.width,
+      props.height,
+      difficulties.length,
+    );
     rowCount = getRowCount(difficulties.length, columnCount);
   } while (
     getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
@@ -153,8 +160,21 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
             });
           }}
         >
-          <Card mode="outlined">
-            <Text variant="headlineMedium" style={{ alignSelf: "center" }}>
+          <Card
+            mode="outlined"
+            theme={{
+              colors: {
+                surface: theme.colors.surfaceAlt,
+              },
+            }}
+          >
+            <Text
+              variant="headlineMedium"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.inverse,
+              }}
+            >
               {difficulty}
             </Text>
             {shrinkage < 0.6 ? (

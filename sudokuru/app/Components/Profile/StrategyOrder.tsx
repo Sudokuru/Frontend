@@ -7,6 +7,7 @@ import {
   PreferencesContext,
   returnSudokuStrategyArray,
 } from "../../Contexts/PreferencesContext";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 /**
  * This is a component for the user to select what order hints for strategies should be given in
@@ -16,6 +17,8 @@ const StrategyOrder = () => {
     React.useContext(PreferencesContext);
 
   const [selectedElement, setSelectedElement] = React.useState(-1);
+
+  const { theme } = useTheme();
 
   // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
   // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
@@ -35,9 +38,9 @@ const StrategyOrder = () => {
     selected: boolean,
     bullet = "•",
   ) => {
-    let borderColor = "grey";
+    let borderColor = theme.colors.onSurface;
     if (selected) {
-      borderColor = "#D9A05B";
+      borderColor = theme.semantic.text.primary;
     }
 
     const updateSelectedElement = (order: number) => {
@@ -62,10 +65,22 @@ const StrategyOrder = () => {
         key={key}
         onPress={() => setSelectedElement(updateSelectedElement(order))}
       >
-        <Text style={{ fontSize: 14, color: "#025E73", minWidth: 20 }}>
+        <Text
+          style={{
+            fontSize: 14,
+            color: theme.semantic.text.quaternary,
+            minWidth: 20,
+          }}
+        >
           {bullet}
         </Text>
-        <Text style={{ fontSize: 14, paddingLeft: 5, color: "#025E73" }}>
+        <Text
+          style={{
+            fontSize: 14,
+            paddingLeft: 5,
+            color: theme.semantic.text.quaternary,
+          }}
+        >
           {point}
         </Text>
       </TouchableOpacity>
@@ -141,9 +156,9 @@ const StrategyOrder = () => {
   const incrementButtonColor = (index: number, button: "up" | "down") => {
     const disabled = isIncrementButtonDisabled(index, button);
     if (disabled) {
-      return "grey";
+      return theme.colors.onSurface;
     } else {
-      return "#025E73";
+      return theme.semantic.text.quaternary;
     }
   };
 
@@ -167,14 +182,20 @@ const StrategyOrder = () => {
 
   return (
     <>
-      <Text style={{ color: "#025E73", fontSize: 25, alignSelf: "center" }}>
+      <Text
+        style={{
+          color: theme.semantic.text.quaternary,
+          fontSize: 25,
+          alignSelf: "center",
+        }}
+      >
         Strategy Hint Order
       </Text>
       <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
         <IconButton
           icon="arrow-up"
           iconColor={incrementButtonColor(selectedElement, "up")}
-          theme={{ colors: { onSurfaceDisabled: "grey" } }}
+          theme={{ colors: { onSurfaceDisabled: theme.colors.onSurface } }}
           testID={"HintStrategyMenuUp"}
           size={20}
           style={{
@@ -187,24 +208,24 @@ const StrategyOrder = () => {
         <View style={{ flexDirection: "column", alignItems: "center" }}>
           <IconButton
             icon="refresh"
-            iconColor="#025E73"
+            iconColor={theme.semantic.text.quaternary}
             testID={"HintStrategyMenuReset"}
             size={20}
             style={{
               borderWidth: 2,
-              borderColor: "#025E73",
+              borderColor: theme.semantic.text.quaternary,
             }}
             // need a deep copy of SUDOKU_STRATEGY_ARRAY otherwise it becomes mutated
             onPress={() => {
               updateStrategyHintOrder(returnSudokuStrategyArray());
             }}
           />
-          <Text style={{ color: "#025E73" }}>RESET</Text>
+          <Text style={{ color: theme.semantic.text.quaternary }}>RESET</Text>
         </View>
         <IconButton
           icon="arrow-down"
           iconColor={incrementButtonColor(selectedElement, "down")}
-          theme={{ colors: { onSurfaceDisabled: "grey" } }}
+          theme={{ colors: { onSurfaceDisabled: theme.colors.onSurface } }}
           testID={"HintStrategyMenuDown"}
           size={20}
           style={{

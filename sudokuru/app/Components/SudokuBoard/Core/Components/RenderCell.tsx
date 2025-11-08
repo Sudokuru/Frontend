@@ -13,6 +13,7 @@ import { HintObjectProps } from "../../SudokuBoard";
 import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { toggleSelectCell } from "../Functions/CellFunctions";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
+import { Theme } from "../../../../Styling/theme";
 
 const RenderCell = (
   sudokuBoard: BoardObjectProps,
@@ -21,6 +22,7 @@ const RenderCell = (
   r: number,
   c: number,
   boardMethods: SudokuVariantMethods,
+  theme: Theme,
 ) => {
   const cell = sudokuBoard.puzzleState[r][c];
   const cellBackgroundColor = useCellBackgroundColor(
@@ -29,9 +31,10 @@ const RenderCell = (
     r,
     c,
     boardMethods.doesCellHaveConflict,
+    theme,
   );
   const disable: boolean = isBoardDisabled(sudokuHint);
-  const noteColor: string[] = getCellNotesColor(sudokuHint, r, c);
+  const noteColor: string[] = getCellNotesColor(sudokuHint, r, c, theme);
   const backgroundNotesColor: string[] =
     getCellBackgroundNotesColor(cellBackgroundColor);
 

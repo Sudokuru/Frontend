@@ -1,8 +1,8 @@
 import { useCellSize } from "../Functions/BoardFunctions";
-import { useTheme } from "react-native-paper";
 import { Platform, Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface ActionRowProps {
   isEraseButtonDisabled: boolean;
@@ -27,7 +27,10 @@ const ActionRow = (props: ActionRowProps) => {
     boardHasConflict,
   } = props;
   const cellSize = useCellSize();
-  const theme = useTheme();
+  const { theme } = useTheme();
+  const iconColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
 
   const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   let fallbackHeight = 30;
@@ -52,7 +55,7 @@ const ActionRow = (props: ActionRowProps) => {
         testID={"undoButton"}
       >
         <MaterialCommunityIcons
-          color={theme.colors.onBackground}
+          color={iconColor}
           name="undo"
           size={cellSize / sizeConst}
         />
@@ -64,7 +67,7 @@ const ActionRow = (props: ActionRowProps) => {
         testID={"toggleNoteModeButton"}
       >
         <MaterialCommunityIcons
-          color={theme.colors.onBackground}
+          color={iconColor}
           name={noteIcon}
           size={cellSize / sizeConst}
         />
@@ -77,7 +80,7 @@ const ActionRow = (props: ActionRowProps) => {
         testID={"eraseButton"}
       >
         <MaterialCommunityIcons
-          color={theme.colors.onBackground}
+          color={iconColor}
           name="eraser"
           size={cellSize / sizeConst}
         />
@@ -88,7 +91,7 @@ const ActionRow = (props: ActionRowProps) => {
         onPress={getHint}
       >
         <MaterialCommunityIcons
-          color={theme.colors.onBackground}
+          color={iconColor}
           name="help"
           size={cellSize / sizeConst}
         />

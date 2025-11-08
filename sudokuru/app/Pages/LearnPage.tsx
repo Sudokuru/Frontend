@@ -1,16 +1,17 @@
 import React, { useCallback, useContext, useState } from "react";
 import { View, ScrollView } from "react-native";
-import { Text, useTheme, ActivityIndicator } from "react-native-paper";
+import { Text, ActivityIndicator } from "react-native-paper";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const LearnPage = () => {
   const windowSize = useNewWindowDimensions();
 
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   const { updateLearnedLessons, learnedLessons } =
     useContext(PreferencesContext);
@@ -57,21 +58,30 @@ const LearnPage = () => {
           >
             <Text
               style={{
-                color: theme.colors.primary,
+                color: theme.semantic.text.primary,
                 fontSize: 50,
                 lineHeight: 50,
                 fontWeight: "bold",
               }}
             >
               Learn{" "}
-              <Text style={{ color: theme.colors.onBackground }}>
+              <Text
+                style={{
+                  color: theme.useDarkTheme
+                    ? theme.semantic.text.inverse
+                    : theme.semantic.text.info,
+                }}
+              >
                 new strategies
               </Text>
             </Text>
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
             {areLessonsLoaded ? (
-              <LessonPanel width={windowSize.width} />
+              <LessonPanel
+                width={windowSize.width}
+                height={windowSize.height}
+              />
             ) : (
               <ActivityIndicator
                 animating={true}

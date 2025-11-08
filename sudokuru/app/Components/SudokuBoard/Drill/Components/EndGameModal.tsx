@@ -6,12 +6,14 @@ import React from "react";
 import { DrillGameStatistics } from "../../../../Functions/LocalDatabase";
 import { formatTime } from "../../Core/Functions/BoardFunctions";
 import { toTitle } from "../../../../Functions/Utils";
+import { useTheme } from "../../../../Contexts/ThemeContext";
 
 export const EndGameModal = ({
   statistics,
 }: {
   statistics: DrillGameStatistics;
 }) => {
+  const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
 
@@ -28,14 +30,20 @@ export const EndGameModal = ({
       <Text
         style={{
           fontSize: reSize ? reSize / 20 : 20,
-          color: "#D9A05B",
+          color: theme.semantic.text.primary,
           fontWeight: "bold",
           marginBottom: 10,
         }}
       >
         Game Results
       </Text>
-      <View style={{ backgroundColor: "#fff", borderRadius: 10, padding: 20 }}>
+      <View
+        style={{
+          backgroundColor: theme.colors.surface,
+          borderRadius: 10,
+          padding: 20,
+        }}
+      >
         <Statistic
           statisticName="Time Spent: "
           statisticValue={formatTime(statistics.time)}
@@ -60,6 +68,7 @@ export const EndGameModal = ({
       <Button
         mode="contained"
         testID="StartNewDrillGame"
+        textColor={theme.semantic.text.inverse}
         onPress={() => navigation.navigate("DrillPage")}
         style={{ marginTop: 20 }}
       >

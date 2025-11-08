@@ -1,9 +1,10 @@
 import React from "react";
 import { Pressable, Image, ImageURISource } from "react-native";
-import { Surface, useTheme } from "react-native-paper";
+import { Surface } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useNewWindowDimensions } from "../../Functions/WindowDimensions";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 interface NavigationButtonProps {
   navigationPage: string;
@@ -15,7 +16,7 @@ interface NavigationButtonProps {
 
 const NavigationButton = (props: NavigationButtonProps) => {
   const minWindowSize = useNewWindowDimensions();
-  const theme = useTheme();
+  const { theme } = useTheme();
   const navigation: any = useNavigation();
 
   const { updateCurrentPage } = React.useContext(PreferencesContext);
@@ -39,9 +40,7 @@ const NavigationButton = (props: NavigationButtonProps) => {
             style={{
               width: WIDTH,
               height: HEIGHT,
-              borderColor: hovered
-                ? theme.colors.outline
-                : theme.colors.onSurface,
+              borderColor: hovered ? theme.colors.border : theme.colors.surface,
               borderWidth: hovered ? 3 : 2,
             }}
             testID={props.testID}

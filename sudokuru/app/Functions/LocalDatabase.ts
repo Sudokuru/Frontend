@@ -1,6 +1,7 @@
 import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
+import { ThemeName, ThemeNames } from "../Styling/theme";
 
 export interface InputPuzzle {
   p: string; // initial puzzle string
@@ -211,9 +212,10 @@ export const SudokuBoardDrillSchema = z.object({
 export const SudokuBoardActiveGameSchema = z.array(SudokuBoardClassicSchema);
 export const SudokuBoardDrillGameSchema = z.array(SudokuBoardDrillSchema);
 
+export const ThemeSchema = z.enum(ThemeNames as [ThemeName, ...ThemeName[]]);
+
 export const ProfileSchema = z.object({
   version: z.literal(1),
-  theme: z.boolean(),
   highlightBox: z.boolean(),
   highlightColumn: z.boolean(),
   highlightRow: z.boolean(),

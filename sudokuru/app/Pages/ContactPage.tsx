@@ -6,7 +6,6 @@ import {
   SegmentedButtons,
   Text,
   TextInput,
-  useTheme,
 } from "react-native-paper";
 import {
   CARD_IMAGE_HEIGHT,
@@ -15,9 +14,10 @@ import {
 } from "../Components/Home/Cards";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
+import { useTheme } from "../Contexts/ThemeContext";
 
 const ContactPage = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const navigation: any = useNavigation();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const size = useWindowDimensions();
@@ -102,7 +102,7 @@ const ContactPage = () => {
       <View style={{ alignItems: "center", alignSelf: "center" }}>
         <Text
           style={{
-            color: theme.colors.primary,
+            color: theme.semantic.text.primary,
             fontSize: 50,
             lineHeight: 50,
             fontWeight: "bold",
@@ -118,9 +118,18 @@ const ContactPage = () => {
           paddingVertical: CARD_PADDING / 2,
         }}
       >
-        <Card mode="outlined">
+        <Card
+          mode="outlined"
+          style={{
+            backgroundColor: theme.colors.surfaceAlt,
+            borderColor: theme.colors.primary,
+          }}
+        >
           <View style={{ flexDirection: "column", padding: CARD_PADDING }}>
-            <Text variant="headlineSmall">
+            <Text
+              variant="headlineSmall"
+              style={{ color: theme.semantic.text.inverse }}
+            >
               Why are you contacting us today?
             </Text>
             <SegmentedButtons
@@ -147,6 +156,7 @@ const ContactPage = () => {
                 });
               }}
               style={{ width: "100%", paddingVertical: CARD_PADDING }}
+              theme={{ colors: { onSurface: theme.semantic.text.inverse } }}
               buttons={[
                 {
                   value: "feature",
@@ -165,8 +175,11 @@ const ContactPage = () => {
               label={contactPage.label}
               value={contactPage.text}
               placeholder={contactPage.placeholder}
-              style={{ backgroundColor: "white", height: CARD_IMAGE_HEIGHT }}
-              textColor="black"
+              style={{
+                backgroundColor: theme.semantic.text.inverse,
+                height: CARD_IMAGE_HEIGHT,
+              }}
+              textColor={theme.semantic.text.info}
               multiline={true}
               onChangeText={(text) => {
                 let disableButton: boolean = true;
@@ -199,9 +212,17 @@ const ContactPage = () => {
               }}
               testID={"SubmitFeedbackButton"}
             >
-              <Text variant="headlineSmall">{contactPage.buttonText}</Text>
+              <Text
+                variant="headlineSmall"
+                style={{ color: theme.semantic.text.inverse }}
+              >
+                {contactPage.buttonText}
+              </Text>
             </Button>
-            <Text variant="titleMedium">
+            <Text
+              variant="titleMedium"
+              style={{ color: theme.semantic.text.inverse }}
+            >
               *Please help us respect your privacy by not including any
               personally identifiable information in your feedback.
             </Text>
@@ -223,7 +244,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.9,
@@ -235,15 +256,22 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Thank You!
             </Text>
             <Text
               variant="bodyLarge"
-              style={{ alignSelf: "center", textAlign: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{
+                alignSelf: "center",
+                textAlign: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Your feedback has been submitted.{"\n"}
               We appreciate the time you took to help us improve our app.{"\n"}
@@ -253,7 +281,7 @@ const ContactPage = () => {
               onPress={closeThankYouModal}
               labelStyle={{
                 fontSize: 20,
-                color: theme.colors.surface,
+                color: theme.semantic.text.quaternary,
                 fontWeight: "bold",
               }}
               testID="confirmSubmitButton"
@@ -278,7 +306,7 @@ const ContactPage = () => {
         >
           <View
             style={{
-              backgroundColor: theme.colors.onSurface,
+              backgroundColor: theme.colors.surface,
               alignSelf: "center",
               width: CARD_WIDTH * 1.08,
               height: CARD_IMAGE_HEIGHT * 0.7,
@@ -290,15 +318,21 @@ const ContactPage = () => {
           >
             <Text
               variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               Error
             </Text>
             <Text
               variant="bodyLarge"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: theme.colors.onPrimary } }}
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.quaternary } }}
             >
               There was an error submitting your feedback.{"\n"}
               Please try again later.
@@ -307,7 +341,7 @@ const ContactPage = () => {
               onPress={closeThankYouErrorModal}
               labelStyle={{
                 fontSize: 20,
-                color: theme.colors.surface,
+                color: theme.semantic.text.quaternary,
                 fontWeight: "bold",
               }}
               testID="confirmErrorButton"

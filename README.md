@@ -121,6 +121,7 @@
   - SudokuPage.tsx lets users play Sudoku!
     - <img src="docs/PageScreenshots/Sudoku.png" alt="Sudoku Screenshot" width=400>
 - 🎨 Styling/ contains code for theme and highlighting colors
+    - All application colors are defined in `sudokuru/app/Styling/theme.ts`
 
 </details>
 

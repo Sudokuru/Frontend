@@ -37,6 +37,8 @@ import {
   getRemainingCellCountOfValue,
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
+import { useTheme } from "../../Contexts/ThemeContext";
+import { Theme } from "../../Styling/theme";
 import {
   boardMethods,
   SudokuVariantMethods,
@@ -77,6 +79,7 @@ export interface HintProps {
 }
 
 const SudokuBoard = (props: Board) => {
+  const { theme } = useTheme();
   const [sudokuBoard, setSudokuBoard] = useState<BoardObjectProps>();
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
@@ -108,6 +111,7 @@ const SudokuBoard = (props: Board) => {
       if (game == null) {
         return;
       }
+      saveGame(game);
       setSudokuBoard(game);
     }
 
@@ -117,7 +121,7 @@ const SudokuBoard = (props: Board) => {
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
-    return <ActivityIndicator animating={true} color="red" />;
+    return <ActivityIndicator animating={true} color={theme.colors.error} />;
   }
 
   // Render EndGame screen when game has ended

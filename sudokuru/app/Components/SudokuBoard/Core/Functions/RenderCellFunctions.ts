@@ -23,6 +23,7 @@ import {
   generateBoxIndex,
   getSelectedCells,
 } from "./CellFunctions";
+import { Theme } from "../../../../Styling/theme";
 
 /**
  * This function returns an array of 9 strings representing the colors of the
@@ -39,8 +40,9 @@ export const getCellNotesColor = (
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
+  theme: Theme,
 ) => {
-  const notesToReturn = Array(9).fill("black");
+  const notesToReturn = new Array(9).fill(theme.semantic.text.info);
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
     const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
@@ -48,7 +50,7 @@ export const getCellNotesColor = (
       if (notes[0] === r && notes[1] === c) {
         notes.splice(0, 2);
         for (const note of notes) {
-          notesToReturn[note - 1] = "red";
+          notesToReturn[note - 1] = theme.colors.error;
         }
       }
     }
@@ -57,7 +59,7 @@ export const getCellNotesColor = (
 };
 
 export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
-  return Array(9).fill(cellBackgroundColor);
+  return new Array(9).fill(cellBackgroundColor);
 };
 
 /**
@@ -84,6 +86,7 @@ export const useCellBackgroundColor = (
     r: number,
     c: number,
   ) => boolean,
+  theme: Theme,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);
@@ -108,7 +111,7 @@ export const useCellBackgroundColor = (
   } else if (peer) {
     cellBackgroundColor = PEER_SELECTED_COLOR;
   } else {
-    cellBackgroundColor = "white";
+    cellBackgroundColor = theme.semantic.text.inverse;
   }
 
   if (sudokuHint) {

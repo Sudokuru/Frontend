@@ -4,7 +4,6 @@ import { returnSudokuStrategyArray } from "../Contexts/PreferencesContext";
 import { ProfileSchema } from "../Functions/LocalDatabase";
 
 type profileValue =
-  | "theme"
   | "highlightBox"
   | "highlightColumn"
   | "highlightIdenticalValues"
@@ -24,7 +23,6 @@ export const getProfile = async (): Promise<Profile> => {
 
   const defaultProfileValues: Profile = {
     version: 1,
-    theme: true,
     highlightBox: true,
     highlightColumn: true,
     highlightRow: true,
@@ -64,9 +62,6 @@ export const setProfileValue = async (
 ) => {
   let value: Profile = await getProfile();
   switch (profileValue) {
-    case "theme":
-      value.theme = !value.theme;
-      break;
     case "highlightBox":
       value.highlightBox = !value.highlightBox;
       break;

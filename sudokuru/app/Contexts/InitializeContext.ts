@@ -1,14 +1,14 @@
 import React from "react";
-import {
-  CombinedDarkTheme,
-  CombinedDefaultTheme,
-} from "../Styling/ThemeColors";
 import { getProfile, setProfileValue } from "../Api/Profile";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { Profile } from "../Api/Puzzle.Types";
 
+// Example commit containing change to add context everywhere it needs to be:
+// https://github.com/Sudokuru/Frontend/commit/0e6470735ab4c75a21e2fa61878f207b08bd3995
+// Note: some stuff has moved e.g. from ProfilePage.tsx to ProfilePanel.tsx
+// Theme is now handled in separate ThemeProvider via ThemeContext.tsx
+
 const InitializeContext = () => {
-  const [darkThemeSetting, setDarkThemeSetting] = React.useState(true);
   const [currentPage, setCurrentPage] = React.useState("Home");
   const [learnedLessons, setLearnedLessons] = React.useState(["NONE"]);
   const [highlightIdenticalValuesSetting, setHighlightIdenticalValuesSetting] =
@@ -37,7 +37,6 @@ const InitializeContext = () => {
   // set initial values of theme
   React.useEffect(() => {
     getProfile().then((data: Profile) => {
-      setDarkThemeSetting(data.theme);
       setHighlightIdenticalValuesSetting(data.highlightIdenticalValues);
       setHighlightBoxSetting(data.highlightBox);
       setHighlightRowSetting(data.highlightRow);
@@ -50,13 +49,6 @@ const InitializeContext = () => {
       setSimplifyNotesSetting(data.simplifyNotes);
     });
   }, []);
-
-  const theme = darkThemeSetting ? CombinedDarkTheme : CombinedDefaultTheme;
-
-  const toggleTheme = React.useCallback(() => {
-    setProfileValue("theme");
-    return setDarkThemeSetting(!darkThemeSetting);
-  }, [darkThemeSetting]);
 
   const updateCurrentPage = React.useCallback(
     (props: React.SetStateAction<string>) => {
@@ -130,8 +122,6 @@ const InitializeContext = () => {
 
   const preferences = React.useMemo(
     () => ({
-      toggleTheme,
-      darkThemeSetting,
       updateCurrentPage,
       currentPage,
       updateLearnedLessons,
@@ -158,8 +148,6 @@ const InitializeContext = () => {
       strategyHintOrderSetting,
     }),
     [
-      toggleTheme,
-      darkThemeSetting,
       updateCurrentPage,
       currentPage,
       updateLearnedLessons,
@@ -188,7 +176,6 @@ const InitializeContext = () => {
   );
 
   return {
-    theme,
     preferences,
   };
 };

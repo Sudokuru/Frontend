@@ -56,7 +56,6 @@ export interface Statistics {
 
 export interface Profile {
   version: number;
-  theme: boolean;
   highlightIdenticalValues: boolean;
   highlightBox: boolean;
   highlightRow: boolean;
