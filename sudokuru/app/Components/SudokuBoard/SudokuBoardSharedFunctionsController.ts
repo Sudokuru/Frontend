@@ -4,6 +4,8 @@ import {
   ClassicGameStatistics,
   DrillGameStatistics,
   GameVariant,
+  CellProps,
+  ClassicObjectProps,
 } from "./../../Functions/LocalDatabase";
 
 import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
@@ -18,6 +20,7 @@ import {
 import {
   finishSudokuGame as drillFinishGameStatistics,
   handlePause as drillHandlePause,
+  getInitialPuzzleState as drillGetInitialPuzzleState,
 } from "./Drill/Functions/BoardFunctions";
 import { generateGame as coreGenerateGame } from "./Core/Functions/GenerateGameFunctions";
 import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGameFunctions";
@@ -49,6 +52,9 @@ export interface SudokuVariantMethods {
   }: {
     statistics: ClassicGameStatistics | DrillGameStatistics;
   }): JSX.Element;
+  hasResetActionButton(): boolean;
+  hasEraseActionButton(): boolean;
+  getInitialPuzzleState(sudokuBoard: BoardObjectProps): CellProps[][];
 }
 
 // 3) Default methods for all variants
@@ -76,6 +82,18 @@ const defaultMethods: SudokuVariantMethods = {
   },
   getEndGameModal({ statistics }: { statistics: ClassicGameStatistics }) {
     return React.createElement(CoreEndGameModal, { statistics });
+  },
+  hasResetActionButton(): boolean {
+    return false;
+  },
+  // todo implement for classic - right now just returns empty array
+  getInitialPuzzleState(sudokuBoard: ClassicObjectProps) {
+    return Array.from({ length: 9 }, () =>
+      Array.from({ length: 9 }, () => ({}) as CellProps),
+    );
+  },
+  hasEraseActionButton(): boolean {
+    return true;
   },
 };
 
@@ -105,6 +123,15 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     },
     getEndGameModal({ statistics }: { statistics: DrillGameStatistics }) {
       return React.createElement(DrillEndGameModal, { statistics });
+    },
+    hasResetActionButton(): boolean {
+      return true;
+    },
+    getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
+      return drillGetInitialPuzzleState(sudokuBoard);
+    },
+    hasEraseActionButton(): boolean {
+      return false;
     },
   },
   // classic has no overrides since classic is the default

@@ -155,6 +155,17 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
+  const reset = () => {
+    if (boardMethods[props.type].hasResetActionButton() === true) {
+      setSudokuBoard({
+        ...sudokuBoard,
+        actionHistory: [],
+        puzzleState:
+          boardMethods[props.type].getInitialPuzzleState(sudokuBoard),
+      });
+    }
+  };
+
   /**
    * Provides a hint for the current sudoku puzzle state by determining the next possible move
    * based on the specified strategy order. The hint is generated using the current puzzle state,
@@ -675,17 +686,22 @@ const SudokuBoard = (props: Board) => {
     );
     const eraseButtonDisabled = isEraseButtonDisabled(sudokuBoard);
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
+    const isResetButtonDisabled = sudokuBoard.actionHistory.length === 0;
 
     return (
       <ActionRow
         isEraseButtonDisabled={eraseButtonDisabled}
         isUndoButtonDisabled={isUndoButtonDisabled}
+        isResetButtonDisabled={isResetButtonDisabled}
         inNoteMode={inNoteMode}
         undo={undo}
         toggleNoteMode={toggleNoteMode}
         eraseSelected={eraseSelected}
+        reset={reset}
         getHint={getHint}
         boardHasConflict={boardHasConflict}
+        hasResetButton={boardMethods[props.type].hasResetActionButton()}
+        hasEraseButton={boardMethods[props.type].hasEraseActionButton()}
       />
     );
   };

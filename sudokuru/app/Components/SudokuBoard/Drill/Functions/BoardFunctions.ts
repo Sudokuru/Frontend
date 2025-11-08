@@ -3,6 +3,7 @@ import { removeData } from "../../../../Functions/AsyncStorage";
 import {
   BoardObjectProps,
   DrillGameStatistics,
+  DrillObjectProps,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
 
@@ -18,4 +19,8 @@ export function finishSudokuGame(
 export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
   navigation.navigate("DrillPage");
+}
+
+export function getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
+  return JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState));
 }
