@@ -1,9 +1,7 @@
 import { SudokuBoardComponent } from "./../../components/sudoku-board.component";
 import { test } from "../../fixture";
-import { PlayPage } from "../../page/play.page";
 import {
   NEW_EMPTY_GAME,
-  OBVIOUS_SINGLE_GAME,
   POINTING_PAIR_CORRECT_DRILL_GAME,
   PROGRESS_INDICATOR_DISABLED_PROFILE,
 } from "../../data";
