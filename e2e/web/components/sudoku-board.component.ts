@@ -19,6 +19,7 @@ export class SudokuBoardComponent {
   readonly timer: Locator;
   readonly pause: Locator;
   readonly undo: Locator;
+  readonly reset: Locator;
   readonly note: Locator;
   readonly erase: Locator;
   readonly hint: Locator;
@@ -46,6 +47,7 @@ export class SudokuBoardComponent {
     this.timer = page.getByText("Time: ");
     this.pause = page.getByTestId("PauseButton");
     this.undo = page.getByTestId("undoButton");
+    this.reset = page.getByTestId("resetButton");
     this.note = page.getByTestId("toggleNoteModeButton");
     this.erase = page.getByTestId("eraseButton");
     this.hint = page.getByTestId("hintButton");

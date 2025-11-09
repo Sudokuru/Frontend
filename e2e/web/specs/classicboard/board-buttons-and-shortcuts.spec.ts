@@ -600,6 +600,22 @@ test.describe("erase", () => {
   });
 });
 
+test.describe("reset", () => {
+  test("reset button should not exist", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await expect(sudokuBoard.reset).not.toBeInViewport({ ratio: 1 });
+  });
+
+  test("reset hotkey should not work", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+    await sudokuBoard.page.keyboard.press("r");
+    await sudokuBoard.cellHasValue(7, 8, "1");
+  });
+});
+
 test.describe("navigate board", () => {
   test("Navigate left to right", async ({ resumeClassicGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);

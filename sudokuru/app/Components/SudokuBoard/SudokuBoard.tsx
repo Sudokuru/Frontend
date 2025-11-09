@@ -548,6 +548,11 @@ const SudokuBoard = (props: Board) => {
             getHint();
           }
         }
+      case "R":
+      case "r":
+        if (boardMethods[props.type].hasResetActionButton() === true) {
+          reset();
+        }
         return;
       default:
         break;
@@ -568,7 +573,9 @@ const SudokuBoard = (props: Board) => {
       case "0":
       case "e":
       case "E":
-        eraseSelected();
+        if (boardMethods[props.type].hasEraseActionButton() === true) {
+          eraseSelected();
+        }
         break;
     }
 

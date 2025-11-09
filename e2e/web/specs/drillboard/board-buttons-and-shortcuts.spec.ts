@@ -342,25 +342,24 @@ test.describe("undo", () => {
     await sudokuBoard.cellHasNotes(8, 0, "7");
   });
 
-  // todo
-  test.skip("Undo button should function with a note move spanning multiple cells @os-specific", async ({
+  test("Undo button should function with a note move spanning multiple cells @os-specific", async ({
     resumeDrillGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await resumeDrillGame.keyboard.down(getSingleMultiSelectKey());
-    await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.cell[6][3].click();
+    await sudokuBoard.cell[7][4].click();
 
     await sudokuBoard.page.keyboard.press("N");
-    await sudokuBoard.numPad[7].click();
+    await sudokuBoard.numPad[6].click();
 
-    await sudokuBoard.cellHasNotes(7, 7, "8");
-    await sudokuBoard.cellHasNotes(7, 8, "458");
+    await sudokuBoard.cellHasNotes(6, 3, "47");
+    await sudokuBoard.cellHasNotes(7, 4, "58");
 
     await sudokuBoard.undo.click();
 
-    await sudokuBoard.cellHasValue(7, 7, "0");
-    await sudokuBoard.cellHasNotes(7, 8, "45");
+    await sudokuBoard.cellHasNotes(6, 3, "4");
+    await sudokuBoard.cellHasNotes(7, 4, "578");
   });
 });
 
@@ -377,6 +376,45 @@ test.describe("erase", () => {
     await sudokuBoard.cellHasValue(8, 0, "1");
     await sudokuBoard.page.keyboard.press("e");
     await sudokuBoard.cellHasValue(8, 0, "1");
+  });
+});
+
+test.describe("reset", () => {
+  test("Reset button should work", async ({ resumeDrillGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    const keys = ["button", "r", "R"];
+    for (const key of keys) {
+      await sudokuBoard.cell[8][0].click();
+      await sudokuBoard.note.click();
+      await sudokuBoard.numPad[6].click();
+      await sudokuBoard.cellHasValue(8, 0, "0");
+
+      await resumeDrillGame.keyboard.down(getSingleMultiSelectKey());
+      await sudokuBoard.cell[6][3].click();
+      await sudokuBoard.cell[7][4].click();
+      await sudokuBoard.numPad[6].click();
+      await sudokuBoard.cellHasNotes(6, 3, "47");
+      await sudokuBoard.cellHasNotes(7, 4, "58");
+      await resumeDrillGame.keyboard.up(getSingleMultiSelectKey());
+
+      await sudokuBoard.page.keyboard.press("N");
+      await sudokuBoard.cell[5][0].click();
+      await sudokuBoard.numPad[0].click();
+      await sudokuBoard.cellHasValue(5, 0, "1");
+
+      if (key === "button") {
+        await sudokuBoard.reset.click();
+      } else {
+        await sudokuBoard.page.keyboard.press(key);
+      }
+
+      await sudokuBoard.cellHasNotes(8, 0, "7");
+
+      await sudokuBoard.cellHasNotes(6, 3, "4");
+      await sudokuBoard.cellHasNotes(7, 4, "578");
+
+      await sudokuBoard.cellHasNotes(5, 0, "9");
+    }
   });
 });
 
