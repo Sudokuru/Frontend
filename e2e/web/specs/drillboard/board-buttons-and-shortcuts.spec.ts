@@ -10,9 +10,7 @@ import {
   SELECTED_COLOR_RGB,
   SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
-import { ProfilePage } from "../../page/profile.page";
 import { expect } from "@playwright/test";
-import { HeaderComponent } from "../../components/header.component";
 import { EndGameDrillModalComponent } from "../../components/end-game-modal-drill.component";
 import { DrillPage } from "../../page/drill.page";
 
@@ -130,48 +128,9 @@ test.describe.skip("progress indicator", () => {
     classicGametoResume: NEW_EMPTY_GAME,
   });
 
-  test("should be visible when enabled", async ({ resumeDrillGame }) => {
+  test("should not be visible when enabled", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator,
-    );
-  });
-
-  test("should not change when incorrect cells are added or removed", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[1][1].click();
-    await sudokuBoard.cell[1][1].press("1");
-    await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator,
-    );
-    await sudokuBoard.undo.click();
-    await sudokuBoard.progressIndicatorRendersCorrectly(
-      initialProgressIndicator,
-    );
-  });
-
-  test("should change when correct cells are added or removed", async ({
-    resumeDrillGame,
-  }) => {
-    const updatedProgressIndicator = [
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "66.6667%",
-      "77.7778%",
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "44.4444%",
-    ];
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[1][1].click();
-    await sudokuBoard.cell[1][1].press("8");
-    await sudokuBoard.progressIndicatorRendersCorrectly(
-      updatedProgressIndicator,
-    );
+    await sudokuBoard.progressIndicatorIsDisabled(initialProgressIndicator);
   });
 });
 
@@ -200,36 +159,13 @@ test.describe.skip("progress indicator", () => {
   });
 });
 
-// todo write tests to ensure that initialize notes is always disabled
-test.describe.skip("Initialize Notes", () => {
-  test("should initialize notes for all cells when enabled", async ({
-    featurePreview,
-  }) => {
-    const profilePage = new ProfilePage(featurePreview);
-    await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
-      ratio: 1,
-    });
-    await profilePage.initializeNotesSwitchEnabled.click();
-    await profilePage.initializeNotesSwitchDisabled.click();
-    const headerComponent = new HeaderComponent(featurePreview);
-    await headerComponent.drawer.click();
-    await headerComponent.drawerPlay.click();
-    await featurePreview.getByText("Novice").click();
-    const SudokuClassicBoardComponent = new SudokuBoardComponent(
-      featurePreview,
-    );
+test.describe("Initialize Notes", () => {
+  // this test is assuming disabled by default - which may not be the case in the future
+  test("should not affect board state when disabled", async ({ drill }) => {
+    await drill.getByText("Obvious Pair").click();
+    const SudokuClassicBoardComponent = new SudokuBoardComponent(drill);
     await SudokuClassicBoardComponent.verifyAllCellsInBoard(async (r, c) => {
       await SudokuClassicBoardComponent.cellIsNotEmpty(r, c);
-    });
-  });
-
-  test("should not initialize notes for all cells when disabled", async ({
-    play,
-  }) => {
-    await play.getByText("Novice").click();
-    const SudokuClassicBoardComponent = new SudokuBoardComponent(play);
-    await SudokuClassicBoardComponent.verifyAllCellsInBoard(async (r, c) => {
-      await SudokuClassicBoardComponent.cellIsNotNote(r, c);
     });
   });
 });
