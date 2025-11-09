@@ -128,9 +128,48 @@ test.describe.skip("progress indicator", () => {
     classicGametoResume: NEW_EMPTY_GAME,
   });
 
-  test("should not be visible when enabled", async ({ resumeDrillGame }) => {
+  test("should be visible when enabled", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.progressIndicatorIsDisabled(initialProgressIndicator);
+    await sudokuBoard.progressIndicatorRendersCorrectly(
+      initialProgressIndicator,
+    );
+  });
+
+  test("should not change when incorrect cells are added or removed", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[1][1].click();
+    await sudokuBoard.cell[1][1].press("1");
+    await sudokuBoard.progressIndicatorRendersCorrectly(
+      initialProgressIndicator,
+    );
+    await sudokuBoard.undo.click();
+    await sudokuBoard.progressIndicatorRendersCorrectly(
+      initialProgressIndicator,
+    );
+  });
+
+  test("should change when correct cells are added or removed", async ({
+    resumeDrillGame,
+  }) => {
+    const updatedProgressIndicator = [
+      "77.7778%",
+      "77.7778%",
+      "88.8889%",
+      "66.6667%",
+      "77.7778%",
+      "77.7778%",
+      "77.7778%",
+      "88.8889%",
+      "44.4444%",
+    ];
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[1][1].click();
+    await sudokuBoard.cell[1][1].press("8");
+    await sudokuBoard.progressIndicatorRendersCorrectly(
+      updatedProgressIndicator,
+    );
   });
 });
 
