@@ -76,8 +76,8 @@ test.describe("typing", () => {
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
       await sudokuBoard.cell[8][0].click();
-      await sudokuBoard.cell[8][0].press("0");
       await sudokuBoard.note.click();
+      await sudokuBoard.cell[8][0].press("7");
       await sudokuBoard.cell[8][0].press(i.toString());
       await sudokuBoard.cellHasNotes(8, 0, i.toString());
     });
@@ -102,8 +102,8 @@ test.describe("numpad", () => {
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
       await sudokuBoard.cell[8][0].click();
-      await sudokuBoard.cell[8][0].press("0");
       await sudokuBoard.page.keyboard.press("t");
+      await sudokuBoard.cell[8][0].press("7");
       await sudokuBoard.numPad[i - 1].click();
       await sudokuBoard.cellHasNotes(8, 0, i.toString());
     });
@@ -350,6 +350,7 @@ test.describe("erase", () => {
     await sudokuBoard.cell[8][0].press("1");
     await sudokuBoard.cellHasValue(8, 0, "1");
     await sudokuBoard.page.keyboard.press("e");
+    await sudokuBoard.page.keyboard.press("E");
     await sudokuBoard.cellHasValue(8, 0, "1");
   });
 });

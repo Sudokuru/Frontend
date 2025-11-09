@@ -548,6 +548,7 @@ const SudokuBoard = (props: Board) => {
             getHint();
           }
         }
+        return;
       case "R":
       case "r":
         if (boardMethods[props.type].hasResetActionButton() === true) {
