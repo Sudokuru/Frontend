@@ -8,26 +8,31 @@ import {
   collectV8CodeCoverageAsync,
   CollectV8CodeCoverageOptions,
 } from "./v8-code-coverage";
-import { ALMOST_FINISHED_GAME } from "./data";
+import { ALMOST_FINISHED_GAME, POINTING_PAIR_DRILL_GAME } from "./data";
+
 import { ProfilePage } from "./page/profile.page";
 import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
 import { CODE_COVERAGE } from "./playwright.config";
+import { DrillPage } from "./page/drill.page";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
   page: Page;
-  resumeGame: Page;
+  resumeClassicGame: Page;
+  resumeDrillGame: Page;
   contact: Page;
   play: Page;
   profile: Page;
   featurePreview: Page;
   aboutUs: Page;
   learn: Page;
+  drill: Page;
 }
 
 interface MyOptions {
-  gameToResume?: any;
+  classicGametoResume?: any;
+  drillGametoResume?: any;
 }
 
 interface MyStorageOptions {
@@ -58,7 +63,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
     const localStorage: { name: string; value: string }[] = [];
 
     const storageItems = [
-      { key: "active_game", value: activeGameStorage },
+      { key: "active_classic_game", value: activeGameStorage },
       { key: "profile", value: profileStorage },
       { key: "statistics", value: statisticsStorage },
     ];
@@ -103,17 +108,21 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
 // Extend base test by providing "todoPage" and "settingsPage".
 // This new "test" can be used in multiple test files, and each of them will get the fixtures.
 export const test = newBase.extend<MyFixtures & MyOptions>({
-  gameToResume: [ALMOST_FINISHED_GAME, { option: true }],
+  classicGametoResume: [ALMOST_FINISHED_GAME, { option: true }],
+  drillGametoResume: [POINTING_PAIR_DRILL_GAME, { option: true }],
 
   page: async ({ page }, use) => {
     await page.goto("");
     await use(page);
   },
   // Loads a game from local storage and navigates to resume the game.
-  resumeGame: async ({ page, gameToResume }, use) => {
-    await page.evaluate((gameToResume: JSON) => {
-      window.localStorage.setItem("active_game", JSON.stringify(gameToResume));
-    }, gameToResume as JSON);
+  resumeClassicGame: async ({ page, classicGametoResume }, use) => {
+    await page.evaluate((classicGametoResume: JSON) => {
+      window.localStorage.setItem(
+        "active_classic_game",
+        JSON.stringify(classicGametoResume),
+      );
+    }, classicGametoResume as JSON);
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
@@ -121,6 +130,22 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     const sudokuBoard = new SudokuBoardComponent(page);
     await sudokuBoard.sudokuBoardIsRendered();
     await use(page);
+  },
+  resumeDrillGame: async ({ featurePreview, drillGametoResume }, use) => {
+    await featurePreview.evaluate((drillGametoResume: JSON) => {
+      window.localStorage.setItem(
+        "active_drill_game",
+        JSON.stringify(drillGametoResume),
+      );
+    }, drillGametoResume as JSON);
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerDrill.click();
+    const drillPage = new DrillPage(featurePreview);
+    await drillPage.page.getByText("Resume Drill").click();
+    const sudokuDrillBoard = new SudokuBoardComponent(featurePreview);
+    await sudokuDrillBoard.sudokuBoardIsRendered();
+    await use(featurePreview);
   },
   // Navigates to the contact page.
   contact: async ({ page }, use) => {
@@ -171,5 +196,13 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     const learnPage = new LearnPage(page);
     await learnPage.learnPageIsRendered();
     await use(page);
+  },
+  drill: async ({ featurePreview }, use) => {
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerDrill.click();
+    const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
+    await use(featurePreview);
   },
 });

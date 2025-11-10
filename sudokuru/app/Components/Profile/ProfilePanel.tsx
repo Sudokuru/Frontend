@@ -24,6 +24,8 @@ const ProfilePanel = (props: any) => {
     toggleProgressIndicator,
     initializeNotesSetting,
     toggleInitializeNotes,
+    drillModeSetting,
+    toggleDrillMode,
     simplifyNotesSetting,
     toggleSimplifyNotes,
     toggleFeaturePreview,
@@ -186,6 +188,14 @@ const ProfilePanel = (props: any) => {
           value={simplifyNotesSetting}
           valueToggle={toggleSimplifyNotes}
           testIdPrefix="SimplifyNotes"
+        ></ProfileToggle>
+      )}
+      {featurePreviewSetting && (
+        <ProfileToggle
+          name="  Drill Mode"
+          value={drillModeSetting}
+          valueToggle={toggleDrillMode}
+          testIdPrefix="Drills"
         ></ProfileToggle>
       )}
     </View>,

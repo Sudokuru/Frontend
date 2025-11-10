@@ -23,6 +23,8 @@ export const PreferencesContext = React.createContext({
   progressIndicatorSetting: true,
   toggleFeaturePreview: () => {},
   featurePreviewSetting: false,
+  toggleDrillMode: () => {},
+  drillModeSetting: true,
   toggleInitializeNotes: () => {},
   initializeNotesSetting: true,
   toggleSimplifyNotes: () => {},

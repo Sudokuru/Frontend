@@ -1,13 +1,10 @@
 import {
-  SudokuObjectProps,
+  BoardObjectProps,
   CellProps,
   CellLocation,
 } from "../../../../Functions/LocalDatabase";
 import { HintObjectProps } from "../../SudokuBoard";
-import {
-  doesCellHaveConflict,
-  isBoardDisabled,
-} from "../../SudokuBoardFunctions";
+import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { isValueCorrect } from "./BoardFunctions";
 
 /**
@@ -16,15 +13,15 @@ import { isValueCorrect } from "./BoardFunctions";
  * @returns The number of cells found that match the value and are playable.
  */
 export const getRemainingCellCountOfValue = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   value: number,
 ) => {
   let cellCountOfValue = 0;
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
       if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0 ||
+        sudokuBoard.puzzleState[r][c].type === "note" ||
+        sudokuBoard.puzzleState[r][c].entry === 0 ||
         doesCellHaveConflict(sudokuBoard, r, c)
       ) {
         if (sudokuBoard.puzzleSolution[r][c] === value) {
@@ -46,12 +43,12 @@ export const getRemainingCellCountOfValue = (
  */
 export const areCellUpdatesDisabled = (
   cell: CellProps,
-  cellSolution: number,
-  r: number,
-  c: number,
+  cellSolution: CellProps | number,
 ) => {
   if (cell.type === "given") {
     return true;
+  } else if (typeof cellSolution === "object" && cellSolution.type === "note") {
+    return false;
   } else if (
     cell.type === "value" &&
     isValueCorrect(cellSolution, cell.entry)
@@ -63,14 +60,14 @@ export const areCellUpdatesDisabled = (
 };
 
 export const getSelectedCells = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
 ): CellProps[] => {
   if (sudokuBoard.selectedCells.length === 0) {
     return [];
   }
   const selectedCells: CellProps[] = [];
   for (const selectedCell of sudokuBoard.selectedCells) {
-    selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
+    selectedCells.push(sudokuBoard.puzzleState[selectedCell.r][selectedCell.c]);
   }
   return selectedCells;
 };
@@ -85,7 +82,7 @@ export const getSelectedCells = (
  * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
  */
 export const toggleSelectCell = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
@@ -116,7 +113,7 @@ export const toggleSelectCell = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithDefaultRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -138,7 +135,7 @@ const toggleSelectCellWithDefaultRules = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithControlRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -163,7 +160,7 @@ const toggleSelectCellWithControlRules = (
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithShiftRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -241,3 +238,25 @@ export function areCellsInSameColumn(
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }
+
+/**
+ * Checks if a given cell in the puzzle has a conflict with the solution.
+ *
+ * @param r - The row index of the cell.
+ * @param c - The column index of the cell.
+ * @param cell - The cell object containing its type and entry.
+ * @returns True if the cell's entry is incorrect; false otherwise.
+ */
+export const doesCellHaveConflict = (
+  sudokuBoard: BoardObjectProps,
+  r: number,
+  c: number,
+): boolean => {
+  const cell = sudokuBoard.puzzleState[r][c];
+  if (cell.type === "note" || cell.entry === 0) {
+    return false;
+  }
+  return (
+    sudokuBoard.puzzleState[r][c].entry !== sudokuBoard.puzzleSolution[r][c]
+  );
+};

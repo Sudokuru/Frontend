@@ -1,7 +1,20 @@
 [
   {
-    "version": "1.31.0",
+    "version": "1.32.0",
     "date": "#{date}#",
+    "summary": "",
+    "preview features": [
+      ""
+    ],
+    "bug fixes": [
+      "Improved the strategy quality for obvious, hidden, and pointing sets when the strategy hint order is changed from the default. This removed false positives for these strategies."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.31.0",
+    "date": "November 6th, 2025",
     "summary": "Revamped the app theming to improve upon the look of the application, added a new dark theme, and replaced the light/dark mode toggle with three theme selection buttons in the profile page.",
     "features": [
       "Added a new dark theme option in the profile page.",

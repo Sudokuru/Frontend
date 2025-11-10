@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
 import {
@@ -26,8 +26,15 @@ import {
   storeData,
 } from "../../Functions/AsyncStorage";
 import { useTheme } from "../../Contexts/ThemeContext";
+import { BoardObjectProps } from "../../Functions/LocalDatabase";
+import { getGame } from "../../Api/Puzzles";
+import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 
-let drillStrategies: SudokuStrategy[] = [
+function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
+  return arr;
+}
+
+export const DRILL_STRATEGIES = defineDrillStrategies([
   "OBVIOUS_SINGLE",
   "OBVIOUS_PAIR",
   "OBVIOUS_TRIPLET",
@@ -38,7 +45,9 @@ let drillStrategies: SudokuStrategy[] = [
   "HIDDEN_QUADRUPLET",
   "POINTING_PAIR",
   "POINTING_TRIPLET",
-];
+] as const);
+
+export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
 let drillImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
@@ -66,6 +75,32 @@ const DrillPanel = (props: any) => {
 
   const [checked, setChecked] = React.useState(false);
 
+  const minWindowSize = useMinWindowDimensions();
+  const newSize = minWindowSize / 25;
+
+  // This determines if user has active game and displays resume button conditionally.
+  async function showOrHideResumeButton() {
+    const game: BoardObjectProps[] = await getGame("drill");
+    if (game != null) {
+      showResumeButton();
+      return true;
+    } else {
+      hideResumeButton();
+      return false;
+    }
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      showOrHideResumeButton();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  const [resumeVisible, setResumeVisible] = React.useState(false);
+  const showResumeButton = () => setResumeVisible(true);
+  const hideResumeButton = () => setResumeVisible(false);
+
   async function showTutorialIfNotDismissed() {
     await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
       if (!dismiss) {
@@ -79,12 +114,12 @@ const DrillPanel = (props: any) => {
   let columnCount: number = calculateCardsPerRow(
     props.width,
     props.height,
-    drillStrategies.length,
+    DRILL_STRATEGIES.length,
   );
-  for (let i = 0; i < drillStrategies.length; i++) {
+  for (let i = 0; i < DRILL_STRATEGIES.length; i++) {
     let img: ImageURISource = drillImages[i];
     let difficulty: difficulty;
-    switch (drillStrategies[i]) {
+    switch (DRILL_STRATEGIES[i]) {
       case "OBVIOUS_SINGLE":
         difficulty = "Very Easy";
         break;
@@ -105,7 +140,8 @@ const DrillPanel = (props: any) => {
     let difficultyColor: string = getDifficultyColor(difficulty);
     subArray.push(
       <View
-        key={drillStrategies[i]}
+        key={DRILL_STRATEGIES[i]}
+        testID={DRILL_STRATEGIES[i]}
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING,
@@ -115,7 +151,8 @@ const DrillPanel = (props: any) => {
           onPress={() => {
             showTutorialIfNotDismissed().then(() => {
               navigation.navigate("DrillGame", {
-                params: drillStrategies[i],
+                params: DRILL_STRATEGIES[i],
+                action: "StartGame",
               });
             });
           }}
@@ -135,7 +172,7 @@ const DrillPanel = (props: any) => {
                 color: theme.semantic.text.inverse,
               }}
             >
-              {toTitle(drillStrategies[i])}
+              {toTitle(DRILL_STRATEGIES[i])}
             </Text>
             <Text
               variant="headlineSmall"
@@ -173,6 +210,24 @@ const DrillPanel = (props: any) => {
   // render each sub-array as a row
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
+      {resumeVisible ? (
+        <Button
+          style={{ margin: newSize / 4 }}
+          mode="outlined"
+          onPress={async function handlePress() {
+            const game = await showOrHideResumeButton();
+            if (game) {
+              navigation.navigate("DrillGame", {
+                action: "ResumeGame",
+              });
+            }
+          }}
+        >
+          Resume Drill
+        </Button>
+      ) : (
+        <></>
+      )}
       {drillButtonArray.map((subArray, index) => (
         <View
           style={{

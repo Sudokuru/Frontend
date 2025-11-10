@@ -8,6 +8,7 @@ type profileValue =
   | "highlightColumn"
   | "highlightIdenticalValues"
   | "highlightRow"
+  | "drillMode"
   | "progressIndicator"
   | "initializeNotes"
   | "simplifyNotes"
@@ -26,6 +27,7 @@ export const getProfile = async (): Promise<Profile> => {
     highlightColumn: true,
     highlightRow: true,
     highlightIdenticalValues: true,
+    drillMode: true,
     progressIndicator: true,
     initializeNotes: true,
     simplifyNotes: true,
@@ -74,6 +76,9 @@ export const setProfileValue = async (
       break;
     case "progressIndicator":
       value.progressIndicator = !value.progressIndicator;
+      break;
+    case "drillMode":
+      value.drillMode = !value.drillMode;
       break;
     case "initializeNotes":
       value.initializeNotes = !value.initializeNotes;

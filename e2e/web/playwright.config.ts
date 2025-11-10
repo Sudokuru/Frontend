@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import { config } from "dotenv-safe";
 const { platform } = require("node:process");
 
-config();
+config({ quiet: true });
 // https://stackoverflow.com/questions/45194598/using-process-env-in-typescript
 declare const process: {
   env: {
