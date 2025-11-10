@@ -35,7 +35,7 @@ export const EndGameModal = ({
           marginBottom: 10,
         }}
       >
-        Game Results
+        Drill Results
       </Text>
       <View
         style={{
