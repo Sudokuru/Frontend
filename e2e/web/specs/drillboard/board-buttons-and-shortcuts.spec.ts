@@ -13,6 +13,8 @@ import {
 import { expect } from "@playwright/test";
 import { EndGameDrillModalComponent } from "../../components/end-game-modal-drill.component";
 import { DrillPage } from "../../page/drill.page";
+import { HeaderComponent } from "../../components/header.component";
+import { ProfilePage } from "../../page/profile.page";
 
 test.describe("hint", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
@@ -199,8 +201,16 @@ test.describe.skip("progress indicator", () => {
 });
 
 test.describe("Initialize Notes", () => {
-  // this test is assuming disabled by default - which may not be the case in the future
   test("should not affect board state when disabled", async ({ drill }) => {
+    const header = new HeaderComponent(drill);
+    await header.profile.click();
+    const profilePage = new ProfilePage(drill);
+    await profilePage.initializeNotesSwitchEnabled.click();
+    await expect(profilePage.initializeNotesSwitchDisabled).toBeInViewport({
+      ratio: 1,
+    });
+    await header.drawer.click();
+    await header.drawerDrill.click();
     await drill.getByText("Obvious Pair").click();
     const SudokuClassicBoardComponent = new SudokuBoardComponent(drill);
     await SudokuClassicBoardComponent.verifyAllCellsInBoard(async (r, c) => {
