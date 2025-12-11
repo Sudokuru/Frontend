@@ -1,9 +1,8 @@
 import { SudokuBoardComponent } from "./../../components/sudoku-board.component";
 import { test } from "../../fixture";
 import {
-  NEW_EMPTY_GAME,
   POINTING_PAIR_CORRECT_DRILL_GAME,
-  PROGRESS_INDICATOR_DISABLED_PROFILE,
+  PROGRESS_INDICATOR_DRILL_DISABLED_PROFILE,
 } from "../../data";
 import { getSingleMultiSelectKey } from "../../playwright.config";
 import {
@@ -112,23 +111,18 @@ test.describe("numpad", () => {
   }
 });
 
-// todo write test to ensure progress indicator is always disabled
-test.describe.skip("progress indicator", () => {
+test.describe("progress indicator", () => {
   const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
   ];
-
-  test.use({
-    classicGametoResume: NEW_EMPTY_GAME,
-  });
 
   test("should be visible when enabled", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -152,46 +146,33 @@ test.describe.skip("progress indicator", () => {
     );
   });
 
-  test("should change when correct cells are added or removed", async ({
+  test("should not change when correct cells are added or removed", async ({
     resumeDrillGame,
   }) => {
-    const updatedProgressIndicator = [
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "66.6667%",
-      "77.7778%",
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "44.4444%",
-    ];
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await sudokuBoard.cell[1][1].click();
     await sudokuBoard.cell[1][1].press("8");
     await sudokuBoard.progressIndicatorRendersCorrectly(
-      updatedProgressIndicator,
+      initialProgressIndicator,
     );
   });
 });
 
-// todo write test to ensure progress indicator always disabled
-test.describe.skip("progress indicator", () => {
+test.describe("progress indicator", () => {
   const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
+    "100%",
   ];
 
   test.use({
-    classicGametoResume: NEW_EMPTY_GAME,
-    profileStorage: PROGRESS_INDICATOR_DISABLED_PROFILE,
+    profileStorage: PROGRESS_INDICATOR_DRILL_DISABLED_PROFILE,
   });
 
   test("should not be visible when disabled", async ({ resumeDrillGame }) => {
@@ -220,7 +201,7 @@ test.describe("Initialize Notes", () => {
 });
 
 // todo re-add simplify notes tests when we have more advanced obvious single drills
-// currently simplify notes functionality in drills is not worth righting tests for since it isn't relevant without the advanced obvious single drills
+// currently simplify notes functionality in drills is not worth writing tests for since it isn't relevant without the advanced obvious single drills
 // since current obvious single drills are the last remaining cell - there is no simplify notes since the game is completed by the last obvious single
 
 test.describe("undo", () => {
