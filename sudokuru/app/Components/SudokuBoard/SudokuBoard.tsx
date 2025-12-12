@@ -333,17 +333,18 @@ const SudokuBoard = (props: Board) => {
 
       cellsHaveUpdates = true;
 
-      // Incrementing numWrongCellsPlayed value
-      // todo turn this into function
-      if (
-        !sudokuBoard.inNoteMode &&
-        !isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
-      ) {
-        sudokuBoard.statistics.numWrongCellsPlayed++;
-      }
-
       // Set new Cell Value
       setCellEntryValue(inputValue, currentType, currentEntry, r, c);
+
+      // Incrementing numWrongCellsPlayed value
+      const isCellIncorrect = boardMethods[props.type].doesCellHaveConflict(
+        sudokuBoard,
+        r,
+        c,
+      );
+      if (isCellIncorrect) {
+        sudokuBoard.statistics.numWrongCellsPlayed++;
+      }
 
       newActionHistory.push({
         cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
