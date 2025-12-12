@@ -74,6 +74,35 @@ test.describe("complete drill", () => {
       ratio: 1,
     });
   });
+
+  test("Completing a drill with note mistakes should display correct game results", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.note.click();
+    await sudokuBoard.cell[7][6].press("2");
+    await sudokuBoard.cell[7][6].press("2");
+    await sudokuBoard.cell[7][6].press("1");
+    await sudokuBoard.cell[7][3].click();
+    await sudokuBoard.numPad[6 - 1].click();
+    const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
+    await endGameModal.endGameModalIsRendered();
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      endGameModal.page.getByText("Strategy: Pointing Pair"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Mistakes Made: 2"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Hint Used: No")).toBeInViewport({
+      ratio: 1,
+    });
+  });
 });
 
 test.describe("start drill", () => {
