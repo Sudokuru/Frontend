@@ -1,4 +1,4 @@
-import { SUDOKU_STRATEGY_ARRAY } from "sudokuru";
+import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { OBVIOUS_SINGLE_DRILLS } from "../../../../Data/drills/obvious_single_drills";
 import { HIDDEN_SINGLE_DRILLS } from "./../../../../Data/drills/hidden_single_drills";
 import {
@@ -95,14 +95,10 @@ export const returnDrillOfStrategy = (
 };
 
 /**
- * This function takes in a Puzzle object and returns a BoardObjectProps object.
- * @param puzzle Puzzle object
+ * Creates an empty drill game object with initialized structure
  */
-export const convertPuzzleToSudokuObject = (
-  puzzle: string,
-  strategy: DrillStrategy,
-): DrillObjectProps => {
-  let game: DrillObjectProps = {
+const createEmptyDrillGame = (strategy: DrillStrategy): DrillObjectProps => {
+  return {
     variant: "drill",
     version: 1,
     selectedCells: [],
@@ -118,128 +114,215 @@ export const convertPuzzleToSudokuObject = (
     inNoteMode: false,
     actionHistory: [],
   };
+};
 
-  for (let i = 0; i < 9; i++) {
+/**
+ * Parses a puzzle string and populates the game board
+ * @param puzzle String representation of the puzzle (81 characters, 0 = empty, 1-9 = given)
+ * @param game The game object to populate
+ */
+const parsePuzzleStringIntoBoard = (
+  puzzle: string,
+  game: DrillObjectProps,
+): void => {
+  for (let row = 0; row < 9; row++) {
     game.puzzleState.push([]);
     game.puzzleSolution.push([]);
     game.initialPuzzleState.push([]);
-    for (let j = 0; j < 9; j++) {
-      let charValuePuzzle = puzzle.charAt(i * 9 + j);
-      let numValuePuzzle = Number(charValuePuzzle);
-      if (numValuePuzzle === 0) {
-        game.puzzleState[i][j] = { type: "value", entry: 0 };
-        game.puzzleSolution[i][j] = { type: "value", entry: 0 };
-        game.initialPuzzleState[i][j] = { type: "value", entry: 0 };
+
+    for (let col = 0; col < 9; col++) {
+      const charValue = puzzle.charAt(row * 9 + col);
+      const numValue = Number(charValue);
+
+      if (numValue === 0) {
+        // Empty cell
+        game.puzzleState[row][col] = { type: "value", entry: 0 };
+        game.puzzleSolution[row][col] = { type: "value", entry: 0 };
+        game.initialPuzzleState[row][col] = { type: "value", entry: 0 };
       } else {
-        game.puzzleState[i][j] = { type: "given", entry: numValuePuzzle };
-        game.puzzleSolution[i][j] = { type: "given", entry: numValuePuzzle };
-        game.initialPuzzleState[i][j] = {
-          type: "given",
-          entry: numValuePuzzle,
-        };
+        // Given cell
+        game.puzzleState[row][col] = { type: "given", entry: numValue };
+        game.puzzleSolution[row][col] = { type: "given", entry: numValue };
+        game.initialPuzzleState[row][col] = { type: "given", entry: numValue };
       }
     }
   }
+};
 
-  // drill strategy is immediatly after AMEND_NOTES and SIMPLIFY_NOTES in priority.
-  const DRILL_ARRAY = SUDOKU_STRATEGY_ARRAY.filter((s) => s !== strategy);
-  const index = DRILL_ARRAY.indexOf("OBVIOUS_SINGLE");
-  DRILL_ARRAY.splice(index, 0, strategy);
+/**
+ * Creates strategy array with the target drill strategy positioned correctly
+ * The drill strategy is placed immediately after AMEND_NOTES and SIMPLIFY_NOTES
+ */
+const createDrillStrategyArray = (
+  strategy: DrillStrategy,
+): SudokuStrategy[] => {
+  const drillArray = SUDOKU_STRATEGY_ARRAY.filter((s) => s !== strategy);
+  const insertIndex = drillArray.indexOf("OBVIOUS_SINGLE");
+  drillArray.splice(insertIndex, 0, strategy);
+  return drillArray;
+};
 
-  // Initialize the board with notes filled in
+/**
+ * Calculates remaining notes after removing specified notes from a cell
+ */
+const calculateRemainingNotes = (
+  game: DrillObjectProps,
+  removal: number[],
+  allNotes: number[],
+): number[] => {
+  const [row, col, ...notesToRemove] = removal;
+  const currentCell = game.puzzleState[row][col];
+
+  if (currentCell.type === "note") {
+    return (currentCell.entry as number[]).filter(
+      (note) => !notesToRemove.includes(note),
+    );
+  }
+
+  // For AMEND_NOTES strategy, start with all notes
+  return allNotes.filter((note) => !notesToRemove.includes(note));
+};
+
+/**
+ * Applies note removals to all affected cells in the game state
+ */
+const applyNoteRemovals = (
+  game: DrillObjectProps,
+  removals: number[][],
+  notes: number[],
+): void => {
+  for (const removal of removals) {
+    const [row, col] = removal;
+    const noteCell = { type: "note" as const, entry: notes };
+
+    game.puzzleState[row][col] = noteCell;
+    game.puzzleSolution[row][col] = noteCell;
+    game.initialPuzzleState[row][col] = noteCell;
+  }
+};
+
+/**
+ * Progressively fills in notes by applying hints until reaching the target strategy
+ */
+const initializeBoardWithNotes = (
+  game: DrillObjectProps,
+  strategy: DrillStrategy,
+): void => {
+  const drillArray = createDrillStrategyArray(strategy);
   const ALL_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
   while (true) {
     try {
-      let hint = getSudokuHint(game.puzzleState, DRILL_ARRAY);
+      const hint = getSudokuHint(game.puzzleState, drillArray);
 
+      // Stop when we reach the target drill strategy
       if (hint.strategy === strategy) {
         break;
       }
 
-      // hint.removals structure: [row, col, note1, note2, ...]
-      // slice(2) skips row and col to get just the notes to remove
-      // Filter to keep only notes that shouldn't be removed
+      // Calculate notes for the first removal cell
+      const notes = calculateRemainingNotes(game, hint.removals[0], ALL_NOTES);
 
-      let notes: number[] = [];
-
-      if (hint.strategy === "AMEND_NOTES") {
-        notes = ALL_NOTES.filter((x) => !hint.removals[0].slice(2).includes(x));
-      } else {
-        for (const removal of hint.removals) {
-          if (game.puzzleState[removal[0]][removal[1]].type === "note") {
-            //
-            notes = (
-              game.puzzleState[removal[0]][removal[1]].entry as number[]
-            ).filter((x) => !removal.slice(2).includes(x));
-          } else {
-            console.log("This shouldn't happen");
-          }
-        }
-      }
-
-      for (const removal of hint.removals) {
-        game.puzzleState[removal[0]][removal[1]] = {
-          type: "note",
-          entry: notes,
-        };
-        game.puzzleSolution[removal[0]][removal[1]] = {
-          type: "note",
-          entry: notes,
-        };
-        game.initialPuzzleState[removal[0]][removal[1]] = {
-          type: "note",
-          entry: notes,
-        };
-      }
+      // Apply the note removals to all affected cells
+      applyNoteRemovals(game, hint.removals, notes);
     } catch (e) {
-      // If getSudokuHint throws an exception, we've initialized
-      // all possible notes and can exit the loop
-      console.log(e);
+      // Exception means all possible notes have been initialized
+      console.log("Note initialization complete:", e);
       break;
     }
   }
+};
 
-  // Finalize solution
-  let hint = getSudokuHint(game.puzzleState, [strategy]);
+/**
+ * Finalizes the solution for OBVIOUS_SINGLE strategy
+ * Places the value and simplifies surrounding notes
+ */
+const finalizeSolutionForObviousSingle = (
+  game: DrillObjectProps,
+  hint: any,
+): void => {
+  const [row, col, value] = hint.placements[0];
+  game.puzzleSolution[row][col] = { type: "value", entry: value };
 
-  if (strategy === "OBVIOUS_SINGLE") {
-    game.puzzleSolution[hint.placements[0][0]][hint.placements[0][1]] = {
-      type: "value",
-      entry: hint.placements[0][2],
-    };
-    while (true) {
-      try {
-        let hint = getSudokuHint(game.puzzleSolution, ["SIMPLIFY_NOTES"]);
-        for (const removals of hint.removals) {
-          let notes = (
-            game.puzzleSolution[removals[0]][removals[1]].entry as number[]
-          ).filter((x) => !removals.slice(2).includes(x));
-          game.puzzleSolution[removals[0]][removals[1]] = {
-            type: "note",
-            entry: notes,
-          };
-        }
-      } catch {
-        break;
+  // Simplify notes in cells affected by the placement
+  while (true) {
+    try {
+      const simplifyHint = getSudokuHint(game.puzzleSolution, [
+        "SIMPLIFY_NOTES",
+      ]);
+
+      for (const removal of simplifyHint.removals) {
+        const [r, c, ...notesToRemove] = removal;
+        const currentNotes = game.puzzleSolution[r][c].entry as number[];
+        const filteredNotes = currentNotes.filter(
+          (note) => !notesToRemove.includes(note),
+        );
+
+        game.puzzleSolution[r][c] = { type: "note", entry: filteredNotes };
       }
-    }
-  } else {
-    let notes: number[] = [];
-    for (const removal of hint.removals) {
-      if (game.puzzleState[removal[0]][removal[1]].type === "note") {
-        notes = (
-          game.puzzleState[removal[0]][removal[1]].entry as number[]
-        ).filter((x) => !removal.slice(2).includes(x));
-      } else {
-        console.log("This shouldn't happen");
-      }
-      game.puzzleSolution[removal[0]][removal[1]] = {
-        type: "note",
-        entry: notes,
-      };
+    } catch {
+      // No more notes to simplify
+      break;
     }
   }
+};
 
-  // Return a clone here so that this is a clone.
+/**
+ * Finalizes the solution for note-based strategies (pairs, triplets, etc.)
+ * Removes the notes identified by the strategy
+ */
+const finalizeSolutionForNoteStrategy = (
+  game: DrillObjectProps,
+  hint: any,
+): void => {
+  for (const removal of hint.removals) {
+    const [row, col, ...notesToRemove] = removal;
+    const currentCell = game.puzzleState[row][col];
+
+    if (currentCell.type === "note") {
+      const filteredNotes = (currentCell.entry as number[]).filter(
+        (note) => !notesToRemove.includes(note),
+      );
+      game.puzzleSolution[row][col] = { type: "note", entry: filteredNotes };
+    } else {
+      console.warn(
+        `Unexpected cell type at [${row}, ${col}]: expected 'note', got '${currentCell.type}'`,
+      );
+    }
+  }
+};
+
+/**
+ * Finalizes the puzzle solution based on the strategy type
+ */
+const finalizeDrillSolution = (
+  game: DrillObjectProps,
+  strategy: DrillStrategy,
+): void => {
+  const hint = getSudokuHint(game.puzzleState, [strategy]);
+
+  if (strategy === "OBVIOUS_SINGLE") {
+    finalizeSolutionForObviousSingle(game, hint);
+  } else {
+    finalizeSolutionForNoteStrategy(game, hint);
+  }
+};
+
+/**
+ * Converts a puzzle string into a complete drill game object
+ * @param puzzle String representation of the puzzle (81 characters)
+ * @param strategy The drill strategy to train
+ * @returns A complete drill game object with solution
+ */
+export const convertPuzzleToSudokuObject = (
+  puzzle: string,
+  strategy: DrillStrategy,
+): DrillObjectProps => {
+  const game = createEmptyDrillGame(strategy);
+  parsePuzzleStringIntoBoard(puzzle, game);
+  initializeBoardWithNotes(game, strategy);
+  finalizeDrillSolution(game, strategy);
+
+  // Return a deep clone to prevent mutations
   return JSON.parse(JSON.stringify(game));
 };
