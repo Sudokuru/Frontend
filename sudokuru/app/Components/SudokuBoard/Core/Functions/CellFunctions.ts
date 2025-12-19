@@ -260,3 +260,12 @@ export const doesCellHaveConflict = (
     sudokuBoard.puzzleState[r][c].entry !== sudokuBoard.puzzleSolution[r][c]
   );
 };
+
+export const isMoveCorrect = (
+  sudokuBoard: BoardObjectProps,
+  r: number,
+  c: number,
+  currentEntry: CellProps,
+): boolean => {
+  return !doesCellHaveConflict(sudokuBoard, r, c);
+};

@@ -337,12 +337,13 @@ const SudokuBoard = (props: Board) => {
       setCellEntryValue(inputValue, currentType, currentEntry, r, c);
 
       // Incrementing numWrongCellsPlayed value
-      const isCellIncorrect = boardMethods[props.type].doesCellHaveConflict(
+      const isMoveCorrect = boardMethods[props.type].isMoveCorrect(
         sudokuBoard,
         r,
         c,
+        { entry: currentEntry, type: currentType } as CellProps,
       );
-      if (isCellIncorrect) {
+      if (!isMoveCorrect) {
         sudokuBoard.statistics.numWrongCellsPlayed++;
       }
 

@@ -8,8 +8,14 @@ import {
   ClassicObjectProps,
 } from "./../../Functions/LocalDatabase";
 
-import { doesCellHaveConflict as coreDoesCellHaveConflict } from "./Core/Functions/CellFunctions";
-import { doesCellHaveConflict as drillDoesCellHaveConflict } from "./Drill/Functions/CellFunctions";
+import {
+  doesCellHaveConflict as coreDoesCellHaveConflict,
+  isMoveCorrect as coreIsMoveCorrect,
+} from "./Core/Functions/CellFunctions";
+import {
+  doesCellHaveConflict as drillDoesCellHaveConflict,
+  isMoveCorrect as drillIsMoveCorrect,
+} from "./Drill/Functions/CellFunctions";
 
 import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
 import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderRowFunctions";
@@ -37,6 +43,12 @@ export interface SudokuVariantMethods {
     r: number,
     c: number,
   ): boolean;
+  isMoveCorrect(
+    sudokuBoard: BoardObjectProps,
+    r: number,
+    c: number,
+    currentEntry: CellProps,
+  ): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
@@ -61,6 +73,14 @@ export interface SudokuVariantMethods {
 const defaultMethods: SudokuVariantMethods = {
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
+  },
+  isMoveCorrect(
+    sudokuBoard: BoardObjectProps,
+    r: number,
+    c: number,
+    currentEntry: CellProps,
+  ) {
+    return coreIsMoveCorrect(sudokuBoard, r, c, currentEntry);
   },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
@@ -102,6 +122,14 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   drill: {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
+    },
+    isMoveCorrect(
+      sudokuBoard: DrillObjectProps,
+      r: number,
+      c: number,
+      currentEntry: CellProps,
+    ) {
+      return drillIsMoveCorrect(sudokuBoard, r, c, currentEntry);
     },
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
