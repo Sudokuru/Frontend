@@ -14,7 +14,6 @@ import { SudokuStrategy } from "sudokuru";
  * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
-// todo clean this up
 export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
   if (variant === "classic") {
     return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
