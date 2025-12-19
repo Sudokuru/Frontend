@@ -31,6 +31,15 @@ flowchart
     UpdateUndoCell --> RemoveHistory
 ```
 
+## Invalid Entry Logic
+
+For classic variant - we check after a user performs a move to see if the cell is incorrect or not to determine if we should increment the mistake count. 
+
+For drill variant:
+- If the user inserts or removes a value we use the same logic as in the classic variant. 
+- If the user inserts a note we check to solution to see if the note is present and add a mistake if the note added is not in the solution.
+- If the user removes a note we check the solution to see if the note is present and add a mistake if the note removed is in the solution.
+
 <br>
 
 For the purposes of cell insertion and undo logic, the Erase button is treated as an insertion of the value `0` and follows the same logic as any other value insertion.
