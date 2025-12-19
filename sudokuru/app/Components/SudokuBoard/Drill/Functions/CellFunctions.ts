@@ -76,13 +76,13 @@ export const isMoveCorrect = (
   } else {
     // compare notes before and after the action
     const oldNotes = Array.isArray(currentEntry.entry)
-      ? (currentEntry.entry as number[])
+      ? currentEntry.entry
       : [];
     const newNotes = Array.isArray(sudokuBoard.puzzleState[r][c].entry)
-      ? (sudokuBoard.puzzleState[r][c].entry as number[])
+      ? sudokuBoard.puzzleState[r][c].entry
       : [];
     const solutionNotes = Array.isArray(sudokuBoard.puzzleSolution[r][c].entry)
-      ? (sudokuBoard.puzzleSolution[r][c].entry as number[])
+      ? sudokuBoard.puzzleSolution[r][c].entry
       : [];
 
     // determine action: added or removed notes
