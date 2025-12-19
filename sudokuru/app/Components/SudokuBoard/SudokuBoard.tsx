@@ -484,6 +484,7 @@ const SudokuBoard = (props: Board) => {
         );
       } else {
         currentEntryCopy.push(inputValue);
+        currentEntryCopy.sort((a: number, b: number) => a - b);
         newCellEntry = currentEntryCopy;
       }
     }
