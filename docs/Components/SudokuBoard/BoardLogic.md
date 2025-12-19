@@ -33,12 +33,16 @@ flowchart
 
 ## Invalid Entry Logic
 
-For classic variant - we check after a user performs a move to see if the cell is incorrect or not to determine if we should increment the mistake count. 
+For classic variant: 
+- We check after a user performs a move to see if the cell is incorrect or not to determine if we should increment the mistake count.
+- We prevent the user from using multi-select to insert multiple incorrect values since that is an illegal move.
+- Notes entries are never counted as mistakes. 
 
 For drill variant:
 - If the user inserts or removes a value we use the same logic as in the classic variant. 
 - If the user inserts a note we check to solution to see if the note is present and add a mistake if the note added is not in the solution.
 - If the user removes a note we check the solution to see if the note is present and add a mistake if the note removed is in the solution.
+- If a user uses multi-select to insert multiple incorrect notes - we count that a multiple mistakes. One mistake for each incorrect note.
 
 <br>
 
