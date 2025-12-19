@@ -17,7 +17,6 @@ import { ClassicBoard } from "../../SudokuBoard";
 import { GameDifficulty } from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
 
-// todo break this up into multiple functions instead of the if statement based on board type
 export async function generateGame(
   props: ClassicBoard,
   initializeNotes: boolean,
