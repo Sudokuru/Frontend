@@ -12,7 +12,7 @@
     "web": "npx expo start --web --clear",
     "web:dev": "cross-env ENV=development npx expo start --web --clear",
     "web:prod": "npx expo start --web --clear --no-dev --minify",
-    "web:serve:prod": "npx serve dist -l 8081",
+    "web:serve:prod": "npm run build:metro-web && npx serve dist -l 8081",
     "build:metro-web": "npx expo export --platform web --dump-sourcemap",
     "tauri:run": "tauri",
     "tauri:dev": "tauri dev",
