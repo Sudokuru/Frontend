@@ -37,6 +37,7 @@ interface MyOptions {
 
 interface MyStorageOptions {
   activeGameStorage?: any;
+  activeDrillGameStorage?: any;
   profileStorage?: any;
   statisticsStorage?: any;
 }
@@ -52,18 +53,26 @@ interface AppFixtures {
 // Code from https://github.com/edumserrano/playwright-adventures/blob/main/demos/code-coverage-with-monocart-reporter/tests/_shared/app-fixtures.ts
 const newBase = base.extend<AppFixtures & MyStorageOptions>({
   activeGameStorage: [null, { option: true }],
+  activeDrillGameStorage: [null, { option: true }],
   profileStorage: [null, { option: true }],
   statisticsStorage: [null, { option: true }],
 
   // this article saving the day: https://testomat.io/blog/what-is-the-use-of-fixtures-in-playwright/
   storageState: async (
-    { activeGameStorage, profileStorage, statisticsStorage, baseURL },
+    {
+      activeGameStorage,
+      activeDrillGameStorage,
+      profileStorage,
+      statisticsStorage,
+      baseURL,
+    },
     use,
   ) => {
     const localStorage: { name: string; value: string }[] = [];
 
     const storageItems = [
       { key: "active_classic_game", value: activeGameStorage },
+      { key: "active_drill_game", value: activeDrillGameStorage },
       { key: "profile", value: profileStorage },
       { key: "statistics", value: statisticsStorage },
     ];
