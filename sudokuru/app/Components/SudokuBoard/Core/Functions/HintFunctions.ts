@@ -125,7 +125,7 @@ export const getSudokuBoardHint = (
   const hint = getSudokuHint(
     sudokuBoard.puzzleState,
     strategyArray,
-    sudokuBoard.puzzleSolution as number[][],
+    sudokuBoard.puzzleSolution,
   );
   sudokuBoard.statistics.numHintsUsed++;
 
