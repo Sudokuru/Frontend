@@ -17,15 +17,12 @@ import {
   GameAction,
   GameVariant,
   BoardObjectProps,
-  DrillObjectProps,
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
-import { getSudokuHint } from "./Core/Functions/HintFunctions";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
 import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
-import { SudokuStrategy } from "sudokuru";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
@@ -178,81 +175,19 @@ const SudokuBoard = (props: Board) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
-    // todo create new function called getSudokuBoardHint in boardMethods
-    let strategyArray: SudokuStrategy[] = [...strategyHintOrderSetting];
+    const { hint, updatedBoard } = boardMethods[props.type].getSudokuBoardHint(
+      sudokuBoard,
+      [...strategyHintOrderSetting],
+    );
 
-    // prioritize "AMEND_NOTES" and "SIMPLIFY_NOTES"
-    strategyArray.unshift("SIMPLIFY_NOTES");
-    strategyArray.unshift("AMEND_NOTES");
-
-    if (sudokuBoard.variant === "drill") {
-      strategyArray = [sudokuBoard.statistics.difficulty];
-    }
-
-    let returnedHint: HintProps;
-
-    // drill variant does not provide puzzleSolution
-    // todo change puzzleSolution to drillSolution in the schema, so we can do if checks and simpler implementation
-    if (typeof sudokuBoard.puzzleSolution[0][0] === "number") {
-      returnedHint = getSudokuHint(
-        sudokuBoard.puzzleState,
-        strategyArray,
-        sudokuBoard.puzzleSolution as number[][],
-      );
-    } else {
-      returnedHint = getSudokuHint(
-        (sudokuBoard as DrillObjectProps).initialPuzzleState,
-        strategyArray,
-      );
-    }
-
-    // unselect board and increment hint statistics
-    if ("numHintsUsed" in sudokuBoard.statistics) {
-      sudokuBoard.statistics.numHintsUsed++;
-    }
-
-    if ("hintUsed" in sudokuBoard.statistics) {
-      sudokuBoard.statistics.hintUsed = true;
-    }
-
-    if ("numHintsUsedPerStrategy" in sudokuBoard.statistics) {
-      let incrementedStrategy = false;
-      for (const [
-        i,
-        strategies,
-      ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
-        if (strategies.hintStrategy === returnedHint.strategy) {
-          sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
-          incrementedStrategy = true;
-          break;
-        }
-      }
-      if (!incrementedStrategy) {
-        sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-          hintStrategy: returnedHint.strategy,
-          numHintsUsed: 1,
-        });
-      }
-    }
-
-    if ("initialPuzzleState" in sudokuBoard) {
-      setSudokuBoard({
-        ...sudokuBoard,
-        puzzleState: JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState)),
-        statistics: sudokuBoard.statistics,
-        selectedCells: [],
-      });
-    } else {
-      setSudokuBoard({
-        ...sudokuBoard,
-        statistics: sudokuBoard.statistics,
-        selectedCells: [],
-      });
-    }
+    setSudokuBoard({
+      ...updatedBoard,
+      selectedCells: [],
+    });
 
     setSudokuHint({
       stage: 1,
-      hint: returnedHint,
+      hint: hint,
       maxStage: 5,
     });
   };

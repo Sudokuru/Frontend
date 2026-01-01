@@ -34,8 +34,12 @@ import { generateGame as drillGenerateGame } from "./Drill/Functions/GenerateGam
 import { EndGameModal as CoreEndGameModal } from "./Core/Components/EndGameModal";
 import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameModal";
 
-import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
+import { getSudokuBoardHint as coreGetSudokuBoardHint } from "./Core/Functions/HintFunctions";
+import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions/HintFunctions";
+
+import { Board, ClassicBoard, DrillBoard, HintProps } from "./SudokuBoard";
 import React, { JSX } from "react";
+import { SudokuStrategy } from "sudokuru";
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
@@ -67,6 +71,13 @@ export interface SudokuVariantMethods {
   hasResetActionButton(): boolean;
   hasEraseActionButton(): boolean;
   getInitialPuzzleState(sudokuBoard: BoardObjectProps): CellProps[][];
+  getSudokuBoardHint: (
+    sudokuBoard: BoardObjectProps,
+    strategyArray: SudokuStrategy[],
+  ) => {
+    hint: HintProps;
+    updatedBoard: BoardObjectProps;
+  };
 }
 
 // 3) Default methods for all variants
@@ -115,6 +126,15 @@ const defaultMethods: SudokuVariantMethods = {
   hasEraseActionButton(): boolean {
     return true;
   },
+  getSudokuBoardHint(
+    sudokuBoard: BoardObjectProps,
+    strategyArray: SudokuStrategy[],
+  ) {
+    return coreGetSudokuBoardHint(
+      sudokuBoard as ClassicObjectProps,
+      strategyArray,
+    );
+  },
 };
 
 // 4) Any per‐variant overrides (only override what you really need)
@@ -160,6 +180,15 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     },
     hasEraseActionButton(): boolean {
       return false;
+    },
+    getSudokuBoardHint(
+      sudokuBoard: BoardObjectProps,
+      strategyArray: SudokuStrategy[],
+    ) {
+      return drillGetSudokuBoardHint(
+        sudokuBoard as DrillObjectProps,
+        strategyArray,
+      );
     },
   },
   // classic has no overrides since classic is the default
