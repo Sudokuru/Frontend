@@ -2,9 +2,9 @@
   {
     "version": "1.32.0",
     "date": "#{date}#",
-    "summary": "",
+    "summary": "Added Drills to feature preview and updated hint logic to improve quality of hints given.",
     "preview features": [
-      ""
+      "Added Drill mode functionality back to the site. Drills were removed in version 1.16.0 to reduce complexity of the site while refactoring the codebase. Drills will now show incorrect movies immediately instead of requiring the user to hit a 'check solution' button. The erase button is replaced with a reset button, since reset will be more useful than erase in the context of drills."
     ],
     "bug fixes": [
       "Improved the strategy quality for obvious, hidden, and pointing sets when the strategy hint order is changed from the default. This removed false positives for these strategies."
