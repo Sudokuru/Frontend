@@ -79,6 +79,12 @@
 2. For iOS, scan the QR code with your camera app, for Android you will need to scan the code from within the Expo app.
 3. For Web, hit the w key to start up the website at `localhost:8081`
 
+For running application locally with production bundle - the below commands are avaliable:
+- `npm run web:prod` - uses expo server to serve a production bundle
+- `npm run web:serve:prod` - uses serve to serve a production web bundle
+
+Production builds will speed up playwright tests, but will disable functionality such as hot reloading.
+
 ## 🧭 Navigating the Codebase
 
 <details>
