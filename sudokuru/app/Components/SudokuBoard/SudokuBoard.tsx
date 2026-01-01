@@ -603,7 +603,6 @@ const SudokuBoard = (props: Board) => {
       }
     }
 
-    console.log("PROGRESS INDICATOR SETTING: ", progressIndicatorSetting);
     return (
       <NumberControl
         areNumberButtonsDisabled={!enableNumberButtons}
