@@ -174,9 +174,7 @@ const calculateRemainingNotes = (
   const currentCell = game.puzzleState[row][col];
 
   if (currentCell.type === "note") {
-    return (currentCell.entry as number[]).filter(
-      (note) => !notesToRemove.includes(note),
-    );
+    return currentCell.entry.filter((note) => !notesToRemove.includes(note));
   }
 
   // For AMEND_NOTES strategy, start with all notes
