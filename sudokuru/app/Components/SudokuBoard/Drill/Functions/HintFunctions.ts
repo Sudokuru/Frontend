@@ -14,19 +14,16 @@ export const getSudokuBoardHint = (
   sudokuBoard: DrillObjectProps,
   strategyArray: SudokuStrategy[],
 ) => {
-  const hint = getSudokuHint(
-    (sudokuBoard as DrillObjectProps).initialPuzzleState,
-    [sudokuBoard.statistics.difficulty],
-  );
+  const hint = getSudokuHint(sudokuBoard.initialPuzzleState, [
+    sudokuBoard.statistics.difficulty,
+  ]);
   sudokuBoard.statistics.hintUsed = true;
 
   return {
     hint,
     updatedBoard: {
       ...sudokuBoard,
-      puzzleState: JSON.parse(
-        JSON.stringify((sudokuBoard as DrillObjectProps).initialPuzzleState),
-      ),
+      puzzleState: JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState)),
     },
   };
 };
