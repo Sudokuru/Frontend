@@ -278,7 +278,7 @@ const finalizeSolutionForNoteStrategy = (
     const currentCell = game.puzzleState[row][col];
 
     if (currentCell.type === "note") {
-      const filteredNotes = (currentCell.entry as number[]).filter(
+      const filteredNotes = currentCell.entry.filter(
         (note) => !notesToRemove.includes(note),
       );
       game.puzzleSolution[row][col] = { type: "note", entry: filteredNotes };
