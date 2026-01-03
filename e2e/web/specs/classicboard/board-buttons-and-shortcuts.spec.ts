@@ -21,12 +21,9 @@ test.describe("hint", () => {
     test("hint button: " + capital + key, async ({ resumeClassicGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[0][0].click();
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
+      for (let i = 0; i < 6; i++) {
+        await sudokuBoard.page.keyboard.press(key);
+      }
       await sudokuBoard.cellHasNotes(0, 0, "1");
     });
   }
