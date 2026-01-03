@@ -37,8 +37,7 @@ export const getRemainingCellCountOfValue = (
  * Checks if the given cell is disabled from being updated.
  * A cell is disabled from being updated if it is a given cell or if it is a value cell with a correct value.
  * @param cell The cell to check.
- * @param r The row index of the cell.
- * @param c The column index of the cell.
+ * @param cellSolution The solution for the cell, either as a CellProps object or a number.
  * @returns True if the cell is disabled from being updated, false otherwise.
  */
 export const areCellUpdatesDisabled = (
@@ -77,6 +76,9 @@ export const getSelectedCells = (
  * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
  * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
  * https://github.com/necolas/react-native-web/issues/1684
+ * @param sudokuBoard The current sudoku board object
+ * @param setBoardSelectedCells The setter function to update the selected cells in the board state
+ * @param sudokuHint The current hint object for the board
  * @param r The row of a given cell 0-8
  * @param c the column of a given cell 0-8
  * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
@@ -109,6 +111,7 @@ export const toggleSelectCell = (
  * Determines what deselect / select actions should take place.
  * This function is run when default behavior is desired, which is when
  * no modifier keys are pressed.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
@@ -131,6 +134,7 @@ const toggleSelectCellWithDefaultRules = (
 
 /**
  * Determines what deselect / select actions should take place when control/meta key is held down.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
@@ -156,6 +160,7 @@ const toggleSelectCellWithControlRules = (
 
 /**
  * Determines what deselect / select actions should take place when shift key is held down.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
@@ -242,9 +247,9 @@ export function areCellsInSameColumn(
 /**
  * Checks if a given cell in the puzzle has a conflict with the solution.
  *
+ * @param sudokuBoard - The current state of the Sudoku board.
  * @param r - The row index of the cell.
  * @param c - The column index of the cell.
- * @param cell - The cell object containing its type and entry.
  * @returns True if the cell's entry is incorrect; false otherwise.
  */
 export const doesCellHaveConflict = (
