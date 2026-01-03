@@ -11,7 +11,7 @@ import { getStatistics, saveStatisitics } from "./Statistics";
 import { SudokuStrategy } from "sudokuru";
 
 /**
- * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
+ * Given the sudoku game variant - retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
 export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
