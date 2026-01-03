@@ -103,19 +103,19 @@ test.describe("numpad", () => {
   }
 });
 
-test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
-  ];
+const initialProgressIndicator = [
+  "77.7778%",
+  "77.7778%",
+  "88.8889%",
+  "66.6667%",
+  "77.7778%",
+  "77.7778%",
+  "77.7778%",
+  "77.7778%",
+  "44.4444%",
+];
 
+test.describe("progress indicator", () => {
   test.use({
     classicGametoResume: NEW_EMPTY_GAME,
   });
@@ -166,18 +166,6 @@ test.describe("progress indicator", () => {
 });
 
 test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
-  ];
-
   test.use({
     classicGametoResume: NEW_EMPTY_GAME,
     profileStorage: PROGRESS_INDICATOR_DISABLED_PROFILE,

@@ -108,19 +108,19 @@ test.describe("numpad", () => {
   }
 });
 
-test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-  ];
+const initialProgressIndicator = [
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+  "100%",
+];
 
+test.describe("progress indicator", () => {
   test("should be visible when enabled", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await sudokuBoard.progressIndicatorRendersCorrectly(
@@ -156,18 +156,6 @@ test.describe("progress indicator", () => {
 });
 
 test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-    "100%",
-  ];
-
   test.use({
     profileStorage: PROGRESS_INDICATOR_DRILL_DISABLED_PROFILE,
   });
