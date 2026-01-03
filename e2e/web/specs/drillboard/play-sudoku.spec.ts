@@ -106,7 +106,7 @@ test.describe("complete drill", () => {
 });
 
 test.describe("start drill", () => {
-  test("Clicking on novice button should start novice game", async ({
+  test("Clicking on obvious single button should start obvious single drill", async ({
     drill,
   }) => {
     await drill.getByText("Obvious Single").click();
@@ -115,7 +115,7 @@ test.describe("start drill", () => {
     });
   });
 
-  test("Clicking on button with intermediate text should start protege game", async ({
+  test("Clicking on button with obvious pair text should start obvious pair drill", async ({
     drill,
   }) => {
     await drill.getByText("Obvious Pair").click();
