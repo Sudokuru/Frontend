@@ -22,8 +22,6 @@ export async function generateGame(
   props: DrillBoard,
   initializeNotes = true,
 ): Promise<BoardObjectProps | null> {
-  let gameData = null;
-
   if (props.action === "StartGame") {
     return returnDrillOfStrategy(props.strategy);
     // !uncomment below for dev testing
@@ -37,7 +35,7 @@ export async function generateGame(
     }
     return gameData[0];
   }
-  return gameData;
+  return null;
 }
 
 /**

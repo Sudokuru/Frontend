@@ -21,8 +21,6 @@ export async function generateGame(
   props: ClassicBoard,
   initializeNotes: boolean,
 ): Promise<BoardObjectProps | null> {
-  let gameData = null;
-
   if (props.action === "StartGame") {
     // !uncomment below for dev testing
     // return returnGameOfDifficulty("dev", initializeNotes);
@@ -36,7 +34,7 @@ export async function generateGame(
     }
     return gameData[0];
   }
-  return gameData;
+  return null;
 }
 
 /**
