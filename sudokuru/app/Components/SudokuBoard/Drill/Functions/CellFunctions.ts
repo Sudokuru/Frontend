@@ -6,9 +6,9 @@ import {
 /**
  * Checks if a given cell in the puzzle has a conflict with the solution.
  *
+ * @param sudokuBoard - The current state of the sudoku board.
  * @param r - The row index of the cell.
  * @param c - The column index of the cell.
- * @param cell - The cell object containing its type and entry.
  * @returns True if the cell's entry is incorrect; false otherwise.
  */
 export const doesCellHaveConflict = (
@@ -16,35 +16,29 @@ export const doesCellHaveConflict = (
   r: number,
   c: number,
 ): boolean => {
-  if (
-    isEqual(
-      sudokuBoard.puzzleState[r][c].entry,
-      sudokuBoard.puzzleSolution[r][c].entry,
-    )
-  ) {
+  const state = sudokuBoard.puzzleState[r][c];
+  const solution = sudokuBoard.puzzleSolution[r][c];
+  const inititial = sudokuBoard.initialPuzzleState[r][c];
+
+  if (isEqual(state.entry, solution.entry)) {
+    return false;
+  }
+
+  if (isEqual(state.entry, inititial.entry)) {
     return false;
   }
 
   if (
-    isEqual(
-      sudokuBoard.puzzleState[r][c].entry,
-      sudokuBoard.initialPuzzleState[r][c].entry,
-    )
-  ) {
-    return false;
-  }
-
-  if (
-    sudokuBoard.puzzleState[r][c].type === "note" &&
-    sudokuBoard.puzzleSolution[r][c].type === "note" &&
-    sudokuBoard.initialPuzzleState[r][c].type === "note"
+    state.type === "note" &&
+    solution.type === "note" &&
+    inititial.type === "note"
   ) {
     let foundInvalidNote = false;
 
-    for (const note of sudokuBoard.puzzleState[r][c].entry) {
-      const inSolution = sudokuBoard.puzzleSolution[r][c].entry.includes(note);
-      const inInitial =
-        sudokuBoard.initialPuzzleState[r][c].entry.includes(note);
+    // current note is not in solution or initial puzzle state
+    for (const note of state.entry) {
+      const inSolution = solution.entry.includes(note);
+      const inInitial = inititial.entry.includes(note);
 
       if (!inSolution && !inInitial) {
         foundInvalidNote = true;
@@ -52,8 +46,9 @@ export const doesCellHaveConflict = (
       }
     }
 
-    for (const note of sudokuBoard.puzzleSolution[r][c].entry) {
-      if (!sudokuBoard.puzzleState[r][c].entry.includes(note)) {
+    // solution note has been removed from current notes
+    for (const note of solution.entry) {
+      if (!state.entry.includes(note)) {
         foundInvalidNote = true;
         break;
       }
@@ -65,6 +60,15 @@ export const doesCellHaveConflict = (
   return true;
 };
 
+/**
+ * Determines if the move made in the sudoku board is correct by comparing the current entry to the solution
+ *
+ * @param sudokuBoard - The current state of the sudoku board.
+ * @param r - The row index of the cell.
+ * @param c - The column index of the cell.
+ * @param currentEntry - The current entry of the cell.
+ * @returns true if the move is correct, false otherwise
+ */
 export const isMoveCorrect = (
   sudokuBoard: DrillObjectProps,
   r: number,
