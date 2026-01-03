@@ -18,7 +18,10 @@ import { HIDDEN_PAIR_DRILLS } from "../../../../Data/drills/hidden_pair_drills";
 import { POINTING_PAIR_DRILLS } from "../../../../Data/drills/pointing_pair_drills";
 import { POINTING_TRIPLET_DRILLS } from "../../../../Data/drills/pointing_triplet_drills";
 
-export async function generateGame(props: DrillBoard, initializeNotes = true) {
+export async function generateGame(
+  props: DrillBoard,
+  initializeNotes = true,
+): Promise<BoardObjectProps | null> {
   let gameData = null;
 
   if (props.action === "StartGame") {

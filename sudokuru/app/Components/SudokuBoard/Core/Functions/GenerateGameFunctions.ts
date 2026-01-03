@@ -20,7 +20,7 @@ import { getSudokuHint } from "./HintFunctions";
 export async function generateGame(
   props: ClassicBoard,
   initializeNotes: boolean,
-) {
+): Promise<BoardObjectProps | null> {
   let gameData = null;
 
   if (props.action === "StartGame") {
