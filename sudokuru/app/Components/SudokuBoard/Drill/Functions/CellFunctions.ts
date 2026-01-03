@@ -77,38 +77,36 @@ export const isMoveCorrect = (
 ): boolean => {
   if (sudokuBoard.puzzleState[r][c].type === "value") {
     return !doesCellHaveConflict(sudokuBoard, r, c);
-  } else {
-    // compare notes before and after the action
-    const oldNotes = Array.isArray(currentEntry.entry)
-      ? currentEntry.entry
-      : [];
-    const newNotes = Array.isArray(sudokuBoard.puzzleState[r][c].entry)
-      ? sudokuBoard.puzzleState[r][c].entry
-      : [];
-    const solutionNotes = Array.isArray(sudokuBoard.puzzleSolution[r][c].entry)
-      ? sudokuBoard.puzzleSolution[r][c].entry
-      : [];
-
-    // determine action: added or removed notes
-    const added = newNotes.filter((n) => !oldNotes.includes(n));
-    const removed = oldNotes.filter((n) => !newNotes.includes(n));
-
-    // if added notes are in solution, move is correct
-    for (const note of added) {
-      if (!solutionNotes.includes(note)) {
-        return false; // added invalid note
-      }
-    }
-
-    // if removed notes are from solution, move is incorrect
-    for (const note of removed) {
-      if (solutionNotes.includes(note)) {
-        return false; // removed valid note
-      }
-    }
-
-    return true;
   }
+
+  // compare notes before and after the action
+  const oldNotes = Array.isArray(currentEntry.entry) ? currentEntry.entry : [];
+  const newNotes = Array.isArray(sudokuBoard.puzzleState[r][c].entry)
+    ? sudokuBoard.puzzleState[r][c].entry
+    : [];
+  const solutionNotes = Array.isArray(sudokuBoard.puzzleSolution[r][c].entry)
+    ? sudokuBoard.puzzleSolution[r][c].entry
+    : [];
+
+  // determine action: added or removed notes
+  const added = newNotes.filter((n) => !oldNotes.includes(n));
+  const removed = oldNotes.filter((n) => !newNotes.includes(n));
+
+  // if added notes are in solution, move is correct
+  for (const note of added) {
+    if (!solutionNotes.includes(note)) {
+      return false; // added invalid note
+    }
+  }
+
+  // if removed notes are from solution, move is incorrect
+  for (const note of removed) {
+    if (solutionNotes.includes(note)) {
+      return false; // removed valid note
+    }
+  }
+
+  return true;
 };
 
 export const isEqual = (a: any, b: any) => {
