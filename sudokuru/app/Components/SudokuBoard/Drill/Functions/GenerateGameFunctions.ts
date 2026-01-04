@@ -20,7 +20,7 @@ import { POINTING_TRIPLET_DRILLS } from "../../../../Data/drills/pointing_triple
 
 export async function generateGame(
   props: DrillBoard,
-  initializeNotes = true,
+  _initializeNotes = true,
 ): Promise<BoardObjectProps | null> {
   if (props.action === "StartGame") {
     return returnDrillOfStrategy(props.strategy);

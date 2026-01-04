@@ -275,7 +275,7 @@ export const isMoveCorrect = (
   sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
-  currentEntry: CellProps,
+  _currentEntry: CellProps,
 ): boolean => {
   return !doesCellHaveConflict(sudokuBoard, r, c);
 };
