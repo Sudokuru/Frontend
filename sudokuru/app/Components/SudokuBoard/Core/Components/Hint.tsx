@@ -5,14 +5,19 @@ import { Platform, Pressable, View } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
+import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface HintProps extends HintObjectProps {
-  incrementStage: (stageOffset: number) => void;
+  incrementStage: (
+    stageOffset: number,
+    finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
+  ) => void;
+  finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
 }
 
 const Hint = (hintProps: HintProps) => {
-  const { stage, hint, maxStage, incrementStage } = hintProps;
+  const { stage, hint, maxStage, incrementStage, finishSudokuGame } = hintProps;
 
   const cellSize = useCellSize();
   const { theme } = useTheme();
@@ -110,7 +115,7 @@ const Hint = (hintProps: HintProps) => {
         }}
       >
         <Pressable
-          onPress={() => incrementStage(-1)}
+          onPress={() => incrementStage(-1, finishSudokuGame)}
           testID={leftButton.testId}
         >
           <MaterialCommunityIcons
@@ -124,7 +129,7 @@ const Hint = (hintProps: HintProps) => {
           />
         </Pressable>
         <Pressable
-          onPress={() => incrementStage(1)}
+          onPress={() => incrementStage(1, finishSudokuGame)}
           testID={rightButton.testId}
         >
           <MaterialCommunityIcons

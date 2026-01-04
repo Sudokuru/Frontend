@@ -10,7 +10,6 @@
   "previewMode": false,
   "strategyHintOrder": [
     "HIDDEN_QUADRUPLET",
-    "SIMPLIFY_NOTES",
     "OBVIOUS_SINGLE",
     "HIDDEN_SINGLE",
     "OBVIOUS_PAIR",

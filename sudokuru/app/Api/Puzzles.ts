@@ -1,46 +1,33 @@
 import {
   SudokuBoardActiveGameSchema,
-  SudokuObjectProps,
+  BoardObjectProps,
+  GameVariant,
+  SudokuBoardDrillGameSchema,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
-import {
-  GameDifficulty,
-  returnGameOfDifficulty,
-} from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+
 import { Statistics } from "./Puzzle.Types";
 import { getStatistics, saveStatisitics } from "./Statistics";
 import { SudokuStrategy } from "sudokuru";
 
 /**
- * Given a difficulty and an user auth token retrieves a random puzzle close to the difficulty that the user hasn't solved before
- * @param difficulty - difficulty number (between 0 and 1)
- * @param strategies - new game can have subset of these strategies
- * @param initializeNotes - boolean to determine if notes should be initialized.
- * @returns promise of puzzle JSON object
- */
-export const startGame = (
-  difficulty: GameDifficulty,
-  initializeNotes: boolean,
-): SudokuObjectProps => {
-  return returnGameOfDifficulty(difficulty, initializeNotes);
-  // !uncomment below for dev testing
-  // return returnGameOfDifficulty("dev", initializeNotes);
-};
-
-/**
- * Given an user auth token retrieves the users active game or returns null if the user doesn't have an active game
+ * Given the sudoku game variant - retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
-export const getGame = (): Promise<SudokuObjectProps[]> => {
-  return getKeyJSON("active_game", SudokuBoardActiveGameSchema);
+export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
+  if (variant === "classic") {
+    return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
+  } else {
+    return getKeyJSON(`active_${variant}_game`, SudokuBoardDrillGameSchema);
+  }
 };
 
 /**
  * Given a game saves it to AsyncStorage
  * @param game - activeGame JSON object
  */
-export const saveGame = (game: SudokuObjectProps) => {
-  storeData("active_game", JSON.stringify([game]));
+export const saveGame = (game: BoardObjectProps) => {
+  storeData(`active_${game.variant}_game`, JSON.stringify([game]));
 };
 
 /**
@@ -65,9 +52,10 @@ export const finishGame = async (
   numWrongCellsPlayed: number,
   time: number,
   score: number,
+  variant: GameVariant,
 ) => {
   // remove the game from storage
-  await removeData("active_game");
+  await removeData(`active_${variant}_game`);
 
   // Create or update user's statistics
   let statistics: Statistics = await getStatistics();

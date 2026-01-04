@@ -1,13 +1,10 @@
 import {
-  SudokuObjectProps,
+  BoardObjectProps,
   CellProps,
   CellLocation,
 } from "../../../../Functions/LocalDatabase";
 import { HintObjectProps } from "../../SudokuBoard";
-import {
-  doesCellHaveConflict,
-  isBoardDisabled,
-} from "../../SudokuBoardFunctions";
+import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { isValueCorrect } from "./BoardFunctions";
 
 /**
@@ -16,15 +13,15 @@ import { isValueCorrect } from "./BoardFunctions";
  * @returns The number of cells found that match the value and are playable.
  */
 export const getRemainingCellCountOfValue = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   value: number,
 ) => {
   let cellCountOfValue = 0;
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
       if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0 ||
+        sudokuBoard.puzzleState[r][c].type === "note" ||
+        sudokuBoard.puzzleState[r][c].entry === 0 ||
         doesCellHaveConflict(sudokuBoard, r, c)
       ) {
         if (sudokuBoard.puzzleSolution[r][c] === value) {
@@ -40,37 +37,41 @@ export const getRemainingCellCountOfValue = (
  * Checks if the given cell is disabled from being updated.
  * A cell is disabled from being updated if it is a given cell or if it is a value cell with a correct value.
  * @param cell The cell to check.
- * @param r The row index of the cell.
- * @param c The column index of the cell.
+ * @param cellSolution The solution for the cell, either as a CellProps object or a number.
  * @returns True if the cell is disabled from being updated, false otherwise.
  */
 export const areCellUpdatesDisabled = (
   cell: CellProps,
-  cellSolution: number,
-  r: number,
-  c: number,
+  cellSolution: CellProps | number,
 ) => {
-  if (cell.type === "given") {
-    return true;
-  } else if (
-    cell.type === "value" &&
-    isValueCorrect(cellSolution, cell.entry)
-  ) {
-    return true;
-  } else {
+  const cellIsNoteSolution =
+    typeof cellSolution === "object" && cellSolution.type === "note";
+  if (cellIsNoteSolution) {
     return false;
   }
+
+  if (cell.type === "given") {
+    return true;
+  }
+
+  const cellIsValueSolution =
+    cell.type === "value" && isValueCorrect(cellSolution, cell.entry);
+  if (cellIsValueSolution) {
+    return true;
+  }
+
+  return false;
 };
 
 export const getSelectedCells = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
 ): CellProps[] => {
   if (sudokuBoard.selectedCells.length === 0) {
     return [];
   }
   const selectedCells: CellProps[] = [];
   for (const selectedCell of sudokuBoard.selectedCells) {
-    selectedCells.push(sudokuBoard.puzzle[selectedCell.r][selectedCell.c]);
+    selectedCells.push(sudokuBoard.puzzleState[selectedCell.r][selectedCell.c]);
   }
   return selectedCells;
 };
@@ -80,12 +81,15 @@ export const getSelectedCells = (
  * event.ctrlKey, event.metaKey and event.shiftKey are from React Native Web, which does not export types that we can use
  * https://stackoverflow.com/questions/41648156/detect-if-shift-key-is-down-react-native
  * https://github.com/necolas/react-native-web/issues/1684
+ * @param sudokuBoard The current sudoku board object
+ * @param setBoardSelectedCells The setter function to update the selected cells in the board state
+ * @param sudokuHint The current hint object for the board
  * @param r The row of a given cell 0-8
  * @param c the column of a given cell 0-8
  * @param event GestureResponderEvent event type from react-native with additional options from react-native-web
  */
 export const toggleSelectCell = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
@@ -112,11 +116,12 @@ export const toggleSelectCell = (
  * Determines what deselect / select actions should take place.
  * This function is run when default behavior is desired, which is when
  * no modifier keys are pressed.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithDefaultRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -134,11 +139,12 @@ const toggleSelectCellWithDefaultRules = (
 
 /**
  * Determines what deselect / select actions should take place when control/meta key is held down.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithControlRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -159,11 +165,12 @@ const toggleSelectCellWithControlRules = (
 
 /**
  * Determines what deselect / select actions should take place when shift key is held down.
+ * @param sudokuBoard The current sudoku board object
  * @param r The row of the cell where select toggle action is taking place.
  * @param c The column of the cell where select toggle action is taking place.
  */
 const toggleSelectCellWithShiftRules = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   r: number,
   c: number,
 ) => {
@@ -241,3 +248,34 @@ export function areCellsInSameColumn(
 ) {
   return currentCellCoordinate.c === selectedCellCoordinate.c;
 }
+
+/**
+ * Checks if a given cell in the puzzle has a conflict with the solution.
+ *
+ * @param sudokuBoard - The current state of the Sudoku board.
+ * @param r - The row index of the cell.
+ * @param c - The column index of the cell.
+ * @returns True if the cell's entry is incorrect; false otherwise.
+ */
+export const doesCellHaveConflict = (
+  sudokuBoard: BoardObjectProps,
+  r: number,
+  c: number,
+): boolean => {
+  const cell = sudokuBoard.puzzleState[r][c];
+  if (cell.type === "note" || cell.entry === 0) {
+    return false;
+  }
+  return (
+    sudokuBoard.puzzleState[r][c].entry !== sudokuBoard.puzzleSolution[r][c]
+  );
+};
+
+export const isMoveCorrect = (
+  sudokuBoard: BoardObjectProps,
+  r: number,
+  c: number,
+  _currentEntry: CellProps,
+): boolean => {
+  return !doesCellHaveConflict(sudokuBoard, r, c);
+};

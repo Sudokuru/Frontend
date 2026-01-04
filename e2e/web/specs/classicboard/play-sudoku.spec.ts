@@ -1,44 +1,44 @@
-import { test } from "../fixture";
+import { test } from "../../fixture";
 import { devices, expect } from "@playwright/test";
-import { PlayPage } from "../page/play.page";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { EndGameModalComponent } from "../components/end-game-modal.component";
-import { HeaderComponent } from "../components/header.component";
-import { StatisticsPage } from "../page/statistics.page";
-import { HomePage } from "../page/home.page";
+import { PlayPage } from "../../page/play.page";
+import { SudokuBoardComponent } from "../../components/sudoku-board.component";
+import { EndGameModalComponent } from "../../components/end-game-modal.component";
+import { HeaderComponent } from "../../components/header.component";
+import { StatisticsPage } from "../../page/statistics.page";
+import { HomePage } from "../../page/home.page";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
 
 test.describe("complete game", () => {
   test("Completing a game and clicking 'Start New Game' should take you to the play game page", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("8");
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
-    const endGameModal = new EndGameModalComponent(resumeGame);
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.playPageIsRendered();
   });
 
   test("Completing a game should display correct game results", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("8");
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
-    const endGameModal = new EndGameModalComponent(resumeGame);
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
       ratio: 1,
     });
@@ -57,9 +57,9 @@ test.describe("complete game", () => {
   });
 
   test("Completing a game with hint should display correct game results", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("8");
     await sudokuBoard.cell[7][7].click();
@@ -67,7 +67,7 @@ test.describe("complete game", () => {
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
     await sudokuBoard.solveHint();
-    const endGameModal = new EndGameModalComponent(resumeGame);
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
       ratio: 1,
     });
@@ -92,20 +92,20 @@ test.describe("complete game", () => {
   });
 
   test("Completing a game should display correct statistics", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("8");
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
-    const endGameModal = new EndGameModalComponent(resumeGame);
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.newGame.click();
-    const header = new HeaderComponent(resumeGame);
+    const header = new HeaderComponent(resumeClassicGame);
     await header.statistics.click();
-    const statistics = new StatisticsPage(resumeGame);
+    const statistics = new StatisticsPage(resumeClassicGame);
     await statistics.statisticsPageIsRendered();
     await expect(statistics.page.getByText("Total Score: 24")).toBeInViewport({
       ratio: 1,
@@ -131,9 +131,9 @@ test.describe("complete game", () => {
   });
 
   test("Completing a game with hint should display correct statistics", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("8");
     await sudokuBoard.cell[7][7].click();
@@ -141,11 +141,11 @@ test.describe("complete game", () => {
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
     await sudokuBoard.solveHint();
-    const endGameModal = new EndGameModalComponent(resumeGame);
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.newGame.click();
-    const header = new HeaderComponent(resumeGame);
+    const header = new HeaderComponent(resumeClassicGame);
     await header.statistics.click();
-    const statistics = new StatisticsPage(resumeGame);
+    const statistics = new StatisticsPage(resumeClassicGame);
     await statistics.statisticsPageIsRendered();
     await expect(statistics.page.getByText("Total Score: 24")).toBeInViewport({
       ratio: 1,

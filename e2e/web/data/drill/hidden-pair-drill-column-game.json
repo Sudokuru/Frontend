@@ -1,0 +1,1235 @@
+[
+  {
+    "variant": "drill",
+    "version": 1,
+    "selectedCells": [],
+    "initialPuzzleState": [
+      [
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 6
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 1
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 8
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 9
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 4
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            3,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 7
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            7,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "note",
+          "entry": [
+            4,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 2
+        }
+      ],
+      [
+        {
+          "type": "note",
+          "entry": [
+            7
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5
+          ]
+        }
+      ]
+    ],
+    "puzzleState": [
+      [
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 6
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 1
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 8
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 9
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 4
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            3,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 7
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            7,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "note",
+          "entry": [
+            4,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 2
+        }
+      ],
+      [
+        {
+          "type": "note",
+          "entry": [
+            7
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5
+          ]
+        }
+      ]
+    ],
+    "puzzleSolution": [
+      [
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 6
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 1
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 8
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 9
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "given",
+          "entry": 9
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 3
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 7
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "given",
+          "entry": 4
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "given",
+          "entry": 2
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            3,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 7
+        }
+      ],
+      [
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 5
+        },
+        {
+          "type": "given",
+          "entry": 1
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            7,
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 8
+        },
+        {
+          "type": "note",
+          "entry": [
+            4,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 2
+        }
+      ],
+      [
+        {
+          "type": "note",
+          "entry": [
+            7
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 6
+        },
+        {
+          "type": "note",
+          "entry": [
+            8,
+            9
+          ]
+        },
+        {
+          "type": "given",
+          "entry": 3
+        },
+        {
+          "type": "given",
+          "entry": 4
+        },
+        {
+          "type": "note",
+          "entry": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            1
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            9
+          ]
+        },
+        {
+          "type": "note",
+          "entry": [
+            5
+          ]
+        }
+      ]
+    ],
+    "statistics": {
+      "difficulty": "HIDDEN_PAIR",
+      "hintUsed": false,
+      "numWrongCellsPlayed": 0,
+      "time": 4
+    },
+    "inNoteMode": false,
+    "actionHistory": []
+  }
+]

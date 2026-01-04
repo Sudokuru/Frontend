@@ -1,5 +1,7 @@
 # Board Variants
 
+Sudoku Board variants are implemented using [Functional Programming](https://mostly-adequate.gitbook.io/mostly-adequate-guide) and the [Strategy Pattern](https://refactoring.guru/design-patterns/strategy). 
+
 ## Classic Variant
 
 Sudoku game with 9x9 grid.

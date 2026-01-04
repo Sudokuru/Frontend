@@ -5,11 +5,13 @@ import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
 import { PlayPage } from "../page/play.page";
+import { DrillPage } from "../page/drill.page";
 import {
   ALMOST_FINISHED_GAME,
   INVALID_ACTIVE_GAME_DATA,
   INVALID_PROFILE_DATA,
   INVALID_STATISTICS_DATA,
+  POINTING_PAIR_DRILL_GAME,
 } from "../data";
 
 test.describe("Offline Storage", () => {
@@ -44,6 +46,21 @@ test.describe("Offline Storage", () => {
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("Offline Storage", () => {
+  test.use({ activeDrillGameStorage: {} });
+  test("Resume Drill button does not show with invalid active game object", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new HeaderComponent(featurePreview);
+    await profilePage.home.click();
+    await featurePreview.reload();
+    const homePage = new HomePage(featurePreview);
+    await homePage.startDrills.click();
+    const drillPage = new DrillPage(featurePreview);
+    await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
 
@@ -87,6 +104,21 @@ test.describe("Offline Storage", () => {
 });
 
 test.describe("Offline Storage", () => {
+  test.use({ activeDrillGameStorage: INVALID_ACTIVE_GAME_DATA });
+  test("Resume Drill button does not show with invalid active game object data", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new HeaderComponent(featurePreview);
+    await profilePage.home.click();
+    await featurePreview.reload();
+    const homePage = new HomePage(featurePreview);
+    await homePage.startDrills.click();
+    const drillPage = new DrillPage(featurePreview);
+    await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("Offline Storage", () => {
   test.use({ activeGameStorage: ALMOST_FINISHED_GAME });
   test("Resume Game with invalid data does not crash app", async ({ page }) => {
     const homePage = new HomePage(page);
@@ -95,7 +127,7 @@ test.describe("Offline Storage", () => {
     await page.evaluate(
       (INVALID_ACTIVE_GAME_DATA: JSON) => {
         window.localStorage.setItem(
-          "active_game",
+          "active_classic_game",
           JSON.stringify(INVALID_ACTIVE_GAME_DATA),
         );
       },
@@ -106,5 +138,32 @@ test.describe("Offline Storage", () => {
     await playPage.resume.click();
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("Offline Storage", () => {
+  test.use({ activeDrillGameStorage: POINTING_PAIR_DRILL_GAME });
+  test("Resume Drill with invalid data does not crash app", async ({
+    featurePreview,
+  }) => {
+    const profilePage = new HeaderComponent(featurePreview);
+    await profilePage.home.click();
+    const homePage = new HomePage(featurePreview);
+    await homePage.startDrills.click();
+    const drillPage = new DrillPage(featurePreview);
+    await featurePreview.evaluate(
+      (INVALID_ACTIVE_GAME_DATA: JSON) => {
+        window.localStorage.setItem(
+          "active_drill_game",
+          JSON.stringify(INVALID_ACTIVE_GAME_DATA),
+        );
+      },
+      INVALID_ACTIVE_GAME_DATA as unknown as JSON,
+    );
+
+    await expect(drillPage.resume).toBeInViewport({ ratio: 1 });
+    await drillPage.resume.click();
+    await drillPage.drillPageIsRendered();
+    await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });

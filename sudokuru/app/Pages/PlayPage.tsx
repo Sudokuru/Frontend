@@ -11,7 +11,7 @@ import {
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
 import { getGame } from "../Api/Puzzles";
-import { SudokuObjectProps } from "../Functions/LocalDatabase";
+import { BoardObjectProps } from "../Functions/LocalDatabase";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
 import { useTheme } from "../Contexts/ThemeContext";
 
@@ -29,7 +29,7 @@ const PlayPage = () => {
 
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
-    const game: SudokuObjectProps[] = await getGame();
+    const game: BoardObjectProps[] = await getGame("classic");
     if (game != null) {
       showResumeButton();
       return true;
