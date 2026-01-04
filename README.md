@@ -60,8 +60,8 @@
 ## ⚙️ General Setup:
 
 1. Git clone this repository
-2. Install Node.js `v20.19.4` or later
-3. Install npm `10.8.2` or later
+2. Install Node.js `v24.8.0` or later
+3. Install npm `11.6.0` or later
 4. Run `npm i` in the root folder
 5. [Install pre-commit hooks](https://pre-commit.com/#install)
 
