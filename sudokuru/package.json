@@ -45,6 +45,9 @@
     "sudokuru": "3.4.0",
     "zod": "^3.23.8"
   },
+  "peerDependencies": {
+    "react-native-worklets": "0.5.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@tauri-apps/cli": "^1.5.5",
