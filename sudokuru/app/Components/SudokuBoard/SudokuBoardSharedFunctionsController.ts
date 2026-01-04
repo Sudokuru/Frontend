@@ -80,7 +80,7 @@ export interface SudokuVariantMethods {
   };
 }
 
-// 3) Default methods for all variants
+// Default methods for all variants
 const defaultMethods: SudokuVariantMethods = {
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
@@ -137,7 +137,7 @@ const defaultMethods: SudokuVariantMethods = {
   },
 };
 
-// 4) Any per‐variant overrides (only override what you really need)
+// Any per‐variant overrides (only override what you really need)
 const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   drill: {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
@@ -195,7 +195,7 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   classic: {},
 };
 
-// 5) Build the final runtime lookup by merging defaults + overrides
+// Build the final runtime lookup by merging defaults + overrides
 export const boardMethods: { [V in GameVariant]: SudokuVariantMethods } =
   Object.fromEntries(
     (Object.keys(overrides) as GameVariant[]).map((v) => [
