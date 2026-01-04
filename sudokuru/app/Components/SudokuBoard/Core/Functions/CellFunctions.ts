@@ -44,18 +44,23 @@ export const areCellUpdatesDisabled = (
   cell: CellProps,
   cellSolution: CellProps | number,
 ) => {
-  if (cell.type === "given") {
-    return true;
-  } else if (typeof cellSolution === "object" && cellSolution.type === "note") {
-    return false;
-  } else if (
-    cell.type === "value" &&
-    isValueCorrect(cellSolution, cell.entry)
-  ) {
-    return true;
-  } else {
+  const cellIsNoteSolution =
+    typeof cellSolution === "object" && cellSolution.type === "note";
+  if (cellIsNoteSolution) {
     return false;
   }
+
+  if (cell.type === "given") {
+    return true;
+  }
+
+  const cellIsValueSolution =
+    cell.type === "value" && isValueCorrect(cellSolution, cell.entry);
+  if (cellIsValueSolution) {
+    return true;
+  }
+
+  return false;
 };
 
 export const getSelectedCells = (
