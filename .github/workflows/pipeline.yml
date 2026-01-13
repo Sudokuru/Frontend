@@ -231,7 +231,7 @@ jobs:
       - name: install frontend dependencies
         run: npm ci
       - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
-        id: tauri_build
+        id: tauri_build # resetting status checks in pr
         with:
           tauriScript: npm run tauri:run
       - name: Upload ${{ matrix.platform[0] }} Artifact
