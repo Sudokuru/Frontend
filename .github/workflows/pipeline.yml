@@ -104,7 +104,7 @@ jobs:
         uses: expo/expo-github-action/preview@v8
         with:
           working-directory: sudokuru
-          command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
+          command: eas update --branch preview --message "${{ github.event.pull_request.head.ref }}" # changed away from PR title to avoid unsanitized user input
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
