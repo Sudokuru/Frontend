@@ -45,6 +45,7 @@ module.exports = defineConfig([
       "**/playwright-coverage/",
       ".DS_Store",
       ".vercel",
+      "**/target/",
     ],
   },
 ]);
