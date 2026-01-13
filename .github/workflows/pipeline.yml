@@ -99,15 +99,14 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
         run: npm ci
-      - name: Sanitize Branch name
-        id: sanitize
-        run: echo "::set-output name=sanitized_ref::$(echo '${{ github.event.pull_request.title }}' | sed 's/[^a-zA-Z0-9_-]//g')"
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@v8
         with:
           working-directory: sudokuru
-          command: eas update --branch preview --message "${{ steps.sanitize.outputs.sanitized_ref }}"
+          command: eas update --branch preview --message "$PR_TITLE"
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
