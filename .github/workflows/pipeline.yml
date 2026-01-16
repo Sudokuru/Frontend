@@ -213,7 +213,7 @@ jobs:
         include:
           - name: macos
             platform: macos-latest
-            args: --target aarch64-apple-darwin
+            args: -- --target aarch64-apple-darwin
           - name: linux
             platform: ubuntu-22.04
             args: ''
