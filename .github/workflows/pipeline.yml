@@ -230,8 +230,6 @@ jobs:
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' }}
       - name: install ubuntu dependencies
         if: matrix.platform == 'ubuntu-22.04'
         run: |
