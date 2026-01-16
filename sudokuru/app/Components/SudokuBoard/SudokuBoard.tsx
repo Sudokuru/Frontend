@@ -42,7 +42,6 @@ import {
   getSelectedCells,
 } from "./Core/Functions/CellFunctions";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { Theme } from "../../Styling/theme";
 
 export interface SudokuBoardProps {
   action: "StartGame" | "ResumeGame";
