@@ -207,19 +207,17 @@ jobs:
           path: sudokuru/Build/*.apk
 
   app_build_desktop:
+    name: app_build_desktop ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: macos
             platform: macos-latest
-            args: -- --target aarch64-apple-darwin
           - name: linux
             platform: ubuntu-22.04
-            args: ''
           - name: windows
             platform: windows-latest
-            args: ''
     runs-on: ${{ matrix.platform }}
     needs: [ code_scan, analyze ]
     steps:
@@ -232,6 +230,8 @@ jobs:
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' }}
       - name: install ubuntu dependencies
         if: matrix.platform == 'ubuntu-22.04'
         run: |
@@ -243,7 +243,6 @@ jobs:
         id: tauri_build
         with:
           tauriScript: npm run tauri:run
-          args: ${{ matrix.args }}
       - name: Upload ${{ matrix.name }} Artifact
         uses: actions/upload-artifact@v4
         with:
