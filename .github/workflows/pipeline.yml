@@ -210,8 +210,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [linux, ubuntu-22.04], [windows, windows-latest] ]
-    runs-on: ${{ matrix.platform[1] }}
+        include:
+          - name: macos
+            platform: macos-latest
+            args: --target aarch64-apple-darwin
+          - name: linux
+            platform: ubuntu-22.04
+            args: ''
+          - name: windows
+            platform: windows-latest
+            args: ''
+    runs-on: ${{ matrix.platform }}
     needs: [ code_scan, analyze ]
     steps:
       - uses: actions/checkout@v4
@@ -224,7 +233,7 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install ubuntu dependencies
-        if: matrix.platform[1] == 'ubuntu-22.04'
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
@@ -234,10 +243,11 @@ jobs:
         id: tauri_build
         with:
           tauriScript: npm run tauri:run
-      - name: Upload ${{ matrix.platform[0] }} Artifact
+          args: ${{ matrix.args }}
+      - name: Upload ${{ matrix.name }} Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform[0] }} binary
+          name: ${{ matrix.name }} binary
           path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
 
   deploy_app_dev:
@@ -245,7 +255,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [linux, windows, android]
+        binary_name: [linux, windows, macos, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -271,7 +281,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [linux, windows, android]
+        binary_name: [linux, windows, macos, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
