@@ -212,8 +212,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: macos
-            platform: macos-latest
           - name: linux
             platform: ubuntu-22.04
           - name: windows
@@ -252,7 +250,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [linux, windows, macos, android]
+        binary_name: [linux, windows, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -278,7 +276,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        binary_name: [linux, windows, macos, android]
+        binary_name: [linux, windows, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
