@@ -260,9 +260,13 @@ jobs:
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
+      - name: Rename Android APK for Itch.io
+        if: ${{ matrix.binary_name == 'android' }}
+        run: |
+          mv bundle/*.apk bundle/${{ secrets.ITCH_GAME_ID }}-alpha-${{matrix.binary_name}}.apk
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -286,9 +290,13 @@ jobs:
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
+      - name: Rename Android APK for Itch.io
+        if: ${{ matrix.binary_name == 'android' }}
+        run: |
+          mv bundle/*.apk bundle/${{ secrets.ITCH_GAME_ID }}-stable-${{matrix.binary_name}}.apk
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
