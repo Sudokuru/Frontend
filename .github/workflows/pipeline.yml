@@ -14,7 +14,7 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
     branches:
-      - main
+      - enhancingBuildPipeline
   pull_request:
     paths-ignore:
       - ".github/**"
@@ -25,10 +25,10 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
     branches:
-      - main
+      - enhancingBuildPipeline
 
 # https://stackoverflow.com/questions/74117321/if-condition-in-concurrency-in-gha
-# A PR will have workflows in the same group, different PRs will have workflows in different groups, and each main workflow will have different group IDs
+# A PR will have workflows in the same group, different PRs will have workflows in different groups, and each enhancingBuildPipeline workflow will have different group IDs
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
   cancel-in-progress: true
@@ -254,7 +254,7 @@ jobs:
       matrix:
         binary_name: [linux, windows, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
@@ -288,7 +288,7 @@ jobs:
       matrix:
         binary_name: [linux, windows, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
@@ -318,7 +318,7 @@ jobs:
   deploy_website_dev:
     name: Deploy Dev Website
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -337,7 +337,7 @@ jobs:
   deploy_website_prod:
     name: Deploy Prod Website
     needs: [ deploy_website_dev, deploy_app_dev ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
