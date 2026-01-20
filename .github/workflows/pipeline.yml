@@ -14,7 +14,7 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
     branches:
-      - enhancingBuildPipeline
+      - main
   pull_request:
     paths-ignore:
       - ".github/**"
@@ -25,10 +25,10 @@ on:
       - ".prettierignore"
       - ".prettierrc.json"
     branches:
-      - enhancingBuildPipeline
+      - main
 
 # https://stackoverflow.com/questions/74117321/if-condition-in-concurrency-in-gha
-# A PR will have workflows in the same group, different PRs will have workflows in different groups, and each enhancingBuildPipeline workflow will have different group IDs
+# A PR will have workflows in the same group, different PRs will have workflows in different groups, and each main workflow will have different group IDs
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
   cancel-in-progress: true
@@ -53,12 +53,12 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
 
@@ -77,7 +77,7 @@ jobs:
         working-directory: sudokuru
         run: npx tsc
 
-  app_preview_dev:
+  app_main_dev:
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze ]
     outputs:
@@ -99,33 +99,33 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
         run: npm ci
-      - name: 🚀 Publish App preview
+      - name: 🚀 Publish App main
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
+        uses: expo/expo-github-action/main@b184ff86a3c926240f1b6db41764c83a01c02eef
         with:
           working-directory: sudokuru
-          command: eas update --branch preview --message "$PR_TITLE"
+          command: eas update --branch main --message "$PR_TITLE"
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
-      - name: Cloudflare dev preview deployment
+      - name: Cloudflare dev main deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
           project-name: sudokuru-dev
           account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      - name: Post comment with preview link
+      - name: Post comment with main link
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: KeisukeYamashita/create-comment@0804a1078ca107e7507c6943f646386d8465b594
         with:
           check-only-first-line: true
           comment: |
-            Preview Website for PR: 
+            main Website for PR: 
             ${{ steps.deployment.outputs.deployment-url }}
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan, analyze, app_preview_dev ]
+    needs: [ code_scan, analyze, app_main_dev ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -141,7 +141,7 @@ jobs:
         run: npm run playwright:test:chrome
         working-directory: e2e/web
         env:
-          BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
+          BASE_URL: ${{ needs.app_main_dev.outputs.deployment-url }}
           CI: 'true'
           CODE_COVERAGE: 'true'
           WORKERS: 0
@@ -254,7 +254,7 @@ jobs:
       matrix:
         binary_name: [linux, windows, android]
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
@@ -288,7 +288,7 @@ jobs:
       matrix:
         binary_name: [linux, windows, android]
     needs: [ deploy_website_dev, deploy_app_dev ]
-    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
@@ -318,7 +318,7 @@ jobs:
   deploy_website_dev:
     name: Deploy Dev Website
     needs: [ app_build_android, website_test_dev, app_build_desktop ]
-    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -326,7 +326,7 @@ jobs:
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
-      - name: Cloudflare dev preview deployment
+      - name: Cloudflare dev main deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
@@ -337,7 +337,7 @@ jobs:
   deploy_website_prod:
     name: Deploy Prod Website
     needs: [ deploy_website_dev, deploy_app_dev ]
-    if: ${{ github.ref == 'refs/heads/enhancingBuildPipeline' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -345,7 +345,7 @@ jobs:
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
-      - name: Cloudflare dev preview deployment
+      - name: Cloudflare dev main deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
