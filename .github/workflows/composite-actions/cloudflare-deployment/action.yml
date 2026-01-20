@@ -32,9 +32,10 @@ runs:
       shell: bash
     - run: npm run build:metro-web
       shell: bash
+      # waiting on https://github.com/cloudflare/wrangler-action/issues/403 to convert to SHA
     - name: Cloudflare Deployment
       id: deployment
-      uses: cloudflare/wrangler-action@707f63750981584eb6abc365a50d441516fb04b8
+      uses: cloudflare/wrangler-action@v3
       with:
         apiToken: ${{ inputs.api-token }}
         accountId: ${{ inputs.account-id }}
