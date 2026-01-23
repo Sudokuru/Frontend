@@ -77,7 +77,7 @@ jobs:
         working-directory: sudokuru
         run: npx tsc
 
-  app_main_dev:
+  app_preview_dev:
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze ]
     outputs:
@@ -125,7 +125,7 @@ jobs:
 
   website_test_dev:
     runs-on: ubuntu-latest
-    needs: [ code_scan, analyze, app_main_dev ]
+    needs: [ code_scan, analyze, app_preview_dev ]
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -141,7 +141,7 @@ jobs:
         run: npm run playwright:test:chrome
         working-directory: e2e/web
         env:
-          BASE_URL: ${{ needs.app_main_dev.outputs.deployment-url }}
+          BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
           CI: 'true'
           CODE_COVERAGE: 'true'
           WORKERS: 0
