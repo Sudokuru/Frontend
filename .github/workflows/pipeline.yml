@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   push:
     paths-ignore:
-      - ".github/**"
       - "docs/**"
       - "e2e/**"
       - "**/*.test.ts"
@@ -17,7 +16,6 @@ on:
       - main
   pull_request:
     paths-ignore:
-      - ".github/**"
       - "docs/**"
       - "README.md"
       - "License.md"
