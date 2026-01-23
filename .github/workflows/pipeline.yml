@@ -107,7 +107,7 @@ jobs:
           command: eas update --branch main --message "$PR_TITLE"
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
-      - name: Cloudflare dev main deployment
+      - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
@@ -326,7 +326,7 @@ jobs:
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
-      - name: Cloudflare dev main deployment
+      - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
@@ -345,7 +345,7 @@ jobs:
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
-      - name: Cloudflare dev main deployment
+      - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
         with:
