@@ -1,4 +1,4 @@
-import { SudokuObjectProps } from "../../Functions/LocalDatabase";
+import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
 import { HintObjectProps } from "./SudokuBoard";
 
@@ -10,19 +10,13 @@ import { HintObjectProps } from "./SudokuBoard";
  * the game has been solved, the function returns true.
  * @returns {boolean} True if the game has been solved, false otherwise.
  */
-export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-      if (sudokuBoard.puzzle[r][c].type === "given") continue;
-      if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0
-      ) {
-        return false;
-      }
+export const isGameSolved = (sudokuBoard: BoardObjectProps): boolean => {
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
+      if (sudokuBoard.puzzleState[r][c].type === "given") continue;
       const isValueCorrectResult = isValueCorrect(
-        sudokuBoard.puzzleSolution[r][c],
-        sudokuBoard.puzzle[r][c].entry as number,
+        sudokuBoard.puzzleSolution[r][c] as number,
+        sudokuBoard.puzzleState[r][c].entry as number,
       );
       if (isValueCorrectResult === false) {
         return false;
@@ -37,16 +31,16 @@ export const isGameSolved = (sudokuBoard: SudokuObjectProps): boolean => {
  * @returns True if there are no correct values in board, False otherwise
  */
 export const doesBoardHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
+  doesCellHaveConflict: (
+    sudokuBoard: BoardObjectProps,
+    r: number,
+    c: number,
+  ) => boolean,
 ): boolean => {
-  for (let r = 0; r < sudokuBoard.puzzle.length; r++) {
-    for (let c = 0; c < sudokuBoard.puzzle[r].length; c++) {
-      if (sudokuBoard.puzzle[r][c].type === "given") continue;
-      if (
-        sudokuBoard.puzzle[r][c].type === "note" ||
-        sudokuBoard.puzzle[r][c].entry === 0
-      )
-        continue;
+  for (let r = 0; r < sudokuBoard.puzzleState.length; r++) {
+    for (let c = 0; c < sudokuBoard.puzzleState[r].length; c++) {
+      if (sudokuBoard.puzzleState[r][c].type === "given") continue;
       const isCellIncorrect = doesCellHaveConflict(sudokuBoard, r, c);
       if (isCellIncorrect === true) {
         return true;
@@ -54,26 +48,6 @@ export const doesBoardHaveConflict = (
     }
   }
   return false;
-};
-
-/**
- * Checks if a given cell in the puzzle has a conflict with the solution.
- *
- * @param r - The row index of the cell.
- * @param c - The column index of the cell.
- * @param cell - The cell object containing its type and entry.
- * @returns True if the cell's entry is incorrect; false otherwise.
- */
-export const doesCellHaveConflict = (
-  sudokuBoard: SudokuObjectProps,
-  r: number,
-  c: number,
-): boolean => {
-  const cell = sudokuBoard.puzzle[r][c];
-  if (cell.type === "note" || cell.entry === 0) {
-    return false;
-  }
-  return !(sudokuBoard.puzzle[r][c].entry === sudokuBoard.puzzleSolution[r][c]);
 };
 
 export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {

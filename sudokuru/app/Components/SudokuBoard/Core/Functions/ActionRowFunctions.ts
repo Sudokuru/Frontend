@@ -1,6 +1,6 @@
 import {
   CellProps,
-  SudokuObjectProps,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { isValueCorrect } from "./BoardFunctions";
 import { getSelectedCells } from "./CellFunctions";
@@ -11,7 +11,7 @@ import { getSelectedCells } from "./CellFunctions";
  * 1. No cells are selected.
  * 2. All selected cells are either given, empty, or correct.
  */
-export const isEraseButtonDisabled = (sudokuBoard: SudokuObjectProps) => {
+export const isEraseButtonDisabled = (sudokuBoard: BoardObjectProps) => {
   const currentSelectedCells: CellProps[] = getSelectedCells(sudokuBoard);
   if (sudokuBoard.selectedCells.length === 0) {
     return true;

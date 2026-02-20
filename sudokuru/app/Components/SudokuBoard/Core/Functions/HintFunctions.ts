@@ -1,5 +1,8 @@
 import { getHint, SudokuStrategy } from "sudokuru";
-import { CellProps } from "../../../../Functions/LocalDatabase";
+import {
+  CellProps,
+  ClassicObjectProps,
+} from "../../../../Functions/LocalDatabase";
 import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 
@@ -14,17 +17,27 @@ import { generateBoxIndex } from "./CellFunctions";
  */
 export const getSudokuHint = (
   puzzle: CellProps[][],
-  solution: number[][],
   strategies: SudokuStrategy[],
+  solution?: number[][],
 ): HintProps => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
-  const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
-  let hint = getHint(
-    puzzleState.puzzleValues,
-    puzzleState.puzzleNotes,
-    strategies,
-    puzzleSolution,
-  ) as unknown as HintProps;
+
+  let hint: HintProps;
+  if (solution) {
+    const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
+    hint = getHint(
+      puzzleState.puzzleValues,
+      puzzleState.puzzleNotes,
+      strategies,
+      puzzleSolution,
+    ) as unknown as HintProps;
+  } else {
+    hint = getHint(
+      puzzleState.puzzleValues,
+      puzzleState.puzzleNotes,
+      strategies,
+    ) as unknown as HintProps;
+  }
   hint = hintInjections(hint);
   return hint;
 };
@@ -91,4 +104,49 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
     puzzleValues: convertedPuzzleValues,
     puzzleNotes: convertedPuzzleNotes,
   };
+};
+
+/**
+ * Retrieves a hint for the current sudoku puzzle board and updates the board's hint statistics.
+ * The hint is generated using the current puzzle state, solution, and a strategy array that determines
+ * the priority order of hint strategies. Per-strategy hint counts are incremented to track which
+ * strategies have been used throughout the game.
+ * @param sudokuBoard - current sudoku board state including puzzle state and statistics
+ * @param strategyArray - order of strategies to use for generating the hint
+ * @returns Object containing the hint information and the updated board with incremented statistics
+ */
+export const getSudokuBoardHint = (
+  sudokuBoard: ClassicObjectProps,
+  strategyArray: SudokuStrategy[],
+) => {
+  strategyArray.unshift("SIMPLIFY_NOTES");
+  strategyArray.unshift("AMEND_NOTES");
+
+  const hint = getSudokuHint(
+    sudokuBoard.puzzleState,
+    strategyArray,
+    sudokuBoard.puzzleSolution,
+  );
+  sudokuBoard.statistics.numHintsUsed++;
+
+  // increment per-strategy hints
+  let incrementedStrategy = false;
+  for (const [
+    i,
+    strategies,
+  ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
+    if (strategies.hintStrategy === hint.strategy) {
+      sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
+      incrementedStrategy = true;
+      break;
+    }
+  }
+  if (!incrementedStrategy) {
+    sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+      hintStrategy: hint.strategy,
+      numHintsUsed: 1,
+    });
+  }
+
+  return { hint, updatedBoard: sudokuBoard };
 };

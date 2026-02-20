@@ -4,23 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
-import { SudokuStrategy } from "sudokuru";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
-interface EndGameModalProps {
-  time: number;
-  numHintsUsed: number;
-  numWrongCellsPlayed: number;
-  numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
-    numHintsUsed: number;
-  }[];
-  score: number;
-  difficulty: string;
-}
-
-const EndGameModal = (props: EndGameModalProps) => {
+export const EndGameModal = ({
+  statistics,
+}: {
+  statistics: ClassicGameStatistics;
+}) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
@@ -54,31 +46,31 @@ const EndGameModal = (props: EndGameModalProps) => {
       >
         <Statistic
           statisticName="Score: "
-          statisticValue={props.score}
+          statisticValue={statistics.score}
           testID="score"
         />
         <Statistic
           statisticName="Time Spent: "
-          statisticValue={formatTime(props.time)}
+          statisticValue={formatTime(statistics.time)}
           testID="time"
         />
         <Statistic
           statisticName="Mistakes Made: "
-          statisticValue={props.numWrongCellsPlayed}
+          statisticValue={statistics.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
         <Statistic
           statisticName="Difficulty: "
-          statisticValue={props.difficulty}
+          statisticValue={statistics.difficulty}
           testID="difficulty"
         />
         <Statistic
           statisticName="Number of Hints Used: "
-          statisticValue={props.numHintsUsed}
+          statisticValue={statistics.numHintsUsed}
           testID="numHintsUsed"
         />
         <NumHintsUsedPerStrategy
-          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
+          numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
         />
       </View>
       <Button

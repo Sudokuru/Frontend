@@ -1,32 +1,29 @@
-import { test } from "../fixture";
-import { SudokuBoardComponent } from "../components/sudoku-board.component";
-import { PlayPage } from "../page/play.page";
+import { test } from "../../fixture";
+import { SudokuBoardComponent } from "../../components/sudoku-board.component";
+import { PlayPage } from "../../page/play.page";
 import {
   AMEND_NOTES_EMPTY_CELL_GAME,
   NEW_EMPTY_GAME,
   OBVIOUS_SINGLE_GAME,
   PROGRESS_INDICATOR_DISABLED_PROFILE,
-} from "../data";
-import { getSingleMultiSelectKey } from "../playwright.config";
-import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../sudokuru/app/Styling/HighlightColors";
-import { ProfilePage } from "../page/profile.page";
+} from "../../data";
+import { getSingleMultiSelectKey } from "../../playwright.config";
+import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../../sudokuru/app/Styling/HighlightColors";
+import { ProfilePage } from "../../page/profile.page";
 import { expect } from "@playwright/test";
-import { HeaderComponent } from "../components/header.component";
+import { HeaderComponent } from "../../components/header.component";
 
 test.describe("hint", () => {
-  test.use({ gameToResume: AMEND_NOTES_EMPTY_CELL_GAME });
+  test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
   const keys = ["h", "H"];
   for (const key of keys) {
     const capital = key === "H" ? "capital " : "";
-    test("hint button: " + capital + key, async ({ resumeGame }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    test("hint button: " + capital + key, async ({ resumeClassicGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[0][0].click();
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
-      await sudokuBoard.page.keyboard.press(key);
+      for (let i = 0; i < 6; i++) {
+        await sudokuBoard.page.keyboard.press(key);
+      }
       await sudokuBoard.cellHasNotes(0, 0, "1");
     });
   }
@@ -36,15 +33,15 @@ test.describe("pause", () => {
   const keys = ["button", "p", "P"];
   for (const key of keys) {
     const capital = key === "P" ? "capital " : "";
-    test("pause button: " + capital + key, async ({ resumeGame }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    test("pause button: " + capital + key, async ({ resumeClassicGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[0][0].click();
       if (key === "button") {
         await sudokuBoard.pause.click();
       } else {
         await sudokuBoard.page.keyboard.press(key);
       }
-      const playPage = new PlayPage(resumeGame);
+      const playPage = new PlayPage(resumeClassicGame);
       await playPage.playPageIsRendered();
       await playPage.resumeButtonIsVisible();
 
@@ -58,10 +55,10 @@ test.describe("pause", () => {
 
 test.describe("typing", () => {
   for (let i = 1; i <= 9; i++) {
-    test(`typing ${i} should fill cell with correct number`, async ({
-      resumeGame,
+    test(`typing ${i} should fill cell with ${i} number`, async ({
+      resumeClassicGame,
     }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
       await sudokuBoard.cell[7][7].press(i.toString());
       await sudokuBoard.cellHasValue(7, 7, i.toString());
@@ -69,10 +66,10 @@ test.describe("typing", () => {
   }
 
   for (let i = 1; i <= 9; i++) {
-    test(`typing ${i} should fill cell with correct note`, async ({
-      resumeGame,
+    test(`typing ${i} should fill cell with ${i} note`, async ({
+      resumeClassicGame,
     }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
       await sudokuBoard.note.click();
       await sudokuBoard.cell[7][7].press(i.toString());
@@ -83,10 +80,10 @@ test.describe("typing", () => {
 
 test.describe("numpad", () => {
   for (let i = 1; i <= 9; i++) {
-    test(`clicking numpad ${i} should fill cell with correct number`, async ({
-      resumeGame,
+    test(`clicking numpad ${i} should fill cell with ${i} number`, async ({
+      resumeClassicGame,
     }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
       await sudokuBoard.numPad[i - 1].click();
       await sudokuBoard.cellHasValue(7, 7, i.toString());
@@ -94,10 +91,10 @@ test.describe("numpad", () => {
   }
 
   for (let i = 1; i <= 9; i++) {
-    test(`clicking numpad ${i} should fill cell with correct note`, async ({
-      resumeGame,
+    test(`clicking numpad ${i} should fill cell with ${i} note`, async ({
+      resumeClassicGame,
     }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
       await sudokuBoard.page.keyboard.press("t");
       await sudokuBoard.numPad[i - 1].click();
@@ -106,34 +103,34 @@ test.describe("numpad", () => {
   }
 });
 
-test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
-  ];
+const initialProgressIndicator = [
+  "77.7778%",
+  "77.7778%",
+  "88.8889%",
+  "66.6667%",
+  "77.7778%",
+  "77.7778%",
+  "77.7778%",
+  "77.7778%",
+  "44.4444%",
+];
 
+test.describe("progress indicator", () => {
   test.use({
-    gameToResume: NEW_EMPTY_GAME,
+    classicGametoResume: NEW_EMPTY_GAME,
   });
 
-  test("should be visible when enabled", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("should be visible when enabled", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.progressIndicatorRendersCorrectly(
       initialProgressIndicator,
     );
   });
 
   test("should not change when incorrect cells are added or removed", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[1][1].click();
     await sudokuBoard.cell[1][1].press("1");
     await sudokuBoard.progressIndicatorRendersCorrectly(
@@ -146,7 +143,7 @@ test.describe("progress indicator", () => {
   });
 
   test("should change when correct cells are added or removed", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
     const updatedProgressIndicator = [
       "77.7778%",
@@ -159,7 +156,7 @@ test.describe("progress indicator", () => {
       "88.8889%",
       "44.4444%",
     ];
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[1][1].click();
     await sudokuBoard.cell[1][1].press("8");
     await sudokuBoard.progressIndicatorRendersCorrectly(
@@ -169,25 +166,13 @@ test.describe("progress indicator", () => {
 });
 
 test.describe("progress indicator", () => {
-  const initialProgressIndicator = [
-    "77.7778%",
-    "77.7778%",
-    "88.8889%",
-    "66.6667%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "77.7778%",
-    "44.4444%",
-  ];
-
   test.use({
-    gameToResume: NEW_EMPTY_GAME,
+    classicGametoResume: NEW_EMPTY_GAME,
     profileStorage: PROGRESS_INDICATOR_DISABLED_PROFILE,
   });
 
-  test("should not be visible when disabled", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("should not be visible when disabled", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.progressIndicatorIsDisabled(initialProgressIndicator);
   });
 });
@@ -224,13 +209,13 @@ test.describe("Initialize Notes", () => {
 });
 
 test.describe("Simplify Notes", () => {
-  test.use({ gameToResume: OBVIOUS_SINGLE_GAME });
+  test.use({ classicGametoResume: OBVIOUS_SINGLE_GAME });
   test("should simplify notes after correct value insertion when enabled", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.featurePreviewSwitchDisabled.click();
     await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
       ratio: 1,
@@ -239,9 +224,9 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("1");
     await sudokuBoard.cellHasContent(0, 5, "568", "notes");
@@ -260,11 +245,11 @@ test.describe("Simplify Notes", () => {
   });
 
   test("should simplify notes after an incorrect then correct value insertion when enabled", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.featurePreviewSwitchDisabled.click();
     await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
       ratio: 1,
@@ -273,9 +258,9 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("2");
     await sudokuBoard.cell[0][0].press("1");
@@ -283,11 +268,11 @@ test.describe("Simplify Notes", () => {
   });
 
   test("should not simplify notes after incorrect value insertion when enabled", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const headerComponent = new HeaderComponent(resumeGame);
+    const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.profile.click();
-    const profilePage = new ProfilePage(resumeGame);
+    const profilePage = new ProfilePage(resumeClassicGame);
     await profilePage.featurePreviewSwitchDisabled.click();
     await expect(profilePage.initializeNotesSwitchEnabled).toBeInViewport({
       ratio: 1,
@@ -296,18 +281,18 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
-    const playPage = new PlayPage(resumeGame);
+    const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("2");
     await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
   });
 
   test("should not simplify notes after correct value insertion when disabled", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("1");
     await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
@@ -322,8 +307,8 @@ test.describe("undo", () => {
       "Undo button should remove value entered on previous move from keypad with: " +
         capital +
         key,
-      async ({ resumeGame }) => {
-        const sudokuBoard = new SudokuBoardComponent(resumeGame);
+      async ({ resumeClassicGame }) => {
+        const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
         await sudokuBoard.cell[7][7].click();
         await sudokuBoard.cell[7][7].press("1");
         await sudokuBoard.cellHasValue(7, 7, "1");
@@ -338,9 +323,9 @@ test.describe("undo", () => {
   }
 
   test("Undo button should remove value entered on previous move from numpad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.numPad[0].click();
     await sudokuBoard.cellHasValue(7, 7, "1");
@@ -349,9 +334,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace value erased on previous move from erase button", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.erase.click();
     await sudokuBoard.cellHasValue(7, 6, "0");
@@ -360,9 +345,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace notes erased on previous move from erase button", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.erase.click();
     await sudokuBoard.cellHasValue(7, 8, "0");
@@ -371,9 +356,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace value overridden on previous move with keypad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.cell[7][6].press("2");
     await sudokuBoard.cellHasValue(7, 6, "2");
@@ -382,9 +367,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace value overridden on previous move with numpad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.numPad[1].click();
     await sudokuBoard.cellHasValue(7, 6, "2");
@@ -393,9 +378,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should remove note entered on previous move with keypad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.page.keyboard.press("T");
     await sudokuBoard.cell[7][7].press("1");
@@ -405,9 +390,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should remove note entered on previous move with numpad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.numPad[0].click();
@@ -417,9 +402,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace note removed on previous move with keypad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.page.keyboard.press("N");
     await sudokuBoard.cell[7][8].press("5");
@@ -429,9 +414,9 @@ test.describe("undo", () => {
   });
 
   test("Undo button should replace note removed on previous move with numpad", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.note.click();
     await sudokuBoard.numPad[4].click();
@@ -441,10 +426,10 @@ test.describe("undo", () => {
   });
 
   test("Undo button should function with a note move spanning multiple cells @os-specific", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
-    await resumeGame.keyboard.down(getSingleMultiSelectKey());
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await resumeClassicGame.keyboard.down(getSingleMultiSelectKey());
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.cell[7][8].click();
 
@@ -461,13 +446,13 @@ test.describe("undo", () => {
   });
 
   test("Undo button should function with an erase move spanning multiple cells", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[6][6].click();
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[8][8].click();
-    await resumeGame.keyboard.up("Shift");
+    await resumeClassicGame.keyboard.up("Shift");
 
     await sudokuBoard.erase.click();
 
@@ -485,18 +470,18 @@ test.describe("undo", () => {
 
 test.describe("erase", () => {
   test("Erase button should be disabled if a cell with a given is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasValue(0, 2, "3");
     await sudokuBoard.cell[0][2].click();
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
   test("Erase hotkey should not work if a cell with a given is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasValue(0, 2, "3");
     await sudokuBoard.cell[0][2].click();
     await sudokuBoard.cell[0][2].press("0");
@@ -504,18 +489,18 @@ test.describe("erase", () => {
   });
 
   test("Erase button should be disabled if a cell with a correct value is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasValue(0, 0, "1");
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
   test("Erase hotkey should not work if a cell with a correct value is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasValue(0, 0, "1");
     await sudokuBoard.cell[0][0].click();
     await sudokuBoard.cell[0][0].press("0");
@@ -523,18 +508,18 @@ test.describe("erase", () => {
   });
 
   test("Erase button should be disabled if an empty cell is selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasValue(7, 7, "0");
     await sudokuBoard.cell[7][7].click();
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
   test("Erasing an incorrect value should succeed for button and all keyboard shortcuts", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][6].click();
     await sudokuBoard.erase.click();
     await sudokuBoard.cellHasValue(7, 6, "0");
@@ -548,8 +533,10 @@ test.describe("erase", () => {
     }
   });
 
-  test("Erasing a cell with notes should succeed", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("Erasing a cell with notes should succeed", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cellHasNotes(7, 8, "45");
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.erase.click();
@@ -557,13 +544,13 @@ test.describe("erase", () => {
   });
 
   test("Erasing multiple cells with notes and incorrect values should succeed", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[6][6].click();
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[8][8].click();
-    await resumeGame.keyboard.up("Shift");
+    await resumeClassicGame.keyboard.up("Shift");
 
     await sudokuBoard.erase.click();
 
@@ -573,24 +560,24 @@ test.describe("erase", () => {
   });
 
   test("Erase button should be disabled if only multiple correct values and givens are selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[2][2].click();
-    await resumeGame.keyboard.up("Shift");
+    await resumeClassicGame.keyboard.up("Shift");
     await sudokuBoard.eraseButtonIsDisabled();
   });
 
   test("Erase hotkey should not work if only multiple correct values and givens are selected", async ({
-    resumeGame,
+    resumeClassicGame,
   }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
     await sudokuBoard.cell[2][2].click();
-    await resumeGame.keyboard.up("Shift");
+    await resumeClassicGame.keyboard.up("Shift");
 
     await sudokuBoard.erase.click();
 
@@ -598,9 +585,25 @@ test.describe("erase", () => {
   });
 });
 
+test.describe("reset", () => {
+  test("reset button should not exist", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await expect(sudokuBoard.reset).not.toBeInViewport({ ratio: 1 });
+  });
+
+  test("reset hotkey should not work", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cellHasNotes(7, 8, "45");
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.page.keyboard.press("1");
+    await sudokuBoard.page.keyboard.press("r");
+    await sudokuBoard.cellHasValue(7, 8, "1");
+  });
+});
+
 test.describe("navigate board", () => {
-  test("Navigate left to right", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("Navigate left to right", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     const keys = ["ArrowRight", "d", "D"];
     for (const key of keys) {
@@ -616,8 +619,8 @@ test.describe("navigate board", () => {
     }
   });
 
-  test("Navigate right to left", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("Navigate right to left", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][8].click();
     const keys = ["ArrowLeft", "a", "A"];
     for (const key of keys) {
@@ -633,8 +636,8 @@ test.describe("navigate board", () => {
     }
   });
 
-  test("Navigate top to bottom", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("Navigate top to bottom", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[0][0].click();
     const keys = ["ArrowDown", "s", "S"];
     for (const key of keys) {
@@ -650,8 +653,8 @@ test.describe("navigate board", () => {
     }
   });
 
-  test("Navigate bottom to top", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("Navigate bottom to top", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[8][0].click();
     const keys = ["ArrowUp", "w", "W"];
     for (const key of keys) {
@@ -672,8 +675,8 @@ test.describe("toggle notes", () => {
   const keys = ["button", "n", "N", "t", "T"];
   for (const key of keys) {
     const capital = key === "N" || key === "T" ? "capital " : "";
-    test("toggle notes: " + capital + key, async ({ resumeGame }) => {
-      const sudokuBoard = new SudokuBoardComponent(resumeGame);
+    test("toggle notes: " + capital + key, async ({ resumeClassicGame }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
       if (key === "button") {
         await sudokuBoard.note.click();
@@ -695,15 +698,15 @@ test.describe("toggle notes", () => {
 });
 
 test.describe("typing with multiple cells selected", () => {
-  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
 
-  test("inserting notes should succeed", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("inserting notes should succeed", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[3][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
 
     await sudokuBoard.cell[5][8].click();
     await sudokuBoard.page.keyboard.press("1");
@@ -719,16 +722,16 @@ test.describe("typing with multiple cells selected", () => {
     await sudokuBoard.cellHasValue(5, 8, "4");
   });
 
-  test.use({ gameToResume: NEW_EMPTY_GAME });
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
 
-  test("inserting values should fail", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("inserting values should fail", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[3][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
     await sudokuBoard.page.keyboard.press("n");
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
 
     await sudokuBoard.cell[5][8].click();
     await sudokuBoard.page.keyboard.press("1");
@@ -746,14 +749,14 @@ test.describe("typing with multiple cells selected", () => {
 });
 
 test.describe("numpad with multiple cells selected", () => {
-  test.use({ gameToResume: NEW_EMPTY_GAME });
-  test("inserting notes should succeed", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test.use({ classicGametoResume: NEW_EMPTY_GAME });
+  test("inserting notes should succeed", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[3][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
 
     await sudokuBoard.cell[5][8].click();
     await sudokuBoard.numPad[0].click();
@@ -769,14 +772,16 @@ test.describe("numpad with multiple cells selected", () => {
     await sudokuBoard.cellHasValue(5, 8, "4");
   });
 
-  test("numpad disabled when not in note mode", async ({ resumeGame }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeGame);
+  test("numpad disabled when not in note mode", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[3][6].click();
     await sudokuBoard.page.keyboard.press("n");
     await sudokuBoard.page.keyboard.press("1");
 
     await sudokuBoard.page.keyboard.press("n");
-    await resumeGame.keyboard.down("Shift");
+    await resumeClassicGame.keyboard.down("Shift");
 
     await sudokuBoard.cell[5][8].click();
     await sudokuBoard.numPad[0].click();

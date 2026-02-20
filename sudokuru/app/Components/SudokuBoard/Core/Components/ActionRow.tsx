@@ -7,24 +7,32 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 interface ActionRowProps {
   isEraseButtonDisabled: boolean;
   isUndoButtonDisabled: boolean;
+  isResetButtonDisabled: boolean;
   inNoteMode: boolean;
   undo: () => void;
   toggleNoteMode: () => void;
   eraseSelected: () => void;
+  reset: () => void;
   getHint: () => void;
   boardHasConflict: boolean;
+  hasResetButton: boolean;
+  hasEraseButton: boolean;
 }
 
 const ActionRow = (props: ActionRowProps) => {
   const {
     isEraseButtonDisabled,
     isUndoButtonDisabled,
+    isResetButtonDisabled,
     inNoteMode,
     undo,
     toggleNoteMode,
     eraseSelected,
+    reset,
     getHint,
     boardHasConflict,
+    hasResetButton,
+    hasEraseButton,
   } = props;
   const cellSize = useCellSize();
   const { theme } = useTheme();
@@ -73,17 +81,38 @@ const ActionRow = (props: ActionRowProps) => {
         />
       </Pressable>
       {/* Erase */}
-      <Pressable
-        onPress={eraseSelected}
-        disabled={isEraseButtonDisabled}
-        testID={"eraseButton"}
-      >
-        <MaterialCommunityIcons
-          color={iconColor}
-          name="eraser"
-          size={cellSize / sizeConst}
-        />
-      </Pressable>
+      {hasEraseButton ? (
+        <Pressable
+          onPress={eraseSelected}
+          disabled={isEraseButtonDisabled}
+          testID={"eraseButton"}
+        >
+          <MaterialCommunityIcons
+            color={iconColor}
+            name="eraser"
+            size={cellSize / sizeConst}
+          />
+        </Pressable>
+      ) : (
+        <></>
+      )}
+      {/* Reset */}
+      {hasResetButton ? (
+        <Pressable
+          onPress={reset}
+          disabled={isResetButtonDisabled}
+          testID={"resetButton"}
+        >
+          <MaterialCommunityIcons
+            color={iconColor}
+            name="restart"
+            size={cellSize / sizeConst}
+          />
+        </Pressable>
+      ) : (
+        <></>
+      )}
+      {/* Hint */}
       <Pressable
         testID={"hintButton"}
         disabled={boardHasConflict}

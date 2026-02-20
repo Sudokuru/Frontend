@@ -1,7 +1,7 @@
 import React from "react";
 import {
   CellLocation,
-  SudokuObjectProps,
+  BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import Cell from "./Cell";
 import {
@@ -12,22 +12,25 @@ import {
 import { HintObjectProps } from "../../SudokuBoard";
 import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { toggleSelectCell } from "../Functions/CellFunctions";
+import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { Theme } from "../../../../Styling/theme";
 
 const RenderCell = (
-  sudokuBoard: SudokuObjectProps,
+  sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: HintObjectProps | undefined,
   r: number,
   c: number,
+  boardMethods: SudokuVariantMethods,
   theme: Theme,
 ) => {
-  const cell = sudokuBoard.puzzle[r][c];
+  const cell = sudokuBoard.puzzleState[r][c];
   const cellBackgroundColor = useCellBackgroundColor(
     sudokuBoard,
     sudokuHint,
     r,
     c,
+    boardMethods.doesCellHaveConflict,
     theme,
   );
   const disable: boolean = isBoardDisabled(sudokuHint);

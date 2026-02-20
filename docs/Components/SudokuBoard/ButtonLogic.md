@@ -22,6 +22,8 @@
 
 Undo button is always enabled unless the history stack is empty.
 
+Reset button is always enabled unless the history stack is empty.
+
 Hint button is always enabled unless there is an incorrect cell on the board.
 This will change when incorrectCell hints get added to Sudokuru package.
 
@@ -39,6 +41,7 @@ Buttons that are always enabled
 "p", "P" - Pause Button  
 "h", "H" - Hint Button  
 "t", "T", "n", "N" - Toggle Notes Button  
+"r", "R" - Reset Button
 1-9 - NumKeys  
 "ArrowLeft", "A", "a" - Move selected cells left  
 "ArrowRight", "D", "d" - Move selected cells right  

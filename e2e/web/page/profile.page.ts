@@ -20,6 +20,8 @@ export class ProfilePage {
   readonly highlightColumnSwitchDisabled: Locator;
   readonly featurePreviewSwitchEnabled: Locator;
   readonly featurePreviewSwitchDisabled: Locator;
+  readonly drillsSwitchEnabled: Locator;
+  readonly drillsSwitchDisabled: Locator;
   readonly initializeNotesSwitchEnabled: Locator;
   readonly initializeNotesSwitchDisabled: Locator;
   readonly simplifyNotesSwitchEnabled: Locator;
@@ -64,6 +66,8 @@ export class ProfilePage {
     this.featurePreviewSwitchDisabled = page.getByTestId(
       "FeaturePreviewDisabled",
     );
+    this.drillsSwitchEnabled = page.getByTestId("DrillsEnabled");
+    this.drillsSwitchDisabled = page.getByTestId("DrillsDisabled");
     this.initializeNotesSwitchEnabled = page.getByTestId(
       "InitializeNotesEnabled",
     );

@@ -28,7 +28,8 @@ const HomePage = () => {
   const windowSize = useNewWindowDimensions();
   const minWindowSize = useMinWindowDimensions();
 
-  const { featurePreviewSetting } = React.useContext(PreferencesContext);
+  const { featurePreviewSetting, drillModeSetting } =
+    React.useContext(PreferencesContext);
 
   const PLAY_SUDOKU_LOGO = require("../../.assets/playSudokuLogo.png");
   const START_LESSONS_LOGO = require("../../.assets/startLessonsLogo.png");
@@ -83,7 +84,7 @@ const HomePage = () => {
           navigationPage="LearnPage"
           testID="HomeLearnButton"
         />
-        {featurePreviewSetting && (
+        {featurePreviewSetting && drillModeSetting && (
           <NavigationButton
             image={
               theme.useDarkTheme
