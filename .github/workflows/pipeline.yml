@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   push:
     paths-ignore:
-      - ".github/**"
       - "docs/**"
       - "e2e/**"
       - "**/*.test.ts"
@@ -17,7 +16,6 @@ on:
       - main
   pull_request:
     paths-ignore:
-      - ".github/**"
       - "docs/**"
       - "README.md"
       - "License.md"
@@ -53,12 +51,12 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:${{matrix.language}}"
 
@@ -93,7 +91,7 @@ jobs:
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@b184ff86a3c926240f1b6db41764c83a01c02eef
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
@@ -101,10 +99,12 @@ jobs:
         run: npm ci
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        uses: expo/expo-github-action/preview@v8
+        uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
         with:
           working-directory: sudokuru
-          command: eas update --branch preview --message "${{ github.event.pull_request.title }}"
+          command: eas update --branch preview --message "$PR_TITLE"
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
       - name: Cloudflare dev preview deployment
         id: deployment
         uses: ./.github/workflows/composite-actions/cloudflare-deployment
@@ -114,7 +114,7 @@ jobs:
           api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       - name: Post comment with preview link
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
-        uses: KeisukeYamashita/create-comment@v1
+        uses: KeisukeYamashita/create-comment@0804a1078ca107e7507c6943f646386d8465b594
         with:
           check-only-first-line: true
           comment: |
@@ -144,7 +144,7 @@ jobs:
           CODE_COVERAGE: 'true'
           WORKERS: 0
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
+        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         if: always()
         with:
           files: e2e/web/playwright-report/results.xml
@@ -156,7 +156,7 @@ jobs:
           path: e2e/web/test-results/*
       - name: Upload coverage reports to Codecov
         if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -186,7 +186,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: 🏗 Setup Expo and EAS
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@b184ff86a3c926240f1b6db41764c83a01c02eef
         with:
           expo-version: latest
           eas-version: latest
@@ -205,11 +205,16 @@ jobs:
           path: sudokuru/Build/*.apk
 
   app_build_desktop:
+    name: app_build_desktop ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix:
-        platform: [ [linux, ubuntu-22.04], [windows, windows-latest] ]
-    runs-on: ${{ matrix.platform[1] }}
+        include:
+          - name: linux
+            platform: ubuntu-22.04
+          - name: windows
+            platform: windows-latest
+    runs-on: ${{ matrix.platform }}
     needs: [ code_scan, analyze ]
     steps:
       - uses: actions/checkout@v4
@@ -220,22 +225,24 @@ jobs:
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@f7ccc83f9ed1e5b9c81d8a67d7ad1a747e22a561
+        with:
+          toolchain: stable
       - name: install ubuntu dependencies
-        if: matrix.platform[1] == 'ubuntu-22.04'
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
         run: npm ci
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
         id: tauri_build
         with:
           tauriScript: npm run tauri:run
-      - name: Upload ${{ matrix.platform[0] }} Artifact
+      - name: Upload ${{ matrix.name }} Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform[0] }} binary
+          name: ${{ matrix.name }} binary
           path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
 
   deploy_app_dev:
@@ -253,16 +260,24 @@ jobs:
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
+      - name: Rename Android APK for Itch.io
+        if: ${{ matrix.binary_name == 'android' }}
+        run: |
+          mv bundle/*.apk bundle/$ITCH_GAME_ID-alpha-${{matrix.binary_name}}.apk
+        env:
+          ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Alpha App
-        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:alpha-${{matrix.binary_name}}
+        run: ./butler push bundle $ITCH_USERNAME/$ITCH_GAME_ID:alpha-${{matrix.binary_name}}
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+          ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
+          ITCH_USERNAME: ${{ secrets.ITCH_USERNAME }}
 
   deploy_app_prod:
     name: Deploy Prod app to Itch.io
@@ -279,16 +294,24 @@ jobs:
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
+      - name: Rename Android APK for Itch.io
+        if: ${{ matrix.binary_name == 'android' }}
+        run: |
+          mv bundle/*.apk bundle/$ITCH_GAME_ID-stable-${{matrix.binary_name}}.apk
+        env:
+          ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Prod App
-        run: ./butler push bundle ${{secrets.ITCH_USERNAME}}/${{secrets.ITCH_GAME_ID}}:stable-${{matrix.binary_name}}
+        run: ./butler push bundle $ITCH_USERNAME/$ITCH_GAME_ID:stable-${{matrix.binary_name}}
         env:
           BUTLER_API_KEY: ${{secrets.BUTLER_API_KEY}}
+          ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
+          ITCH_USERNAME: ${{ secrets.ITCH_USERNAME }}
 
   deploy_website_dev:
     name: Deploy Dev Website
