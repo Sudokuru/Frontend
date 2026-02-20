@@ -7,9 +7,9 @@ import { NOVICE_PUZZLES } from "../../../../Data/puzzles/novice_puzzles";
 import { PROFESSIONAL_PUZZLES } from "../../../../Data/puzzles/professional_puzzles";
 import { PROTEGE_PUZZLES } from "../../../../Data/puzzles/protege_puzzles";
 import { PUNDIT_PUZZLES } from "../../../../Data/puzzles/pundit_puzzles";
+import { InputPuzzle } from "../../../../Data/puzzles/puzzle.types";
 import { TRAINEE_PUZZLES } from "../../../../Data/puzzles/trainee_puzzles";
 import {
-  InputPuzzle,
   BoardObjectProps,
   ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";

@@ -3,12 +3,6 @@ import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
 
-export interface InputPuzzle {
-  p: string; // initial puzzle string
-  s: string; // solution string
-  d: number; // difficulty
-}
-
 export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
   version: number;
