@@ -1,9 +1,65 @@
 import { useCellSize } from "../Functions/BoardFunctions";
-import { Platform, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text } from "react-native-paper";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+
+const FALLBACK_CELL_SIZE = 30;
+const ROW_WIDTH_IN_CELLS = 9;
+const ROW_BOTTOM_MARGIN_RATIO = 0.25;
+const ROW_HEIGHT_RATIO = 1.35;
+const ACTION_BUTTON_WIDTH_RATIO = 1.55;
+const ACTION_BUTTON_HEIGHT_RATIO = 1.2;
+const ACTION_ICON_RATIO = 1.45;
+const ACTION_LABEL_RATIO = 5;
+
+interface ActionButtonProps {
+  iconName: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+  label: string;
+  onPress: () => void;
+  disabled: boolean;
+  testID: string;
+  iconColor: string;
+  buttonWidth: number;
+  buttonHeight: number;
+  iconSize: number;
+  labelSize: number;
+}
+
+const ActionButton = ({
+  iconName,
+  label,
+  onPress,
+  disabled,
+  testID,
+  iconColor,
+  buttonWidth,
+  buttonHeight,
+  iconSize,
+  labelSize,
+}: ActionButtonProps) => {
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      testID={testID}
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: buttonWidth,
+        height: buttonHeight,
+      }}
+    >
+      <MaterialCommunityIcons
+        color={iconColor}
+        name={iconName}
+        size={iconSize}
+      />
+      <Text style={{ color: iconColor, fontSize: labelSize }}>{label}</Text>
+    </Pressable>
+  );
+};
 
 interface ActionRowProps {
   isEraseButtonDisabled: boolean;
@@ -41,136 +97,89 @@ const ActionRow = (props: ActionRowProps) => {
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
 
-  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
-  let fallbackHeight = 30;
-  const actionBaseSize = cellSize || fallbackHeight;
-  const actionButtonWidth = actionBaseSize * 1.55;
-  const actionButtonHeight = actionBaseSize * 1.2;
-  const actionIconSize = actionBaseSize / (1.45 * sizeConst);
-  const actionLabelSize = actionBaseSize / (5 * sizeConst);
+  const actionBaseSize = cellSize || FALLBACK_CELL_SIZE;
+  const actionButtonWidth = actionBaseSize * ACTION_BUTTON_WIDTH_RATIO;
+  const actionButtonHeight = actionBaseSize * ACTION_BUTTON_HEIGHT_RATIO;
+  const actionIconSize = actionBaseSize / ACTION_ICON_RATIO;
+  const actionLabelSize = actionBaseSize / ACTION_LABEL_RATIO;
 
   const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
 
   return (
     <View
       style={{
-        width: actionBaseSize * 9,
-        height: actionBaseSize * 1.35,
+        width: actionBaseSize * ROW_WIDTH_IN_CELLS,
+        height: actionBaseSize * ROW_HEIGHT_RATIO,
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        marginBottom: actionBaseSize * (1 / 4),
+        marginBottom: actionBaseSize * ROW_BOTTOM_MARGIN_RATIO,
       }}
     >
-      {/* Undo */}
-      <Pressable
+      <ActionButton
+        iconName="undo"
+        label="UNDO"
         onPress={undo}
         disabled={isUndoButtonDisabled}
-        testID={"undoButton"}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: actionButtonWidth,
-          height: actionButtonHeight,
-        }}
-      >
-        <MaterialCommunityIcons
-          color={iconColor}
-          name="undo"
-          size={actionIconSize}
-        />
-        <Text style={{ color: iconColor, fontSize: actionLabelSize }}>
-          UNDO
-        </Text>
-      </Pressable>
-      {/* Note mode */}
-      <Pressable
+        testID="undoButton"
+        iconColor={iconColor}
+        buttonWidth={actionButtonWidth}
+        buttonHeight={actionButtonHeight}
+        iconSize={actionIconSize}
+        labelSize={actionLabelSize}
+      />
+      <ActionButton
+        iconName={noteIcon}
+        label="NOTES/VALUE"
         onPress={toggleNoteMode}
         disabled={false}
-        testID={"toggleNoteModeButton"}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: actionButtonWidth,
-          height: actionButtonHeight,
-        }}
-      >
-        <MaterialCommunityIcons
-          color={iconColor}
-          name={noteIcon}
-          size={actionIconSize}
-        />
-        <Text style={{ color: iconColor, fontSize: actionLabelSize }}>
-          NOTES/VALUE
-        </Text>
-      </Pressable>
-      {/* Erase */}
+        testID="toggleNoteModeButton"
+        iconColor={iconColor}
+        buttonWidth={actionButtonWidth}
+        buttonHeight={actionButtonHeight}
+        iconSize={actionIconSize}
+        labelSize={actionLabelSize}
+      />
       {hasEraseButton ? (
-        <Pressable
+        <ActionButton
+          iconName="eraser"
+          label="ERASE"
           onPress={eraseSelected}
           disabled={isEraseButtonDisabled}
-          testID={"eraseButton"}
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            width: actionButtonWidth,
-            height: actionButtonHeight,
-          }}
-        >
-          <MaterialCommunityIcons
-            color={iconColor}
-            name="eraser"
-            size={actionIconSize}
-          />
-          <Text style={{ color: iconColor, fontSize: actionLabelSize }}>
-            ERASE
-          </Text>
-        </Pressable>
+          testID="eraseButton"
+          iconColor={iconColor}
+          buttonWidth={actionButtonWidth}
+          buttonHeight={actionButtonHeight}
+          iconSize={actionIconSize}
+          labelSize={actionLabelSize}
+        />
       ) : null}
-      {/* Reset */}
       {hasResetButton ? (
-        <Pressable
+        <ActionButton
+          iconName="restart"
+          label="RESET"
           onPress={reset}
           disabled={isResetButtonDisabled}
-          testID={"resetButton"}
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            width: actionButtonWidth,
-            height: actionButtonHeight,
-          }}
-        >
-          <MaterialCommunityIcons
-            color={iconColor}
-            name="restart"
-            size={actionIconSize}
-          />
-          <Text style={{ color: iconColor, fontSize: actionLabelSize }}>
-            RESET
-          </Text>
-        </Pressable>
-      ) : null}
-      {/* Hint */}
-      <Pressable
-        testID={"hintButton"}
-        disabled={boardHasConflict}
-        onPress={getHint}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: actionButtonWidth,
-          height: actionButtonHeight,
-        }}
-      >
-        <MaterialCommunityIcons
-          color={iconColor}
-          name="help"
-          size={actionIconSize}
+          testID="resetButton"
+          iconColor={iconColor}
+          buttonWidth={actionButtonWidth}
+          buttonHeight={actionButtonHeight}
+          iconSize={actionIconSize}
+          labelSize={actionLabelSize}
         />
-        <Text style={{ color: iconColor, fontSize: actionLabelSize }}>
-          HINT
-        </Text>
-      </Pressable>
+      ) : null}
+      <ActionButton
+        iconName="help"
+        label="HINT"
+        onPress={getHint}
+        disabled={boardHasConflict}
+        testID="hintButton"
+        iconColor={iconColor}
+        buttonWidth={actionButtonWidth}
+        buttonHeight={actionButtonHeight}
+        iconSize={actionIconSize}
+        labelSize={actionLabelSize}
+      />
     </View>
   );
 };
