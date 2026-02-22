@@ -44,10 +44,18 @@ const DrawerNavigator = () => {
         >
           <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
-          <Drawer.Screen name="SudokuPage" component={SudokuPage} />
+          <Drawer.Screen
+            name="SudokuPage"
+            component={SudokuPage}
+            options={{ headerShown: false }}
+          />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
-          <Drawer.Screen name="DrillGame" component={DrillGame} />
+          <Drawer.Screen
+            name="DrillGame"
+            component={DrillGame}
+            options={{ headerShown: false }}
+          />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           {/* @ts-ignore */}
           <Drawer.Screen name="Lesson" component={Lesson} />
