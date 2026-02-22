@@ -8,11 +8,11 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 const FALLBACK_CELL_SIZE = 30;
 const ROW_WIDTH_IN_CELLS = 9;
 const ROW_BOTTOM_MARGIN_RATIO = 0.25;
-const ROW_HEIGHT_RATIO = 1.35;
+const ROW_HEIGHT_RATIO = 1.8;
 const ACTION_BUTTON_WIDTH_RATIO = 1.55;
-const ACTION_BUTTON_HEIGHT_RATIO = 1.2;
-const ACTION_ICON_RATIO = 1.45;
-const ACTION_LABEL_RATIO = 5;
+const ACTION_BUTTON_HEIGHT_RATIO = 1.6;
+const ACTION_ICON_RATIO = 1.4;
+const ACTION_LABEL_RATIO = 2.2;
 
 interface ActionButtonProps {
   iconName: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
@@ -56,7 +56,11 @@ const ActionButton = ({
         name={iconName}
         size={iconSize}
       />
-      <Text style={{ color: iconColor, fontSize: labelSize }}>{label}</Text>
+      <Text
+        style={{ color: iconColor, fontSize: labelSize, fontWeight: "bold" }}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 };
@@ -130,7 +134,7 @@ const ActionRow = (props: ActionRowProps) => {
       />
       <ActionButton
         iconName={noteIcon}
-        label="NOTES/VALUE"
+        label={inNoteMode ? "VALUE" : "NOTE"}
         onPress={toggleNoteMode}
         disabled={false}
         testID="toggleNoteModeButton"
