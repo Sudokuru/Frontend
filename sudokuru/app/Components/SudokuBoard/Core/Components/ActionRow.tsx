@@ -7,7 +7,7 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 const FALLBACK_CELL_SIZE = 30;
 const ROW_WIDTH_IN_CELLS = 9;
-const ROW_HEIGHT_RATIO = 1.8;
+const ROW_HEIGHT_RATIO = 1.6;
 const ACTION_BUTTON_WIDTH_RATIO = 1.55;
 const ACTION_BUTTON_HEIGHT_RATIO = 1.6;
 const ACTION_ICON_RATIO = 1.4;
