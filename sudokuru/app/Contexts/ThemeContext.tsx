@@ -9,6 +9,7 @@ import {
   MD3LightTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import { Platform } from "react-native";
 import { Theme, themes, ThemeName, THEME_OPTIONS } from "../Styling/theme";
 import { getStoredTheme, setStoredTheme } from "../Api/Theme";
 
@@ -39,6 +40,13 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const theme = themes[themeName];
+
+  // Set document.body background on web to match theme
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      document.body.style.backgroundColor = theme.colors.bg;
+    }
+  }, [theme.colors.bg]);
 
   const md3Theme = theme.useDarkTheme ? MD3DarkTheme : MD3LightTheme;
   const navTheme = theme.useDarkTheme
