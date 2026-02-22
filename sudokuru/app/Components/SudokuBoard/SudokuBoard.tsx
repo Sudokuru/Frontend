@@ -36,7 +36,7 @@ import {
   SudokuVariantMethods,
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
-import { useKeyboardHotkeys } from "./useKeyboardHotkeys";
+import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";

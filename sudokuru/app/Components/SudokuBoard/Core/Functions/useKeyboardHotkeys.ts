@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 import { Platform } from "react-native";
-import { doesBoardHaveConflict, wrapDigit } from "./SudokuBoardFunctions";
-import { BoardObjectProps, GameVariant } from "../../Functions/LocalDatabase";
+import { doesBoardHaveConflict, wrapDigit } from "../../SudokuBoardFunctions";
+import {
+  BoardObjectProps,
+  GameVariant,
+} from "../../../../Functions/LocalDatabase";
 
 interface UseKeyboardHotkeysProps {
   boardType: GameVariant;
