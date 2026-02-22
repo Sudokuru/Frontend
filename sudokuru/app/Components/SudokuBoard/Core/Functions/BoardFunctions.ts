@@ -22,17 +22,12 @@ export function useCellSize(): number {
 
   const MOBILE_BREAKPOINT = 768;
   const MAX_BOARD_SIZE = 640;
-  const LARGE_SCREEN_WIDTH_RATIO = 0.75;
-  const LARGE_SCREEN_HEIGHT_RATIO = 0.9;
+  const shortestSide = Math.min(width, height);
 
-  const isSmallScreen = width < MOBILE_BREAKPOINT;
-  const boardSize = isSmallScreen
-    ? Math.min(width, height)
-    : Math.min(
-        width * LARGE_SCREEN_WIDTH_RATIO,
-        height * LARGE_SCREEN_HEIGHT_RATIO,
-        MAX_BOARD_SIZE,
-      );
+  const boardSize =
+    width < MOBILE_BREAKPOINT
+      ? width
+      : Math.min(shortestSide * 0.9, MAX_BOARD_SIZE);
 
   return boardSize / 9;
 }
