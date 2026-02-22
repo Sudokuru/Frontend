@@ -97,7 +97,7 @@ export const useKeyboardHotkeys = ({
     }
 
     if (/^[1-9]$/.test(inputValue)) {
-      updateCellEntryRef.current?.(parseInt(inputValue, 10));
+      updateCellEntryRef.current?.(Number.parseInt(inputValue, 10));
       return;
     }
 
@@ -148,13 +148,13 @@ export const useKeyboardHotkeys = ({
     });
   };
 
-  // Setup keyboard event listeners for web platform using window.addEventListener
+  // Setup keyboard event listeners for web platform using globalThis.addEventListener
   // This allows hotkeys to work without requiring board focus
   useEffect(() => {
     if (Platform.OS !== "web") return;
 
-    window.addEventListener("keydown", handleWindowKeyDown);
-    return () => window.removeEventListener("keydown", handleWindowKeyDown);
+    globalThis.addEventListener("keydown", handleWindowKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleWindowKeyDown);
   }, []);
 
   return {
