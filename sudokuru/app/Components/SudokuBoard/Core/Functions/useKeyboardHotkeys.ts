@@ -35,12 +35,12 @@ export const useKeyboardHotkeys = ({
   const sudokuHintRef = useRef<any>(null);
 
   /**
-   * When a user presses a key down, do the desired action via window.addEventListener
+   * When a user presses a key down, do the desired action via globalThis.addEventListener
    * Uses refs to access current state and function implementations
    * @param event keyboard event
    * @returns void
    */
-  const handleWindowKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (!sudokuBoardRef.current) return;
 
     const inputValue = event.key;
@@ -191,8 +191,8 @@ export const useKeyboardHotkeys = ({
   useEffect(() => {
     if (Platform.OS !== "web") return;
 
-    globalThis.addEventListener("keydown", handleWindowKeyDown);
-    return () => globalThis.removeEventListener("keydown", handleWindowKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return {
