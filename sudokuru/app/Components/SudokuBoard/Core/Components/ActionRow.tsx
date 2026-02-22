@@ -7,7 +7,6 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 const FALLBACK_CELL_SIZE = 30;
 const ROW_WIDTH_IN_CELLS = 9;
-const ROW_BOTTOM_MARGIN_RATIO = 0.25;
 const ROW_HEIGHT_RATIO = 1.8;
 const ACTION_BUTTON_WIDTH_RATIO = 1.55;
 const ACTION_BUTTON_HEIGHT_RATIO = 1.6;
@@ -117,7 +116,6 @@ const ActionRow = (props: ActionRowProps) => {
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        marginBottom: actionBaseSize * ROW_BOTTOM_MARGIN_RATIO,
       }}
     >
       <ActionButton
