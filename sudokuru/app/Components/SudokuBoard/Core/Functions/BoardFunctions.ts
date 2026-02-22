@@ -15,15 +15,26 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
 
 /**
  * This function retrieves the user's device size and calculates the cell size
- * board has width and height dimensions of 1 x 1.44444
+ * board has width and height dimensions
  */
 export function useCellSize(): number {
-  const size = useWindowDimensions();
-  return Math.min(size.width * 1.44444, size.height) / 15;
-}
+  const { width, height } = useWindowDimensions();
 
-export function useBoardSize(): number {
-  return useCellSize() * 9;
+  const MOBILE_BREAKPOINT = 768;
+  const MAX_BOARD_SIZE = 640;
+  const LARGE_SCREEN_WIDTH_RATIO = 0.75;
+  const LARGE_SCREEN_HEIGHT_RATIO = 0.9;
+
+  const isSmallScreen = width < MOBILE_BREAKPOINT;
+  const boardSize = isSmallScreen
+    ? Math.min(width, height)
+    : Math.min(
+        width * LARGE_SCREEN_WIDTH_RATIO,
+        height * LARGE_SCREEN_HEIGHT_RATIO,
+        MAX_BOARD_SIZE,
+      );
+
+  return boardSize / 9;
 }
 
 export const isValueCorrect = (
