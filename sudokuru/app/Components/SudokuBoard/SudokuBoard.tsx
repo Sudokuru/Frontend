@@ -1,11 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
-import {
-  doesBoardHaveConflict,
-  isGameSolved,
-  wrapDigit,
-} from "./SudokuBoardFunctions";
+import { doesBoardHaveConflict, isGameSolved } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Core/Components/NumberControl";
 import ActionRow from "./Core/Components/ActionRow";
@@ -40,6 +36,7 @@ import {
   SudokuVariantMethods,
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
+import { useKeyboardHotkeys } from "./useKeyboardHotkeys";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -90,141 +87,23 @@ const SudokuBoard = (props: Board) => {
     progressIndicatorSetting,
   } = React.useContext(PreferencesContext);
 
-  // Refs to capture current function implementations for keyboard handler
-  const undoRef = useRef<any>(null);
-  const toggleNoteModeRef = useRef<any>(null);
-  const getHintRef = useRef<any>(null);
-  const resetRef = useRef<any>(null);
-  const updateCellEntryRef = useRef<any>(null);
-  const eraseSelectedRef = useRef<any>(null);
-  const updateHintStageRef = useRef<any>(null);
-
-  // Refs for state to capture current values in keyboard handler
-  const sudokuBoardRef = useRef<any>(sudokuBoard);
-  const sudokuHintRef = useRef<any>(sudokuHint);
-
-  /**
-   * When a user presses a key down, do the desired action via window.addEventListener
-   * Uses refs to access current state and function implementations
-   * @param event keyboard event
-   * @returns void
-   */
-  const handleWindowKeyDown = (event: KeyboardEvent) => {
-    if (!sudokuBoardRef.current) return;
-
-    const inputValue = event.key;
-    const board = sudokuBoardRef.current;
-    const hint = sudokuHintRef.current;
-
-    switch (inputValue) {
-      case "u":
-      case "U":
-        if (board.actionHistory.length !== 0) {
-          undoRef.current?.();
-        }
-        return;
-      case "p":
-      case "P":
-        boardMethods[props.type].handlePause(board, navigation);
-        return;
-      case "t":
-      case "T":
-      case "n":
-      case "N":
-        toggleNoteModeRef.current?.();
-        return;
-      case "H":
-      case "h":
-        if (
-          !doesBoardHaveConflict(
-            board,
-            boardMethods[props.type].doesCellHaveConflict,
-          )
-        ) {
-          if (hint) {
-            updateHintStageRef.current?.(
-              1,
-              boardMethods[props.type].finishSudokuGame,
-            );
-          } else {
-            getHintRef.current?.();
-          }
-        }
-        return;
-      case "R":
-      case "r":
-        if (boardMethods[props.type].hasResetActionButton() === true) {
-          resetRef.current?.();
-        }
-        return;
-      default:
-        break;
-    }
-
-    if (board.selectedCells.length === 0) {
-      return;
-    }
-
-    if (/^[1-9]$/.test(inputValue)) {
-      updateCellEntryRef.current?.(parseInt(inputValue, 10));
-      return;
-    }
-
-    switch (inputValue) {
-      case "Delete":
-      case "Backspace":
-      case "0":
-      case "e":
-      case "E":
-        if (boardMethods[props.type].hasEraseActionButton() === true) {
-          eraseSelectedRef.current?.();
-        }
-        break;
-    }
-
-    for (let i = 0; i < board.selectedCells.length; i++) {
-      let newCol = board.selectedCells[i].c;
-      let newRow = board.selectedCells[i].r;
-      switch (inputValue) {
-        case "ArrowLeft":
-        case "a":
-        case "A":
-          newCol = wrapDigit(newCol - 1);
-          break;
-        case "ArrowRight":
-        case "d":
-        case "D":
-          newCol = wrapDigit(newCol + 1);
-          break;
-        case "ArrowUp":
-        case "w":
-        case "W":
-          newRow = wrapDigit(newRow - 1);
-          break;
-        case "ArrowDown":
-        case "s":
-        case "S":
-          newRow = wrapDigit(newRow + 1);
-          break;
-        default:
-          return;
-      }
-      board.selectedCells[i] = { r: newRow, c: newCol };
-    }
-    setSudokuBoard({
-      ...board,
-      selectedCells: board.selectedCells,
-    });
-  };
-
-  // Setup keyboard event listeners for web platform using window.addEventListener
-  // This allows hotkeys to work without requiring board focus
-  useEffect(() => {
-    if (Platform.OS !== "web") return;
-
-    window.addEventListener("keydown", handleWindowKeyDown);
-    return () => window.removeEventListener("keydown", handleWindowKeyDown);
-  }, []);
+  // Call keyboard hotkeys hook early (before early returns) to satisfy React hooks rules
+  const {
+    undoRef,
+    toggleNoteModeRef,
+    getHintRef,
+    resetRef,
+    updateCellEntryRef,
+    eraseSelectedRef,
+    updateHintStageRef,
+    sudokuBoardRef,
+    sudokuHintRef,
+  } = useKeyboardHotkeys({
+    boardType: props.type,
+    navigation,
+    boardMethods,
+    setSudokuBoard,
+  });
 
   useEffect(() => {
     let initializeNotes = false;
@@ -922,7 +801,7 @@ const SudokuBoard = (props: Board) => {
     }
   };
 
-  // Update all function refs so keyboard handler always calls current versions
+  // Sync keyboard handler refs on every render to access fresh state and functions
   undoRef.current = undo;
   toggleNoteModeRef.current = toggleNoteMode;
   getHintRef.current = getHint;
@@ -930,8 +809,6 @@ const SudokuBoard = (props: Board) => {
   updateCellEntryRef.current = updateCellEntry;
   eraseSelectedRef.current = eraseSelected;
   updateHintStageRef.current = updateHintStage;
-
-  // Update state refs so keyboard handler has access to current state
   sudokuBoardRef.current = sudokuBoard;
   sudokuHintRef.current = sudokuHint;
 
