@@ -38,7 +38,7 @@ const NoteGrid = (props: {
     if (entry.includes(noteIndex)) {
       const styleVal: StyleProp<TextStyle> = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-        fontFamily: "Inter_200ExtraLight",
+        fontFamily: "Inter_400Regular",
         color: noteColor[noteIndex - 1],
       };
       return (
