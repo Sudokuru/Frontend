@@ -13,6 +13,8 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
  * todo functions will be documented, sorted, and optimized
  */
 
+export const MOBILE_BREAKPOINT = 768;
+
 /**
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions
@@ -20,7 +22,6 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
 
-  const MOBILE_BREAKPOINT = 768;
   const MAX_BOARD_SIZE = 640;
   const shortestSide = Math.min(width, height);
 

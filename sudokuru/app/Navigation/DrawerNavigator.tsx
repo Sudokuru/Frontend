@@ -16,11 +16,14 @@ import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useWindowDimensions } from "react-native";
+import { MOBILE_BREAKPOINT } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const { theme } = useTheme();
+  const { width } = useWindowDimensions();
 
   return (
     <SafeAreaProvider>
@@ -47,14 +50,14 @@ const DrawerNavigator = () => {
           <Drawer.Screen
             name="SudokuPage"
             component={SudokuPage}
-            options={{ headerShown: false }}
+            options={{ headerShown: width < MOBILE_BREAKPOINT ? false : true }}
           />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
           <Drawer.Screen
             name="DrillGame"
             component={DrillGame}
-            options={{ headerShown: false }}
+            options={{ headerShown: width < MOBILE_BREAKPOINT ? false : true }}
           />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           {/* @ts-ignore */}
