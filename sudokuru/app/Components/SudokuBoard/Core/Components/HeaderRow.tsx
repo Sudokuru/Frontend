@@ -44,20 +44,17 @@ const HeaderRow = (props: HeaderRowProps) => {
       style={{
         alignSelf: "center",
         width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
+        height: cellSize ? cellSize * 0.9 : fallbackHeight * 0.9,
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        marginTop: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2),
       }}
     >
       <View style={{ width: cellSize * 3 }}>
         <Text
           style={{
             fontFamily: "Inter_400Regular",
-            fontSize: cellSize
-              ? cellSize * (1 / 3) + 1
-              : fallbackHeight * (1 / 3) + 1,
+            fontSize: cellSize ? cellSize * 0.42 : fallbackHeight * 0.42,
             color: theme.useDarkTheme
               ? theme.semantic.text.inverse
               : theme.semantic.text.info,
@@ -70,9 +67,7 @@ const HeaderRow = (props: HeaderRowProps) => {
         <Text
           style={{
             fontFamily: "Inter_400Regular",
-            fontSize: cellSize
-              ? cellSize * (1 / 3.5) + 1
-              : fallbackHeight * (1 / 3.5) + 1,
+            fontSize: cellSize ? cellSize * 0.39 : fallbackHeight * 0.39,
             color: theme.useDarkTheme
               ? theme.semantic.text.inverse
               : theme.semantic.text.info,
