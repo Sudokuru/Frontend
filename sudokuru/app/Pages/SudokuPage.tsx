@@ -3,6 +3,7 @@ import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { useIsFocused } from "@react-navigation/native";
 import { Text } from "react-native-paper";
+import { ScrollView } from "react-native";
 
 const SudokuPage = ({ route }: any) => {
   const { action } = route.params;
@@ -12,10 +13,10 @@ const SudokuPage = ({ route }: any) => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <>
+    <ScrollView>
       <SudokuBoard type="classic" action={action} difficulty={difficulty} />
       <StatusBar style="auto" />
-    </>
+    </ScrollView>
   );
 };
 

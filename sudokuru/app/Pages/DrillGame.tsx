@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -19,8 +19,8 @@ const Drill = (props: any) => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <View
-      style={{
+    <ScrollView
+      contentContainerStyle={{
         display: "flex",
         flexDirection: "row",
       }}
@@ -36,7 +36,7 @@ const Drill = (props: any) => {
         <SudokuBoard type="drill" action={action} strategy={strategy} />
         <StatusBar style="auto" />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
