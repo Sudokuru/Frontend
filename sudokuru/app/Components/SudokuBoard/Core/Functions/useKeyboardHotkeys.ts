@@ -47,23 +47,50 @@ export const useKeyboardHotkeys = ({
     const board = sudokuBoardRef.current;
     const hint = sudokuHintRef.current;
 
+    if (
+      handleGlobalHotkeys({
+        inputValue,
+        board,
+        hint,
+      })
+    )
+      return;
+
+    if (board.selectedCells.length === 0) {
+      return;
+    }
+
+    if (handleDigitEntry(inputValue)) return;
+    if (handleErase(inputValue)) return;
+    handleNavigation(inputValue, board);
+  };
+
+  const handleGlobalHotkeys = ({
+    inputValue,
+    board,
+    hint,
+  }: {
+    inputValue: string;
+    board: BoardObjectProps;
+    hint: any;
+  }) => {
     switch (inputValue) {
       case "u":
       case "U":
         if (board.actionHistory.length !== 0) {
           undoRef.current?.();
         }
-        return;
+        return true;
       case "p":
       case "P":
         boardMethods[boardType].handlePause(board, navigation);
-        return;
+        return true;
       case "t":
       case "T":
       case "n":
       case "N":
         toggleNoteModeRef.current?.();
-        return;
+        return true;
       case "H":
       case "h":
         if (
@@ -81,26 +108,27 @@ export const useKeyboardHotkeys = ({
             getHintRef.current?.();
           }
         }
-        return;
+        return true;
       case "R":
       case "r":
         if (boardMethods[boardType].hasResetActionButton() === true) {
           resetRef.current?.();
         }
-        return;
+        return true;
       default:
-        break;
+        return false;
     }
+  };
 
-    if (board.selectedCells.length === 0) {
-      return;
-    }
-
+  const handleDigitEntry = (inputValue: string) => {
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntryRef.current?.(Number.parseInt(inputValue, 10));
-      return;
+      return true;
     }
+    return false;
+  };
 
+  const handleErase = (inputValue: string) => {
     switch (inputValue) {
       case "Delete":
       case "Backspace":
@@ -110,8 +138,14 @@ export const useKeyboardHotkeys = ({
         if (boardMethods[boardType].hasEraseActionButton() === true) {
           eraseSelectedRef.current?.();
         }
-        break;
+        return true;
+      default:
+        return false;
     }
+  };
+
+  const handleNavigation = (inputValue: string, board: BoardObjectProps) => {
+    let didNavigate = false;
 
     for (let i = 0; i < board.selectedCells.length; i++) {
       let newCol = board.selectedCells[i].c;
@@ -140,12 +174,16 @@ export const useKeyboardHotkeys = ({
         default:
           return;
       }
+      didNavigate = true;
       board.selectedCells[i] = { r: newRow, c: newCol };
     }
-    setSudokuBoard({
-      ...board,
-      selectedCells: board.selectedCells,
-    });
+
+    if (didNavigate) {
+      setSudokuBoard({
+        ...board,
+        selectedCells: board.selectedCells,
+      });
+    }
   };
 
   // Setup keyboard event listeners for web platform using globalThis.addEventListener
