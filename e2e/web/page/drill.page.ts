@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { MOBILE_WIDTH_LESS_THAN } from "../playwright.config";
 
 export class DrillPage {
   readonly page: Page;
@@ -27,10 +28,8 @@ export class DrillPage {
 
     // Get viewport size to determine if difficulty text should be visible
     const viewportSize = await this.page.viewportSize();
-    if (!viewportSize) return;
-
-    // todo get a better estimate here
-    const estimatedHidesDifficulty = viewportSize.width < 600;
+    const estimatedHidesDifficulty =
+      viewportSize && viewportSize.width < MOBILE_WIDTH_LESS_THAN;
 
     if (!estimatedHidesDifficulty) {
       const drillDifficultyLocator = drillLocator.getByText(drillDifficulty);

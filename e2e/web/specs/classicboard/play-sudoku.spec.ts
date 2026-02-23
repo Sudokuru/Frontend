@@ -6,6 +6,7 @@ import { EndGameModalComponent } from "../../components/end-game-modal.component
 import { HeaderComponent } from "../../components/header.component";
 import { StatisticsPage } from "../../page/statistics.page";
 import { HomePage } from "../../page/home.page";
+import { MOBILE_WIDTH_LESS_THAN } from "../../playwright.config";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
@@ -189,13 +190,20 @@ test.describe("start game", () => {
     });
   });
 
-  test("Clicking on button with intermediate text should start protege game", async ({
+  test("Clicking on button with intermediate text should start protege game in large viewport", async ({
     play,
   }) => {
-    await play.getByText("Intermediate").click();
-    await expect(play.getByText("Difficulty: protege")).toBeInViewport({
-      ratio: 1,
-    });
+    const viewPort = play.viewportSize();
+    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+      await play.getByText("Intermediate").click();
+      await expect(play.getByText("Difficulty: protege")).toBeInViewport({
+        ratio: 1,
+      });
+    } else {
+      expect(await play.getByText("Intermediate")).not.toBeInViewport({
+        ratio: 1,
+      });
+    }
   });
 });
 
