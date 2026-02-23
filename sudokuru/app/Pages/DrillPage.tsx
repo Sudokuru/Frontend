@@ -4,7 +4,10 @@ import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
-import { useNewWindowDimensions } from "../Functions/WindowDimensions";
+import {
+  useNewWindowDimensions,
+  useMinWindowDimensions,
+} from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const DrillPage = () => {
@@ -13,13 +16,14 @@ const DrillPage = () => {
   const { theme } = useTheme();
 
   const windowSize = useNewWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const isFocused = useIsFocused();
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -50,7 +54,7 @@ const DrillPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                with a strategy
+                strategies
               </Text>
             </Text>
           </View>
