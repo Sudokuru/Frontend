@@ -14,6 +14,7 @@ export class AboutUsPage {
   }
 
   async teamMemberCardIsVisible(name: string) {
+    await this.page.getByTestId(name).scrollIntoViewIfNeeded();
     await expect(this.page.getByTestId(name)).toBeInViewport({ ratio: 1 });
   }
 
