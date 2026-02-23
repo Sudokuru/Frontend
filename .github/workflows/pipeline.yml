@@ -135,7 +135,7 @@ jobs:
       - name: install dependencies
         run: npm i
       - name: Install Playwright Browsers
-        run: npm run playwright:init
+        run: npm run playwright:init:deps
       - name: Playwright run
         run: npm run playwright:test
         working-directory: e2e/web
