@@ -33,6 +33,7 @@ export const useKeyboardHotkeys = ({
   const updateHintStageRef = useRef<any>(null);
   const sudokuBoardRef = useRef<any>(null);
   const sudokuHintRef = useRef<any>(null);
+  const gameOverRef = useRef<boolean>(false);
 
   /**
    * When a user presses a key down, do the desired action via globalThis.addEventListener
@@ -41,6 +42,7 @@ export const useKeyboardHotkeys = ({
    * @returns void
    */
   const handleKeyDown = (event: KeyboardEvent) => {
+    if (gameOverRef.current) return;
     if (!sudokuBoardRef.current) return;
 
     const inputValue = event.key;
@@ -211,5 +213,6 @@ export const useKeyboardHotkeys = ({
     updateHintStageRef,
     sudokuBoardRef,
     sudokuHintRef,
+    gameOverRef,
   };
 };

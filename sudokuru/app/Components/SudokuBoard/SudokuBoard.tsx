@@ -98,6 +98,7 @@ const SudokuBoard = (props: Board) => {
     updateHintStageRef,
     sudokuBoardRef,
     sudokuHintRef,
+    gameOverRef,
   } = useKeyboardHotkeys({
     boardType: props.type,
     navigation,
@@ -811,6 +812,7 @@ const SudokuBoard = (props: Board) => {
   updateHintStageRef.current = updateHintStage;
   sudokuBoardRef.current = sudokuBoard;
   sudokuHintRef.current = sudokuHint;
+  gameOverRef.current = gameOver;
 
   return (
     <View
