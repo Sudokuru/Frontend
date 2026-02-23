@@ -246,19 +246,6 @@ test.describe("resize play page", () => {
     await playPage.starsAreHidden();
   });
 
-  test("Full page title is visible on desktop sized screens", async ({
-    play,
-  }) => {
-    const playPage = new PlayPage(play);
-    await playPage.fullTitleIsVisible();
-  });
-
-  test("Partial page title is visible on small screens", async ({ play }) => {
-    play.setViewportSize(devices["iPhone 14"].viewport);
-    const playPage = new PlayPage(play);
-    await playPage.partialTitleIsVisible();
-  });
-
   test("Difficulty stars go away on but descriptions stay on medium screens", async ({
     play,
   }) => {

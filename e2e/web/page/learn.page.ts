@@ -6,7 +6,7 @@ export class LearnPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("Learn new strategies");
+    this.title = page.getByText("Learn Sudoku");
   }
 
   async learnPageIsRendered() {

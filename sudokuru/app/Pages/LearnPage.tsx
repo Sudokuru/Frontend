@@ -77,7 +77,7 @@ const LearnPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                strategies
+                Sudoku
               </Text>
             </Text>
           </View>
