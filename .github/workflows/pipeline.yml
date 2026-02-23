@@ -124,6 +124,7 @@ jobs:
   website_test_dev:
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze, app_preview_dev ]
+    timeout-minutes: 120
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
