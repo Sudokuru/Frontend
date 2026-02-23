@@ -7,7 +7,7 @@ export class DrillPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("Train with a strategy");
+    this.title = page.getByText("Train Sudoku");
     this.resume = page.getByText("Resume Drill");
   }
 
