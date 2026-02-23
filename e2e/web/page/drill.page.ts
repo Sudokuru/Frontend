@@ -24,9 +24,19 @@ export class DrillPage {
     const drillTextLocator = drillLocator.getByText(text);
     await drillTextLocator.scrollIntoViewIfNeeded();
     await expect(drillTextLocator).toBeInViewport({ ratio: 1 });
-    const drillDifficultyLocator = drillLocator.getByText(drillDifficulty);
-    await drillTextLocator.scrollIntoViewIfNeeded();
-    await expect(drillDifficultyLocator).toBeInViewport({ ratio: 1 });
+
+    // Get viewport size to determine if difficulty text should be visible
+    const viewportSize = await this.page.viewportSize();
+    if (!viewportSize) return;
+
+    // todo get a better estimate here
+    const estimatedHidesDifficulty = viewportSize.width < 600;
+
+    if (!estimatedHidesDifficulty) {
+      const drillDifficultyLocator = drillLocator.getByText(drillDifficulty);
+      await drillDifficultyLocator.scrollIntoViewIfNeeded();
+      await expect(drillDifficultyLocator).toBeInViewport({ ratio: 1 });
+    }
   }
 
   async getAndClickDrill(drill: string) {
