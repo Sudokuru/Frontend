@@ -48,7 +48,7 @@ export const useKeyboardHotkeys = ({
     const hint = sudokuHintRef.current;
 
     if (
-      handleGlobalHotkeys({
+      handleGeneralHotkeys({
         inputValue,
         board,
         hint,
@@ -65,7 +65,7 @@ export const useKeyboardHotkeys = ({
     handleNavigation(inputValue, board);
   };
 
-  const handleGlobalHotkeys = ({
+  const handleGeneralHotkeys = ({
     inputValue,
     board,
     hint,
