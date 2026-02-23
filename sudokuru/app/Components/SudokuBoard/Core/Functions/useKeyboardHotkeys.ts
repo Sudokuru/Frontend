@@ -72,7 +72,6 @@ export const useKeyboardHotkeys = ({
     }
     if (handleNavigation(inputValue, board)) {
       event.preventDefault();
-      return;
     }
   };
 
