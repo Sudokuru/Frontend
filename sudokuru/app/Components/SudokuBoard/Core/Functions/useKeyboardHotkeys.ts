@@ -145,8 +145,6 @@ export const useKeyboardHotkeys = ({
   };
 
   const handleNavigation = (inputValue: string, board: BoardObjectProps) => {
-    let didNavigate = false;
-
     for (let i = 0; i < board.selectedCells.length; i++) {
       let newCol = board.selectedCells[i].c;
       let newRow = board.selectedCells[i].r;
@@ -174,16 +172,13 @@ export const useKeyboardHotkeys = ({
         default:
           return;
       }
-      didNavigate = true;
       board.selectedCells[i] = { r: newRow, c: newCol };
     }
 
-    if (didNavigate) {
-      setSudokuBoard({
-        ...board,
-        selectedCells: board.selectedCells,
-      });
-    }
+    setSudokuBoard({
+      ...board,
+      selectedCells: board.selectedCells,
+    });
   };
 
   // Setup keyboard event listeners for web platform using globalThis.addEventListener
