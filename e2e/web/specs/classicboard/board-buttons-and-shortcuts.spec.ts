@@ -104,15 +104,15 @@ test.describe("numpad", () => {
 });
 
 const initialProgressIndicator = [
-  "77.7778%",
-  "77.7778%",
-  "88.8889%",
-  "66.6667%",
-  "77.7778%",
-  "77.7778%",
-  "77.7778%",
-  "77.7778%",
-  "44.4444%",
+  "77.77%",
+  "77.77%",
+  "88.88%",
+  "66.66%",
+  "77.77%",
+  "77.77%",
+  "77.77%",
+  "77.77%",
+  "44.44%",
 ];
 
 test.describe("progress indicator", () => {
@@ -146,15 +146,15 @@ test.describe("progress indicator", () => {
     resumeClassicGame,
   }) => {
     const updatedProgressIndicator = [
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "66.6667%",
-      "77.7778%",
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "44.4444%",
+      "77.77%",
+      "77.77%",
+      "88.88%",
+      "66.66%",
+      "77.77%",
+      "77.77%",
+      "77.77%",
+      "88.88%",
+      "44.44%",
     ];
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[1][1].click();
