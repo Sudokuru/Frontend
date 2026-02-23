@@ -53,16 +53,27 @@ export const useKeyboardHotkeys = ({
         board,
         hint,
       })
-    )
+    ) {
+      event.preventDefault();
       return;
+    }
 
     if (board.selectedCells.length === 0) {
       return;
     }
 
-    if (handleDigitEntry(inputValue)) return;
-    if (handleErase(inputValue)) return;
-    handleNavigation(inputValue, board);
+    if (handleDigitEntry(inputValue)) {
+      event.preventDefault();
+      return;
+    }
+    if (handleErase(inputValue)) {
+      event.preventDefault();
+      return;
+    }
+    if (handleNavigation(inputValue, board)) {
+      event.preventDefault();
+      return;
+    }
   };
 
   const handleGeneralHotkeys = ({
@@ -170,7 +181,7 @@ export const useKeyboardHotkeys = ({
           newRow = wrapDigit(newRow + 1);
           break;
         default:
-          return;
+          return false;
       }
       board.selectedCells[i] = { r: newRow, c: newCol };
     }
@@ -179,6 +190,7 @@ export const useKeyboardHotkeys = ({
       ...board,
       selectedCells: board.selectedCells,
     });
+    return true;
   };
 
   // Setup keyboard event listeners for web platform using globalThis.addEventListener
