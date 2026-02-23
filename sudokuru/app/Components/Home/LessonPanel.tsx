@@ -7,6 +7,7 @@ import {
   Modal,
 } from "react-native";
 import { ActivityIndicator, Text, Card, Button } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
@@ -173,41 +174,83 @@ const LessonPanel = (props: any) => {
                 },
               }}
             >
-              <Text
-                variant="headlineMedium"
-                testID="lessonName"
-                style={{
-                  alignSelf: "center",
-                  color: theme.semantic.text.inverse,
-                }}
-              >
-                {formatOneLessonName(availableLessons[i])}
-              </Text>
-              {shrinkage < 0.6 ? (
-                <Text
-                  testID={"difficulty"}
-                  variant="headlineSmall"
-                  style={{ alignSelf: "center" }}
-                  theme={{ colors: { onSurface: difficultyColor } }}
-                >
-                  {difficulty}
-                </Text>
-              ) : (
-                <></>
-              )}
-              {shrinkage < 0.3 ? (
-                <Image
-                  source={img}
-                  defaultSource={img}
+              {shrinkage >= 0.6 ? (
+                <View
                   style={{
-                    width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                    height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                    resizeMode: "contain",
-                    alignSelf: "center",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    padding: 10,
                   }}
-                />
+                >
+                  <MaterialCommunityIcons
+                    name={
+                      learnedLessons.includes(availableLessons[i])
+                        ? "check-circle"
+                        : lockedLessons.includes(availableLessons[i])
+                          ? "lock"
+                          : "play-circle"
+                    }
+                    size={30}
+                    color={
+                      learnedLessons.includes(availableLessons[i])
+                        ? "green"
+                        : lockedLessons.includes(availableLessons[i])
+                          ? theme.semantic.text.tertiary
+                          : theme.semantic.text.primary
+                    }
+                  />
+                  <Text
+                    variant="headlineMedium"
+                    testID="lessonName"
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      color: theme.semantic.text.inverse,
+                    }}
+                  >
+                    {formatOneLessonName(availableLessons[i])}
+                  </Text>
+                </View>
               ) : (
-                <></>
+                <>
+                  <Text
+                    variant="headlineMedium"
+                    testID="lessonName"
+                    style={{
+                      alignSelf: "center",
+                      color: theme.semantic.text.inverse,
+                    }}
+                  >
+                    {formatOneLessonName(availableLessons[i])}
+                  </Text>
+                  {shrinkage < 0.6 ? (
+                    <Text
+                      testID={"difficulty"}
+                      variant="headlineSmall"
+                      style={{ alignSelf: "center" }}
+                      theme={{ colors: { onSurface: difficultyColor } }}
+                    >
+                      {difficulty}
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
+                  {shrinkage < 0.3 ? (
+                    <Image
+                      source={img}
+                      defaultSource={img}
+                      style={{
+                        width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+                        height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+                        resizeMode: "contain",
+                        alignSelf: "center",
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </>
               )}
             </Card>
           </TouchableOpacity>
