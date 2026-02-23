@@ -210,7 +210,7 @@ test.describe("start game", () => {
 test.describe("resume game", () => {
   test("user can pause and resume a game", async ({ play }) => {
     const playPage = new PlayPage(play);
-    await playPage.noviceDesc.click();
+    await playPage.page.getByText("Novice").click();
     const sudokuBoard = new SudokuBoardComponent(play);
     await sudokuBoard.pause.click();
     await playPage.resumeButtonIsVisible();
@@ -222,7 +222,7 @@ test.describe("resume game", () => {
 test.describe("game is saved on start", () => {
   test("Starting a game should save it to resume later", async ({ play }) => {
     const playPage = new PlayPage(play);
-    await playPage.amateurDesc.click();
+    await playPage.page.getByText("Amateur").click();
     await expect(play.getByText("Difficulty: amateur")).toBeInViewport({
       ratio: 1,
     });
@@ -237,23 +237,23 @@ test.describe("game is saved on start", () => {
 });
 
 test.describe("resize play page", () => {
-  test("Difficulty stars and descriptions are visible on desktop sized screen", async ({
-    play,
-  }) => {
-    const playPage = new PlayPage(play);
-    await playPage.descriptionsAreVisible();
-    await playPage.starsAreVisible();
+  test.describe("resize play page", () => {
+    test("Difficulty stars and descriptions visibility depends on viewport size", async ({
+      play,
+    }) => {
+      const playPage = new PlayPage(play);
+      const viewPort = await play.viewportSize();
+      if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+        await playPage.descriptionsAreVisible();
+        await playPage.starsAreVisible();
+      } else {
+        await playPage.descriptionsAreHidden();
+        await playPage.starsAreHidden();
+      }
+    });
   });
 
-  test("Difficulty descriptions and stars go away on small screens", async ({
-    play,
-  }) => {
-    play.setViewportSize(devices["iPhone 14"].viewport);
-    const playPage = new PlayPage(play);
-    await playPage.descriptionsAreHidden();
-    await playPage.starsAreHidden();
-  });
-
+  // todo if important - create new project type just for this viewport size for testing, then add to above test
   test("Difficulty stars go away on but descriptions stay on medium screens", async ({
     play,
   }) => {
