@@ -125,7 +125,7 @@ const SudokuBoard = (props: Board) => {
       saveGame(game);
       setSudokuBoard(game);
     }
-    // retrigger pipeline
+
     loadGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
