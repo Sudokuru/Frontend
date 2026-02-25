@@ -38,6 +38,9 @@ export const getSingleMultiSelectKey = () => {
   }
 };
 
+export const MOBILE_WIDTH_LESS_THAN = 400;
+export const MOBILE_HEIGHT_LESS_THAN = 860;
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */

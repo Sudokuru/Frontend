@@ -21,7 +21,7 @@ export class PlayPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByTestId("playPageTitle");
+    this.title = page.getByText("Play Sudoku");
     this.resume = page.getByText("Resume Puzzle");
     this.noviceDesc = page.getByTestId("NoviceDescription");
     this.amateurDesc = page.getByTestId("AmateurDescription");
@@ -47,14 +47,6 @@ export class PlayPage {
 
   async resumeButtonIsVisible() {
     await expect(this.resume).toBeInViewport({ ratio: 1 });
-  }
-
-  async fullTitleIsVisible() {
-    await expect(this.title).toHaveText("Play a Sudoku game");
-  }
-
-  async partialTitleIsVisible() {
-    await expect(this.title).toHaveText("Play Sudoku");
   }
 
   async starsHaveCount(count: number) {

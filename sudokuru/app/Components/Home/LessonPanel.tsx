@@ -7,6 +7,7 @@ import {
   Modal,
 } from "react-native";
 import { ActivityIndicator, Text, Card, Button } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
@@ -89,11 +90,25 @@ const LessonPanel = (props: any) => {
     let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
 
     let subArray = [];
-    let columnCount: number = calculateCardsPerRow(
-      props.width,
-      props.height,
-      availableLessons.length,
+
+    // Calculate shrinkage based on screen size
+    let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
+    let shrinkage: number = -0.01,
+      columnCount,
+      rowCount;
+    do {
+      shrinkage += 0.01;
+      columnCount = calculateCardsPerRow(
+        props.width,
+        props.height,
+        availableLessons.length,
+      );
+      rowCount = getRowCount(availableLessons.length, columnCount);
+    } while (
+      getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
+      props.height * 0.7
     );
+
     for (let i = 0; i < availableLessons.length; i++) {
       let img: ImageURISource;
       let id: string = i.toString();
@@ -133,7 +148,11 @@ const LessonPanel = (props: any) => {
         <View
           key={availableLessons[i]}
           testID={id}
-          style={{ width: CARD_WIDTH, padding: CARD_PADDING }}
+          style={{
+            width: CARD_WIDTH,
+            padding: CARD_PADDING * (1 - shrinkage),
+            margin: 5,
+          }}
         >
           <TouchableOpacity
             onPress={() => {
@@ -155,34 +174,84 @@ const LessonPanel = (props: any) => {
                 },
               }}
             >
-              <Text
-                variant="headlineMedium"
-                testID="lessonName"
-                style={{
-                  alignSelf: "center",
-                  color: theme.semantic.text.inverse,
-                }}
-              >
-                {formatOneLessonName(availableLessons[i])}
-              </Text>
-              <Text
-                testID={"difficulty"}
-                variant="headlineSmall"
-                style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: difficultyColor } }}
-              >
-                {difficulty}
-              </Text>
-              <Image
-                source={img}
-                defaultSource={img}
-                style={{
-                  width: CARD_IMAGE_WIDTH,
-                  height: CARD_IMAGE_HEIGHT,
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                }}
-              />
+              {shrinkage >= 0.6 ? (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    padding: 10,
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name={
+                      learnedLessons.includes(availableLessons[i])
+                        ? "check-circle"
+                        : lockedLessons.includes(availableLessons[i])
+                          ? "lock"
+                          : "play-circle"
+                    }
+                    size={30}
+                    color={
+                      learnedLessons.includes(availableLessons[i])
+                        ? "green"
+                        : lockedLessons.includes(availableLessons[i])
+                          ? theme.semantic.text.tertiary
+                          : theme.semantic.text.primary
+                    }
+                  />
+                  <Text
+                    variant="headlineMedium"
+                    testID="lessonName"
+                    style={{
+                      flex: 1,
+                      textAlign: "center",
+                      color: theme.semantic.text.inverse,
+                    }}
+                  >
+                    {formatOneLessonName(availableLessons[i])}
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <Text
+                    variant="headlineMedium"
+                    testID="lessonName"
+                    style={{
+                      alignSelf: "center",
+                      color: theme.semantic.text.inverse,
+                    }}
+                  >
+                    {formatOneLessonName(availableLessons[i])}
+                  </Text>
+                  {shrinkage < 0.6 ? (
+                    <Text
+                      testID={"difficulty"}
+                      variant="headlineSmall"
+                      style={{ alignSelf: "center" }}
+                      theme={{ colors: { onSurface: difficultyColor } }}
+                    >
+                      {difficulty}
+                    </Text>
+                  ) : (
+                    <></>
+                  )}
+                  {shrinkage < 0.3 ? (
+                    <Image
+                      source={img}
+                      defaultSource={img}
+                      style={{
+                        width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+                        height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+                        resizeMode: "contain",
+                        alignSelf: "center",
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
             </Card>
           </TouchableOpacity>
         </View>,
@@ -194,6 +263,27 @@ const LessonPanel = (props: any) => {
         subArray = [];
       }
     }
+
+    /**
+     * Given total number of cards and number of cards per column calculates how many rows there are total
+     */
+    function getRowCount(cardCount: number, columnCount: number): number {
+      return Math.ceil(cardCount / columnCount);
+    }
+
+    /**
+     * Calculates the total height taken up by cards and the padding in between them
+     */
+    function getTotalCardsHeight(
+      rowCount: number,
+      cardHeight: number,
+      shrinkage: number,
+    ): number {
+      let fromCards: number = rowCount * cardHeight;
+      let fromPadding: number = (rowCount - 1) * CARD_PADDING;
+      return (fromCards + fromPadding) * (1 - shrinkage);
+    }
+
     // Add last row if not evenly divisible
     if (subArray.length > 0) {
       lessonButtonArray.push(subArray);
