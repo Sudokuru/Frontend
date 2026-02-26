@@ -16,6 +16,12 @@ export const EndGameModal = ({
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  const resultsWidth =
+    size.width >= 1000
+      ? Math.min(size.width * 0.54, 540)
+      : size.width >= 700
+        ? Math.min(size.width * 0.58, 460)
+        : size.width * 0.9;
 
   const navigation: any = useNavigation();
 
@@ -24,8 +30,9 @@ export const EndGameModal = ({
       style={{
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 30,
+        justifyContent: "flex-start",
+        paddingTop: 30,
+        paddingBottom: 20,
       }}
     >
       <Text
@@ -40,9 +47,8 @@ export const EndGameModal = ({
       </Text>
       <View
         style={{
-          width: "100%",
-          maxWidth: 620,
-          paddingHorizontal: 8,
+          width: resultsWidth,
+          alignSelf: "center",
         }}
       >
         <View

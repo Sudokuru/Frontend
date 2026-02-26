@@ -16,7 +16,13 @@ export const EndGameModal = ({
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
-  const statFontSize = Math.max(18, Math.min(reSize / 21, 22));
+  const isLargeScreen = size.width >= 800;
+  const statFontSize = Math.max(
+    16,
+    Math.min(reSize / (isLargeScreen ? 19 : 23), isLargeScreen ? 30 : 24),
+  );
+  const resultsMaxWidth =
+    size.width >= 1100 ? 760 : size.width >= 800 ? 640 : 520;
 
   const navigation: any = useNavigation();
   const [isHintsBreakdownExpanded, setHintsBreakdownExpanded] =
@@ -27,8 +33,9 @@ export const EndGameModal = ({
       style={{
         flex: 1,
         alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 30,
+        justifyContent: "flex-start",
+        paddingTop: 30,
+        paddingBottom: 20,
       }}
     >
       <Text
@@ -43,8 +50,8 @@ export const EndGameModal = ({
       </Text>
       <View
         style={{
-          width: "90%",
-          maxWidth: 480,
+          width: "94%",
+          maxWidth: resultsMaxWidth,
         }}
       >
         <View
