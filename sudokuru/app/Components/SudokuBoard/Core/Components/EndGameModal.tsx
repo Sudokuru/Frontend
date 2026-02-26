@@ -22,7 +22,7 @@ export const EndGameModal = ({
     Math.min(reSize / (isLargeScreen ? 19 : 23), isLargeScreen ? 30 : 24),
   );
   const resultsMaxWidth =
-    size.width >= 1100 ? 760 : size.width >= 800 ? 640 : 520;
+    size.width >= 1100 ? 540 : size.width >= 800 ? 500 : 460;
 
   const navigation: any = useNavigation();
   const [isHintsBreakdownExpanded, setHintsBreakdownExpanded] =
@@ -50,7 +50,7 @@ export const EndGameModal = ({
       </Text>
       <View
         style={{
-          width: "94%",
+          width: "84%",
           maxWidth: resultsMaxWidth,
         }}
       >
