@@ -13,7 +13,7 @@ const Statistic = (props: StatisticProps) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
-  const fontSize = Math.max(18, Math.min(reSize / 21, 22));
+  const fontSize = Math.max(16, Math.min(reSize / 23, 22));
 
   return (
     <View
@@ -39,7 +39,8 @@ const Statistic = (props: StatisticProps) => {
           fontSize,
           fontWeight: "bold",
           color: theme.semantic.text.primary,
-          flexShrink: 0,
+          flexShrink: 1,
+          textAlign: "right",
         }}
         testID={props.testID}
       >

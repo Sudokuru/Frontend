@@ -20,11 +20,12 @@ export const EndGameModal = ({
   const navigation: any = useNavigation();
 
   return (
-    <ScrollView
-      contentContainerStyle={{
+    <View
+      style={{
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        marginVertical: 30,
+        paddingVertical: 30,
       }}
     >
       <Text
@@ -37,44 +38,81 @@ export const EndGameModal = ({
       >
         Drill Results
       </Text>
-      <Button
-        mode="contained"
-        testID="StartNewDrillGame"
-        textColor={theme.semantic.text.inverse}
-        onPress={() => navigation.navigate("DrillPage")}
-        style={{ marginBottom: 16 }}
-      >
-        Start New Drill
-      </Button>
       <View
         style={{
-          backgroundColor: theme.colors.surface,
-          borderRadius: 10,
-          padding: 20,
+          width: "100%",
+          maxWidth: 620,
+          paddingHorizontal: 8,
         }}
       >
-        <Statistic
-          statisticName="Time Spent: "
-          statisticValue={formatTime(statistics.time)}
-          testID="time"
-        />
-        <Statistic
-          statisticName="Strategy: "
-          statisticValue={toTitle(statistics.difficulty)}
-          testID="strategy"
-        />
-        <Statistic
-          statisticName="Mistakes Made: "
-          statisticValue={statistics.numWrongCellsPlayed}
-          testID="numWrongCellsPlayed"
-        />
-        <Statistic
-          statisticName="Hint Used: "
-          statisticValue={statistics.hintUsed ? "Yes" : "No"}
-          testID="numHintsUsed"
-        />
+        <View
+          style={{
+            backgroundColor: theme.colors.surface,
+            borderRadius: 10,
+            paddingHorizontal: 12,
+            paddingVertical: 16,
+            maxHeight: size.height * 0.5,
+          }}
+        >
+          <ScrollView>
+            <Statistic
+              statisticName="Time Spent: "
+              statisticValue={formatTime(statistics.time)}
+              testID="time"
+            />
+            <Statistic
+              statisticName="Strategy: "
+              statisticValue={toTitle(statistics.difficulty)}
+              testID="strategy"
+            />
+            <Statistic
+              statisticName="Mistakes Made: "
+              statisticValue={statistics.numWrongCellsPlayed}
+              testID="numWrongCellsPlayed"
+            />
+            <Statistic
+              statisticName="Hint Used: "
+              statisticValue={statistics.hintUsed ? "Yes" : "No"}
+              testID="numHintsUsed"
+            />
+          </ScrollView>
+        </View>
+
+        <Button
+          mode="contained"
+          testID="ChangeDrillButton"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          onPress={() => navigation.navigate("DrillPage")}
+          style={{ marginTop: 16 }}
+        >
+          Change Drill
+        </Button>
+        <Button
+          mode="contained"
+          testID="StartNewDrillGame"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "DrillGame",
+                  params: {
+                    params: statistics.difficulty,
+                    action: "StartGame",
+                  },
+                },
+              ],
+            });
+          }}
+          style={{ marginTop: 12 }}
+        >
+          New Drill
+        </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
