@@ -1,4 +1,4 @@
-import { Text } from "react-native-paper";
+import { List, Text, TouchableRipple } from "react-native-paper";
 import { useWindowDimensions, View } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Core/Functions/BoardFunctions";
@@ -24,8 +24,15 @@ export interface TotalStatisticsProps {
 const TotalStatistics = (props: TotalStatisticsProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  const isLargeScreen = size.width >= 800;
+  const statFontSize = Math.max(
+    16,
+    Math.min(reSize / (isLargeScreen ? 19 : 23), isLargeScreen ? 30 : 24),
+  );
 
   const { theme } = useTheme();
+  const [isHintsBreakdownExpanded, setHintsBreakdownExpanded] =
+    React.useState(false);
 
   return (
     <View
@@ -82,14 +89,54 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
-        <Statistic
-          statisticName="Total Hints Used: "
-          statisticValue={props.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <NumHintsUsedPerStrategy
-          numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
-        />
+        <TouchableRipple
+          onPress={() => setHintsBreakdownExpanded(!isHintsBreakdownExpanded)}
+          style={{ marginBottom: 8 }}
+          rippleColor={theme.colors.border}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "baseline",
+              flexWrap: "wrap",
+            }}
+          >
+            <Text
+              style={{
+                color: theme.semantic.text.quaternary,
+                fontSize: statFontSize,
+                lineHeight: statFontSize * 1.2,
+                marginRight: 2,
+              }}
+            >
+              {"Total Hints Used: "}
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  color: theme.semantic.text.primary,
+                  fontSize: statFontSize,
+                  lineHeight: statFontSize * 1.2,
+                  fontWeight: "bold",
+                }}
+                testID="numHintsUsed"
+              >
+                {props.numHintsUsed}
+              </Text>
+              <List.Icon
+                icon={isHintsBreakdownExpanded ? "chevron-up" : "chevron-down"}
+                color={theme.semantic.text.primary}
+                style={{ margin: 0 }}
+              />
+            </View>
+          </View>
+        </TouchableRipple>
+        {isHintsBreakdownExpanded ? (
+          <NumHintsUsedPerStrategy
+            numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
+          />
+        ) : null}
       </View>
     </View>
   );
