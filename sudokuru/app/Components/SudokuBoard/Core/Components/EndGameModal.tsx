@@ -75,13 +75,36 @@ export const EndGameModal = ({
       </View>
       <Button
         mode="contained"
-        testID="StartNewGameButton"
+        testID="ChangeDifficultyButton"
         textColor={theme.semantic.text.inverse}
         labelStyle={{ fontSize: 20, fontWeight: "700" }}
         onPress={() => navigation.navigate("PlayPage")}
         style={{ marginTop: 20 }}
       >
-        Play New Game
+        Change Difficulty
+      </Button>
+      <Button
+        mode="contained"
+        testID="StartNewGameButton"
+        textColor={theme.semantic.text.inverse}
+        labelStyle={{ fontSize: 20, fontWeight: "700" }}
+        onPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: "SudokuPage",
+                params: {
+                  action: "StartGame",
+                  difficulty: statistics.difficulty,
+                },
+              },
+            ],
+          });
+        }}
+        style={{ marginTop: 20 }}
+      >
+        New Game
       </Button>
     </ScrollView>
   );
