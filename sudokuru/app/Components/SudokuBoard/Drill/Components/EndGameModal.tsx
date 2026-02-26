@@ -89,8 +89,9 @@ export const EndGameModal = ({
           testID="ChangeDrillButton"
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
           onPress={() => navigation.navigate("DrillPage")}
-          style={{ marginTop: 16 }}
+          style={{ marginTop: 16, alignSelf: "center" }}
         >
           Change Drill
         </Button>
@@ -99,6 +100,7 @@ export const EndGameModal = ({
           testID="StartNewDrillGame"
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
           onPress={() => {
             navigation.reset({
               index: 0,
@@ -113,7 +115,7 @@ export const EndGameModal = ({
               ],
             });
           }}
-          style={{ marginTop: 12 }}
+          style={{ marginTop: 12, alignSelf: "center" }}
         >
           New Drill
         </Button>

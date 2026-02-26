@@ -144,8 +144,9 @@ export const EndGameModal = ({
           testID="ChangeDifficultyButton"
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
           onPress={() => navigation.navigate("PlayPage")}
-          style={{ marginTop: 16 }}
+          style={{ marginTop: 16, alignSelf: "center" }}
         >
           Change Difficulty
         </Button>
@@ -154,6 +155,7 @@ export const EndGameModal = ({
           testID="StartNewGameButton"
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
           onPress={() => {
             navigation.reset({
               index: 0,
@@ -168,7 +170,7 @@ export const EndGameModal = ({
               ],
             });
           }}
-          style={{ marginTop: 12 }}
+          style={{ marginTop: 12, alignSelf: "center" }}
         >
           New Game
         </Button>
