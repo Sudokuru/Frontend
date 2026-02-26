@@ -13,21 +13,33 @@ const Statistic = (props: StatisticProps) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  const fontSize = Math.max(18, Math.min(reSize / 21, 22));
+
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+        marginBottom: 4,
+      }}
+    >
       <Text
         style={{
-          fontSize: reSize ? reSize / 20 : 20,
+          fontSize,
           color: theme.semantic.text.quaternary,
+          flex: 1,
+          marginRight: 10,
         }}
       >
         {props.statisticName}
       </Text>
       <Text
         style={{
-          fontSize: reSize ? reSize / 20 : 20,
+          fontSize,
           fontWeight: "bold",
           color: theme.semantic.text.primary,
+          flexShrink: 0,
         }}
         testID={props.testID}
       >

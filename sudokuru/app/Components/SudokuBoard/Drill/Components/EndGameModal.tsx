@@ -37,6 +37,15 @@ export const EndGameModal = ({
       >
         Drill Results
       </Text>
+      <Button
+        mode="contained"
+        testID="StartNewDrillGame"
+        textColor={theme.semantic.text.inverse}
+        onPress={() => navigation.navigate("DrillPage")}
+        style={{ marginBottom: 16 }}
+      >
+        Start New Drill
+      </Button>
       <View
         style={{
           backgroundColor: theme.colors.surface,
@@ -65,15 +74,6 @@ export const EndGameModal = ({
           testID="numHintsUsed"
         />
       </View>
-      <Button
-        mode="contained"
-        testID="StartNewDrillGame"
-        textColor={theme.semantic.text.inverse}
-        onPress={() => navigation.navigate("DrillPage")}
-        style={{ marginTop: 20 }}
-      >
-        Start New Drill
-      </Button>
     </ScrollView>
   );
 };
