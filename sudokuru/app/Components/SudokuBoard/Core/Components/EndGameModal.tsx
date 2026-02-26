@@ -88,33 +88,34 @@ export const EndGameModal = ({
               onPress={() =>
                 setHintsBreakdownExpanded(!isHintsBreakdownExpanded)
               }
-              style={{ marginBottom: 4 }}
+              style={{ marginBottom: 8 }}
               rippleColor={theme.colors.border}
             >
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  alignItems: "baseline",
+                  flexWrap: "wrap",
                 }}
               >
                 <Text
                   style={{
                     color: theme.semantic.text.quaternary,
                     fontSize: statFontSize,
-                    flex: 1,
-                    marginRight: 10,
+                    lineHeight: statFontSize * 1.2,
+                    marginRight: 2,
                   }}
                 >
-                  Number of Hints Used:
+                  {"Number of Hints Used: "}
                 </Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text
                     style={{
                       color: theme.semantic.text.primary,
                       fontSize: statFontSize,
+                      lineHeight: statFontSize * 1.2,
                       fontWeight: "bold",
-                      flexShrink: 0,
                     }}
                     testID="numHintsUsed"
                   >

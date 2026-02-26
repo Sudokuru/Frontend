@@ -23,9 +23,9 @@ const Statistic = (props: StatisticProps) => {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "flex-start",
-        marginBottom: 4,
+        alignItems: "baseline",
+        flexWrap: "wrap",
+        marginBottom: 8,
       }}
     >
       <Text
@@ -33,8 +33,7 @@ const Statistic = (props: StatisticProps) => {
           fontSize,
           lineHeight: fontSize * 1.2,
           color: theme.semantic.text.quaternary,
-          flex: 1,
-          marginRight: 10,
+          marginRight: 2,
         }}
       >
         {props.statisticName}
@@ -46,7 +45,6 @@ const Statistic = (props: StatisticProps) => {
           fontWeight: "bold",
           color: theme.semantic.text.primary,
           flexShrink: 1,
-          textAlign: "right",
         }}
         testID={props.testID}
       >
