@@ -3,6 +3,7 @@ import { Platform } from "react-native";
 import { doesBoardHaveConflict, wrapDigit } from "../../SudokuBoardFunctions";
 import {
   BoardObjectProps,
+  CellLocation,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
 
@@ -10,7 +11,6 @@ interface UseKeyboardHotkeysProps {
   boardType: GameVariant;
   navigation: any;
   boardMethods: any;
-  setSudokuBoard: (board: BoardObjectProps) => void;
 }
 
 /**
@@ -22,7 +22,6 @@ export const useKeyboardHotkeys = ({
   boardType,
   navigation,
   boardMethods,
-  setSudokuBoard,
 }: UseKeyboardHotkeysProps) => {
   const undoRef = useRef<any>(null);
   const toggleNoteModeRef = useRef<any>(null);
@@ -34,6 +33,9 @@ export const useKeyboardHotkeys = ({
   const sudokuBoardRef = useRef<any>(null);
   const sudokuHintRef = useRef<any>(null);
   const gameOverRef = useRef<boolean>(false);
+  const setBoardSelectedCellsRef = useRef<
+    ((cells: CellLocation[]) => void) | null
+  >(null);
 
   /**
    * When a user presses a key down, do the desired action via globalThis.addEventListener
@@ -157,9 +159,11 @@ export const useKeyboardHotkeys = ({
   };
 
   const handleNavigation = (inputValue: string, board: BoardObjectProps) => {
-    for (let i = 0; i < board.selectedCells.length; i++) {
-      let newCol = board.selectedCells[i].c;
-      let newRow = board.selectedCells[i].r;
+    const updatedSelectedCells: CellLocation[] = [];
+
+    for (const cellLocation of board.selectedCells) {
+      let newCol = cellLocation.c;
+      let newRow = cellLocation.r;
       switch (inputValue) {
         case "ArrowLeft":
         case "a":
@@ -184,13 +188,10 @@ export const useKeyboardHotkeys = ({
         default:
           return false;
       }
-      board.selectedCells[i] = { r: newRow, c: newCol };
+      updatedSelectedCells.push({ r: newRow, c: newCol });
     }
 
-    setSudokuBoard({
-      ...board,
-      selectedCells: board.selectedCells,
-    });
+    setBoardSelectedCellsRef.current?.(updatedSelectedCells);
     return true;
   };
 
@@ -214,5 +215,6 @@ export const useKeyboardHotkeys = ({
     sudokuBoardRef,
     sudokuHintRef,
     gameOverRef,
+    setBoardSelectedCellsRef,
   };
 };

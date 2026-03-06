@@ -99,11 +99,11 @@ const SudokuBoard = (props: Board) => {
     sudokuBoardRef,
     sudokuHintRef,
     gameOverRef,
+    setBoardSelectedCellsRef,
   } = useKeyboardHotkeys({
     boardType: props.type,
     navigation,
     boardMethods,
-    setSudokuBoard,
   });
 
   useEffect(() => {
@@ -813,6 +813,7 @@ const SudokuBoard = (props: Board) => {
   sudokuBoardRef.current = sudokuBoard;
   sudokuHintRef.current = sudokuHint;
   gameOverRef.current = gameOver;
+  setBoardSelectedCellsRef.current = setBoardSelectedCells;
 
   return (
     <View
