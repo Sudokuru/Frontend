@@ -130,6 +130,9 @@ const SudokuBoard = (props: Board) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Keep keyboard hotkey game-over guard fresh even when this component early-returns
+  gameOverRef.current = gameOver;
+
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
     return <ActivityIndicator animating={true} color={theme.colors.error} />;
@@ -812,7 +815,6 @@ const SudokuBoard = (props: Board) => {
   updateHintStageRef.current = updateHintStage;
   sudokuBoardRef.current = sudokuBoard;
   sudokuHintRef.current = sudokuHint;
-  gameOverRef.current = gameOver;
   setBoardSelectedCellsRef.current = setBoardSelectedCells;
 
   return (
