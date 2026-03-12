@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.32.1",
+    "date": "#{date}#",
+    "summary": "Sudoku board hotkeys functionality now works even if the board is not selected.",
+    "bug fixes": [
+      "Sudoku board hotkeys now work even if the board is not selected. Previously, hotkeys would only work when the user has selected a cell on the board. Hotkeys would stop working when the user clicked away from the sudoku board."
+    ],
+    "targets": ["web"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.32.0",
     "date": "February 19th, 2026",
     "summary": "Added Drills to feature preview and updated hint logic to improve quality of hints given.",
