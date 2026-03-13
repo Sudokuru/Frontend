@@ -23,8 +23,6 @@ const PlayPage = () => {
   const newSize = minWindowSize / 25;
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
-  const titleText = windowSize.width > 500 ? "a Sudoku game" : "Sudoku";
-
   const { theme } = useTheme();
 
   // This determines if user has active game and displays resume button conditionally.
@@ -86,7 +84,7 @@ const PlayPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                {titleText}
+                {"Sudoku"}
               </Text>
             </Text>
           </View>

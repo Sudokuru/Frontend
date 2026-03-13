@@ -49,6 +49,33 @@ export const DRILL_STRATEGIES = defineDrillStrategies([
 
 export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
+/**
+ * Given total number of cards and number of cards per column calculates how many rows there are total
+ * @param cardCount
+ * @param columnCount
+ * @returns number of rows
+ */
+function getRowCount(cardCount: number, columnCount: number): number {
+  return Math.ceil(cardCount / columnCount);
+}
+
+/**
+ * Calculates the total height taken up by cards and the padding in between them
+ * @param rowCount
+ * @param cardHeight
+ * @param shrinkage
+ * @returns total height taken up by cards and their padding
+ */
+function getTotalCardsHeight(
+  rowCount: number,
+  cardHeight: number,
+  shrinkage: number,
+): number {
+  let fromCards: number = rowCount * cardHeight;
+  let fromPadding: number = (rowCount - 1) * CARD_PADDING;
+  return (fromCards + fromPadding) * (1 - shrinkage);
+}
+
 let drillImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
   require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
@@ -111,11 +138,25 @@ const DrillPanel = (props: any) => {
 
   let drillButtonArray = [];
   let subArray = [];
-  let columnCount: number = calculateCardsPerRow(
-    props.width,
-    props.height,
-    DRILL_STRATEGIES.length,
+
+  // Calculate shrinkage based on screen size
+  let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
+  let shrinkage: number = -0.01,
+    columnCount,
+    rowCount;
+  do {
+    shrinkage += 0.01;
+    columnCount = calculateCardsPerRow(
+      props.width,
+      props.height,
+      DRILL_STRATEGIES.length,
+    );
+    rowCount = getRowCount(DRILL_STRATEGIES.length, columnCount);
+  } while (
+    getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
+    props.height * 0.7
   );
+
   for (let i = 0; i < DRILL_STRATEGIES.length; i++) {
     let img: ImageURISource = drillImages[i];
     let difficulty: difficulty;
@@ -144,7 +185,8 @@ const DrillPanel = (props: any) => {
         testID={DRILL_STRATEGIES[i]}
         style={{
           width: CARD_WIDTH,
-          padding: CARD_PADDING,
+          padding: CARD_PADDING * (1 - shrinkage),
+          margin: 5,
         }}
       >
         <TouchableOpacity
@@ -174,23 +216,31 @@ const DrillPanel = (props: any) => {
             >
               {toTitle(DRILL_STRATEGIES[i])}
             </Text>
-            <Text
-              variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: difficultyColor } }}
-            >
-              {difficulty}
-            </Text>
-            <Image
-              source={img}
-              defaultSource={img}
-              style={{
-                width: CARD_IMAGE_WIDTH,
-                height: CARD_IMAGE_HEIGHT,
-                resizeMode: "contain",
-                alignSelf: "center",
-              }}
-            />
+            {shrinkage < 0.6 ? (
+              <Text
+                variant="headlineSmall"
+                style={{ alignSelf: "center" }}
+                theme={{ colors: { onSurface: difficultyColor } }}
+              >
+                {difficulty}
+              </Text>
+            ) : (
+              <></>
+            )}
+            {shrinkage < 0.3 ? (
+              <Image
+                source={img}
+                defaultSource={img}
+                style={{
+                  width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+                  height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                }}
+              />
+            ) : (
+              <></>
+            )}
           </Card>
         </TouchableOpacity>
       </View>,

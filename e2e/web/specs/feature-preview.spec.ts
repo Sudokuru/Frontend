@@ -2,27 +2,31 @@ import { ProfilePage } from "./../page/profile.page";
 import { test } from "../fixture";
 import { devices, expect } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
+import { MOBILE_WIDTH_LESS_THAN } from "../playwright.config";
 
 test.describe("feature preview", () => {
-  test("full indicator text appears on wide viewports", async ({ page }) => {
-    const headerComponent = new HeaderComponent(page);
-    await headerComponent.profile.click();
-    await headerComponent.fullFeaturePreviewTextIsNotVisible();
-    const profilePage = new ProfilePage(page);
-    await profilePage.featurePreviewSwitchDisabled.click();
-    await headerComponent.fullFeaturePreviewTextIsVisible();
-  });
-
-  test("partial indicator text appears on small viewports", async ({
+  test("indicator text appears correctly based on viewport size", async ({
     page,
   }) => {
-    await page.setViewportSize(devices["iPhone 14"].viewport);
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
-    await headerComponent.partialFeaturePreviewTextIsNotVisible();
+
+    const viewPort = await page.viewportSize();
+
+    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+      await headerComponent.fullFeaturePreviewTextIsNotVisible();
+    } else {
+      await headerComponent.partialFeaturePreviewTextIsNotVisible();
+    }
+
     const profilePage = new ProfilePage(page);
     await profilePage.featurePreviewSwitchDisabled.click();
-    await headerComponent.partialFeaturePreviewTextIsVisible();
+
+    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+      await headerComponent.fullFeaturePreviewTextIsVisible();
+    } else {
+      await headerComponent.partialFeaturePreviewTextIsVisible();
+    }
   });
 
   test("Drills profile setting appears in feature preview", async ({

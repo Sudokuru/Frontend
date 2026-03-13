@@ -5,11 +5,16 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
-import { useNewWindowDimensions } from "../Functions/WindowDimensions";
+import {
+  useNewWindowDimensions,
+  useMinWindowDimensions,
+} from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const LearnPage = () => {
   const windowSize = useNewWindowDimensions();
+  const minWindowSize = useMinWindowDimensions();
+  const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const { theme } = useTheme();
 
@@ -41,7 +46,7 @@ const LearnPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -72,16 +77,18 @@ const LearnPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                new strategies
+                Sudoku
               </Text>
             </Text>
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
             {areLessonsLoaded ? (
-              <LessonPanel
-                width={windowSize.width}
-                height={windowSize.height}
-              />
+              <View style={{ padding: reSize / 4 }}>
+                <LessonPanel
+                  width={windowSize.width}
+                  height={windowSize.height}
+                />
+              </View>
             ) : (
               <ActivityIndicator
                 animating={true}

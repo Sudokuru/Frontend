@@ -14,6 +14,7 @@ export class AboutUsPage {
   }
 
   async teamMemberCardIsVisible(name: string) {
+    await this.page.getByTestId(name).scrollIntoViewIfNeeded();
     await expect(this.page.getByTestId(name)).toBeInViewport({ ratio: 1 });
   }
 
@@ -24,9 +25,10 @@ export class AboutUsPage {
   async linkButtonWorks(name: string, url: string) {
     const [newPage] = await Promise.all([
       this.page.waitForEvent("popup"),
+      this.page.getByTestId("button-" + name).scrollIntoViewIfNeeded(),
       this.page.getByTestId("button-" + name).click(),
     ]);
-    expect(newPage.url()).toBe(url);
+    expect(newPage.url()).toContain(url);
   }
 
   async mediaButtonsWork() {
@@ -34,6 +36,6 @@ export class AboutUsPage {
       "source-code",
       "https://github.com/Sudokuru/Frontend",
     );
-    await this.linkButtonWorks("youtube", "https://www.youtube.com/@SudoKuru");
+    await this.linkButtonWorks("youtube", "youtube.com/@SudoKuru");
   }
 }

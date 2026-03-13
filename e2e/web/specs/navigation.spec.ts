@@ -7,6 +7,7 @@ import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
 import { ContactPage } from "../page/contact.page";
 import { AboutUsPage } from "../page/aboutus.page";
+import { DrillPage } from "../page/drill.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {

@@ -124,6 +124,7 @@ jobs:
   website_test_dev:
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze, app_preview_dev ]
+    timeout-minutes: 120
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -134,9 +135,9 @@ jobs:
       - name: install dependencies
         run: npm i
       - name: Install Playwright Browsers
-        run: npm run playwright:init --with-deps
+        run: npm run playwright:init:deps
       - name: Playwright run
-        run: npm run playwright:test:chrome
+        run: npm run playwright:test
         working-directory: e2e/web
         env:
           BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}

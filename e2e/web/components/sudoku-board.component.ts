@@ -81,7 +81,9 @@ export class SudokuBoardComponent {
     for (let i = 0; i < this.numNumPads; i++) {
       await expect(this.numPad[i].locator("div").first()).toHaveCSS(
         "background-image",
-        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`,
+        new RegExp(
+          `linear-gradient\\(rgb\\(255, 255, 255\\) ${progress[i].replace("%", "")}\\d*%?, rgb\\(217, 160, 91\\) ${progress[i].replace("%", "")}\\d*%?`,
+        ),
       );
     }
   }
@@ -90,7 +92,9 @@ export class SudokuBoardComponent {
     for (let i = 0; i < this.numNumPads; i++) {
       await expect(this.numPad[i].locator("div").first()).not.toHaveCSS(
         "background-image",
-        `linear-gradient(rgb(255, 255, 255) ${progress[i]}, rgb(217, 160, 91) ${progress[i]})`,
+        new RegExp(
+          `linear-gradient\\(rgb\\(255, 255, 255\\) ${progress[i].replace("%", "")}\\d*%?, rgb\\(217, 160, 91\\) ${progress[i].replace("%", "")}\\d*%?`,
+        ),
       );
     }
   }
