@@ -84,7 +84,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24.x
       - name: Setup Changelog
@@ -148,7 +148,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24.x
       - name: install dependencies
@@ -213,7 +213,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24.x
       - name: install dependencies
@@ -268,7 +268,7 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24.x
       - name: Setup Changelog
@@ -311,7 +311,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22
       - name: Setup Changelog
