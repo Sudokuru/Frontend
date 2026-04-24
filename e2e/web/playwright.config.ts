@@ -28,6 +28,10 @@ const reporter: any = CI
         {
           name: "Sudokuru Report",
           outputFile: "./test-results/report.html",
+          zip: {
+            outputFile: "./test-results/report.zip",
+            clean: true,
+          },
           // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
           coverage: {
             entryFilter: () => true,

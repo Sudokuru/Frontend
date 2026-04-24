@@ -177,6 +177,13 @@ jobs:
           name: playwright-junit-${{ matrix.artifact-name }}
           path: e2e/web/playwright-report/results.xml
           if-no-files-found: error
+      - name: Upload monocart shard artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monocart-report-${{ matrix.artifact-name }}
+          path: e2e/web/test-results/report.zip
+          if-no-files-found: error
       - name: Upload coverage reports to Codecov
         if: always() && matrix.project == 'chromium'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
@@ -218,8 +225,17 @@ jobs:
           pattern: playwright-junit-*
           path: e2e/web/all-junit-reports
           merge-multiple: true
+      - name: Download monocart reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: monocart-report-*
+          path: e2e/web/all-monocart-reports
+          merge-multiple: true
       - name: Merge Playwright HTML report
         run: npx playwright merge-reports --reporter=html ./all-blob-reports
+        working-directory: e2e/web
+      - name: Merge Monocart HTML report
+        run: npx monocart merge './all-monocart-reports/*.zip' -o ./monocart-report/index.html
         working-directory: e2e/web
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
@@ -232,6 +248,13 @@ jobs:
         with:
           name: PlaywrightTestResults
           path: e2e/web/playwright-report
+          if-no-files-found: error
+      - name: Upload merged monocart report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MonocartTestResults
+          path: e2e/web/monocart-report
           if-no-files-found: error
 
   app_build_android:
