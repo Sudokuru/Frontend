@@ -33,7 +33,6 @@ const monocartOptions = {
   ...(CI && {
     zip: {
       outputFile: "./test-results/report.zip",
-      clean: true,
     },
   }),
 };
