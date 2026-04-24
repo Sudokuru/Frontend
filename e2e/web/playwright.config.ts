@@ -40,6 +40,7 @@ export const getSingleMultiSelectKey = () => {
 
 export const MOBILE_WIDTH_LESS_THAN = 400;
 export const MOBILE_HEIGHT_LESS_THAN = 860;
+export const MIDDLE_WIDTH_AND_HEIGHT = 1024;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -124,11 +125,19 @@ export default defineConfig({
     /* Test against branded browsers. */
     {
       name: "Microsoft Edge",
-      use: { ...devices["Desktop Edge"], channel: "msedge" },
+      use: {
+        ...devices["Desktop Edge"],
+        channel: "msedge",
+        viewport: { width: 1024, height: 1024 },
+      },
     },
     {
       name: "Google Chrome",
-      use: { ...devices["Desktop Chrome"], channel: "chrome" },
+      use: {
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
+        viewport: { width: 1024, height: 1024 },
+      },
     },
   ],
 
