@@ -48,7 +48,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: 📦 Install dependencies
         run: npm ci
       - name: Lint Check
@@ -82,7 +82,7 @@ jobs:
       deployment-url: ${{ steps.deployment.outputs.deployment-url }}
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -146,7 +146,7 @@ jobs:
             artifact-name: google-chrome
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -211,7 +211,7 @@ jobs:
     if: always()
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -266,7 +266,7 @@ jobs:
     needs: [ code_scan, analyze ]
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -309,7 +309,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     needs: [ code_scan, analyze ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: setup node
         uses: actions/setup-node@v6
         with:
@@ -412,7 +412,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
@@ -431,7 +431,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
