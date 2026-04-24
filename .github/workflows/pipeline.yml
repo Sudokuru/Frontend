@@ -86,7 +86,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 26.x
+          node-version: 24.x
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
@@ -150,7 +150,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 26.x
+          node-version: 24.x
       - name: install dependencies
         run: npm i
       - name: Install Playwright Browsers
@@ -215,7 +215,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 26.x
+          node-version: 24.x
       - name: install dependencies
         run: npm i
       - name: Download blob reports
@@ -270,7 +270,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 26.x
+          node-version: 24.x
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v4
