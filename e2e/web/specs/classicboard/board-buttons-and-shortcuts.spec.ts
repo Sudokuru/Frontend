@@ -20,7 +20,6 @@ test.describe("hint", () => {
     const capital = key === "H" ? "capital " : "";
     test("hint button: " + capital + key, async ({ resumeClassicGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-      await sudokuBoard.cell[0][0].click();
       for (let i = 0; i < 6; i++) {
         await sudokuBoard.page.keyboard.press(key);
       }
@@ -35,7 +34,6 @@ test.describe("pause", () => {
     const capital = key === "P" ? "capital " : "";
     test("pause button: " + capital + key, async ({ resumeClassicGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-      await sudokuBoard.cell[0][0].click();
       if (key === "button") {
         await sudokuBoard.pause.click();
       } else {

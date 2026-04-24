@@ -186,9 +186,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
               >
                 {description}
               </Text>
-            ) : (
-              <></>
-            )}
+            ) : null}
             {shrinkage < 0.3 ? (
               <Image
                 style={{
@@ -201,9 +199,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
                 defaultSource={img}
                 accessibilityLabel={alt}
               />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </Card>
         </TouchableOpacity>
       </View>,

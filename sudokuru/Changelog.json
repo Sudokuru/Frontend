@@ -1,7 +1,17 @@
 [
   {
-    "version": "1.32.0",
+    "version": "1.32.1",
     "date": "#{date}#",
+    "summary": "Sudoku board hotkeys functionality now works even if the board is not selected.",
+    "bug fixes": [
+      "Sudoku board hotkeys now work even if the board is not selected. Previously, hotkeys would only work when the user has selected a cell on the board. Hotkeys would stop working when the user clicked away from the sudoku board."
+    ],
+    "targets": ["web"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.32.0",
+    "date": "February 19th, 2026",
     "summary": "Added Drills to feature preview and updated hint logic to improve quality of hints given.",
     "preview features": [
       "Added Drill mode functionality back to the site. Drills were removed in version 1.16.0 to reduce complexity of the site while refactoring the codebase. Drills will now show incorrect movies immediately instead of requiring the user to hit a 'check solution' button. The erase button is replaced with a reset button, since reset will be more useful than erase in the context of drills."

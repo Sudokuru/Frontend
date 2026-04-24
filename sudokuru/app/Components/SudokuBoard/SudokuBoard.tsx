@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
-import {
-  doesBoardHaveConflict,
-  isGameSolved,
-  wrapDigit,
-} from "./SudokuBoardFunctions";
+import { doesBoardHaveConflict, isGameSolved } from "./SudokuBoardFunctions";
 import { ActivityIndicator } from "react-native-paper";
 import NumberControl from "./Core/Components/NumberControl";
 import ActionRow from "./Core/Components/ActionRow";
@@ -40,6 +36,7 @@ import {
   SudokuVariantMethods,
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
+import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -90,6 +87,25 @@ const SudokuBoard = (props: Board) => {
     progressIndicatorSetting,
   } = React.useContext(PreferencesContext);
 
+  // Call keyboard hotkeys hook early (before early returns) to satisfy React hooks rules
+  const {
+    undoRef,
+    toggleNoteModeRef,
+    getHintRef,
+    resetRef,
+    updateCellEntryRef,
+    eraseSelectedRef,
+    updateHintStageRef,
+    sudokuBoardRef,
+    sudokuHintRef,
+    gameOverRef,
+    setBoardSelectedCellsRef,
+  } = useKeyboardHotkeys({
+    boardType: props.type,
+    navigation,
+    boardMethods,
+  });
+
   useEffect(() => {
     let initializeNotes = false;
 
@@ -113,6 +129,9 @@ const SudokuBoard = (props: Board) => {
     loadGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Keep keyboard hotkey game-over guard fresh even when this component early-returns
+  gameOverRef.current = gameOver;
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
@@ -445,114 +464,6 @@ const SudokuBoard = (props: Board) => {
         handlePause={boardMethods[props.type].handlePause}
       />
     );
-  };
-
-  /**
-   * When a user presses a key down, do the desired action
-   * @param event onKeyDown event for react-native-web documented here: https://necolas.github.io/react-native-web/docs/interactions/#keyboardevent-props-api
-   * @returns void
-   */
-  const handleKeyDown = (event: any) => {
-    const inputValue = event.nativeEvent.key;
-
-    switch (inputValue) {
-      case "u":
-      case "U":
-        if (sudokuBoard.actionHistory.length !== 0) {
-          undo();
-        }
-        return;
-      case "p":
-      case "P":
-        boardMethods[props.type].handlePause(sudokuBoard, navigation);
-        return;
-      case "t":
-      case "T":
-      case "n":
-      case "N":
-        toggleNoteMode();
-        return;
-      case "H":
-      case "h":
-        if (
-          !doesBoardHaveConflict(
-            sudokuBoard,
-            boardMethods[props.type].doesCellHaveConflict,
-          )
-        ) {
-          if (sudokuHint) {
-            updateHintStage(1, boardMethods[props.type].finishSudokuGame);
-          } else {
-            getHint();
-          }
-        }
-        return;
-      case "R":
-      case "r":
-        if (boardMethods[props.type].hasResetActionButton() === true) {
-          reset();
-        }
-        return;
-      default:
-        break;
-    }
-
-    if (sudokuBoard.selectedCells.length === 0) {
-      return;
-    }
-
-    if (/^[1-9]$/.test(inputValue)) {
-      updateCellEntry(parseInt(inputValue, 10));
-      return;
-    }
-
-    switch (inputValue) {
-      case "Delete":
-      case "Backspace":
-      case "0":
-      case "e":
-      case "E":
-        if (boardMethods[props.type].hasEraseActionButton() === true) {
-          eraseSelected();
-        }
-        break;
-    }
-
-    for (let i = 0; i < sudokuBoard.selectedCells.length; i++) {
-      let newCol = sudokuBoard.selectedCells[i].c;
-      let newRow = sudokuBoard.selectedCells[i].r;
-      switch (inputValue) {
-        // below cases do not return to allow for update of selected cell
-        // todo create function for updating selectedCell for below cases to call
-        case "ArrowLeft":
-        case "a":
-        case "A":
-          newCol = wrapDigit(newCol - 1);
-          break;
-        case "ArrowRight":
-        case "d":
-        case "D":
-          newCol = wrapDigit(newCol + 1);
-          break;
-        case "ArrowUp":
-        case "w":
-        case "W":
-          newRow = wrapDigit(newRow - 1);
-          break;
-        case "ArrowDown":
-        case "s":
-        case "S":
-          newRow = wrapDigit(newRow + 1);
-          break;
-        default:
-          return;
-      }
-      sudokuBoard.selectedCells[i] = { r: newRow, c: newCol };
-    }
-    setSudokuBoard({
-      ...sudokuBoard,
-      selectedCells: sudokuBoard.selectedCells,
-    });
   };
 
   const renderPuzzle = () => {
@@ -894,10 +805,21 @@ const SudokuBoard = (props: Board) => {
     }
   };
 
+  // Sync keyboard handler refs on every render to access fresh state and functions
+  undoRef.current = undo;
+  toggleNoteModeRef.current = toggleNoteMode;
+  getHintRef.current = getHint;
+  resetRef.current = reset;
+  updateCellEntryRef.current = updateCellEntry;
+  eraseSelectedRef.current = eraseSelected;
+  updateHintStageRef.current = updateHintStage;
+  sudokuBoardRef.current = sudokuBoard;
+  sudokuHintRef.current = sudokuHint;
+  setBoardSelectedCellsRef.current = setBoardSelectedCells;
+
   return (
     <View
       testID={"sudokuBoard"}
-      onKeyDown={handleKeyDown}
       style={{
         alignItems: "center",
         alignContent: "center",
