@@ -19,65 +19,31 @@ const WORKERS = Number(process.env.WORKERS);
 export const CODE_COVERAGE = process.env.CODE_COVERAGE === "true";
 const BASE_URL = process.env.BASE_URL;
 
-const reporter: any = CI
-  ? [
-      ["list"],
-      ["blob"],
-      ["junit", { outputFile: "playwright-report/results.xml" }],
-      [
-        "monocart-reporter",
-        {
-          name: "Sudokuru Report",
-          outputFile: "./test-results/report.html",
-          zip: {
-            outputFile: "./test-results/report.zip",
-            clean: true,
-          },
-          // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
-          coverage: {
-            entryFilter: () => true,
-            // exclude the generated javascript files that are storing puzzle data
-            sourceFilter: (sourcePath: string) =>
-              sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
-            reports: [
-              "v8",
-              "v8-json",
-              "console-summary",
-              "html",
-              "codecov",
-              "codacy",
-            ],
-          },
-        },
-      ],
-    ]
-  : [
-      ["list"],
-      ["html"],
-      ["junit", { outputFile: "playwright-report/results.xml" }],
-      [
-        "monocart-reporter",
-        {
-          name: "Sudokuru Report",
-          outputFile: "./test-results/report.html",
-          // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
-          coverage: {
-            entryFilter: () => true,
-            // exclude the generated javascript files that are storing puzzle data
-            sourceFilter: (sourcePath: string) =>
-              sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
-            reports: [
-              "v8",
-              "v8-json",
-              "console-summary",
-              "html",
-              "codecov",
-              "codacy",
-            ],
-          },
-        },
-      ],
-    ];
+const monocartOptions = {
+  name: "Sudokuru Report",
+  outputFile: "./test-results/report.html",
+  // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
+  coverage: {
+    entryFilter: () => true,
+    // exclude the generated javascript files that are storing puzzle data
+    sourceFilter: (sourcePath: string) =>
+      sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
+    reports: ["v8", "v8-json", "console-summary", "html", "codecov", "codacy"],
+  },
+  ...(CI && {
+    zip: {
+      outputFile: "./test-results/report.zip",
+      clean: true,
+    },
+  }),
+};
+
+const reporter: any = [
+  ["list"],
+  ...(CI ? [["blob"]] : [["html"]]),
+  ["junit", { outputFile: "playwright-report/results.xml" }],
+  ["monocart-reporter", monocartOptions],
+];
 
 // determines how many playwright parallel workers there should be
 const workerValue = (CI: boolean, WORKERS: number) => {
