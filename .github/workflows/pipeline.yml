@@ -122,9 +122,28 @@ jobs:
             ${{ steps.deployment.outputs.deployment-url }}
 
   website_test_dev:
+    name: website_test_dev ${{ matrix.artifact-name }}
     runs-on: ubuntu-latest
     needs: [ code_scan, analyze, app_preview_dev ]
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chromium
+            artifact-name: chromium
+          - project: firefox
+            artifact-name: firefox
+          - project: webkit
+            artifact-name: webkit
+          - project: Mobile Chrome
+            artifact-name: mobile-chrome
+          - project: Mobile Safari
+            artifact-name: mobile-safari
+          - project: Microsoft Edge
+            artifact-name: microsoft-edge
+          - project: Google Chrome
+            artifact-name: google-chrome
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v4
@@ -137,26 +156,29 @@ jobs:
       - name: Install Playwright Browsers
         run: npm run playwright:init:deps
       - name: Playwright run
-        run: npm run playwright:test
+        run: npx playwright test --project="${{ matrix.project }}"
         working-directory: e2e/web
         env:
           BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
           CI: 'true'
           CODE_COVERAGE: 'true'
           WORKERS: 0
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
-        if: always()
-        with:
-          files: e2e/web/playwright-report/results.xml
-      - name: Upload Test Results
+      - name: Upload blob report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: PlaywrightTestResults
-          path: e2e/web/test-results/*
-      - name: Upload coverage reports to Codecov
+          name: playwright-blob-report-${{ matrix.artifact-name }}
+          path: e2e/web/blob-report
+          if-no-files-found: error
+      - name: Upload junit artifact
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-junit-${{ matrix.artifact-name }}
+          path: e2e/web/playwright-report/results.xml
+          if-no-files-found: error
+      - name: Upload coverage reports to Codecov
+        if: always() && matrix.project == 'chromium'
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           fail_ci_if_error: true
@@ -169,6 +191,48 @@ jobs:
       #   with:
       #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
       #     coverage-reports: test-results/coverage/codacy.json
+
+  website_test_report_dev:
+    name: Merge Playwright reports
+    runs-on: ubuntu-latest
+    needs: [ website_test_dev ]
+    if: always()
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: install dependencies
+        run: npm i
+      - name: Download blob reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-blob-report-*
+          path: e2e/web/all-blob-reports
+          merge-multiple: true
+      - name: Download junit reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: playwright-junit-*
+          path: e2e/web/all-junit-reports
+          merge-multiple: true
+      - name: Merge Playwright HTML report
+        run: npx playwright merge-reports --reporter=html ./all-blob-reports
+        working-directory: e2e/web
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
+        if: always()
+        with:
+          files: e2e/web/all-junit-reports/**/*.xml
+      - name: Upload merged Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlaywrightTestResults
+          path: e2e/web/playwright-report
+          if-no-files-found: error
 
   app_build_android:
     runs-on: ubuntu-latest
@@ -252,7 +316,7 @@ jobs:
       fail-fast: false
       matrix:
         binary_name: [linux, windows, android]
-    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    needs: [ app_build_android, website_test_report_dev, app_build_desktop ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
@@ -316,7 +380,7 @@ jobs:
 
   deploy_website_dev:
     name: Deploy Dev Website
-    needs: [ app_build_android, website_test_dev, app_build_desktop ]
+    needs: [ app_build_android, website_test_report_dev, app_build_desktop ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:

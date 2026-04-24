@@ -19,6 +19,61 @@ const WORKERS = Number(process.env.WORKERS);
 export const CODE_COVERAGE = process.env.CODE_COVERAGE === "true";
 const BASE_URL = process.env.BASE_URL;
 
+const reporter: any = CI
+  ? [
+      ["blob"],
+      ["junit", { outputFile: "playwright-report/results.xml" }],
+      [
+        "monocart-reporter",
+        {
+          name: "Sudokuru Report",
+          outputFile: "./test-results/report.html",
+          // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
+          coverage: {
+            entryFilter: () => true,
+            // exclude the generated javascript files that are storing puzzle data
+            sourceFilter: (sourcePath: string) =>
+              sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
+            reports: [
+              "v8",
+              "v8-json",
+              "console-summary",
+              "html",
+              "codecov",
+              "codacy",
+            ],
+          },
+        },
+      ],
+    ]
+  : [
+      ["list"],
+      ["html"],
+      ["junit", { outputFile: "playwright-report/results.xml" }],
+      [
+        "monocart-reporter",
+        {
+          name: "Sudokuru Report",
+          outputFile: "./test-results/report.html",
+          // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
+          coverage: {
+            entryFilter: () => true,
+            // exclude the generated javascript files that are storing puzzle data
+            sourceFilter: (sourcePath: string) =>
+              sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
+            reports: [
+              "v8",
+              "v8-json",
+              "console-summary",
+              "html",
+              "codecov",
+              "codacy",
+            ],
+          },
+        },
+      ],
+    ];
+
 // determines how many playwright parallel workers there should be
 const workerValue = (CI: boolean, WORKERS: number) => {
   if (WORKERS >= 1) {
@@ -57,33 +112,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: workerValue(CI, WORKERS),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["list"],
-    ["html"],
-    ["junit", { outputFile: "playwright-report/results.xml" }],
-    [
-      "monocart-reporter",
-      {
-        name: "Sudokuru Report",
-        outputFile: "./test-results/report.html",
-        // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
-        coverage: {
-          entryFilter: () => true,
-          // exclude the generated javascript files that are storing puzzle data
-          sourceFilter: (sourcePath: string) =>
-            sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
-          reports: [
-            "v8",
-            "v8-json",
-            "console-summary",
-            "html",
-            "codecov",
-            "codacy",
-          ],
-        },
-      },
-    ],
-  ],
+  reporter,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
