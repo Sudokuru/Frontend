@@ -229,7 +229,6 @@ jobs:
         with:
           pattern: playwright-junit-*
           path: e2e/web/all-junit-reports
-          merge-multiple: true
       - name: Download monocart reports
         uses: actions/download-artifact@v8
         with:
