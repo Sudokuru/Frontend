@@ -165,14 +165,14 @@ jobs:
           WORKERS: 0
       - name: Upload blob report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-blob-report-${{ matrix.artifact-name }}
           path: e2e/web/blob-report
           if-no-files-found: error
       - name: Upload junit artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-junit-${{ matrix.artifact-name }}
           path: e2e/web/playwright-report/results.xml
@@ -182,7 +182,7 @@ jobs:
         run: mv e2e/web/test-results/report.zip e2e/web/test-results/report-${{ matrix.artifact-name }}.zip
       - name: Upload monocart shard artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: monocart-report-${{ matrix.artifact-name }}
           path: e2e/web/test-results/report-${{ matrix.artifact-name }}.zip
@@ -219,19 +219,19 @@ jobs:
       - name: install dependencies
         run: npm i
       - name: Download blob reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: playwright-blob-report-*
           path: e2e/web/all-blob-reports
           merge-multiple: true
       - name: Download junit reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: playwright-junit-*
           path: e2e/web/all-junit-reports
           merge-multiple: true
       - name: Download monocart reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: monocart-report-*
           path: e2e/web/all-monocart-reports
@@ -248,14 +248,14 @@ jobs:
           files: e2e/web/all-junit-reports/**/*.xml
       - name: Upload merged Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PlaywrightTestResults
           path: e2e/web/playwright-report
           if-no-files-found: error
       - name: Upload merged monocart report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: MonocartTestResults
           path: e2e/web/monocart-report
@@ -291,7 +291,7 @@ jobs:
         env:
           EAS_LOCAL_BUILD_ARTIFACTS_DIR: Build
       - name: Upload binary Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: android binary
           path: sudokuru/Build/*.apk
@@ -332,7 +332,7 @@ jobs:
         with:
           tauriScript: npm run tauri:run
       - name: Upload ${{ matrix.name }} Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.name }} binary
           path: "${{ join(fromJSON(steps.tauri_build.outputs.artifactPaths), '\n') }}"
@@ -348,7 +348,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
@@ -382,7 +382,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: ${{matrix.binary_name}} binary
           path: bundle
