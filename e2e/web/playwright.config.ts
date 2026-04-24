@@ -21,6 +21,7 @@ const BASE_URL = process.env.BASE_URL;
 
 const reporter: any = CI
   ? [
+      ["list"],
       ["blob"],
       ["junit", { outputFile: "playwright-report/results.xml" }],
       [
