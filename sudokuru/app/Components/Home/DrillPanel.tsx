@@ -35,16 +35,11 @@ export const DRILL_STRATEGIES = defineDrillStrategies([
 export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
 let drillImages: ImageURISource[] = [
-  require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_TRIPLET.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_QUADRUPLET.png"),
-  require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
-  require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
-  require("./../../../.assets/CardImages/HIDDEN_TRIPLET.png"),
-  require("./../../../.assets/CardImages/HIDDEN_QUADRUPLET.png"),
-  require("./../../../.assets/CardImages/POINTING_PAIR.png"),
-  require("./../../../.assets/CardImages/POINTING_TRIPLET.png"),
+  require("../../../.assets/DifficultyStars/3points.png"),
+  require("../../../.assets/DifficultyStars/4points.png"),
+  require("../../../.assets/DifficultyStars/5points.png"),
+  require("../../../.assets/DifficultyStars/9points.png"),
+  require("../../../.assets/DifficultyStars/24points.png"),
 ];
 
 const DrillPanel = (props: any) => {
@@ -108,6 +103,21 @@ const DrillPanel = (props: any) => {
     }
   }
 
+  function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
+    switch (getDrillDifficulty(strategy)) {
+      case "Very Easy":
+        return drillImages[0];
+      case "Easy":
+        return drillImages[1];
+      case "Intermediate":
+        return drillImages[2];
+      case "Hard":
+        return drillImages[3];
+      default:
+        return drillImages[4];
+    }
+  }
+
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
       {resumeVisible ? (
@@ -139,7 +149,7 @@ const DrillPanel = (props: any) => {
         getSubtitleColor={(strategy) =>
           getDifficultyColor(getDrillDifficulty(strategy))
         }
-        getCardImage={(_, index) => drillImages[index]}
+        getCardImage={(strategy) => getDrillDifficultyImage(strategy)}
         onPress={(strategy) => {
           showTutorialIfNotDismissed().then(() => {
             navigation.navigate("DrillGame", {
