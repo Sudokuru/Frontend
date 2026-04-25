@@ -226,7 +226,7 @@ jobs:
         working-directory: e2e/web
       - name: Upload combined coverage to Codacy
         if: always()
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        uses: codacy/codacy-coverage-reporter-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: e2e/web/monocart-report/codecov.json
