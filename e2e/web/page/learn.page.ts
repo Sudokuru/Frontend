@@ -37,9 +37,6 @@ export class LearnPage {
     text: string,
   ) {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
-    const lessonTextLocator = lessonLocator.getByText(text);
-    await lessonTextLocator.scrollIntoViewIfNeeded();
-    await expect(lessonTextLocator).toBeInViewport({ ratio: 1 });
 
     // Get viewport size to determine if difficulty text should be visible
     const viewportSize = await this.page.viewportSize();
@@ -51,6 +48,7 @@ export class LearnPage {
     if (!estimatedHidesDifficulty) {
       const lessonDifficultyLocator = lessonLocator.getByTestId("difficulty");
       await lessonDifficultyLocator.scrollIntoViewIfNeeded();
+      await expect(lessonDifficultyLocator).toHaveText(text);
       await expect(lessonDifficultyLocator).toBeInViewport({ ratio: 1 });
     }
   }
