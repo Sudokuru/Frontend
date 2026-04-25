@@ -187,22 +187,6 @@ jobs:
           name: monocart-report-${{ matrix.artifact-name }}
           path: e2e/web/test-results/report-${{ matrix.artifact-name }}.zip
           if-no-files-found: error
-      - name: Upload coverage reports to Codecov
-        if: always() && matrix.project == 'chromium'
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
-        with:
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
-          disable_search: true
-          files: e2e/web/test-results/coverage/codecov.json
-      # https://github.com/codacy/codacy-coverage-reporter/issues/506
-      # codacy does not allow uploading of codacy.json files directly without API endpoint
-      # - name: Run codacy-coverage-reporter
-      #   if: always()
-      #   uses: codacy/codacy-coverage-reporter-action@v1.3.0
-      #   with:
-      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      #     coverage-reports: test-results/coverage/codacy.json
 
   website_test_report_dev:
     name: Merge Playwright reports
@@ -240,6 +224,12 @@ jobs:
       - name: Merge Monocart HTML report
         run: npx monocart merge './all-monocart-reports/**/*.zip' -o ./monocart-report/index.html
         working-directory: e2e/web
+      - name: Upload combined coverage to Codacy
+        if: always()
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: e2e/web/monocart-report/codecov.json
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         if: always()
