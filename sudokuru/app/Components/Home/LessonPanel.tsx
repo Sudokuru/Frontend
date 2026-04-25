@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ImageURISource, View, Modal } from "react-native";
+import { View, Modal } from "react-native";
 import { ActivityIndicator, Text, Button } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
@@ -18,39 +18,6 @@ import {
 import { getStrategies } from "../../Api/Lessons";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
-
-let lessonImages: ImageURISource[] = [
-  require("../../../.assets/CardImages/SUDOKU_101.png"),
-  require("./../../../.assets/CardImages/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
-  require("./../../../.assets/CardImages/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
-  require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
-  require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
-  require("./../../../.assets/CardImages/POINTING_PAIR.png"),
-];
-
-let learnedLessonImages: ImageURISource[] = [
-  require("./../../../.assets/CardImages/Learned/SUDOKU_101.png"),
-  require("./../../../.assets/CardImages/Learned/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/Learned/OBVIOUS_SINGLE.png"),
-  require("./../../../.assets/CardImages/Learned/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/Learned/OBVIOUS_SET.png"),
-  require("./../../../.assets/CardImages/Learned/HIDDEN_SINGLE.png"),
-  require("./../../../.assets/CardImages/Learned/HIDDEN_SET.png"),
-  require("./../../../.assets/CardImages/Learned/POINTING_SET.png"),
-];
-
-let lockedLessonImages: ImageURISource[] = [
-  require("./../../../.assets/CardImages/Locked/SUDOKU_101.png"),
-  require("./../../../.assets/CardImages/Locked/AMEND_NOTES.png"),
-  require("./../../../.assets/CardImages/Locked/OBVIOUS_SINGLE.png"),
-  require("./../../../.assets/CardImages/Locked/SIMPLIFY_NOTES.png"),
-  require("./../../../.assets/CardImages/Locked/OBVIOUS_SET.png"),
-  require("./../../../.assets/CardImages/Locked/HIDDEN_SINGLE.png"),
-  require("./../../../.assets/CardImages/Locked/HIDDEN_SET.png"),
-  require("./../../../.assets/CardImages/Locked/POINTING_SET.png"),
-];
 
 const LessonPanel = (props: any) => {
   const { theme } = useTheme();
@@ -94,16 +61,6 @@ const LessonPanel = (props: any) => {
     }
   }
 
-  function getLessonImage(lesson: string, index: number): ImageURISource {
-    if (learnedLessons.includes(lesson)) {
-      return learnedLessonImages[index];
-    }
-    if (lockedLessons.includes(lesson)) {
-      return lockedLessonImages[index];
-    }
-    return lessonImages[index];
-  }
-
   if (isLoading) {
     return <ActivityIndicator animating={true} color={theme.colors.primary} />;
   }
@@ -131,7 +88,26 @@ const LessonPanel = (props: any) => {
         getSubtitleColor={(lesson) =>
           getDifficultyColor(getLessonDifficulty(lesson))
         }
-        getCardImage={(lesson, index) => getLessonImage(lesson, index)}
+        renderImageContent={(lesson, _, shrinkage) => (
+          <MaterialCommunityIcons
+            name={
+              learnedLessons.includes(lesson)
+                ? "check-circle"
+                : lockedLessons.includes(lesson)
+                  ? "lock"
+                  : "play-circle"
+            }
+            size={Math.max(30, 75 * (1 - shrinkage))}
+            color={
+              learnedLessons.includes(lesson)
+                ? "green"
+                : lockedLessons.includes(lesson)
+                  ? theme.semantic.text.tertiary
+                  : theme.semantic.text.primary
+            }
+            style={{ alignSelf: "center" }}
+          />
+        )}
         onPress={(lesson, index) => {
           if (lockedLessons.includes(lesson)) {
             setLockedLesson(index);

@@ -23,6 +23,11 @@ interface ListPanelProps<T> {
   getSubtitleColor?: (item: T, index: number) => string;
   getCardImage?: (item: T, index: number) => ImageURISource | undefined;
   getImageAccessibilityLabel?: (item: T, index: number) => string | undefined;
+  renderImageContent?: (
+    item: T,
+    index: number,
+    shrinkage: number,
+  ) => React.ReactNode;
   onPress: (item: T, index: number) => void;
   renderCompactContent?: (
     item: T,
@@ -58,6 +63,7 @@ const ListPanel = <T,>({
   getSubtitleColor,
   getCardImage,
   getImageAccessibilityLabel,
+  renderImageContent,
   onPress,
   renderCompactContent,
 }: ListPanelProps<T>) => {
@@ -130,7 +136,12 @@ const ListPanel = <T,>({
                     {subtitle}
                   </Text>
                 ) : null}
-                {shrinkage < 0.3 && img != null ? (
+                {shrinkage < 0.3 && renderImageContent != null
+                  ? renderImageContent(item, i, shrinkage)
+                  : null}
+                {shrinkage < 0.3 &&
+                renderImageContent == null &&
+                img != null ? (
                   <Image
                     source={img}
                     defaultSource={img}
