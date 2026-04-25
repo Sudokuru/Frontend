@@ -224,12 +224,12 @@ jobs:
       - name: Merge Monocart HTML report
         run: npx monocart merge './all-monocart-reports/**/*.zip' -o ./monocart-report/index.html
         working-directory: e2e/web
-      - name: Upload combined coverage to Codacy
+      - name: Upload combined coverage reports to Codecov
         if: always()
-        uses: codacy/codacy-coverage-reporter-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: e2e/web/monocart-report/codecov.json
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         if: always()
