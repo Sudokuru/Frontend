@@ -1,16 +1,7 @@
-import { ImageURISource, TouchableOpacity, View, Image } from "react-native";
-import {
-  calculateCardsPerRow,
-  CARD_IMAGE_HEIGHT,
-  CARD_IMAGE_WIDTH,
-  CARD_PADDING,
-  CARD_WIDTH,
-  difficulty,
-  getDifficultyColor,
-} from "./Cards";
+import { ImageURISource } from "react-native";
+import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
-import { Card, Text } from "react-native-paper";
-import { useTheme } from "../../Contexts/ThemeContext";
+import ListPanel from "./ListPanel";
 
 let difficulties: string[] = [
   "Novice",
@@ -45,193 +36,77 @@ Added final white border to non transparent pixels (shapes) like this:
 convert 3points.png \( +clone -alpha extract -morphology dilate diamond:10 -background white -alpha shape \) -compose DstOver -composite 3points.png
 */
 
-/**
- * Given total number of cards and number of cards per column calculates how many rows there are total
- * @param cardCount
- * @param columnCount
- * @returns number of rows
- */
-function getRowCount(cardCount: number, columnCount: number): number {
-  return Math.ceil(cardCount / columnCount);
-}
-
-/**
- * Calculates the total height taken up by cards and the padding in between them
- * @param rowCount
- * @param cardHeight
- * @param shrinkage
- * @returns total height taken up by cards and their padding
- */
-function getTotalCardsHeight(
-  rowCount: number,
-  cardHeight: number,
-  shrinkage: number,
-): number {
-  let fromCards: number = rowCount * cardHeight;
-  let fromPadding: number = (rowCount - 1) * CARD_PADDING;
-  return (fromCards + fromPadding) * (1 - shrinkage);
-}
-
 interface DifficultyPanelProps {
   width: number;
   height: number;
   navigation: any;
 }
 
+function getDifficultyCardData(level: string): {
+  description: difficulty;
+  image: ImageURISource;
+  alt: string;
+} {
+  switch (level) {
+    case "Novice":
+    case "Amateur":
+      return {
+        description: "Very Easy",
+        image: difficultyStars[0],
+        alt: "3 Point Star",
+      };
+    case "Layman":
+    case "Trainee":
+      return {
+        description: "Easy",
+        image: difficultyStars[1],
+        alt: "4 Point Star",
+      };
+    case "Protege":
+      return {
+        description: "Intermediate",
+        image: difficultyStars[2],
+        alt: "5 Point Star",
+      };
+    case "Professional":
+    case "Pundit":
+      return {
+        description: "Hard",
+        image: difficultyStars[3],
+        alt: "9 Point Star",
+      };
+    default:
+      return {
+        description: "Very Hard",
+        image: difficultyStars[4],
+        alt: "24 Point Star",
+      };
+  }
+}
+
 const DifficultyPanel = (props: DifficultyPanelProps) => {
-  const { theme } = useTheme();
-
-  let difficultyButtonArray = [];
-  let subArray = [];
-
-  // Calculate shrinkage based on screen size (shrinkage of 0.1 decreases card size by 10%, high shrinkage removes image and difficulty description)
-  // Does this by adjusting total height of cards (row count * card height * (1-shrinkage) + padding) to be at most 70% of screen height
-  let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
-  let shrinkage: number = -0.01,
-    columnCount,
-    rowCount;
-  do {
-    shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(
-      props.width,
-      props.height,
-      difficulties.length,
-    );
-    rowCount = getRowCount(difficulties.length, columnCount);
-  } while (
-    getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
-    props.height * 0.7
-  );
-
-  let difficulty: string = "";
-  for (let i = 0; i < difficulties.length; i++) {
-    let img: ImageURISource;
-    let alt: string;
-    difficulty = difficulties[i];
-    let description: difficulty;
-    switch (difficulty) {
-      case "Novice":
-      case "Amateur":
-        description = "Very Easy";
-        img = difficultyStars[0];
-        alt = "3 Point Star";
-        break;
-      case "Layman":
-      case "Trainee":
-        description = "Easy";
-        img = difficultyStars[1];
-        alt = "4 Point Star";
-        break;
-      case "Protege":
-        description = "Intermediate";
-        img = difficultyStars[2];
-        alt = "5 Point Star";
-        break;
-      case "Professional":
-      case "Pundit":
-        description = "Hard";
-        img = difficultyStars[3];
-        alt = "9 Point Star";
-        break;
-      default:
-        description = "Very Hard";
-        img = difficultyStars[4];
-        alt = "24 Point Star";
-        break;
-    }
-    let difficultyColor: string = getDifficultyColor(description);
-    const descriptionTestID = `${difficulty}Description`;
-    const difficultyString = difficulty.toLowerCase();
-    subArray.push(
-      <View
-        key={difficulty}
-        testID={difficulty}
-        style={{
-          width: CARD_WIDTH,
-          padding: CARD_PADDING * (1 - shrinkage),
-          margin: 5,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("SudokuPage", {
-              action: "StartGame",
-              difficulty: difficultyString,
-            });
-          }}
-        >
-          <Card
-            mode="outlined"
-            theme={{
-              colors: {
-                surface: theme.colors.surfaceAlt,
-              },
-            }}
-          >
-            <Text
-              variant="headlineMedium"
-              style={{
-                alignSelf: "center",
-                color: theme.semantic.text.inverse,
-              }}
-            >
-              {difficulty}
-            </Text>
-            {shrinkage < 0.6 ? (
-              <Text
-                testID={descriptionTestID}
-                variant="headlineSmall"
-                style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: difficultyColor } }}
-              >
-                {description}
-              </Text>
-            ) : null}
-            {shrinkage < 0.3 ? (
-              <Image
-                style={{
-                  width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                  height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                }}
-                source={img}
-                defaultSource={img}
-                accessibilityLabel={alt}
-              />
-            ) : null}
-          </Card>
-        </TouchableOpacity>
-      </View>,
-    );
-
-    // Add row
-    if ((i + 1) % columnCount === 0) {
-      difficultyButtonArray.push([difficulty + "Row", subArray]);
-      subArray = [];
-    }
-  }
-  // Add last row if not evenly divisible
-  if (subArray.length > 0) {
-    difficultyButtonArray.push([difficulty + "Row", subArray]);
-  }
-
-  // render each sub-array as a row
   return (
-    <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
-      {difficultyButtonArray.map(([rowKey, difficultyCard]) => (
-        <View
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-          key={String(rowKey)}
-        >
-          {difficultyCard}
-        </View>
-      ))}
-    </View>
+    <ListPanel
+      width={props.width}
+      height={props.height}
+      items={difficulties}
+      getKey={(level) => level}
+      getTestID={(level) => level}
+      getTitle={(level) => level}
+      getSubtitle={(level) => getDifficultyCardData(level).description}
+      getSubtitleTestID={(level) => `${level}Description`}
+      getSubtitleColor={(level) =>
+        getDifficultyColor(getDifficultyCardData(level).description)
+      }
+      getCardImage={(level) => getDifficultyCardData(level).image}
+      getImageAccessibilityLabel={(level) => getDifficultyCardData(level).alt}
+      onPress={(level) => {
+        props.navigation.navigate("SudokuPage", {
+          action: "StartGame",
+          difficulty: level.toLowerCase(),
+        });
+      }}
+    />
   );
 };
 

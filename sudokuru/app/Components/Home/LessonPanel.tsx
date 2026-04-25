@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  ImageURISource,
-  Image,
-  TouchableOpacity,
-  View,
-  Modal,
-} from "react-native";
-import { ActivityIndicator, Text, Card, Button } from "react-native-paper";
+import { ImageURISource, View, Modal } from "react-native";
+import { ActivityIndicator, Text, Button } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -17,15 +11,13 @@ import {
 
 import {
   CARD_IMAGE_HEIGHT,
-  CARD_IMAGE_WIDTH,
-  CARD_PADDING,
   CARD_WIDTH,
-  calculateCardsPerRow,
   difficulty,
   getDifficultyColor,
 } from "./Cards";
 import { getStrategies } from "../../Api/Lessons";
 import { useTheme } from "../../Contexts/ThemeContext";
+import ListPanel from "./ListPanel";
 
 let lessonImages: ImageURISource[] = [
   require("../../../.assets/CardImages/SUDOKU_101.png"),
@@ -82,328 +74,212 @@ const LessonPanel = (props: any) => {
     }, []),
   );
 
+  const lockedLessons = getLockedLessons(learnedLessons, availableLessons);
+
+  function getLessonDifficulty(lesson: string): difficulty {
+    switch (lesson) {
+      case "SUDOKU_101":
+      case "AMEND_NOTES":
+      case "OBVIOUS_SINGLE":
+      case "SIMPLIFY_NOTES":
+        return "Very Easy";
+      case "OBVIOUS_SET":
+        return "Easy";
+      case "HIDDEN_SINGLE":
+        return "Intermediate";
+      case "HIDDEN_SET":
+        return "Hard";
+      default:
+        return "Very Hard";
+    }
+  }
+
+  function getLessonImage(lesson: string, index: number): ImageURISource {
+    if (learnedLessons.includes(lesson)) {
+      return learnedLessonImages[index];
+    }
+    if (lockedLessons.includes(lesson)) {
+      return lockedLessonImages[index];
+    }
+    return lessonImages[index];
+  }
+
   if (isLoading) {
     return <ActivityIndicator animating={true} color={theme.colors.primary} />;
-  } else {
-    // dynamically render in lesson buttons based on criteria
-    let lessonButtonArray = [];
-    let lockedLessons = getLockedLessons(learnedLessons, availableLessons);
+  }
 
-    let subArray = [];
-
-    // Calculate shrinkage based on screen size
-    let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
-    let shrinkage: number = -0.01,
-      columnCount,
-      rowCount;
-    do {
-      shrinkage += 0.01;
-      columnCount = calculateCardsPerRow(
-        props.width,
-        props.height,
-        availableLessons.length,
-      );
-      rowCount = getRowCount(availableLessons.length, columnCount);
-    } while (
-      getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
-      props.height * 0.7
-    );
-
-    for (let i = 0; i < availableLessons.length; i++) {
-      let img: ImageURISource;
-      let id: string = i.toString();
-      if (learnedLessons.includes(availableLessons[i])) {
-        img = learnedLessonImages[i];
-        id = "learned" + id;
-      } else if (lockedLessons.includes(availableLessons[i])) {
-        img = lockedLessonImages[i];
-        id = "locked" + id;
-      } else {
-        img = lessonImages[i];
-        id = "lesson" + id;
-      }
-      let difficulty: difficulty;
-      switch (availableLessons[i]) {
-        case "SUDOKU_101":
-        case "AMEND_NOTES":
-        case "OBVIOUS_SINGLE":
-        case "SIMPLIFY_NOTES":
-          difficulty = "Very Easy";
-          break;
-        case "OBVIOUS_SET":
-          difficulty = "Easy";
-          break;
-        case "HIDDEN_SINGLE":
-          difficulty = "Intermediate";
-          break;
-        case "HIDDEN_SET":
-          difficulty = "Hard";
-          break;
-        default:
-          difficulty = "Very Hard";
-          break;
-      }
-      let difficultyColor: string = getDifficultyColor(difficulty);
-      subArray.push(
+  return (
+    <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
+      <ListPanel
+        width={props.width}
+        height={props.height}
+        items={availableLessons}
+        getKey={(lesson) => lesson}
+        getTestID={(lesson, index) => {
+          if (learnedLessons.includes(lesson)) {
+            return "learned" + index;
+          }
+          if (lockedLessons.includes(lesson)) {
+            return "locked" + index;
+          }
+          return "lesson" + index;
+        }}
+        getTitle={(lesson) => formatOneLessonName(lesson)}
+        getTitleTestID={() => "lessonName"}
+        getSubtitle={(lesson) => getLessonDifficulty(lesson)}
+        getSubtitleTestID={() => "difficulty"}
+        getSubtitleColor={(lesson) =>
+          getDifficultyColor(getLessonDifficulty(lesson))
+        }
+        getCardImage={(lesson, index) => getLessonImage(lesson, index)}
+        onPress={(lesson, index) => {
+          if (lockedLessons.includes(lesson)) {
+            setLockedLesson(index);
+            showLockedWarning();
+          } else {
+            navigation.navigate("Lesson", {
+              params: lesson,
+            });
+          }
+        }}
+        renderCompactContent={(lesson) => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              padding: 10,
+            }}
+          >
+            <MaterialCommunityIcons
+              name={
+                learnedLessons.includes(lesson)
+                  ? "check-circle"
+                  : lockedLessons.includes(lesson)
+                    ? "lock"
+                    : "play-circle"
+              }
+              size={30}
+              color={
+                learnedLessons.includes(lesson)
+                  ? "green"
+                  : lockedLessons.includes(lesson)
+                    ? theme.semantic.text.tertiary
+                    : theme.semantic.text.primary
+              }
+            />
+            <Text
+              variant="headlineMedium"
+              testID="lessonName"
+              style={{
+                flex: 1,
+                textAlign: "center",
+                color: theme.semantic.text.inverse,
+              }}
+            >
+              {formatOneLessonName(lesson)}
+            </Text>
+          </View>
+        )}
+      />
+      <Modal
+        visible={lockedWarningVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={hideLockedWarning}
+      >
         <View
-          key={availableLessons[i]}
-          testID={id}
           style={{
-            width: CARD_WIDTH,
-            padding: CARD_PADDING * (1 - shrinkage),
-            margin: 5,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              if (lockedLessons.includes(availableLessons[i])) {
-                setLockedLesson(i);
-                showLockedWarning();
-              } else {
-                navigation.navigate("Lesson", {
-                  params: availableLessons[i],
-                });
-              }
+          <View
+            style={{
+              backgroundColor: theme.colors.surface,
+              alignSelf: "center",
+              width: CARD_WIDTH * 1.08,
+              height: CARD_IMAGE_HEIGHT * 1.15,
+              padding: CARD_WIDTH / 10,
+              borderRadius: CARD_WIDTH / 8,
+              borderWidth: CARD_WIDTH / 80,
+              borderColor: theme.colors.primary,
             }}
           >
-            <Card
-              mode="outlined"
-              theme={{
-                colors: {
-                  surface: theme.colors.surfaceAlt,
-                },
+            <Text
+              variant="headlineLarge"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
               }}
+              theme={{ colors: { onSurface: theme.semantic.text.info } }}
             >
-              {shrinkage >= 0.6 ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    padding: 10,
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name={
-                      learnedLessons.includes(availableLessons[i])
-                        ? "check-circle"
-                        : lockedLessons.includes(availableLessons[i])
-                          ? "lock"
-                          : "play-circle"
-                    }
-                    size={30}
-                    color={
-                      learnedLessons.includes(availableLessons[i])
-                        ? "green"
-                        : lockedLessons.includes(availableLessons[i])
-                          ? theme.semantic.text.tertiary
-                          : theme.semantic.text.primary
-                    }
-                  />
-                  <Text
-                    variant="headlineMedium"
-                    testID="lessonName"
-                    style={{
-                      flex: 1,
-                      textAlign: "center",
-                      color: theme.semantic.text.inverse,
-                    }}
-                  >
-                    {formatOneLessonName(availableLessons[i])}
-                  </Text>
-                </View>
-              ) : (
-                <>
-                  <Text
-                    variant="headlineMedium"
-                    testID="lessonName"
-                    style={{
-                      alignSelf: "center",
-                      color: theme.semantic.text.inverse,
-                    }}
-                  >
-                    {formatOneLessonName(availableLessons[i])}
-                  </Text>
-                  {shrinkage < 0.6 ? (
-                    <Text
-                      testID={"difficulty"}
-                      variant="headlineSmall"
-                      style={{ alignSelf: "center" }}
-                      theme={{ colors: { onSurface: difficultyColor } }}
-                    >
-                      {difficulty}
-                    </Text>
-                  ) : (
-                    <></>
-                  )}
-                  {shrinkage < 0.3 ? (
-                    <Image
-                      source={img}
-                      defaultSource={img}
-                      style={{
-                        width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                        height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                        resizeMode: "contain",
-                        alignSelf: "center",
-                      }}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </>
-              )}
-            </Card>
-          </TouchableOpacity>
-        </View>,
-      );
-
-      // Add row
-      if ((i + 1) % columnCount === 0) {
-        lessonButtonArray.push(subArray);
-        subArray = [];
-      }
-    }
-
-    /**
-     * Given total number of cards and number of cards per column calculates how many rows there are total
-     */
-    function getRowCount(cardCount: number, columnCount: number): number {
-      return Math.ceil(cardCount / columnCount);
-    }
-
-    /**
-     * Calculates the total height taken up by cards and the padding in between them
-     */
-    function getTotalCardsHeight(
-      rowCount: number,
-      cardHeight: number,
-      shrinkage: number,
-    ): number {
-      let fromCards: number = rowCount * cardHeight;
-      let fromPadding: number = (rowCount - 1) * CARD_PADDING;
-      return (fromCards + fromPadding) * (1 - shrinkage);
-    }
-
-    // Add last row if not evenly divisible
-    if (subArray.length > 0) {
-      lessonButtonArray.push(subArray);
-    }
-
-    // render each sub-array as a row
-    return (
-      <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
-        {lessonButtonArray.map((subArray, index) => (
-          <View
-            style={{
-              flexWrap: "wrap",
-              flexDirection: "row",
-              justifyContent: "center",
-            }}
-            key={index}
-          >
-            {subArray}
-          </View>
-        ))}
-        <Modal
-          visible={lockedWarningVisible}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={hideLockedWarning}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+              Warning
+            </Text>
+            <Text
+              variant="bodyLarge"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.info } }}
+            >
+              You have selected a lesson that is locked. Locked lessons build on
+              knowledge gained from previous lessons. It is recommended that you
+              complete the previous lessons before attempting this one.
+            </Text>
+            <Text
+              variant="headlineSmall"
+              style={{
+                alignSelf: "center",
+                color: theme.semantic.text.quaternary,
+                margin: CARD_IMAGE_HEIGHT / 50,
+              }}
+              theme={{ colors: { onSurface: theme.semantic.text.info } }}
+            >
+              Continue?
+            </Text>
             <View
               style={{
-                backgroundColor: theme.colors.surface,
+                flexWrap: "wrap",
+                flexDirection: "row",
                 alignSelf: "center",
-                width: CARD_WIDTH * 1.08,
-                height: CARD_IMAGE_HEIGHT * 1.15,
-                padding: CARD_WIDTH / 10,
-                borderRadius: CARD_WIDTH / 8,
-                borderWidth: CARD_WIDTH / 80,
-                borderColor: theme.colors.primary,
               }}
             >
-              <Text
-                variant="headlineLarge"
-                style={{
-                  alignSelf: "center",
+              <Button
+                onPress={() => {
+                  hideLockedWarning();
+                  navigation.navigate("Lesson", {
+                    params: availableLessons[lockedLesson],
+                  });
+                }}
+                labelStyle={{
+                  fontSize: 20,
                   color: theme.semantic.text.quaternary,
+                  fontWeight: "bold",
                 }}
-                theme={{ colors: { onSurface: theme.semantic.text.info } }}
+                testID="confirmContinueButton"
               >
-                Warning
-              </Text>
-              <Text
-                variant="bodyLarge"
-                style={{
-                  alignSelf: "center",
+                Yes
+              </Button>
+              <Button
+                onPress={hideLockedWarning}
+                labelStyle={{
+                  fontSize: 20,
                   color: theme.semantic.text.quaternary,
+                  fontWeight: "bold",
                 }}
-                theme={{ colors: { onSurface: theme.semantic.text.info } }}
+                testID="cancelContinueButton"
               >
-                You have selected a lesson that is locked. Locked lessons build
-                on knowledge gained from previous lessons. It is recommended
-                that you complete the previous lessons before attempting this
-                one.
-              </Text>
-              <Text
-                variant="headlineSmall"
-                style={{
-                  alignSelf: "center",
-                  color: theme.semantic.text.quaternary,
-                  margin: CARD_IMAGE_HEIGHT / 50,
-                }}
-                theme={{ colors: { onSurface: theme.semantic.text.info } }}
-              >
-                Continue?
-              </Text>
-              <View
-                style={{
-                  flexWrap: "wrap",
-                  flexDirection: "row",
-                  alignSelf: "center",
-                }}
-              >
-                <Button
-                  onPress={() => {
-                    hideLockedWarning();
-                    navigation.navigate("Lesson", {
-                      params: availableLessons[lockedLesson],
-                    });
-                  }}
-                  labelStyle={{
-                    fontSize: 20,
-                    color: theme.semantic.text.quaternary,
-                    fontWeight: "bold",
-                  }}
-                  testID="confirmContinueButton"
-                >
-                  Yes
-                </Button>
-                <Button
-                  onPress={hideLockedWarning}
-                  labelStyle={{
-                    fontSize: 20,
-                    color: theme.semantic.text.quaternary,
-                    fontWeight: "bold",
-                  }}
-                  testID="cancelContinueButton"
-                >
-                  No
-                </Button>
-              </View>
+                No
+              </Button>
             </View>
           </View>
-        </Modal>
-      </View>
-    );
-  }
+        </View>
+      </Modal>
+    </View>
+  );
 };
 
 export default LessonPanel;

@@ -1,34 +1,19 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
-import {
-  Button,
-  Card,
-  Checkbox,
-  Dialog,
-  Portal,
-  Text,
-} from "react-native-paper";
+import { View, ImageURISource } from "react-native";
+import { Button, Checkbox, Dialog, Portal, Text } from "react-native-paper";
 import { SudokuStrategy } from "sudokuru";
-import {
-  CARD_IMAGE_HEIGHT,
-  CARD_IMAGE_WIDTH,
-  CARD_PADDING,
-  CARD_WIDTH,
-  calculateCardsPerRow,
-  difficulty,
-  getDifficultyColor,
-} from "./Cards";
+import { difficulty, getDifficultyColor } from "./Cards";
 import { toTitle } from "../../Functions/Utils";
 import {
   getKeyJSON,
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
-import { useTheme } from "../../Contexts/ThemeContext";
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import { getGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
+import ListPanel from "./ListPanel";
 
 function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
   return arr;
@@ -49,33 +34,6 @@ export const DRILL_STRATEGIES = defineDrillStrategies([
 
 export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
-/**
- * Given total number of cards and number of cards per column calculates how many rows there are total
- * @param cardCount
- * @param columnCount
- * @returns number of rows
- */
-function getRowCount(cardCount: number, columnCount: number): number {
-  return Math.ceil(cardCount / columnCount);
-}
-
-/**
- * Calculates the total height taken up by cards and the padding in between them
- * @param rowCount
- * @param cardHeight
- * @param shrinkage
- * @returns total height taken up by cards and their padding
- */
-function getTotalCardsHeight(
-  rowCount: number,
-  cardHeight: number,
-  shrinkage: number,
-): number {
-  let fromCards: number = rowCount * cardHeight;
-  let fromPadding: number = (rowCount - 1) * CARD_PADDING;
-  return (fromCards + fromPadding) * (1 - shrinkage);
-}
-
 let drillImages: ImageURISource[] = [
   require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
   require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
@@ -91,8 +49,6 @@ let drillImages: ImageURISource[] = [
 
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
-
-  const { theme } = useTheme();
 
   const [visible, setVisible] = React.useState(false);
 
@@ -136,128 +92,22 @@ const DrillPanel = (props: any) => {
     });
   }
 
-  let drillButtonArray = [];
-  let subArray = [];
-
-  // Calculate shrinkage based on screen size
-  let CARD_LENGTH = (CARD_WIDTH * 3) / 5;
-  let shrinkage: number = -0.01,
-    columnCount,
-    rowCount;
-  do {
-    shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(
-      props.width,
-      props.height,
-      DRILL_STRATEGIES.length,
-    );
-    rowCount = getRowCount(DRILL_STRATEGIES.length, columnCount);
-  } while (
-    getTotalCardsHeight(rowCount, CARD_LENGTH, shrinkage) >
-    props.height * 0.7
-  );
-
-  for (let i = 0; i < DRILL_STRATEGIES.length; i++) {
-    let img: ImageURISource = drillImages[i];
-    let difficulty: difficulty;
-    switch (DRILL_STRATEGIES[i]) {
+  function getDrillDifficulty(strategy: DrillStrategy): difficulty {
+    switch (strategy) {
       case "OBVIOUS_SINGLE":
-        difficulty = "Very Easy";
-        break;
+        return "Very Easy";
       case "OBVIOUS_PAIR":
-        difficulty = "Easy";
-        break;
+        return "Easy";
       case "OBVIOUS_TRIPLET":
       case "OBVIOUS_QUADRUPLET":
-        difficulty = "Intermediate";
-        break;
+        return "Intermediate";
       case "HIDDEN_SINGLE":
-        difficulty = "Hard";
-        break;
+        return "Hard";
       default:
-        difficulty = "Very Hard";
-        break;
-    }
-    let difficultyColor: string = getDifficultyColor(difficulty);
-    subArray.push(
-      <View
-        key={DRILL_STRATEGIES[i]}
-        testID={DRILL_STRATEGIES[i]}
-        style={{
-          width: CARD_WIDTH,
-          padding: CARD_PADDING * (1 - shrinkage),
-          margin: 5,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            showTutorialIfNotDismissed().then(() => {
-              navigation.navigate("DrillGame", {
-                params: DRILL_STRATEGIES[i],
-                action: "StartGame",
-              });
-            });
-          }}
-        >
-          <Card
-            mode="outlined"
-            theme={{
-              colors: {
-                surface: theme.colors.surfaceAlt,
-              },
-            }}
-          >
-            <Text
-              variant="headlineMedium"
-              style={{
-                alignSelf: "center",
-                color: theme.semantic.text.inverse,
-              }}
-            >
-              {toTitle(DRILL_STRATEGIES[i])}
-            </Text>
-            {shrinkage < 0.6 ? (
-              <Text
-                variant="headlineSmall"
-                style={{ alignSelf: "center" }}
-                theme={{ colors: { onSurface: difficultyColor } }}
-              >
-                {difficulty}
-              </Text>
-            ) : (
-              <></>
-            )}
-            {shrinkage < 0.3 ? (
-              <Image
-                source={img}
-                defaultSource={img}
-                style={{
-                  width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                  height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                  resizeMode: "contain",
-                  alignSelf: "center",
-                }}
-              />
-            ) : (
-              <></>
-            )}
-          </Card>
-        </TouchableOpacity>
-      </View>,
-    );
-
-    // Add row
-    if ((i + 1) % columnCount === 0) {
-      drillButtonArray.push(subArray);
-      subArray = [];
+        return "Very Hard";
     }
   }
-  // Add last row if not evenly divisible
-  if (subArray.length > 0) {
-    drillButtonArray.push(subArray);
-  }
 
-  // render each sub-array as a row
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
       {resumeVisible ? (
@@ -278,18 +128,27 @@ const DrillPanel = (props: any) => {
       ) : (
         <></>
       )}
-      {drillButtonArray.map((subArray, index) => (
-        <View
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-          key={index}
-        >
-          {subArray}
-        </View>
-      ))}
+      <ListPanel
+        width={props.width}
+        height={props.height}
+        items={[...DRILL_STRATEGIES]}
+        getKey={(strategy) => strategy}
+        getTestID={(strategy) => strategy}
+        getTitle={(strategy) => toTitle(strategy)}
+        getSubtitle={(strategy) => getDrillDifficulty(strategy)}
+        getSubtitleColor={(strategy) =>
+          getDifficultyColor(getDrillDifficulty(strategy))
+        }
+        getCardImage={(_, index) => drillImages[index]}
+        onPress={(strategy) => {
+          showTutorialIfNotDismissed().then(() => {
+            navigation.navigate("DrillGame", {
+              params: strategy,
+              action: "StartGame",
+            });
+          });
+        }}
+      />
       <Portal>
         <Dialog
           visible={visible}
