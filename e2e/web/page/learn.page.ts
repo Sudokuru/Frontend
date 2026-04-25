@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { MOBILE_WIDTH_LESS_THAN } from "../playwright.config";
 
 export class LearnPage {
   readonly page: Page;
@@ -39,6 +40,19 @@ export class LearnPage {
     const lessonTextLocator = lessonLocator.getByText(text);
     await lessonTextLocator.scrollIntoViewIfNeeded();
     await expect(lessonTextLocator).toBeInViewport({ ratio: 1 });
+
+    // Get viewport size to determine if difficulty text should be visible
+    const viewportSize = await this.page.viewportSize();
+    const estimatedHidesDifficulty =
+      viewportSize && viewportSize.width < MOBILE_WIDTH_LESS_THAN;
+
+    // Difficulty subtitles are only visible when not in mobile view
+    // This check verifies the responsive behavior of ListPanel
+    if (!estimatedHidesDifficulty) {
+      const lessonDifficultyLocator = lessonLocator.getByTestId("difficulty");
+      await lessonDifficultyLocator.scrollIntoViewIfNeeded();
+      await expect(lessonDifficultyLocator).toBeInViewport({ ratio: 1 });
+    }
   }
 
   async getAndClickLesson(lesson: number, lessonType: string) {
