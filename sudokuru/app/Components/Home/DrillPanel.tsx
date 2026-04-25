@@ -34,7 +34,7 @@ export const DRILL_STRATEGIES = defineDrillStrategies([
 
 export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
-let drillImages: ImageURISource[] = [
+const drillImages: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/3points.png"),
   require("../../../.assets/DifficultyStars/4points.png"),
   require("../../../.assets/DifficultyStars/5points.png"),

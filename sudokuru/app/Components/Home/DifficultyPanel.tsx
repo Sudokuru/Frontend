@@ -3,7 +3,7 @@ import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
 import ListPanel from "./ListPanel";
 
-let difficulties: string[] = [
+const difficulties: string[] = [
   "Novice",
   "Amateur",
   "Layman",
@@ -15,7 +15,7 @@ let difficulties: string[] = [
   "Grandmaster",
 ];
 
-let difficultyStars: ImageURISource[] = [
+const difficultyStars: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/3points.png"),
   require("../../../.assets/DifficultyStars/4points.png"),
   require("../../../.assets/DifficultyStars/5points.png"),
