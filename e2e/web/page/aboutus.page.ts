@@ -23,9 +23,9 @@ export class AboutUsPage {
   }
 
   async linkButtonWorks(name: string, url: string) {
+    await this.page.getByTestId("button-" + name).scrollIntoViewIfNeeded();
     const [newPage] = await Promise.all([
       this.page.waitForEvent("popup"),
-      this.page.getByTestId("button-" + name).scrollIntoViewIfNeeded(),
       this.page.getByTestId("button-" + name).click(),
     ]);
     expect(newPage.url()).toContain(url);
