@@ -240,25 +240,23 @@ test.describe("game is saved on start", () => {
 });
 
 test.describe("resize play page", () => {
-  test.describe("resize play page", () => {
-    test("Difficulty stars and descriptions visibility depends on viewport size", async ({
-      play,
-    }) => {
-      const playPage = new PlayPage(play);
-      const viewPort = await play.viewportSize();
-      if (
-        viewPort?.width === MIDDLE_WIDTH_AND_HEIGHT &&
-        viewPort?.height === MIDDLE_WIDTH_AND_HEIGHT
-      ) {
-        await playPage.descriptionsAreVisible();
-        await playPage.starsAreHidden();
-      } else if ((viewPort?.width ?? 0) > MOBILE_WIDTH_LESS_THAN) {
-        await playPage.descriptionsAreVisible();
-        await playPage.starsAreVisible();
-      } else {
-        await playPage.descriptionsAreHidden();
-        await playPage.starsAreHidden();
-      }
-    });
+  test("Difficulty stars and descriptions visibility depends on viewport size", async ({
+    play,
+  }) => {
+    const playPage = new PlayPage(play);
+    const viewPort = await play.viewportSize();
+    if (
+      viewPort?.width === MIDDLE_WIDTH_AND_HEIGHT &&
+      viewPort?.height === MIDDLE_WIDTH_AND_HEIGHT
+    ) {
+      await playPage.descriptionsAreVisible();
+      await playPage.starsAreHidden();
+    } else if ((viewPort?.width ?? 0) > MOBILE_WIDTH_LESS_THAN) {
+      await playPage.descriptionsAreVisible();
+      await playPage.starsAreVisible();
+    } else {
+      await playPage.descriptionsAreHidden();
+      await playPage.starsAreHidden();
+    }
   });
 });
