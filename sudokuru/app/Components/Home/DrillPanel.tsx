@@ -58,8 +58,8 @@ function getDrillDifficulty(strategy: DrillStrategy): difficulty {
   }
 }
 
-function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
-  switch (getDrillDifficulty(strategy)) {
+function getDrillDifficultyImage(level: difficulty): ImageURISource {
+  switch (level) {
     case "Very Easy":
       return drillImages[0];
     case "Easy":
@@ -76,6 +76,11 @@ function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
 interface DrillPanelProps {
   width: number;
   height: number;
+}
+
+interface DrillCardItem {
+  strategy: DrillStrategy;
+  difficulty: difficulty;
 }
 
 const DrillPanel = ({ width, height }: DrillPanelProps) => {
@@ -125,6 +130,10 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
 
   const dialogWidth = width > 800 ? width * 0.4 : Math.min(600, width);
   const checkboxWidth = width > 800 ? width * 0.2 : Math.min(300, width);
+  const drillItems: DrillCardItem[] = DRILL_STRATEGIES.map((strategy) => ({
+    strategy,
+    difficulty: getDrillDifficulty(strategy),
+  }));
 
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
@@ -149,19 +158,17 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
       <ListPanel
         width={width}
         height={height}
-        items={[...DRILL_STRATEGIES]}
-        getKey={(strategy) => strategy}
-        getTestID={(strategy) => strategy}
-        getTitle={(strategy) => toTitle(strategy)}
-        getSubtitle={(strategy) => getDrillDifficulty(strategy)}
-        getSubtitleColor={(strategy) =>
-          getDifficultyColor(getDrillDifficulty(strategy))
-        }
-        getCardImage={(strategy) => getDrillDifficultyImage(strategy)}
-        onPress={(strategy) => {
+        items={drillItems}
+        getKey={(item) => item.strategy}
+        getTestID={(item) => item.strategy}
+        getTitle={(item) => toTitle(item.strategy)}
+        getSubtitle={(item) => item.difficulty}
+        getSubtitleColor={(item) => getDifficultyColor(item.difficulty)}
+        getCardImage={(item) => getDrillDifficultyImage(item.difficulty)}
+        onPress={(item) => {
           showTutorialIfNotDismissed().then(() => {
             navigation.navigate("DrillGame", {
-              params: strategy,
+              params: item.strategy,
               action: "StartGame",
             });
           });
