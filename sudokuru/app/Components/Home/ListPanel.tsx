@@ -50,18 +50,57 @@ function getTotalCardsHeight(
   return (fromCards + fromPadding) * (1 - shrinkage);
 }
 
-function renderCardBody(
-  shrinkage: number,
-  title: string,
-  titleTestID: string | undefined,
-  subtitle: string | undefined,
-  subtitleTestID: string | undefined,
-  subtitleColor: string | undefined,
-  renderImageContent: ((shrinkage: number) => React.ReactNode) | undefined,
-  img: ImageURISource | undefined,
-  imageAccessibilityLabel: string | undefined,
-  theme: ReturnType<typeof useTheme>["theme"],
-): React.ReactNode {
+interface CardBodyContent {
+  title: string;
+  titleTestID?: string;
+  subtitle?: string;
+  subtitleTestID?: string;
+  subtitleColor?: string;
+  renderImageContent?: (shrinkage: number) => React.ReactNode;
+  img?: ImageURISource;
+  imageAccessibilityLabel?: string;
+}
+
+interface RenderCardBodyArgs {
+  shrinkage: number;
+  content: CardBodyContent;
+  theme: ReturnType<typeof useTheme>["theme"];
+}
+
+function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
+  const { shrinkage, content, theme } = args;
+  const {
+    title,
+    titleTestID,
+    subtitle,
+    subtitleTestID,
+    subtitleColor,
+    renderImageContent,
+    img,
+    imageAccessibilityLabel,
+  } = content;
+
+  let imageContent: React.ReactNode = null;
+  if (shrinkage < 0.3) {
+    if (renderImageContent != null) {
+      imageContent = renderImageContent(shrinkage);
+    } else if (img != null) {
+      imageContent = (
+        <Image
+          source={img}
+          defaultSource={img}
+          style={{
+            width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+            height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+            resizeMode: "contain",
+            alignSelf: "center",
+          }}
+          accessibilityLabel={imageAccessibilityLabel}
+        />
+      );
+    }
+  }
+
   return (
     <>
       <Text
@@ -84,22 +123,7 @@ function renderCardBody(
           {subtitle}
         </Text>
       ) : null}
-      {shrinkage < 0.3 && renderImageContent != null
-        ? renderImageContent(shrinkage)
-        : null}
-      {shrinkage < 0.3 && renderImageContent == null && img != null ? (
-        <Image
-          source={img}
-          defaultSource={img}
-          style={{
-            width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-            height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-            resizeMode: "contain",
-            alignSelf: "center",
-          }}
-          accessibilityLabel={imageAccessibilityLabel}
-        />
-      ) : null}
+      {imageContent}
     </>
   );
 }
@@ -150,6 +174,12 @@ const ListPanel = <T,>({
     const subtitleColor = getSubtitleColor?.(item, i);
     const img = getCardImage?.(item, i);
     const imageAccessibilityLabel = getImageAccessibilityLabel?.(item, i);
+    let cardRenderImageContent:
+      | ((shrinkage: number) => React.ReactNode)
+      | undefined;
+    if (renderImageContent != null) {
+      cardRenderImageContent = (s) => renderImageContent(item, i, s);
+    }
 
     subArray.push(
       <View
@@ -172,20 +202,20 @@ const ListPanel = <T,>({
           >
             {renderCompactContent != null && shrinkage >= 0.6
               ? renderCompactContent(item, i, shrinkage)
-              : renderCardBody(
+              : renderCardBody({
                   shrinkage,
-                  title,
-                  titleTestID,
-                  subtitle,
-                  subtitleTestID,
-                  subtitleColor,
-                  renderImageContent != null
-                    ? (s) => renderImageContent(item, i, s)
-                    : undefined,
-                  img,
-                  imageAccessibilityLabel,
+                  content: {
+                    title,
+                    titleTestID,
+                    subtitle,
+                    subtitleTestID,
+                    subtitleColor,
+                    renderImageContent: cardRenderImageContent,
+                    img,
+                    imageAccessibilityLabel,
+                  },
                   theme,
-                )}
+                })}
           </Card>
         </TouchableOpacity>
       </View>,

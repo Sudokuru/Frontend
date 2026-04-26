@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
