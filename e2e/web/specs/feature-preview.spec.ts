@@ -1,6 +1,6 @@
 import { ProfilePage } from "./../page/profile.page";
 import { test } from "../fixture";
-import { devices, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
 import { MOBILE_WIDTH_LESS_THAN } from "../playwright.config";
 

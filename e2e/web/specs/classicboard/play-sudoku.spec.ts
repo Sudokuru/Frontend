@@ -1,5 +1,5 @@
 import { test } from "../../fixture";
-import { devices, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { PlayPage } from "../../page/play.page";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { EndGameModalComponent } from "../../components/end-game-modal.component";
@@ -247,13 +247,12 @@ test.describe("resize play page", () => {
       const playPage = new PlayPage(play);
       const viewPort = await play.viewportSize();
       if (
-        viewPort &&
-        viewPort.width === MIDDLE_WIDTH_AND_HEIGHT &&
-        viewPort.height === MIDDLE_WIDTH_AND_HEIGHT
+        viewPort?.width === MIDDLE_WIDTH_AND_HEIGHT &&
+        viewPort?.height === MIDDLE_WIDTH_AND_HEIGHT
       ) {
         await playPage.descriptionsAreVisible();
         await playPage.starsAreHidden();
-      } else if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+      } else if ((viewPort?.width ?? 0) > MOBILE_WIDTH_LESS_THAN) {
         await playPage.descriptionsAreVisible();
         await playPage.starsAreVisible();
       } else {
