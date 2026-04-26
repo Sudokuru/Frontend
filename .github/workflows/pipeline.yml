@@ -221,10 +221,15 @@ jobs:
       - name: Merge Playwright HTML report
         run: npx playwright merge-reports --reporter=html ./all-blob-reports
         working-directory: e2e/web
-      - name: Merge Monocart HTML report
-        run: npx monocart merge './all-monocart-reports/**/*.zip' -o ./monocart-report/index.html
+      - name: Extract Monocart reports
+        run: |
+          mkdir -p ./monocart-report
+          find ./all-monocart-reports -name '*.zip' -print0 | while IFS= read -r -d '' report; do
+            report_name="$(basename "${report%.zip}")"
+            unzip -q "$report" -d "./monocart-report/$report_name"
+          done
         working-directory: e2e/web
-      - name: Upload combined coverage reports to Codecov
+      - name: Upload all coverage reports to Codecov
         if: always()
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
