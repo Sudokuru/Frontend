@@ -82,7 +82,7 @@ export class SudokuBoardComponent {
       await expect(this.numPad[i].locator("div").first()).toHaveCSS(
         "background-image",
         new RegExp(
-          `linear-gradient\\(rgb\\(255, 255, 255\\) ${progress[i].replace("%", "")}\\d*%?, rgb\\(217, 160, 91\\) ${progress[i].replace("%", "")}\\d*%?`,
+          String.raw`linear-gradient\(rgb\(255, 255, 255\) ${progress[i].replace("%", "")}\d*%?, rgb\(217, 160, 91\) ${progress[i].replace("%", "")}\d*%?`,
         ),
       );
     }
@@ -93,7 +93,7 @@ export class SudokuBoardComponent {
       await expect(this.numPad[i].locator("div").first()).not.toHaveCSS(
         "background-image",
         new RegExp(
-          `linear-gradient\\(rgb\\(255, 255, 255\\) ${progress[i].replace("%", "")}\\d*%?, rgb\\(217, 160, 91\\) ${progress[i].replace("%", "")}\\d*%?`,
+          String.raw`linear-gradient\(rgb\(255, 255, 255\) ${progress[i].replace("%", "")}\d*%?, rgb\(217, 160, 91\) ${progress[i].replace("%", "")}\d*%?`,
         ),
       );
     }
