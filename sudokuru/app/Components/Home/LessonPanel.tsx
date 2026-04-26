@@ -19,6 +19,24 @@ import { getStrategies } from "../../Api/Lessons";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
 
+function getLessonDifficulty(lesson: string): difficulty {
+  switch (lesson) {
+    case "SUDOKU_101":
+    case "AMEND_NOTES":
+    case "OBVIOUS_SINGLE":
+    case "SIMPLIFY_NOTES":
+      return "Very Easy";
+    case "OBVIOUS_SET":
+      return "Easy";
+    case "HIDDEN_SINGLE":
+      return "Intermediate";
+    case "HIDDEN_SET":
+      return "Hard";
+    default:
+      return "Very Hard";
+  }
+}
+
 const LessonPanel = (props: any) => {
   const { theme } = useTheme();
 
@@ -43,26 +61,22 @@ const LessonPanel = (props: any) => {
 
   const lockedLessons = getLockedLessons(learnedLessons, availableLessons);
 
-  function getLessonDifficulty(lesson: string): difficulty {
-    switch (lesson) {
-      case "SUDOKU_101":
-      case "AMEND_NOTES":
-      case "OBVIOUS_SINGLE":
-      case "SIMPLIFY_NOTES":
-        return "Very Easy";
-      case "OBVIOUS_SET":
-        return "Easy";
-      case "HIDDEN_SINGLE":
-        return "Intermediate";
-      case "HIDDEN_SET":
-        return "Hard";
-      default:
-        return "Very Hard";
-    }
-  }
-
   if (isLoading) {
     return <ActivityIndicator animating={true} color={theme.colors.primary} />;
+  }
+
+  function getLessonIconName(
+    lesson: string,
+  ): React.ComponentProps<typeof MaterialCommunityIcons>["name"] {
+    if (learnedLessons.includes(lesson)) return "check-circle";
+    if (lockedLessons.includes(lesson)) return "lock";
+    return "play-circle";
+  }
+
+  function getLessonIconColor(lesson: string): string {
+    if (learnedLessons.includes(lesson)) return "green";
+    if (lockedLessons.includes(lesson)) return theme.semantic.text.tertiary;
+    return theme.semantic.text.primary;
   }
 
   return (
@@ -90,21 +104,9 @@ const LessonPanel = (props: any) => {
         }
         renderImageContent={(lesson, _, shrinkage) => (
           <MaterialCommunityIcons
-            name={
-              learnedLessons.includes(lesson)
-                ? "check-circle"
-                : lockedLessons.includes(lesson)
-                  ? "lock"
-                  : "play-circle"
-            }
+            name={getLessonIconName(lesson)}
             size={Math.max(30, 75 * (1 - shrinkage))}
-            color={
-              learnedLessons.includes(lesson)
-                ? "green"
-                : lockedLessons.includes(lesson)
-                  ? theme.semantic.text.tertiary
-                  : theme.semantic.text.primary
-            }
+            color={getLessonIconColor(lesson)}
             style={{ alignSelf: "center" }}
           />
         )}
@@ -128,21 +130,9 @@ const LessonPanel = (props: any) => {
             }}
           >
             <MaterialCommunityIcons
-              name={
-                learnedLessons.includes(lesson)
-                  ? "check-circle"
-                  : lockedLessons.includes(lesson)
-                    ? "lock"
-                    : "play-circle"
-              }
+              name={getLessonIconName(lesson)}
               size={30}
-              color={
-                learnedLessons.includes(lesson)
-                  ? "green"
-                  : lockedLessons.includes(lesson)
-                    ? theme.semantic.text.tertiary
-                    : theme.semantic.text.primary
-              }
+              color={getLessonIconColor(lesson)}
             />
             <Text
               variant="headlineMedium"
