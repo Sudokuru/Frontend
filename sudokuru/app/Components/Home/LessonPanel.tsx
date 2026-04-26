@@ -54,8 +54,11 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
 
   const [lockedWarningVisible, setLockedWarningVisible] = useState(false);
   const showLockedWarning = () => setLockedWarningVisible(true);
-  const hideLockedWarning = () => setLockedWarningVisible(false);
   const [lockedLesson, setLockedLesson] = useState(-1);
+  const hideLockedWarning = () => {
+    setLockedWarningVisible(false);
+    setLockedLesson(-1);
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -220,9 +223,18 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
             >
               <Button
                 onPress={() => {
+                  const isValidLockedLesson =
+                    lockedLesson >= 0 && lockedLesson < availableLessons.length;
+
+                  if (!isValidLockedLesson) {
+                    hideLockedWarning();
+                    return;
+                  }
+
+                  const selectedLesson = availableLessons[lockedLesson];
                   hideLockedWarning();
                   navigation.navigate("Lesson", {
-                    params: availableLessons[lockedLesson],
+                    params: selectedLesson,
                   });
                 }}
                 labelStyle={{
