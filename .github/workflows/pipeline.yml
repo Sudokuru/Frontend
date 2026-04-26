@@ -234,7 +234,8 @@ jobs:
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}      - name: Publish Test Results
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@27d65e188ec43221b20d26de30f4892fad91df2f
         if: always()
         with:
