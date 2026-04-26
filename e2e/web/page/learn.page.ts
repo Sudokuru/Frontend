@@ -4,16 +4,10 @@ import { MOBILE_WIDTH_LESS_THAN } from "../playwright.config";
 export class LearnPage {
   readonly page: Page;
   readonly title: Locator;
-  readonly checkCircleIcon: Locator;
-  readonly lockIcon: Locator;
-  readonly playCircleIcon: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Learn Sudoku");
-    this.checkCircleIcon = page.locator('[data-icon="check-circle"]');
-    this.lockIcon = page.locator('[data-icon="lock"]');
-    this.playCircleIcon = page.locator('[data-icon="play-circle"]');
   }
 
   async learnPageIsRendered() {

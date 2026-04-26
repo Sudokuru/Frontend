@@ -203,7 +203,7 @@ test.describe("start game", () => {
         ratio: 1,
       });
     } else {
-      expect(await play.getByText("Intermediate")).not.toBeInViewport({
+      await expect(await play.getByText("Intermediate")).not.toBeInViewport({
         ratio: 1,
       });
     }
