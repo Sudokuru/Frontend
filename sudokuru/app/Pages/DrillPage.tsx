@@ -6,17 +6,14 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import {
   useNewWindowDimensions,
-  useMinWindowDimensions,
 } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const DrillPage = () => {
-  const navigation: any = useNavigation();
 
   const { theme } = useTheme();
 
   const windowSize = useNewWindowDimensions();
-  const minWindowSize = useMinWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const isFocused = useIsFocused();

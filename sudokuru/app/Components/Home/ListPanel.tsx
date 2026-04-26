@@ -50,6 +50,60 @@ function getTotalCardsHeight(
   return (fromCards + fromPadding) * (1 - shrinkage);
 }
 
+function renderCardBody(
+  shrinkage: number,
+  title: string,
+  titleTestID: string | undefined,
+  subtitle: string | undefined,
+  subtitleTestID: string | undefined,
+  subtitleColor: string | undefined,
+  renderImageContent: ((shrinkage: number) => React.ReactNode) | undefined,
+  img: ImageURISource | undefined,
+  imageAccessibilityLabel: string | undefined,
+  theme: ReturnType<typeof useTheme>["theme"],
+): React.ReactNode {
+  return (
+    <>
+      <Text
+        variant="headlineMedium"
+        testID={titleTestID}
+        style={{
+          alignSelf: "center",
+          color: theme.semantic.text.inverse,
+        }}
+      >
+        {title}
+      </Text>
+      {shrinkage < 0.6 && subtitle != null ? (
+        <Text
+          testID={subtitleTestID}
+          variant="headlineSmall"
+          style={{ alignSelf: "center" }}
+          theme={{ colors: { onSurface: subtitleColor } }}
+        >
+          {subtitle}
+        </Text>
+      ) : null}
+      {shrinkage < 0.3 && renderImageContent != null
+        ? renderImageContent(shrinkage)
+        : null}
+      {shrinkage < 0.3 && renderImageContent == null && img != null ? (
+        <Image
+          source={img}
+          defaultSource={img}
+          style={{
+            width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
+            height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
+            resizeMode: "contain",
+            alignSelf: "center",
+          }}
+          accessibilityLabel={imageAccessibilityLabel}
+        />
+      ) : null}
+    </>
+  );
+}
+
 const ListPanel = <T,>({
   width,
   height,
@@ -69,8 +123,9 @@ const ListPanel = <T,>({
 }: ListPanelProps<T>) => {
   const { theme } = useTheme();
 
-  const listButtonArray = [];
-  let subArray = [];
+  const listButtonArray: { rowKey: string; elements: React.ReactNode[] }[] = [];
+  let subArray: React.ReactNode[] = [];
+  let subArrayKey = "";
 
   const cardLength = (CARD_WIDTH * 3) / 5;
   let shrinkage: number = -0.01;
@@ -85,6 +140,9 @@ const ListPanel = <T,>({
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const key = getKey(item, i);
+    if (subArray.length === 0) {
+      subArrayKey = key;
+    }
     const title = getTitle(item, i);
     const titleTestID = getTitleTestID?.(item, i);
     const subtitle = getSubtitle?.(item, i);
@@ -115,46 +173,20 @@ const ListPanel = <T,>({
             {renderCompactContent != null && shrinkage >= 0.6 ? (
               renderCompactContent(item, i, shrinkage)
             ) : (
-              <>
-                <Text
-                  variant="headlineMedium"
-                  testID={titleTestID}
-                  style={{
-                    alignSelf: "center",
-                    color: theme.semantic.text.inverse,
-                  }}
-                >
-                  {title}
-                </Text>
-                {shrinkage < 0.6 && subtitle != null ? (
-                  <Text
-                    testID={subtitleTestID}
-                    variant="headlineSmall"
-                    style={{ alignSelf: "center" }}
-                    theme={{ colors: { onSurface: subtitleColor } }}
-                  >
-                    {subtitle}
-                  </Text>
-                ) : null}
-                {shrinkage < 0.3 && renderImageContent != null
-                  ? renderImageContent(item, i, shrinkage)
-                  : null}
-                {shrinkage < 0.3 &&
-                renderImageContent == null &&
-                img != null ? (
-                  <Image
-                    source={img}
-                    defaultSource={img}
-                    style={{
-                      width: (CARD_IMAGE_WIDTH / 3) * (1 - shrinkage),
-                      height: (CARD_IMAGE_HEIGHT / 3) * (1 - shrinkage),
-                      resizeMode: "contain",
-                      alignSelf: "center",
-                    }}
-                    accessibilityLabel={imageAccessibilityLabel}
-                  />
-                ) : null}
-              </>
+              renderCardBody(
+                shrinkage,
+                title,
+                titleTestID,
+                subtitle,
+                subtitleTestID,
+                subtitleColor,
+                renderImageContent != null
+                  ? (s) => renderImageContent(item, i, s)
+                  : undefined,
+                img,
+                imageAccessibilityLabel,
+                theme,
+              )
             )}
           </Card>
         </TouchableOpacity>
@@ -162,27 +194,28 @@ const ListPanel = <T,>({
     );
 
     if ((i + 1) % columnCount === 0) {
-      listButtonArray.push(subArray);
+      listButtonArray.push({ rowKey: subArrayKey, elements: subArray });
       subArray = [];
+      subArrayKey = "";
     }
   }
 
   if (subArray.length > 0) {
-    listButtonArray.push(subArray);
+    listButtonArray.push({ rowKey: subArrayKey, elements: subArray });
   }
 
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
-      {listButtonArray.map((row, index) => (
+      {listButtonArray.map((row) => (
         <View
           style={{
             flexWrap: "wrap",
             flexDirection: "row",
             justifyContent: "center",
           }}
-          key={index}
+          key={row.rowKey}
         >
-          {row}
+          {row.elements}
         </View>
       ))}
     </View>

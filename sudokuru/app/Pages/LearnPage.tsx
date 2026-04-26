@@ -7,13 +7,11 @@ import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
 import {
   useNewWindowDimensions,
-  useMinWindowDimensions,
 } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const LearnPage = () => {
   const windowSize = useNewWindowDimensions();
-  const minWindowSize = useMinWindowDimensions();
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const { theme } = useTheme();
