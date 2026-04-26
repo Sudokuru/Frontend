@@ -83,7 +83,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
 
   function getLessonIconColor(lesson: string): string {
     if (learnedLessons.includes(lesson)) return "green";
-    if (lockedLessons.includes(lesson)) return theme.semantic.text.tertiary;
+    if (lockedLessons.includes(lesson)) return theme.semantic.text.inverse;
     return theme.semantic.text.primary;
   }
 
