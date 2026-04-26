@@ -118,6 +118,11 @@ const DrillPanel = (props: any) => {
     });
   }
 
+  const dialogWidth =
+    props.width > 800 ? props.width * 0.4 : Math.min(600, props.width);
+  const checkboxWidth =
+    props.width > 800 ? props.width * 0.2 : Math.min(300, props.width);
+
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
       {resumeVisible ? (
@@ -166,10 +171,7 @@ const DrillPanel = (props: any) => {
           style={{
             alignSelf: "center",
             alignItems: "center",
-            width:
-              props.width > 800
-                ? props.width * 0.4
-                : Math.min(600, props.width),
+            width: dialogWidth,
           }}
         >
           <Dialog.Title>How Drills Work</Dialog.Title>
@@ -187,10 +189,7 @@ const DrillPanel = (props: any) => {
               mode="android" // iOS doesn't have box around checkbox so best to just tell it to use android
               style={{
                 alignSelf: "center",
-                width:
-                  props.width > 800
-                    ? props.width * 0.2
-                    : Math.min(300, props.width),
+                width: checkboxWidth,
               }}
               testID="dismissDrillTutorial"
               onPress={() => {
