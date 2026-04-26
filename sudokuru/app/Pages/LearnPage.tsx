@@ -5,9 +5,7 @@ import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
-import {
-  useNewWindowDimensions,
-} from "../Functions/WindowDimensions";
+import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const LearnPage = () => {

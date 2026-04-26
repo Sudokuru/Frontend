@@ -170,24 +170,22 @@ const ListPanel = <T,>({
               },
             }}
           >
-            {renderCompactContent != null && shrinkage >= 0.6 ? (
-              renderCompactContent(item, i, shrinkage)
-            ) : (
-              renderCardBody(
-                shrinkage,
-                title,
-                titleTestID,
-                subtitle,
-                subtitleTestID,
-                subtitleColor,
-                renderImageContent != null
-                  ? (s) => renderImageContent(item, i, s)
-                  : undefined,
-                img,
-                imageAccessibilityLabel,
-                theme,
-              )
-            )}
+            {renderCompactContent != null && shrinkage >= 0.6
+              ? renderCompactContent(item, i, shrinkage)
+              : renderCardBody(
+                  shrinkage,
+                  title,
+                  titleTestID,
+                  subtitle,
+                  subtitleTestID,
+                  subtitleColor,
+                  renderImageContent != null
+                    ? (s) => renderImageContent(item, i, s)
+                    : undefined,
+                  img,
+                  imageAccessibilityLabel,
+                  theme,
+                )}
           </Card>
         </TouchableOpacity>
       </View>,
