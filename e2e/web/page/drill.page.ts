@@ -27,7 +27,7 @@ export class DrillPage {
     await expect(drillTextLocator).toBeInViewport({ ratio: 1 });
 
     // Get viewport size to determine if difficulty text should be visible
-    const viewportSize = await this.page.viewportSize();
+    const viewportSize = this.page.viewportSize();
     const estimatedHidesDifficulty =
       viewportSize && viewportSize.width < MOBILE_WIDTH_LESS_THAN;
 

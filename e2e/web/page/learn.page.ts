@@ -33,7 +33,7 @@ export class LearnPage {
     const lessonLocator = this.page.getByTestId(lessonType + lesson);
 
     // Get viewport size to determine if difficulty text should be visible
-    const viewportSize = await this.page.viewportSize();
+    const viewportSize = this.page.viewportSize();
     const estimatedHidesDifficulty =
       viewportSize && viewportSize.width < MOBILE_WIDTH_LESS_THAN;
 
