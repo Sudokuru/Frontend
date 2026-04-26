@@ -21,7 +21,7 @@ export class PlayPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.title = page.getByText("Play Sudoku");
+    this.title = page.getByText(/^Play Sudoku$/);
     this.resume = page.getByText("Resume Puzzle");
     this.noviceDesc = page.getByTestId("NoviceDescription");
     this.amateurDesc = page.getByTestId("AmateurDescription");

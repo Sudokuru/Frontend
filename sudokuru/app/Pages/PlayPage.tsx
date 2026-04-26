@@ -84,7 +84,7 @@ const PlayPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                {"Sudoku"}
+                Sudoku
               </Text>
             </Text>
           </View>

@@ -40,16 +40,6 @@ function getRowCount(cardCount: number, columnCount: number): number {
   return Math.ceil(cardCount / columnCount);
 }
 
-function getTotalCardsHeight(
-  rowCount: number,
-  cardHeight: number,
-  shrinkage: number,
-): number {
-  const fromCards: number = rowCount * cardHeight;
-  const fromPadding: number = (rowCount - 1) * CARD_PADDING;
-  return (fromCards + fromPadding) * (1 - shrinkage);
-}
-
 interface CardBodyContent {
   title: string;
   titleTestID?: string;
@@ -151,15 +141,21 @@ const ListPanel = <T,>({
   let subArray: React.ReactNode[] = [];
   let subArrayKey = "";
 
-  const cardLength = (CARD_WIDTH * 3) / 5;
-  let shrinkage: number = -0.01;
-  let columnCount: number = 1;
-  let rowCount: number = 1;
-  do {
-    shrinkage += 0.01;
-    columnCount = calculateCardsPerRow(width, height, items.length);
-    rowCount = getRowCount(items.length, columnCount);
-  } while (getTotalCardsHeight(rowCount, cardLength, shrinkage) > height * 0.7);
+  const cardHeight = (CARD_WIDTH * 3) / 5;
+  const columnCount = Math.max(
+    1,
+    calculateCardsPerRow(width, height, items.length),
+  );
+  const rowCount = getRowCount(items.length, columnCount);
+  const unshrunkHeight =
+    rowCount * cardHeight + (rowCount > 0 ? (rowCount - 1) * CARD_PADDING : 0);
+  const maxAllowedHeight = height * 0.7;
+  const rawShrinkage =
+    unshrunkHeight > 0 ? 1 - maxAllowedHeight / unshrunkHeight : 0;
+  const shrinkage = Math.min(
+    0.99,
+    Math.max(0, Math.ceil(rawShrinkage * 100) / 100),
+  );
 
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
