@@ -102,7 +102,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
   }
 
   return (
-    <>
+    <View>
       <Text
         variant="headlineMedium"
         testID={titleTestID}
@@ -124,7 +124,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
         </Text>
       ) : null}
       {imageContent}
-    </>
+    </View>
   );
 }
 
