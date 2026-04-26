@@ -42,6 +42,37 @@ const drillImages: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/24points.png"),
 ];
 
+function getDrillDifficulty(strategy: DrillStrategy): difficulty {
+  switch (strategy) {
+    case "OBVIOUS_SINGLE":
+      return "Very Easy";
+    case "OBVIOUS_PAIR":
+      return "Easy";
+    case "OBVIOUS_TRIPLET":
+    case "OBVIOUS_QUADRUPLET":
+      return "Intermediate";
+    case "HIDDEN_SINGLE":
+      return "Hard";
+    default:
+      return "Very Hard";
+  }
+}
+
+function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
+  switch (getDrillDifficulty(strategy)) {
+    case "Very Easy":
+      return drillImages[0];
+    case "Easy":
+      return drillImages[1];
+    case "Intermediate":
+      return drillImages[2];
+    case "Hard":
+      return drillImages[3];
+    default:
+      return drillImages[4];
+  }
+}
+
 const DrillPanel = (props: any) => {
   const navigation: any = useNavigation();
 
@@ -85,37 +116,6 @@ const DrillPanel = (props: any) => {
         showDialog();
       }
     });
-  }
-
-  function getDrillDifficulty(strategy: DrillStrategy): difficulty {
-    switch (strategy) {
-      case "OBVIOUS_SINGLE":
-        return "Very Easy";
-      case "OBVIOUS_PAIR":
-        return "Easy";
-      case "OBVIOUS_TRIPLET":
-      case "OBVIOUS_QUADRUPLET":
-        return "Intermediate";
-      case "HIDDEN_SINGLE":
-        return "Hard";
-      default:
-        return "Very Hard";
-    }
-  }
-
-  function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
-    switch (getDrillDifficulty(strategy)) {
-      case "Very Easy":
-        return drillImages[0];
-      case "Easy":
-        return drillImages[1];
-      case "Intermediate":
-        return drillImages[2];
-      case "Hard":
-        return drillImages[3];
-      default:
-        return drillImages[4];
-    }
   }
 
   return (
