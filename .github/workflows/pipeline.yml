@@ -222,7 +222,7 @@ jobs:
         run: npx playwright merge-reports --reporter=html ./all-blob-reports
         working-directory: e2e/web
       # for now codecov will handle coverage merging automatically with multiple codecov.json files
-      # future enhancement handle ourselves for viewing merged reports locally as well
+      # future enhancement handle ourselves for viewing merged reports in the pipeline and not rely on codecov's UI
       # https://abdul-alhasany.github.io/monocart-coverage-reports/guide/merging-reports.html#manual-merging
       - name: Extract Monocart reports
         run: |
