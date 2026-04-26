@@ -7,7 +7,7 @@ import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
 import { ContactPage } from "../page/contact.page";
 import { AboutUsPage } from "../page/aboutus.page";
-// import { DrillPage } from "../page/drill.page";
+import { DrillPage } from "../page/drill.page";
 
 test.describe("home page", () => {
   test("start lessons button", async ({ page }) => {
@@ -17,12 +17,14 @@ test.describe("home page", () => {
     await learnPage.learnPageIsRendered();
   });
 
-  // test("start drills button", async ({ page }) => {
-  //   const homePage = new HomePage(page);
-  //   await homePage.startDrills.click();
-  //   const drillPage = new DrillPage(page);
-  //   await drillPage.drillPageIsRendered();
-  // });
+  test("start drills button", async ({ featurePreview }) => {
+    const headerComponent = new HeaderComponent(featurePreview);
+    await headerComponent.home.click();
+    const homePage = new HomePage(featurePreview);
+    await homePage.startDrills.click();
+    const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
+  });
 
   test("play sudoku button", async ({ page }) => {
     const homePage = new HomePage(page);
