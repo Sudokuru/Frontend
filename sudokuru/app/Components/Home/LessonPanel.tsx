@@ -37,7 +37,12 @@ function getLessonDifficulty(lesson: string): difficulty {
   }
 }
 
-const LessonPanel = (props: any) => {
+interface LessonPanelProps {
+  width: number;
+  height: number;
+}
+
+const LessonPanel = ({ width, height }: LessonPanelProps) => {
   const { theme } = useTheme();
 
   const navigation: any = useNavigation();
@@ -82,8 +87,8 @@ const LessonPanel = (props: any) => {
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
       <ListPanel
-        width={props.width}
-        height={props.height}
+        width={width}
+        height={height}
         items={availableLessons}
         getKey={(lesson) => lesson}
         getTestID={(lesson, index) => {

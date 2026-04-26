@@ -73,7 +73,12 @@ function getDrillDifficultyImage(strategy: DrillStrategy): ImageURISource {
   }
 }
 
-const DrillPanel = (props: any) => {
+interface DrillPanelProps {
+  width: number;
+  height: number;
+}
+
+const DrillPanel = ({ width, height }: DrillPanelProps) => {
   const navigation: any = useNavigation();
 
   const [visible, setVisible] = React.useState(false);
@@ -118,10 +123,8 @@ const DrillPanel = (props: any) => {
     });
   }
 
-  const dialogWidth =
-    props.width > 800 ? props.width * 0.4 : Math.min(600, props.width);
-  const checkboxWidth =
-    props.width > 800 ? props.width * 0.2 : Math.min(300, props.width);
+  const dialogWidth = width > 800 ? width * 0.4 : Math.min(600, width);
+  const checkboxWidth = width > 800 ? width * 0.2 : Math.min(300, width);
 
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
@@ -144,8 +147,8 @@ const DrillPanel = (props: any) => {
         <></>
       )}
       <ListPanel
-        width={props.width}
-        height={props.height}
+        width={width}
+        height={height}
         items={[...DRILL_STRATEGIES]}
         getKey={(strategy) => strategy}
         getTestID={(strategy) => strategy}
