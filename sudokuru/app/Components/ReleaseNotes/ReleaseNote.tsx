@@ -23,19 +23,20 @@ export interface ReleaseNoteInterface {
  * @returns A JSX element of a bullet
  */
 const BulletComponent = (point: string, key: number, theme: Theme) => {
+  const bulletTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
   return (
     <View
       style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
       key={key}
     >
-      <Text style={{ fontSize: 14, color: theme.semantic.text.inverse }}>
-        •
-      </Text>
+      <Text style={{ fontSize: 14, color: bulletTextColor }}>•</Text>
       <Text
         style={{
           fontSize: 14,
           paddingLeft: 5,
-          color: theme.semantic.text.inverse,
+          color: bulletTextColor,
         }}
       >
         {point}
@@ -63,6 +64,13 @@ export const ReleaseNote = (
   width: number,
   theme: Theme,
 ) => {
+  const releaseCardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.bg;
+  const releaseCardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
+
   let featureList = ["None"];
   if (props.features) {
     featureList = props.features;
@@ -92,7 +100,9 @@ export const ReleaseNote = (
   return (
     <View
       style={{
-        backgroundColor: theme.colors.surfaceAlt,
+        backgroundColor: releaseCardSurfaceColor,
+        borderColor: theme.colors.primary,
+        borderWidth: 1,
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
@@ -102,43 +112,43 @@ export const ReleaseNote = (
       key={key}
       testID={key}
     >
-      <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+      <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
         Version: {props.version}
       </Text>
-      <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+      <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
         Release Date: {props.date}
       </Text>
       <Divider style={{ marginBottom: 10 }} />
       <>
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Summary:{" "}
         </Text>
         <Text
           style={{
             paddingLeft: 20,
             fontSize: 14,
-            color: theme.semantic.text.inverse,
+            color: releaseCardTextColor,
           }}
         >
           {props.summary}
         </Text>
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Features:{" "}
         </Text>
         {featureListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Preview Features:{" "}
         </Text>
         {previewFeatureListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Bug Fixes:{" "}
         </Text>
         {bugListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Target Platforms:{" "}
         </Text>
         {targetPlatformsString}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Contributors:{" "}
         </Text>
         {contributorsString}
