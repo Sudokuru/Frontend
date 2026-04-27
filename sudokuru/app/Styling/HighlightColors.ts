@@ -13,7 +13,7 @@ export const HINT_NOT_HIGHLIGHTED_COLOR = "#808080";
 
 export const VERY_EASY_COLOR = "#4CBB17";
 export const EASY_COLOR = "#7CFC00";
-export const INTERMEDIATE_COLOR = "#FFFF00";
+export const INTERMEDIATE_COLOR = "#D4A017";
 export const HARD_COLOR = "#FFA500";
 export const VERY_HARD_COLOR = "#FF0000";
 
