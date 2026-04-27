@@ -35,6 +35,12 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const [steps, setSteps] = React.useState<[string, ImageURISource][]>([]);
 
   const { theme } = useTheme();
+  const lessonCardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.bg;
+  const lessonCardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
 
   let title = toTitle(name);
 
@@ -73,7 +79,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           mode="outlined"
           theme={{
             colors: {
-              surface: theme.colors.surfaceAlt,
+              surface: lessonCardSurfaceColor,
             },
           }}
         >
@@ -101,7 +107,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
             />
             <Text
               variant="headlineSmall"
-              style={{ color: theme.semantic.text.inverse }}
+              style={{ color: lessonCardTextColor }}
             >
               {steps[i][0]}
             </Text>
