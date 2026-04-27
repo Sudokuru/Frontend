@@ -69,6 +69,9 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
     img,
     imageAccessibilityLabel,
   } = content;
+  const titleColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
 
   let imageContent: React.ReactNode = null;
   if (shrinkage < 0.3) {
@@ -98,7 +101,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
         testID={titleTestID}
         style={{
           alignSelf: "center",
-          color: theme.semantic.text.inverse,
+          color: titleColor,
         }}
       >
         {title}
@@ -136,6 +139,9 @@ const ListPanel = <T,>({
   renderCompactContent,
 }: ListPanelProps<T>) => {
   const { theme } = useTheme();
+  const cardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.bg;
 
   const listButtonArray: { rowKey: string; elements: React.ReactNode[] }[] = [];
   let subArray: React.ReactNode[] = [];
@@ -192,7 +198,7 @@ const ListPanel = <T,>({
             mode="outlined"
             theme={{
               colors: {
-                surface: theme.colors.surfaceAlt,
+                surface: cardSurfaceColor,
               },
             }}
           >
