@@ -66,7 +66,7 @@ export const ReleaseNote = (
 ) => {
   const releaseCardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
-    : theme.colors.bg;
+    : theme.colors.surface;
   const releaseCardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;

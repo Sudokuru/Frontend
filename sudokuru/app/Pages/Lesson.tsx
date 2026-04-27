@@ -37,7 +37,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   const { theme } = useTheme();
   const lessonCardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
-    : theme.colors.bg;
+    : theme.colors.surface;
   const lessonCardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;

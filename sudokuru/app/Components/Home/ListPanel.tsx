@@ -141,7 +141,7 @@ const ListPanel = <T,>({
   const { theme } = useTheme();
   const cardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
-    : theme.colors.bg;
+    : theme.colors.surface;
 
   const listButtonArray: { rowKey: string; elements: React.ReactNode[] }[] = [];
   let subArray: React.ReactNode[] = [];
