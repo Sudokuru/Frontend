@@ -16,9 +16,11 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
 export const MOBILE_BREAKPOINT = 768;
 const MAX_BOARD_SIZE = 640;
 
-// Total stacked height in cell-size units when hint modal is not shown:
-// HeaderRow (1.75) + Puzzle (9) + ActionRow (1.6) + NumberControl (1)
-const BOARD_LAYOUT_HEIGHT_IN_CELLS = 13.35;
+const HEADER_ROW_HEIGHT_IN_CELLS = 1.75;
+const PUZZLE_HEIGHT_IN_CELLS = 9;
+const ACTION_ROW_HEIGHT_IN_CELLS = 1.6;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP = 1;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE = 2.2;
 const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
 
 /**
@@ -27,13 +29,23 @@ const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
  */
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
+  const numberControlHeightInCells =
+    width < MOBILE_BREAKPOINT
+      ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
+      : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
+
+  const boardLayoutHeightInCells =
+    HEADER_ROW_HEIGHT_IN_CELLS +
+    PUZZLE_HEIGHT_IN_CELLS +
+    ACTION_ROW_HEIGHT_IN_CELLS +
+    numberControlHeightInCells;
 
   const maxBoardWidth =
     width < MOBILE_BREAKPOINT ? width : Math.min(width * 0.9, MAX_BOARD_SIZE);
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
   const maxCellSizeFromHeight =
-    (height * BOARD_VERTICAL_VIEWPORT_FRACTION) / BOARD_LAYOUT_HEIGHT_IN_CELLS;
+    (height * BOARD_VERTICAL_VIEWPORT_FRACTION) / boardLayoutHeightInCells;
 
   return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }
