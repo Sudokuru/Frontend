@@ -10,6 +10,7 @@ const ROW_WIDTH_IN_CELLS = 9;
 const ROW_HEIGHT_RATIO = 1.6;
 const ACTION_BUTTON_WIDTH_RATIO = 1.55;
 const ACTION_BUTTON_HEIGHT_RATIO = 1.6;
+const ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO = 0.82;
 const ACTION_ICON_RATIO = 1.4;
 const ACTION_LABEL_RATIO = 2.2;
 
@@ -20,6 +21,7 @@ interface ActionButtonProps {
   disabled: boolean;
   testID: string;
   iconColor: string;
+  backgroundColor: string;
   buttonWidth: number;
   buttonHeight: number;
   iconSize: number;
@@ -33,6 +35,7 @@ const ActionButton = ({
   disabled,
   testID,
   iconColor,
+  backgroundColor,
   buttonWidth,
   buttonHeight,
   iconSize,
@@ -50,16 +53,27 @@ const ActionButton = ({
         height: buttonHeight,
       }}
     >
-      <MaterialCommunityIcons
-        color={iconColor}
-        name={iconName}
-        size={iconSize}
-      />
-      <Text
-        style={{ color: iconColor, fontSize: labelSize, fontWeight: "bold" }}
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: buttonWidth,
+          height: buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO,
+          borderRadius: buttonWidth * 0.18,
+          backgroundColor: backgroundColor,
+        }}
       >
-        {label}
-      </Text>
+        <MaterialCommunityIcons
+          color={iconColor}
+          name={iconName}
+          size={iconSize}
+        />
+        <Text
+          style={{ color: iconColor, fontSize: labelSize, fontWeight: "bold" }}
+        >
+          {label}
+        </Text>
+      </View>
     </Pressable>
   );
 };
@@ -99,6 +113,9 @@ const ActionRow = (props: ActionRowProps) => {
   const iconColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
+  const actionButtonBackgroundColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
 
   const actionBaseSize = cellSize || FALLBACK_CELL_SIZE;
   const actionButtonWidth = actionBaseSize * ACTION_BUTTON_WIDTH_RATIO;
@@ -125,6 +142,7 @@ const ActionRow = (props: ActionRowProps) => {
         disabled={isUndoButtonDisabled}
         testID="undoButton"
         iconColor={iconColor}
+        backgroundColor={actionButtonBackgroundColor}
         buttonWidth={actionButtonWidth}
         buttonHeight={actionButtonHeight}
         iconSize={actionIconSize}
@@ -137,6 +155,7 @@ const ActionRow = (props: ActionRowProps) => {
         disabled={false}
         testID="toggleNoteModeButton"
         iconColor={iconColor}
+        backgroundColor={actionButtonBackgroundColor}
         buttonWidth={actionButtonWidth}
         buttonHeight={actionButtonHeight}
         iconSize={actionIconSize}
@@ -150,6 +169,7 @@ const ActionRow = (props: ActionRowProps) => {
           disabled={isEraseButtonDisabled}
           testID="eraseButton"
           iconColor={iconColor}
+          backgroundColor={actionButtonBackgroundColor}
           buttonWidth={actionButtonWidth}
           buttonHeight={actionButtonHeight}
           iconSize={actionIconSize}
@@ -164,6 +184,7 @@ const ActionRow = (props: ActionRowProps) => {
           disabled={isResetButtonDisabled}
           testID="resetButton"
           iconColor={iconColor}
+          backgroundColor={actionButtonBackgroundColor}
           buttonWidth={actionButtonWidth}
           buttonHeight={actionButtonHeight}
           iconSize={actionIconSize}
@@ -177,6 +198,7 @@ const ActionRow = (props: ActionRowProps) => {
         disabled={boardHasConflict}
         testID="hintButton"
         iconColor={iconColor}
+        backgroundColor={actionButtonBackgroundColor}
         buttonWidth={actionButtonWidth}
         buttonHeight={actionButtonHeight}
         iconSize={actionIconSize}
