@@ -44,9 +44,10 @@ const ReleaseNotesPage = () => {
         </Text>
       }
       data={releaseNotes}
-      renderItem={({ item }) =>
-        ReleaseNote(item, item.version, componentWidth(width), theme)
-      }
+      keyExtractor={(item) => item.version}
+      renderItem={({ item }) => (
+        <ReleaseNote item={item} width={componentWidth(width)} />
+      )}
     />
   );
 };
