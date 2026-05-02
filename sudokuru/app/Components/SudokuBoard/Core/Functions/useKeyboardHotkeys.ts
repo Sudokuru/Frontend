@@ -202,7 +202,7 @@ export const useKeyboardHotkeys = ({
 
     globalThis.addEventListener("keydown", handleKeyDown);
     return () => globalThis.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [handleKeyDown]);
 
   return {
     undoRef,

@@ -21,18 +21,6 @@ interface HeaderRowProps {
   handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
 }
 
-const getHintStatText = (sudokuBoard: BoardObjectProps): string => {
-  if ("numHintsUsed" in sudokuBoard.statistics) {
-    return `Hints: ${sudokuBoard.statistics.numHintsUsed}`;
-  }
-
-  return `Hint: ${sudokuBoard.statistics.hintUsed ? "Used" : "None"}`;
-};
-
-const getMistakeStatText = (sudokuBoard: BoardObjectProps): string => {
-  return `Mistakes: ${sudokuBoard.statistics.numWrongCellsPlayed}`;
-};
-
 const getHintStatValue = (sudokuBoard: BoardObjectProps): string => {
   if ("numHintsUsed" in sudokuBoard.statistics) {
     return `${sudokuBoard.statistics.numHintsUsed}`;
@@ -86,12 +74,6 @@ const HeaderRow = (props: HeaderRowProps) => {
     (cellSize ? cellSize * 0.08 : fallbackHeight * 0.08) *
     mobileCompactScale *
     mobileSpacingScale;
-  const rowGap =
-    (cellSize ? cellSize * 0.08 : fallbackHeight * 0.08) *
-    mobileCompactScale *
-    mobileSpacingScale;
-  const statusRowHeight =
-    Math.max(statusIconSize, statusTextSize) + pillVerticalPadding * 2;
   const iconOnlyPillSize =
     statusIconSize +
     (cellSize ? cellSize * 0.2 : fallbackHeight * 0.2) * mobileCompactScale;

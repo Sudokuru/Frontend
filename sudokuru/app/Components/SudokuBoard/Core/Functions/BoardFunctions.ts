@@ -32,19 +32,49 @@ const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
  */
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
-  const headerRowHeightInCells =
-    width < MOBILE_BREAKPOINT
-      ? HEADER_ROW_HEIGHT_IN_CELLS_MOBILE
-      : HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP;
-  const actionRowHeightInCells =
-    width < MOBILE_BREAKPOINT
-      ? ACTION_ROW_HEIGHT_IN_CELLS_MOBILE
-      : ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP;
 
-  const numberControlHeightInCells =
-    width < MOBILE_BREAKPOINT
-      ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
-      : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
+  // Web uses a single monotonic sizing rule (no breakpoint branches), so
+  // board size never increases while viewport width is shrinking.
+  if (Platform.OS === "web") {
+    const webBoardLayoutHeightInCells =
+      HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
+      PUZZLE_HEIGHT_IN_CELLS +
+      ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
+      NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE;
+    const maxCellSizeFromWidth = Math.min(width, MAX_BOARD_SIZE) / 9;
+
+    // Account for the app nav header when it is visible.
+    const NAV_HEADER_HEIGHT = 60;
+    const NAV_HEADER_SAFETY_PADDING = 12;
+    const availableHeightWithHeader =
+      height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
+    const boardHeightAtWidth =
+      maxCellSizeFromWidth * webBoardLayoutHeightInCells;
+    const navHeaderShown = boardHeightAtWidth <= availableHeightWithHeader;
+
+    // iOS Safari can under-report vertical viewport on small phones while URL bars animate.
+    // Add a narrow-screen tolerance so iPhone SE can still render full width.
+    const smallPhoneHeightTolerance = width <= 430 ? 24 : 0;
+    const effectiveAvailableHeight = navHeaderShown
+      ? availableHeightWithHeader
+      : height;
+    const maxCellSizeFromHeight =
+      (effectiveAvailableHeight + smallPhoneHeightTolerance) /
+      webBoardLayoutHeightInCells;
+    return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
+  }
+
+  const isMobileSizingLayout = width < MOBILE_BREAKPOINT;
+  const headerRowHeightInCells = isMobileSizingLayout
+    ? HEADER_ROW_HEIGHT_IN_CELLS_MOBILE
+    : HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP;
+  const actionRowHeightInCells = isMobileSizingLayout
+    ? ACTION_ROW_HEIGHT_IN_CELLS_MOBILE
+    : ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP;
+
+  const numberControlHeightInCells = isMobileSizingLayout
+    ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
+    : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
 
   const boardLayoutHeightInCells =
     headerRowHeightInCells +
@@ -52,45 +82,20 @@ export function useCellSize(): number {
     actionRowHeightInCells +
     numberControlHeightInCells;
 
-  const boardVerticalViewportFraction =
-    width < MOBILE_BREAKPOINT
-      ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
-      : BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP;
+  const boardVerticalViewportFraction = isMobileSizingLayout
+    ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
+    : BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP;
 
-  const maxBoardWidth =
-    width < MOBILE_BREAKPOINT ? width : Math.min(width * 0.9, MAX_BOARD_SIZE);
+  const maxBoardWidth = isMobileSizingLayout
+    ? Math.min(width, MAX_BOARD_SIZE)
+    : Math.min(width * 0.9, MAX_BOARD_SIZE);
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
-
-  // On web at mobile widths, constrain by height only when the nav header is shown.
-  // No fraction needed — browser has no OS chrome to account for.
-  if (Platform.OS === "web" && width < MOBILE_BREAKPOINT) {
-    const cellSizeAtFullWidth = width / 9;
-    const boardHeightAtFullWidth =
-      cellSizeAtFullWidth * boardLayoutHeightInCells;
-    const NAV_HEADER_HEIGHT = 60;
-    const NAV_HEADER_SAFETY = 12;
-    const availableWithHeader = height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY;
-    const navHeaderShown = boardHeightAtFullWidth <= availableWithHeader;
-
-    if (navHeaderShown) {
-      // Nav header visible — constrain so board fits in remaining height
-      const maxFromHeight = availableWithHeader / boardLayoutHeightInCells;
-      return Math.min(cellSizeAtFullWidth, maxFromHeight);
-    } else {
-      // Nav header hidden — allow 10% tolerance for iOS Safari address bar chrome
-      if (boardHeightAtFullWidth <= height * 1.1) {
-        return cellSizeAtFullWidth;
-      }
-      // Genuinely too tall — constrain by height
-      return height / boardLayoutHeightInCells;
-    }
-  }
 
   const maxCellSizeFromHeight =
     (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
 
-  if (width < MOBILE_BREAKPOINT && Platform.OS !== "web") {
+  if (width < MOBILE_BREAKPOINT) {
     return maxCellSizeFromWidth;
   }
 
