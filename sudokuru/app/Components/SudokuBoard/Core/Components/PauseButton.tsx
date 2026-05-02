@@ -12,11 +12,24 @@ interface PauseButtonProps {
 const PauseButton = (props: PauseButtonProps) => {
   const { handlePause, isPaused } = props;
   const cellSize = useCellSize();
-  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
+  const isMobile = Platform.OS !== "web";
+  const sizeConst = Platform.OS === "web" ? 1.5 : 1.15;
   const { theme } = useTheme();
 
   return (
-    <Pressable testID="PauseButton" onPress={handlePause}>
+    <Pressable
+      testID="PauseButton"
+      onPress={handlePause}
+      style={{
+        width: isMobile ? cellSize * 1.35 : undefined,
+        height: isMobile ? cellSize * 1.35 : undefined,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: cellSize * 0.2,
+        borderWidth: 0,
+        backgroundColor: "transparent",
+      }}
+    >
       {isPaused ? (
         <MaterialCommunityIcons
           color={

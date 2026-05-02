@@ -38,7 +38,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const { theme } = useTheme();
 
   const boardWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
-  const headerHeight = cellSize ? cellSize * 1.15 : fallbackHeight * 1.15;
+  const headerHeight = cellSize ? cellSize * 1.75 : fallbackHeight * 1.75;
   const headerTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
@@ -48,6 +48,19 @@ const HeaderRow = (props: HeaderRowProps) => {
   const statPillTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
+  const statusIconSize = cellSize ? cellSize * 0.48 : fallbackHeight * 0.48;
+  const statusTextSize = cellSize ? cellSize * 0.49 : fallbackHeight * 0.49;
+  const pillHorizontalPadding = cellSize
+    ? cellSize * 0.2
+    : fallbackHeight * 0.2;
+  const pillVerticalPadding = cellSize
+    ? cellSize * 0.04
+    : fallbackHeight * 0.04;
+  const pillBorderRadius = cellSize ? cellSize * 0.15 : fallbackHeight * 0.15;
+  const pillGap = cellSize ? cellSize * 0.08 : fallbackHeight * 0.08;
+  const rowGap = cellSize ? cellSize * 0.08 : fallbackHeight * 0.08;
+  const statusRowHeight =
+    Math.max(statusIconSize, statusTextSize) + pillVerticalPadding * 2;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -69,144 +82,176 @@ const HeaderRow = (props: HeaderRowProps) => {
         alignSelf: "center",
         width: boardWidth,
         height: headerHeight,
-        justifyContent: "space-between",
-        alignItems: "flex-end",
+        justifyContent: "center",
+        alignItems: "center",
         flexDirection: "row",
-        paddingBottom: cellSize ? cellSize * 0.05 : fallbackHeight * 0.05,
       }}
     >
       <View
         style={{
           flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          marginBottom: cellSize ? cellSize * 0.18 : fallbackHeight * 0.18,
+          flexDirection: "column",
+          justifyContent: "center",
         }}
       >
         <View
-          testID="difficultyCounter"
           style={{
-            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
-            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
-            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
-            overflow: "hidden",
-            backgroundColor: statPillBackgroundColor,
             flexDirection: "row",
             alignItems: "center",
+            marginBottom: rowGap,
+            minHeight: statusRowHeight,
           }}
         >
-          <MaterialCommunityIcons
-            name="signal-cellular-3"
-            color={theme.colors.primary}
-            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-          />
-          <Text
+          <View
+            testID="difficultyCounter"
             style={{
-              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-              color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+              marginRight: pillGap,
+              paddingHorizontal: pillHorizontalPadding,
+              paddingVertical: pillVerticalPadding,
+              borderRadius: pillBorderRadius,
+              overflow: "hidden",
+              backgroundColor: statPillBackgroundColor,
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            {headerRowTitle(sudokuBoard)}
-          </Text>
+            <MaterialCommunityIcons
+              name="signal-cellular-3"
+              color={theme.colors.primary}
+              size={statusIconSize}
+            />
+            <Text
+              style={{
+                marginLeft: pillGap,
+                color: statPillTextColor,
+                fontFamily: "Inter_400Regular",
+                fontSize: statusTextSize,
+              }}
+            >
+              {headerRowTitle(sudokuBoard)}
+            </Text>
+          </View>
+
+          <View
+            testID="timeCounter"
+            style={{
+              paddingHorizontal: pillHorizontalPadding,
+              paddingVertical: pillVerticalPadding,
+              borderRadius: pillBorderRadius,
+              overflow: "hidden",
+              backgroundColor: statPillBackgroundColor,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <MaterialCommunityIcons
+              name="clock-outline"
+              color={headerTextColor}
+              size={statusIconSize}
+            />
+            <Text
+              style={{
+                marginLeft: pillGap,
+                color: statPillTextColor,
+                fontFamily: "Inter_400Regular",
+                fontSize: statusTextSize,
+              }}
+            >
+              Time: {formatTime(currentTime)}
+            </Text>
+          </View>
         </View>
 
         <View
-          testID="hintsCounter"
           style={{
-            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
-            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
-            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
-            overflow: "hidden",
-            backgroundColor: statPillBackgroundColor,
             flexDirection: "row",
             alignItems: "center",
+            minHeight: statusRowHeight,
           }}
         >
-          <MaterialCommunityIcons
-            name="lightbulb-on-outline"
-            color="#D9A05B"
-            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-          />
-          <Text
+          <View
+            testID="hintsCounter"
             style={{
-              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-              color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+              marginRight: pillGap,
+              paddingHorizontal: pillHorizontalPadding,
+              paddingVertical: pillVerticalPadding,
+              borderRadius: pillBorderRadius,
+              overflow: "hidden",
+              backgroundColor: statPillBackgroundColor,
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            {getHintStatText(sudokuBoard)}
-          </Text>
-        </View>
+            <MaterialCommunityIcons
+              name="lightbulb-on-outline"
+              color="#D9A05B"
+              size={statusIconSize}
+            />
+            <Text
+              style={{
+                marginLeft: pillGap,
+                color: statPillTextColor,
+                fontFamily: "Inter_400Regular",
+                fontSize: statusTextSize,
+              }}
+            >
+              {getHintStatText(sudokuBoard)}
+            </Text>
+          </View>
 
-        <View
-          testID="mistakesCounter"
-          style={{
-            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
-            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
-            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
-            overflow: "hidden",
-            backgroundColor: statPillBackgroundColor,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <MaterialCommunityIcons
-            name="alert-circle"
-            color="#FF6B6B"
-            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-          />
-          <Text
+          <View
+            testID="mistakesCounter"
             style={{
-              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-              color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+              paddingHorizontal: pillHorizontalPadding,
+              paddingVertical: pillVerticalPadding,
+              borderRadius: pillBorderRadius,
+              overflow: "hidden",
+              backgroundColor: statPillBackgroundColor,
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            {getMistakeStatText(sudokuBoard)}
-          </Text>
-        </View>
-
-        <View
-          testID="timeCounter"
-          style={{
-            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
-            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
-            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
-            overflow: "hidden",
-            backgroundColor: statPillBackgroundColor,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <MaterialCommunityIcons
-            name="clock-outline"
-            color={headerTextColor}
-            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-          />
-          <Text
-            style={{
-              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-              color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
-            }}
-          >
-            Time: {formatTime(currentTime)}
-          </Text>
+            <MaterialCommunityIcons
+              name="alert-circle"
+              color="#FF6B6B"
+              size={statusIconSize}
+            />
+            <Text
+              style={{
+                marginLeft: pillGap,
+                color: statPillTextColor,
+                fontFamily: "Inter_400Regular",
+                fontSize: statusTextSize,
+              }}
+            >
+              {getMistakeStatText(sudokuBoard)}
+            </Text>
+          </View>
         </View>
       </View>
 
-      <PauseButton
-        handlePause={() => handlePause(sudokuBoard, navigation)}
-        isPaused={false}
-      />
+      <View
+        style={{
+          marginLeft: pillGap,
+          minHeight: statusRowHeight * 2 + rowGap,
+          justifyContent: "flex-start",
+          alignItems: "flex-end",
+        }}
+      >
+        <View style={{ height: statusRowHeight + rowGap }} />
+        <View
+          style={{
+            height: statusRowHeight,
+            justifyContent: "center",
+            alignItems: "flex-end",
+          }}
+        >
+          <PauseButton
+            handlePause={() => handlePause(sudokuBoard, navigation)}
+            isPaused={false}
+          />
+        </View>
+      </View>
     </View>
   );
 };
