@@ -90,8 +90,8 @@ When a game ends, the following information is displayed to the user
 
 - Score
 - Time spent
-- Number of Hints used
-- Number of Hints used per strategy
+- Total Hints used
+- Total Hints used per strategy
 - Mistakes made
 - Difficulty
 

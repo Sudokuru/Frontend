@@ -46,7 +46,7 @@ test.describe("complete game", () => {
       endGameModal.page.getByText("Time Spent: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Number of Hints Used: 0"),
+      endGameModal.page.getByText("Total Hints Used: 0"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
       endGameModal.page.getByText("Mistakes Made: 235"),
@@ -75,7 +75,7 @@ test.describe("complete game", () => {
       endGameModal.page.getByText("Time Spent: 06:1"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
-      endGameModal.page.getByText("Number of Hints Used: 2"),
+      endGameModal.page.getByText("Total Hints Used: 2"),
     ).toBeInViewport({ ratio: 1 });
     await expect(
       endGameModal.page.getByText("Simplify Notes: 1"),
