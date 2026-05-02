@@ -100,6 +100,7 @@ interface ActionRowProps {
   eraseSelected: () => void;
   reset: () => void;
   getHint: () => void;
+  handlePause: () => void;
   boardHasConflict: boolean;
   hasResetButton: boolean;
   hasEraseButton: boolean;
@@ -116,6 +117,7 @@ const ActionRow = (props: ActionRowProps) => {
     eraseSelected,
     reset,
     getHint,
+    handlePause,
     boardHasConflict,
     hasResetButton,
     hasEraseButton,
@@ -211,6 +213,17 @@ const ActionRow = (props: ActionRowProps) => {
       onPress: getHint,
       disabled: boardHasConflict,
       testID: "hintButton",
+      visible: true,
+    },
+    {
+      key: "pause",
+      iconName: "pause" as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: "PAUSE",
+      onPress: handlePause,
+      disabled: false,
+      testID: "PauseButton",
       visible: true,
     },
   ].filter((button) => button.visible);

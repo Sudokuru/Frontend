@@ -1,4 +1,4 @@
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { Image, View, useWindowDimensions } from "react-native";
 import { Text } from "react-native-paper";
@@ -9,7 +9,6 @@ import {
   useCellSize,
   formatTime,
 } from "../Functions/BoardFunctions";
-import PauseButton from "./PauseButton";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
@@ -18,7 +17,6 @@ interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
   headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
-  handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
 }
 
 const getHintStatValue = (sudokuBoard: BoardObjectProps): string => {
@@ -34,12 +32,11 @@ const getMistakeStatValue = (sudokuBoard: BoardObjectProps): string => {
 };
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard, headerRowTitle, handlePause } = props;
+  const { sudokuBoard, setSudokuBoard, headerRowTitle } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
   const { width, height } = useWindowDimensions();
-  const navigation = useNavigation();
   const { theme } = useTheme();
   const isMobileLayout = width < MOBILE_BREAKPOINT;
   const mobileCompactScale = 0.75;
@@ -123,7 +120,7 @@ const HeaderRow = (props: HeaderRowProps) => {
     >
       <View
         style={{
-          flex: 1,
+          width: "100%",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-start",
@@ -280,19 +277,6 @@ const HeaderRow = (props: HeaderRowProps) => {
             {formatTime(currentTime)}
           </Text>
         </View>
-      </View>
-
-      <View
-        style={{
-          marginLeft: pillGap,
-          justifyContent: "center",
-          alignItems: "flex-end",
-        }}
-      >
-        <PauseButton
-          handlePause={() => handlePause(sudokuBoard, navigation)}
-          isPaused={false}
-        />
       </View>
     </View>
   );

@@ -461,7 +461,6 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard={sudokuBoard}
         setSudokuBoard={setSudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
-        handlePause={boardMethods[props.type].handlePause}
       />
     );
   };
@@ -555,6 +554,9 @@ const SudokuBoard = (props: Board) => {
         eraseSelected={eraseSelected}
         reset={reset}
         getHint={getHint}
+        handlePause={() =>
+          boardMethods[props.type].handlePause(sudokuBoard, navigation)
+        }
         boardHasConflict={boardHasConflict}
         hasResetButton={boardMethods[props.type].hasResetActionButton()}
         hasEraseButton={boardMethods[props.type].hasEraseActionButton()}
