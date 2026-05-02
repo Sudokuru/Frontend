@@ -38,7 +38,6 @@ const HeaderRow = (props: HeaderRowProps) => {
   const { theme } = useTheme();
 
   const boardWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
-  const sectionWidth = boardWidth / 3;
   const headerHeight = cellSize ? cellSize * 1.15 : fallbackHeight * 1.15;
   const headerTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
@@ -71,142 +70,143 @@ const HeaderRow = (props: HeaderRowProps) => {
         width: boardWidth,
         height: headerHeight,
         justifyContent: "space-between",
-        alignItems: "center",
-        flexDirection: "column",
+        alignItems: "flex-end",
+        flexDirection: "row",
+        paddingBottom: cellSize ? cellSize * 0.05 : fallbackHeight * 0.05,
       }}
     >
       <View
         style={{
-          width: boardWidth,
-          justifyContent: "space-between",
-          alignItems: "flex-start",
+          flex: 1,
           flexDirection: "row",
+          alignItems: "center",
+          marginBottom: cellSize ? cellSize * 0.18 : fallbackHeight * 0.18,
         }}
       >
-        <View style={{ width: sectionWidth, justifyContent: "center" }}>
-          <Text
-            style={{
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.42 : fallbackHeight * 0.42,
-              color: headerTextColor,
-            }}
-          >
-            Time: {formatTime(currentTime)}
-          </Text>
-          <View
-            style={{
-              marginTop: cellSize ? cellSize * 0.06 : fallbackHeight * 0.06,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View
-              testID="hintsCounter"
-              style={{
-                marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
-                paddingHorizontal: cellSize
-                  ? cellSize * 0.2
-                  : fallbackHeight * 0.2,
-                paddingVertical: cellSize
-                  ? cellSize * 0.04
-                  : fallbackHeight * 0.04,
-                borderRadius: cellSize
-                  ? cellSize * 0.15
-                  : fallbackHeight * 0.15,
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="lightbulb-on-outline"
-                color="#D9A05B"
-                size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-              />
-              <Text
-                style={{
-                  marginLeft: cellSize
-                    ? cellSize * 0.08
-                    : fallbackHeight * 0.08,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
-                }}
-              >
-                {getHintStatText(sudokuBoard)}
-              </Text>
-            </View>
-
-            <View
-              testID="mistakesCounter"
-              style={{
-                paddingHorizontal: cellSize
-                  ? cellSize * 0.2
-                  : fallbackHeight * 0.2,
-                paddingVertical: cellSize
-                  ? cellSize * 0.04
-                  : fallbackHeight * 0.04,
-                borderRadius: cellSize
-                  ? cellSize * 0.15
-                  : fallbackHeight * 0.15,
-                alignSelf: "flex-start",
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="alert-circle"
-                color="#FF6B6B"
-                size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
-              />
-              <Text
-                style={{
-                  marginLeft: cellSize
-                    ? cellSize * 0.08
-                    : fallbackHeight * 0.08,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
-                }}
-              >
-                {getMistakeStatText(sudokuBoard)}
-              </Text>
-            </View>
-          </View>
-        </View>
         <View
+          testID="difficultyCounter"
           style={{
-            width: sectionWidth,
+            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
+          <MaterialCommunityIcons
+            name="signal-cellular-3"
+            color={theme.colors.primary}
+            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
+          />
           <Text
             style={{
+              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+              color: statPillTextColor,
               fontFamily: "Inter_400Regular",
-              fontSize: cellSize ? cellSize * 0.39 : fallbackHeight * 0.39,
-              color: headerTextColor,
+              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
             }}
           >
             {headerRowTitle(sudokuBoard)}
           </Text>
         </View>
+
         <View
+          testID="hintsCounter"
           style={{
-            width: sectionWidth,
-            alignItems: "flex-end",
-            justifyContent: "center",
+            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
-          <PauseButton
-            handlePause={() => handlePause(sudokuBoard, navigation)}
-            isPaused={false}
+          <MaterialCommunityIcons
+            name="lightbulb-on-outline"
+            color="#D9A05B"
+            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
           />
+          <Text
+            style={{
+              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+            }}
+          >
+            {getHintStatText(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="mistakesCounter"
+          style={{
+            marginRight: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="alert-circle"
+            color="#FF6B6B"
+            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
+          />
+          <Text
+            style={{
+              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+            }}
+          >
+            {getMistakeStatText(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="timeCounter"
+          style={{
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="clock-outline"
+            color={headerTextColor}
+            size={cellSize ? cellSize * 0.2 : fallbackHeight * 0.2}
+          />
+          <Text
+            style={{
+              marginLeft: cellSize ? cellSize * 0.08 : fallbackHeight * 0.08,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+            }}
+          >
+            Time: {formatTime(currentTime)}
+          </Text>
         </View>
       </View>
+
+      <PauseButton
+        handlePause={() => handlePause(sudokuBoard, navigation)}
+        isPaused={false}
+      />
     </View>
   );
 };
