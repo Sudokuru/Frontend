@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Divider, Text } from "react-native-paper";
-import { Theme } from "../../Styling/theme";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 export interface ReleaseNoteInterface {
   version: string;
@@ -14,6 +14,11 @@ export interface ReleaseNoteInterface {
   contributors: string[];
 }
 
+export interface ReleaseNoteProps {
+  item: ReleaseNoteInterface;
+  width: number;
+}
+
 // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
 // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
 /**
@@ -22,22 +27,14 @@ export interface ReleaseNoteInterface {
  * @param key a key for the view element
  * @returns A JSX element of a bullet
  */
-const BulletComponent = (point: string, key: number, theme: Theme) => {
+const BulletComponent = (point: string, key: number, textColor: string) => {
   return (
     <View
       style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
       key={key}
     >
-      <Text style={{ fontSize: 14, color: theme.semantic.text.inverse }}>
-        •
-      </Text>
-      <Text
-        style={{
-          fontSize: 14,
-          paddingLeft: 5,
-          color: theme.semantic.text.inverse,
-        }}
-      >
+      <Text style={{ fontSize: 14, color: textColor }}>•</Text>
+      <Text style={{ fontSize: 14, paddingLeft: 5, color: textColor }}>
         {point}
       </Text>
     </View>
@@ -49,45 +46,21 @@ const BulletComponent = (point: string, key: number, theme: Theme) => {
  * @param points A list of strings for the bulleted list component
  * @returns A JSX element of a bullet list component
  */
-const BulletedListComponent = (points: string[], theme: Theme) => {
+const BulletedListComponent = (points: string[], textColor: string) => {
   const list = [];
   for (const [index, point] of points.entries()) {
-    list.push(BulletComponent(point, index, theme));
+    list.push(BulletComponent(point, index, textColor));
   }
   return list;
 };
 
-export const ReleaseNote = (
-  props: ReleaseNoteInterface,
-  key: string,
-  width: number,
-  theme: Theme,
-) => {
-  let featureList = ["None"];
-  if (props.features) {
-    featureList = props.features;
-  }
+export const ReleaseNote = ({ item, width }: ReleaseNoteProps) => {
+  const { theme } = useTheme();
+  const textColor = theme.semantic.text.inverse;
 
-  const featureListComponent = BulletedListComponent(featureList, theme);
-
-  let previewFeatureList = ["None"];
-  if (props["preview features"]) {
-    previewFeatureList = props["preview features"];
-  }
-
-  const previewFeatureListComponent = BulletedListComponent(
-    previewFeatureList,
-    theme,
-  );
-
-  let bugList = ["None"];
-  if (props["bug fixes"]) {
-    bugList = props["bug fixes"];
-  }
-
-  const bugListComponent = BulletedListComponent(bugList, theme);
-  const targetPlatformsString = BulletedListComponent(props.targets, theme);
-  const contributorsString = BulletedListComponent(props.contributors, theme);
+  const featureList = item.features ?? ["None"];
+  const previewFeatureList = item["preview features"] ?? ["None"];
+  const bugList = item["bug fixes"] ?? ["None"];
 
   return (
     <View
@@ -99,49 +72,34 @@ export const ReleaseNote = (
         width: width,
         alignSelf: "center",
       }}
-      key={key}
-      testID={key}
+      testID={item.version}
     >
-      <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-        Version: {props.version}
+      <Text style={{ fontSize: 20, color: textColor }}>
+        Version: {item.version}
       </Text>
-      <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-        Release Date: {props.date}
+      <Text style={{ fontSize: 20, color: textColor }}>
+        Release Date: {item.date}
       </Text>
       <Divider style={{ marginBottom: 10 }} />
       <>
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-          Summary:{" "}
+        <Text style={{ fontSize: 20, color: textColor }}>Summary: </Text>
+        <Text style={{ paddingLeft: 20, fontSize: 14, color: textColor }}>
+          {item.summary}
         </Text>
-        <Text
-          style={{
-            paddingLeft: 20,
-            fontSize: 14,
-            color: theme.semantic.text.inverse,
-          }}
-        >
-          {props.summary}
-        </Text>
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-          Features:{" "}
-        </Text>
-        {featureListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        <Text style={{ fontSize: 20, color: textColor }}>Features: </Text>
+        {BulletedListComponent(featureList, textColor)}
+        <Text style={{ fontSize: 20, color: textColor }}>
           Preview Features:{" "}
         </Text>
-        {previewFeatureListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-          Bug Fixes:{" "}
-        </Text>
-        {bugListComponent}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
+        {BulletedListComponent(previewFeatureList, textColor)}
+        <Text style={{ fontSize: 20, color: textColor }}>Bug Fixes: </Text>
+        {BulletedListComponent(bugList, textColor)}
+        <Text style={{ fontSize: 20, color: textColor }}>
           Target Platforms:{" "}
         </Text>
-        {targetPlatformsString}
-        <Text style={{ fontSize: 20, color: theme.semantic.text.inverse }}>
-          Contributors:{" "}
-        </Text>
-        {contributorsString}
+        {BulletedListComponent(item.targets, textColor)}
+        <Text style={{ fontSize: 20, color: textColor }}>Contributors: </Text>
+        {BulletedListComponent(item.contributors, textColor)}
       </>
     </View>
   );
