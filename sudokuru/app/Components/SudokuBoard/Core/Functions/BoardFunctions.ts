@@ -1,4 +1,4 @@
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, Platform } from "react-native";
 import {
   BoardObjectProps,
   CellProps,
@@ -61,10 +61,36 @@ export function useCellSize(): number {
     width < MOBILE_BREAKPOINT ? width : Math.min(width * 0.9, MAX_BOARD_SIZE);
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
+
+  // On web at mobile widths, constrain by height only when the nav header is shown.
+  // No fraction needed — browser has no OS chrome to account for.
+  if (Platform.OS === "web" && width < MOBILE_BREAKPOINT) {
+    const cellSizeAtFullWidth = width / 9;
+    const boardHeightAtFullWidth =
+      cellSizeAtFullWidth * boardLayoutHeightInCells;
+    const NAV_HEADER_HEIGHT = 60;
+    const NAV_HEADER_SAFETY = 12;
+    const availableWithHeader = height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY;
+    const navHeaderShown = boardHeightAtFullWidth <= availableWithHeader;
+
+    if (navHeaderShown) {
+      // Nav header visible — constrain so board fits in remaining height
+      const maxFromHeight = availableWithHeader / boardLayoutHeightInCells;
+      return Math.min(cellSizeAtFullWidth, maxFromHeight);
+    } else {
+      // Nav header hidden — allow 10% tolerance for iOS Safari address bar chrome
+      if (boardHeightAtFullWidth <= height * 1.1) {
+        return cellSizeAtFullWidth;
+      }
+      // Genuinely too tall — constrain by height
+      return height / boardLayoutHeightInCells;
+    }
+  }
+
   const maxCellSizeFromHeight =
     (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
 
-  if (width < MOBILE_BREAKPOINT) {
+  if (width < MOBILE_BREAKPOINT && Platform.OS !== "web") {
     return maxCellSizeFromWidth;
   }
 
