@@ -10,7 +10,7 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 interface HintProps extends HintObjectProps {
   incrementStage: (
-    stageOffset: number,
+    stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => void;
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
@@ -90,21 +90,26 @@ const Hint = (hintProps: HintProps) => {
   interface ButtonConfig {
     testId: string;
     icon: IconName;
+    action: -1 | 0 | 1;
   }
 
   const getButtonConfigs = (
     stage: number,
     maxStage: number,
-  ): [ButtonConfig, ButtonConfig] => [
-    // left button
-    stage === 1
-      ? { testId: "hintExit", icon: "close" }
-      : { testId: "hintArrowLeft", icon: "arrow-left" },
-    // right button
-    stage === maxStage
-      ? { testId: "hintFinish", icon: "check" }
-      : { testId: "hintArrowRight", icon: "arrow-right" },
-  ];
+  ): [ButtonConfig, ButtonConfig] => {
+    const leftButton: ButtonConfig = {
+      testId: "hintArrowLeft",
+      icon: "arrow-left",
+      action: -1,
+    };
+
+    const rightButton: ButtonConfig =
+      stage === maxStage
+        ? { testId: "hintFinish", icon: "check", action: 1 }
+        : { testId: "hintArrowRight", icon: "arrow-right", action: 1 };
+
+    return [leftButton, rightButton];
+  };
 
   const [leftButton, rightButton] = getButtonConfigs(stage, maxStage);
 
@@ -114,9 +119,11 @@ const Hint = (hintProps: HintProps) => {
   };
 
   const navButtonSize = getResponsiveSize(0.82);
+  const navButtonGap = getResponsiveSize(0.12);
   const navButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
+  const showMiddleStageExit = stage > 1 && stage < maxStage;
 
   return (
     <View
@@ -130,7 +137,7 @@ const Hint = (hintProps: HintProps) => {
       }}
     >
       <Pressable
-        onPress={() => incrementStage(-1, finishSudokuGame)}
+        onPress={() => incrementStage(leftButton.action, finishSudokuGame)}
         testID={leftButton.testId}
         hitSlop={12}
         style={{
@@ -157,6 +164,36 @@ const Hint = (hintProps: HintProps) => {
         />
       </Pressable>
 
+      {showMiddleStageExit && (
+        <Pressable
+          onPress={() => incrementStage(0, finishSudokuGame)}
+          testID="hintExit"
+          hitSlop={12}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: getResponsiveSize(0.05) + navButtonSize + navButtonGap,
+            zIndex: 2,
+            width: navButtonSize,
+            height: navButtonSize,
+            borderRadius: navButtonSize * 0.22,
+            backgroundColor: navButtonBackgroundColor,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <MaterialCommunityIcons
+            color={
+              theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info
+            }
+            name="close"
+            size={cellSize / sizeConst}
+          />
+        </Pressable>
+      )}
+
       <View
         pointerEvents="none"
         style={{
@@ -171,7 +208,7 @@ const Hint = (hintProps: HintProps) => {
       </View>
 
       <Pressable
-        onPress={() => incrementStage(1, finishSudokuGame)}
+        onPress={() => incrementStage(rightButton.action, finishSudokuGame)}
         testID={rightButton.testId}
         hitSlop={12}
         style={{
