@@ -1,5 +1,5 @@
-import { useCellSize } from "../Functions/BoardFunctions";
-import { Pressable, View } from "react-native";
+import { MOBILE_BREAKPOINT, useCellSize } from "../Functions/BoardFunctions";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text } from "react-native-paper";
@@ -26,6 +26,7 @@ interface ActionButtonProps {
   buttonHeight: number;
   iconSize: number;
   labelSize: number;
+  isMobileLayout: boolean;
 }
 
 const ActionButton = ({
@@ -40,6 +41,7 @@ const ActionButton = ({
   buttonHeight,
   iconSize,
   labelSize,
+  isMobileLayout,
 }: ActionButtonProps) => {
   return (
     <Pressable
@@ -59,8 +61,12 @@ const ActionButton = ({
           justifyContent: "center",
           width: buttonWidth,
           height: buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO,
-          borderRadius: buttonWidth * 0.18,
+          borderRadius:
+            buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO * 0.22,
           backgroundColor: backgroundColor,
+          flexDirection: isMobileLayout ? "row" : "column",
+          paddingHorizontal: isMobileLayout ? buttonWidth * 0.05 : 0,
+          overflow: "hidden",
         }}
       >
         <MaterialCommunityIcons
@@ -69,7 +75,13 @@ const ActionButton = ({
           size={iconSize}
         />
         <Text
-          style={{ color: iconColor, fontSize: labelSize, fontWeight: "bold" }}
+          ellipsizeMode={isMobileLayout ? "clip" : undefined}
+          style={{
+            color: iconColor,
+            fontSize: labelSize,
+            fontWeight: "bold",
+            marginLeft: isMobileLayout ? buttonWidth * 0.05 : 0,
+          }}
         >
           {label}
         </Text>
@@ -109,101 +121,148 @@ const ActionRow = (props: ActionRowProps) => {
     hasEraseButton,
   } = props;
   const cellSize = useCellSize();
+  const { width } = useWindowDimensions();
   const { theme } = useTheme();
+  const isMobileLayout = width < MOBILE_BREAKPOINT;
   const iconColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
   const actionButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
+  const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
+  const noteLabel = isMobileLayout
+    ? inNoteMode
+      ? "VALUE"
+      : "NOTE"
+    : inNoteMode
+      ? "VALUE"
+      : "NOTE";
+
+  type ActionButtonConfig = {
+    key: string;
+    iconName: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+    label: string;
+    onPress: () => void;
+    disabled: boolean;
+    testID: string;
+    visible: boolean;
+  };
 
   const actionBaseSize = cellSize || FALLBACK_CELL_SIZE;
-  const actionButtonWidth = actionBaseSize * ACTION_BUTTON_WIDTH_RATIO;
-  const actionButtonHeight = actionBaseSize * ACTION_BUTTON_HEIGHT_RATIO;
-  const actionIconSize = actionBaseSize / ACTION_ICON_RATIO;
-  const actionLabelSize = actionBaseSize / ACTION_LABEL_RATIO;
+  const rowWidth = actionBaseSize * ROW_WIDTH_IN_CELLS;
+  const rowHeightRatio = isMobileLayout ? 0.95 : ROW_HEIGHT_RATIO;
+  const actionButtonHeightRatio = isMobileLayout
+    ? 0.95
+    : ACTION_BUTTON_HEIGHT_RATIO;
+  const mobileButtonGap = isMobileLayout ? actionBaseSize * 0.08 : 0;
 
-  const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
+  const buttonConfigs: ActionButtonConfig[] = [
+    {
+      key: "undo",
+      iconName: "undo" as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: "UNDO",
+      onPress: undo,
+      disabled: isUndoButtonDisabled,
+      testID: "undoButton",
+      visible: true,
+    },
+    {
+      key: "note",
+      iconName: noteIcon as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: noteLabel,
+      onPress: toggleNoteMode,
+      disabled: false,
+      testID: "toggleNoteModeButton",
+      visible: true,
+    },
+    {
+      key: "erase",
+      iconName: "eraser" as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: "ERASE",
+      onPress: eraseSelected,
+      disabled: isEraseButtonDisabled,
+      testID: "eraseButton",
+      visible: hasEraseButton,
+    },
+    {
+      key: "reset",
+      iconName: "restart" as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: "RESET",
+      onPress: reset,
+      disabled: isResetButtonDisabled,
+      testID: "resetButton",
+      visible: hasResetButton,
+    },
+    {
+      key: "hint",
+      iconName: "help" as React.ComponentProps<
+        typeof MaterialCommunityIcons
+      >["name"],
+      label: "HINT",
+      onPress: getHint,
+      disabled: boardHasConflict,
+      testID: "hintButton",
+      visible: true,
+    },
+  ].filter((button) => button.visible);
+
+  const actionButtonWidth = isMobileLayout
+    ? (rowWidth - mobileButtonGap * (buttonConfigs.length - 1)) /
+      buttonConfigs.length
+    : actionBaseSize * ACTION_BUTTON_WIDTH_RATIO;
+  const actionButtonHeight = actionBaseSize * actionButtonHeightRatio;
+  const actionIconSize = isMobileLayout
+    ? actionBaseSize / 2.25
+    : actionBaseSize / ACTION_ICON_RATIO;
+  const actionLabelSize = isMobileLayout
+    ? actionBaseSize / 3.2
+    : actionBaseSize / ACTION_LABEL_RATIO;
 
   return (
     <View
       style={{
-        width: actionBaseSize * ROW_WIDTH_IN_CELLS,
-        height: actionBaseSize * ROW_HEIGHT_RATIO,
-        justifyContent: "space-between",
+        width: rowWidth,
+        height: actionBaseSize * rowHeightRatio,
+        justifyContent: isMobileLayout ? "flex-start" : "space-between",
         alignItems: "center",
         flexDirection: "row",
       }}
     >
-      <ActionButton
-        iconName="undo"
-        label="UNDO"
-        onPress={undo}
-        disabled={isUndoButtonDisabled}
-        testID="undoButton"
-        iconColor={iconColor}
-        backgroundColor={actionButtonBackgroundColor}
-        buttonWidth={actionButtonWidth}
-        buttonHeight={actionButtonHeight}
-        iconSize={actionIconSize}
-        labelSize={actionLabelSize}
-      />
-      <ActionButton
-        iconName={noteIcon}
-        label={inNoteMode ? "VALUE" : "NOTE"}
-        onPress={toggleNoteMode}
-        disabled={false}
-        testID="toggleNoteModeButton"
-        iconColor={iconColor}
-        backgroundColor={actionButtonBackgroundColor}
-        buttonWidth={actionButtonWidth}
-        buttonHeight={actionButtonHeight}
-        iconSize={actionIconSize}
-        labelSize={actionLabelSize}
-      />
-      {hasEraseButton ? (
-        <ActionButton
-          iconName="eraser"
-          label="ERASE"
-          onPress={eraseSelected}
-          disabled={isEraseButtonDisabled}
-          testID="eraseButton"
-          iconColor={iconColor}
-          backgroundColor={actionButtonBackgroundColor}
-          buttonWidth={actionButtonWidth}
-          buttonHeight={actionButtonHeight}
-          iconSize={actionIconSize}
-          labelSize={actionLabelSize}
-        />
-      ) : null}
-      {hasResetButton ? (
-        <ActionButton
-          iconName="restart"
-          label="RESET"
-          onPress={reset}
-          disabled={isResetButtonDisabled}
-          testID="resetButton"
-          iconColor={iconColor}
-          backgroundColor={actionButtonBackgroundColor}
-          buttonWidth={actionButtonWidth}
-          buttonHeight={actionButtonHeight}
-          iconSize={actionIconSize}
-          labelSize={actionLabelSize}
-        />
-      ) : null}
-      <ActionButton
-        iconName="help"
-        label="HINT"
-        onPress={getHint}
-        disabled={boardHasConflict}
-        testID="hintButton"
-        iconColor={iconColor}
-        backgroundColor={actionButtonBackgroundColor}
-        buttonWidth={actionButtonWidth}
-        buttonHeight={actionButtonHeight}
-        iconSize={actionIconSize}
-        labelSize={actionLabelSize}
-      />
+      {buttonConfigs.map((button, index) => (
+        <View
+          key={button.key}
+          style={{
+            marginRight:
+              isMobileLayout && index < buttonConfigs.length - 1
+                ? mobileButtonGap
+                : 0,
+          }}
+        >
+          <ActionButton
+            iconName={button.iconName}
+            label={button.label}
+            onPress={button.onPress}
+            disabled={button.disabled}
+            testID={button.testID}
+            iconColor={iconColor}
+            backgroundColor={actionButtonBackgroundColor}
+            buttonWidth={actionButtonWidth}
+            buttonHeight={actionButtonHeight}
+            iconSize={actionIconSize}
+            labelSize={actionLabelSize}
+            isMobileLayout={isMobileLayout}
+          />
+        </View>
+      ))}
     </View>
   );
 };

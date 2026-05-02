@@ -20,10 +20,21 @@ import { useWindowDimensions } from "react-native";
 import { MOBILE_BREAKPOINT } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
 
 const Drawer = createDrawerNavigator();
+const MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS = 13.4;
+const ESTIMATED_NAV_HEADER_HEIGHT = 60;
+const GAME_FIT_SAFETY_PADDING = 12;
 
 const DrawerNavigator = () => {
   const { theme } = useTheme();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
+  const mobileCellSizeFromWidth = width / 9;
+  const requiredGameContentHeight =
+    mobileCellSizeFromWidth * MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS;
+  const availableHeightWithHeader =
+    height - ESTIMATED_NAV_HEADER_HEIGHT - GAME_FIT_SAFETY_PADDING;
+  const shouldShowGamePageHeader =
+    width >= MOBILE_BREAKPOINT ||
+    requiredGameContentHeight <= availableHeightWithHeader;
 
   return (
     <SafeAreaProvider>
@@ -50,14 +61,14 @@ const DrawerNavigator = () => {
           <Drawer.Screen
             name="SudokuPage"
             component={SudokuPage}
-            options={{ headerShown: width < MOBILE_BREAKPOINT ? false : true }}
+            options={{ headerShown: shouldShowGamePageHeader }}
           />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
           <Drawer.Screen
             name="DrillGame"
             component={DrillGame}
-            options={{ headerShown: width < MOBILE_BREAKPOINT ? false : true }}
+            options={{ headerShown: shouldShowGamePageHeader }}
           />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           {/* @ts-ignore */}

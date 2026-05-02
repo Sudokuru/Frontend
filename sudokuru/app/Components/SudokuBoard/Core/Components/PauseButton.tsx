@@ -1,8 +1,11 @@
-import { Pressable, Platform } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useCellSize } from "../Functions/BoardFunctions";
+import { MOBILE_BREAKPOINT, useCellSize } from "../Functions/BoardFunctions";
 import React from "react";
+import { Text } from "react-native-paper";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+
+const ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO = 0.82;
 
 interface PauseButtonProps {
   handlePause: () => void;
@@ -12,17 +15,76 @@ interface PauseButtonProps {
 const PauseButton = (props: PauseButtonProps) => {
   const { handlePause, isPaused } = props;
   const cellSize = useCellSize();
-  const isMobile = Platform.OS !== "web";
-  const sizeConst = Platform.OS === "web" ? 1.5 : 1.15;
+  const { width } = useWindowDimensions();
+  const isMobileLayout = width < MOBILE_BREAKPOINT;
   const { theme } = useTheme();
+
+  const iconColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
+  const backgroundColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+
+  const iconName = isPaused ? "play" : "pause";
+  const label = isPaused ? "PLAY" : "PAUSE";
+
+  if (isMobileLayout) {
+    const buttonHeight = cellSize * 0.95;
+    const buttonWidth = cellSize * 1.75;
+    const iconSize = cellSize / 2.25;
+    const labelSize = cellSize / 3.2;
+
+    return (
+      <Pressable
+        testID="PauseButton"
+        onPress={handlePause}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: buttonWidth,
+          height: buttonHeight,
+        }}
+      >
+        <View
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            width: buttonWidth,
+            height: buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO,
+            borderRadius:
+              buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO * 0.22,
+            backgroundColor: backgroundColor,
+            flexDirection: "row",
+            paddingHorizontal: buttonWidth * 0.05,
+            overflow: "hidden",
+          }}
+        >
+          <MaterialCommunityIcons
+            color={iconColor}
+            name={iconName}
+            size={iconSize}
+          />
+          <Text
+            style={{
+              color: iconColor,
+              fontSize: labelSize,
+              fontWeight: "bold",
+              marginLeft: buttonWidth * 0.05,
+            }}
+          >
+            {label}
+          </Text>
+        </View>
+      </Pressable>
+    );
+  }
 
   return (
     <Pressable
       testID="PauseButton"
       onPress={handlePause}
       style={{
-        width: isMobile ? cellSize * 1.35 : undefined,
-        height: isMobile ? cellSize * 1.35 : undefined,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: cellSize * 0.2,
@@ -30,27 +92,11 @@ const PauseButton = (props: PauseButtonProps) => {
         backgroundColor: "transparent",
       }}
     >
-      {isPaused ? (
-        <MaterialCommunityIcons
-          color={
-            theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info
-          }
-          name="play"
-          size={cellSize / sizeConst}
-        />
-      ) : (
-        <MaterialCommunityIcons
-          color={
-            theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info
-          }
-          name="pause"
-          size={cellSize / sizeConst}
-        />
-      )}
+      <MaterialCommunityIcons
+        color={iconColor}
+        name={iconName}
+        size={cellSize / 1.5}
+      />
     </Pressable>
   );
 };

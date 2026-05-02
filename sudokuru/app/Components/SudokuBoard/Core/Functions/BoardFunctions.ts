@@ -16,12 +16,15 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
 export const MOBILE_BREAKPOINT = 768;
 const MAX_BOARD_SIZE = 640;
 
-const HEADER_ROW_HEIGHT_IN_CELLS = 1.75;
+const HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.75;
+const HEADER_ROW_HEIGHT_IN_CELLS_MOBILE = 1.3;
 const PUZZLE_HEIGHT_IN_CELLS = 9;
-const ACTION_ROW_HEIGHT_IN_CELLS = 1.6;
+const ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.6;
+const ACTION_ROW_HEIGHT_IN_CELLS_MOBILE = 1.45;
 const NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP = 1;
-const NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE = 2.2;
-const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE = 1.65;
+const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
+const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
 
 /**
  * This function retrieves the user's device size and calculates the cell size
@@ -29,23 +32,41 @@ const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
  */
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
+  const headerRowHeightInCells =
+    width < MOBILE_BREAKPOINT
+      ? HEADER_ROW_HEIGHT_IN_CELLS_MOBILE
+      : HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP;
+  const actionRowHeightInCells =
+    width < MOBILE_BREAKPOINT
+      ? ACTION_ROW_HEIGHT_IN_CELLS_MOBILE
+      : ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP;
+
   const numberControlHeightInCells =
     width < MOBILE_BREAKPOINT
       ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
       : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
 
   const boardLayoutHeightInCells =
-    HEADER_ROW_HEIGHT_IN_CELLS +
+    headerRowHeightInCells +
     PUZZLE_HEIGHT_IN_CELLS +
-    ACTION_ROW_HEIGHT_IN_CELLS +
+    actionRowHeightInCells +
     numberControlHeightInCells;
+
+  const boardVerticalViewportFraction =
+    width < MOBILE_BREAKPOINT
+      ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
+      : BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP;
 
   const maxBoardWidth =
     width < MOBILE_BREAKPOINT ? width : Math.min(width * 0.9, MAX_BOARD_SIZE);
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
   const maxCellSizeFromHeight =
-    (height * BOARD_VERTICAL_VIEWPORT_FRACTION) / boardLayoutHeightInCells;
+    (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
+
+  if (width < MOBILE_BREAKPOINT) {
+    return maxCellSizeFromWidth;
+  }
 
   return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }

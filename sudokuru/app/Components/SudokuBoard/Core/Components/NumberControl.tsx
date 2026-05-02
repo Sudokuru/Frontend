@@ -33,13 +33,14 @@ const NumberControl = (props: NumberControlProps) => {
   const { width } = useWindowDimensions();
   const { theme } = useTheme();
   const isMobileLayout = width < MOBILE_BREAKPOINT;
+  const keyHeightRatio = isMobileLayout ? 0.77 : 1;
   const visualKeyWidthRatio = isMobileLayout ? 100 / 60 : 50 / 60;
   const visualKeyWidth = cellSize
     ? cellSize * visualKeyWidthRatio
     : fallbackHeight * visualKeyWidthRatio;
   const touchKeyWidth = visualKeyWidth;
-  const keyHeight = cellSize || fallbackHeight;
-  const mobileRowGap = keyHeight * 0.2;
+  const keyHeight = (cellSize || fallbackHeight) * keyHeightRatio;
+  const mobileRowGap = keyHeight * 0.1;
   const controlWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
   const mobileTopRowButtonGap = Math.max(
     (controlWidth - touchKeyWidth * 5) / 4,
@@ -55,9 +56,13 @@ const NumberControl = (props: NumberControlProps) => {
       <Text
         style={{
           fontFamily: "Inter_400Regular",
-          fontSize: cellSize
-            ? cellSize * (3 / 4) + 1
-            : fallbackHeight * (3 / 4) + 1,
+          fontSize: isMobileLayout
+            ? cellSize
+              ? cellSize * 0.62
+              : fallbackHeight * 0.62
+            : cellSize
+              ? cellSize * (3 / 4) + 1
+              : fallbackHeight * (3 / 4) + 1,
           color: theme.semantic.text.info,
         }}
         selectable={false}
