@@ -1,14 +1,10 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
-import { Image, View, useWindowDimensions } from "react-native";
+import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
-import {
-  MOBILE_BREAKPOINT,
-  useCellSize,
-  formatTime,
-} from "../Functions/BoardFunctions";
+import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
@@ -36,9 +32,7 @@ const HeaderRow = (props: HeaderRowProps) => {
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
-  const { width, height } = useWindowDimensions();
   const { theme } = useTheme();
-  const isMobileLayout = width < MOBILE_BREAKPOINT;
   const mobileCompactScale = 0.75;
   const mobileSpacingScale = 0.5;
   const headerHeightMultiplier = 1.05;
@@ -77,14 +71,6 @@ const HeaderRow = (props: HeaderRowProps) => {
   const mobileStatPillGap = pillGap;
   const mobileHeaderPuzzleGapOffset =
     (cellSize ? cellSize : fallbackHeight) * 0.08;
-
-  const mobileCellSizeFromWidth = width / 9;
-  const requiredGameContentHeight = mobileCellSizeFromWidth * 13.4;
-  const availableHeightWithHeader = height - 60 - 12;
-  const shouldShowGamePageHeader =
-    width >= MOBILE_BREAKPOINT ||
-    requiredGameContentHeight <= availableHeightWithHeader;
-  const showBrandLogo = isMobileLayout && !shouldShowGamePageHeader;
 
   const DARK_LOGO = require("../../../../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../../../../.assets/lightBlueLogoText.png");
@@ -126,29 +112,27 @@ const HeaderRow = (props: HeaderRowProps) => {
           justifyContent: "flex-start",
         }}
       >
-        {showBrandLogo && (
-          <View
+        <View
+          style={{
+            paddingHorizontal: pillHorizontalPadding,
+            paddingVertical: pillVerticalPadding * 0.1,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            marginRight: mobileStatPillGap,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={logoSource}
             style={{
-              paddingHorizontal: pillHorizontalPadding,
-              paddingVertical: pillVerticalPadding * 0.1,
-              borderRadius: pillBorderRadius,
-              overflow: "hidden",
-              backgroundColor: statPillBackgroundColor,
-              marginRight: mobileStatPillGap,
-              alignItems: "center",
-              justifyContent: "center",
+              height: logoHeight,
+              width: logoWidth,
+              resizeMode: "contain",
             }}
-          >
-            <Image
-              source={logoSource}
-              style={{
-                height: logoHeight,
-                width: logoWidth,
-                resizeMode: "contain",
-              }}
-            />
-          </View>
-        )}
+          />
+        </View>
         <View
           testID="difficultyCounter"
           style={{
