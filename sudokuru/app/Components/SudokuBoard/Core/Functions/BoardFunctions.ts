@@ -17,8 +17,8 @@ export const MOBILE_BREAKPOINT = 768;
 const MAX_BOARD_SIZE = 640;
 
 // Total stacked height in cell-size units when hint modal is not shown:
-// HeaderRow (1.35) + Puzzle (9) + ActionRow (1.6) + NumberControl (1)
-const BOARD_LAYOUT_HEIGHT_IN_CELLS = 12.95;
+// HeaderRow (1.15) + Puzzle (9) + ActionRow (1.6) + NumberControl (1)
+const BOARD_LAYOUT_HEIGHT_IN_CELLS = 12.75;
 const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
 
 /**
