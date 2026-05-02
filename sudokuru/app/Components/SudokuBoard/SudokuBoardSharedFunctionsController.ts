@@ -54,6 +54,7 @@ export interface SudokuVariantMethods {
     currentEntry: CellProps,
   ): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
+  headerRowTooltipLabel(): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
     variant: GameVariant,
@@ -95,6 +96,9 @@ const defaultMethods: SudokuVariantMethods = {
   },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
+  },
+  headerRowTooltipLabel() {
+    return "Difficulty";
   },
   finishSudokuGame(
     statistics: ClassicGameStatistics,
@@ -153,6 +157,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     },
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
+    },
+    headerRowTooltipLabel() {
+      return "Strategy";
     },
     finishSudokuGame(
       statistics: DrillGameStatistics,
