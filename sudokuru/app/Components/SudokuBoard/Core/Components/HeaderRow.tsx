@@ -16,12 +16,28 @@ interface HeaderRowProps {
   handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
 }
 
+const getHintStatText = (sudokuBoard: BoardObjectProps): string => {
+  if ("numHintsUsed" in sudokuBoard.statistics) {
+    return `Hints: ${sudokuBoard.statistics.numHintsUsed}`;
+  }
+
+  return `Hint: ${sudokuBoard.statistics.hintUsed ? "Used" : "None"}`;
+};
+
+const getMistakeStatText = (sudokuBoard: BoardObjectProps): string => {
+  return `Mistakes: ${sudokuBoard.statistics.numWrongCellsPlayed}`;
+};
+
 const HeaderRow = (props: HeaderRowProps) => {
   const { sudokuBoard, setSudokuBoard, headerRowTitle, handlePause } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
   const navigation = useNavigation();
+
+  const boardWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
+  const sectionWidth = boardWidth / 3;
+  const headerHeight = cellSize ? cellSize * 1.35 : fallbackHeight * 1.35;
 
   const { theme } = useTheme();
 
@@ -43,14 +59,14 @@ const HeaderRow = (props: HeaderRowProps) => {
     <View
       style={{
         alignSelf: "center",
-        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize * 0.9 : fallbackHeight * 0.9,
+        width: boardWidth,
+        height: headerHeight,
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
       }}
     >
-      <View style={{ width: cellSize * 3 }}>
+      <View style={{ width: sectionWidth }}>
         <Text
           style={{
             fontFamily: "Inter_400Regular",
@@ -62,8 +78,25 @@ const HeaderRow = (props: HeaderRowProps) => {
         >
           Time: {formatTime(currentTime)}
         </Text>
+        <Text
+          testID="mistakesCounter"
+          style={{
+            marginTop: cellSize ? cellSize * 0.06 : fallbackHeight * 0.06,
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            alignSelf: "flex-start",
+            overflow: "hidden",
+            backgroundColor: theme.colors.surface,
+            color: theme.semantic.text.info,
+            fontFamily: "Inter_400Regular",
+            fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+          }}
+        >
+          {getMistakeStatText(sudokuBoard)}
+        </Text>
       </View>
-      <View style={{ width: cellSize * 3, alignItems: "center" }}>
+      <View style={{ width: sectionWidth, alignItems: "center" }}>
         <Text
           style={{
             fontFamily: "Inter_400Regular",
@@ -75,8 +108,24 @@ const HeaderRow = (props: HeaderRowProps) => {
         >
           {headerRowTitle(sudokuBoard)}
         </Text>
+        <Text
+          testID="hintsCounter"
+          style={{
+            marginTop: cellSize ? cellSize * 0.06 : fallbackHeight * 0.06,
+            paddingHorizontal: cellSize ? cellSize * 0.2 : fallbackHeight * 0.2,
+            paddingVertical: cellSize ? cellSize * 0.04 : fallbackHeight * 0.04,
+            borderRadius: cellSize ? cellSize * 0.15 : fallbackHeight * 0.15,
+            overflow: "hidden",
+            backgroundColor: theme.colors.surface,
+            color: theme.semantic.text.info,
+            fontFamily: "Inter_400Regular",
+            fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
+          }}
+        >
+          {getHintStatText(sudokuBoard)}
+        </Text>
       </View>
-      <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>
+      <View style={{ width: sectionWidth, alignItems: "flex-end" }}>
         <PauseButton
           handlePause={() => handlePause(sudokuBoard, navigation)}
           isPaused={false}
