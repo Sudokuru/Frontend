@@ -84,6 +84,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const logoSource = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
   const logoHeight = cellSize ? cellSize * 0.65 : fallbackHeight * 0.65;
   const logoWidth = logoHeight * (100 / 45);
+  const logoPillWidth = logoWidth + pillHorizontalPadding * 2;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -117,6 +118,8 @@ const HeaderRow = (props: HeaderRowProps) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-start",
+          position: "relative",
+          paddingRight: logoPillWidth + mobileStatPillGap,
         }}
       >
         <View
@@ -126,9 +129,11 @@ const HeaderRow = (props: HeaderRowProps) => {
             borderRadius: pillBorderRadius,
             overflow: "hidden",
             backgroundColor: statPillBackgroundColor,
-            marginRight: mobileStatPillGap,
             alignItems: "center",
             justifyContent: "center",
+            position: "absolute",
+            right: 0,
+            top: 0,
           }}
         >
           <Image
