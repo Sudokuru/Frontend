@@ -14,6 +14,12 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
  */
 
 export const MOBILE_BREAKPOINT = 768;
+const MAX_BOARD_SIZE = 640;
+
+// Total stacked height in cell-size units when hint modal is not shown:
+// HeaderRow (1.35) + Puzzle (9) + ActionRow (1.6) + NumberControl (1)
+const BOARD_LAYOUT_HEIGHT_IN_CELLS = 12.95;
+const BOARD_VERTICAL_VIEWPORT_FRACTION = 0.92;
 
 /**
  * This function retrieves the user's device size and calculates the cell size
@@ -22,15 +28,14 @@ export const MOBILE_BREAKPOINT = 768;
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
 
-  const MAX_BOARD_SIZE = 640;
-  const shortestSide = Math.min(width, height);
+  const maxBoardWidth =
+    width < MOBILE_BREAKPOINT ? width : Math.min(width * 0.9, MAX_BOARD_SIZE);
 
-  const boardSize =
-    width < MOBILE_BREAKPOINT
-      ? width
-      : Math.min(shortestSide * 0.9, MAX_BOARD_SIZE);
+  const maxCellSizeFromWidth = maxBoardWidth / 9;
+  const maxCellSizeFromHeight =
+    (height * BOARD_VERTICAL_VIEWPORT_FRACTION) / BOARD_LAYOUT_HEIGHT_IN_CELLS;
 
-  return boardSize / 9;
+  return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }
 
 export const isValueCorrect = (
