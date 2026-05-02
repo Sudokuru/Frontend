@@ -54,9 +54,9 @@ const HeaderRow = (props: HeaderRowProps) => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const isMobileLayout = width < MOBILE_BREAKPOINT;
-  const mobileCompactScale = isMobileLayout ? 0.75 : 1;
-  const mobileSpacingScale = isMobileLayout ? 0.5 : 1;
-  const headerHeightMultiplier = isMobileLayout ? 1.05 : 1.75;
+  const mobileCompactScale = 0.75;
+  const mobileSpacingScale = 0.5;
+  const headerHeightMultiplier = 1.05;
 
   const boardWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
   const headerHeight = cellSize
@@ -133,361 +133,185 @@ const HeaderRow = (props: HeaderRowProps) => {
         alignSelf: "center",
         width: boardWidth,
         height: headerHeight,
-        marginBottom: isMobileLayout ? -mobileHeaderPuzzleGapOffset : 0,
-        justifyContent: isMobileLayout ? "flex-end" : "center",
+        marginBottom: -mobileHeaderPuzzleGapOffset,
+        justifyContent: "flex-end",
         alignItems: "center",
         flexDirection: "row",
       }}
     >
-      {isMobileLayout ? (
-        <>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
+      >
+        {showBrandLogo && (
           <View
             style={{
-              flex: 1,
-              flexDirection: "row",
+              paddingHorizontal: pillHorizontalPadding,
+              paddingVertical: pillVerticalPadding * 0.1,
+              borderRadius: pillBorderRadius,
+              overflow: "hidden",
+              backgroundColor: statPillBackgroundColor,
+              marginRight: mobileStatPillGap,
               alignItems: "center",
-              justifyContent: "flex-start",
-            }}
-          >
-            {showBrandLogo && (
-              <View
-                style={{
-                  paddingHorizontal: pillHorizontalPadding,
-                  paddingVertical: pillVerticalPadding,
-                  borderRadius: pillBorderRadius,
-                  overflow: "hidden",
-                  backgroundColor: statPillBackgroundColor,
-                  marginRight: mobileStatPillGap,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image
-                  source={logoSource}
-                  style={{
-                    height: logoHeight,
-                    width: logoWidth,
-                    resizeMode: "contain",
-                  }}
-                />
-              </View>
-            )}
-            <View
-              testID="difficultyCounter"
-              style={{
-                paddingHorizontal: pillHorizontalPadding,
-                paddingVertical: pillVerticalPadding,
-                borderRadius: pillBorderRadius,
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="signal-cellular-3"
-                color={theme.colors.primary}
-                size={statusIconSize}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  marginLeft: pillGap,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: statusTextSize,
-                }}
-              >
-                {headerRowTitle(sudokuBoard)}
-              </Text>
-            </View>
-
-            <View
-              testID="mistakesCounter"
-              style={{
-                marginLeft: mobileStatPillGap,
-                minWidth: iconOnlyPillSize,
-                height: iconOnlyPillSize,
-                paddingHorizontal: pillHorizontalPadding,
-                borderRadius: pillBorderRadius,
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="alert-circle"
-                color="#FF6B6B"
-                size={statusIconSize}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  marginLeft: pillGap,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: statusTextSize,
-                }}
-              >
-                {getMistakeStatValue(sudokuBoard)}
-              </Text>
-            </View>
-
-            <View
-              testID="hintsCounter"
-              style={{
-                marginLeft: mobileStatPillGap,
-                minWidth: iconOnlyPillSize,
-                height: iconOnlyPillSize,
-                paddingHorizontal: pillHorizontalPadding,
-                borderRadius: pillBorderRadius,
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="lightbulb-on-outline"
-                color="#D9A05B"
-                size={statusIconSize}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  marginLeft: pillGap,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: statusTextSize,
-                }}
-              >
-                {getHintStatValue(sudokuBoard)}
-              </Text>
-            </View>
-
-            <View
-              testID="timeCounter"
-              style={{
-                marginLeft: mobileStatPillGap,
-                minWidth: iconOnlyPillSize,
-                height: iconOnlyPillSize,
-                paddingHorizontal: pillHorizontalPadding,
-                borderRadius: pillBorderRadius,
-                overflow: "hidden",
-                backgroundColor: statPillBackgroundColor,
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexDirection: "row",
-              }}
-            >
-              <MaterialCommunityIcons
-                name="clock-outline"
-                color={headerTextColor}
-                size={statusIconSize}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  marginLeft: pillGap,
-                  color: statPillTextColor,
-                  fontFamily: "Inter_400Regular",
-                  fontSize: statusTextSize,
-                }}
-              >
-                {formatTime(currentTime)}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              marginLeft: pillGap,
               justifyContent: "center",
-              alignItems: "flex-end",
             }}
           >
-            <PauseButton
-              handlePause={() => handlePause(sudokuBoard, navigation)}
-              isPaused={false}
+            <Image
+              source={logoSource}
+              style={{
+                height: logoHeight,
+                width: logoWidth,
+                resizeMode: "contain",
+              }}
             />
           </View>
-        </>
-      ) : (
-        <>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginBottom: rowGap,
-                minHeight: statusRowHeight,
-              }}
-            >
-              <View
-                testID="difficultyCounter"
-                style={{
-                  marginRight: pillGap,
-                  paddingHorizontal: pillHorizontalPadding,
-                  paddingVertical: pillVerticalPadding,
-                  borderRadius: pillBorderRadius,
-                  overflow: "hidden",
-                  backgroundColor: statPillBackgroundColor,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="signal-cellular-3"
-                  color={theme.colors.primary}
-                  size={statusIconSize}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    marginLeft: pillGap,
-                    color: statPillTextColor,
-                    fontFamily: "Inter_400Regular",
-                    fontSize: statusTextSize,
-                  }}
-                >
-                  {headerRowTitle(sudokuBoard)}
-                </Text>
-              </View>
-
-              <View
-                testID="timeCounter"
-                style={{
-                  paddingHorizontal: pillHorizontalPadding,
-                  paddingVertical: pillVerticalPadding,
-                  borderRadius: pillBorderRadius,
-                  overflow: "hidden",
-                  backgroundColor: statPillBackgroundColor,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="clock-outline"
-                  color={headerTextColor}
-                  size={statusIconSize}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    marginLeft: pillGap,
-                    color: statPillTextColor,
-                    fontFamily: "Inter_400Regular",
-                    fontSize: statusTextSize,
-                  }}
-                >
-                  Time: {formatTime(currentTime)}
-                </Text>
-              </View>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                minHeight: statusRowHeight,
-              }}
-            >
-              <View
-                testID="hintsCounter"
-                style={{
-                  marginRight: pillGap,
-                  paddingHorizontal: pillHorizontalPadding,
-                  paddingVertical: pillVerticalPadding,
-                  borderRadius: pillBorderRadius,
-                  overflow: "hidden",
-                  backgroundColor: statPillBackgroundColor,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="lightbulb-on-outline"
-                  color="#D9A05B"
-                  size={statusIconSize}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    marginLeft: pillGap,
-                    color: statPillTextColor,
-                    fontFamily: "Inter_400Regular",
-                    fontSize: statusTextSize,
-                  }}
-                >
-                  {getHintStatText(sudokuBoard)}
-                </Text>
-              </View>
-
-              <View
-                testID="mistakesCounter"
-                style={{
-                  paddingHorizontal: pillHorizontalPadding,
-                  paddingVertical: pillVerticalPadding,
-                  borderRadius: pillBorderRadius,
-                  overflow: "hidden",
-                  backgroundColor: statPillBackgroundColor,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="alert-circle"
-                  color="#FF6B6B"
-                  size={statusIconSize}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    marginLeft: pillGap,
-                    color: statPillTextColor,
-                    fontFamily: "Inter_400Regular",
-                    fontSize: statusTextSize,
-                  }}
-                >
-                  {getMistakeStatText(sudokuBoard)}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          <View
+        )}
+        <View
+          testID="difficultyCounter"
+          style={{
+            paddingHorizontal: pillHorizontalPadding,
+            paddingVertical: pillVerticalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="signal-cellular-3"
+            color={theme.colors.primary}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
             style={{
               marginLeft: pillGap,
-              minHeight: statusRowHeight * 2 + rowGap,
-              justifyContent: "flex-start",
-              alignItems: "flex-end",
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: statusTextSize,
             }}
           >
-            <View style={{ height: statusRowHeight + rowGap }} />
-            <View
-              style={{
-                height: statusRowHeight,
-                justifyContent: "center",
-                alignItems: "flex-end",
-              }}
-            >
-              <PauseButton
-                handlePause={() => handlePause(sudokuBoard, navigation)}
-                isPaused={false}
-              />
-            </View>
-          </View>
-        </>
-      )}
+            {headerRowTitle(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="mistakesCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="alert-circle"
+            color="#FF6B6B"
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: statusTextSize,
+            }}
+          >
+            {getMistakeStatValue(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="hintsCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="lightbulb-on-outline"
+            color="#D9A05B"
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: statusTextSize,
+            }}
+          >
+            {getHintStatValue(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="timeCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="clock-outline"
+            color={headerTextColor}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: "Inter_400Regular",
+              fontSize: statusTextSize,
+            }}
+          >
+            {formatTime(currentTime)}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          marginLeft: pillGap,
+          justifyContent: "center",
+          alignItems: "flex-end",
+        }}
+      >
+        <PauseButton
+          handlePause={() => handlePause(sudokuBoard, navigation)}
+          isPaused={false}
+        />
+      </View>
     </View>
   );
 };

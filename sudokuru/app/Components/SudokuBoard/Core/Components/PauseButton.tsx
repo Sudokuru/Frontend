@@ -1,6 +1,6 @@
-import { Pressable, View, useWindowDimensions } from "react-native";
+import { Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MOBILE_BREAKPOINT, useCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Text } from "react-native-paper";
 import { useTheme } from "../../../../Contexts/ThemeContext";
@@ -15,8 +15,6 @@ interface PauseButtonProps {
 const PauseButton = (props: PauseButtonProps) => {
   const { handlePause, isPaused } = props;
   const cellSize = useCellSize();
-  const { width } = useWindowDimensions();
-  const isMobileLayout = width < MOBILE_BREAKPOINT;
   const { theme } = useTheme();
 
   const iconColor = theme.useDarkTheme
@@ -29,56 +27,10 @@ const PauseButton = (props: PauseButtonProps) => {
   const iconName = isPaused ? "play" : "pause";
   const label = isPaused ? "PLAY" : "PAUSE";
 
-  if (isMobileLayout) {
-    const buttonHeight = cellSize * 0.95;
-    const buttonWidth = cellSize * 1.75;
-    const iconSize = cellSize / 2.25;
-    const labelSize = cellSize / 3.2;
-
-    return (
-      <Pressable
-        testID="PauseButton"
-        onPress={handlePause}
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          width: buttonWidth,
-          height: buttonHeight,
-        }}
-      >
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            width: buttonWidth,
-            height: buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO,
-            borderRadius:
-              buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO * 0.22,
-            backgroundColor: backgroundColor,
-            flexDirection: "row",
-            paddingHorizontal: buttonWidth * 0.05,
-            overflow: "hidden",
-          }}
-        >
-          <MaterialCommunityIcons
-            color={iconColor}
-            name={iconName}
-            size={iconSize}
-          />
-          <Text
-            style={{
-              color: iconColor,
-              fontSize: labelSize,
-              fontWeight: "bold",
-              marginLeft: buttonWidth * 0.05,
-            }}
-          >
-            {label}
-          </Text>
-        </View>
-      </Pressable>
-    );
-  }
+  const buttonHeight = cellSize * 0.95;
+  const buttonWidth = cellSize * 1.75;
+  const iconSize = cellSize / 2.25;
+  const labelSize = cellSize / 3.2;
 
   return (
     <Pressable
@@ -87,16 +39,40 @@ const PauseButton = (props: PauseButtonProps) => {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: cellSize * 0.2,
-        borderWidth: 0,
-        backgroundColor: "transparent",
+        width: buttonWidth,
+        height: buttonHeight,
       }}
     >
-      <MaterialCommunityIcons
-        color={iconColor}
-        name={iconName}
-        size={cellSize / 1.5}
-      />
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: buttonWidth,
+          height: buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO,
+          borderRadius:
+            buttonHeight * ACTION_BUTTON_BACKGROUND_HEIGHT_RATIO * 0.22,
+          backgroundColor: backgroundColor,
+          flexDirection: "row",
+          paddingHorizontal: buttonWidth * 0.05,
+          overflow: "hidden",
+        }}
+      >
+        <MaterialCommunityIcons
+          color={iconColor}
+          name={iconName}
+          size={iconSize}
+        />
+        <Text
+          style={{
+            color: iconColor,
+            fontSize: labelSize,
+            fontWeight: "bold",
+            marginLeft: buttonWidth * 0.05,
+          }}
+        >
+          {label}
+        </Text>
+      </View>
     </Pressable>
   );
 };
