@@ -43,6 +43,12 @@ const HeaderRow = (props: HeaderRowProps) => {
   const headerTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
+  const statPillBackgroundColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const statPillTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -108,7 +114,7 @@ const HeaderRow = (props: HeaderRowProps) => {
                   ? cellSize * 0.15
                   : fallbackHeight * 0.15,
                 overflow: "hidden",
-                backgroundColor: theme.colors.surface,
+                backgroundColor: statPillBackgroundColor,
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -123,7 +129,7 @@ const HeaderRow = (props: HeaderRowProps) => {
                   marginLeft: cellSize
                     ? cellSize * 0.08
                     : fallbackHeight * 0.08,
-                  color: headerTextColor,
+                  color: statPillTextColor,
                   fontFamily: "Inter_400Regular",
                   fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
                 }}
@@ -146,7 +152,7 @@ const HeaderRow = (props: HeaderRowProps) => {
                   : fallbackHeight * 0.15,
                 alignSelf: "flex-start",
                 overflow: "hidden",
-                backgroundColor: theme.colors.surface,
+                backgroundColor: statPillBackgroundColor,
                 flexDirection: "row",
                 alignItems: "center",
               }}
@@ -161,7 +167,7 @@ const HeaderRow = (props: HeaderRowProps) => {
                   marginLeft: cellSize
                     ? cellSize * 0.08
                     : fallbackHeight * 0.08,
-                  color: headerTextColor,
+                  color: statPillTextColor,
                   fontFamily: "Inter_400Regular",
                   fontSize: cellSize ? cellSize * 0.21 : fallbackHeight * 0.21,
                 }}
