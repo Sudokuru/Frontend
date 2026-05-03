@@ -9,6 +9,7 @@ import {
   MD3LightTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
+import { Platform } from "react-native";
 import { Theme, themes, ThemeName, THEME_OPTIONS } from "../Styling/theme";
 import { getStoredTheme, setStoredTheme } from "../Api/Theme";
 
@@ -37,6 +38,31 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     setThemeName(name);
     setStoredTheme(name);
   };
+
+  useEffect(() => {
+    if (Platform.OS !== "web") return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isThemeShortcut =
+        event.key.toLowerCase() === "t" &&
+        (event.ctrlKey || event.metaKey) &&
+        event.altKey;
+
+      if (!isThemeShortcut) return;
+
+      event.preventDefault();
+
+      const currentIndex = THEME_OPTIONS.findIndex(
+        (option) => option.key === themeName,
+      );
+      const nextTheme =
+        THEME_OPTIONS[(currentIndex + 1) % THEME_OPTIONS.length].key;
+      setTheme(nextTheme);
+    };
+
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
+  }, [themeName]);
 
   const theme = themes[themeName];
 
