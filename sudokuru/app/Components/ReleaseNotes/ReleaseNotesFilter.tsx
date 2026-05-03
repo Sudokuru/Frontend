@@ -3,6 +3,7 @@ import { View, ScrollView } from "react-native";
 import {
   Searchbar,
   Button,
+  IconButton,
   Menu,
   Chip,
   Divider,
@@ -88,8 +89,6 @@ export const ReleaseNotesFilter = ({
     textStyle: { color: theme.semantic.text.inverse },
   });
 
-  const menuAnchorStyle = { marginRight: 6 };
-
   return (
     <View
       style={{
@@ -127,22 +126,29 @@ export const ReleaseNotesFilter = ({
             onDismiss={() => setOpenMenu(null)}
             contentStyle={{ backgroundColor: theme.colors.surface }}
             anchor={
-              <Button
-                mode={selectedTargets.size > 0 ? "contained" : "outlined"}
-                compact
-                onPress={() => setOpenMenu("targets")}
-                style={menuAnchorStyle}
-                buttonColor={
-                  selectedTargets.size > 0 ? theme.colors.primary : undefined
-                }
-                textColor={
-                  selectedTargets.size > 0
-                    ? theme.semantic.text.secondary
-                    : theme.colors.primary
-                }
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 6,
+                }}
               >
-                {filterButtonLabel("Targets", selectedTargets.size)}
-              </Button>
+                <Button
+                  mode={selectedTargets.size > 0 ? "contained" : "outlined"}
+                  compact
+                  onPress={() => setOpenMenu("targets")}
+                  buttonColor={
+                    selectedTargets.size > 0 ? theme.colors.primary : undefined
+                  }
+                  textColor={
+                    selectedTargets.size > 0
+                      ? theme.semantic.text.secondary
+                      : theme.colors.primary
+                  }
+                >
+                  {filterButtonLabel("Targets", selectedTargets.size)}
+                </Button>
+              </View>
             }
           >
             <View
@@ -154,6 +160,28 @@ export const ReleaseNotesFilter = ({
                 maxWidth: 260,
               }}
             >
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 6,
+                }}
+              >
+                <Text
+                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
+                >
+                  Targets
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={16}
+                  onPress={() => setOpenMenu(null)}
+                  style={{ margin: 0 }}
+                  iconColor={theme.colors.primary}
+                />
+              </View>
               {ALL_TARGETS.map((target) => (
                 <Chip
                   key={target}
@@ -175,22 +203,31 @@ export const ReleaseNotesFilter = ({
             onDismiss={() => setOpenMenu(null)}
             contentStyle={{ backgroundColor: theme.colors.surface }}
             anchor={
-              <Button
-                mode={selectedCategories.size > 0 ? "contained" : "outlined"}
-                compact
-                onPress={() => setOpenMenu("categories")}
-                style={menuAnchorStyle}
-                buttonColor={
-                  selectedCategories.size > 0 ? theme.colors.primary : undefined
-                }
-                textColor={
-                  selectedCategories.size > 0
-                    ? theme.semantic.text.secondary
-                    : theme.colors.primary
-                }
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 6,
+                }}
               >
-                {filterButtonLabel("Categories", selectedCategories.size)}
-              </Button>
+                <Button
+                  mode={selectedCategories.size > 0 ? "contained" : "outlined"}
+                  compact
+                  onPress={() => setOpenMenu("categories")}
+                  buttonColor={
+                    selectedCategories.size > 0
+                      ? theme.colors.primary
+                      : undefined
+                  }
+                  textColor={
+                    selectedCategories.size > 0
+                      ? theme.semantic.text.secondary
+                      : theme.colors.primary
+                  }
+                >
+                  {filterButtonLabel("Categories", selectedCategories.size)}
+                </Button>
+              </View>
             }
           >
             <View
@@ -202,6 +239,28 @@ export const ReleaseNotesFilter = ({
                 maxWidth: 320,
               }}
             >
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 6,
+                }}
+              >
+                <Text
+                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
+                >
+                  Categories
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={16}
+                  onPress={() => setOpenMenu(null)}
+                  style={{ margin: 0 }}
+                  iconColor={theme.colors.primary}
+                />
+              </View>
               {ALL_CATEGORIES.map((cat) => (
                 <Chip
                   key={cat}
@@ -223,24 +282,33 @@ export const ReleaseNotesFilter = ({
             onDismiss={() => setOpenMenu(null)}
             contentStyle={{ backgroundColor: theme.colors.surface }}
             anchor={
-              <Button
-                mode={selectedContributors.size > 0 ? "contained" : "outlined"}
-                compact
-                onPress={() => setOpenMenu("contributors")}
-                style={menuAnchorStyle}
-                buttonColor={
-                  selectedContributors.size > 0
-                    ? theme.colors.primary
-                    : undefined
-                }
-                textColor={
-                  selectedContributors.size > 0
-                    ? theme.semantic.text.secondary
-                    : theme.colors.primary
-                }
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 6,
+                }}
               >
-                {filterButtonLabel("Contributors", selectedContributors.size)}
-              </Button>
+                <Button
+                  mode={
+                    selectedContributors.size > 0 ? "contained" : "outlined"
+                  }
+                  compact
+                  onPress={() => setOpenMenu("contributors")}
+                  buttonColor={
+                    selectedContributors.size > 0
+                      ? theme.colors.primary
+                      : undefined
+                  }
+                  textColor={
+                    selectedContributors.size > 0
+                      ? theme.semantic.text.secondary
+                      : theme.colors.primary
+                  }
+                >
+                  {filterButtonLabel("Contributors", selectedContributors.size)}
+                </Button>
+              </View>
             }
           >
             <View
@@ -252,6 +320,28 @@ export const ReleaseNotesFilter = ({
                 maxWidth: 340,
               }}
             >
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 6,
+                }}
+              >
+                <Text
+                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
+                >
+                  Contributors
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={16}
+                  onPress={() => setOpenMenu(null)}
+                  style={{ margin: 0 }}
+                  iconColor={theme.colors.primary}
+                />
+              </View>
               {allContributors.map((contributor) => (
                 <Chip
                   key={contributor}
