@@ -47,6 +47,9 @@ export const useKeyboardHotkeys = ({
     if (gameOverRef.current) return;
     if (!sudokuBoardRef.current) return;
 
+    // Let global/browser shortcuts (Ctrl/Cmd/Alt combos) bypass Sudoku hotkeys.
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+
     const inputValue = event.key;
     const board = sudokuBoardRef.current;
     const hint = sudokuHintRef.current;
