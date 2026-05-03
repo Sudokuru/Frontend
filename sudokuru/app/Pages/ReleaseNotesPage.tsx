@@ -13,15 +13,28 @@ import { useWindowDimensions, FlatList } from "react-native";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useIsFocused } from "@react-navigation/native";
 
-/** Parse dates like "March 12th, 2026" → JS Date */
 const parseChangelogDate = (dateStr: string): Date => {
   const cleaned = dateStr.replace(/(\d+)(st|nd|rd|th)/, "$1");
   return new Date(cleaned);
 };
 
+const formatMonthYear = (date: Date): string =>
+  date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+const parseMonthYear = (value: string): Date => new Date(`${value} 1`);
+
 const ALL_CONTRIBUTORS = Array.from(
   new Set((json as ReleaseNoteInterface[]).flatMap((r) => r.contributors)),
 );
+
+const ALL_RELEASE_MONTHS = Array.from(
+  new Set(
+    (json as ReleaseNoteInterface[])
+      .map((r) => parseChangelogDate(r.date))
+      .filter((d) => !Number.isNaN(d.getTime()))
+      .map((d) => formatMonthYear(d)),
+  ),
+).sort((a, b) => parseMonthYear(b).getTime() - parseMonthYear(a).getTime());
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -34,6 +47,10 @@ const ReleaseNotesPage = () => {
 
   // Filter state
   const [keyword, setKeyword] = useState("");
+  const [selectedStartMonth, setSelectedStartMonth] = useState<string | null>(
+    null,
+  );
+  const [selectedEndMonth, setSelectedEndMonth] = useState<string | null>(null);
   const [selectedTargets, setSelectedTargets] = useState<Set<string>>(
     new Set(),
   );
@@ -46,6 +63,8 @@ const ReleaseNotesPage = () => {
 
   const clearFilters = () => {
     setKeyword("");
+    setSelectedStartMonth(null);
+    setSelectedEndMonth(null);
     setSelectedTargets(new Set());
     setSelectedContributors(new Set());
     setSelectedCategories(new Set());
@@ -53,6 +72,11 @@ const ReleaseNotesPage = () => {
 
   const filteredNotes = useMemo(() => {
     const lowerKeyword = keyword.trim().toLowerCase();
+    const startMonth = selectedStartMonth
+      ? parseMonthYear(selectedStartMonth)
+      : null;
+    const endMonth = selectedEndMonth ? parseMonthYear(selectedEndMonth) : null;
+
     return releaseNotes.filter((note) => {
       if (lowerKeyword.length > 0) {
         const searchable = [
@@ -92,11 +116,37 @@ const ReleaseNotesPage = () => {
         if (!hasCategory) return false;
       }
 
+      if (startMonth || endMonth) {
+        const releaseDate = parseChangelogDate(note.date);
+        if (Number.isNaN(releaseDate.getTime())) return false;
+
+        if (startMonth) {
+          const normalizedStart = new Date(startMonth);
+          normalizedStart.setHours(0, 0, 0, 0);
+          if (releaseDate < normalizedStart) return false;
+        }
+
+        if (endMonth) {
+          const normalizedEnd = new Date(
+            endMonth.getFullYear(),
+            endMonth.getMonth() + 1,
+            0,
+            23,
+            59,
+            59,
+            999,
+          );
+          if (releaseDate > normalizedEnd) return false;
+        }
+      }
+
       return true;
     });
   }, [
     releaseNotes,
     keyword,
+    selectedStartMonth,
+    selectedEndMonth,
     selectedTargets,
     selectedContributors,
     selectedCategories,
@@ -123,8 +173,13 @@ const ReleaseNotesPage = () => {
           </Text>
           <ReleaseNotesFilter
             allContributors={ALL_CONTRIBUTORS}
+            allReleaseMonths={ALL_RELEASE_MONTHS}
             keyword={keyword}
             setKeyword={setKeyword}
+            selectedStartMonth={selectedStartMonth}
+            setSelectedStartMonth={setSelectedStartMonth}
+            selectedEndMonth={selectedEndMonth}
+            setSelectedEndMonth={setSelectedEndMonth}
             selectedTargets={selectedTargets}
             setSelectedTargets={setSelectedTargets}
             selectedContributors={selectedContributors}

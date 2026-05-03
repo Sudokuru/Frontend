@@ -22,8 +22,13 @@ export const ALL_CATEGORIES: Category[] = [
 
 export interface ReleaseNotesFilterProps {
   allContributors: string[];
+  allReleaseMonths: string[];
   keyword: string;
   setKeyword: (v: string) => void;
+  selectedStartMonth: string | null;
+  setSelectedStartMonth: (v: string | null) => void;
+  selectedEndMonth: string | null;
+  setSelectedEndMonth: (v: string | null) => void;
   selectedTargets: Set<string>;
   setSelectedTargets: (v: Set<string>) => void;
   selectedContributors: Set<string>;
@@ -51,12 +56,33 @@ const CATEGORY_LABELS: Record<Category, string> = {
   "bug fixes": "Bug Fixes",
 };
 
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
 type OpenMenu = "targets" | "categories" | "contributors" | null;
+type DateMenuType = "startDate" | "endDate" | null;
 
 export const ReleaseNotesFilter = ({
   allContributors,
+  allReleaseMonths,
   keyword,
   setKeyword,
+  selectedStartMonth,
+  setSelectedStartMonth,
+  selectedEndMonth,
+  setSelectedEndMonth,
   selectedTargets,
   setSelectedTargets,
   selectedContributors,
@@ -69,9 +95,26 @@ export const ReleaseNotesFilter = ({
 }: ReleaseNotesFilterProps) => {
   const { theme } = useTheme();
   const [openMenu, setOpenMenu] = useState<OpenMenu>(null);
+  const [openDateMenu, setOpenDateMenu] = useState<DateMenuType>(null);
+  const [startDraftYear, setStartDraftYear] = useState<number>(
+    new Date().getFullYear(),
+  );
+  const [startDraftMonth, setStartDraftMonth] = useState<string>(
+    MONTH_NAMES[0],
+  );
+  const [endDraftYear, setEndDraftYear] = useState<number>(
+    new Date().getFullYear(),
+  );
+  const [endDraftMonth, setEndDraftMonth] = useState<string>(MONTH_NAMES[0]);
+  const [startYearMenuOpen, setStartYearMenuOpen] = useState(false);
+  const [startMonthMenuOpen, setStartMonthMenuOpen] = useState(false);
+  const [endYearMenuOpen, setEndYearMenuOpen] = useState(false);
+  const [endMonthMenuOpen, setEndMonthMenuOpen] = useState(false);
 
   const hasActiveFilters =
     keyword.trim().length > 0 ||
+    selectedStartMonth != null ||
+    selectedEndMonth != null ||
     selectedTargets.size > 0 ||
     selectedContributors.size > 0 ||
     selectedCategories.size > 0;
@@ -88,6 +131,81 @@ export const ReleaseNotesFilter = ({
     },
     textStyle: { color: theme.semantic.text.inverse },
   });
+
+  const releaseMonthYearPairs = allReleaseMonths
+    .map((value) => {
+      const parts = value.split(" ");
+      const year = Number(parts[parts.length - 1]);
+      const month = parts.slice(0, -1).join(" ");
+      return { month, year };
+    })
+    .filter(
+      (pair) =>
+        !Number.isNaN(pair.year) &&
+        MONTH_NAMES.includes(pair.month as (typeof MONTH_NAMES)[number]),
+    );
+
+  const sortedMonthOptions = releaseMonthYearPairs
+    .map((pair) => `${pair.month} ${pair.year}`)
+    .sort(
+      (a, b) => new Date(`${b} 1`).getTime() - new Date(`${a} 1`).getTime(),
+    );
+
+  const availableYears = Array.from(
+    new Set(releaseMonthYearPairs.map((pair) => pair.year)),
+  ).sort((a, b) => b - a);
+
+  const monthsForYear = (year: number) =>
+    Array.from(
+      new Set(
+        releaseMonthYearPairs
+          .filter((pair) => pair.year === year)
+          .map((pair) => pair.month),
+      ),
+    ).sort(
+      (a, b) =>
+        MONTH_NAMES.indexOf(a as (typeof MONTH_NAMES)[number]) -
+        MONTH_NAMES.indexOf(b as (typeof MONTH_NAMES)[number]),
+    );
+
+  const parseSelectedMonthYear = (value: string | null) => {
+    if (!value) return null;
+    const parts = value.split(" ");
+    const year = Number(parts[parts.length - 1]);
+    const month = parts.slice(0, -1).join(" ");
+    if (Number.isNaN(year)) return null;
+    if (!MONTH_NAMES.includes(month as (typeof MONTH_NAMES)[number]))
+      return null;
+    return { year, month };
+  };
+
+  const openStartDateMenu = () => {
+    const parsed = parseSelectedMonthYear(selectedStartMonth);
+    const fallbackYear = availableYears[0] ?? new Date().getFullYear();
+    const year = parsed?.year ?? fallbackYear;
+    const months = monthsForYear(year);
+    setStartDraftYear(year);
+    setStartDraftMonth(
+      parsed?.month && months.includes(parsed.month)
+        ? parsed.month
+        : (months[0] ?? MONTH_NAMES[0]),
+    );
+    setOpenDateMenu("startDate");
+  };
+
+  const openEndDateMenu = () => {
+    const parsed = parseSelectedMonthYear(selectedEndMonth);
+    const fallbackYear = availableYears[0] ?? new Date().getFullYear();
+    const year = parsed?.year ?? fallbackYear;
+    const months = monthsForYear(year);
+    setEndDraftYear(year);
+    setEndDraftMonth(
+      parsed?.month && months.includes(parsed.month)
+        ? parsed.month
+        : (months[0] ?? MONTH_NAMES[0]),
+    );
+    setOpenDateMenu("endDate");
+  };
 
   return (
     <View
@@ -356,6 +474,316 @@ export const ReleaseNotesFilter = ({
                   {contributor}
                 </Chip>
               ))}
+            </View>
+          </Menu>
+
+          {/* Start Date */}
+          <Menu
+            visible={openDateMenu === "startDate"}
+            onDismiss={() => setOpenDateMenu(null)}
+            contentStyle={{ backgroundColor: theme.colors.surface }}
+            anchor={
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 6,
+                }}
+              >
+                <Button
+                  mode={selectedStartMonth != null ? "contained" : "outlined"}
+                  compact
+                  onPress={openStartDateMenu}
+                  buttonColor={
+                    selectedStartMonth != null
+                      ? theme.colors.primary
+                      : undefined
+                  }
+                  textColor={
+                    selectedStartMonth != null
+                      ? theme.semantic.text.secondary
+                      : theme.colors.primary
+                  }
+                >
+                  {selectedStartMonth
+                    ? `Start Date: ${selectedStartMonth}`
+                    : "Start Date"}
+                </Button>
+              </View>
+            }
+          >
+            <View style={{ width: 260 }}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 8,
+                  paddingTop: 6,
+                }}
+              >
+                <Text
+                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
+                >
+                  Start Date
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={16}
+                  onPress={() => setOpenDateMenu(null)}
+                  style={{ margin: 0 }}
+                  iconColor={theme.colors.primary}
+                />
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: 8,
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  gap: 8,
+                }}
+              >
+                <View>
+                  <Text
+                    style={{ color: theme.colors.primary, marginBottom: 4 }}
+                  >
+                    Year
+                  </Text>
+                  <Menu
+                    visible={startYearMenuOpen}
+                    onDismiss={() => setStartYearMenuOpen(false)}
+                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    anchor={
+                      <Button
+                        mode="outlined"
+                        compact
+                        onPress={() => setStartYearMenuOpen(true)}
+                        textColor={theme.colors.primary}
+                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
+                      >
+                        {String(startDraftYear)}
+                      </Button>
+                    }
+                  >
+                    <ScrollView style={{ maxHeight: 180 }}>
+                      {availableYears.map((year) => (
+                        <Menu.Item
+                          key={`start-year-${year}`}
+                          title={String(year)}
+                          dense
+                          titleStyle={{ color: theme.colors.primary }}
+                          onPress={() => {
+                            const months = monthsForYear(year);
+                            setStartDraftYear(year);
+                            if (!months.includes(startDraftMonth)) {
+                              setStartDraftMonth(months[0] ?? MONTH_NAMES[0]);
+                            }
+                            setStartYearMenuOpen(false);
+                          }}
+                        />
+                      ))}
+                    </ScrollView>
+                  </Menu>
+                </View>
+
+                <View>
+                  <Text
+                    style={{ color: theme.colors.primary, marginBottom: 4 }}
+                  >
+                    Month
+                  </Text>
+                  <Menu
+                    visible={startMonthMenuOpen}
+                    onDismiss={() => setStartMonthMenuOpen(false)}
+                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    anchor={
+                      <Button
+                        mode="outlined"
+                        compact
+                        onPress={() => setStartMonthMenuOpen(true)}
+                        textColor={theme.colors.primary}
+                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
+                      >
+                        {startDraftMonth}
+                      </Button>
+                    }
+                  >
+                    <ScrollView style={{ maxHeight: 180 }}>
+                      {monthsForYear(startDraftYear).map((month) => (
+                        <Menu.Item
+                          key={`start-month-${month}`}
+                          title={month}
+                          dense
+                          titleStyle={{ color: theme.colors.primary }}
+                          onPress={() => {
+                            setStartDraftMonth(month);
+                            setSelectedStartMonth(`${month} ${startDraftYear}`);
+                            setStartYearMenuOpen(false);
+                            setStartMonthMenuOpen(false);
+                            setOpenDateMenu(null);
+                          }}
+                        />
+                      ))}
+                    </ScrollView>
+                  </Menu>
+                </View>
+              </View>
+            </View>
+          </Menu>
+
+          {/* End Date */}
+          <Menu
+            visible={openDateMenu === "endDate"}
+            onDismiss={() => setOpenDateMenu(null)}
+            contentStyle={{ backgroundColor: theme.colors.surface }}
+            anchor={
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginRight: 6,
+                }}
+              >
+                <Button
+                  mode={selectedEndMonth != null ? "contained" : "outlined"}
+                  compact
+                  onPress={openEndDateMenu}
+                  buttonColor={
+                    selectedEndMonth != null ? theme.colors.primary : undefined
+                  }
+                  textColor={
+                    selectedEndMonth != null
+                      ? theme.semantic.text.secondary
+                      : theme.colors.primary
+                  }
+                >
+                  {selectedEndMonth
+                    ? `End Date: ${selectedEndMonth}`
+                    : "End Date"}
+                </Button>
+              </View>
+            }
+          >
+            <View style={{ width: 260 }}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingHorizontal: 8,
+                  paddingTop: 6,
+                }}
+              >
+                <Text
+                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
+                >
+                  End Date
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={16}
+                  onPress={() => setOpenDateMenu(null)}
+                  style={{ margin: 0 }}
+                  iconColor={theme.colors.primary}
+                />
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: 8,
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  gap: 6,
+                }}
+              >
+                <View>
+                  <Text
+                    style={{ color: theme.colors.primary, marginBottom: 4 }}
+                  >
+                    Year
+                  </Text>
+                  <Menu
+                    visible={endYearMenuOpen}
+                    onDismiss={() => setEndYearMenuOpen(false)}
+                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    anchor={
+                      <Button
+                        mode="outlined"
+                        compact
+                        onPress={() => setEndYearMenuOpen(true)}
+                        textColor={theme.colors.primary}
+                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
+                      >
+                        {String(endDraftYear)}
+                      </Button>
+                    }
+                  >
+                    <ScrollView style={{ maxHeight: 180 }}>
+                      {availableYears.map((year) => (
+                        <Menu.Item
+                          key={`end-year-${year}`}
+                          title={String(year)}
+                          dense
+                          titleStyle={{ color: theme.colors.primary }}
+                          onPress={() => {
+                            const months = monthsForYear(year);
+                            setEndDraftYear(year);
+                            if (!months.includes(endDraftMonth)) {
+                              setEndDraftMonth(months[0] ?? MONTH_NAMES[0]);
+                            }
+                            setEndYearMenuOpen(false);
+                          }}
+                        />
+                      ))}
+                    </ScrollView>
+                  </Menu>
+                </View>
+
+                <View>
+                  <Text
+                    style={{ color: theme.colors.primary, marginBottom: 4 }}
+                  >
+                    Month
+                  </Text>
+                  <Menu
+                    visible={endMonthMenuOpen}
+                    onDismiss={() => setEndMonthMenuOpen(false)}
+                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    anchor={
+                      <Button
+                        mode="outlined"
+                        compact
+                        onPress={() => setEndMonthMenuOpen(true)}
+                        textColor={theme.colors.primary}
+                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
+                      >
+                        {endDraftMonth}
+                      </Button>
+                    }
+                  >
+                    <ScrollView style={{ maxHeight: 180 }}>
+                      {monthsForYear(endDraftYear).map((month) => (
+                        <Menu.Item
+                          key={`end-month-${month}`}
+                          title={month}
+                          dense
+                          titleStyle={{ color: theme.colors.primary }}
+                          onPress={() => {
+                            setEndDraftMonth(month);
+                            setSelectedEndMonth(`${month} ${endDraftYear}`);
+                            setEndYearMenuOpen(false);
+                            setEndMonthMenuOpen(false);
+                            setOpenDateMenu(null);
+                          }}
+                        />
+                      ))}
+                    </ScrollView>
+                  </Menu>
+                </View>
+              </View>
             </View>
           </Menu>
         </ScrollView>
