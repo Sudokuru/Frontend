@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Divider, Text } from "react-native-paper";
-import { Theme } from "../../Styling/theme";
+import { useTheme } from "../../Contexts/ThemeContext";
 
 export interface ReleaseNoteInterface {
   version: string;
@@ -14,6 +14,11 @@ export interface ReleaseNoteInterface {
   contributors: string[];
 }
 
+export interface ReleaseNoteProps {
+  item: ReleaseNoteInterface;
+  width: number;
+}
+
 // https://stackoverflow.com/questions/40441877/react-native-bulleted-lists-using-flex-wrap
 // https://stackoverflow.com/questions/39110460/react-native-unordered-style-list
 /**
@@ -22,21 +27,18 @@ export interface ReleaseNoteInterface {
  * @param key a key for the view element
  * @returns A JSX element of a bullet
  */
-const BulletComponent = (point: string, key: number, theme: Theme) => {
-  const bulletTextColor = theme.useDarkTheme
-    ? theme.semantic.text.inverse
-    : theme.semantic.text.quaternary;
+const BulletComponent = (point: string, key: number, textColor: string) => {
   return (
     <View
       style={{ flexDirection: "row", paddingLeft: 20, maxWidth: 800 }}
       key={key}
     >
-      <Text style={{ fontSize: 14, color: bulletTextColor }}>•</Text>
+      <Text style={{ fontSize: 14, color: textColor }}>•</Text>
       <Text
         style={{
           fontSize: 14,
           paddingLeft: 5,
-          color: bulletTextColor,
+          color: textColor,
         }}
       >
         {point}
@@ -50,20 +52,17 @@ const BulletComponent = (point: string, key: number, theme: Theme) => {
  * @param points A list of strings for the bulleted list component
  * @returns A JSX element of a bullet list component
  */
-const BulletedListComponent = (points: string[], theme: Theme) => {
+const BulletedListComponent = (points: string[], textColor: string) => {
   const list = [];
   for (const [index, point] of points.entries()) {
-    list.push(BulletComponent(point, index, theme));
+    list.push(BulletComponent(point, index, textColor));
   }
   return list;
 };
 
-export const ReleaseNote = (
-  props: ReleaseNoteInterface,
-  key: string,
-  width: number,
-  theme: Theme,
-) => {
+export const ReleaseNote = ({ item, width }: ReleaseNoteProps) => {
+  const { theme } = useTheme();
+
   const releaseCardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
@@ -72,30 +71,39 @@ export const ReleaseNote = (
     : theme.semantic.text.quaternary;
 
   let featureList = ["None"];
-  if (props.features) {
-    featureList = props.features;
+  if (item.features) {
+    featureList = item.features;
   }
 
-  const featureListComponent = BulletedListComponent(featureList, theme);
+  const featureListComponent = BulletedListComponent(
+    featureList,
+    releaseCardTextColor,
+  );
 
   let previewFeatureList = ["None"];
-  if (props["preview features"]) {
-    previewFeatureList = props["preview features"];
+  if (item["preview features"]) {
+    previewFeatureList = item["preview features"];
   }
 
   const previewFeatureListComponent = BulletedListComponent(
     previewFeatureList,
-    theme,
+    releaseCardTextColor,
   );
 
   let bugList = ["None"];
-  if (props["bug fixes"]) {
-    bugList = props["bug fixes"];
+  if (item["bug fixes"]) {
+    bugList = item["bug fixes"];
   }
 
-  const bugListComponent = BulletedListComponent(bugList, theme);
-  const targetPlatformsString = BulletedListComponent(props.targets, theme);
-  const contributorsString = BulletedListComponent(props.contributors, theme);
+  const bugListComponent = BulletedListComponent(bugList, releaseCardTextColor);
+  const targetPlatformsString = BulletedListComponent(
+    item.targets,
+    releaseCardTextColor,
+  );
+  const contributorsString = BulletedListComponent(
+    item.contributors,
+    releaseCardTextColor,
+  );
 
   return (
     <View
@@ -109,14 +117,13 @@ export const ReleaseNote = (
         width: width,
         alignSelf: "center",
       }}
-      key={key}
-      testID={key}
+      testID={item.version}
     >
       <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
-        Version: {props.version}
+        Version: {item.version}
       </Text>
       <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
-        Release Date: {props.date}
+        Release Date: {item.date}
       </Text>
       <Divider style={{ marginBottom: 10 }} />
       <>
@@ -130,7 +137,7 @@ export const ReleaseNote = (
             color: releaseCardTextColor,
           }}
         >
-          {props.summary}
+          {item.summary}
         </Text>
         <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Features:{" "}
