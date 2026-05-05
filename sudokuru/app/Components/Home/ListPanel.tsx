@@ -10,6 +10,14 @@ import {
 } from "./Cards";
 import { useTheme } from "../../Contexts/ThemeContext";
 
+const IMAGE_HIDE_SHRINKAGE_THRESHOLD = 0.3;
+const COMPACT_CONTENT_SHRINKAGE_THRESHOLD = 0.6;
+const CARD_HEIGHT_ASPECT_RATIO = 3 / 5;
+const MAX_HEIGHT_RATIO = 0.7;
+const MAX_SHRINKAGE = 0.99;
+const SHRINKAGE_ROUNDING_FACTOR = 100;
+const CARD_MARGIN = 5;
+
 interface ListPanelProps<T> {
   width: number;
   height: number;
@@ -71,7 +79,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
   } = content;
 
   let imageContent: React.ReactNode = null;
-  if (shrinkage < 0.3) {
+  if (shrinkage < IMAGE_HIDE_SHRINKAGE_THRESHOLD) {
     if (renderImageContent != null) {
       imageContent = renderImageContent(shrinkage);
     } else if (img != null) {
@@ -103,7 +111,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
       >
         {title}
       </Text>
-      {shrinkage < 0.6 && subtitle != null ? (
+      {shrinkage < COMPACT_CONTENT_SHRINKAGE_THRESHOLD && subtitle != null ? (
         <Text
           testID={subtitleTestID}
           variant="headlineSmall"
@@ -141,7 +149,7 @@ const ListPanel = <T,>({
   let subArray: React.ReactNode[] = [];
   let subArrayKey = "";
 
-  const cardHeight = (CARD_WIDTH * 3) / 5;
+  const cardHeight = CARD_WIDTH * CARD_HEIGHT_ASPECT_RATIO;
   const columnCount = Math.max(
     1,
     calculateCardsPerRow(width, height, items.length),
@@ -149,12 +157,16 @@ const ListPanel = <T,>({
   const rowCount = getRowCount(items.length, columnCount);
   const unshrunkHeight =
     rowCount * cardHeight + (rowCount > 0 ? (rowCount - 1) * CARD_PADDING : 0);
-  const maxAllowedHeight = height * 0.7;
+  const maxAllowedHeight = height * MAX_HEIGHT_RATIO;
   const rawShrinkage =
     unshrunkHeight > 0 ? 1 - maxAllowedHeight / unshrunkHeight : 0;
   const shrinkage = Math.min(
-    0.99,
-    Math.max(0, Math.ceil(rawShrinkage * 100) / 100),
+    MAX_SHRINKAGE,
+    Math.max(
+      0,
+      Math.ceil(rawShrinkage * SHRINKAGE_ROUNDING_FACTOR) /
+        SHRINKAGE_ROUNDING_FACTOR,
+    ),
   );
 
   for (let i = 0; i < items.length; i++) {
@@ -184,7 +196,7 @@ const ListPanel = <T,>({
         style={{
           width: CARD_WIDTH,
           padding: CARD_PADDING * (1 - shrinkage),
-          margin: 5,
+          margin: CARD_MARGIN,
         }}
       >
         <TouchableOpacity onPress={() => onPress(item, i)}>
@@ -196,7 +208,8 @@ const ListPanel = <T,>({
               },
             }}
           >
-            {renderCompactContent != null && shrinkage >= 0.6
+            {renderCompactContent != null &&
+            shrinkage >= COMPACT_CONTENT_SHRINKAGE_THRESHOLD
               ? renderCompactContent(item, i, shrinkage)
               : renderCardBody({
                   shrinkage,
