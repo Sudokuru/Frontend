@@ -4,7 +4,9 @@
     "date": "#{date}#",
     "summary": "Users can now toggle the Sudokuru site theme using Control/Command + Alt + t keyboard shortcut.",
     "features": [
-      "Users can now toggle the Sudokuru site theme using Control/Command + Alt + t keyboard shortcut.",
+      "Users can now toggle the Sudokuru site theme using Control/Command + Alt + t keyboard shortcut."
+    ],
+    "bug fixes": [
       "T and t hotkeys no longer toggle notes, since N and n hotkeys already do this."
     ],
     "targets": ["web", "desktop"],
