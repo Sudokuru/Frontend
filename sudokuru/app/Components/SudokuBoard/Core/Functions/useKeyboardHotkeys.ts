@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { Platform } from "react-native";
 import { doesBoardHaveConflict, wrapDigit } from "../../SudokuBoardFunctions";
 import {
@@ -43,7 +43,7 @@ export const useKeyboardHotkeys = ({
    * @param event keyboard event
    * @returns void
    */
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (gameOverRef.current) return;
     if (!sudokuBoardRef.current) return;
 
@@ -80,7 +80,7 @@ export const useKeyboardHotkeys = ({
     if (handleNavigation(inputValue, board)) {
       event.preventDefault();
     }
-  };
+  }, []);
 
   const handleGeneralHotkeys = ({
     inputValue,
@@ -205,7 +205,7 @@ export const useKeyboardHotkeys = ({
 
     globalThis.addEventListener("keydown", handleKeyDown);
     return () => globalThis.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [handleKeyDown]);
 
   return {
     undoRef,

@@ -693,6 +693,17 @@ test.describe("toggle notes", () => {
       await sudokuBoard.cellHasValue(7, 7, "2");
     });
   }
+
+  test("does not activate when toggling theme", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.page.keyboard.press(`${getSingleMultiSelectKey()}+Alt+T`);
+    await sudokuBoard.cellHasValue(7, 7, "0");
+    await sudokuBoard.page.keyboard.press("1");
+    await sudokuBoard.cellHasValue(7, 7, "1");
+  });
 });
 
 test.describe("typing with multiple cells selected", () => {
