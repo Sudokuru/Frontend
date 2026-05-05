@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
@@ -27,6 +33,8 @@ const ThemeContext = createContext<ThemeContextValue>({
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [themeName, setThemeName] = useState<ThemeName>(THEME_OPTIONS[0].key);
+  const themeNameRef = useRef<ThemeName>(themeName);
+  themeNameRef.current = themeName;
 
   useEffect(() => {
     getStoredTheme().then((stored) => {
@@ -53,7 +61,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       event.preventDefault();
 
       const currentIndex = THEME_OPTIONS.findIndex(
-        (option) => option.key === themeName,
+        (option) => option.key === themeNameRef.current,
       );
       const nextTheme =
         THEME_OPTIONS[(currentIndex + 1) % THEME_OPTIONS.length].key;
@@ -62,7 +70,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     globalThis.addEventListener("keydown", handleKeyDown);
     return () => globalThis.removeEventListener("keydown", handleKeyDown);
-  }, [themeName]);
+  }, []);
 
   const theme = themes[themeName];
 
