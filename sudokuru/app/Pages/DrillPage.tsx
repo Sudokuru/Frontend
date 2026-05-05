@@ -39,7 +39,7 @@ const DrillPage = () => {
                 fontWeight: "bold",
               }}
             >
-              Train{" "}
+              Drill{" "}
               <Text
                 style={{
                   color: theme.useDarkTheme
