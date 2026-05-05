@@ -1,7 +1,17 @@
 [
   {
-    "version": "1.33.0",
+    "version": "1.34.0",
     "date": "#{date}#",
+    "summary": "Users can now toggle the Sudokuru site theme using Control/Command + Alt + t keyboard shortcut.",
+    "features": [
+      "Users can now toggle the Sudokuru site theme using Control/Command + Alt + t keyboard shortcut."
+    ],
+    "targets": ["web", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.33.0",
+    "date": "May 4th, 2026",
     "summary": "Layout enhancements to the Play page, Drill page, and Lessons page. These pages are restructured to fit on smaller screens such as on mobile devices.",
     "features": [
       "Play page simplified from 'Play a Sudoku game' to 'Play Sudoku'. This helps with mobile sizing. It is also more clear and direct.",
