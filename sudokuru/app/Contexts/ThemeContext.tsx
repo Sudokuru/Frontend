@@ -34,6 +34,7 @@ const ThemeContext = createContext<ThemeContextValue>({
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [themeName, setThemeName] = useState<ThemeName>(THEME_OPTIONS[0].key);
   const themeNameRef = useRef<ThemeName>(themeName);
+  const lastThemeShortcutPressRef = useRef<number>(0);
   themeNameRef.current = themeName;
 
   useEffect(() => {
@@ -50,15 +51,32 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (Platform.OS !== "web") return;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isThemeShortcut =
-        event.key.toLowerCase() === "t" &&
-        (event.ctrlKey || event.metaKey) &&
-        event.altKey;
+    const DOUBLE_PRESS_WINDOW_MS = 500;
 
-      if (!isThemeShortcut) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isThemeShortcutKey =
+        event.key.toLowerCase() === "t" &&
+        !event.ctrlKey &&
+        !event.metaKey &&
+        !event.altKey;
+
+      if (!isThemeShortcutKey || event.repeat) {
+        return;
+      }
+
+      const currentTime = Date.now();
+      const isDoublePress =
+        currentTime - lastThemeShortcutPressRef.current <=
+        DOUBLE_PRESS_WINDOW_MS;
+
+      lastThemeShortcutPressRef.current = currentTime;
+
+      if (!isDoublePress) {
+        return;
+      }
 
       event.preventDefault();
+      lastThemeShortcutPressRef.current = 0;
 
       const currentIndex = THEME_OPTIONS.findIndex(
         (option) => option.key === themeNameRef.current,

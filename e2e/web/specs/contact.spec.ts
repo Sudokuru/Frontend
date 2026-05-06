@@ -2,6 +2,9 @@ import { test } from "../fixture";
 import { ContactPage } from "../page/contact.page";
 import { expect, Request } from "@playwright/test";
 import { HomePage } from "../page/home.page";
+import { HeaderComponent } from "../components/header.component";
+import { ProfilePage } from "../page/profile.page";
+import { THEME_OPTIONS } from "../../../sudokuru/app/Styling/theme";
 
 const contactTypes = [
   ["Feature", "Feature%20Request"],
@@ -74,5 +77,24 @@ test.describe("contact page", () => {
     await contactPage.closeErrorAlert();
     await contactPage.errorIsNotVisible();
     await contactPage.submitFeedbackButtonIsEnabled();
+  });
+
+  test("does not toggle theme while typing in feedback textbox", async ({
+    contact,
+  }) => {
+    const contactPage = new ContactPage(contact);
+    const expectedTheme = THEME_OPTIONS[0].key;
+
+    await contactPage.feedback.click();
+    await contact.keyboard.press("t");
+    await contact.keyboard.press("t");
+
+    await expect(contactPage.feedback).toHaveValue("tt");
+
+    const headerComponent = new HeaderComponent(contact);
+    await headerComponent.profile.click();
+
+    const profilePage = new ProfilePage(contact);
+    await profilePage.verifySelectedTheme(expectedTheme);
   });
 });

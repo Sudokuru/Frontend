@@ -4,7 +4,6 @@ import { expect } from "@playwright/test";
 import { HeaderComponent } from "../components/header.component";
 import { returnSudokuStrategyArray } from "../../../sudokuru/app/Contexts/PreferencesContext";
 import { THEME_OPTIONS } from "../../../sudokuru/app/Styling/theme";
-import { getSingleMultiSelectKey } from "../playwright.config";
 
 const SUDOKU_STRATEGY_ARRAY = returnSudokuStrategyArray();
 
@@ -29,10 +28,10 @@ test.describe("profile", () => {
 
   test("should toggle theme via hotkey", async ({ profile }) => {
     const profilePage = new ProfilePage(profile);
-    const modifierKey = getSingleMultiSelectKey();
 
     for (let i = 0; i < THEME_OPTIONS.length; i++) {
-      await profilePage.page.keyboard.press(`${modifierKey}+Alt+T`);
+      await profilePage.page.keyboard.press("t");
+      await profilePage.page.keyboard.press("t");
       const expectedTheme = THEME_OPTIONS[(i + 1) % THEME_OPTIONS.length];
       await profilePage.verifySelectedTheme(expectedTheme.key);
       await profilePage.verifyThemeInStorage(expectedTheme.key);
