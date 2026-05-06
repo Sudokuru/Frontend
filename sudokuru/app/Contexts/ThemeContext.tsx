@@ -35,7 +35,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [themeName, setThemeName] = useState<ThemeName>(THEME_OPTIONS[0].key);
   const themeNameRef = useRef<ThemeName>(themeName);
   const lastThemeShortcutPressRef = useRef<number>(0);
-  themeNameRef.current = themeName;
+
+  useEffect(() => {
+    themeNameRef.current = themeName;
+  }, [themeName]);
 
   useEffect(() => {
     getStoredTheme().then((stored) => {
