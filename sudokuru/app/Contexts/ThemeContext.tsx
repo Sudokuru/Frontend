@@ -51,6 +51,8 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     setStoredTheme(name);
   };
 
+  // Listen for "t" key presses to toggle theme, but only on web (and desktop)
+  // Double press "t" within 500ms to toggle the theme
   useEffect(() => {
     if (Platform.OS !== "web") return;
 
