@@ -86,7 +86,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
 
   function getLessonIconColor(lesson: string): string {
     if (learnedLessons.includes(lesson)) return "green";
-    if (lockedLessons.includes(lesson)) return theme.semantic.text.inverse;
+    if (lockedLessons.includes(lesson)) return cardTitleColor;
     return theme.semantic.text.primary;
   }
 
@@ -151,7 +151,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
               style={{
                 flex: 1,
                 textAlign: "center",
-                color: theme.semantic.text.inverse,
+                color: cardTitleColor,
               }}
             >
               {formatOneLessonName(lesson)}
