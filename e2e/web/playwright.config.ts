@@ -19,6 +19,31 @@ const WORKERS = Number(process.env.WORKERS);
 export const CODE_COVERAGE = process.env.CODE_COVERAGE === "true";
 const BASE_URL = process.env.BASE_URL;
 
+const monocartOptions = {
+  name: "Sudokuru Report",
+  outputFile: "./test-results/report.html",
+  // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
+  coverage: {
+    entryFilter: () => true,
+    // exclude the generated javascript files that are storing puzzle data
+    sourceFilter: (sourcePath: string) =>
+      sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
+    reports: ["v8", "v8-json", "console-summary", "html", "codecov", "codacy"],
+  },
+  ...(CI && {
+    zip: {
+      outputFile: "./test-results/report.zip",
+    },
+  }),
+};
+
+const reporter: any = [
+  ["list"],
+  ...(CI ? [["blob"]] : [["html"]]),
+  ["junit", { outputFile: "playwright-report/results.xml" }],
+  ["monocart-reporter", monocartOptions],
+];
+
 // determines how many playwright parallel workers there should be
 const workerValue = (CI: boolean, WORKERS: number) => {
   if (WORKERS >= 1) {
@@ -38,6 +63,10 @@ export const getSingleMultiSelectKey = () => {
   }
 };
 
+export const MOBILE_WIDTH_LESS_THAN = 400;
+export const MOBILE_HEIGHT_LESS_THAN = 860;
+export const MIDDLE_WIDTH_AND_HEIGHT = 1024;
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -53,33 +82,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: workerValue(CI, WORKERS),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["list"],
-    ["html"],
-    ["junit", { outputFile: "playwright-report/results.xml" }],
-    [
-      "monocart-reporter",
-      {
-        name: "Sudokuru Report",
-        outputFile: "./test-results/report.html",
-        // options: https://github.com/cenfun/monocart-coverage-reports/blob/main/lib/index.d.ts
-        coverage: {
-          entryFilter: () => true,
-          // exclude the generated javascript files that are storing puzzle data
-          sourceFilter: (sourcePath: string) =>
-            sourcePath.search(/app\/(?!.*_puzzles).+/) !== -1,
-          reports: [
-            "v8",
-            "v8-json",
-            "console-summary",
-            "html",
-            "codecov",
-            "codacy",
-          ],
-        },
-      },
-    ],
-  ],
+  reporter,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -121,11 +124,19 @@ export default defineConfig({
     /* Test against branded browsers. */
     {
       name: "Microsoft Edge",
-      use: { ...devices["Desktop Edge"], channel: "msedge" },
+      use: {
+        ...devices["Desktop Edge"],
+        channel: "msedge",
+        viewport: { width: 1024, height: 1024 },
+      },
     },
     {
       name: "Google Chrome",
-      use: { ...devices["Desktop Chrome"], channel: "chrome" },
+      use: {
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
+        viewport: { width: 1024, height: 1024 },
+      },
     },
   ],
 

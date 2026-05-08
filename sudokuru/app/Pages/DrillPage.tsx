@@ -1,15 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
 
 const DrillPage = () => {
-  const navigation: any = useNavigation();
-
   const { theme } = useTheme();
 
   const windowSize = useNewWindowDimensions();
@@ -19,7 +16,7 @@ const DrillPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -42,7 +39,7 @@ const DrillPage = () => {
                 fontWeight: "bold",
               }}
             >
-              Train{" "}
+              Drill{" "}
               <Text
                 style={{
                   color: theme.useDarkTheme
@@ -50,7 +47,7 @@ const DrillPage = () => {
                     : theme.semantic.text.info,
                 }}
               >
-                with a strategy
+                Sudoku
               </Text>
             </Text>
           </View>

@@ -112,24 +112,34 @@ export class ProfilePage {
   }
 
   async verifyAllHighlightSwitchesAreEnabled() {
+    await this.highlightSwitchEnabled.scrollIntoViewIfNeeded();
     await expect(this.highlightSwitchEnabled).toBeInViewport({ ratio: 1 });
+    await this.highlightIdenticalValuesSwitchEnabled.scrollIntoViewIfNeeded();
     await expect(this.highlightIdenticalValuesSwitchEnabled).toBeInViewport({
       ratio: 1,
     });
+    await this.highlightBoxSwitchEnabled.scrollIntoViewIfNeeded();
     await expect(this.highlightBoxSwitchEnabled).toBeInViewport({ ratio: 1 });
+    await this.highlightRowSwitchEnabled.scrollIntoViewIfNeeded();
     await expect(this.highlightRowSwitchEnabled).toBeInViewport({ ratio: 1 });
+    await this.highlightColumnSwitchEnabled.scrollIntoViewIfNeeded();
     await expect(this.highlightColumnSwitchEnabled).toBeInViewport({
       ratio: 1,
     });
   }
 
   async verifyAllHighlightSwitchesAreDisabled() {
+    await this.highlightSwitchDisabled.scrollIntoViewIfNeeded();
     await expect(this.highlightSwitchDisabled).toBeInViewport({ ratio: 1 });
+    await this.highlightIdenticalValuesSwitchDisabled.scrollIntoViewIfNeeded();
     await expect(this.highlightIdenticalValuesSwitchDisabled).toBeInViewport({
       ratio: 1,
     });
+    await this.highlightBoxSwitchDisabled.scrollIntoViewIfNeeded();
     await expect(this.highlightBoxSwitchDisabled).toBeInViewport({ ratio: 1 });
+    await this.highlightRowSwitchDisabled.scrollIntoViewIfNeeded();
     await expect(this.highlightRowSwitchDisabled).toBeInViewport({ ratio: 1 });
+    await this.highlightColumnSwitchDisabled.scrollIntoViewIfNeeded();
     await expect(this.highlightColumnSwitchDisabled).toBeInViewport({
       ratio: 1,
     });
@@ -140,6 +150,7 @@ export class ProfilePage {
     const strategyButton = this.page.getByText(
       `${priority}.${formattedStrategy}`,
     );
+    await strategyButton.scrollIntoViewIfNeeded();
     await expect(strategyButton).toBeInViewport({ ratio: 1 });
   }
 
@@ -148,6 +159,7 @@ export class ProfilePage {
     const strategyButton = this.page.getByText(
       `${priority}.${formattedStrategy}`,
     );
+    await strategyButton.scrollIntoViewIfNeeded();
     await strategyButton.click();
   }
 

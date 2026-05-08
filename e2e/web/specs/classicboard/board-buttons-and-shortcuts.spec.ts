@@ -94,7 +94,7 @@ test.describe("numpad", () => {
     }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();
-      await sudokuBoard.page.keyboard.press("t");
+      await sudokuBoard.page.keyboard.press("n");
       await sudokuBoard.numPad[i - 1].click();
       await sudokuBoard.cellHasNotes(7, 7, i.toString());
     });
@@ -102,15 +102,15 @@ test.describe("numpad", () => {
 });
 
 const initialProgressIndicator = [
-  "77.7778%",
-  "77.7778%",
-  "88.8889%",
-  "66.6667%",
-  "77.7778%",
-  "77.7778%",
-  "77.7778%",
-  "77.7778%",
-  "44.4444%",
+  "77.77%",
+  "77.77%",
+  "88.88%",
+  "66.66%",
+  "77.77%",
+  "77.77%",
+  "77.77%",
+  "77.77%",
+  "44.44%",
 ];
 
 test.describe("progress indicator", () => {
@@ -144,15 +144,15 @@ test.describe("progress indicator", () => {
     resumeClassicGame,
   }) => {
     const updatedProgressIndicator = [
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "66.6667%",
-      "77.7778%",
-      "77.7778%",
-      "77.7778%",
-      "88.8889%",
-      "44.4444%",
+      "77.77%",
+      "77.77%",
+      "88.88%",
+      "66.66%",
+      "77.77%",
+      "77.77%",
+      "77.77%",
+      "88.88%",
+      "44.44%",
     ];
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[1][1].click();
@@ -380,7 +380,7 @@ test.describe("undo", () => {
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.page.keyboard.press("T");
+    await sudokuBoard.page.keyboard.press("N");
     await sudokuBoard.cell[7][7].press("1");
     await sudokuBoard.cellHasNotes(7, 7, "1");
     await sudokuBoard.undo.click();
@@ -670,9 +670,9 @@ test.describe("navigate board", () => {
 });
 
 test.describe("toggle notes", () => {
-  const keys = ["button", "n", "N", "t", "T"];
+  const keys = ["button", "n", "N"];
   for (const key of keys) {
-    const capital = key === "N" || key === "T" ? "capital " : "";
+    const capital = key === "N" ? "capital " : "";
     test("toggle notes: " + capital + key, async ({ resumeClassicGame }) => {
       const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
       await sudokuBoard.cell[7][7].click();

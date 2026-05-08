@@ -1,34 +1,19 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Image, TouchableOpacity, ImageURISource } from "react-native";
-import {
-  Button,
-  Card,
-  Checkbox,
-  Dialog,
-  Portal,
-  Text,
-} from "react-native-paper";
+import { View, ImageURISource } from "react-native";
+import { Button, Checkbox, Dialog, Portal, Text } from "react-native-paper";
 import { SudokuStrategy } from "sudokuru";
-import {
-  CARD_IMAGE_HEIGHT,
-  CARD_IMAGE_WIDTH,
-  CARD_PADDING,
-  CARD_WIDTH,
-  calculateCardsPerRow,
-  difficulty,
-  getDifficultyColor,
-} from "./Cards";
+import { difficulty, getDifficultyColor } from "./Cards";
 import { toTitle } from "../../Functions/Utils";
 import {
   getKeyJSON,
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
-import { useTheme } from "../../Contexts/ThemeContext";
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import { getGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
+import ListPanel from "./ListPanel";
 
 function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
   return arr;
@@ -49,23 +34,57 @@ export const DRILL_STRATEGIES = defineDrillStrategies([
 
 export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
 
-let drillImages: ImageURISource[] = [
-  require("./../../../.assets/CardImages/OBVIOUS_SINGLE.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_PAIR.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_TRIPLET.png"),
-  require("./../../../.assets/CardImages/OBVIOUS_QUADRUPLET.png"),
-  require("./../../../.assets/CardImages/HIDDEN_SINGLE.png"),
-  require("./../../../.assets/CardImages/HIDDEN_PAIR.png"),
-  require("./../../../.assets/CardImages/HIDDEN_TRIPLET.png"),
-  require("./../../../.assets/CardImages/HIDDEN_QUADRUPLET.png"),
-  require("./../../../.assets/CardImages/POINTING_PAIR.png"),
-  require("./../../../.assets/CardImages/POINTING_TRIPLET.png"),
+const drillImages: ImageURISource[] = [
+  require("../../../.assets/DifficultyStars/3points.png"),
+  require("../../../.assets/DifficultyStars/4points.png"),
+  require("../../../.assets/DifficultyStars/5points.png"),
+  require("../../../.assets/DifficultyStars/9points.png"),
+  require("../../../.assets/DifficultyStars/24points.png"),
 ];
 
-const DrillPanel = (props: any) => {
-  const navigation: any = useNavigation();
+function getDrillDifficulty(strategy: DrillStrategy): difficulty {
+  switch (strategy) {
+    case "OBVIOUS_SINGLE":
+      return "Very Easy";
+    case "OBVIOUS_PAIR":
+      return "Easy";
+    case "OBVIOUS_TRIPLET":
+    case "OBVIOUS_QUADRUPLET":
+      return "Intermediate";
+    case "HIDDEN_SINGLE":
+      return "Hard";
+    default:
+      return "Very Hard";
+  }
+}
 
-  const { theme } = useTheme();
+function getDrillDifficultyImage(level: difficulty): ImageURISource {
+  switch (level) {
+    case "Very Easy":
+      return drillImages[0];
+    case "Easy":
+      return drillImages[1];
+    case "Intermediate":
+      return drillImages[2];
+    case "Hard":
+      return drillImages[3];
+    default:
+      return drillImages[4];
+  }
+}
+
+interface DrillPanelProps {
+  width: number;
+  height: number;
+}
+
+interface DrillCardItem {
+  strategy: DrillStrategy;
+  difficulty: difficulty;
+}
+
+const DrillPanel = ({ width, height }: DrillPanelProps) => {
+  const navigation: any = useNavigation();
 
   const [visible, setVisible] = React.useState(false);
 
@@ -109,105 +128,13 @@ const DrillPanel = (props: any) => {
     });
   }
 
-  let drillButtonArray = [];
-  let subArray = [];
-  let columnCount: number = calculateCardsPerRow(
-    props.width,
-    props.height,
-    DRILL_STRATEGIES.length,
-  );
-  for (let i = 0; i < DRILL_STRATEGIES.length; i++) {
-    let img: ImageURISource = drillImages[i];
-    let difficulty: difficulty;
-    switch (DRILL_STRATEGIES[i]) {
-      case "OBVIOUS_SINGLE":
-        difficulty = "Very Easy";
-        break;
-      case "OBVIOUS_PAIR":
-        difficulty = "Easy";
-        break;
-      case "OBVIOUS_TRIPLET":
-      case "OBVIOUS_QUADRUPLET":
-        difficulty = "Intermediate";
-        break;
-      case "HIDDEN_SINGLE":
-        difficulty = "Hard";
-        break;
-      default:
-        difficulty = "Very Hard";
-        break;
-    }
-    let difficultyColor: string = getDifficultyColor(difficulty);
-    subArray.push(
-      <View
-        key={DRILL_STRATEGIES[i]}
-        testID={DRILL_STRATEGIES[i]}
-        style={{
-          width: CARD_WIDTH,
-          padding: CARD_PADDING,
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            showTutorialIfNotDismissed().then(() => {
-              navigation.navigate("DrillGame", {
-                params: DRILL_STRATEGIES[i],
-                action: "StartGame",
-              });
-            });
-          }}
-        >
-          <Card
-            mode="outlined"
-            theme={{
-              colors: {
-                surface: theme.colors.surfaceAlt,
-              },
-            }}
-          >
-            <Text
-              variant="headlineMedium"
-              style={{
-                alignSelf: "center",
-                color: theme.semantic.text.inverse,
-              }}
-            >
-              {toTitle(DRILL_STRATEGIES[i])}
-            </Text>
-            <Text
-              variant="headlineSmall"
-              style={{ alignSelf: "center" }}
-              theme={{ colors: { onSurface: difficultyColor } }}
-            >
-              {difficulty}
-            </Text>
-            <Image
-              source={img}
-              defaultSource={img}
-              style={{
-                width: CARD_IMAGE_WIDTH,
-                height: CARD_IMAGE_HEIGHT,
-                resizeMode: "contain",
-                alignSelf: "center",
-              }}
-            />
-          </Card>
-        </TouchableOpacity>
-      </View>,
-    );
+  const dialogWidth = width > 800 ? width * 0.4 : Math.min(600, width);
+  const checkboxWidth = width > 800 ? width * 0.2 : Math.min(300, width);
+  const drillItems: DrillCardItem[] = DRILL_STRATEGIES.map((strategy) => ({
+    strategy,
+    difficulty: getDrillDifficulty(strategy),
+  }));
 
-    // Add row
-    if ((i + 1) % columnCount === 0) {
-      drillButtonArray.push(subArray);
-      subArray = [];
-    }
-  }
-  // Add last row if not evenly divisible
-  if (subArray.length > 0) {
-    drillButtonArray.push(subArray);
-  }
-
-  // render each sub-array as a row
   return (
     <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
       {resumeVisible ? (
@@ -228,18 +155,25 @@ const DrillPanel = (props: any) => {
       ) : (
         <></>
       )}
-      {drillButtonArray.map((subArray, index) => (
-        <View
-          style={{
-            flexWrap: "wrap",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-          key={index}
-        >
-          {subArray}
-        </View>
-      ))}
+      <ListPanel
+        width={width}
+        height={height}
+        items={drillItems}
+        getKey={(item) => item.strategy}
+        getTestID={(item) => item.strategy}
+        getTitle={(item) => toTitle(item.strategy)}
+        getSubtitle={(item) => item.difficulty}
+        getSubtitleColor={(item) => getDifficultyColor(item.difficulty)}
+        getCardImage={(item) => getDrillDifficultyImage(item.difficulty)}
+        onPress={(item) => {
+          showTutorialIfNotDismissed().then(() => {
+            navigation.navigate("DrillGame", {
+              params: item.strategy,
+              action: "StartGame",
+            });
+          });
+        }}
+      />
       <Portal>
         <Dialog
           visible={visible}
@@ -247,10 +181,7 @@ const DrillPanel = (props: any) => {
           style={{
             alignSelf: "center",
             alignItems: "center",
-            width:
-              props.width > 800
-                ? props.width * 0.4
-                : Math.min(600, props.width),
+            width: dialogWidth,
           }}
         >
           <Dialog.Title>How Drills Work</Dialog.Title>
@@ -268,10 +199,7 @@ const DrillPanel = (props: any) => {
               mode="android" // iOS doesn't have box around checkbox so best to just tell it to use android
               style={{
                 alignSelf: "center",
-                width:
-                  props.width > 800
-                    ? props.width * 0.2
-                    : Math.min(300, props.width),
+                width: checkboxWidth,
               }}
               testID="dismissDrillTutorial"
               onPress={() => {
