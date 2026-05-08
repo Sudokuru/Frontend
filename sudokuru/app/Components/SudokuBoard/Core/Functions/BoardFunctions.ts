@@ -1,4 +1,4 @@
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, Platform } from "react-native";
 import {
   BoardObjectProps,
   CellProps,
@@ -13,17 +13,93 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
  * todo functions will be documented, sorted, and optimized
  */
 
+export const MOBILE_BREAKPOINT = 768;
+const MAX_BOARD_SIZE = 640;
+
+const HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.75;
+const HEADER_ROW_HEIGHT_IN_CELLS_MOBILE = 1.3;
+const PUZZLE_HEIGHT_IN_CELLS = 9;
+const ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.6;
+const ACTION_ROW_HEIGHT_IN_CELLS_MOBILE = 1.45;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP = 1;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE = 1.65;
+const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
+const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
+
 /**
  * This function retrieves the user's device size and calculates the cell size
- * board has width and height dimensions of 1 x 1.44444
+ * board has width and height dimensions
  */
 export function useCellSize(): number {
-  const size = useWindowDimensions();
-  return Math.min(size.width * 1.44444, size.height) / 15;
-}
+  const { width, height } = useWindowDimensions();
 
-export function useBoardSize(): number {
-  return useCellSize() * 9;
+  // Web uses a single monotonic sizing rule (no breakpoint branches), so
+  // board size never increases while viewport width is shrinking.
+  if (Platform.OS === "web") {
+    const webBoardLayoutHeightInCells =
+      HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
+      PUZZLE_HEIGHT_IN_CELLS +
+      ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
+      NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE;
+    const maxCellSizeFromWidth = Math.min(width, MAX_BOARD_SIZE) / 9;
+
+    // Account for the app nav header when it is visible.
+    const NAV_HEADER_HEIGHT = 60;
+    const NAV_HEADER_SAFETY_PADDING = 12;
+    const availableHeightWithHeader =
+      height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
+    const boardHeightAtWidth =
+      maxCellSizeFromWidth * webBoardLayoutHeightInCells;
+    const navHeaderShown = boardHeightAtWidth <= availableHeightWithHeader;
+
+    // iOS Safari can under-report vertical viewport on small phones while URL bars animate.
+    // Add a narrow-screen tolerance so iPhone SE can still render full width.
+    const smallPhoneHeightTolerance = width <= 430 ? 24 : 0;
+    const effectiveAvailableHeight = navHeaderShown
+      ? availableHeightWithHeader
+      : height;
+    const maxCellSizeFromHeight =
+      (effectiveAvailableHeight + smallPhoneHeightTolerance) /
+      webBoardLayoutHeightInCells;
+    return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
+  }
+
+  const isMobileSizingLayout = width < MOBILE_BREAKPOINT;
+  const headerRowHeightInCells = isMobileSizingLayout
+    ? HEADER_ROW_HEIGHT_IN_CELLS_MOBILE
+    : HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP;
+  const actionRowHeightInCells = isMobileSizingLayout
+    ? ACTION_ROW_HEIGHT_IN_CELLS_MOBILE
+    : ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP;
+
+  const numberControlHeightInCells = isMobileSizingLayout
+    ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
+    : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
+
+  const boardLayoutHeightInCells =
+    headerRowHeightInCells +
+    PUZZLE_HEIGHT_IN_CELLS +
+    actionRowHeightInCells +
+    numberControlHeightInCells;
+
+  const boardVerticalViewportFraction = isMobileSizingLayout
+    ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
+    : BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP;
+
+  const maxBoardWidth = isMobileSizingLayout
+    ? Math.min(width, MAX_BOARD_SIZE)
+    : Math.min(width * 0.9, MAX_BOARD_SIZE);
+
+  const maxCellSizeFromWidth = maxBoardWidth / 9;
+
+  const maxCellSizeFromHeight =
+    (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
+
+  if (width < MOBILE_BREAKPOINT) {
+    return maxCellSizeFromWidth;
+  }
+
+  return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }
 
 export const isValueCorrect = (

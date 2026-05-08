@@ -461,7 +461,9 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard={sudokuBoard}
         setSudokuBoard={setSudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
-        handlePause={boardMethods[props.type].handlePause}
+        firstHeaderTooltipLabel={boardMethods[
+          props.type
+        ].headerRowTooltipLabel()}
       />
     );
   };
@@ -555,6 +557,9 @@ const SudokuBoard = (props: Board) => {
         eraseSelected={eraseSelected}
         reset={reset}
         getHint={getHint}
+        handlePause={() =>
+          boardMethods[props.type].handlePause(sudokuBoard, navigation)
+        }
         boardHasConflict={boardHasConflict}
         hasResetButton={boardMethods[props.type].hasResetActionButton()}
         hasEraseButton={boardMethods[props.type].hasEraseActionButton()}
@@ -625,17 +630,19 @@ const SudokuBoard = (props: Board) => {
    * Increments the hint stage depending on user actions
    * This is an incredibly messy function, but it works.
    * I am thinking this is ok since we are planning on revising the hint api.
-   * @param stageOffset A number (-1) or (1) that represents how to alter hint stage
+   * @param stageOffset A number (-1), (0), or (1) that represents how to alter hint stage
    * @returns void
    */
   const updateHintStage = (
-    stageOffset: number,
+    stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => {
-    if (stageOffset !== -1 && stageOffset !== 1) {
+    if (!sudokuHint) {
       return;
     }
-    if (!sudokuHint) {
+
+    if (stageOffset === 0) {
+      setSudokuHint(undefined);
       return;
     }
 

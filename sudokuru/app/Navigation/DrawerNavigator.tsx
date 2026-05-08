@@ -16,11 +16,25 @@ import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useWindowDimensions } from "react-native";
+import { MOBILE_BREAKPOINT } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
 
 const Drawer = createDrawerNavigator();
+const MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS = 13.4;
+const ESTIMATED_NAV_HEADER_HEIGHT = 60;
+const GAME_FIT_SAFETY_PADDING = 12;
 
 const DrawerNavigator = () => {
   const { theme } = useTheme();
+  const { width, height } = useWindowDimensions();
+  const mobileCellSizeFromWidth = width / 9;
+  const requiredGameContentHeight =
+    mobileCellSizeFromWidth * MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS;
+  const availableHeightWithHeader =
+    height - ESTIMATED_NAV_HEADER_HEIGHT - GAME_FIT_SAFETY_PADDING;
+  const shouldShowGamePageHeader =
+    width >= MOBILE_BREAKPOINT ||
+    requiredGameContentHeight <= availableHeightWithHeader;
 
   return (
     <SafeAreaProvider>
@@ -44,10 +58,18 @@ const DrawerNavigator = () => {
         >
           <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
-          <Drawer.Screen name="SudokuPage" component={SudokuPage} />
+          <Drawer.Screen
+            name="SudokuPage"
+            component={SudokuPage}
+            options={{ headerShown: shouldShowGamePageHeader }}
+          />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
-          <Drawer.Screen name="DrillGame" component={DrillGame} />
+          <Drawer.Screen
+            name="DrillGame"
+            component={DrillGame}
+            options={{ headerShown: shouldShowGamePageHeader }}
+          />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           {/* @ts-ignore */}
           <Drawer.Screen name="Lesson" component={Lesson} />

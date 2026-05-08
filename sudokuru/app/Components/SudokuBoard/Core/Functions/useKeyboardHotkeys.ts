@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import { doesBoardHaveConflict, wrapDigit } from "../../SudokuBoardFunctions";
 import {
@@ -43,155 +43,167 @@ export const useKeyboardHotkeys = ({
    * @param event keyboard event
    * @returns void
    */
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (gameOverRef.current) return;
-    if (!sudokuBoardRef.current) return;
-
-    const inputValue = event.key;
-    const board = sudokuBoardRef.current;
-    const hint = sudokuHintRef.current;
-
-    if (
-      handleGeneralHotkeys({
-        inputValue,
-        board,
-        hint,
-      })
-    ) {
-      event.preventDefault();
-      return;
-    }
-
-    if (board.selectedCells.length === 0) {
-      return;
-    }
-
-    if (handleDigitEntry(inputValue)) {
-      event.preventDefault();
-      return;
-    }
-    if (handleErase(inputValue)) {
-      event.preventDefault();
-      return;
-    }
-    if (handleNavigation(inputValue, board)) {
-      event.preventDefault();
-    }
-  }, []);
-
-  const handleGeneralHotkeys = ({
-    inputValue,
-    board,
-    hint,
-  }: {
-    inputValue: string;
-    board: BoardObjectProps;
-    hint: any;
-  }) => {
-    switch (inputValue) {
-      case "u":
-      case "U":
-        if (board.actionHistory.length !== 0) {
-          undoRef.current?.();
-        }
-        return true;
-      case "p":
-      case "P":
-        boardMethods[boardType].handlePause(board, navigation);
-        return true;
-      case "n":
-      case "N":
-        toggleNoteModeRef.current?.();
-        return true;
-      case "H":
-      case "h":
-        if (
-          !doesBoardHaveConflict(
-            board,
-            boardMethods[boardType].doesCellHaveConflict,
-          )
-        ) {
-          if (hint) {
-            updateHintStageRef.current?.(
-              1,
-              boardMethods[boardType].finishSudokuGame,
-            );
-          } else {
-            getHintRef.current?.();
+  const handleGeneralHotkeys = useCallback(
+    ({
+      inputValue,
+      board,
+      hint,
+    }: {
+      inputValue: string;
+      board: BoardObjectProps;
+      hint: any;
+    }) => {
+      switch (inputValue) {
+        case "u":
+        case "U":
+          if (board.actionHistory.length !== 0) {
+            undoRef.current?.();
           }
-        }
-        return true;
-      case "R":
-      case "r":
-        if (boardMethods[boardType].hasResetActionButton() === true) {
-          resetRef.current?.();
-        }
-        return true;
-      default:
-        return false;
-    }
-  };
+          return true;
+        case "p":
+        case "P":
+          boardMethods[boardType].handlePause(board, navigation);
+          return true;
+        case "n":
+        case "N":
+          toggleNoteModeRef.current?.();
+          return true;
+        case "H":
+        case "h":
+          if (
+            !doesBoardHaveConflict(
+              board,
+              boardMethods[boardType].doesCellHaveConflict,
+            )
+          ) {
+            if (hint) {
+              updateHintStageRef.current?.(
+                1,
+                boardMethods[boardType].finishSudokuGame,
+              );
+            } else {
+              getHintRef.current?.();
+            }
+          }
+          return true;
+        case "R":
+        case "r":
+          if (boardMethods[boardType].hasResetActionButton() === true) {
+            resetRef.current?.();
+          }
+          return true;
+        default:
+          return false;
+      }
+    },
+    [boardMethods, boardType, navigation],
+  );
 
-  const handleDigitEntry = (inputValue: string) => {
+  const handleDigitEntry = useCallback((inputValue: string) => {
     if (/^[1-9]$/.test(inputValue)) {
       updateCellEntryRef.current?.(Number.parseInt(inputValue, 10));
       return true;
     }
     return false;
-  };
+  }, []);
 
-  const handleErase = (inputValue: string) => {
-    switch (inputValue) {
-      case "Delete":
-      case "Backspace":
-      case "0":
-      case "e":
-      case "E":
-        if (boardMethods[boardType].hasEraseActionButton() === true) {
-          eraseSelectedRef.current?.();
-        }
-        return true;
-      default:
-        return false;
-    }
-  };
-
-  const handleNavigation = (inputValue: string, board: BoardObjectProps) => {
-    const updatedSelectedCells: CellLocation[] = [];
-
-    for (const cellLocation of board.selectedCells) {
-      let newCol = cellLocation.c;
-      let newRow = cellLocation.r;
+  const handleErase = useCallback(
+    (inputValue: string) => {
       switch (inputValue) {
-        case "ArrowLeft":
-        case "a":
-        case "A":
-          newCol = wrapDigit(newCol - 1);
-          break;
-        case "ArrowRight":
-        case "d":
-        case "D":
-          newCol = wrapDigit(newCol + 1);
-          break;
-        case "ArrowUp":
-        case "w":
-        case "W":
-          newRow = wrapDigit(newRow - 1);
-          break;
-        case "ArrowDown":
-        case "s":
-        case "S":
-          newRow = wrapDigit(newRow + 1);
-          break;
+        case "Delete":
+        case "Backspace":
+        case "0":
+        case "e":
+        case "E":
+          if (boardMethods[boardType].hasEraseActionButton() === true) {
+            eraseSelectedRef.current?.();
+          }
+          return true;
         default:
           return false;
       }
-      updatedSelectedCells.push({ r: newRow, c: newCol });
-    }
+    },
+    [boardMethods, boardType],
+  );
 
-    setBoardSelectedCellsRef.current?.(updatedSelectedCells);
-    return true;
-  };
+  const handleNavigation = useCallback(
+    (inputValue: string, board: BoardObjectProps) => {
+      const updatedSelectedCells: CellLocation[] = [];
+
+      for (const cellLocation of board.selectedCells) {
+        let newCol = cellLocation.c;
+        let newRow = cellLocation.r;
+        switch (inputValue) {
+          case "ArrowLeft":
+          case "a":
+          case "A":
+            newCol = wrapDigit(newCol - 1);
+            break;
+          case "ArrowRight":
+          case "d":
+          case "D":
+            newCol = wrapDigit(newCol + 1);
+            break;
+          case "ArrowUp":
+          case "w":
+          case "W":
+            newRow = wrapDigit(newRow - 1);
+            break;
+          case "ArrowDown":
+          case "s":
+          case "S":
+            newRow = wrapDigit(newRow + 1);
+            break;
+          default:
+            return false;
+        }
+        updatedSelectedCells.push({ r: newRow, c: newCol });
+      }
+
+      setBoardSelectedCellsRef.current?.(updatedSelectedCells);
+      return true;
+    },
+    [],
+  );
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (gameOverRef.current) return;
+      if (!sudokuBoardRef.current) return;
+
+      const inputValue = event.key;
+      const board = sudokuBoardRef.current;
+      const hint = sudokuHintRef.current;
+
+      if (
+        handleGeneralHotkeys({
+          inputValue,
+          board,
+          hint,
+        })
+      ) {
+        event.preventDefault();
+        return;
+      }
+
+      if (board.selectedCells.length === 0) {
+        return;
+      }
+
+      if (handleDigitEntry(inputValue)) {
+        event.preventDefault();
+        return;
+      }
+      if (handleErase(inputValue)) {
+        event.preventDefault();
+        return;
+      }
+      if (handleNavigation(inputValue, board)) {
+        event.preventDefault();
+      }
+    },
+    [handleDigitEntry, handleErase, handleGeneralHotkeys, handleNavigation],
+  );
 
   // Setup keyboard event listeners for web platform using globalThis.addEventListener
   // This allows hotkeys to work without requiring board focus
