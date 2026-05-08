@@ -64,8 +64,6 @@ export const useKeyboardHotkeys = ({
         case "P":
           boardMethods[boardType].handlePause(board, navigation);
           return true;
-        case "t":
-        case "T":
         case "n":
         case "N":
           toggleNoteModeRef.current?.();
