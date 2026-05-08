@@ -26,6 +26,18 @@ test.describe("profile", () => {
     }
   });
 
+  test("should toggle theme via hotkey", async ({ profile }) => {
+    const profilePage = new ProfilePage(profile);
+
+    for (let i = 0; i < THEME_OPTIONS.length; i++) {
+      await profilePage.page.keyboard.press("t");
+      await profilePage.page.keyboard.press("t");
+      const expectedTheme = THEME_OPTIONS[(i + 1) % THEME_OPTIONS.length];
+      await profilePage.verifySelectedTheme(expectedTheme.key);
+      await profilePage.verifyThemeInStorage(expectedTheme.key);
+    }
+  });
+
   test("should toggle root highlight and verify all highlight switches' states", async ({
     profile,
   }) => {
