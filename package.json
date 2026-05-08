@@ -15,6 +15,7 @@
     "playwright:report": "npm run playwright:report --workspace=e2e/web",
     "playwright:monocart:report": "npm run playwright:monocart:report --workspace=e2e/web",
     "playwright:init": "npm run playwright:init --workspace=e2e/web",
+    "playwright:init:deps": "npm run playwright:init:deps --workspace=e2e/web",
     "start": "npm run start --workspace=sudokuru",
     "start:atlas": "npm run start:atlas --workspace=sudokuru",
     "start:atlas:prod": "npm run start:atlas:prod --workspace=sudokuru",

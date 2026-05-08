@@ -56,7 +56,7 @@
     "@types/react-native-web": "0.19.0",
     "babel-plugin-istanbul": "^6.1.1",
     "cross-env": "^7.0.3",
-    "expo-atlas": "0.4.0",
+    "expo-atlas": "0.4.3",
     "expo-doctor": "1.17.7",
     "metro": "0.83.1"
   },

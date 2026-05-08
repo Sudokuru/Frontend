@@ -6,7 +6,8 @@
     "playwright:ui": "npx playwright test --ui",
     "playwright:report": "npx playwright show-report playwright-report",
     "playwright:monocart:report": "npx monocart show-report test-results/report.html",
-    "playwright:init": "npx playwright install"
+    "playwright:init": "npx playwright install",
+    "playwright:init:deps": "npx playwright install --with-deps"
   },
   "dependencies": {
     "@playwright/test": "1.56.1",
