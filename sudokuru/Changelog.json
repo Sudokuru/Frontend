@@ -1,5 +1,23 @@
 [
   {
+    "version": "1.33.0",
+    "date": "#{date}#",
+    "summary": "Layout enhancements to the Play page, Drill page, and Lessons page. These pages are restructured to fit on smaller screens such as on mobile devices.",
+    "features": [
+      "Play page simplified from 'Play a Sudoku game' to 'Play Sudoku'. This helps with mobile sizing. It is also more clear and direct.",
+      "Learn page simplified from 'Learn new strategies' to 'Learn Sudoku'. This helps with mobile sizing. It is also more clear and direct.",
+      "The Learn page now uses the same rendering algorithm as the Play page. This improves consistency across the site.",
+      "The Lesson buttons status icons are updated to a simpler design."
+    ],
+    "preview features": [
+      "Drill page simplified from 'Train with a strategy' to 'Drill Sudoku'. This helps with mobile sizing. It is also more clear and direct.",
+      "The Drill page now uses the same rendering algorithm as the Play page. This improves consistency across the site.",
+      "The Drill button icons are now the same as the Play button icons for displaying relative difficulty."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.32.1",
     "date": "March 12th, 2026",
     "summary": "Sudoku board hotkeys functionality now works even if the board is not selected.",

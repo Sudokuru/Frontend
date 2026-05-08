@@ -7,7 +7,7 @@ import { DrillPage } from "../../page/drill.page";
 // TODO add test: Should solve game with multiple action types
 
 test.describe("complete drill", () => {
-  test("Completing a drill and clicking 'Start New Drill' should take you to the train page", async ({
+  test("Completing a drill and clicking 'Start New Drill' should take you to the drill page", async ({
     resumeDrillGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);

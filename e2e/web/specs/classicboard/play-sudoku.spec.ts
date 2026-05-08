@@ -1,11 +1,15 @@
 import { test } from "../../fixture";
-import { devices, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { PlayPage } from "../../page/play.page";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { EndGameModalComponent } from "../../components/end-game-modal.component";
 import { HeaderComponent } from "../../components/header.component";
 import { StatisticsPage } from "../../page/statistics.page";
 import { HomePage } from "../../page/home.page";
+import {
+  MIDDLE_WIDTH_AND_HEIGHT,
+  MOBILE_WIDTH_LESS_THAN,
+} from "../../playwright.config";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
@@ -189,20 +193,27 @@ test.describe("start game", () => {
     });
   });
 
-  test("Clicking on button with intermediate text should start protege game", async ({
+  test("Clicking on button with intermediate text should start protege game in large viewport", async ({
     play,
   }) => {
-    await play.getByText("Intermediate").click();
-    await expect(play.getByText("Difficulty: protege")).toBeInViewport({
-      ratio: 1,
-    });
+    const viewPort = play.viewportSize();
+    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
+      await play.getByText("Intermediate").click();
+      await expect(play.getByText("Difficulty: protege")).toBeInViewport({
+        ratio: 1,
+      });
+    } else {
+      await expect(await play.getByText("Intermediate")).not.toBeInViewport({
+        ratio: 1,
+      });
+    }
   });
 });
 
 test.describe("resume game", () => {
   test("user can pause and resume a game", async ({ play }) => {
     const playPage = new PlayPage(play);
-    await playPage.noviceDesc.click();
+    await playPage.page.getByText("Novice").click();
     const sudokuBoard = new SudokuBoardComponent(play);
     await sudokuBoard.pause.click();
     await playPage.resumeButtonIsVisible();
@@ -214,7 +225,7 @@ test.describe("resume game", () => {
 test.describe("game is saved on start", () => {
   test("Starting a game should save it to resume later", async ({ play }) => {
     const playPage = new PlayPage(play);
-    await playPage.amateurDesc.click();
+    await playPage.page.getByText("Amateur").click();
     await expect(play.getByText("Difficulty: amateur")).toBeInViewport({
       ratio: 1,
     });
@@ -229,45 +240,23 @@ test.describe("game is saved on start", () => {
 });
 
 test.describe("resize play page", () => {
-  test("Difficulty stars and descriptions are visible on desktop sized screen", async ({
+  test("Difficulty stars and descriptions visibility depends on viewport size", async ({
     play,
   }) => {
     const playPage = new PlayPage(play);
-    await playPage.descriptionsAreVisible();
-    await playPage.starsAreVisible();
-  });
-
-  test("Difficulty descriptions and stars go away on small screens", async ({
-    play,
-  }) => {
-    play.setViewportSize(devices["iPhone 14"].viewport);
-    const playPage = new PlayPage(play);
-    await playPage.descriptionsAreHidden();
-    await playPage.starsAreHidden();
-  });
-
-  test("Full page title is visible on desktop sized screens", async ({
-    play,
-  }) => {
-    const playPage = new PlayPage(play);
-    await playPage.fullTitleIsVisible();
-  });
-
-  test("Partial page title is visible on small screens", async ({ play }) => {
-    play.setViewportSize(devices["iPhone 14"].viewport);
-    const playPage = new PlayPage(play);
-    await playPage.partialTitleIsVisible();
-  });
-
-  test("Difficulty stars go away on but descriptions stay on medium screens", async ({
-    play,
-  }) => {
-    play.setViewportSize({
-      width: 1024,
-      height: 1024,
-    });
-    const playPage = new PlayPage(play);
-    await playPage.descriptionsAreVisible();
-    await playPage.starsAreHidden();
+    const viewPort = await play.viewportSize();
+    if (
+      viewPort?.width === MIDDLE_WIDTH_AND_HEIGHT &&
+      viewPort?.height === MIDDLE_WIDTH_AND_HEIGHT
+    ) {
+      await playPage.descriptionsAreVisible();
+      await playPage.starsAreHidden();
+    } else if ((viewPort?.width ?? 0) > MOBILE_WIDTH_LESS_THAN) {
+      await playPage.descriptionsAreVisible();
+      await playPage.starsAreVisible();
+    } else {
+      await playPage.descriptionsAreHidden();
+      await playPage.starsAreHidden();
+    }
   });
 });
