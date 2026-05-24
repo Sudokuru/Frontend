@@ -23,13 +23,15 @@
             pre-commit
             nodejs_24
             bun
+            cargo
+            rustc
           ];
 
           shellHook = ''
             echo "⚡ Pinned NixOS 25.11 Development Environment Activated ⚡"
             export PROJECT_ROOT=$(pwd)
             pre-commit install
-            echo "Avaliable tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version)"
+            echo "Avaliable tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version), $(cargo --version), $(rustc --version)"
           '';
         };
       });
