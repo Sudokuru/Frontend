@@ -67,7 +67,7 @@
 
 6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
 
-**Optional:** If you have Nix installed, you can run `nix develop` in the project root to automatically install all required development packages in a reproducible environment.
+**Optional:** If you have Nix installed, you can run `nix develop` in the project root to automatically install all required development packages in a reproducible environment. (nix config has only been tested on mac)
 
 ## 📲 Mobile Setup (not needed to run website):
 
