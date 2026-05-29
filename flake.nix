@@ -16,7 +16,7 @@
       in
       {
         devShells.default = pkgs.mkShell {
-          name = "Sudokuru-Frontend";
+          name = "Sudokuru";
           buildInputs = with pkgs; [
             git
             jq
@@ -31,7 +31,11 @@
             echo "⚡ Pinned NixOS 25.11 Development Environment Activated ⚡"
             export PROJECT_ROOT=$(pwd)
             pre-commit install
-            echo "Avaliable tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version), $(cargo --version), $(rustc --version)"
+            stools() {
+              echo "Available tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version), $(cargo --version), $(rustc --version)"
+            }
+            stools
+            export PS1="(\w) $PS1"
           '';
         };
       });
