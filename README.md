@@ -67,11 +67,18 @@
 
 6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
 
+**Optional:** If you have Nix installed, you can run `nix develop` in the project root to automatically install all required development packages in a reproducible environment. (nix config has only been tested on mac)
+
 ## 📲 Mobile Setup (not needed to run website):
 
 1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
 2. Download the expo app on your mobile device.
 3. On your development device, e.g., laptop, login by running: `expo login` and fill out the parameters.
+
+## 🖥️ Desktop Setup (for Tauri development)
+
+1. Install Rust
+2. Install Cargo
 
 ## 🏃‍♂️ Running the Application Locally
 
