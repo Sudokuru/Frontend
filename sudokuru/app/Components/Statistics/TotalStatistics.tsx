@@ -2,10 +2,10 @@ import { Text } from "react-native-paper";
 import { useWindowDimensions, View } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Core/Functions/BoardFunctions";
-import { SudokuStrategy } from "sudokuru";
 import React from "react";
 import { NumHintsUsedPerStrategy } from "../NumHintsUsedPerStrategy";
 import { useTheme } from "../../Contexts/ThemeContext";
+import { HintStrategy } from "../../Functions/LocalDatabase";
 
 export interface TotalStatisticsProps {
   totalScore: number;
@@ -15,7 +15,7 @@ export interface TotalStatisticsProps {
   totalSolveTime: number;
   numHintsUsed: number;
   numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
+    hintStrategy: HintStrategy;
     numHintsUsed: number;
   }[];
   numWrongCellsPlayed: number;

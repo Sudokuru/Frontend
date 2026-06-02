@@ -1,3 +1,9 @@
+import type { WrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
+
+export type WrongValueDemoDifficulty =
+  | "wrong-value-direct-conflict"
+  | "wrong-value-no-direct-conflict";
+
 export type GameDifficulty =
   | "novice"
   | "amateur"
@@ -7,7 +13,32 @@ export type GameDifficulty =
   | "professional"
   | "pundit"
   | "master"
-  | "grandmaster";
+  | "grandmaster"
+  | WrongValueDemoDifficulty;
+
+export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
+  "wrong-value-direct-conflict",
+  "wrong-value-no-direct-conflict",
+];
+
+export function isWrongValueDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is WrongValueDemoDifficulty {
+  return WRONG_VALUE_DEMO_DIFFICULTIES.includes(
+    difficulty as WrongValueDemoDifficulty,
+  );
+}
+
+export function getWrongValueDemoCaseId(
+  difficulty: WrongValueDemoDifficulty,
+): WrongValueDemoCase["id"] {
+  switch (difficulty) {
+    case "wrong-value-direct-conflict":
+      return "direct-row-conflict";
+    case "wrong-value-no-direct-conflict":
+      return "no-direct-conflict";
+  }
+}
 
 export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 
@@ -38,6 +69,9 @@ function calculateDifficultyScore(
       return 35;
     case "grandmaster":
       return 40;
+    case "wrong-value-direct-conflict":
+    case "wrong-value-no-direct-conflict":
+      return 0;
   }
 }
 

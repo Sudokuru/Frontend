@@ -1,11 +1,11 @@
 import Statistic from "./Statistics/Statistic";
 import { formatOneLessonName } from "../Functions/learnedLessons";
 import React from "react";
-import { SudokuStrategy } from "sudokuru";
+import { HintStrategy } from "../Functions/LocalDatabase";
 
 interface NumHintsUsedPerStrategyProps {
   numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
+    hintStrategy: HintStrategy;
     numHintsUsed: number;
   }[];
 }

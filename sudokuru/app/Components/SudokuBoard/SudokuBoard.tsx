@@ -18,7 +18,10 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
-import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
+import {
+  GameDifficulty,
+  isWrongValueDemoDifficulty,
+} from "./Core/Functions/DifficultyFunctions";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
@@ -37,6 +40,7 @@ import {
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
+import type { WrongValueHint } from "../../Data/hints/demo_wrong_value_hints";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -69,6 +73,13 @@ export interface HintProps {
   removals: any;
   info: string;
   action: string;
+  stages?: WrongValueHint["stages"];
+}
+
+export function isWrongValueHint(
+  hint: HintProps,
+): hint is HintProps & Pick<WrongValueHint, "stages"> {
+  return hint.strategy === "WRONG_VALUE" && "stages" in hint;
 }
 
 const SudokuBoard = (props: Board) => {
@@ -207,7 +218,7 @@ const SudokuBoard = (props: Board) => {
     setSudokuHint({
       stage: 1,
       hint: hint,
-      maxStage: 5,
+      maxStage: isWrongValueHint(hint) ? hint.stages.length : 5,
     });
   };
 
@@ -536,10 +547,14 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     const inNoteMode = sudokuBoard.inNoteMode;
-    const boardHasConflict = doesBoardHaveConflict(
-      sudokuBoard,
-      boardMethods[props.type].doesCellHaveConflict,
-    );
+    const boardHasConflict =
+      sudokuBoard.variant === "classic" &&
+      isWrongValueDemoDifficulty(sudokuBoard.statistics.difficulty)
+        ? false
+        : doesBoardHaveConflict(
+            sudokuBoard,
+            boardMethods[props.type].doesCellHaveConflict,
+          );
     const eraseButtonDisabled = isEraseButtonDisabled(sudokuBoard);
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
     const isResetButtonDisabled = sudokuBoard.actionHistory.length === 0;
@@ -678,6 +693,10 @@ const SudokuBoard = (props: Board) => {
     }
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
+
+    if (isWrongValueHint(sudokuHint.hint)) {
+      return;
+    }
 
     const removals: number[][] = JSON.parse(
       JSON.stringify(sudokuHint.hint.removals),

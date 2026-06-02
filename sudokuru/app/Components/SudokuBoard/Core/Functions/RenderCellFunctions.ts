@@ -15,7 +15,7 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
 } from "../../../../Styling/HighlightColors";
-import { HintObjectProps } from "../../SudokuBoard";
+import { HintObjectProps, isWrongValueHint } from "../../SudokuBoard";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -43,6 +43,16 @@ export const getCellNotesColor = (
   theme: Theme,
 ) => {
   const notesToReturn = new Array(9).fill(theme.semantic.text.info);
+  if (sudokuHint && isWrongValueHint(sudokuHint.hint)) {
+    const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
+    for (const note of hintStage?.highlightNotes ?? []) {
+      if (note.location.r === r && note.location.c === c) {
+        notesToReturn[note.value - 1] = theme.colors.error;
+      }
+    }
+    return notesToReturn;
+  }
+
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
     const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
@@ -115,6 +125,25 @@ export const useCellBackgroundColor = (
   }
 
   if (sudokuHint) {
+    if (isWrongValueHint(sudokuHint.hint)) {
+      const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
+      const highlighted =
+        hintStage?.highlightCells?.some(
+          (cell) => cell.location.r === r && cell.location.c === c,
+        ) ||
+        hintStage?.highlightValues?.some(
+          (cell) => cell.location.r === r && cell.location.c === c,
+        ) ||
+        hintStage?.highlightNotes?.some(
+          (cell) => cell.location.r === r && cell.location.c === c,
+        );
+
+      cellBackgroundColor = highlighted
+        ? HINT_SELECTED_COLOR
+        : HINT_NOT_HIGHLIGHTED_COLOR;
+      return cellBackgroundColor;
+    }
+
     const hintCause = isCellAHintCause(sudokuHint, r, c);
     const hintFocus = isCellAHintFocus(sudokuHint, r, c);
 

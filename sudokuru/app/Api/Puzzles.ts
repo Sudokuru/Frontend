@@ -3,12 +3,12 @@ import {
   BoardObjectProps,
   GameVariant,
   SudokuBoardDrillGameSchema,
+  HintStrategy,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
 import { Statistics } from "./Puzzle.Types";
 import { getStatistics, saveStatisitics } from "./Statistics";
-import { SudokuStrategy } from "sudokuru";
 
 /**
  * Given the sudoku game variant - retrieves the users active game or returns null if the user doesn't have an active game
@@ -46,7 +46,7 @@ export const saveGame = (game: BoardObjectProps) => {
 export const finishGame = async (
   numHintsUsed: number,
   numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
+    hintStrategy: HintStrategy;
     numHintsUsed: number;
   }[],
   numWrongCellsPlayed: number,
@@ -75,7 +75,7 @@ export const finishGame = async (
   // Create or update user's total number of hints used per strategy statistics
   for (const newHintStrategies of numHintsUsedPerStrategy) {
     const existingHintStrategies = statistics.numHintsUsedPerStrategy.find(
-      (strategy: { hintStrategy: SudokuStrategy; numHintsUsed: number }) =>
+      (strategy: { hintStrategy: HintStrategy; numHintsUsed: number }) =>
         strategy.hintStrategy === newHintStrategies.hintStrategy,
     );
     if (existingHintStrategies) {

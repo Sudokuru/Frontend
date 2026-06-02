@@ -2,17 +2,42 @@ import { ImageURISource } from "react-native";
 import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
 import ListPanel from "./ListPanel";
+import { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
 
-const difficulties: string[] = [
-  "Novice",
-  "Amateur",
-  "Layman",
-  "Trainee",
-  "Protege",
-  "Professional",
-  "Pundit",
-  "Master",
-  "Grandmaster",
+interface DifficultyItem {
+  label: string;
+  value: GameDifficulty;
+  testID: string;
+}
+
+const difficulties: DifficultyItem[] = [
+  { label: "Novice", value: "novice", testID: "Novice" },
+  { label: "Amateur", value: "amateur", testID: "Amateur" },
+  { label: "Layman", value: "layman", testID: "Layman" },
+  { label: "Trainee", value: "trainee", testID: "Trainee" },
+  { label: "Protege", value: "protege", testID: "Protege" },
+  {
+    label: "Professional",
+    value: "professional",
+    testID: "Professional",
+  },
+  { label: "Pundit", value: "pundit", testID: "Pundit" },
+  { label: "Master", value: "master", testID: "Master" },
+  {
+    label: "Grandmaster",
+    value: "grandmaster",
+    testID: "Grandmaster",
+  },
+  {
+    label: "Wrong Value Direct Conflict",
+    value: "wrong-value-direct-conflict",
+    testID: "WrongValueDirectConflict",
+  },
+  {
+    label: "Wrong Value No Direct Conflict",
+    value: "wrong-value-no-direct-conflict",
+    testID: "WrongValueNoDirectConflict",
+  },
 ];
 
 const difficultyStars: ImageURISource[] = [
@@ -42,45 +67,48 @@ interface DifficultyPanelProps {
   navigation: any;
 }
 
-function getDifficultyCardData(level: string): {
-  description: difficulty;
-  image: ImageURISource;
-  alt: string;
+function getDifficultyCardData(level: GameDifficulty): {
+  description?: difficulty;
+  image?: ImageURISource;
+  alt?: string;
 } {
   switch (level) {
-    case "Novice":
-    case "Amateur":
+    case "novice":
+    case "amateur":
       return {
         description: "Very Easy",
         image: difficultyStars[0],
         alt: "3 Point Star",
       };
-    case "Layman":
-    case "Trainee":
+    case "layman":
+    case "trainee":
       return {
         description: "Easy",
         image: difficultyStars[1],
         alt: "4 Point Star",
       };
-    case "Protege":
+    case "protege":
       return {
         description: "Intermediate",
         image: difficultyStars[2],
         alt: "5 Point Star",
       };
-    case "Professional":
-    case "Pundit":
+    case "professional":
+    case "pundit":
       return {
         description: "Hard",
         image: difficultyStars[3],
         alt: "9 Point Star",
       };
-    default:
+    case "master":
+    case "grandmaster":
       return {
         description: "Very Hard",
         image: difficultyStars[4],
         alt: "24 Point Star",
       };
+    default:
+      return {};
   }
 }
 
@@ -90,20 +118,22 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
       width={props.width}
       height={props.height}
       items={difficulties}
-      getKey={(level) => level}
-      getTestID={(level) => level}
-      getTitle={(level) => level}
-      getSubtitle={(level) => getDifficultyCardData(level).description}
-      getSubtitleTestID={(level) => `${level}Description`}
+      getKey={(level) => level.value}
+      getTestID={(level) => level.testID}
+      getTitle={(level) => level.label}
+      getSubtitle={(level) => getDifficultyCardData(level.value).description}
+      getSubtitleTestID={(level) => `${level.label}Description`}
       getSubtitleColor={(level) =>
-        getDifficultyColor(getDifficultyCardData(level).description)
+        getDifficultyCardData(level.value).description
+          ? getDifficultyColor(getDifficultyCardData(level.value).description!)
+          : undefined
       }
-      getCardImage={(level) => getDifficultyCardData(level).image}
-      getImageAccessibilityLabel={(level) => getDifficultyCardData(level).alt}
+      getCardImage={(level) => getDifficultyCardData(level.value).image}
+      getImageAccessibilityLabel={(level) => getDifficultyCardData(level.value).alt}
       onPress={(level) => {
         props.navigation.navigate("SudokuPage", {
           action: "StartGame",
-          difficulty: level.toLowerCase(),
+          difficulty: level.value,
         });
       }}
     />

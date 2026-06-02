@@ -2,9 +2,15 @@ import { getHint, SudokuStrategy } from "sudokuru";
 import {
   CellProps,
   ClassicObjectProps,
+  HintStrategy,
 } from "../../../../Functions/LocalDatabase";
+import { getWrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
 import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
+import {
+  getWrongValueDemoCaseId,
+  isWrongValueDemoDifficulty,
+} from "./DifficultyFunctions";
 
 /**
  * Retrieves a hint for the current sudoku puzzle state based on the specified strategy order.
@@ -119,6 +125,31 @@ export const getSudokuBoardHint = (
   sudokuBoard: ClassicObjectProps,
   strategyArray: SudokuStrategy[],
 ) => {
+  if (isWrongValueDemoDifficulty(sudokuBoard.statistics.difficulty)) {
+    const demoCase = getWrongValueDemoCase(
+      getWrongValueDemoCaseId(sudokuBoard.statistics.difficulty),
+    );
+    sudokuBoard.statistics.numHintsUsed++;
+
+    const existingWrongValueStats =
+      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
+        (strategy) => strategy.hintStrategy === "WRONG_VALUE",
+      );
+    if (existingWrongValueStats) {
+      existingWrongValueStats.numHintsUsed++;
+    } else {
+      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: "WRONG_VALUE",
+        numHintsUsed: 1,
+      });
+    }
+
+    return {
+      hint: demoCase.hint as HintProps,
+      updatedBoard: sudokuBoard,
+    };
+  }
+
   strategyArray.unshift("SIMPLIFY_NOTES");
   strategyArray.unshift("AMEND_NOTES");
 
@@ -145,7 +176,7 @@ export const getSudokuBoardHint = (
     sudokuBoard.statistics.numHintsUsedPerStrategy.push({
       hintStrategy: hint.strategy,
       numHintsUsed: 1,
-    });
+    } as { hintStrategy: HintStrategy; numHintsUsed: number });
   }
 
   return { hint, updatedBoard: sudokuBoard };

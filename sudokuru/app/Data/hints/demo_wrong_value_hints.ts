@@ -6,46 +6,46 @@
  * puzzle state below.
  */
 
-type SudokuValue = number;
+export type SudokuValue = number;
 
-type CellLocation = {
+export type CellLocation = {
   r: number;
   c: number;
 };
 
-type CellWithValue = {
+export type CellWithValue = {
   type: "given" | "value";
   value: SudokuValue;
 };
 
-type CellWithNotes = {
+export type CellWithNotes = {
   type: "note";
   notes: SudokuValue[];
 };
 
-type CellProps = CellWithValue | CellWithNotes;
-type ValueCellWithLocation = CellWithValue & CellLocation;
-type NoteCellWithLocation = CellWithNotes & CellLocation;
+export type CellProps = CellWithValue | CellWithNotes;
+export type ValueCellWithLocation = CellWithValue & CellLocation;
+export type NoteCellWithLocation = CellWithNotes & CellLocation;
 
-type HighlightType = "removal" | "placement" | "focus";
+export type HighlightType = "removal" | "placement" | "focus";
 
-type HighlightedCell = {
+export type HighlightedCell = {
   location: CellLocation;
   highlightType: HighlightType;
 };
 
-type HighlightedValue = {
+export type HighlightedValue = {
   location: CellLocation;
   highlightType: HighlightType;
 };
 
-type HighlightedNote = {
+export type HighlightedNote = {
   location: CellLocation;
   value: SudokuValue;
   highlightType: HighlightType;
 };
 
-type HintStage = {
+export type HintStage = {
   removeValues?: ValueCellWithLocation[];
   removeNotes?: NoteCellWithLocation[];
   placeValues?: ValueCellWithLocation[];
@@ -56,12 +56,12 @@ type HintStage = {
   text?: string;
 };
 
-type WrongValueHint = {
+export type WrongValueHint = {
   strategy: "WRONG_VALUE";
   stages: HintStage[];
 };
 
-type WrongValueDemoCase = {
+export type WrongValueDemoCase = {
   id: "direct-row-conflict" | "no-direct-conflict";
   label: string;
   puzzle: CellProps[][];

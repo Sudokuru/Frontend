@@ -10,11 +10,21 @@ import { PUNDIT_PUZZLES } from "../../../../Data/puzzles/pundit_puzzles";
 import { InputPuzzle } from "../../../../Data/puzzles/puzzle.types";
 import { TRAINEE_PUZZLES } from "../../../../Data/puzzles/trainee_puzzles";
 import {
+  getWrongValueDemoCase,
+  WrongValueDemoCase,
+  CellProps as WrongValueCellProps,
+} from "../../../../Data/hints/demo_wrong_value_hints";
+import {
   BoardObjectProps,
   ClassicObjectProps,
+  CellProps,
 } from "../../../../Functions/LocalDatabase";
 import { ClassicBoard } from "../../SudokuBoard";
-import { GameDifficulty } from "./DifficultyFunctions";
+import {
+  GameDifficulty,
+  getWrongValueDemoCaseId,
+  isWrongValueDemoDifficulty,
+} from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
 
 export async function generateGame(
@@ -76,6 +86,9 @@ export const returnPuzzleOfDifficulty = (
       return retrieveRandomPuzzle(MASTER_PUZZLES);
     case "grandmaster":
       return retrieveRandomPuzzle(GRANDMASTER_PUZZLES);
+    case "wrong-value-direct-conflict":
+    case "wrong-value-no-direct-conflict":
+      return NOVICE_PUZZLES[0];
   }
 };
 
@@ -89,6 +102,11 @@ export const returnGameOfDifficulty = (
   difficulty: GameDifficulty | "dev",
   initializeNotes: boolean,
 ): BoardObjectProps => {
+  if (difficulty !== "dev" && isWrongValueDemoDifficulty(difficulty)) {
+    const demoCase = getWrongValueDemoCase(getWrongValueDemoCaseId(difficulty));
+    return convertWrongValueDemoCaseToSudokuObject(demoCase, difficulty);
+  }
+
   const puzzles = returnPuzzleOfDifficulty(difficulty);
   if (difficulty === "dev") {
     difficulty = "novice";
@@ -173,3 +191,45 @@ export const convertPuzzleToSudokuObject = (
   // Return a clone here so that this is a clone.
   return JSON.parse(JSON.stringify(game));
 };
+
+function convertWrongValueDemoCell(cell: WrongValueCellProps): CellProps {
+  if (cell.type === "note") {
+    return {
+      type: "note",
+      entry: [...cell.notes],
+    };
+  }
+
+  return {
+    type: cell.type,
+    entry: cell.value,
+  };
+}
+
+function convertWrongValueDemoCaseToSudokuObject(
+  demoCase: WrongValueDemoCase,
+  difficulty: GameDifficulty,
+): ClassicObjectProps {
+  const game: ClassicObjectProps = {
+    variant: "classic",
+    version: 1,
+    selectedCells: [],
+    puzzleState: demoCase.puzzle.map((row) =>
+      row.map((cell) => convertWrongValueDemoCell(cell)),
+    ),
+    puzzleSolution: JSON.parse(JSON.stringify(demoCase.solution)),
+    statistics: {
+      difficulty: difficulty,
+      internalDifficulty: 0,
+      numHintsUsed: 0,
+      numHintsUsedPerStrategy: [],
+      numWrongCellsPlayed: 0,
+      score: 0,
+      time: 0,
+    },
+    inNoteMode: false,
+    actionHistory: [],
+  };
+
+  return JSON.parse(JSON.stringify(game));
+}
