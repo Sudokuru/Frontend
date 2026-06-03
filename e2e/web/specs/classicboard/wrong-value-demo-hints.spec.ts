@@ -45,9 +45,17 @@ test.describe("wrong value demo hints", () => {
 
       await sudokuBoard.hintArrowRight.click();
       await sudokuBoard.sudokuBoardContainsText(demoCase.secondStage);
+      await sudokuBoard.cellIsEmpty(
+        demoCase.wrongCell.row,
+        demoCase.wrongCell.column,
+      );
 
       await sudokuBoard.hintFinish.click();
       await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+      await sudokuBoard.cellIsEmpty(
+        demoCase.wrongCell.row,
+        demoCase.wrongCell.column,
+      );
     });
   }
 });

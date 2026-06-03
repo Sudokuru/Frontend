@@ -636,6 +636,59 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
+  const wrongValueStageHasCellActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ): boolean => {
+    return Boolean(
+      stage?.removeValues?.length ||
+        stage?.removeNotes?.length ||
+        stage?.placeValues?.length ||
+        stage?.placeNotes?.length,
+    );
+  };
+
+  const applyWrongValueHintStage = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ) => {
+    if (!stage) {
+      return;
+    }
+
+    const cells: CellProps[] = [];
+    const locations: CellLocation[] = [];
+
+    for (const valueToRemove of stage.removeValues ?? []) {
+      cells.push({ type: "value", entry: 0 });
+      locations.push({ r: valueToRemove.r, c: valueToRemove.c });
+    }
+
+    for (const valueToPlace of stage.placeValues ?? []) {
+      cells.push({ type: valueToPlace.type, entry: valueToPlace.value });
+      locations.push({ r: valueToPlace.r, c: valueToPlace.c });
+    }
+
+    for (const notesToRemove of stage.removeNotes ?? []) {
+      const currentCell =
+        sudokuBoard.puzzleState[notesToRemove.r][notesToRemove.c];
+      const currentNotes =
+        currentCell.type === "note" ? (currentCell.entry as number[]) : [];
+      cells.push({
+        type: "note",
+        entry: currentNotes.filter((note) => !notesToRemove.notes.includes(note)),
+      });
+      locations.push({ r: notesToRemove.r, c: notesToRemove.c });
+    }
+
+    for (const notesToPlace of stage.placeNotes ?? []) {
+      cells.push({ type: "note", entry: [...notesToPlace.notes] });
+      locations.push({ r: notesToPlace.r, c: notesToPlace.c });
+    }
+
+    if (cells.length > 0) {
+      replaceSudokuBoardCells(cells, locations);
+    }
+  };
+
   /**
    * Increments the hint stage depending on user actions
    * This is an incredibly messy function, but it works.
@@ -681,7 +734,14 @@ const SudokuBoard = (props: Board) => {
 
         const undoStage = stageOffset === -1 && sudokuHint.stage === 5;
 
-        if (amendNotesUndoStage || undoStage) {
+        const wrongValueUndoStage =
+          stageOffset === -1 &&
+          isWrongValueHint(sudokuHint.hint) &&
+          wrongValueStageHasCellActions(
+            sudokuHint.hint.stages[sudokuHint.stage - 1],
+          );
+
+        if (amendNotesUndoStage || undoStage || wrongValueUndoStage) {
           undo();
         }
 
@@ -695,6 +755,7 @@ const SudokuBoard = (props: Board) => {
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
 
     if (isWrongValueHint(sudokuHint.hint)) {
+      applyWrongValueHintStage(sudokuHint.hint.stages[currentStage - 1]);
       return;
     }
 
