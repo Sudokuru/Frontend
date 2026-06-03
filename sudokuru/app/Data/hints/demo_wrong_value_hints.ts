@@ -122,13 +122,13 @@ function numbersToPuzzle(numbers: SudokuValue[][]): CellProps[][] {
       }
 
       return { type: "given", value };
-    })
+    }),
   );
 }
 
 function withWrongValue(
   numbers: SudokuValue[][],
-  wrongValue: ValueCellWithLocation
+  wrongValue: ValueCellWithLocation,
 ): CellProps[][] {
   return numbers.map((row, r) =>
     row.map((value, c): CellProps => {
@@ -144,7 +144,7 @@ function withWrongValue(
       }
 
       return { type: "given", value };
-    })
+    }),
   );
 }
 
@@ -156,12 +156,12 @@ export const wrongValuePuzzleSolution: SudokuValue[][] =
 
 export const directConflictWrongValuePuzzle: CellProps[][] = withWrongValue(
   BASE_PUZZLE_NUMBERS,
-  directConflictWrongValue
+  directConflictWrongValue,
 );
 
 export const noDirectConflictWrongValuePuzzle: CellProps[][] = withWrongValue(
   BASE_PUZZLE_NUMBERS,
-  noDirectConflictWrongValue
+  noDirectConflictWrongValue,
 );
 
 export const directConflictWrongValueHint: WrongValueHint = {
@@ -176,8 +176,7 @@ export const directConflictWrongValueHint: WrongValueHint = {
         { location: directConflictWrongValue, highlightType: "removal" },
         { location: conflictingGiven, highlightType: "focus" },
       ],
-      text:
-        "The 8 in row 1, column 4 conflicts with another 8 in the same row.",
+      text: "The 8 in row 1, column 4 conflicts with another 8 in the same row.",
     },
     {
       removeValues: [directConflictWrongValue],
@@ -235,7 +234,7 @@ export const wrongValueDemoCases: WrongValueDemoCase[] = [
 ];
 
 export function getWrongValueDemoCase(
-  id: WrongValueDemoCase["id"]
+  id: WrongValueDemoCase["id"],
 ): WrongValueDemoCase {
   const demoCase = wrongValueDemoCases.find((candidate) => candidate.id === id);
 

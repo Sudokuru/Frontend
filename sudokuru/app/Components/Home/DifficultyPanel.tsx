@@ -129,7 +129,9 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
           : undefined
       }
       getCardImage={(level) => getDifficultyCardData(level.value).image}
-      getImageAccessibilityLabel={(level) => getDifficultyCardData(level.value).alt}
+      getImageAccessibilityLabel={(level) =>
+        getDifficultyCardData(level.value).alt
+      }
       onPress={(level) => {
         props.navigation.navigate("SudokuPage", {
           action: "StartGame",

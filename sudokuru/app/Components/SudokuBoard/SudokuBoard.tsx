@@ -674,7 +674,9 @@ const SudokuBoard = (props: Board) => {
         currentCell.type === "note" ? (currentCell.entry as number[]) : [];
       cells.push({
         type: "note",
-        entry: currentNotes.filter((note) => !notesToRemove.notes.includes(note)),
+        entry: currentNotes.filter(
+          (note) => !notesToRemove.notes.includes(note),
+        ),
       });
       locations.push({ r: notesToRemove.r, c: notesToRemove.c });
     }
