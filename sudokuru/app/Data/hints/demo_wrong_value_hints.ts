@@ -27,7 +27,7 @@ export type CellProps = CellWithValue | CellWithNotes;
 export type ValueCellWithLocation = CellWithValue & CellLocation;
 export type NoteCellWithLocation = CellWithNotes & CellLocation;
 
-export type HighlightType = "removal" | "placement" | "focus";
+export type HighlightType = "removal" | "placement" | "focus" | "basis";
 
 export type HighlightedCell = {
   location: CellLocation;
@@ -114,6 +114,28 @@ const noDirectConflictWrongValue: ValueCellWithLocation = {
   value: 4,
 };
 
+const directConflictRowFocusCells: CellLocation[] = [
+  { r: 0, c: 0 },
+  { r: 0, c: 1 },
+  { r: 0, c: 2 },
+  { r: 0, c: 5 },
+  { r: 0, c: 6 },
+  { r: 0, c: 7 },
+  { r: 0, c: 8 },
+];
+
+const directConflictFullRowFocusCells: CellLocation[] = [
+  { r: 0, c: 0 },
+  { r: 0, c: 1 },
+  { r: 0, c: 2 },
+  { r: 0, c: 3 },
+  { r: 0, c: 4 },
+  { r: 0, c: 5 },
+  { r: 0, c: 6 },
+  { r: 0, c: 7 },
+  { r: 0, c: 8 },
+];
+
 function numbersToPuzzle(numbers: SudokuValue[][]): CellProps[][] {
   return numbers.map((row) =>
     row.map((value): CellProps => {
@@ -169,24 +191,24 @@ export const directConflictWrongValueHint: WrongValueHint = {
   stages: [
     {
       highlightCells: [
+        ...directConflictRowFocusCells.map((location) => ({
+          location,
+          highlightType: "focus" as const,
+        })),
         { location: directConflictWrongValue, highlightType: "removal" },
-        { location: conflictingGiven, highlightType: "focus" },
+        { location: conflictingGiven, highlightType: "basis" },
       ],
-      highlightValues: [
-        { location: directConflictWrongValue, highlightType: "removal" },
-        { location: conflictingGiven, highlightType: "focus" },
-      ],
-      text: "The 8 in row 1, column 4 conflicts with another 8 in the same row.",
+      text: "The 8 in row 1, column 4 conflicts with the existing 8 in the same row.",
     },
     {
       removeValues: [directConflictWrongValue],
       highlightCells: [
-        { location: directConflictWrongValue, highlightType: "removal" },
+        ...directConflictFullRowFocusCells.map((location) => ({
+          location,
+          highlightType: "focus" as const,
+        })),
       ],
-      highlightValues: [
-        { location: directConflictWrongValue, highlightType: "removal" },
-      ],
-      text: "Remove the user-entered 8 from row 1, column 4.",
+      text: "Remove the 8 in row 1, column 4.",
     },
   ],
 };
@@ -198,20 +220,14 @@ export const noDirectConflictWrongValueHint: WrongValueHint = {
       highlightCells: [
         { location: noDirectConflictWrongValue, highlightType: "removal" },
       ],
-      highlightValues: [
-        { location: noDirectConflictWrongValue, highlightType: "removal" },
-      ],
-      text: "The 4 in row 2, column 2 is not the right value for this cell.",
+      text: "The 4 in row 2, column 2 is the wrong value for this cell.",
     },
     {
       removeValues: [noDirectConflictWrongValue],
       highlightCells: [
-        { location: noDirectConflictWrongValue, highlightType: "removal" },
+        { location: noDirectConflictWrongValue, highlightType: "focus" },
       ],
-      highlightValues: [
-        { location: noDirectConflictWrongValue, highlightType: "removal" },
-      ],
-      text: "Remove the user-entered 4 from row 2, column 2.",
+      text: "Remove the 4 in row 2, column 2.",
     },
   ],
 };
