@@ -1,25 +1,64 @@
 import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { test } from "../../fixture";
+import {
+  wrongValueDemoCases as wrongValueDemoHintCases,
+  WrongValueDemoCase,
+} from "../../../../sudokuru/app/Data/hints/demo_wrong_value_hints";
+
+const getWrongValueDemoCase = (
+  id: WrongValueDemoCase["id"],
+): WrongValueDemoCase => {
+  const demoCase = wrongValueDemoHintCases.find(
+    (candidate) => candidate.id === id,
+  );
+  if (!demoCase) {
+    throw new Error(`Could not find wrong value demo case ${id}`);
+  }
+  return demoCase;
+};
+
+const getStageText = (demoCase: WrongValueDemoCase, stageIndex: number) => {
+  const text = demoCase.hint.stages[stageIndex]?.text;
+  if (!text) {
+    throw new Error(
+      `Could not find stage ${stageIndex + 1} text for ${demoCase.id}`,
+    );
+  }
+  return text;
+};
+
+const getWrongCell = (demoCase: WrongValueDemoCase) => {
+  const wrongValue = demoCase.hint.stages.flatMap(
+    (stage) => stage.removeValues ?? [],
+  )[0];
+  if (!wrongValue) {
+    throw new Error(`Could not find removable value for ${demoCase.id}`);
+  }
+  return {
+    row: wrongValue.r,
+    column: wrongValue.c,
+    value: wrongValue.value.toString(),
+  };
+};
 
 const wrongValueDemoCases = [
   {
     cardTestId: "WrongValueDirectConflict",
     difficulty: "wrong-value-direct-conflict",
-    wrongCell: { row: 0, column: 3, value: "8" },
-    firstStage:
-      "The 8 in row 1, column 4 conflicts with another 8 in the same row.",
-    secondStage: "Remove the user-entered 8 from row 1, column 4.",
+    demoCase: getWrongValueDemoCase("direct-row-conflict"),
   },
   {
     cardTestId: "WrongValueNoDirectConflict",
     difficulty: "wrong-value-no-direct-conflict",
-    wrongCell: { row: 1, column: 1, value: "4" },
-    firstStage:
-      "The 4 in row 2, column 2 is not the right value for this cell.",
-    secondStage: "Remove the user-entered 4 from row 2, column 2.",
+    demoCase: getWrongValueDemoCase("no-direct-conflict"),
   },
-];
+].map((demoCase) => ({
+  ...demoCase,
+  wrongCell: getWrongCell(demoCase.demoCase),
+  firstStage: getStageText(demoCase.demoCase, 0),
+  secondStage: getStageText(demoCase.demoCase, 1),
+}));
 
 test.describe("wrong value demo hints", () => {
   for (const demoCase of wrongValueDemoCases) {

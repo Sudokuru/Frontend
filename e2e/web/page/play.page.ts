@@ -1,5 +1,16 @@
 import { Locator, Page, expect } from "@playwright/test";
 
+const CARD_WIDTH = 300;
+const CARD_HEIGHT = 600;
+const CARD_PADDING = 20;
+const CARD_HEIGHT_ASPECT_RATIO = 3 / 5;
+const IMAGE_HIDE_SHRINKAGE_THRESHOLD = 0.3;
+const COMPACT_CONTENT_SHRINKAGE_THRESHOLD = 0.6;
+const MAX_HEIGHT_RATIO = 0.7;
+const MAX_SHRINKAGE = 0.99;
+const SHRINKAGE_ROUNDING_FACTOR = 100;
+const DIFFICULTY_CARD_COUNT = 11;
+
 export class PlayPage {
   readonly page: Page;
   readonly title: Locator;
@@ -64,6 +75,77 @@ export class PlayPage {
 
   async starsAreHidden() {
     await this.starsHaveCount(0);
+  }
+
+  private calculateCardsPerRow(
+    width: number,
+    height: number,
+    count: number,
+  ): number {
+    let columnCount: number = Math.floor(width / (CARD_WIDTH + 100));
+    if (columnCount === 0) {
+      return 1;
+    }
+
+    const maxRows: number = Math.floor((height * 0.8) / CARD_HEIGHT);
+    const minColumns: number = Math.ceil(count / maxRows);
+
+    while (
+      columnCount > minColumns &&
+      columnCount - 1 >= Math.ceil(count / (columnCount - 1))
+    ) {
+      columnCount--;
+    }
+    return columnCount;
+  }
+
+  private getDifficultyPanelShrinkage(
+    viewport: { width: number; height: number } | null,
+  ): number {
+    if (!viewport) {
+      return 0;
+    }
+
+    const cardHeight = CARD_WIDTH * CARD_HEIGHT_ASPECT_RATIO;
+    const columnCount = this.calculateCardsPerRow(
+      viewport.width,
+      viewport.height,
+      DIFFICULTY_CARD_COUNT,
+    );
+    const rowCount = Math.ceil(DIFFICULTY_CARD_COUNT / columnCount);
+    const unshrunkHeight =
+      rowCount * cardHeight +
+      (rowCount > 0 ? (rowCount - 1) * CARD_PADDING : 0);
+    const maxAllowedHeight = viewport.height * MAX_HEIGHT_RATIO;
+    const rawShrinkage =
+      unshrunkHeight > 0 ? 1 - maxAllowedHeight / unshrunkHeight : 0;
+
+    return Math.min(
+      MAX_SHRINKAGE,
+      Math.max(
+        0,
+        Math.ceil(rawShrinkage * SHRINKAGE_ROUNDING_FACTOR) /
+          SHRINKAGE_ROUNDING_FACTOR,
+      ),
+    );
+  }
+
+  difficultyStarsShouldBeVisible(
+    viewport: { width: number; height: number } | null,
+  ) {
+    return (
+      this.getDifficultyPanelShrinkage(viewport) <
+      IMAGE_HIDE_SHRINKAGE_THRESHOLD
+    );
+  }
+
+  difficultyDescriptionsShouldBeVisible(
+    viewport: { width: number; height: number } | null,
+  ) {
+    return (
+      this.getDifficultyPanelShrinkage(viewport) <
+      COMPACT_CONTENT_SHRINKAGE_THRESHOLD
+    );
   }
 
   async descriptionsHaveCount(count: number) {
