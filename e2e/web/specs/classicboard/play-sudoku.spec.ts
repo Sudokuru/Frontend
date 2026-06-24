@@ -192,16 +192,15 @@ test.describe("start game", () => {
   test("Clicking on button with intermediate text should start protege game in large viewport", async ({
     play,
   }) => {
+    const playPage = new PlayPage(play);
     const viewPort = play.viewportSize();
-    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
-      await play.getByText("Intermediate").click();
+    if (playPage.difficultyDescriptionsShouldBeVisible(viewPort)) {
+      await playPage.protegeDesc.click();
       await expect(play.getByText("Difficulty: protege")).toBeInViewport({
         ratio: 1,
       });
     } else {
-      await expect(await play.getByText("Intermediate")).not.toBeInViewport({
-        ratio: 1,
-      });
+      await expect(playPage.protegeDesc).toHaveCount(0);
     }
   });
 });
