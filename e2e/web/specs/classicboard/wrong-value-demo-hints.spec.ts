@@ -10,6 +10,7 @@ import {
   HINT_NOT_HIGHLIGHTED_COLOR_RGB,
   HINT_SELECTED_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
+  REMOVE_NOTE_TEXT_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
 
 const getWrongValueDemoCase = (
@@ -56,33 +57,39 @@ const getStageHighlights = (
   stageIndex: number,
 ) => {
   const stage = demoCase.hint.stages[stageIndex];
-  const selectedCells = [
+  const stageHighlights = [
     ...(stage.highlightCells ?? []),
     ...(stage.highlightValues ?? []),
     ...(stage.highlightNotes ?? []),
-  ]
-    .filter((highlight) => highlight.highlightType !== "focus")
+  ];
+  const removalCells = stageHighlights
+    .filter((highlight) => highlight.highlightType === "removal")
     .map((highlight) => highlight.location);
-  const focusCells = [
-    ...(stage.highlightCells ?? []),
-    ...(stage.highlightValues ?? []),
-    ...(stage.highlightNotes ?? []),
-  ]
+  const selectedCells = stageHighlights
+    .filter(
+      (highlight) =>
+        highlight.highlightType === "basis" ||
+        highlight.highlightType === "placement",
+    )
+    .map((highlight) => highlight.location);
+  const focusCells = stageHighlights
     .filter(
       (highlight) =>
         highlight.highlightType === "focus" &&
+        !removalCells.some((cell) => sameCell(cell, highlight.location)) &&
         !selectedCells.some((cell) => sameCell(cell, highlight.location)),
     )
     .map((highlight) => highlight.location);
 
-  return { selectedCells, focusCells };
+  return { removalCells, selectedCells, focusCells };
 };
 
 const getOutsideHighlightCell = (
+  removalCells: CellLocation[],
   selectedCells: CellLocation[],
   focusCells: CellLocation[],
 ): CellLocation => {
-  const highlightedCells = [...selectedCells, ...focusCells];
+  const highlightedCells = [...removalCells, ...selectedCells, ...focusCells];
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       const candidate = { r, c };
@@ -100,7 +107,18 @@ const verifyWrongValueStageHighlights = async (
   demoCase: WrongValueDemoCase,
   stageIndex: number,
 ) => {
-  const { selectedCells, focusCells } = getStageHighlights(demoCase, stageIndex);
+  const { removalCells, selectedCells, focusCells } = getStageHighlights(
+    demoCase,
+    stageIndex,
+  );
+
+  for (const cell of removalCells) {
+    await sudokuBoard.cellHasColor(
+      cell.r,
+      cell.c,
+      REMOVE_NOTE_TEXT_COLOR_RGB,
+    );
+  }
 
   for (const cell of selectedCells) {
     await sudokuBoard.cellHasColor(
@@ -119,6 +137,7 @@ const verifyWrongValueStageHighlights = async (
   }
 
   const outsideHighlightCell = getOutsideHighlightCell(
+    removalCells,
     selectedCells,
     focusCells,
   );
