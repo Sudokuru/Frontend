@@ -4,7 +4,13 @@ import { test } from "../../fixture";
 import {
   wrongValueDemoCases as wrongValueDemoHintCases,
   WrongValueDemoCase,
+  CellLocation,
 } from "../../../../sudokuru/app/Data/hints/demo_wrong_value_hints";
+import {
+  HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+  HINT_SELECTED_COLOR_RGB,
+  NOT_HIGHLIGHTED_COLOR_RGB,
+} from "../../../../sudokuru/app/Styling/HighlightColors";
 
 const getWrongValueDemoCase = (
   id: WrongValueDemoCase["id"],
@@ -40,6 +46,87 @@ const getWrongCell = (demoCase: WrongValueDemoCase) => {
     column: wrongValue.c,
     value: wrongValue.value.toString(),
   };
+};
+
+const sameCell = (first: CellLocation, second: CellLocation) =>
+  first.r === second.r && first.c === second.c;
+
+const getStageHighlights = (
+  demoCase: WrongValueDemoCase,
+  stageIndex: number,
+) => {
+  const stage = demoCase.hint.stages[stageIndex];
+  const selectedCells = [
+    ...(stage.highlightCells ?? []),
+    ...(stage.highlightValues ?? []),
+    ...(stage.highlightNotes ?? []),
+  ]
+    .filter((highlight) => highlight.highlightType !== "focus")
+    .map((highlight) => highlight.location);
+  const focusCells = [
+    ...(stage.highlightCells ?? []),
+    ...(stage.highlightValues ?? []),
+    ...(stage.highlightNotes ?? []),
+  ]
+    .filter(
+      (highlight) =>
+        highlight.highlightType === "focus" &&
+        !selectedCells.some((cell) => sameCell(cell, highlight.location)),
+    )
+    .map((highlight) => highlight.location);
+
+  return { selectedCells, focusCells };
+};
+
+const getOutsideHighlightCell = (
+  selectedCells: CellLocation[],
+  focusCells: CellLocation[],
+): CellLocation => {
+  const highlightedCells = [...selectedCells, ...focusCells];
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const candidate = { r, c };
+      if (!highlightedCells.some((cell) => sameCell(cell, candidate))) {
+        return candidate;
+      }
+    }
+  }
+
+  throw new Error("Could not find a cell outside the highlighted region");
+};
+
+const verifyWrongValueStageHighlights = async (
+  sudokuBoard: SudokuBoardComponent,
+  demoCase: WrongValueDemoCase,
+  stageIndex: number,
+) => {
+  const { selectedCells, focusCells } = getStageHighlights(demoCase, stageIndex);
+
+  for (const cell of selectedCells) {
+    await sudokuBoard.cellHasColor(
+      cell.r,
+      cell.c,
+      HINT_SELECTED_COLOR_RGB,
+    );
+  }
+
+  for (const cell of focusCells) {
+    await sudokuBoard.cellHasColor(
+      cell.r,
+      cell.c,
+      NOT_HIGHLIGHTED_COLOR_RGB,
+    );
+  }
+
+  const outsideHighlightCell = getOutsideHighlightCell(
+    selectedCells,
+    focusCells,
+  );
+  await sudokuBoard.cellHasColor(
+    outsideHighlightCell.r,
+    outsideHighlightCell.c,
+    HINT_NOT_HIGHLIGHTED_COLOR_RGB,
+  );
 };
 
 const wrongValueDemoCases = [
@@ -81,9 +168,19 @@ test.describe("wrong value demo hints", () => {
       await sudokuBoard.hint.click();
       await sudokuBoard.sudokuBoardContainsText("Wrong Value");
       await sudokuBoard.sudokuBoardContainsText(demoCase.firstStage);
+      await verifyWrongValueStageHighlights(
+        sudokuBoard,
+        demoCase.demoCase,
+        0,
+      );
 
       await sudokuBoard.hintArrowRight.click();
       await sudokuBoard.sudokuBoardContainsText(demoCase.secondStage);
+      await verifyWrongValueStageHighlights(
+        sudokuBoard,
+        demoCase.demoCase,
+        1,
+      );
       await sudokuBoard.cellIsEmpty(
         demoCase.wrongCell.row,
         demoCase.wrongCell.column,

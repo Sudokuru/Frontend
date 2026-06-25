@@ -14,6 +14,7 @@ import {
   PEER_SELECTED_COLOR,
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
+  NOT_HIGHLIGHTED_COLOR,
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps, isWrongValueHint } from "../../SudokuBoard";
 import {
@@ -127,20 +128,25 @@ export const useCellBackgroundColor = (
   if (sudokuHint) {
     if (isWrongValueHint(sudokuHint.hint)) {
       const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
-      const highlighted =
-        hintStage?.highlightCells?.some(
-          (cell) => cell.location.r === r && cell.location.c === c,
-        ) ||
-        hintStage?.highlightValues?.some(
-          (cell) => cell.location.r === r && cell.location.c === c,
-        ) ||
-        hintStage?.highlightNotes?.some(
-          (cell) => cell.location.r === r && cell.location.c === c,
-        );
+      const cellHighlights = [
+        ...(hintStage?.highlightCells ?? []),
+        ...(hintStage?.highlightValues ?? []),
+        ...(hintStage?.highlightNotes ?? []),
+      ].filter((cell) => cell.location.r === r && cell.location.c === c);
+      const hasSelectedHighlight = cellHighlights.some(
+        (cell) => cell.highlightType !== "focus",
+      );
+      const hasFocusHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "focus",
+      );
 
-      cellBackgroundColor = highlighted
-        ? HINT_SELECTED_COLOR
-        : HINT_NOT_HIGHLIGHTED_COLOR;
+      if (hasSelectedHighlight) {
+        cellBackgroundColor = HINT_SELECTED_COLOR;
+      } else if (hasFocusHighlight) {
+        cellBackgroundColor = NOT_HIGHLIGHTED_COLOR;
+      } else {
+        cellBackgroundColor = HINT_NOT_HIGHLIGHTED_COLOR;
+      }
       return cellBackgroundColor;
     }
 
