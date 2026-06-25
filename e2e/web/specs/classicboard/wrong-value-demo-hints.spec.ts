@@ -113,27 +113,15 @@ const verifyWrongValueStageHighlights = async (
   );
 
   for (const cell of removalCells) {
-    await sudokuBoard.cellHasColor(
-      cell.r,
-      cell.c,
-      REMOVE_NOTE_TEXT_COLOR_RGB,
-    );
+    await sudokuBoard.cellHasColor(cell.r, cell.c, REMOVE_NOTE_TEXT_COLOR_RGB);
   }
 
   for (const cell of selectedCells) {
-    await sudokuBoard.cellHasColor(
-      cell.r,
-      cell.c,
-      HINT_SELECTED_COLOR_RGB,
-    );
+    await sudokuBoard.cellHasColor(cell.r, cell.c, HINT_SELECTED_COLOR_RGB);
   }
 
   for (const cell of focusCells) {
-    await sudokuBoard.cellHasColor(
-      cell.r,
-      cell.c,
-      NOT_HIGHLIGHTED_COLOR_RGB,
-    );
+    await sudokuBoard.cellHasColor(cell.r, cell.c, NOT_HIGHLIGHTED_COLOR_RGB);
   }
 
   const outsideHighlightCell = getOutsideHighlightCell(
@@ -187,19 +175,11 @@ test.describe("wrong value demo hints", () => {
       await sudokuBoard.hint.click();
       await sudokuBoard.sudokuBoardContainsText("Wrong Value");
       await sudokuBoard.sudokuBoardContainsText(demoCase.firstStage);
-      await verifyWrongValueStageHighlights(
-        sudokuBoard,
-        demoCase.demoCase,
-        0,
-      );
+      await verifyWrongValueStageHighlights(sudokuBoard, demoCase.demoCase, 0);
 
       await sudokuBoard.hintArrowRight.click();
       await sudokuBoard.sudokuBoardContainsText(demoCase.secondStage);
-      await verifyWrongValueStageHighlights(
-        sudokuBoard,
-        demoCase.demoCase,
-        1,
-      );
+      await verifyWrongValueStageHighlights(sudokuBoard, demoCase.demoCase, 1);
       await sudokuBoard.cellIsEmpty(
         demoCase.wrongCell.row,
         demoCase.wrongCell.column,
