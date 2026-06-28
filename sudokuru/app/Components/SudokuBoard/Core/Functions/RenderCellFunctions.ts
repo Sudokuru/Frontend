@@ -15,7 +15,6 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
   NOT_HIGHLIGHTED_COLOR,
-  REMOVE_NOTE_TEXT_COLOR,
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps, isWrongValueHint } from "../../SudokuBoard";
 import {
@@ -146,7 +145,7 @@ export const useCellBackgroundColor = (
       );
 
       if (hasRemovalHighlight) {
-        cellBackgroundColor = REMOVE_NOTE_TEXT_COLOR;
+        cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
       } else if (hasSelectedHighlight) {
         cellBackgroundColor = HINT_SELECTED_COLOR;
       } else if (hasFocusHighlight) {

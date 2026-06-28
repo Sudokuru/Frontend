@@ -10,7 +10,7 @@ import {
   HINT_NOT_HIGHLIGHTED_COLOR_RGB,
   HINT_SELECTED_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
-  REMOVE_NOTE_TEXT_COLOR_RGB,
+  NOT_SELECTED_CONFLICT_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
 
 const getWrongValueDemoCase = (
@@ -113,7 +113,11 @@ const verifyWrongValueStageHighlights = async (
   );
 
   for (const cell of removalCells) {
-    await sudokuBoard.cellHasColor(cell.r, cell.c, REMOVE_NOTE_TEXT_COLOR_RGB);
+    await sudokuBoard.cellHasColor(
+      cell.r,
+      cell.c,
+      NOT_SELECTED_CONFLICT_COLOR_RGB,
+    );
   }
 
   for (const cell of selectedCells) {
