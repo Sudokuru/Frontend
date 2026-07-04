@@ -1,8 +1,12 @@
 import type { WrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
+import type { AmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
 
 export type WrongValueDemoDifficulty =
   | "wrong-value-direct-conflict"
   | "wrong-value-no-direct-conflict";
+export type AmendNotesDemoDifficulty =
+  | "amend-notes-basic"
+  | "amend-notes-corrective";
 
 export type GameDifficulty =
   | "novice"
@@ -14,11 +18,16 @@ export type GameDifficulty =
   | "pundit"
   | "master"
   | "grandmaster"
-  | WrongValueDemoDifficulty;
+  | WrongValueDemoDifficulty
+  | AmendNotesDemoDifficulty;
 
 export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
   "wrong-value-direct-conflict",
   "wrong-value-no-direct-conflict",
+];
+export const AMEND_NOTES_DEMO_DIFFICULTIES: AmendNotesDemoDifficulty[] = [
+  "amend-notes-basic",
+  "amend-notes-corrective",
 ];
 
 export function isWrongValueDemoDifficulty(
@@ -26,6 +35,14 @@ export function isWrongValueDemoDifficulty(
 ): difficulty is WrongValueDemoDifficulty {
   return WRONG_VALUE_DEMO_DIFFICULTIES.includes(
     difficulty as WrongValueDemoDifficulty,
+  );
+}
+
+export function isAmendNotesDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is AmendNotesDemoDifficulty {
+  return AMEND_NOTES_DEMO_DIFFICULTIES.includes(
+    difficulty as AmendNotesDemoDifficulty,
   );
 }
 
@@ -37,6 +54,17 @@ export function getWrongValueDemoCaseId(
       return "direct-row-conflict";
     case "wrong-value-no-direct-conflict":
       return "no-direct-conflict";
+  }
+}
+
+export function getAmendNotesDemoCaseId(
+  difficulty: AmendNotesDemoDifficulty,
+): AmendNotesDemoCase["id"] {
+  switch (difficulty) {
+    case "amend-notes-basic":
+      return "basic-amend-notes";
+    case "amend-notes-corrective":
+      return "corrective-amend-notes";
   }
 }
 
@@ -71,6 +99,8 @@ function calculateDifficultyScore(
       return 40;
     case "wrong-value-direct-conflict":
     case "wrong-value-no-direct-conflict":
+    case "amend-notes-basic":
+    case "amend-notes-corrective":
       return 0;
   }
 }

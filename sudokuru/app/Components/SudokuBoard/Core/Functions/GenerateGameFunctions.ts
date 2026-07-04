@@ -15,6 +15,11 @@ import {
   CellProps as WrongValueCellProps,
 } from "../../../../Data/hints/demo_wrong_value_hints";
 import {
+  getAmendNotesDemoCase,
+  AmendNotesDemoCase,
+  CellProps as AmendNotesCellProps,
+} from "../../../../Data/hints/demo_amend_notes_hints";
+import {
   BoardObjectProps,
   ClassicObjectProps,
   CellProps,
@@ -22,7 +27,9 @@ import {
 import { ClassicBoard } from "../../SudokuBoard";
 import {
   GameDifficulty,
+  getAmendNotesDemoCaseId,
   getWrongValueDemoCaseId,
+  isAmendNotesDemoDifficulty,
   isWrongValueDemoDifficulty,
 } from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
@@ -88,6 +95,8 @@ export const returnPuzzleOfDifficulty = (
       return retrieveRandomPuzzle(GRANDMASTER_PUZZLES);
     case "wrong-value-direct-conflict":
     case "wrong-value-no-direct-conflict":
+    case "amend-notes-basic":
+    case "amend-notes-corrective":
       return NOVICE_PUZZLES[0];
   }
 };
@@ -104,7 +113,12 @@ export const returnGameOfDifficulty = (
 ): BoardObjectProps => {
   if (difficulty !== "dev" && isWrongValueDemoDifficulty(difficulty)) {
     const demoCase = getWrongValueDemoCase(getWrongValueDemoCaseId(difficulty));
-    return convertWrongValueDemoCaseToSudokuObject(demoCase, difficulty);
+    return convertDemoCaseToSudokuObject(demoCase, difficulty);
+  }
+
+  if (difficulty !== "dev" && isAmendNotesDemoDifficulty(difficulty)) {
+    const demoCase = getAmendNotesDemoCase(getAmendNotesDemoCaseId(difficulty));
+    return convertDemoCaseToSudokuObject(demoCase, difficulty);
   }
 
   const puzzles = returnPuzzleOfDifficulty(difficulty);
@@ -192,7 +206,9 @@ export const convertPuzzleToSudokuObject = (
   return JSON.parse(JSON.stringify(game));
 };
 
-function convertWrongValueDemoCell(cell: WrongValueCellProps): CellProps {
+function convertDemoCell(
+  cell: WrongValueCellProps | AmendNotesCellProps,
+): CellProps {
   if (cell.type === "note") {
     return {
       type: "note",
@@ -206,8 +222,8 @@ function convertWrongValueDemoCell(cell: WrongValueCellProps): CellProps {
   };
 }
 
-function convertWrongValueDemoCaseToSudokuObject(
-  demoCase: WrongValueDemoCase,
+function convertDemoCaseToSudokuObject(
+  demoCase: WrongValueDemoCase | AmendNotesDemoCase,
   difficulty: GameDifficulty,
 ): ClassicObjectProps {
   const game: ClassicObjectProps = {
@@ -215,7 +231,7 @@ function convertWrongValueDemoCaseToSudokuObject(
     version: 1,
     selectedCells: [],
     puzzleState: demoCase.puzzle.map((row) =>
-      row.map((cell) => convertWrongValueDemoCell(cell)),
+      row.map((cell) => convertDemoCell(cell)),
     ),
     puzzleSolution: JSON.parse(JSON.stringify(demoCase.solution)),
     statistics: {

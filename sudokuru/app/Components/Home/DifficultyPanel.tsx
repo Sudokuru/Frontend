@@ -38,6 +38,16 @@ const difficulties: DifficultyItem[] = [
     value: "wrong-value-no-direct-conflict",
     testID: "WrongValueNoDirectConflict",
   },
+  {
+    label: "Amend Notes Basic",
+    value: "amend-notes-basic",
+    testID: "AmendNotesBasic",
+  },
+  {
+    label: "Amend Notes Corrective",
+    value: "amend-notes-corrective",
+    testID: "AmendNotesCorrective",
+  },
 ];
 
 const difficultyStars: ImageURISource[] = [

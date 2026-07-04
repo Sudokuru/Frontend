@@ -41,6 +41,7 @@ import {
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
 import type { WrongValueHint } from "../../Data/hints/demo_wrong_value_hints";
+import type { AmendNotesHint } from "../../Data/hints/demo_amend_notes_hints";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -73,13 +74,19 @@ export interface HintProps {
   removals: any;
   info: string;
   action: string;
-  stages?: WrongValueHint["stages"];
+  stages?: WrongValueHint["stages"] | AmendNotesHint["stages"];
 }
 
 export function isWrongValueHint(
   hint: HintProps,
 ): hint is HintProps & Pick<WrongValueHint, "stages"> {
   return hint.strategy === "WRONG_VALUE" && "stages" in hint;
+}
+
+export function isPlayableHint(hint: HintProps): hint is HintProps & {
+  stages: NonNullable<HintProps["stages"]>;
+} {
+  return Array.isArray(hint.stages);
 }
 
 const SudokuBoard = (props: Board) => {
@@ -218,7 +225,7 @@ const SudokuBoard = (props: Board) => {
     setSudokuHint({
       stage: 1,
       hint: hint,
-      maxStage: isWrongValueHint(hint) ? hint.stages.length : 5,
+      maxStage: isPlayableHint(hint) ? hint.stages.length : 5,
     });
   };
 
@@ -636,7 +643,7 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
-  const wrongValueStageHasCellActions = (
+  const playableHintStageHasCellActions = (
     stage: NonNullable<HintProps["stages"]>[number] | undefined,
   ): boolean => {
     return Boolean(
@@ -647,7 +654,7 @@ const SudokuBoard = (props: Board) => {
     );
   };
 
-  const applyWrongValueHintStage = (
+  const applyPlayableHintStage = (
     stage: NonNullable<HintProps["stages"]>[number] | undefined,
   ) => {
     if (!stage) {
@@ -736,14 +743,14 @@ const SudokuBoard = (props: Board) => {
 
         const undoStage = stageOffset === -1 && sudokuHint.stage === 5;
 
-        const wrongValueUndoStage =
+        const playableHintUndoStage =
           stageOffset === -1 &&
-          isWrongValueHint(sudokuHint.hint) &&
-          wrongValueStageHasCellActions(
+          isPlayableHint(sudokuHint.hint) &&
+          playableHintStageHasCellActions(
             sudokuHint.hint.stages[sudokuHint.stage - 1],
           );
 
-        if (amendNotesUndoStage || undoStage || wrongValueUndoStage) {
+        if (amendNotesUndoStage || undoStage || playableHintUndoStage) {
           undo();
         }
 
@@ -756,8 +763,8 @@ const SudokuBoard = (props: Board) => {
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
 
-    if (isWrongValueHint(sudokuHint.hint)) {
-      applyWrongValueHintStage(sudokuHint.hint.stages[currentStage - 1]);
+    if (isPlayableHint(sudokuHint.hint)) {
+      applyPlayableHintStage(sudokuHint.hint.stages[currentStage - 1]);
       return;
     }
 

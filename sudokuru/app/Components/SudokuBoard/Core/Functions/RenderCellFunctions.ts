@@ -15,8 +15,9 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
   NOT_HIGHLIGHTED_COLOR,
+  PLACE_NOTE_TEXT_COLOR,
 } from "../../../../Styling/HighlightColors";
-import { HintObjectProps, isWrongValueHint } from "../../SudokuBoard";
+import { HintObjectProps, isPlayableHint } from "../../SudokuBoard";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -44,11 +45,14 @@ export const getCellNotesColor = (
   theme: Theme,
 ) => {
   const notesToReturn = new Array(9).fill(theme.semantic.text.info);
-  if (sudokuHint && isWrongValueHint(sudokuHint.hint)) {
+  if (sudokuHint && isPlayableHint(sudokuHint.hint)) {
     const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
     for (const note of hintStage?.highlightNotes ?? []) {
       if (note.location.r === r && note.location.c === c) {
-        notesToReturn[note.value - 1] = theme.colors.error;
+        notesToReturn[note.value - 1] =
+          note.highlightType === "placement"
+            ? PLACE_NOTE_TEXT_COLOR
+            : theme.colors.error;
       }
     }
     return notesToReturn;
@@ -126,7 +130,7 @@ export const useCellBackgroundColor = (
   }
 
   if (sudokuHint) {
-    if (isWrongValueHint(sudokuHint.hint)) {
+    if (isPlayableHint(sudokuHint.hint)) {
       const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
       const cellHighlights = [
         ...(hintStage?.highlightCells ?? []),

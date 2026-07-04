@@ -5,10 +5,13 @@ import {
   HintStrategy,
 } from "../../../../Functions/LocalDatabase";
 import { getWrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
+import { getAmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
 import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 import {
+  getAmendNotesDemoCaseId,
   getWrongValueDemoCaseId,
+  isAmendNotesDemoDifficulty,
   isWrongValueDemoDifficulty,
 } from "./DifficultyFunctions";
 
@@ -140,6 +143,31 @@ export const getSudokuBoardHint = (
     } else {
       sudokuBoard.statistics.numHintsUsedPerStrategy.push({
         hintStrategy: "WRONG_VALUE",
+        numHintsUsed: 1,
+      });
+    }
+
+    return {
+      hint: demoCase.hint as HintProps,
+      updatedBoard: sudokuBoard,
+    };
+  }
+
+  if (isAmendNotesDemoDifficulty(sudokuBoard.statistics.difficulty)) {
+    const demoCase = getAmendNotesDemoCase(
+      getAmendNotesDemoCaseId(sudokuBoard.statistics.difficulty),
+    );
+    sudokuBoard.statistics.numHintsUsed++;
+
+    const existingAmendNotesStats =
+      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
+        (strategy) => strategy.hintStrategy === "AMEND_NOTES",
+      );
+    if (existingAmendNotesStats) {
+      existingAmendNotesStats.numHintsUsed++;
+    } else {
+      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: "AMEND_NOTES",
         numHintsUsed: 1,
       });
     }

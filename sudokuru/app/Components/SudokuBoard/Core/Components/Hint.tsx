@@ -1,5 +1,5 @@
 import { Text } from "react-native-paper";
-import { HintObjectProps, isWrongValueHint } from "../../SudokuBoard";
+import { HintObjectProps, isPlayableHint } from "../../SudokuBoard";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Platform, Pressable, View } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
@@ -54,12 +54,12 @@ const Hint = (hintProps: HintProps) => {
   };
 
   const renderHintStageContent = (stage: number) => {
-    if (isWrongValueHint(hint)) {
-      const wrongValueStage = hint.stages[stage - 1];
+    if (isPlayableHint(hint)) {
+      const playableHintStage = hint.stages[stage - 1];
       return (
         <>
           {hintTitle}
-          {wrongValueStage?.text && (
+          {playableHintStage?.text && (
             <Text
               style={{
                 textAlign: "center",
@@ -69,7 +69,7 @@ const Hint = (hintProps: HintProps) => {
                   : theme.semantic.text.info,
               }}
             >
-              {wrongValueStage.text}
+              {playableHintStage.text}
             </Text>
           )}
         </>
