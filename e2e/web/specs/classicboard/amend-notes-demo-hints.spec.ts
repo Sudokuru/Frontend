@@ -12,6 +12,7 @@ import {
   HINT_SELECTED_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
   NOT_SELECTED_CONFLICT_COLOR_RGB,
+  PLACE_NOTE_BACKGROUND_COLOR_RGB,
   PLACE_NOTE_TEXT_COLOR_RGB,
   REMOVE_NOTE_TEXT_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
@@ -103,7 +104,6 @@ const getStageHighlights = (
   const stageHighlights = [
     ...(stage.highlightCells ?? []),
     ...(stage.highlightValues ?? []),
-    ...(stage.highlightNotes ?? []),
   ];
   const removalCells = stageHighlights
     .filter((highlight) => highlight.highlightType === "removal")
@@ -205,6 +205,25 @@ const verifyHighlightedNoteColors = async (
   }
 };
 
+const verifyPlacedNoteHighlights = async (
+  sudokuBoard: SudokuBoardComponent,
+  demoCase: AmendNotesDemoCase,
+  stageIndex: number,
+) => {
+  for (const note of demoCase.hint.stages[stageIndex]?.highlightNotes ?? []) {
+    if (note.highlightType !== "placement") {
+      continue;
+    }
+
+    await sudokuBoard.cellNoteHasBackgroundColor(
+      note.location.r,
+      note.location.c,
+      note.value,
+      PLACE_NOTE_BACKGROUND_COLOR_RGB,
+    );
+  }
+};
+
 const amendNotesDemoCases = [
   {
     label: "Amend Notes Basic",
@@ -275,6 +294,11 @@ test.describe("amend notes demo hints", () => {
           demoCase.demoCase,
           stageIndex,
           getStageTargetNotesText(demoCase.demoCase, stageIndex),
+        );
+        await verifyPlacedNoteHighlights(
+          sudokuBoard,
+          demoCase.demoCase,
+          stageIndex,
         );
       }
 
