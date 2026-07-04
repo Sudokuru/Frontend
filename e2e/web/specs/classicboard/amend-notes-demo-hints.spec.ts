@@ -61,7 +61,7 @@ const getInitialTargetNotesText = (
 
 const getCellNotesText = (cell: NoteCellWithLocation) => cell.notes.join("");
 
-const getStageTargetNotesText = (
+const getVisibleStageTargetNotesText = (
   demoCase: AmendNotesDemoCase,
   stageIndex: number,
 ) => {
@@ -74,7 +74,7 @@ const getStageTargetNotesText = (
   }
 
   const notesRemovedThroughStage = demoCase.hint.stages
-    .slice(0, stageIndex + 1)
+    .slice(0, stageIndex)
     .flatMap((stage) => stage.removeNotes ?? [])
     .filter((cell) => cell.r === targetCell.r && cell.c === targetCell.c)
     .flatMap((cell) => cell.notes);
@@ -86,6 +86,30 @@ const getStageTargetNotesText = (
   if (!firstPlacement) {
     throw new Error(`Could not find placed notes for ${demoCase.id}`);
   }
+
+  return firstPlacement.notes
+    .filter((note) => !notesRemovedThroughStage.includes(note))
+    .join("");
+};
+
+const getAppliedStageTargetNotesText = (
+  demoCase: AmendNotesDemoCase,
+  stageIndex: number,
+) => {
+  const targetCell = getTargetCell(demoCase);
+  const firstPlacement = demoCase.hint.stages
+    .flatMap((stage) => stage.placeNotes ?? [])
+    .find((cell) => cell.r === targetCell.r && cell.c === targetCell.c);
+
+  if (!firstPlacement) {
+    throw new Error(`Could not find placed notes for ${demoCase.id}`);
+  }
+
+  const notesRemovedThroughStage = demoCase.hint.stages
+    .slice(0, stageIndex + 1)
+    .flatMap((stage) => stage.removeNotes ?? [])
+    .filter((cell) => cell.r === targetCell.r && cell.c === targetCell.c)
+    .flatMap((cell) => cell.notes);
 
   return firstPlacement.notes
     .filter((note) => !notesRemovedThroughStage.includes(note))
@@ -266,14 +290,14 @@ test.describe("amend notes demo hints", () => {
         await sudokuBoard.cellHasContent(
           demoCase.targetCell.r,
           demoCase.targetCell.c,
-          getStageTargetNotesText(demoCase.demoCase, stageIndex),
+          getVisibleStageTargetNotesText(demoCase.demoCase, stageIndex),
           "notes",
         );
         await verifyHighlightedNoteColors(
           sudokuBoard,
           demoCase.demoCase,
           stageIndex,
-          getStageTargetNotesText(demoCase.demoCase, stageIndex),
+          getVisibleStageTargetNotesText(demoCase.demoCase, stageIndex),
         );
       }
 
@@ -281,7 +305,7 @@ test.describe("amend notes demo hints", () => {
       await sudokuBoard.cellHasContent(
         demoCase.targetCell.r,
         demoCase.targetCell.c,
-        getStageTargetNotesText(demoCase.demoCase, 2),
+        getVisibleStageTargetNotesText(demoCase.demoCase, 2),
         "notes",
       );
 
@@ -289,7 +313,7 @@ test.describe("amend notes demo hints", () => {
       await sudokuBoard.cellHasContent(
         demoCase.targetCell.r,
         demoCase.targetCell.c,
-        getStageTargetNotesText(demoCase.demoCase, 1),
+        getVisibleStageTargetNotesText(demoCase.demoCase, 1),
         "notes",
       );
 
@@ -300,7 +324,7 @@ test.describe("amend notes demo hints", () => {
       await sudokuBoard.cellHasContent(
         demoCase.targetCell.r,
         demoCase.targetCell.c,
-        getStageTargetNotesText(demoCase.demoCase, 3),
+        getAppliedStageTargetNotesText(demoCase.demoCase, 3),
         "notes",
       );
     });

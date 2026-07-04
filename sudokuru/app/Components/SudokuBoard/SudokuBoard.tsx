@@ -643,19 +643,30 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
-  const playableHintStageHasCellActions = (
+  const playableHintStageHasEntryActions = (
     stage: NonNullable<HintProps["stages"]>[number] | undefined,
   ): boolean => {
     return Boolean(
       stage?.removeValues?.length ||
-        stage?.removeNotes?.length ||
         stage?.placeValues?.length ||
         stage?.placeNotes?.length,
     );
   };
 
+  const playableHintStageHasExitActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ): boolean => {
+    return Boolean(stage?.removeNotes?.length);
+  };
+
   const applyPlayableHintStage = (
     stage: NonNullable<HintProps["stages"]>[number] | undefined,
+    actions: {
+      removeValues?: boolean;
+      removeNotes?: boolean;
+      placeValues?: boolean;
+      placeNotes?: boolean;
+    },
   ) => {
     if (!stage) {
       return;
@@ -664,38 +675,110 @@ const SudokuBoard = (props: Board) => {
     const cells: CellProps[] = [];
     const locations: CellLocation[] = [];
 
-    for (const valueToRemove of stage.removeValues ?? []) {
-      cells.push({ type: "value", entry: 0 });
-      locations.push({ r: valueToRemove.r, c: valueToRemove.c });
+    if (actions.removeValues) {
+      for (const valueToRemove of stage.removeValues ?? []) {
+        cells.push({ type: "value", entry: 0 });
+        locations.push({ r: valueToRemove.r, c: valueToRemove.c });
+      }
     }
 
-    for (const valueToPlace of stage.placeValues ?? []) {
-      cells.push({ type: valueToPlace.type, entry: valueToPlace.value });
-      locations.push({ r: valueToPlace.r, c: valueToPlace.c });
+    if (actions.placeValues) {
+      for (const valueToPlace of stage.placeValues ?? []) {
+        cells.push({ type: valueToPlace.type, entry: valueToPlace.value });
+        locations.push({ r: valueToPlace.r, c: valueToPlace.c });
+      }
     }
 
-    for (const notesToRemove of stage.removeNotes ?? []) {
-      const currentCell =
-        sudokuBoard.puzzleState[notesToRemove.r][notesToRemove.c];
-      const currentNotes =
-        currentCell.type === "note" ? (currentCell.entry as number[]) : [];
-      cells.push({
-        type: "note",
-        entry: currentNotes.filter(
-          (note) => !notesToRemove.notes.includes(note),
-        ),
-      });
-      locations.push({ r: notesToRemove.r, c: notesToRemove.c });
+    if (actions.removeNotes) {
+      for (const notesToRemove of stage.removeNotes ?? []) {
+        const currentCell =
+          sudokuBoard.puzzleState[notesToRemove.r][notesToRemove.c];
+        const currentNotes =
+          currentCell.type === "note" ? (currentCell.entry as number[]) : [];
+        cells.push({
+          type: "note",
+          entry: currentNotes.filter(
+            (note) => !notesToRemove.notes.includes(note),
+          ),
+        });
+        locations.push({ r: notesToRemove.r, c: notesToRemove.c });
+      }
     }
 
-    for (const notesToPlace of stage.placeNotes ?? []) {
-      cells.push({ type: "note", entry: [...notesToPlace.notes] });
-      locations.push({ r: notesToPlace.r, c: notesToPlace.c });
+    if (actions.placeNotes) {
+      for (const notesToPlace of stage.placeNotes ?? []) {
+        cells.push({ type: "note", entry: [...notesToPlace.notes] });
+        locations.push({ r: notesToPlace.r, c: notesToPlace.c });
+      }
     }
 
     if (cells.length > 0) {
       replaceSudokuBoardCells(cells, locations);
     }
+  };
+
+  const applyPlayableHintStageEntryActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ) => {
+    applyPlayableHintStage(stage, {
+      removeValues: true,
+      placeValues: true,
+      placeNotes: true,
+    });
+  };
+
+  const applyPlayableHintStageExitActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ) => {
+    applyPlayableHintStage(stage, {
+      removeNotes: true,
+    });
+  };
+
+  const updatePlayableHintStage = (stageOffset: number) => {
+    if (!sudokuHint || !isPlayableHint(sudokuHint.hint)) {
+      return;
+    }
+
+    const currentStage = sudokuHint.stage;
+    const nextStage = currentStage + stageOffset;
+
+    if (nextStage === 0) {
+      setSudokuHint(undefined);
+      return;
+    }
+
+    if (stageOffset === -1) {
+      const currentStageHint = sudokuHint.hint.stages[currentStage - 1];
+      const previousStageHint = sudokuHint.hint.stages[nextStage - 1];
+      if (playableHintStageHasEntryActions(currentStageHint)) {
+        undo();
+      }
+      if (playableHintStageHasExitActions(previousStageHint)) {
+        undo();
+      }
+
+      setSudokuHint({
+        ...sudokuHint,
+        stage: nextStage,
+      });
+      return;
+    }
+
+    const currentStageHint = sudokuHint.hint.stages[currentStage - 1];
+    applyPlayableHintStageExitActions(currentStageHint);
+
+    if (nextStage === sudokuHint.maxStage + 1) {
+      setSudokuHint(undefined);
+      return;
+    }
+
+    const nextStageHint = sudokuHint.hint.stages[nextStage - 1];
+    applyPlayableHintStageEntryActions(nextStageHint);
+    setSudokuHint({
+      ...sudokuHint,
+      stage: nextStage,
+    });
   };
 
   /**
@@ -713,6 +796,11 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     if (!sudokuHint) {
+      return;
+    }
+
+    if (isPlayableHint(sudokuHint.hint)) {
+      updatePlayableHintStage(stageOffset);
       return;
     }
 
@@ -743,14 +831,7 @@ const SudokuBoard = (props: Board) => {
 
         const undoStage = stageOffset === -1 && sudokuHint.stage === 5;
 
-        const playableHintUndoStage =
-          stageOffset === -1 &&
-          isPlayableHint(sudokuHint.hint) &&
-          playableHintStageHasCellActions(
-            sudokuHint.hint.stages[sudokuHint.stage - 1],
-          );
-
-        if (amendNotesUndoStage || undoStage || playableHintUndoStage) {
+        if (amendNotesUndoStage || undoStage) {
           undo();
         }
 
@@ -762,11 +843,6 @@ const SudokuBoard = (props: Board) => {
     }
 
     const currentStage = sudokuHint.stage + stageOffset; // keep track of updated state
-
-    if (isPlayableHint(sudokuHint.hint)) {
-      applyPlayableHintStage(sudokuHint.hint.stages[currentStage - 1]);
-      return;
-    }
 
     const removals: number[][] = JSON.parse(
       JSON.stringify(sudokuHint.hint.removals),
