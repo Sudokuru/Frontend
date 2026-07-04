@@ -154,18 +154,6 @@ export class SudokuBoardComponent {
     ).toHaveCSS("color", color);
   }
 
-  async cellNoteHasBackgroundColor(
-    row: number,
-    column: number,
-    note: number,
-    color: string,
-  ) {
-    await expect(this.cell[row][column].getByTestId(`note${note}`)).toHaveCSS(
-      "background-color",
-      color,
-    );
-  }
-
   async cellHasContent(
     row: number,
     column: number,

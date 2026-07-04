@@ -15,7 +15,6 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
   NOT_HIGHLIGHTED_COLOR,
-  PLACE_NOTE_BACKGROUND_COLOR,
   PLACE_NOTE_TEXT_COLOR,
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps, isPlayableHint } from "../../SudokuBoard";
@@ -74,27 +73,8 @@ export const getCellNotesColor = (
   return notesToReturn;
 };
 
-export const getCellBackgroundNotesColor = (
-  sudokuHint: HintObjectProps | undefined,
-  r: number,
-  c: number,
-  cellBackgroundColor: string,
-) => {
-  const notesToReturn = new Array(9).fill(cellBackgroundColor);
-  if (sudokuHint && isPlayableHint(sudokuHint.hint)) {
-    const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
-    for (const note of hintStage?.highlightNotes ?? []) {
-      if (
-        note.location.r === r &&
-        note.location.c === c &&
-        note.highlightType === "placement"
-      ) {
-        notesToReturn[note.value - 1] = PLACE_NOTE_BACKGROUND_COLOR;
-      }
-    }
-  }
-
-  return notesToReturn;
+export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
+  return new Array(9).fill(cellBackgroundColor);
 };
 
 /**

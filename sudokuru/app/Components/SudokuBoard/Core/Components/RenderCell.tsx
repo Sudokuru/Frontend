@@ -35,12 +35,8 @@ const RenderCell = (
   );
   const disable: boolean = isBoardDisabled(sudokuHint);
   const noteColor: string[] = getCellNotesColor(sudokuHint, r, c, theme);
-  const backgroundNotesColor: string[] = getCellBackgroundNotesColor(
-    sudokuHint,
-    r,
-    c,
-    cellBackgroundColor,
-  );
+  const backgroundNotesColor: string[] =
+    getCellBackgroundNotesColor(cellBackgroundColor);
 
   return (
     <Cell
