@@ -15,6 +15,7 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
   NOT_HIGHLIGHTED_COLOR,
+  PLACEMENT_COLOR,
   PLACE_NOTE_TEXT_COLOR,
 } from "../../../../Styling/HighlightColors";
 import { HintObjectProps, isPlayableHint } from "../../SudokuBoard";
@@ -139,9 +140,11 @@ export const useCellBackgroundColor = (
       const hasRemovalHighlight = cellHighlights.some(
         (cell) => cell.highlightType === "removal",
       );
-      const hasSelectedHighlight = cellHighlights.some(
-        (cell) =>
-          cell.highlightType === "basis" || cell.highlightType === "placement",
+      const hasPlacementHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "placement",
+      );
+      const hasBasisHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "basis",
       );
       const hasFocusHighlight = cellHighlights.some(
         (cell) => cell.highlightType === "focus",
@@ -149,7 +152,9 @@ export const useCellBackgroundColor = (
 
       if (hasRemovalHighlight) {
         cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
-      } else if (hasSelectedHighlight) {
+      } else if (hasPlacementHighlight) {
+        cellBackgroundColor = PLACEMENT_COLOR;
+      } else if (hasBasisHighlight) {
         cellBackgroundColor = HINT_SELECTED_COLOR;
       } else if (hasFocusHighlight) {
         cellBackgroundColor = NOT_HIGHLIGHTED_COLOR;

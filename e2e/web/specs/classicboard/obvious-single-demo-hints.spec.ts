@@ -11,6 +11,7 @@ import {
   HINT_SELECTED_COLOR_RGB,
   NOT_HIGHLIGHTED_COLOR_RGB,
   NOT_SELECTED_CONFLICT_COLOR_RGB,
+  PLACEMENT_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
 
 const demoCase: ObviousSingleDemoCase = getObviousSingleDemoCase(
@@ -52,12 +53,11 @@ const getStageHighlights = (
     removalCells: stageHighlights
       .filter((highlight) => highlight.highlightType === "removal")
       .map((highlight) => highlight.location),
-    selectedCells: stageHighlights
-      .filter(
-        (highlight) =>
-          highlight.highlightType === "basis" ||
-          highlight.highlightType === "placement",
-      )
+    basisCells: stageHighlights
+      .filter((highlight) => highlight.highlightType === "basis")
+      .map((highlight) => highlight.location),
+    placementCells: stageHighlights
+      .filter((highlight) => highlight.highlightType === "placement")
       .map((highlight) => highlight.location),
     focusCells: stageHighlights
       .filter((highlight) => highlight.highlightType === "focus")
@@ -85,10 +85,8 @@ const verifyStageHighlights = async (
   sudokuBoard: SudokuBoardComponent,
   stageIndex: number,
 ) => {
-  const { removalCells, selectedCells, focusCells } = getStageHighlights(
-    demoCase,
-    stageIndex,
-  );
+  const { removalCells, basisCells, placementCells, focusCells } =
+    getStageHighlights(demoCase, stageIndex);
 
   for (const cell of removalCells) {
     await sudokuBoard.cellHasColor(
@@ -98,8 +96,12 @@ const verifyStageHighlights = async (
     );
   }
 
-  for (const cell of selectedCells) {
+  for (const cell of basisCells) {
     await sudokuBoard.cellHasColor(cell.r, cell.c, HINT_SELECTED_COLOR_RGB);
+  }
+
+  for (const cell of placementCells) {
+    await sudokuBoard.cellHasColor(cell.r, cell.c, PLACEMENT_COLOR_RGB);
   }
 
   for (const cell of focusCells) {
@@ -108,7 +110,8 @@ const verifyStageHighlights = async (
 
   const outsideHighlightCell = getOutsideHighlightCell(
     removalCells,
-    selectedCells,
+    basisCells,
+    placementCells,
     focusCells,
   );
   await sudokuBoard.cellHasColor(
