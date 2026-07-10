@@ -143,6 +143,17 @@ export class SudokuBoardComponent {
     ).toBeInViewport({ ratio: 1 });
   }
 
+  async cellNoteHasColor(
+    row: number,
+    column: number,
+    note: number,
+    color: string,
+  ) {
+    await expect(
+      this.cell[row][column].getByTestId(`note${note}`).getByText(`${note}`),
+    ).toHaveCSS("color", color);
+  }
+
   async cellHasContent(
     row: number,
     column: number,

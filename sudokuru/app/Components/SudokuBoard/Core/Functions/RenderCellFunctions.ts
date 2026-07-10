@@ -14,8 +14,11 @@ import {
   PEER_SELECTED_COLOR,
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
+  NOT_HIGHLIGHTED_COLOR,
+  PLACEMENT_COLOR,
+  PLACE_NOTE_TEXT_COLOR,
 } from "../../../../Styling/HighlightColors";
-import { HintObjectProps } from "../../SudokuBoard";
+import { HintObjectProps, isPlayableHint } from "../../SudokuBoard";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -43,6 +46,19 @@ export const getCellNotesColor = (
   theme: Theme,
 ) => {
   const notesToReturn = new Array(9).fill(theme.semantic.text.info);
+  if (sudokuHint && isPlayableHint(sudokuHint.hint)) {
+    const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
+    for (const note of hintStage?.highlightNotes ?? []) {
+      if (note.location.r === r && note.location.c === c) {
+        notesToReturn[note.value - 1] =
+          note.highlightType === "placement"
+            ? PLACE_NOTE_TEXT_COLOR
+            : theme.colors.error;
+      }
+    }
+    return notesToReturn;
+  }
+
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
     const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
@@ -115,6 +131,39 @@ export const useCellBackgroundColor = (
   }
 
   if (sudokuHint) {
+    if (isPlayableHint(sudokuHint.hint)) {
+      const hintStage = sudokuHint.hint.stages[sudokuHint.stage - 1];
+      const cellHighlights = [
+        ...(hintStage?.highlightCells ?? []),
+        ...(hintStage?.highlightValues ?? []),
+      ].filter((cell) => cell.location.r === r && cell.location.c === c);
+      const hasRemovalHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "removal",
+      );
+      const hasPlacementHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "placement",
+      );
+      const hasBasisHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "basis",
+      );
+      const hasFocusHighlight = cellHighlights.some(
+        (cell) => cell.highlightType === "focus",
+      );
+
+      if (hasRemovalHighlight) {
+        cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
+      } else if (hasPlacementHighlight) {
+        cellBackgroundColor = PLACEMENT_COLOR;
+      } else if (hasBasisHighlight) {
+        cellBackgroundColor = HINT_SELECTED_COLOR;
+      } else if (hasFocusHighlight) {
+        cellBackgroundColor = NOT_HIGHLIGHTED_COLOR;
+      } else {
+        cellBackgroundColor = HINT_NOT_HIGHLIGHTED_COLOR;
+      }
+      return cellBackgroundColor;
+    }
+
     const hintCause = isCellAHintCause(sudokuHint, r, c);
     const hintFocus = isCellAHintFocus(sudokuHint, r, c);
 

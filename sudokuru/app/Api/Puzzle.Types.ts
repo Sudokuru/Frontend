@@ -1,4 +1,5 @@
 import { SudokuStrategy } from "sudokuru";
+import type { HintStrategy } from "../Functions/LocalDatabase";
 
 export interface Puzzle {
   puzzle: string;
@@ -49,7 +50,7 @@ export interface Statistics {
   numWrongCellsPlayed: number;
   numHintsUsed: number;
   numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
+    hintStrategy: HintStrategy;
     numHintsUsed: number;
   }[];
 }

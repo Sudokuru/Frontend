@@ -28,7 +28,7 @@ interface ListPanelProps<T> {
   getTitleTestID?: (item: T, index: number) => string;
   getSubtitle?: (item: T, index: number) => string | undefined;
   getSubtitleTestID?: (item: T, index: number) => string | undefined;
-  getSubtitleColor?: (item: T, index: number) => string;
+  getSubtitleColor?: (item: T, index: number) => string | undefined;
   getCardImage?: (item: T, index: number) => ImageURISource | undefined;
   getImageAccessibilityLabel?: (item: T, index: number) => string | undefined;
   renderImageContent?: (

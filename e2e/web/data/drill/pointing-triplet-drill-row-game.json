@@ -7,71 +7,31 @@
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [4, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            8
-          ]
+          "entry": [1, 4, 6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            5,
-            6
-          ]
+          "entry": [1, 2, 4, 5, 6]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            6,
-            8
-          ]
+          "entry": [2, 4, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            8
-          ]
+          "entry": [1, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         },
         {
           "type": "given",
@@ -79,39 +39,21 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            8
-          ]
+          "entry": [4, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            8
-          ]
+          "entry": [1, 4, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "given",
@@ -131,19 +73,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6
-          ]
+          "entry": [1, 2, 6]
         }
       ],
       [
@@ -161,42 +95,23 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6
-          ]
+          "entry": [4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6
-          ]
+          "entry": [1, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            9
-          ]
+          "entry": [1, 4, 9]
         },
         {
           "type": "given",
@@ -210,19 +125,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            5
-          ]
+          "entry": [1, 4, 5]
         },
         {
           "type": "given",
@@ -230,26 +137,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5
-          ]
+          "entry": [2, 4, 5]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            9
-          ]
+          "entry": [1, 2, 9]
         },
         {
           "type": "given",
@@ -257,21 +153,13 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            9
-          ]
+          "entry": [1, 2, 5, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7
-          ]
+          "entry": [2, 7]
         },
         {
           "type": "given",
@@ -279,19 +167,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            7
-          ]
+          "entry": [5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            6,
-            7
-          ]
+          "entry": [2, 5, 6, 7]
         },
         {
           "type": "given",
@@ -299,10 +179,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6
-          ]
+          "entry": [5, 6]
         },
         {
           "type": "given",
@@ -310,11 +187,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            8
-          ]
+          "entry": [2, 5, 8]
         },
         {
           "type": "given",
@@ -324,21 +197,11 @@
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            3,
-            4,
-            7
-          ]
+          "entry": [2, 3, 4, 7]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            7
-          ]
+          "entry": [1, 2, 4, 7]
         },
         {
           "type": "given",
@@ -350,26 +213,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            7
-          ]
+          "entry": [2, 4, 5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2
-          ]
+          "entry": [1, 2]
         },
         {
           "type": "given",
@@ -377,11 +229,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5
-          ]
+          "entry": [1, 2, 5]
         }
       ],
       [
@@ -391,36 +239,19 @@
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            8
-          ]
+          "entry": [6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            9
-          ]
+          "entry": [6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7
-          ]
+          "entry": [5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -432,33 +263,17 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            8,
-            9
-          ]
+          "entry": [5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [3, 5, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 4, 7, 8, 9]
         },
         {
           "type": "given",
@@ -466,20 +281,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7
-          ]
+          "entry": [1, 6, 7]
         },
         {
           "type": "given",
@@ -487,62 +293,29 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            8,
-            9
-          ]
+          "entry": [1, 6, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            8,
-            9
-          ]
+          "entry": [1, 2, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            6,
-            7,
-            8
-          ]
+          "entry": [2, 6, 7, 8]
         },
         {
           "type": "given",
@@ -550,21 +323,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            7
-          ]
+          "entry": [1, 5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -572,35 +335,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            8,
-            9
-          ]
+          "entry": [1, 2, 5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 5, 6, 7, 9]
         }
       ]
     ],
@@ -608,71 +351,31 @@
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [4, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            8
-          ]
+          "entry": [1, 4, 6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            5,
-            6
-          ]
+          "entry": [1, 2, 4, 5, 6]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            6,
-            8
-          ]
+          "entry": [2, 4, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            8
-          ]
+          "entry": [1, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         },
         {
           "type": "given",
@@ -680,39 +383,21 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            8
-          ]
+          "entry": [4, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            8
-          ]
+          "entry": [1, 4, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "given",
@@ -732,19 +417,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6
-          ]
+          "entry": [1, 2, 6]
         }
       ],
       [
@@ -762,42 +439,23 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6
-          ]
+          "entry": [4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6
-          ]
+          "entry": [1, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            9
-          ]
+          "entry": [1, 4, 9]
         },
         {
           "type": "given",
@@ -811,19 +469,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            5
-          ]
+          "entry": [1, 4, 5]
         },
         {
           "type": "given",
@@ -831,26 +481,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5
-          ]
+          "entry": [2, 4, 5]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            9
-          ]
+          "entry": [1, 2, 9]
         },
         {
           "type": "given",
@@ -858,21 +497,13 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            9
-          ]
+          "entry": [1, 2, 5, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7
-          ]
+          "entry": [2, 7]
         },
         {
           "type": "given",
@@ -880,19 +511,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            7
-          ]
+          "entry": [5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            6,
-            7
-          ]
+          "entry": [2, 5, 6, 7]
         },
         {
           "type": "given",
@@ -900,10 +523,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6
-          ]
+          "entry": [5, 6]
         },
         {
           "type": "given",
@@ -911,11 +531,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            8
-          ]
+          "entry": [2, 5, 8]
         },
         {
           "type": "given",
@@ -925,21 +541,11 @@
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            3,
-            4,
-            7
-          ]
+          "entry": [2, 3, 4, 7]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            7
-          ]
+          "entry": [1, 2, 4, 7]
         },
         {
           "type": "given",
@@ -951,26 +557,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            7
-          ]
+          "entry": [2, 4, 5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2
-          ]
+          "entry": [1, 2]
         },
         {
           "type": "given",
@@ -978,11 +573,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5
-          ]
+          "entry": [1, 2, 5]
         }
       ],
       [
@@ -992,36 +583,19 @@
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            8
-          ]
+          "entry": [6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            9
-          ]
+          "entry": [6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7
-          ]
+          "entry": [5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1033,33 +607,17 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            8,
-            9
-          ]
+          "entry": [5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [3, 5, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 4, 7, 8, 9]
         },
         {
           "type": "given",
@@ -1067,20 +625,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7
-          ]
+          "entry": [1, 6, 7]
         },
         {
           "type": "given",
@@ -1088,62 +637,29 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            8,
-            9
-          ]
+          "entry": [1, 6, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            8,
-            9
-          ]
+          "entry": [1, 2, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            6,
-            7,
-            8
-          ]
+          "entry": [2, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1151,21 +667,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            7
-          ]
+          "entry": [1, 5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1173,35 +679,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            8,
-            9
-          ]
+          "entry": [1, 2, 5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 5, 6, 7, 9]
         }
       ]
     ],
@@ -1209,70 +695,31 @@
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [4, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            8
-          ]
+          "entry": [1, 4, 6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            5,
-            6
-          ]
+          "entry": [1, 2, 4, 5, 6]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            6,
-            8
-          ]
+          "entry": [2, 4, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            8
-          ]
+          "entry": [1, 5, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            9
-          ]
+          "entry": [1, 2, 6, 9]
         },
         {
           "type": "given",
@@ -1280,38 +727,21 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            9
-          ]
+          "entry": [1, 2, 6, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            4,
-            8
-          ]
+          "entry": [4, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6,
-            8
-          ]
+          "entry": [1, 4, 6, 8]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "given",
@@ -1331,19 +761,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6
-          ]
+          "entry": [1, 2, 6]
         }
       ],
       [
@@ -1361,42 +783,23 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            6
-          ]
+          "entry": [1, 4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6
-          ]
+          "entry": [4, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6
-          ]
+          "entry": [1, 6]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            9
-          ]
+          "entry": [1, 4, 9]
         },
         {
           "type": "given",
@@ -1410,19 +813,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4
-          ]
+          "entry": [1, 2, 4]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            4,
-            5
-          ]
+          "entry": [1, 4, 5]
         },
         {
           "type": "given",
@@ -1430,26 +825,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5
-          ]
+          "entry": [2, 4, 5]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            9
-          ]
+          "entry": [1, 2, 9]
         },
         {
           "type": "given",
@@ -1457,21 +841,13 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            9
-          ]
+          "entry": [1, 2, 5, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7
-          ]
+          "entry": [2, 7]
         },
         {
           "type": "given",
@@ -1479,19 +855,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            7
-          ]
+          "entry": [5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            6,
-            7
-          ]
+          "entry": [2, 5, 6, 7]
         },
         {
           "type": "given",
@@ -1499,10 +867,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6
-          ]
+          "entry": [5, 6]
         },
         {
           "type": "given",
@@ -1510,11 +875,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            5,
-            8
-          ]
+          "entry": [2, 5, 8]
         },
         {
           "type": "given",
@@ -1524,21 +885,11 @@
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            3,
-            4,
-            7
-          ]
+          "entry": [2, 3, 4, 7]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            4,
-            7
-          ]
+          "entry": [1, 2, 4, 7]
         },
         {
           "type": "given",
@@ -1550,26 +901,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            5,
-            7
-          ]
+          "entry": [2, 4, 5, 7]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5
-          ]
+          "entry": [3, 5]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2
-          ]
+          "entry": [1, 2]
         },
         {
           "type": "given",
@@ -1577,11 +917,7 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5
-          ]
+          "entry": [1, 2, 5]
         }
       ],
       [
@@ -1591,36 +927,19 @@
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            8
-          ]
+          "entry": [6, 7, 8]
         },
         {
           "type": "note",
-          "entry": [
-            6,
-            7,
-            9
-          ]
+          "entry": [6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7
-          ]
+          "entry": [5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1632,33 +951,17 @@
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            8,
-            9
-          ]
+          "entry": [5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            3,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [3, 5, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            4,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 4, 7, 8, 9]
         },
         {
           "type": "given",
@@ -1666,20 +969,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            4,
-            6,
-            7,
-            9
-          ]
+          "entry": [4, 6, 7, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            7
-          ]
+          "entry": [1, 6, 7]
         },
         {
           "type": "given",
@@ -1687,62 +981,29 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            6,
-            8,
-            9
-          ]
+          "entry": [1, 6, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            8,
-            9
-          ]
+          "entry": [1, 2, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 9]
         }
       ],
       [
         {
           "type": "note",
-          "entry": [
-            2,
-            7,
-            8,
-            9
-          ]
+          "entry": [2, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            2,
-            6,
-            7,
-            8
-          ]
+          "entry": [2, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1750,21 +1011,11 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            5,
-            6,
-            7
-          ]
+          "entry": [1, 5, 6, 7]
         },
         {
           "type": "note",
-          "entry": [
-            5,
-            6,
-            7,
-            8
-          ]
+          "entry": [5, 6, 7, 8]
         },
         {
           "type": "given",
@@ -1772,35 +1023,15 @@
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            6,
-            7,
-            8,
-            9
-          ]
+          "entry": [1, 2, 6, 7, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            8,
-            9
-          ]
+          "entry": [1, 2, 5, 8, 9]
         },
         {
           "type": "note",
-          "entry": [
-            1,
-            2,
-            5,
-            6,
-            7,
-            9
-          ]
+          "entry": [1, 2, 5, 6, 7, 9]
         }
       ]
     ],

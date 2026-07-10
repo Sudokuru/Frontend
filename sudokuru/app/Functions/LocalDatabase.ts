@@ -3,6 +3,8 @@ import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
 
+export type HintStrategy = SudokuStrategy | "WRONG_VALUE";
+
 export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
   version: number;
@@ -63,7 +65,7 @@ export interface ClassicGameStatistics {
   numWrongCellsPlayed: number;
   numHintsUsed: number;
   numHintsUsedPerStrategy: {
-    hintStrategy: SudokuStrategy;
+    hintStrategy: HintStrategy;
     numHintsUsed: number;
   }[];
 }
@@ -112,6 +114,13 @@ const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
   "pundit",
   "master",
   "grandmaster",
+  "wrong-value-direct-conflict",
+  "wrong-value-no-direct-conflict",
+];
+
+const SUDOKU_HINT_STRATEGIES: HintStrategy[] = [
+  ...SUDOKU_STRATEGY_ARRAY,
+  "WRONG_VALUE",
 ];
 
 const SudokuBoardCellSchema = z.union([
@@ -149,7 +158,7 @@ export const SudokuBoardClassicSchema = z.object({
     numHintsUsedPerStrategy: z.array(
       z.object({
         hintStrategy: z.enum(
-          Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
+          Object.values(SUDOKU_HINT_STRATEGIES) as [string, ...string[]],
         ),
         numHintsUsed: z.number().int().nonnegative().finite().safe(),
       }),
@@ -233,7 +242,7 @@ export const StatisticsSchema = z.object({
   numHintsUsedPerStrategy: z.array(
     z.object({
       hintStrategy: z.enum(
-        Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
+        Object.values(SUDOKU_HINT_STRATEGIES) as [string, ...string[]],
       ),
       numHintsUsed: z.number().int().nonnegative().finite().safe(),
     }),

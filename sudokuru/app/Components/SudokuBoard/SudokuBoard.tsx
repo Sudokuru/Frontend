@@ -18,7 +18,10 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
 import { useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
-import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
+import {
+  GameDifficulty,
+  isWrongValueDemoDifficulty,
+} from "./Core/Functions/DifficultyFunctions";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
@@ -37,6 +40,9 @@ import {
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
+import type { WrongValueHint } from "../../Data/hints/demo_wrong_value_hints";
+import type { AmendNotesHint } from "../../Data/hints/demo_amend_notes_hints";
+import type { ObviousSingleHint } from "../../Data/hints/demo_obvious_single_hints";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -69,6 +75,22 @@ export interface HintProps {
   removals: any;
   info: string;
   action: string;
+  stages?:
+    | WrongValueHint["stages"]
+    | AmendNotesHint["stages"]
+    | ObviousSingleHint["stages"];
+}
+
+export function isWrongValueHint(
+  hint: HintProps,
+): hint is HintProps & Pick<WrongValueHint, "stages"> {
+  return hint.strategy === "WRONG_VALUE" && "stages" in hint;
+}
+
+export function isPlayableHint(hint: HintProps): hint is HintProps & {
+  stages: NonNullable<HintProps["stages"]>;
+} {
+  return Array.isArray(hint.stages);
 }
 
 const SudokuBoard = (props: Board) => {
@@ -207,7 +229,7 @@ const SudokuBoard = (props: Board) => {
     setSudokuHint({
       stage: 1,
       hint: hint,
-      maxStage: 5,
+      maxStage: isPlayableHint(hint) ? hint.stages.length : 5,
     });
   };
 
@@ -536,10 +558,14 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     const inNoteMode = sudokuBoard.inNoteMode;
-    const boardHasConflict = doesBoardHaveConflict(
-      sudokuBoard,
-      boardMethods[props.type].doesCellHaveConflict,
-    );
+    const boardHasConflict =
+      sudokuBoard.variant === "classic" &&
+      isWrongValueDemoDifficulty(sudokuBoard.statistics.difficulty)
+        ? false
+        : doesBoardHaveConflict(
+            sudokuBoard,
+            boardMethods[props.type].doesCellHaveConflict,
+          );
     const eraseButtonDisabled = isEraseButtonDisabled(sudokuBoard);
     const isUndoButtonDisabled = sudokuBoard.actionHistory.length === 0;
     const isResetButtonDisabled = sudokuBoard.actionHistory.length === 0;
@@ -621,6 +647,157 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
+  const playableHintStageHasEntryActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ): boolean => {
+    return Boolean(
+      stage?.removeValues?.length ||
+        stage?.placeValues?.length ||
+        stage?.placeNotes?.length,
+    );
+  };
+
+  const playableHintStageHasExitActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ): boolean => {
+    return Boolean(stage?.removeNotes?.length);
+  };
+
+  const applyPlayableHintStage = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+    actions: {
+      removeValues?: boolean;
+      removeNotes?: boolean;
+      placeValues?: boolean;
+      placeNotes?: boolean;
+    },
+  ) => {
+    if (!stage) {
+      return;
+    }
+
+    const cells: CellProps[] = [];
+    const locations: CellLocation[] = [];
+
+    if (actions.removeValues) {
+      for (const valueToRemove of stage.removeValues ?? []) {
+        cells.push({ type: "value", entry: 0 });
+        locations.push({ r: valueToRemove.r, c: valueToRemove.c });
+      }
+    }
+
+    if (actions.placeValues) {
+      for (const valueToPlace of stage.placeValues ?? []) {
+        cells.push({ type: valueToPlace.type, entry: valueToPlace.value });
+        locations.push({ r: valueToPlace.r, c: valueToPlace.c });
+      }
+    }
+
+    if (actions.removeNotes) {
+      for (const notesToRemove of stage.removeNotes ?? []) {
+        const currentCell =
+          sudokuBoard.puzzleState[notesToRemove.r][notesToRemove.c];
+        const currentNotes =
+          currentCell.type === "note" ? (currentCell.entry as number[]) : [];
+        cells.push({
+          type: "note",
+          entry: currentNotes.filter(
+            (note) => !notesToRemove.notes.includes(note),
+          ),
+        });
+        locations.push({ r: notesToRemove.r, c: notesToRemove.c });
+      }
+    }
+
+    if (actions.placeNotes) {
+      for (const notesToPlace of stage.placeNotes ?? []) {
+        cells.push({ type: "note", entry: [...notesToPlace.notes] });
+        locations.push({ r: notesToPlace.r, c: notesToPlace.c });
+      }
+    }
+
+    if (cells.length > 0) {
+      replaceSudokuBoardCells(cells, locations);
+    }
+  };
+
+  const applyPlayableHintStageEntryActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ) => {
+    applyPlayableHintStage(stage, {
+      removeValues: true,
+      placeValues: true,
+      placeNotes: true,
+    });
+  };
+
+  const applyPlayableHintStageExitActions = (
+    stage: NonNullable<HintProps["stages"]>[number] | undefined,
+  ) => {
+    applyPlayableHintStage(stage, {
+      removeNotes: true,
+    });
+  };
+
+  const updatePlayableHintStage = (
+    stageOffset: number,
+    finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
+  ) => {
+    if (!sudokuHint || !isPlayableHint(sudokuHint.hint)) {
+      return;
+    }
+
+    const currentStage = sudokuHint.stage;
+    const nextStage = currentStage + stageOffset;
+
+    if (nextStage === 0) {
+      setSudokuHint(undefined);
+      return;
+    }
+
+    if (stageOffset === -1) {
+      const currentStageHint = sudokuHint.hint.stages[currentStage - 1];
+      const previousStageHint = sudokuHint.hint.stages[nextStage - 1];
+      if (playableHintStageHasEntryActions(currentStageHint)) {
+        undo();
+      }
+      if (playableHintStageHasExitActions(previousStageHint)) {
+        undo();
+      }
+
+      setSudokuHint({
+        ...sudokuHint,
+        stage: nextStage,
+      });
+      return;
+    }
+
+    const currentStageHint = sudokuHint.hint.stages[currentStage - 1];
+    applyPlayableHintStageExitActions(currentStageHint);
+
+    if (nextStage === sudokuHint.maxStage + 1) {
+      setSudokuHint(undefined);
+      if (isGameSolved(sudokuBoard)) {
+        setSudokuBoard({
+          ...sudokuBoard,
+          puzzleState: sudokuBoard.puzzleState,
+          actionHistory: sudokuBoard.actionHistory,
+          //@ts-ignore
+          statistics: finishSudokuGame(sudokuBoard.statistics, props.type),
+        });
+        setGameOver(true);
+      }
+      return;
+    }
+
+    const nextStageHint = sudokuHint.hint.stages[nextStage - 1];
+    applyPlayableHintStageEntryActions(nextStageHint);
+    setSudokuHint({
+      ...sudokuHint,
+      stage: nextStage,
+    });
+  };
+
   /**
    * Increments the hint stage depending on user actions
    * This is an incredibly messy function, but it works.
@@ -636,6 +813,11 @@ const SudokuBoard = (props: Board) => {
       return;
     }
     if (!sudokuHint) {
+      return;
+    }
+
+    if (isPlayableHint(sudokuHint.hint)) {
+      updatePlayableHintStage(stageOffset, finishSudokuGame);
       return;
     }
 

@@ -1,3 +1,17 @@
+import type { WrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
+import type { AmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
+import type { ObviousSingleDemoCase } from "../../../../Data/hints/demo_obvious_single_hints";
+
+export type WrongValueDemoDifficulty =
+  | "wrong-value-direct-conflict"
+  | "wrong-value-no-direct-conflict";
+export type AmendNotesDemoDifficulty =
+  | "amend-notes-basic"
+  | "amend-notes-corrective";
+export type ObviousSingleDemoDifficulty =
+  | "obvious-single"
+  | "obvious-single-with-note-simplification";
+
 export type GameDifficulty =
   | "novice"
   | "amateur"
@@ -7,7 +21,80 @@ export type GameDifficulty =
   | "professional"
   | "pundit"
   | "master"
-  | "grandmaster";
+  | "grandmaster"
+  | WrongValueDemoDifficulty
+  | AmendNotesDemoDifficulty
+  | ObviousSingleDemoDifficulty;
+
+export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
+  "wrong-value-direct-conflict",
+  "wrong-value-no-direct-conflict",
+];
+export const AMEND_NOTES_DEMO_DIFFICULTIES: AmendNotesDemoDifficulty[] = [
+  "amend-notes-basic",
+  "amend-notes-corrective",
+];
+export const OBVIOUS_SINGLE_DEMO_DIFFICULTIES: ObviousSingleDemoDifficulty[] = [
+  "obvious-single",
+  "obvious-single-with-note-simplification",
+];
+
+export function isWrongValueDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is WrongValueDemoDifficulty {
+  return WRONG_VALUE_DEMO_DIFFICULTIES.includes(
+    difficulty as WrongValueDemoDifficulty,
+  );
+}
+
+export function isAmendNotesDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is AmendNotesDemoDifficulty {
+  return AMEND_NOTES_DEMO_DIFFICULTIES.includes(
+    difficulty as AmendNotesDemoDifficulty,
+  );
+}
+
+export function isObviousSingleDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is ObviousSingleDemoDifficulty {
+  return OBVIOUS_SINGLE_DEMO_DIFFICULTIES.includes(
+    difficulty as ObviousSingleDemoDifficulty,
+  );
+}
+
+export function getWrongValueDemoCaseId(
+  difficulty: WrongValueDemoDifficulty,
+): WrongValueDemoCase["id"] {
+  switch (difficulty) {
+    case "wrong-value-direct-conflict":
+      return "direct-row-conflict";
+    case "wrong-value-no-direct-conflict":
+      return "no-direct-conflict";
+  }
+}
+
+export function getAmendNotesDemoCaseId(
+  difficulty: AmendNotesDemoDifficulty,
+): AmendNotesDemoCase["id"] {
+  switch (difficulty) {
+    case "amend-notes-basic":
+      return "basic-amend-notes";
+    case "amend-notes-corrective":
+      return "corrective-amend-notes";
+  }
+}
+
+export function getObviousSingleDemoCaseId(
+  difficulty: ObviousSingleDemoDifficulty,
+): ObviousSingleDemoCase["id"] {
+  switch (difficulty) {
+    case "obvious-single":
+      return "single-obvious-single";
+    case "obvious-single-with-note-simplification":
+      return "obvious-single-with-note-simplification";
+  }
+}
 
 export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 
@@ -38,6 +125,13 @@ function calculateDifficultyScore(
       return 35;
     case "grandmaster":
       return 40;
+    case "wrong-value-direct-conflict":
+    case "wrong-value-no-direct-conflict":
+    case "amend-notes-basic":
+    case "amend-notes-corrective":
+    case "obvious-single":
+    case "obvious-single-with-note-simplification":
+      return 0;
   }
 }
 

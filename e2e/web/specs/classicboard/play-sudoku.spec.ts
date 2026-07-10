@@ -6,10 +6,6 @@ import { EndGameModalComponent } from "../../components/end-game-modal.component
 import { HeaderComponent } from "../../components/header.component";
 import { StatisticsPage } from "../../page/statistics.page";
 import { HomePage } from "../../page/home.page";
-import {
-  MIDDLE_WIDTH_AND_HEIGHT,
-  MOBILE_WIDTH_LESS_THAN,
-} from "../../playwright.config";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
@@ -196,16 +192,15 @@ test.describe("start game", () => {
   test("Clicking on button with intermediate text should start protege game in large viewport", async ({
     play,
   }) => {
+    const playPage = new PlayPage(play);
     const viewPort = play.viewportSize();
-    if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
-      await play.getByText("Intermediate").click();
+    if (playPage.difficultyDescriptionsShouldBeVisible(viewPort)) {
+      await playPage.protegeDesc.click();
       await expect(play.getByText("Difficulty: protege")).toBeInViewport({
         ratio: 1,
       });
     } else {
-      await expect(await play.getByText("Intermediate")).not.toBeInViewport({
-        ratio: 1,
-      });
+      await expect(playPage.protegeDesc).toHaveCount(0);
     }
   });
 });
@@ -245,17 +240,16 @@ test.describe("resize play page", () => {
   }) => {
     const playPage = new PlayPage(play);
     const viewPort = await play.viewportSize();
-    if (
-      viewPort?.width === MIDDLE_WIDTH_AND_HEIGHT &&
-      viewPort?.height === MIDDLE_WIDTH_AND_HEIGHT
-    ) {
+
+    if (playPage.difficultyDescriptionsShouldBeVisible(viewPort)) {
       await playPage.descriptionsAreVisible();
-      await playPage.starsAreHidden();
-    } else if ((viewPort?.width ?? 0) > MOBILE_WIDTH_LESS_THAN) {
-      await playPage.descriptionsAreVisible();
-      await playPage.starsAreVisible();
     } else {
       await playPage.descriptionsAreHidden();
+    }
+
+    if (playPage.difficultyStarsShouldBeVisible(viewPort)) {
+      await playPage.starsAreVisible();
+    } else {
       await playPage.starsAreHidden();
     }
   });
