@@ -105,6 +105,7 @@ export const returnPuzzleOfDifficulty = (
     case "amend-notes-basic":
     case "amend-notes-corrective":
     case "obvious-single":
+    case "obvious-single-with-note-simplification":
       return NOVICE_PUZZLES[0];
   }
 };

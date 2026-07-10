@@ -8,7 +8,9 @@ export type WrongValueDemoDifficulty =
 export type AmendNotesDemoDifficulty =
   | "amend-notes-basic"
   | "amend-notes-corrective";
-export type ObviousSingleDemoDifficulty = "obvious-single";
+export type ObviousSingleDemoDifficulty =
+  | "obvious-single"
+  | "obvious-single-with-note-simplification";
 
 export type GameDifficulty =
   | "novice"
@@ -34,6 +36,7 @@ export const AMEND_NOTES_DEMO_DIFFICULTIES: AmendNotesDemoDifficulty[] = [
 ];
 export const OBVIOUS_SINGLE_DEMO_DIFFICULTIES: ObviousSingleDemoDifficulty[] = [
   "obvious-single",
+  "obvious-single-with-note-simplification",
 ];
 
 export function isWrongValueDemoDifficulty(
@@ -88,6 +91,8 @@ export function getObviousSingleDemoCaseId(
   switch (difficulty) {
     case "obvious-single":
       return "single-obvious-single";
+    case "obvious-single-with-note-simplification":
+      return "obvious-single-with-note-simplification";
   }
 }
 
@@ -125,6 +130,7 @@ function calculateDifficultyScore(
     case "amend-notes-basic":
     case "amend-notes-corrective":
     case "obvious-single":
+    case "obvious-single-with-note-simplification":
       return 0;
   }
 }

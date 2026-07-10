@@ -53,6 +53,11 @@ const difficulties: DifficultyItem[] = [
     value: "obvious-single",
     testID: "ObviousSingle",
   },
+  {
+    label: "Obvious Single With Note Simplification",
+    value: "obvious-single-with-note-simplification",
+    testID: "ObviousSingleWithNoteSimplification",
+  },
 ];
 
 const difficultyStars: ImageURISource[] = [
