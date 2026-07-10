@@ -1,5 +1,6 @@
 import type { WrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
 import type { AmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
+import type { ObviousSingleDemoCase } from "../../../../Data/hints/demo_obvious_single_hints";
 
 export type WrongValueDemoDifficulty =
   | "wrong-value-direct-conflict"
@@ -7,6 +8,7 @@ export type WrongValueDemoDifficulty =
 export type AmendNotesDemoDifficulty =
   | "amend-notes-basic"
   | "amend-notes-corrective";
+export type ObviousSingleDemoDifficulty = "obvious-single";
 
 export type GameDifficulty =
   | "novice"
@@ -19,7 +21,8 @@ export type GameDifficulty =
   | "master"
   | "grandmaster"
   | WrongValueDemoDifficulty
-  | AmendNotesDemoDifficulty;
+  | AmendNotesDemoDifficulty
+  | ObviousSingleDemoDifficulty;
 
 export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
   "wrong-value-direct-conflict",
@@ -28,6 +31,9 @@ export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
 export const AMEND_NOTES_DEMO_DIFFICULTIES: AmendNotesDemoDifficulty[] = [
   "amend-notes-basic",
   "amend-notes-corrective",
+];
+export const OBVIOUS_SINGLE_DEMO_DIFFICULTIES: ObviousSingleDemoDifficulty[] = [
+  "obvious-single",
 ];
 
 export function isWrongValueDemoDifficulty(
@@ -43,6 +49,14 @@ export function isAmendNotesDemoDifficulty(
 ): difficulty is AmendNotesDemoDifficulty {
   return AMEND_NOTES_DEMO_DIFFICULTIES.includes(
     difficulty as AmendNotesDemoDifficulty,
+  );
+}
+
+export function isObviousSingleDemoDifficulty(
+  difficulty: GameDifficulty,
+): difficulty is ObviousSingleDemoDifficulty {
+  return OBVIOUS_SINGLE_DEMO_DIFFICULTIES.includes(
+    difficulty as ObviousSingleDemoDifficulty,
   );
 }
 
@@ -65,6 +79,15 @@ export function getAmendNotesDemoCaseId(
       return "basic-amend-notes";
     case "amend-notes-corrective":
       return "corrective-amend-notes";
+  }
+}
+
+export function getObviousSingleDemoCaseId(
+  difficulty: ObviousSingleDemoDifficulty,
+): ObviousSingleDemoCase["id"] {
+  switch (difficulty) {
+    case "obvious-single":
+      return "single-obvious-single";
   }
 }
 
@@ -101,6 +124,7 @@ function calculateDifficultyScore(
     case "wrong-value-no-direct-conflict":
     case "amend-notes-basic":
     case "amend-notes-corrective":
+    case "obvious-single":
       return 0;
   }
 }

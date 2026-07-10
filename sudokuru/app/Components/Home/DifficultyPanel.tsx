@@ -48,6 +48,11 @@ const difficulties: DifficultyItem[] = [
     value: "amend-notes-corrective",
     testID: "AmendNotesCorrective",
   },
+  {
+    label: "Obvious Single",
+    value: "obvious-single",
+    testID: "ObviousSingle",
+  },
 ];
 
 const difficultyStars: ImageURISource[] = [

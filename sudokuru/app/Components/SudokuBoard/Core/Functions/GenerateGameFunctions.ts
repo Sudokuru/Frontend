@@ -20,6 +20,11 @@ import {
   CellProps as AmendNotesCellProps,
 } from "../../../../Data/hints/demo_amend_notes_hints";
 import {
+  getObviousSingleDemoCase,
+  ObviousSingleDemoCase,
+  CellProps as ObviousSingleCellProps,
+} from "../../../../Data/hints/demo_obvious_single_hints";
+import {
   BoardObjectProps,
   ClassicObjectProps,
   CellProps,
@@ -28,8 +33,10 @@ import { ClassicBoard } from "../../SudokuBoard";
 import {
   GameDifficulty,
   getAmendNotesDemoCaseId,
+  getObviousSingleDemoCaseId,
   getWrongValueDemoCaseId,
   isAmendNotesDemoDifficulty,
+  isObviousSingleDemoDifficulty,
   isWrongValueDemoDifficulty,
 } from "./DifficultyFunctions";
 import { getSudokuHint } from "./HintFunctions";
@@ -97,6 +104,7 @@ export const returnPuzzleOfDifficulty = (
     case "wrong-value-no-direct-conflict":
     case "amend-notes-basic":
     case "amend-notes-corrective":
+    case "obvious-single":
       return NOVICE_PUZZLES[0];
   }
 };
@@ -118,6 +126,13 @@ export const returnGameOfDifficulty = (
 
   if (difficulty !== "dev" && isAmendNotesDemoDifficulty(difficulty)) {
     const demoCase = getAmendNotesDemoCase(getAmendNotesDemoCaseId(difficulty));
+    return convertDemoCaseToSudokuObject(demoCase, difficulty);
+  }
+
+  if (difficulty !== "dev" && isObviousSingleDemoDifficulty(difficulty)) {
+    const demoCase = getObviousSingleDemoCase(
+      getObviousSingleDemoCaseId(difficulty),
+    );
     return convertDemoCaseToSudokuObject(demoCase, difficulty);
   }
 
@@ -207,7 +222,7 @@ export const convertPuzzleToSudokuObject = (
 };
 
 function convertDemoCell(
-  cell: WrongValueCellProps | AmendNotesCellProps,
+  cell: WrongValueCellProps | AmendNotesCellProps | ObviousSingleCellProps,
 ): CellProps {
   if (cell.type === "note") {
     return {
@@ -223,7 +238,7 @@ function convertDemoCell(
 }
 
 function convertDemoCaseToSudokuObject(
-  demoCase: WrongValueDemoCase | AmendNotesDemoCase,
+  demoCase: WrongValueDemoCase | AmendNotesDemoCase | ObviousSingleDemoCase,
   difficulty: GameDifficulty,
 ): ClassicObjectProps {
   const game: ClassicObjectProps = {

@@ -6,12 +6,15 @@ import {
 } from "../../../../Functions/LocalDatabase";
 import { getWrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
 import { getAmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
+import { getObviousSingleDemoCase } from "../../../../Data/hints/demo_obvious_single_hints";
 import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 import {
   getAmendNotesDemoCaseId,
+  getObviousSingleDemoCaseId,
   getWrongValueDemoCaseId,
   isAmendNotesDemoDifficulty,
+  isObviousSingleDemoDifficulty,
   isWrongValueDemoDifficulty,
 } from "./DifficultyFunctions";
 
@@ -168,6 +171,31 @@ export const getSudokuBoardHint = (
     } else {
       sudokuBoard.statistics.numHintsUsedPerStrategy.push({
         hintStrategy: "AMEND_NOTES",
+        numHintsUsed: 1,
+      });
+    }
+
+    return {
+      hint: demoCase.hint as HintProps,
+      updatedBoard: sudokuBoard,
+    };
+  }
+
+  if (isObviousSingleDemoDifficulty(sudokuBoard.statistics.difficulty)) {
+    const demoCase = getObviousSingleDemoCase(
+      getObviousSingleDemoCaseId(sudokuBoard.statistics.difficulty),
+    );
+    sudokuBoard.statistics.numHintsUsed++;
+
+    const existingObviousSingleStats =
+      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
+        (strategy) => strategy.hintStrategy === "OBVIOUS_SINGLE",
+      );
+    if (existingObviousSingleStats) {
+      existingObviousSingleStats.numHintsUsed++;
+    } else {
+      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+        hintStrategy: "OBVIOUS_SINGLE",
         numHintsUsed: 1,
       });
     }

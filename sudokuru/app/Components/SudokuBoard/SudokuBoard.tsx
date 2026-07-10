@@ -42,6 +42,7 @@ import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
 import type { WrongValueHint } from "../../Data/hints/demo_wrong_value_hints";
 import type { AmendNotesHint } from "../../Data/hints/demo_amend_notes_hints";
+import type { ObviousSingleHint } from "../../Data/hints/demo_obvious_single_hints";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -74,7 +75,10 @@ export interface HintProps {
   removals: any;
   info: string;
   action: string;
-  stages?: WrongValueHint["stages"] | AmendNotesHint["stages"];
+  stages?:
+    | WrongValueHint["stages"]
+    | AmendNotesHint["stages"]
+    | ObviousSingleHint["stages"];
 }
 
 export function isWrongValueHint(
@@ -735,7 +739,10 @@ const SudokuBoard = (props: Board) => {
     });
   };
 
-  const updatePlayableHintStage = (stageOffset: number) => {
+  const updatePlayableHintStage = (
+    stageOffset: number,
+    finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
+  ) => {
     if (!sudokuHint || !isPlayableHint(sudokuHint.hint)) {
       return;
     }
@@ -770,6 +777,16 @@ const SudokuBoard = (props: Board) => {
 
     if (nextStage === sudokuHint.maxStage + 1) {
       setSudokuHint(undefined);
+      if (isGameSolved(sudokuBoard)) {
+        setSudokuBoard({
+          ...sudokuBoard,
+          puzzleState: sudokuBoard.puzzleState,
+          actionHistory: sudokuBoard.actionHistory,
+          //@ts-ignore
+          statistics: finishSudokuGame(sudokuBoard.statistics, props.type),
+        });
+        setGameOver(true);
+      }
       return;
     }
 
@@ -800,7 +817,7 @@ const SudokuBoard = (props: Board) => {
     }
 
     if (isPlayableHint(sudokuHint.hint)) {
-      updatePlayableHintStage(stageOffset);
+      updatePlayableHintStage(stageOffset, finishSudokuGame);
       return;
     }
 
