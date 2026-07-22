@@ -122,31 +122,29 @@ const HeaderRow = (props: HeaderRowProps) => {
           paddingRight: logoPillWidth + mobileStatPillGap,
         }}
       >
-        <HeaderTooltip
-          title="hello there"
-          style={{ position: "absolute", right: 0, top: 0 }}
+        <View
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            paddingHorizontal: pillHorizontalPadding,
+            paddingVertical: pillVerticalPadding * 0.1,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          <View
+          <Image
+            source={logoSource}
             style={{
-              paddingHorizontal: pillHorizontalPadding,
-              paddingVertical: pillVerticalPadding * 0.1,
-              borderRadius: pillBorderRadius,
-              overflow: "hidden",
-              backgroundColor: statPillBackgroundColor,
-              alignItems: "center",
-              justifyContent: "center",
+              height: logoHeight,
+              width: logoWidth,
+              resizeMode: "contain",
             }}
-          >
-            <Image
-              source={logoSource}
-              style={{
-                height: logoHeight,
-                width: logoWidth,
-                resizeMode: "contain",
-              }}
-            />
-          </View>
-        </HeaderTooltip>
+          />
+        </View>
         <HeaderTooltip title={firstHeaderTooltipLabel}>
           <View
             testID="difficultyCounter"
