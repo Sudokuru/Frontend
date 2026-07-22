@@ -10,11 +10,11 @@
     "playwright:init:deps": "npx playwright install --with-deps"
   },
   "dependencies": {
-    "@playwright/test": "1.56.1",
+    "@playwright/test": "1.60.0",
     "dotenv-safe": "9.1.0"
   },
   "devDependencies": {
     "@types/dotenv-safe": "8.1.6",
-    "monocart-reporter": "2.9.23"
+    "monocart-reporter": "2.11.2"
   }
 }
