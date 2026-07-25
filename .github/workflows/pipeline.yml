@@ -66,14 +66,14 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Lint Check
-        run: npx eslint .
+        run: npm run lint
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Typescript Check
         working-directory: sudokuru
-        run: npx tsc
+        run: npm run tsc
 
   app_preview_dev:
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
@@ -152,11 +152,11 @@ jobs:
         with:
           node-version: 24.x
       - name: install dependencies
-        run: npm i
+        run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
         run: npm run playwright:init:deps
       - name: Playwright run
-        run: npx playwright test --project="${{ matrix.project }}"
+        run: npm run playwright:test -- --project="${{ matrix.project }}"
         working-directory: e2e/web
         env:
           BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
@@ -201,7 +201,7 @@ jobs:
         with:
           node-version: 24.x
       - name: install dependencies
-        run: npm i
+        run: npm ci --ignore-scripts
       - name: Download blob reports
         uses: actions/download-artifact@v8
         with:
@@ -219,7 +219,7 @@ jobs:
           pattern: monocart-report-*
           path: e2e/web/all-monocart-reports
       - name: Merge Playwright HTML report
-        run: npx playwright merge-reports --reporter=html ./all-blob-reports
+        run: npm run playwright:merge-reports -- --reporter=html ./all-blob-reports
         working-directory: e2e/web
       # for now codecov will handle coverage merging automatically with multiple codecov.json files
       # future enhancement handle ourselves for viewing merged reports in the pipeline and not rely on codecov's UI
@@ -274,7 +274,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: sudokuru
@@ -316,7 +316,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
         id: tauri_build
         with:
@@ -350,7 +350,7 @@ jobs:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -384,7 +384,7 @@ jobs:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -403,7 +403,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
@@ -422,7 +422,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci
+      - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
