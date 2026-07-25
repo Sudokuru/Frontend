@@ -49,7 +49,9 @@ export function useCellSize(): number {
       height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
     const boardHeightAtWidth =
       maxCellSizeFromWidth * webBoardLayoutHeightInCells;
-    const navHeaderShown = boardHeightAtWidth <= availableHeightWithHeader;
+    const navHeaderShown =
+      width >= MOBILE_BREAKPOINT ||
+      boardHeightAtWidth <= availableHeightWithHeader;
 
     // iOS Safari can under-report vertical viewport on small phones while URL bars animate.
     // Add a narrow-screen tolerance so iPhone SE can still render full width.
