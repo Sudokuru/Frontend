@@ -44,7 +44,7 @@ export class SudokuBoardComponent {
 
     this.sudokuBoard = page.getByTestId("sudokuBoard");
 
-    this.timer = page.getByText("Time: ");
+    this.timer = page.getByTestId("timeCounter");
     this.pause = page.getByTestId("PauseButton");
     this.undo = page.getByTestId("undoButton");
     this.reset = page.getByTestId("resetButton");
