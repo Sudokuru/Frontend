@@ -461,9 +461,6 @@ const SudokuBoard = (props: Board) => {
         sudokuBoard={sudokuBoard}
         setSudokuBoard={setSudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
-        firstHeaderTooltipLabel={boardMethods[
-          props.type
-        ].headerRowTooltipLabel()}
       />
     );
   };
