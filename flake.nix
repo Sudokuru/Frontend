@@ -25,6 +25,7 @@
             bun
             cargo
             rustc
+            gh
           ];
 
           shellHook = ''
