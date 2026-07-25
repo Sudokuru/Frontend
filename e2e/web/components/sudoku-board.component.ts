@@ -17,6 +17,8 @@ export class SudokuBoardComponent {
   readonly sudokuBoard: Locator;
 
   readonly difficulty: Locator;
+  readonly hints: Locator;
+  readonly mistakes: Locator;
   readonly timer: Locator;
   readonly pause: Locator;
   readonly undo: Locator;
@@ -46,6 +48,8 @@ export class SudokuBoardComponent {
     this.sudokuBoard = page.getByTestId("sudokuBoard");
 
     this.difficulty = page.getByTestId("difficultyCounter");
+    this.hints = page.getByTestId("hintsCounter");
+    this.mistakes = page.getByTestId("mistakesCounter");
     this.timer = page.getByTestId("timeCounter");
     this.pause = page.getByTestId("PauseButton");
     this.undo = page.getByTestId("undoButton");
