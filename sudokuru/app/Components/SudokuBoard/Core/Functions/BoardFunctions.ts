@@ -15,6 +15,7 @@ import { isEqual } from "../../Drill/Functions/CellFunctions";
 
 export const MOBILE_BREAKPOINT = 768;
 const MAX_BOARD_SIZE = 640;
+const BOARD_EDGE_PADDING = 1;
 
 const HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.75;
 const HEADER_ROW_HEIGHT_IN_CELLS_MOBILE = 1.3;
@@ -40,7 +41,8 @@ export function useCellSize(): number {
       PUZZLE_HEIGHT_IN_CELLS +
       ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
       NUMBER_CONTROL_HEIGHT_IN_CELLS;
-    const maxCellSizeFromWidth = Math.min(width, MAX_BOARD_SIZE) / 9;
+    const maxCellSizeFromWidth =
+      Math.min(Math.max(width - BOARD_EDGE_PADDING, 0), MAX_BOARD_SIZE) / 9;
 
     // Account for the app nav header when it is visible.
     const NAV_HEADER_HEIGHT = 60;
@@ -83,9 +85,12 @@ export function useCellSize(): number {
     ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
     : BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP;
 
-  const maxBoardWidth = isMobileSizingLayout
-    ? Math.min(width, MAX_BOARD_SIZE)
-    : Math.min(width * 0.9, MAX_BOARD_SIZE);
+  const maxBoardWidth = Math.max(
+    (isMobileSizingLayout
+      ? Math.min(width, MAX_BOARD_SIZE)
+      : Math.min(width * 0.9, MAX_BOARD_SIZE)) - BOARD_EDGE_PADDING,
+    0,
+  );
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
 
