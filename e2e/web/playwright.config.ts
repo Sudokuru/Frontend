@@ -71,7 +71,7 @@ export const MIDDLE_WIDTH_AND_HEIGHT = 1024;
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 120000,
+  timeout: 30000,
   testDir: ".",
   /* Run tests in files in parallel */
   fullyParallel: true,
