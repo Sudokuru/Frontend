@@ -129,6 +129,7 @@ const HeaderRow = (props: HeaderRowProps) => {
           }}
         >
           <Image
+            testID="sudokuBoardLogo"
             source={logoSource}
             style={{
               height: logoHeight,
