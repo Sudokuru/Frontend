@@ -76,8 +76,7 @@ const HeaderRow = (props: HeaderRowProps) => {
     statusIconSize +
     (cellSize ? cellSize * 0.2 : fallbackHeight * 0.2) * mobileCompactScale;
   const mobileStatPillGap = pillGap;
-  const mobileHeaderPuzzleGapOffset =
-    (cellSize ? cellSize : fallbackHeight) * 0.08;
+  const mobileHeaderPuzzleGapOffset = (cellSize || fallbackHeight) * 0.08;
 
   const DARK_LOGO = require("../../../../../.assets/goldLogoText.png");
   const LIGHT_LOGO = require("../../../../../.assets/lightBlueLogoText.png");

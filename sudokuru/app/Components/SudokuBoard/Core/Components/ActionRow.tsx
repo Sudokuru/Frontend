@@ -133,13 +133,7 @@ const ActionRow = (props: ActionRowProps) => {
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
   const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
-  const noteLabel = isMobileLayout
-    ? inNoteMode
-      ? "VALUE"
-      : "NOTE"
-    : inNoteMode
-      ? "VALUE"
-      : "NOTE";
+  const noteLabel = inNoteMode ? "VALUE" : "NOTE";
 
   type ActionButtonConfig = {
     key: string;
