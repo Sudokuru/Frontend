@@ -21,8 +21,7 @@ const HEADER_ROW_HEIGHT_IN_CELLS_MOBILE = 1.3;
 const PUZZLE_HEIGHT_IN_CELLS = 9;
 const ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.6;
 const ACTION_ROW_HEIGHT_IN_CELLS_MOBILE = 1.45;
-const NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP = 1;
-const NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE = 1.65;
+const NUMBER_CONTROL_HEIGHT_IN_CELLS = 1.65;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
 
@@ -40,7 +39,7 @@ export function useCellSize(): number {
       HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
       PUZZLE_HEIGHT_IN_CELLS +
       ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
-      NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE;
+      NUMBER_CONTROL_HEIGHT_IN_CELLS;
     const maxCellSizeFromWidth = Math.min(width, MAX_BOARD_SIZE) / 9;
 
     // Account for the app nav header when it is visible.
@@ -72,15 +71,11 @@ export function useCellSize(): number {
     ? ACTION_ROW_HEIGHT_IN_CELLS_MOBILE
     : ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP;
 
-  const numberControlHeightInCells = isMobileSizingLayout
-    ? NUMBER_CONTROL_HEIGHT_IN_CELLS_MOBILE
-    : NUMBER_CONTROL_HEIGHT_IN_CELLS_DESKTOP;
-
   const boardLayoutHeightInCells =
     headerRowHeightInCells +
     PUZZLE_HEIGHT_IN_CELLS +
     actionRowHeightInCells +
-    numberControlHeightInCells;
+    NUMBER_CONTROL_HEIGHT_IN_CELLS;
 
   const boardVerticalViewportFraction = isMobileSizingLayout
     ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE

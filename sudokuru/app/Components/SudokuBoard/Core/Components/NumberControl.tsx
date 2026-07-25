@@ -1,7 +1,6 @@
-import { Pressable, Text, View, useWindowDimensions } from "react-native";
-import { range } from "../../SudokuBoardFunctions";
+import { Pressable, Text, View } from "react-native";
 import React from "react";
-import { MOBILE_BREAKPOINT, useCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useTheme } from "../../../../Contexts/ThemeContext";
@@ -30,22 +29,14 @@ const NumberControl = (props: NumberControlProps) => {
     progressIndicatorSetting,
   } = props;
   const cellSize = useCellSize();
-  const { width } = useWindowDimensions();
   const { theme } = useTheme();
-  const isMobileLayout = width < MOBILE_BREAKPOINT;
-  const keyHeightRatio = isMobileLayout ? 0.77 : 1;
-  const visualKeyWidthRatio = isMobileLayout ? 100 / 60 : 50 / 60;
-  const visualKeyWidth = cellSize
-    ? cellSize * visualKeyWidthRatio
-    : fallbackHeight * visualKeyWidthRatio;
+  const baseSize = cellSize || fallbackHeight;
+  const keyHeight = baseSize * 0.77;
+  const visualKeyWidth = baseSize * (100 / 60);
   const touchKeyWidth = visualKeyWidth;
-  const keyHeight = (cellSize || fallbackHeight) * keyHeightRatio;
-  const mobileRowGap = keyHeight * 0.1;
-  const controlWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
-  const mobileTopRowButtonGap = Math.max(
-    (controlWidth - touchKeyWidth * 5) / 4,
-    0,
-  );
+  const rowGap = keyHeight * 0.1;
+  const controlWidth = baseSize * 9;
+  const topRowButtonGap = Math.max((controlWidth - touchKeyWidth * 5) / 4, 0);
 
   const renderNumberButton = (number: number) => {
     const onClick = () => {
@@ -56,13 +47,7 @@ const NumberControl = (props: NumberControlProps) => {
       <Text
         style={{
           fontFamily: "Inter_400Regular",
-          fontSize: isMobileLayout
-            ? cellSize
-              ? cellSize * 0.62
-              : fallbackHeight * 0.62
-            : cellSize
-              ? cellSize * (3 / 4) + 1
-              : fallbackHeight * (3 / 4) + 1,
+          fontSize: baseSize * 0.62,
           color: theme.semantic.text.info,
         }}
         selectable={false}
@@ -101,9 +86,7 @@ const NumberControl = (props: NumberControlProps) => {
               height: keyHeight,
               alignItems: "center",
               justifyContent: "center",
-              borderRadius: cellSize
-                ? cellSize * (10 / 60)
-                : fallbackHeight * (10 / 60),
+              borderRadius: baseSize * (10 / 60),
             }}
           >
             {numberText}
@@ -132,9 +115,7 @@ const NumberControl = (props: NumberControlProps) => {
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: theme.colors.primary,
-            borderRadius: cellSize
-              ? cellSize * (10 / 60)
-              : fallbackHeight * (10 / 60),
+            borderRadius: baseSize * (10 / 60),
           }}
         >
           {numberText}
@@ -147,51 +128,37 @@ const NumberControl = (props: NumberControlProps) => {
     <View
       style={{
         width: controlWidth,
-        height: isMobileLayout ? keyHeight * 2 + mobileRowGap : keyHeight,
+        height: keyHeight * 2 + rowGap,
         justifyContent: "space-between",
       }}
     >
-      {isMobileLayout ? (
-        <>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {[1, 2, 3, 4, 5].map(renderNumberButton)}
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {[6, 7, 8, 9].map((number, index) => (
           <View
+            key={number}
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              marginRight: index < 3 ? topRowButtonGap : 0,
             }}
           >
-            {[1, 2, 3, 4, 5].map(renderNumberButton)}
+            {renderNumberButton(number)}
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {[6, 7, 8, 9].map((number, index) => (
-              <View
-                key={number}
-                style={{
-                  marginRight: index < 3 ? mobileTopRowButtonGap : 0,
-                }}
-              >
-                {renderNumberButton(number)}
-              </View>
-            ))}
-          </View>
-        </>
-      ) : (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {range(9).map((i) => renderNumberButton(i + 1))}
-        </View>
-      )}
+        ))}
+      </View>
     </View>
   );
 };
