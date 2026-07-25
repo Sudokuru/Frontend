@@ -202,10 +202,11 @@ const Hint = (hintProps: HintProps) => {
         pointerEvents="none"
         style={{
           width: "100%",
+          minHeight: getResponsiveSize(1),
           minWidth: 0,
           paddingHorizontal: getResponsiveSize(1),
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "flex-start",
         }}
       >
         {hintContent}
