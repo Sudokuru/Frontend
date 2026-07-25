@@ -1,7 +1,7 @@
 import { Text } from "react-native-paper";
 import { HintObjectProps } from "../../SudokuBoard";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
-import { Platform, Pressable, View, useWindowDimensions } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
@@ -23,7 +23,6 @@ const Hint = (hintProps: HintProps) => {
   const { height } = useWindowDimensions();
   const { theme } = useTheme();
 
-  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
   const FALLBACK_HEIGHT = 30;
   const MIN_HEIGHT_FOR_SCALE = 620;
   const MAX_HEIGHT_FOR_SCALE = 980;
@@ -120,6 +119,17 @@ const Hint = (hintProps: HintProps) => {
 
   const navButtonSize = getResponsiveSize(0.82);
   const navButtonGap = getResponsiveSize(0.12);
+  const navIconSize = navButtonSize * 0.72;
+  const navIconColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
+  const navIconStyle = {
+    width: navButtonSize,
+    height: navButtonSize,
+    lineHeight: navButtonSize,
+    textAlign: "center" as const,
+    textAlignVertical: "center" as const,
+  };
   const navButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
@@ -154,13 +164,10 @@ const Hint = (hintProps: HintProps) => {
         }}
       >
         <MaterialCommunityIcons
-          color={
-            theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info
-          }
+          color={navIconColor}
           name={leftButton.icon}
-          size={cellSize / sizeConst}
+          size={navIconSize}
+          style={navIconStyle}
         />
       </Pressable>
 
@@ -183,13 +190,10 @@ const Hint = (hintProps: HintProps) => {
           }}
         >
           <MaterialCommunityIcons
-            color={
-              theme.useDarkTheme
-                ? theme.semantic.text.inverse
-                : theme.semantic.text.info
-            }
+            color={navIconColor}
             name="close"
-            size={cellSize / sizeConst}
+            size={navIconSize}
+            style={navIconStyle}
           />
         </Pressable>
       )}
@@ -225,13 +229,10 @@ const Hint = (hintProps: HintProps) => {
         }}
       >
         <MaterialCommunityIcons
-          color={
-            theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info
-          }
+          color={navIconColor}
           name={rightButton.icon}
-          size={cellSize / sizeConst}
+          size={navIconSize}
+          style={navIconStyle}
         />
       </Pressable>
     </View>
