@@ -33,7 +33,7 @@
             export PROJECT_ROOT=$(pwd)
             pre-commit install
             stools() {
-              echo "Available tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version), $(cargo --version), $(rustc --version)"
+              echo "Available tools: $(git --version), $(jq --version), node $(node --version), npm $(npm --version), $(pre-commit --version), bun $(bun --version), $(cargo --version), $(rustc --version), $(gh --version)"
             }
             stools
             export PS1="(\w) $PS1"
