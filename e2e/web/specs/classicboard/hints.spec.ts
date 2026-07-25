@@ -74,6 +74,56 @@ test.describe("hint mode operates correctly", () => {
     await sudokuBoard.hint.click();
     await sudokuBoard.cellIsDisabled(0, 0);
   });
+
+  test("exit button is visible after the first hint stage", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+      await expect(sudokuBoard.hintExit).toBeVisible();
+    }
+
+    await expect(sudokuBoard.hintFinish).toBeVisible();
+  });
+
+  test("exit button leaves hint mode", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+    await sudokuBoard.hintArrowRight.click();
+
+    await expect(sudokuBoard.hintExit).toBeVisible();
+    await expect(sudokuBoard.hint).toHaveCount(0);
+    await sudokuBoard.hintExit.click();
+
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+    await expect(sudokuBoard.hint).toBeVisible();
+    await sudokuBoard.cellIsEnabled(0, 0);
+  });
+
+  test("exit button restores the stage five hint action", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.hintExit.click();
+
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await sudokuBoard.verifyAllCellsInBoard((row, column) =>
+      sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB),
+    );
+  });
 });
 
 test.describe("board AMEND_NOTES", () => {

@@ -642,6 +642,13 @@ const SudokuBoard = (props: Board) => {
     }
 
     if (stageOffset === 0) {
+      const hintActionWasApplied =
+        sudokuHint.stage === sudokuHint.maxStage ||
+        (sudokuHint.stage === 4 && sudokuHint.hint.strategy === "AMEND_NOTES");
+
+      if (hintActionWasApplied) {
+        undo();
+      }
       setSudokuHint(undefined);
       return;
     }

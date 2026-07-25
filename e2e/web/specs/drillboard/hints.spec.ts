@@ -33,6 +33,7 @@ import {
   NOT_HIGHLIGHTED_COLOR_RGB,
   SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
+import { expect } from "@playwright/test";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
@@ -55,10 +56,61 @@ test.describe("hint mode operates correctly", () => {
     await sudokuBoard.hint.click();
     await sudokuBoard.cellIsDisabled(0, 0);
   });
+
+  test("exit button is visible after the first hint stage", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.hint.click();
+
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+      await expect(sudokuBoard.hintExit).toBeVisible();
+    }
+
+    await expect(sudokuBoard.hintFinish).toBeVisible();
+  });
+
+  test("exit button leaves hint mode", async ({ resumeDrillGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.hint.click();
+    await sudokuBoard.hintArrowRight.click();
+
+    await expect(sudokuBoard.hintExit).toBeVisible();
+    await expect(sudokuBoard.hint).toHaveCount(0);
+    await sudokuBoard.hintExit.click();
+
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+    await expect(sudokuBoard.hint).toBeVisible();
+    await sudokuBoard.cellIsEnabled(0, 0);
+  });
 });
 
 test.describe("board OBVIOUS_SINGLE", () => {
   test.use({ drillGametoResume: OBVIOUS_SINGLE_DRILL_GAME });
+
+  test("exit button restores the stage five hint action", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasValue(8, 7, "9");
+    await sudokuBoard.hintExit.click();
+
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.verifyAllCellsInBoard((row, column) =>
+      sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB),
+    );
+  });
+
   test("OBVIOUS_SINGLE", async ({ resumeDrillGame }) => {
     const notHighlightedColor = (row: number, column: number) => {
       return row > 5 && column > 5;

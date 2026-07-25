@@ -133,7 +133,7 @@ const Hint = (hintProps: HintProps) => {
   const navButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
-  const showMiddleStageExit = stage > 1 && stage < maxStage;
+  const showHintExit = stage > 1;
 
   return (
     <View
@@ -171,7 +171,7 @@ const Hint = (hintProps: HintProps) => {
         />
       </Pressable>
 
-      {showMiddleStageExit && (
+      {showHintExit && (
         <Pressable
           onPress={() => incrementStage(0, finishSudokuGame)}
           testID="hintExit"
