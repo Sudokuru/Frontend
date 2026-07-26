@@ -350,9 +350,11 @@ jobs:
           mv bundle/*.apk bundle/$ITCH_GAME_ID-alpha-${{matrix.binary_name}}.apk
         env:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
-      - name: Install Butler
+      - &install_butler
+        name: Install Butler
         run: |
-          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://github.com/itchio/butler/releases/download/v15.27.0/butler-linux-amd64.zip
+          echo "b78ca81ed566c2daa54d68b7e300dd32888168163212293909ce90f16e0ec75d  butler.zip" | sha256sum --check --strict -
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -384,12 +386,7 @@ jobs:
           mv bundle/*.apk bundle/$ITCH_GAME_ID-stable-${{matrix.binary_name}}.apk
         env:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
-      - name: Install Butler
-        run: |
-          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
+      - *install_butler
       - name: Update Itch.io ${{matrix.binary_name}} Prod App
         run: ./butler push bundle $ITCH_USERNAME/$ITCH_GAME_ID:stable-${{matrix.binary_name}}
         env:
