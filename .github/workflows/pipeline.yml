@@ -336,7 +336,7 @@ jobs:
       matrix:
         binary_name: [linux, windows, android]
     needs: [ app_build_android, website_test_dev, website_test_report_dev, app_build_desktop ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/fixingButlerBuildsAndSecurityIssues') }}
     runs-on: ubuntu-latest
     steps:
       - name: Download binary Artifact
@@ -355,7 +355,7 @@ jobs:
         run: |
           curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://github.com/itchio/butler/releases/download/v15.27.0/butler-linux-amd64.zip
           echo "b78ca81ed566c2daa54d68b7e300dd32888168163212293909ce90f16e0ec75d  butler.zip" | sha256sum --check --strict -
-          unzip butler.zip
+          unzip -j butler.zip
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Alpha App
