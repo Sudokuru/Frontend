@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Text, Button } from "react-native-paper";
 import {
   useFocusEffect,
@@ -14,6 +14,7 @@ import { getGame } from "../Api/Puzzles";
 import { BoardObjectProps } from "../Functions/LocalDatabase";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const PlayPage = () => {
   const navigation: any = useNavigation();
@@ -52,7 +53,9 @@ const PlayPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
+    <PageScrollView
+      style={{ width: windowSize.width, height: windowSize.height }}
+    >
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -123,7 +126,7 @@ const PlayPage = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

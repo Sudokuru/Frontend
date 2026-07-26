@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ScrollView, View, useWindowDimensions } from "react-native";
+import { Modal, View, useWindowDimensions } from "react-native";
 import {
   Button,
   Card,
@@ -15,6 +15,7 @@ import {
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const ContactPage = () => {
   const { theme } = useTheme();
@@ -98,7 +99,7 @@ const ContactPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <PageScrollView>
       <View style={{ alignItems: "center", alignSelf: "center" }}>
         <Text
           style={{
@@ -351,7 +352,7 @@ const ContactPage = () => {
           </View>
         </View>
       </Modal>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

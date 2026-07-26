@@ -7,6 +7,37 @@ import { StatisticsPage } from "../page/statistics.page";
 import { HeaderComponent } from "../components/header.component";
 
 test.describe("learn", () => {
+  test("should scroll a lesson with arrow keys without first selecting the page", async ({
+    learn,
+  }) => {
+    const learnPage = new LearnPage(learn);
+    await learnPage.getAndClickLesson(0, "lesson");
+    const scrollView = learn.getByTestId("lessonPageScrollView");
+
+    await expect
+      .poll(() =>
+        scrollView.evaluate(
+          (element) => element.scrollHeight > element.clientHeight,
+        ),
+      )
+      .toBe(true);
+
+    await scrollView.evaluate((element) => {
+      element.scrollTop = 0;
+    });
+    await learn.keyboard.press("ArrowDown");
+
+    await expect
+      .poll(() => scrollView.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(0);
+
+    await learn.keyboard.press("ArrowUp");
+
+    await expect
+      .poll(() => scrollView.evaluate((element) => element.scrollTop))
+      .toBe(0);
+  });
+
   test("should verify lessons have correct initial states", async ({
     learn,
   }) => {

@@ -1,11 +1,44 @@
 import { ReleaseNotesPage } from "./../page/releasenotes.page";
 import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
+import { expect } from "@playwright/test";
 import json from "../../../sudokuru/Changelog.json";
 import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
 const releaseNotes: ReleaseNoteInterface[] = json;
 
 test.describe("release notes", () => {
+  test("scrolls the list with arrow keys without first selecting it", async ({
+    page,
+  }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.releaseNotes.click();
+    const scrollView = page.getByTestId("releaseNotesPageScrollView");
+
+    await expect
+      .poll(() =>
+        scrollView.evaluate(
+          (element) => element.scrollHeight > element.clientHeight,
+        ),
+      )
+      .toBe(true);
+
+    await scrollView.evaluate((element) => {
+      element.scrollTop = 0;
+    });
+    await page.keyboard.press("ArrowDown");
+
+    await expect
+      .poll(() => scrollView.evaluate((element) => element.scrollTop))
+      .toBeGreaterThan(0);
+
+    await page.keyboard.press("ArrowUp");
+
+    await expect
+      .poll(() => scrollView.evaluate((element) => element.scrollTop))
+      .toBe(0);
+  });
+
   test("first release note renders", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();

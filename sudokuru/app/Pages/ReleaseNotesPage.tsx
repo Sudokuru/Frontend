@@ -5,9 +5,10 @@ import {
   ReleaseNote,
 } from "../Components/ReleaseNotes/ReleaseNote";
 import { Text } from "react-native-paper";
-import { useWindowDimensions, FlatList } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useIsFocused } from "@react-navigation/native";
+import { PageFlatList } from "../Components/PageScrollView";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -28,7 +29,8 @@ const ReleaseNotesPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <FlatList
+    <PageFlatList
+      testID="releaseNotesPageScrollView"
       ListHeaderComponent={
         <Text
           testID="ReleaseNotesTitle"

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Text, ActivityIndicator } from "react-native-paper";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
@@ -7,6 +7,7 @@ import LessonPanel from "../Components/Home/LessonPanel";
 import { getLearnedLessons } from "../Api/Statistics";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const LearnPage = () => {
   const windowSize = useNewWindowDimensions();
@@ -42,7 +43,9 @@ const LearnPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
+    <PageScrollView
+      style={{ width: windowSize.width, height: windowSize.height }}
+    >
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -94,7 +97,7 @@ const LearnPage = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

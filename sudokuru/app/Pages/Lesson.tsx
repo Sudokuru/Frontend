@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Image,
-  useWindowDimensions,
-  ScrollView,
-  ImageURISource,
-} from "react-native";
+import { View, Image, useWindowDimensions, ImageURISource } from "react-native";
 import { Text, Button, Card } from "react-native-paper";
 import {
   useNavigation,
@@ -19,6 +13,7 @@ import { toTitle } from "../Functions/Utils";
 import { getLessonSteps } from "../Api/Lessons";
 import { saveLearnedLessons } from "../Api/Statistics";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const Lesson = (props: { route: { params: { params: any } } }) => {
   let name = props.route.params
@@ -115,7 +110,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <PageScrollView testID="lessonPageScrollView">
       <View
         style={{
           height: "100%",
@@ -153,7 +148,7 @@ const Lesson = (props: { route: { params: { params: any } } }) => {
           </Button>
         </View>
       </View>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

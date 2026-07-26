@@ -1,10 +1,11 @@
 import React from "react";
-import { Linking, ScrollView, TouchableOpacity, View } from "react-native";
+import { Linking, TouchableOpacity, View } from "react-native";
 import { Button, Icon, Text } from "react-native-paper";
 import { calculateCardsPerRow, CARD_WIDTH } from "../Components/Home/Cards";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { Member, contributors, teamMembers } from "../Data/members";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 import { Theme } from "../Styling/theme";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -101,7 +102,7 @@ const AboutUsPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView>
+    <PageScrollView>
       <Text
         style={{
           color: theme.colors.primary,
@@ -220,7 +221,7 @@ const AboutUsPage = () => {
           </Button>
         </View>
       </View>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

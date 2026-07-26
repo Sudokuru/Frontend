@@ -1,10 +1,11 @@
 import React from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import DrillPanel from "../Components/Home/DrillPanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const DrillPage = () => {
   const { theme } = useTheme();
@@ -16,7 +17,9 @@ const DrillPage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView style={{ width: windowSize.width, height: windowSize.height }}>
+    <PageScrollView
+      style={{ width: windowSize.width, height: windowSize.height }}
+    >
       <View style={{ flexDirection: "row" }}>
         <View
           style={{
@@ -58,7 +61,7 @@ const DrillPage = () => {
           </View>
         </View>
       </View>
-    </ScrollView>
+    </PageScrollView>
   );
 };
 

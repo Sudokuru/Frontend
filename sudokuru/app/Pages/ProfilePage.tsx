@@ -1,10 +1,10 @@
 import React from "react";
-import { ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import ProfilePanel from "../Components/Profile/ProfilePanel";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 import { useIsFocused } from "@react-navigation/native";
 import { useTheme } from "../Contexts/ThemeContext";
+import { PageScrollView } from "../Components/PageScrollView";
 
 const ProfilePage = () => {
   const windowSize = useNewWindowDimensions();
@@ -15,7 +15,7 @@ const ProfilePage = () => {
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
   return (
-    <ScrollView
+    <PageScrollView
       contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
     >
       <Text
@@ -29,7 +29,7 @@ const ProfilePage = () => {
         Profile
       </Text>
       <ProfilePanel width={windowSize.width} height={windowSize.height} />
-    </ScrollView>
+    </PageScrollView>
   );
 };
 
