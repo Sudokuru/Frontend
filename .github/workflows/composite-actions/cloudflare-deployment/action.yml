@@ -19,8 +19,6 @@ runs:
   using: composite
   steps:
     # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
-    - run: npm i -d wrangler
-      shell: bash
     - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
       working-directory: node_modules/wrangler/wrangler-dist
       shell: bash
