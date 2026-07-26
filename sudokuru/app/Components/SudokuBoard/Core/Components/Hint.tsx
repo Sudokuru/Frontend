@@ -138,8 +138,6 @@ const Hint = (hintProps: HintProps) => {
 
   const hintContent = renderHintStageContent(stage);
 
-  type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
-
   interface ButtonConfig {
     testId: string;
     icon: IconName;
