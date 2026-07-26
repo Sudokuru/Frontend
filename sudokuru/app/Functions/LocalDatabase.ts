@@ -5,7 +5,8 @@ import { ThemeName, ThemeNames } from "../Styling/theme";
 
 export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
-  version: number;
+  version: 1;
+  activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
   statistics: DrillGameStatistics;
   initialPuzzleState: CellProps[][];
@@ -24,7 +25,8 @@ export interface DrillGameStatistics {
 
 export interface ClassicObjectProps extends SudokuObjectProps<"classic"> {
   variant: "classic";
-  version: number;
+  version: 1;
+  activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
   statistics: ClassicGameStatistics;
   puzzleState: CellProps[][];
@@ -88,18 +90,22 @@ export type CellType = "note" | "value" | "given";
 
 export const SUDOKU_CELL_TYPES: CellType[] = ["note", "value", "given"];
 
-// This will be exported from Sudokuru package
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Hint {
-  hint: {
-    strategy: any;
-    cause: any;
-    groups: any;
-    placements: any;
-    removals: any;
-    info: string;
-    action: string;
-  };
+export interface PersistedHintPayload {
+  strategy: SudokuStrategy;
+  cause: number[][];
+  groups: number[][];
+  placements: number[][];
+  removals: number[][];
+  info: string;
+  action: string;
+  simplifyNotesAfterPlacement: boolean;
+}
+
+export interface ActiveHintState {
+  stage: 1 | 2 | 3 | 4 | 5;
+  maxStage: 5;
+  hint: PersistedHintPayload;
+  puzzleStateBeforeHint: CellProps[][];
 }
 
 const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
@@ -134,11 +140,54 @@ const SudokuBoardCellLocationSchema = z.object({
   c: z.number().int().gte(0).lte(8),
 });
 
+const HintCellIndexSchema = z.number().int().gte(0).lte(8);
+const HintValueSchema = z.number().int().gte(1).lte(9);
+
+const PersistedHintPayloadSchema = z.object({
+  strategy: z.enum(
+    Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]],
+  ),
+  cause: z.array(z.tuple([HintCellIndexSchema, HintCellIndexSchema])),
+  groups: z.array(
+    z.tuple([
+      z.union([z.literal(0), z.literal(1), z.literal(2)]),
+      HintCellIndexSchema,
+    ]),
+  ),
+  placements: z.array(
+    z.tuple([HintCellIndexSchema, HintCellIndexSchema, HintValueSchema]),
+  ),
+  removals: z.array(
+    z
+      .tuple([HintCellIndexSchema, HintCellIndexSchema, HintValueSchema])
+      .rest(HintValueSchema),
+  ),
+  info: z.string(),
+  action: z.string(),
+  simplifyNotesAfterPlacement: z.boolean(),
+});
+
+export const ActiveHintSchema = z.object({
+  stage: z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+  ]),
+  maxStage: z.literal(5),
+  hint: PersistedHintPayloadSchema,
+  puzzleStateBeforeHint: z
+    .array(z.array(SudokuBoardCellSchema).length(9))
+    .length(9),
+});
+
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
 // todo make custom schemas perhaps?
 export const SudokuBoardClassicSchema = z.object({
   variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
   version: z.literal(1),
+  activeHint: ActiveHintSchema.nullable(),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
     difficulty: z.enum(
@@ -178,6 +227,7 @@ export const SudokuBoardClassicSchema = z.object({
 export const SudokuBoardDrillSchema = z.object({
   variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
   version: z.literal(1),
+  activeHint: ActiveHintSchema.nullable(),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
     difficulty: z.enum(

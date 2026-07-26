@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActiveHintState,
   CellLocation,
   BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
@@ -9,7 +10,6 @@ import {
   getCellBackgroundNotesColor,
   getCellNotesColor,
 } from "../Functions/RenderCellFunctions";
-import { HintObjectProps } from "../../SudokuBoard";
 import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { toggleSelectCell } from "../Functions/CellFunctions";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
@@ -18,7 +18,8 @@ import { Theme } from "../../../../Styling/theme";
 const RenderCell = (
   sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
+  boardDisabled: boolean,
   r: number,
   c: number,
   boardMethods: SudokuVariantMethods,
@@ -33,7 +34,7 @@ const RenderCell = (
     boardMethods.doesCellHaveConflict,
     theme,
   );
-  const disable: boolean = isBoardDisabled(sudokuHint);
+  const disable: boolean = boardDisabled || isBoardDisabled(sudokuHint);
   const noteColor: string[] = getCellNotesColor(sudokuHint, r, c, theme);
   const backgroundNotesColor: string[] =
     getCellBackgroundNotesColor(cellBackgroundColor);

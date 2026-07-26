@@ -1,10 +1,10 @@
 import { View } from "react-native";
 import React, { JSX } from "react";
 import {
+  ActiveHintState,
   CellLocation,
   BoardObjectProps,
 } from "../../../../Functions/LocalDatabase";
-import { HintObjectProps } from "../../SudokuBoard";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { Theme } from "../../../../Styling/theme";
 import { useTheme } from "../../../../Contexts/ThemeContext";
@@ -13,7 +13,8 @@ interface PuzzleProps {
   RenderCell: (
     sudokuBoard: BoardObjectProps,
     setBoardSelectedCells: (cells: CellLocation[]) => void,
-    sudokuHint: HintObjectProps | undefined,
+    sudokuHint: ActiveHintState | null,
+    boardDisabled: boolean,
     r: number,
     c: number,
     boardMethods: SudokuVariantMethods,
@@ -21,7 +22,8 @@ interface PuzzleProps {
   ) => JSX.Element | undefined;
   sudokuBoard: BoardObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
-  sudokuHint: HintObjectProps | undefined;
+  sudokuHint: ActiveHintState | null;
+  boardDisabled: boolean;
   boardMethods: SudokuVariantMethods;
 }
 
@@ -32,6 +34,7 @@ const Puzzle = (props: PuzzleProps) => {
     sudokuBoard,
     setBoardSelectedCells,
     sudokuHint,
+    boardDisabled,
     boardMethods,
   } = props;
 
@@ -44,6 +47,7 @@ const Puzzle = (props: PuzzleProps) => {
           sudokuBoard,
           setBoardSelectedCells,
           sudokuHint,
+          boardDisabled,
           r,
           c,
           boardMethods,

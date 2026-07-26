@@ -34,6 +34,13 @@ import {
   SELECTED_IDENTICAL_VALUE_COLOR_RGB,
 } from "../../../../sudokuru/app/Styling/HighlightColors";
 import { expect } from "@playwright/test";
+import { HomePage } from "../../page/home.page";
+import { DrillPage } from "../../page/drill.page";
+import {
+  dispatchKeysDuringNextStorageWrite,
+  failNextStorageWrite,
+  getFailedStorageOperationCount,
+} from "../../storage-test-helpers";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
@@ -87,6 +94,48 @@ test.describe("hint mode operates correctly", () => {
     await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
     await sudokuBoard.cellIsEnabled(0, 0);
   });
+
+  test("failed hint persistence does not start a hint or increment statistics", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await expect(sudokuBoard.hints).toContainText("0");
+    await failNextStorageWrite(resumeDrillGame, "active_drill_game");
+
+    await sudokuBoard.hint.click();
+    await expect
+      .poll(() => getFailedStorageOperationCount(resumeDrillGame))
+      .toBe(1);
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+    await expect(sudokuBoard.hints).toContainText("0");
+
+    await sudokuBoard.hint.click();
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hints).toContainText("1");
+  });
+
+  test("ordinary keyboard input is ignored while hint start is persisted", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[7][6].click();
+    const cellContentBeforeHint =
+      await sudokuBoard.cell[7][6].getAttribute("data-testid");
+    await dispatchKeysDuringNextStorageWrite(
+      resumeDrillGame,
+      "active_drill_game",
+      ["u", "p", "n", "2", "Backspace", "ArrowRight", "r"],
+    );
+
+    await sudokuBoard.hint.click();
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await sudokuBoard.hintExit.click();
+    await expect(sudokuBoard.cell[7][6]).toHaveAttribute(
+      "data-testid",
+      cellContentBeforeHint!,
+    );
+  });
 });
 
 test.describe("board OBVIOUS_SINGLE", () => {
@@ -110,6 +159,90 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await sudokuBoard.verifyAllCellsInBoard((row, column) =>
       sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB),
     );
+  });
+
+  test("undo is ignored during stage four and exit restores the pre-hint board", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[8][7].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.cell[8][7].press("8");
+    await sudokuBoard.cell[8][7].press("8");
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 4; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.page.keyboard.press("u");
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+  });
+
+  test("undo is ignored during stage five and exit restores the pre-hint board", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[8][7].click();
+    await sudokuBoard.page.keyboard.press("n");
+    await sudokuBoard.cell[8][7].press("8");
+    await sudokuBoard.cell[8][7].press("8");
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasValue(8, 7, "9");
+    await sudokuBoard.page.keyboard.press("u");
+    await sudokuBoard.cellHasValue(8, 7, "9");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+  });
+
+  test("OBVIOUS_SINGLE stage five persists through reload and exit", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasValue(8, 7, "9");
+    await resumeDrillGame.reload();
+    const homePage = new HomePage(resumeDrillGame);
+    await homePage.startDrills.click();
+    const drillPage = new DrillPage(resumeDrillGame);
+    await drillPage.resume.click();
+    await sudokuBoard.sudokuBoardIsRendered();
+
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintArrowLeft).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintFinish).toBeInViewport({ ratio: 1 });
+    await sudokuBoard.cellHasValue(8, 7, "9");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+
+    await resumeDrillGame.reload();
+    await homePage.startDrills.click();
+    await drillPage.resume.click();
+    await sudokuBoard.sudokuBoardIsRendered();
+
+    await sudokuBoard.cellHasNotes(8, 7, "9");
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
   });
 
   test("OBVIOUS_SINGLE", async ({ resumeDrillGame }) => {

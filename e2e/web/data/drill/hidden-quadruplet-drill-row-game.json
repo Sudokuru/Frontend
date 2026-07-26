@@ -1,7 +1,8 @@
 [
   {
     "variant": "drill",
-    "version": 1,
+  "version": 1,
+  "activeHint": null,
     "selectedCells": [],
     "initialPuzzleState": [
       [

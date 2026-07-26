@@ -1,5 +1,5 @@
 import { Text } from "react-native-paper";
-import { HintObjectProps } from "../../SudokuBoard";
+import { ActiveHintState } from "../../../../Functions/LocalDatabase";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Pressable, View, useWindowDimensions } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
@@ -8,7 +8,8 @@ import React from "react";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 
-interface HintProps extends HintObjectProps {
+interface HintProps
+  extends Pick<ActiveHintState, "stage" | "maxStage" | "hint"> {
   incrementStage: (
     stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],

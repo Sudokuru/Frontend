@@ -26,9 +26,8 @@ export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
  * Given a game saves it to AsyncStorage
  * @param game - activeGame JSON object
  */
-export const saveGame = (game: BoardObjectProps) => {
+export const saveGame = (game: BoardObjectProps) =>
   storeData(`active_${game.variant}_game`, JSON.stringify([game]));
-};
 
 /**
  * Completes the game by removing the active game from storage and updating user statistics.
@@ -54,9 +53,6 @@ export const finishGame = async (
   score: number,
   variant: GameVariant,
 ) => {
-  // remove the game from storage
-  await removeData(`active_${variant}_game`);
-
   // Create or update user's statistics
   let statistics: Statistics = await getStatistics();
 
@@ -88,5 +84,8 @@ export const finishGame = async (
     }
   }
 
-  saveStatisitics(statistics);
+  await saveStatisitics(statistics);
+
+  // Keep the resumable game until its completion statistics are persisted.
+  await removeData(`active_${variant}_game`);
 };

@@ -143,10 +143,10 @@ export const formatTime = (inputSeconds: number) => {
  * @param time
  * @returns
  */
-export function finishSudokuGame(
+export async function finishSudokuGame(
   statistics: ClassicGameStatistics,
   variant: GameVariant,
-): ClassicGameStatistics {
+): Promise<ClassicGameStatistics> {
   // calculate score
   const score = calculateGameScore(
     statistics.numHintsUsed,
@@ -156,7 +156,7 @@ export function finishSudokuGame(
   );
 
   // removes game from localstorage and updates statistics page
-  finishGame(
+  await finishGame(
     statistics.numHintsUsed,
     statistics.numHintsUsedPerStrategy,
     statistics.numWrongCellsPlayed,

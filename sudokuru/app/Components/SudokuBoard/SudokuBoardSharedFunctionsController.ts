@@ -6,6 +6,7 @@ import {
   GameVariant,
   CellProps,
   ClassicObjectProps,
+  PersistedHintPayload,
 } from "./../../Functions/LocalDatabase";
 
 import {
@@ -37,7 +38,7 @@ import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameMod
 import { getSudokuBoardHint as coreGetSudokuBoardHint } from "./Core/Functions/HintFunctions";
 import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions/HintFunctions";
 
-import { Board, ClassicBoard, DrillBoard, HintProps } from "./SudokuBoard";
+import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 
@@ -57,7 +58,7 @@ export interface SudokuVariantMethods {
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
     variant: GameVariant,
-  ): ClassicGameStatistics | DrillGameStatistics;
+  ): Promise<ClassicGameStatistics | DrillGameStatistics>;
   generateGame(
     board: Board,
     initializeNotes: boolean,
@@ -75,7 +76,7 @@ export interface SudokuVariantMethods {
     sudokuBoard: BoardObjectProps,
     strategyArray: SudokuStrategy[],
   ) => {
-    hint: HintProps;
+    hint: PersistedHintPayload;
     updatedBoard: BoardObjectProps;
   };
 }
@@ -96,11 +97,11 @@ const defaultMethods: SudokuVariantMethods = {
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
   },
-  finishSudokuGame(
+  async finishSudokuGame(
     statistics: ClassicGameStatistics,
     variant: GameVariant,
-  ): ClassicGameStatistics {
-    return coreFinishGameStatistics(statistics, variant);
+  ): Promise<ClassicGameStatistics> {
+    return await coreFinishGameStatistics(statistics, variant);
   },
   generateGame(
     board: ClassicBoard,
@@ -154,11 +155,11 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },
-    finishSudokuGame(
+    async finishSudokuGame(
       statistics: DrillGameStatistics,
       variant: GameVariant,
-    ): DrillGameStatistics {
-      return drillFinishGameStatistics(statistics, variant);
+    ): Promise<DrillGameStatistics> {
+      return await drillFinishGameStatistics(statistics, variant);
     },
     generateGame(
       board: DrillBoard,

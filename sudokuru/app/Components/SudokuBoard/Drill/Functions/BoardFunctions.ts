@@ -8,11 +8,11 @@ import {
 } from "../../../../Functions/LocalDatabase";
 
 // This function does nothing to override default classic function
-export function finishSudokuGame(
+export async function finishSudokuGame(
   statistics: DrillGameStatistics,
   variant: GameVariant,
-): DrillGameStatistics {
-  removeData(`active_${variant}_game`);
+): Promise<DrillGameStatistics> {
+  await removeData(`active_${variant}_game`);
   return statistics;
 }
 

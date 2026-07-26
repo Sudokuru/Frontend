@@ -11,6 +11,7 @@ export const storeData = async (key: string, value: any) => {
     await AsyncStorage.setItem(key, value);
   } catch (e) {
     console.log(e);
+    throw e;
   }
 };
 
@@ -48,5 +49,6 @@ export const removeData = async (key: string) => {
     await AsyncStorage.removeItem(key);
   } catch (e) {
     console.log(e);
+    throw e;
   }
 };

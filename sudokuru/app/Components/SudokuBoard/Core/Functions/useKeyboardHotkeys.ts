@@ -31,7 +31,7 @@ export const useKeyboardHotkeys = ({
   const eraseSelectedRef = useRef<any>(null);
   const updateHintStageRef = useRef<any>(null);
   const sudokuBoardRef = useRef<any>(null);
-  const sudokuHintRef = useRef<any>(null);
+  const hintTransitionPendingRef = useRef(false);
   const gameOverRef = useRef<boolean>(false);
   const setBoardSelectedCellsRef = useRef<
     ((cells: CellLocation[]) => void) | null
@@ -173,7 +173,23 @@ export const useKeyboardHotkeys = ({
 
       const inputValue = event.key;
       const board = sudokuBoardRef.current;
-      const hint = sudokuHintRef.current;
+      const hint = board.activeHint;
+
+      if (hintTransitionPendingRef.current) {
+        event.preventDefault();
+        return;
+      }
+
+      if (hint) {
+        if (inputValue === "h" || inputValue === "H") {
+          updateHintStageRef.current?.(
+            1,
+            boardMethods[boardType].finishSudokuGame,
+          );
+        }
+        event.preventDefault();
+        return;
+      }
 
       if (
         handleGeneralHotkeys({
@@ -202,7 +218,14 @@ export const useKeyboardHotkeys = ({
         event.preventDefault();
       }
     },
-    [handleDigitEntry, handleErase, handleGeneralHotkeys, handleNavigation],
+    [
+      boardMethods,
+      boardType,
+      handleDigitEntry,
+      handleErase,
+      handleGeneralHotkeys,
+      handleNavigation,
+    ],
   );
 
   // Setup keyboard event listeners for web platform using globalThis.addEventListener
@@ -223,7 +246,7 @@ export const useKeyboardHotkeys = ({
     eraseSelectedRef,
     updateHintStageRef,
     sudokuBoardRef,
-    sudokuHintRef,
+    hintTransitionPendingRef,
     gameOverRef,
     setBoardSelectedCellsRef,
   };
