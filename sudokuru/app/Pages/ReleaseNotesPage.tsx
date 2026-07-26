@@ -8,6 +8,7 @@ import { Text } from "react-native-paper";
 import { useWindowDimensions, FlatList } from "react-native";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useIsFocused } from "@react-navigation/native";
+import KeyboardScrollView from "../Components/KeyboardScrollView";
 
 const ReleaseNotesPage = () => {
   const releaseNotes: ReleaseNoteInterface[] = json;
@@ -29,6 +30,7 @@ const ReleaseNotesPage = () => {
 
   return (
     <FlatList
+      renderScrollComponent={(props) => <KeyboardScrollView {...props} />}
       ListHeaderComponent={
         <Text
           testID="ReleaseNotesTitle"

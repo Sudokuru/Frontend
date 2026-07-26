@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ScrollView, View } from "react-native";
+import { Modal, View } from "react-native";
 import { Button, ActivityIndicator, Text } from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
@@ -8,6 +8,7 @@ import TotalStatistics from "../Components/Statistics/TotalStatistics";
 import { Statistics } from "../Api/Puzzle.Types";
 import { CARD_IMAGE_HEIGHT, CARD_WIDTH } from "../Components/Home/Cards";
 import { useTheme } from "../Contexts/ThemeContext";
+import KeyboardScrollView from "../Components/KeyboardScrollView";
 
 const StatisticsPage = () => {
   const { theme } = useTheme();
@@ -61,7 +62,7 @@ const StatisticsPage = () => {
     return <ActivityIndicator animating={true} color={theme.colors.primary} />;
   } else {
     return (
-      <ScrollView>
+      <KeyboardScrollView>
         <View
           style={{
             flex: 1,
@@ -181,7 +182,7 @@ const StatisticsPage = () => {
             </View>
           </View>
         </Modal>
-      </ScrollView>
+      </KeyboardScrollView>
     );
   }
 };

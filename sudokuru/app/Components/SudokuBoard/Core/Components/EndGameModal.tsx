@@ -1,11 +1,12 @@
 import { Button, Text } from "react-native-paper";
-import { useWindowDimensions, ScrollView, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
 import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import KeyboardScrollView from "../../../KeyboardScrollView";
 import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
 export const EndGameModal = ({
@@ -20,7 +21,7 @@ export const EndGameModal = ({
   const navigation: any = useNavigation();
 
   return (
-    <ScrollView
+    <KeyboardScrollView
       testID="endGameResults"
       contentContainerStyle={{
         alignItems: "center",
@@ -84,7 +85,7 @@ export const EndGameModal = ({
       >
         Play New Game
       </Button>
-    </ScrollView>
+    </KeyboardScrollView>
   );
 };
 

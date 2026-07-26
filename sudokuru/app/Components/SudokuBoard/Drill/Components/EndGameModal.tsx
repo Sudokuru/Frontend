@@ -1,5 +1,5 @@
 import { Button, Text } from "react-native-paper";
-import { useWindowDimensions, ScrollView, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import React from "react";
@@ -7,6 +7,7 @@ import { DrillGameStatistics } from "../../../../Functions/LocalDatabase";
 import { formatTime } from "../../Core/Functions/BoardFunctions";
 import { toTitle } from "../../../../Functions/Utils";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import KeyboardScrollView from "../../../KeyboardScrollView";
 
 export const EndGameModal = ({
   statistics,
@@ -20,7 +21,7 @@ export const EndGameModal = ({
   const navigation: any = useNavigation();
 
   return (
-    <ScrollView
+    <KeyboardScrollView
       testID="endGameResults"
       contentContainerStyle={{
         alignItems: "center",
@@ -75,7 +76,7 @@ export const EndGameModal = ({
       >
         Start New Drill
       </Button>
-    </ScrollView>
+    </KeyboardScrollView>
   );
 };
 

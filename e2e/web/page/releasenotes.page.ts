@@ -14,6 +14,10 @@ export class ReleaseNotesPage {
     await expect(this.title).toBeInViewport({ ratio: 1 });
   }
 
+  async titleIsNotInViewport() {
+    await expect(this.title).not.toBeInViewport();
+  }
+
   async firstReleaseNoteIsRendered(version: string) {
     await expect(this.page.getByText(version)).toBeInViewport({ ratio: 1 });
   }
