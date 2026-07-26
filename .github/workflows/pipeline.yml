@@ -194,7 +194,7 @@ jobs:
     name: Merge Playwright reports
     runs-on: ubuntu-latest
     needs: [ website_test_dev ]
-    if: always()
+    if: ${{ !cancelled() && needs.website_test_dev.result != 'skipped' }}
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
