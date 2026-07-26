@@ -7,8 +7,6 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
 
-// todo rewrite
-
 interface NumberControlProps {
   areNumberButtonsDisabled: boolean;
   updateEntry: (inputValue: number) => void;
