@@ -7,6 +7,9 @@
   "directories": {
     "doc": "docs"
   },
+  "engines": {
+    "node": ">=26.5.0"
+  },
   "scripts": {
     "pre-commit": "pre-commit run --all-files",
     "playwright:test": "npm run playwright:test --workspace=e2e/web",

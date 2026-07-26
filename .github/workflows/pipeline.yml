@@ -67,6 +67,10 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
       - name: 📦 Install dependencies
         run: npm ci --ignore-scripts
       - name: Lint Check
@@ -88,7 +92,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
@@ -152,7 +156,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: install dependencies
         run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
@@ -201,7 +205,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: install dependencies
         run: npm ci --ignore-scripts
       - name: Download blob reports
@@ -262,7 +266,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v5
@@ -305,7 +309,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
@@ -402,6 +406,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
       - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
@@ -421,6 +429,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
       - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
