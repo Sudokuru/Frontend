@@ -8,12 +8,17 @@ import {
 import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
 import { isEqual } from "../../Drill/Functions/CellFunctions";
+import {
+  MOBILE_BREAKPOINT,
+  NAV_HEADER_HEIGHT,
+  NAV_HEADER_SAFETY_PADDING,
+  isNavHeaderVisible,
+} from "../../../../Functions/GameLayout";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
  */
 
-export const MOBILE_BREAKPOINT = 768;
 const MAX_BOARD_SIZE = 640;
 const BOARD_EDGE_PADDING = 1;
 
@@ -25,27 +30,6 @@ const ACTION_ROW_HEIGHT_IN_CELLS_MOBILE = 1.45;
 const NUMBER_CONTROL_HEIGHT_IN_CELLS = 1.65;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
-
-const NAV_HEADER_HEIGHT = 60;
-const NAV_HEADER_SAFETY_PADDING = 12;
-
-const MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS =
-  HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
-  PUZZLE_HEIGHT_IN_CELLS +
-  ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
-  NUMBER_CONTROL_HEIGHT_IN_CELLS;
-
-export const isNavHeaderVisible = (width: number, height: number): boolean => {
-  const cellSizeFromWidth = width / 9;
-  const requiredContentHeight =
-    cellSizeFromWidth * MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS;
-  const availableHeightWithHeader =
-    height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
-  return (
-    width >= MOBILE_BREAKPOINT ||
-    requiredContentHeight <= availableHeightWithHeader
-  );
-};
 
 /**
  * This function retrieves the user's device size and calculates the cell size

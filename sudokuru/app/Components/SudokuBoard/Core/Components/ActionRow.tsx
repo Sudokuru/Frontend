@@ -1,4 +1,5 @@
-import { MOBILE_BREAKPOINT, useCellSize } from "../Functions/BoardFunctions";
+import { useCellSize } from "../Functions/BoardFunctions";
+import { MOBILE_BREAKPOINT } from "../../../../Functions/GameLayout";
 import { Pressable, View, useWindowDimensions } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";

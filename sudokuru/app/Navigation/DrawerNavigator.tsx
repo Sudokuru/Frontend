@@ -17,7 +17,7 @@ import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useWindowDimensions } from "react-native";
-import { isNavHeaderVisible } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
+import { isNavHeaderVisible } from "../Functions/GameLayout";
 
 const Drawer = createDrawerNavigator();
 
