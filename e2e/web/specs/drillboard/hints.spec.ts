@@ -57,33 +57,34 @@ test.describe("hint mode operates correctly", () => {
     await sudokuBoard.cellIsDisabled(0, 0);
   });
 
-  test("exit button is visible after the first hint stage", async ({
+  test("exit button is visible on every hint stage", async ({
     resumeDrillGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await sudokuBoard.hint.click();
 
-    await expect(sudokuBoard.hintExit).toHaveCount(0);
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintArrowLeft).toHaveCount(0);
 
     for (let stage = 2; stage <= 5; stage++) {
       await sudokuBoard.hintArrowRight.click();
-      await expect(sudokuBoard.hintExit).toBeVisible();
+      await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+      await expect(sudokuBoard.hintArrowLeft).toBeInViewport({ ratio: 1 });
     }
 
-    await expect(sudokuBoard.hintFinish).toBeVisible();
+    await expect(sudokuBoard.hintFinish).toBeInViewport({ ratio: 1 });
   });
 
   test("exit button leaves hint mode", async ({ resumeDrillGame }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
     await sudokuBoard.hint.click();
-    await sudokuBoard.hintArrowRight.click();
 
-    await expect(sudokuBoard.hintExit).toBeVisible();
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
     await expect(sudokuBoard.hint).toHaveCount(0);
     await sudokuBoard.hintExit.click();
 
     await expect(sudokuBoard.hintExit).toHaveCount(0);
-    await expect(sudokuBoard.hint).toBeVisible();
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
     await sudokuBoard.cellIsEnabled(0, 0);
   });
 });

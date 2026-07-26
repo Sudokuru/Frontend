@@ -96,11 +96,10 @@ const Hint = (hintProps: HintProps) => {
     stage: number,
     maxStage: number,
   ): [ButtonConfig, ButtonConfig] => {
-    const leftButton: ButtonConfig = {
-      testId: "hintArrowLeft",
-      icon: "arrow-left",
-      action: -1,
-    };
+    const leftButton: ButtonConfig =
+      stage === 1
+        ? { testId: "hintExit", icon: "close", action: 0 }
+        : { testId: "hintArrowLeft", icon: "arrow-left", action: -1 };
 
     const rightButton: ButtonConfig =
       stage === maxStage
