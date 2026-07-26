@@ -34,7 +34,7 @@ const NumberControl = (props: NumberControlProps) => {
   const touchKeyWidth = visualKeyWidth;
   const rowGap = keyHeight * 0.1;
   const controlWidth = baseSize * 9;
-  const topRowButtonGap = Math.max((controlWidth - touchKeyWidth * 5) / 4, 0);
+  const keyGap = Math.max((controlWidth - touchKeyWidth * 5) / 4, 0);
 
   const renderNumberButton = (number: number) => {
     const onClick = () => {
@@ -150,7 +150,7 @@ const NumberControl = (props: NumberControlProps) => {
           <View
             key={number}
             style={{
-              marginRight: index < 3 ? topRowButtonGap : 0,
+              marginRight: index < 3 ? keyGap : 0,
             }}
           >
             {renderNumberButton(number)}
