@@ -237,6 +237,7 @@ test.describe("resume game", () => {
     await playPage.resumeButtonIsVisible();
     await playPage.resume.click();
     await expect(sudokuBoard.difficulty).toContainText("Novice");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 });
 
