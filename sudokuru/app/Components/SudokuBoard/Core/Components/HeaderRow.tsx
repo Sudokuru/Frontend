@@ -9,6 +9,9 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 let fallbackHeight = 30;
 
+const DARK_LOGO = require("../../../../../.assets/goldLogoText.png");
+const LIGHT_LOGO = require("../../../../../.assets/lightBlueLogoText.png");
+
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
@@ -71,8 +74,6 @@ const HeaderRow = (props: HeaderRowProps) => {
   const mobileStatPillGap = pillGap;
   const mobileHeaderPuzzleGapOffset = (cellSize || fallbackHeight) * 0.08;
 
-  const DARK_LOGO = require("../../../../../.assets/goldLogoText.png");
-  const LIGHT_LOGO = require("../../../../../.assets/lightBlueLogoText.png");
   const logoSource = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
   const logoHeight = cellSize ? cellSize * 0.65 : fallbackHeight * 0.65;
   const logoWidth = logoHeight * (100 / 45);
