@@ -55,14 +55,8 @@ export function useCellSize(): number {
       width >= MOBILE_BREAKPOINT ||
       boardHeightAtWidth <= availableHeightWithHeader;
 
-    // iOS Safari can under-report vertical viewport on small phones while URL bars animate.
-    // Add a narrow-screen tolerance so iPhone SE can still render full width.
-    const smallPhoneHeightTolerance = width <= 430 ? 24 : 0;
-    const effectiveAvailableHeight = navHeaderShown
-      ? availableHeightWithHeader
-      : height;
     const maxCellSizeFromHeight =
-      (effectiveAvailableHeight + smallPhoneHeightTolerance) /
+      (navHeaderShown ? availableHeightWithHeader : height) /
       webBoardLayoutHeightInCells;
     return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
   }
