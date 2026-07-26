@@ -91,10 +91,6 @@ export function useCellSize(): number {
   const maxCellSizeFromHeight =
     (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
 
-  if (width < MOBILE_BREAKPOINT) {
-    return maxCellSizeFromWidth;
-  }
-
   return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }
 
