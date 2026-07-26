@@ -206,18 +206,18 @@ const ContactPage = () => {
               }}
               disabled={contactPage.buttonDisabled}
               mode="contained"
+              labelStyle={{
+                color: theme.semantic.text.inverse,
+                fontSize: 24,
+                lineHeight: 32,
+              }}
               style={{
                 marginVertical: "2%",
                 marginHorizontal: size.width > 800 ? "30%" : "10%",
               }}
               testID={"SubmitFeedbackButton"}
             >
-              <Text
-                variant="headlineSmall"
-                style={{ color: theme.semantic.text.inverse }}
-              >
-                {contactPage.buttonText}
-              </Text>
+              {contactPage.buttonText}
             </Button>
             <Text
               variant="titleMedium"
