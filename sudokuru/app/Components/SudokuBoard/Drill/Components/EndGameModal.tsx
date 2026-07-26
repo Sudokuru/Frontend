@@ -21,7 +21,6 @@ export const EndGameModal = ({
 
   return (
     <ScrollView
-      testID="endGameResults"
       contentContainerStyle={{
         alignItems: "center",
         justifyContent: "center",

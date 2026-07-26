@@ -84,15 +84,8 @@ const Header = () => {
         }}
       >
         {featurePreviewSetting && (
-          <View
-            style={{
-              alignSelf: "center",
-              // Prevent macOS WebKit from rounding the text's right edge inward.
-              marginRight: 0.5,
-            }}
-          >
+          <View style={{ alignSelf: "center" }} testID="FeaturePreviewText">
             <Text
-              testID="FeaturePreviewText"
               style={{
                 color: theme.colors.primary,
                 fontWeight: "bold",

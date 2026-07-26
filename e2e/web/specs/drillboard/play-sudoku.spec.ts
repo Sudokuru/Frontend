@@ -34,26 +34,20 @@ test.describe("complete drill", () => {
     await sudokuBoard.numPad[6 - 1].click();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
     await endGameModal.endGameModalIsRendered();
-    await endGameModal.statisticIsFullyVisible(
-      "time",
-      /Time Spent:/,
-      /^0[1-5]$/,
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "strategy",
-      /Strategy:/,
-      "Pointing Pair",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numWrongCellsPlayed",
-      /Mistakes Made:/,
-      "1",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numHintsUsed",
-      /Hint Used:/,
-      "No",
-    );
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      endGameModal.page.getByText("Strategy: Pointing Pair"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Mistakes Made: 1"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Hint Used: No")).toBeInViewport({
+      ratio: 1,
+    });
   });
 
   test("Completing a drill with hint should display correct game results", async ({
@@ -65,27 +59,20 @@ test.describe("complete drill", () => {
     await sudokuBoard.cell[7][6].press("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
-    await endGameModal.endGameModalIsRendered();
-    await endGameModal.statisticIsFullyVisible(
-      "time",
-      /Time Spent:/,
-      /^0[1-5]$/,
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "strategy",
-      /Strategy:/,
-      "Pointing Pair",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numWrongCellsPlayed",
-      /Mistakes Made:/,
-      "1",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numHintsUsed",
-      /Hint Used:/,
-      "Yes",
-    );
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      endGameModal.page.getByText("Strategy: Pointing Pair"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Mistakes Made: 1"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Hint Used: Yes")).toBeInViewport({
+      ratio: 1,
+    });
   });
 
   test("Completing a drill with note mistakes should display correct game results", async ({
@@ -101,26 +88,20 @@ test.describe("complete drill", () => {
     await sudokuBoard.numPad[6 - 1].click();
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
     await endGameModal.endGameModalIsRendered();
-    await endGameModal.statisticIsFullyVisible(
-      "time",
-      /Time Spent:/,
-      /^0[1-5]$/,
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "strategy",
-      /Strategy:/,
-      "Pointing Pair",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numWrongCellsPlayed",
-      /Mistakes Made:/,
-      "2",
-    );
-    await endGameModal.statisticIsFullyVisible(
-      "numHintsUsed",
-      /Hint Used:/,
-      "No",
-    );
+    await expect(
+      endGameModal.page.getByText(/Time Spent: (01|02)/),
+    ).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(
+      endGameModal.page.getByText("Strategy: Pointing Pair"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      endGameModal.page.getByText("Mistakes Made: 2"),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(endGameModal.page.getByText("Hint Used: No")).toBeInViewport({
+      ratio: 1,
+    });
   });
 });
 

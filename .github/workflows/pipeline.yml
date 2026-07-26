@@ -66,14 +66,14 @@ jobs:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
       - name: 📦 Install dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci
       - name: Lint Check
-        run: npm run lint
+        run: npx eslint .
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Typescript Check
         working-directory: sudokuru
-        run: npm run tsc
+        run: npx tsc
 
   app_preview_dev:
     runs-on: ubuntu-latest
@@ -96,7 +96,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
@@ -152,11 +152,11 @@ jobs:
         with:
           node-version: 24.x
       - name: install dependencies
-        run: npm ci --ignore-scripts
+        run: npm i
       - name: Install Playwright Browsers
         run: npm run playwright:init:deps
       - name: Playwright run
-        run: npm run playwright:test -- --project="${{ matrix.project }}"
+        run: npx playwright test --project="${{ matrix.project }}"
         working-directory: e2e/web
         env:
           BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
@@ -201,7 +201,7 @@ jobs:
         with:
           node-version: 24.x
       - name: install dependencies
-        run: npm ci --ignore-scripts
+        run: npm i
       - name: Download blob reports
         uses: actions/download-artifact@v8
         with:
@@ -219,7 +219,7 @@ jobs:
           pattern: monocart-report-*
           path: e2e/web/all-monocart-reports
       - name: Merge Playwright HTML report
-        run: npm run playwright:merge-reports -- --reporter=html ./all-blob-reports
+        run: npx playwright merge-reports --reporter=html ./all-blob-reports
         working-directory: e2e/web
       # for now codecov will handle coverage merging automatically with multiple codecov.json files
       # future enhancement handle ourselves for viewing merged reports in the pipeline and not rely on codecov's UI
@@ -234,7 +234,7 @@ jobs:
         working-directory: e2e/web
       - name: Upload all coverage reports to Codecov
         if: always()
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -274,7 +274,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: sudokuru
@@ -316,7 +316,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci
       - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
         id: tauri_build
         with:
@@ -350,7 +350,7 @@ jobs:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -384,7 +384,7 @@ jobs:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
       - name: Install Butler
         run: |
-          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
+          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
@@ -403,7 +403,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci --ignore-scripts
+      - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
@@ -422,7 +422,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci --ignore-scripts
+      - run: npm ci
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment

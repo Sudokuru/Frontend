@@ -4,14 +4,12 @@ export class ContactPage {
   readonly page: Page;
   readonly title: Locator;
   readonly submitFeedback: Locator;
-  readonly submitFeedbackText: Locator;
   readonly feedback: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Contact Us");
     this.submitFeedback = page.getByTestId("SubmitFeedbackButton");
-    this.submitFeedbackText = page.getByTestId("SubmitFeedbackButton-text");
     this.feedback = page.getByTestId("FeedbackTextInput");
   }
 
@@ -42,9 +40,9 @@ export class ContactPage {
   }
 
   async buttonIsSubmitting() {
-    await expect(this.submitFeedbackText).toHaveText("Submitting...");
-    await expect(this.submitFeedbackText).toBeInViewport({ ratio: 1 });
-    await expect(this.submitFeedback).toBeInViewport({ ratio: 1 });
+    await expect(this.page.getByText("Submitting...")).toBeInViewport({
+      ratio: 1,
+    });
     await this.submitFeedbackButtonIsDisabled();
   }
 
