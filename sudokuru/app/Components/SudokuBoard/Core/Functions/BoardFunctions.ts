@@ -26,6 +26,27 @@ const NUMBER_CONTROL_HEIGHT_IN_CELLS = 1.65;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
 
+const NAV_HEADER_HEIGHT = 60;
+const NAV_HEADER_SAFETY_PADDING = 12;
+
+const MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS =
+  HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
+  PUZZLE_HEIGHT_IN_CELLS +
+  ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
+  NUMBER_CONTROL_HEIGHT_IN_CELLS;
+
+export const isNavHeaderVisible = (width: number, height: number): boolean => {
+  const cellSizeFromWidth = width / 9;
+  const requiredContentHeight =
+    cellSizeFromWidth * MOBILE_BOARD_LAYOUT_HEIGHT_IN_CELLS;
+  const availableHeightWithHeader =
+    height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
+  return (
+    width >= MOBILE_BREAKPOINT ||
+    requiredContentHeight <= availableHeightWithHeader
+  );
+};
+
 /**
  * This function retrieves the user's device size and calculates the cell size
  * board has width and height dimensions
@@ -44,16 +65,9 @@ export function useCellSize(): number {
     const maxCellSizeFromWidth =
       Math.min(Math.max(width - BOARD_EDGE_PADDING, 0), MAX_BOARD_SIZE) / 9;
 
-    // Account for the app nav header when it is visible.
-    const NAV_HEADER_HEIGHT = 60;
-    const NAV_HEADER_SAFETY_PADDING = 12;
+    const navHeaderShown = isNavHeaderVisible(width, height);
     const availableHeightWithHeader =
       height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
-    const boardHeightAtWidth =
-      maxCellSizeFromWidth * webBoardLayoutHeightInCells;
-    const navHeaderShown =
-      width >= MOBILE_BREAKPOINT ||
-      boardHeightAtWidth <= availableHeightWithHeader;
 
     const maxCellSizeFromHeight =
       (navHeaderShown ? availableHeightWithHeader : height) /
