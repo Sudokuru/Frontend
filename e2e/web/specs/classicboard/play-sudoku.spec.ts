@@ -43,21 +43,28 @@ test.describe("complete game", () => {
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
-    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
-      ratio: 1,
-    });
-    await expect(
-      endGameModal.page.getByText("Time Spent: 06:1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Number of Hints Used: 0"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Mistakes Made: 235"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Difficulty: novice"),
-    ).toBeInViewport({ ratio: 1 });
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.statisticIsFullyVisible("score", /Score:/, "24");
+    await endGameModal.statisticIsFullyVisible(
+      "time",
+      /Time Spent:/,
+      /^06:1[4-9]$/,
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numHintsUsed",
+      /Number of Hints Used:/,
+      "0",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numWrongCellsPlayed",
+      /Mistakes Made:/,
+      "235",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "difficulty",
+      /Difficulty:/,
+      "novice",
+    );
   });
 
   test("Completing a game with hint should display correct game results", async ({
@@ -72,27 +79,38 @@ test.describe("complete game", () => {
     await sudokuBoard.solveHint();
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
-    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
-      ratio: 1,
-    });
-    await expect(
-      endGameModal.page.getByText("Time Spent: 06:1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Number of Hints Used: 2"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Simplify Notes: 1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Obvious Single: 1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Mistakes Made: 235"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Difficulty: novice"),
-    ).toBeInViewport({ ratio: 1 });
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.statisticIsFullyVisible("score", /Score:/, "24");
+    await endGameModal.statisticIsFullyVisible(
+      "time",
+      /Time Spent:/,
+      /^06:1[4-9]$/,
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numHintsUsed",
+      /Number of Hints Used:/,
+      "2",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "hintsUsedSIMPLIFY_NOTES",
+      /Simplify Notes:/,
+      "1",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "hintsUsedOBVIOUS_SINGLE",
+      /Obvious Single:/,
+      "1",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numWrongCellsPlayed",
+      /Mistakes Made:/,
+      "235",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "difficulty",
+      /Difficulty:/,
+      "novice",
+    );
   });
 
   test("Completing a game should display correct statistics", async ({
