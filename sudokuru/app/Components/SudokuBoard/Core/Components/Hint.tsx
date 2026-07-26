@@ -133,6 +133,10 @@ const Hint = (hintProps: HintProps) => {
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
   const showHintExit = stage > 1;
+  const leftButtonHitSlop = showHintExit
+    ? { top: 12, right: 12, bottom: 0, left: 12 }
+    : 12;
+  const exitButtonHitSlop = { top: 0, right: 12, bottom: 12, left: 12 };
 
   return (
     <View
@@ -148,7 +152,7 @@ const Hint = (hintProps: HintProps) => {
       <Pressable
         onPress={() => incrementStage(leftButton.action, finishSudokuGame)}
         testID={leftButton.testId}
-        hitSlop={12}
+        hitSlop={leftButtonHitSlop}
         style={{
           position: "absolute",
           left: 0,
@@ -174,7 +178,7 @@ const Hint = (hintProps: HintProps) => {
         <Pressable
           onPress={() => incrementStage(0, finishSudokuGame)}
           testID="hintExit"
-          hitSlop={12}
+          hitSlop={exitButtonHitSlop}
           style={{
             position: "absolute",
             left: 0,
