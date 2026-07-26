@@ -132,7 +132,8 @@ const ActionRow = (props: ActionRowProps) => {
   const actionButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
-  const noteIcon = inNoteMode ? "pencil-outline" : "pencil-off-outline";
+  const noteIcon: React.ComponentProps<typeof MaterialCommunityIcons>["name"] =
+    inNoteMode ? "pencil-outline" : "pencil-off-outline";
   const noteLabel = inNoteMode ? "VALUE" : "NOTE";
 
   type ActionButtonConfig = {
@@ -153,12 +154,10 @@ const ActionRow = (props: ActionRowProps) => {
     : ACTION_BUTTON_HEIGHT_RATIO;
   const mobileButtonGap = isMobileLayout ? actionBaseSize * 0.08 : 0;
 
-  const buttonConfigs: ActionButtonConfig[] = [
+  const allButtons: ActionButtonConfig[] = [
     {
       key: "undo",
-      iconName: "undo" as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: "undo",
       label: "UNDO",
       onPress: undo,
       disabled: isUndoButtonDisabled,
@@ -167,9 +166,7 @@ const ActionRow = (props: ActionRowProps) => {
     },
     {
       key: "note",
-      iconName: noteIcon as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: noteIcon,
       label: noteLabel,
       onPress: toggleNoteMode,
       disabled: false,
@@ -178,9 +175,7 @@ const ActionRow = (props: ActionRowProps) => {
     },
     {
       key: "erase",
-      iconName: "eraser" as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: "eraser",
       label: "ERASE",
       onPress: eraseSelected,
       disabled: isEraseButtonDisabled,
@@ -189,9 +184,7 @@ const ActionRow = (props: ActionRowProps) => {
     },
     {
       key: "reset",
-      iconName: "restart" as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: "restart",
       label: "RESET",
       onPress: reset,
       disabled: isResetButtonDisabled,
@@ -200,9 +193,7 @@ const ActionRow = (props: ActionRowProps) => {
     },
     {
       key: "hint",
-      iconName: "help" as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: "help",
       label: "HINT",
       onPress: getHint,
       disabled: boardHasConflict,
@@ -211,16 +202,15 @@ const ActionRow = (props: ActionRowProps) => {
     },
     {
       key: "pause",
-      iconName: "pause" as React.ComponentProps<
-        typeof MaterialCommunityIcons
-      >["name"],
+      iconName: "pause",
       label: "PAUSE",
       onPress: handlePause,
       disabled: false,
       testID: "pauseButton",
       visible: true,
     },
-  ].filter((button) => button.visible);
+  ];
+  const buttonConfigs = allButtons.filter((button) => button.visible);
 
   const actionButtonWidth = isMobileLayout
     ? (rowWidth - mobileButtonGap * (buttonConfigs.length - 1)) /
