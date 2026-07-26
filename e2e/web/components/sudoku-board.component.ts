@@ -53,7 +53,7 @@ export class SudokuBoardComponent {
     this.hints = page.getByTestId("hintsCounter");
     this.mistakes = page.getByTestId("mistakesCounter");
     this.timer = page.getByTestId("timeCounter");
-    this.pause = page.getByTestId("PauseButton");
+    this.pause = page.getByTestId("pauseButton");
     this.undo = page.getByTestId("undoButton");
     this.reset = page.getByTestId("resetButton");
     this.note = page.getByTestId("toggleNoteModeButton");

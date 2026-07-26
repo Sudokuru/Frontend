@@ -217,7 +217,7 @@ const ActionRow = (props: ActionRowProps) => {
       label: "PAUSE",
       onPress: handlePause,
       disabled: false,
-      testID: "PauseButton",
+      testID: "pauseButton",
       visible: true,
     },
   ].filter((button) => button.visible);
