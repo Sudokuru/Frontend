@@ -16,6 +16,60 @@ interface HintProps extends HintObjectProps {
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
 }
 
+type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+
+interface NavButtonProps {
+  testID: string;
+  icon: IconName;
+  onPress: () => void;
+  hitSlop:
+    | number
+    | { top: number; right: number; bottom: number; left: number };
+  buttonSize: number;
+  backgroundColor: string;
+  iconColor: string;
+  iconSize: number;
+  iconStyle: object;
+  style?: object;
+}
+
+const NavButton = ({
+  testID,
+  icon,
+  onPress,
+  hitSlop,
+  buttonSize,
+  backgroundColor,
+  iconColor,
+  iconSize,
+  iconStyle,
+  style,
+}: NavButtonProps) => (
+  <Pressable
+    onPress={onPress}
+    testID={testID}
+    hitSlop={hitSlop}
+    style={[
+      {
+        width: buttonSize,
+        height: buttonSize,
+        borderRadius: buttonSize * 0.22,
+        backgroundColor,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      style,
+    ]}
+  >
+    <MaterialCommunityIcons
+      color={iconColor}
+      name={icon}
+      size={iconSize}
+      style={iconStyle}
+    />
+  </Pressable>
+);
+
 const Hint = (hintProps: HintProps) => {
   const { stage, hint, maxStage, incrementStage, finishSudokuGame } = hintProps;
 
@@ -138,46 +192,6 @@ const Hint = (hintProps: HintProps) => {
     : 12;
   const exitButtonHitSlop = { top: 0, right: 12, bottom: 12, left: 12 };
 
-  const NavButton = ({
-    testID,
-    icon,
-    onPress,
-    hitSlop,
-    style,
-  }: {
-    testID: string;
-    icon: IconName;
-    onPress: () => void;
-    hitSlop:
-      | number
-      | { top: number; right: number; bottom: number; left: number };
-    style?: object;
-  }) => (
-    <Pressable
-      onPress={onPress}
-      testID={testID}
-      hitSlop={hitSlop}
-      style={[
-        {
-          width: navButtonSize,
-          height: navButtonSize,
-          borderRadius: navButtonSize * 0.22,
-          backgroundColor: navButtonBackgroundColor,
-          alignItems: "center",
-          justifyContent: "center",
-        },
-        style,
-      ]}
-    >
-      <MaterialCommunityIcons
-        color={navIconColor}
-        name={icon}
-        size={navIconSize}
-        style={navIconStyle}
-      />
-    </Pressable>
-  );
-
   return (
     <View
       style={{
@@ -194,6 +208,11 @@ const Hint = (hintProps: HintProps) => {
         icon={leftButton.icon}
         onPress={() => incrementStage(leftButton.action, finishSudokuGame)}
         hitSlop={leftButtonHitSlop}
+        buttonSize={navButtonSize}
+        backgroundColor={navButtonBackgroundColor}
+        iconColor={navIconColor}
+        iconSize={navIconSize}
+        iconStyle={navIconStyle}
         style={{
           position: "absolute",
           left: 0,
@@ -208,6 +227,11 @@ const Hint = (hintProps: HintProps) => {
           icon="close"
           onPress={() => incrementStage(0, finishSudokuGame)}
           hitSlop={exitButtonHitSlop}
+          buttonSize={navButtonSize}
+          backgroundColor={navButtonBackgroundColor}
+          iconColor={navIconColor}
+          iconSize={navIconSize}
+          iconStyle={navIconStyle}
           style={{
             position: "absolute",
             left: 0,
@@ -236,6 +260,11 @@ const Hint = (hintProps: HintProps) => {
         icon={rightButton.icon}
         onPress={() => incrementStage(rightButton.action, finishSudokuGame)}
         hitSlop={12}
+        buttonSize={navButtonSize}
+        backgroundColor={navButtonBackgroundColor}
+        iconColor={navIconColor}
+        iconSize={navIconSize}
+        iconStyle={navIconStyle}
         style={{
           position: "absolute",
           right: 0,
