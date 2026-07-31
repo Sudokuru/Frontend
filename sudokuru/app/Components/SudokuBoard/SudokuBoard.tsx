@@ -40,9 +40,7 @@ import {
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
-import type { WrongValueHint } from "../../Data/hints/demo_wrong_value_hints";
-import type { AmendNotesHint } from "../../Data/hints/demo_amend_notes_hints";
-import type { ObviousSingleHint } from "../../Data/hints/demo_obvious_single_hints";
+import type { DemoHintStage } from "../../Data/hints/demo_strategy_hints";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -75,16 +73,7 @@ export interface HintProps {
   removals: any;
   info: string;
   action: string;
-  stages?:
-    | WrongValueHint["stages"]
-    | AmendNotesHint["stages"]
-    | ObviousSingleHint["stages"];
-}
-
-export function isWrongValueHint(
-  hint: HintProps,
-): hint is HintProps & Pick<WrongValueHint, "stages"> {
-  return hint.strategy === "WRONG_VALUE" && "stages" in hint;
+  stages?: DemoHintStage[];
 }
 
 export function isPlayableHint(hint: HintProps): hint is HintProps & {

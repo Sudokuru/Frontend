@@ -25,6 +25,12 @@ import {
   CellProps as ObviousSingleCellProps,
 } from "../../../../Data/hints/demo_obvious_single_hints";
 import {
+  DemoHintCell as StrategyDemoCellProps,
+  getStrategyDemoDefinition,
+  isStrategyDemoDifficulty,
+  StrategyDemoCase,
+} from "../../../../Data/hints/demo_strategy_hints";
+import {
   BoardObjectProps,
   ClassicObjectProps,
   CellProps,
@@ -78,6 +84,10 @@ const retrieveRandomPuzzle = (PUZZLES: InputPuzzle[]): InputPuzzle => {
 export const returnPuzzleOfDifficulty = (
   difficulty: GameDifficulty | "dev",
 ): InputPuzzle => {
+  if (difficulty !== "dev" && isStrategyDemoDifficulty(difficulty)) {
+    return NOVICE_PUZZLES[0];
+  }
+
   switch (difficulty) {
     // "dev" difficulty is a custom difficulty that always returns the same puzzle.
     case "dev":
@@ -134,6 +144,11 @@ export const returnGameOfDifficulty = (
     const demoCase = getObviousSingleDemoCase(
       getObviousSingleDemoCaseId(difficulty),
     );
+    return convertDemoCaseToSudokuObject(demoCase, difficulty);
+  }
+
+  if (difficulty !== "dev" && isStrategyDemoDifficulty(difficulty)) {
+    const { demoCase } = getStrategyDemoDefinition(difficulty);
     return convertDemoCaseToSudokuObject(demoCase, difficulty);
   }
 
@@ -223,7 +238,11 @@ export const convertPuzzleToSudokuObject = (
 };
 
 function convertDemoCell(
-  cell: WrongValueCellProps | AmendNotesCellProps | ObviousSingleCellProps,
+  cell:
+    | WrongValueCellProps
+    | AmendNotesCellProps
+    | ObviousSingleCellProps
+    | StrategyDemoCellProps,
 ): CellProps {
   if (cell.type === "note") {
     return {
@@ -239,7 +258,11 @@ function convertDemoCell(
 }
 
 function convertDemoCaseToSudokuObject(
-  demoCase: WrongValueDemoCase | AmendNotesDemoCase | ObviousSingleDemoCase,
+  demoCase:
+    | WrongValueDemoCase
+    | AmendNotesDemoCase
+    | ObviousSingleDemoCase
+    | StrategyDemoCase,
   difficulty: GameDifficulty,
 ): ClassicObjectProps {
   const game: ClassicObjectProps = {

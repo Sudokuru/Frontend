@@ -1,9 +1,19 @@
-import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import {
+  DEMO_DIFFICULTIES,
+  GameDifficulty,
+} from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
+import {
+  ADVANCED_DEMO_HINT_STRATEGIES,
+  AdvancedDemoHintStrategy,
+} from "../Data/hints/demo_strategy_hints";
 
-export type HintStrategy = SudokuStrategy | "WRONG_VALUE";
+export type HintStrategy =
+  | SudokuStrategy
+  | "WRONG_VALUE"
+  | AdvancedDemoHintStrategy;
 
 export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
@@ -114,13 +124,13 @@ const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
   "pundit",
   "master",
   "grandmaster",
-  "wrong-value-direct-conflict",
-  "wrong-value-no-direct-conflict",
+  ...DEMO_DIFFICULTIES,
 ];
 
 const SUDOKU_HINT_STRATEGIES: HintStrategy[] = [
   ...SUDOKU_STRATEGY_ARRAY,
   "WRONG_VALUE",
+  ...ADVANCED_DEMO_HINT_STRATEGIES,
 ];
 
 const SudokuBoardCellSchema = z.union([

@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { DEMO_DIFFICULTIES } from "../../../sudokuru/app/Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 
 const CARD_WIDTH = 300;
 const CARD_HEIGHT = 600;
@@ -9,7 +10,9 @@ const COMPACT_CONTENT_SHRINKAGE_THRESHOLD = 0.6;
 const MAX_HEIGHT_RATIO = 0.7;
 const MAX_SHRINKAGE = 0.99;
 const SHRINKAGE_ROUNDING_FACTOR = 100;
-const DIFFICULTY_CARD_COUNT = 11;
+const STANDARD_DIFFICULTY_CARD_COUNT = 9;
+const DIFFICULTY_CARD_COUNT =
+  STANDARD_DIFFICULTY_CARD_COUNT + DEMO_DIFFICULTIES.length;
 
 export class PlayPage {
   readonly page: Page;

@@ -7,6 +7,10 @@ import {
 import { getWrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
 import { getAmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
 import { getObviousSingleDemoCase } from "../../../../Data/hints/demo_obvious_single_hints";
+import {
+  getStrategyDemoDefinition,
+  isStrategyDemoDifficulty,
+} from "../../../../Data/hints/demo_strategy_hints";
 import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 import {
@@ -118,6 +122,26 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
   };
 };
 
+const incrementHintStatistics = (
+  sudokuBoard: ClassicObjectProps,
+  hintStrategy: HintStrategy,
+) => {
+  sudokuBoard.statistics.numHintsUsed++;
+
+  const existingStrategyStats =
+    sudokuBoard.statistics.numHintsUsedPerStrategy.find(
+      (strategy) => strategy.hintStrategy === hintStrategy,
+    );
+  if (existingStrategyStats) {
+    existingStrategyStats.numHintsUsed++;
+  } else {
+    sudokuBoard.statistics.numHintsUsedPerStrategy.push({
+      hintStrategy,
+      numHintsUsed: 1,
+    });
+  }
+};
+
 /**
  * Retrieves a hint for the current sudoku puzzle board and updates the board's hint statistics.
  * The hint is generated using the current puzzle state, solution, and a strategy array that determines
@@ -135,20 +159,7 @@ export const getSudokuBoardHint = (
     const demoCase = getWrongValueDemoCase(
       getWrongValueDemoCaseId(sudokuBoard.statistics.difficulty),
     );
-    sudokuBoard.statistics.numHintsUsed++;
-
-    const existingWrongValueStats =
-      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
-        (strategy) => strategy.hintStrategy === "WRONG_VALUE",
-      );
-    if (existingWrongValueStats) {
-      existingWrongValueStats.numHintsUsed++;
-    } else {
-      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-        hintStrategy: "WRONG_VALUE",
-        numHintsUsed: 1,
-      });
-    }
+    incrementHintStatistics(sudokuBoard, "WRONG_VALUE");
 
     return {
       hint: demoCase.hint as HintProps,
@@ -160,20 +171,7 @@ export const getSudokuBoardHint = (
     const demoCase = getAmendNotesDemoCase(
       getAmendNotesDemoCaseId(sudokuBoard.statistics.difficulty),
     );
-    sudokuBoard.statistics.numHintsUsed++;
-
-    const existingAmendNotesStats =
-      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
-        (strategy) => strategy.hintStrategy === "AMEND_NOTES",
-      );
-    if (existingAmendNotesStats) {
-      existingAmendNotesStats.numHintsUsed++;
-    } else {
-      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-        hintStrategy: "AMEND_NOTES",
-        numHintsUsed: 1,
-      });
-    }
+    incrementHintStatistics(sudokuBoard, "AMEND_NOTES");
 
     return {
       hint: demoCase.hint as HintProps,
@@ -185,20 +183,19 @@ export const getSudokuBoardHint = (
     const demoCase = getObviousSingleDemoCase(
       getObviousSingleDemoCaseId(sudokuBoard.statistics.difficulty),
     );
-    sudokuBoard.statistics.numHintsUsed++;
+    incrementHintStatistics(sudokuBoard, "OBVIOUS_SINGLE");
 
-    const existingObviousSingleStats =
-      sudokuBoard.statistics.numHintsUsedPerStrategy.find(
-        (strategy) => strategy.hintStrategy === "OBVIOUS_SINGLE",
-      );
-    if (existingObviousSingleStats) {
-      existingObviousSingleStats.numHintsUsed++;
-    } else {
-      sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-        hintStrategy: "OBVIOUS_SINGLE",
-        numHintsUsed: 1,
-      });
-    }
+    return {
+      hint: demoCase.hint as HintProps,
+      updatedBoard: sudokuBoard,
+    };
+  }
+
+  if (isStrategyDemoDifficulty(sudokuBoard.statistics.difficulty)) {
+    const { demoCase } = getStrategyDemoDefinition(
+      sudokuBoard.statistics.difficulty,
+    );
+    incrementHintStatistics(sudokuBoard, demoCase.hint.strategy);
 
     return {
       hint: demoCase.hint as HintProps,

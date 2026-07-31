@@ -1,6 +1,10 @@
 import type { WrongValueDemoCase } from "../../../../Data/hints/demo_wrong_value_hints";
 import type { AmendNotesDemoCase } from "../../../../Data/hints/demo_amend_notes_hints";
 import type { ObviousSingleDemoCase } from "../../../../Data/hints/demo_obvious_single_hints";
+import {
+  STRATEGY_DEMO_DIFFICULTIES,
+  StrategyDemoDifficulty,
+} from "../../../../Data/hints/demo_strategy_hints";
 
 export type WrongValueDemoDifficulty =
   | "wrong-value-direct-conflict"
@@ -24,7 +28,8 @@ export type GameDifficulty =
   | "grandmaster"
   | WrongValueDemoDifficulty
   | AmendNotesDemoDifficulty
-  | ObviousSingleDemoDifficulty;
+  | ObviousSingleDemoDifficulty
+  | StrategyDemoDifficulty;
 
 export const WRONG_VALUE_DEMO_DIFFICULTIES: WrongValueDemoDifficulty[] = [
   "wrong-value-direct-conflict",
@@ -37,6 +42,12 @@ export const AMEND_NOTES_DEMO_DIFFICULTIES: AmendNotesDemoDifficulty[] = [
 export const OBVIOUS_SINGLE_DEMO_DIFFICULTIES: ObviousSingleDemoDifficulty[] = [
   "obvious-single",
   "obvious-single-with-note-simplification",
+];
+export const DEMO_DIFFICULTIES: GameDifficulty[] = [
+  ...WRONG_VALUE_DEMO_DIFFICULTIES,
+  ...AMEND_NOTES_DEMO_DIFFICULTIES,
+  ...OBVIOUS_SINGLE_DEMO_DIFFICULTIES,
+  ...STRATEGY_DEMO_DIFFICULTIES,
 ];
 
 export function isWrongValueDemoDifficulty(
@@ -131,6 +142,19 @@ function calculateDifficultyScore(
     case "amend-notes-corrective":
     case "obvious-single":
     case "obvious-single-with-note-simplification":
+    case "box-line-reduction":
+    case "hidden-single":
+    case "hidden-pair":
+    case "hidden-triplet":
+    case "hidden-quadruplet":
+    case "obvious-pair":
+    case "obvious-triplet":
+    case "obvious-quadruplet":
+    case "pointing-pair":
+    case "pointing-triplet":
+    case "simplify-notes":
+    case "swordfish":
+    case "x-wing":
       return 0;
   }
 }

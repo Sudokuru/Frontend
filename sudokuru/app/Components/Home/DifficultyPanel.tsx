@@ -3,6 +3,7 @@ import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
 import ListPanel from "./ListPanel";
 import { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
+import { strategyDemoDefinitions } from "../../Data/hints/demo_strategy_hints";
 
 interface DifficultyItem {
   label: string;
@@ -58,6 +59,11 @@ const difficulties: DifficultyItem[] = [
     value: "obvious-single-with-note-simplification",
     testID: "ObviousSingleWithNoteSimplification",
   },
+  ...strategyDemoDefinitions.map(({ difficulty, testID, demoCase }) => ({
+    label: demoCase.label,
+    value: difficulty,
+    testID,
+  })),
 ];
 
 const difficultyStars: ImageURISource[] = [
