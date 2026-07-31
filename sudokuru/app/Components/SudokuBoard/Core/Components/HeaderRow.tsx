@@ -6,11 +6,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import { useLogo } from "../../../../Styling/logos";
 
 let fallbackHeight = 30;
-
-const DARK_LOGO = require("../../../../../.assets/goldLogoText.png");
-const LIGHT_LOGO = require("../../../../../.assets/lightBlueLogoText.png");
 
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
@@ -74,7 +72,7 @@ const HeaderRow = (props: HeaderRowProps) => {
   const mobileStatPillGap = pillGap;
   const mobileHeaderPuzzleGapOffset = (cellSize || fallbackHeight) * 0.08;
 
-  const logoSource = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
+  const logoSource = useLogo();
   const logoHeight = cellSize ? cellSize * 0.65 : fallbackHeight * 0.65;
   const logoWidth = logoHeight * (100 / 45);
   const logoPillWidth = logoWidth + pillHorizontalPadding * 2;
