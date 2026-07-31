@@ -82,19 +82,15 @@ const HeaderRow = (props: HeaderRowProps) => {
   useFocusEffect(
     React.useCallback(() => {
       let interval = setInterval(() => {
-        setSudokuBoard(
-          (prevState: BoardObjectProps) =>
-            ({
-              ...prevState,
-              statistics: {
-                ...prevState.statistics,
-                time: prevState.statistics.time + 1,
-              },
-            }) as BoardObjectProps,
-        );
+        sudokuBoard.statistics.time = sudokuBoard.statistics.time + 1;
+        setSudokuBoard((prevState: BoardObjectProps) => ({
+          ...prevState,
+          statistics: sudokuBoard.statistics,
+        }));
       }, 1000);
       return () => clearInterval(interval);
-    }, [setSudokuBoard]),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sudokuBoard.statistics.time]),
   );
 
   return (

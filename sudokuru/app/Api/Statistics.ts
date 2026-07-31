@@ -30,8 +30,9 @@ export const saveLearnedLessons = (learnedLessons: string[]) => {
   storeData("learned_lessons", JSON.stringify(learnedLessons));
 };
 
-export const saveStatisitics = (statistics: Statistics) =>
+export const saveStatisitics = (statistics: Statistics) => {
   storeData("statistics", JSON.stringify(statistics));
+};
 
 /**
  * returns all statistics objects for given user
@@ -50,7 +51,7 @@ export const getStatistics = async (): Promise<Statistics> => {
       numHintsUsedPerStrategy: [],
       numWrongCellsPlayed: 0,
     };
-    await saveStatisitics(statistics);
+    saveStatisitics(statistics);
     return statistics;
   }
   return value;

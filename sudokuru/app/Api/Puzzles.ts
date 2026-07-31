@@ -53,6 +53,9 @@ export const finishGame = async (
   score: number,
   variant: GameVariant,
 ) => {
+  // remove the game from storage
+  await removeData(`active_${variant}_game`);
+
   // Create or update user's statistics
   let statistics: Statistics = await getStatistics();
 
@@ -84,8 +87,5 @@ export const finishGame = async (
     }
   }
 
-  await saveStatisitics(statistics);
-
-  // Keep the resumable game until its completion statistics are persisted.
-  await removeData(`active_${variant}_game`);
+  saveStatisitics(statistics);
 };

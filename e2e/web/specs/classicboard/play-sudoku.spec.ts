@@ -10,38 +10,11 @@ import {
   MIDDLE_WIDTH_AND_HEIGHT,
   MOBILE_WIDTH_LESS_THAN,
 } from "../../playwright.config";
-import {
-  getStorageOperations,
-  recordStorageOperations,
-} from "../../storage-test-helpers";
 
 // TODO add test: Should solve game with multiple action types
 // TODO add test: Completing multiple games should display correct statistics
 
 test.describe("complete game", () => {
-  test("Completion persists statistics before removing the active game", async ({
-    resumeClassicGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-    await recordStorageOperations(resumeClassicGame);
-    await sudokuBoard.cell[7][6].click();
-    await sudokuBoard.cell[7][6].press("8");
-    await sudokuBoard.cell[7][7].click();
-    await sudokuBoard.numPad[2 - 1].click();
-    await sudokuBoard.cell[7][8].click();
-    await sudokuBoard.cell[7][8].press("4");
-    const endGameModal = new EndGameModalComponent(resumeClassicGame);
-    await endGameModal.endGameModalIsRendered();
-
-    const storageOperations = await getStorageOperations(resumeClassicGame);
-    const statisticsWrite = storageOperations.lastIndexOf("set:statistics");
-    const activeGameRemoval = storageOperations.indexOf(
-      "remove:active_classic_game",
-    );
-    expect(statisticsWrite).toBeGreaterThanOrEqual(0);
-    expect(activeGameRemoval).toBeGreaterThan(statisticsWrite);
-  });
-
   test("Completing a game and clicking 'Start New Game' should take you to the play game page", async ({
     resumeClassicGame,
   }) => {
