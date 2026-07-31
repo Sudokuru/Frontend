@@ -36,11 +36,6 @@ import {
 import { expect } from "@playwright/test";
 import { HomePage } from "../../page/home.page";
 import { DrillPage } from "../../page/drill.page";
-import {
-  dispatchKeysDuringNextStorageWrite,
-  failNextStorageWrite,
-  getFailedStorageOperationCount,
-} from "../../storage-test-helpers";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
@@ -93,48 +88,6 @@ test.describe("hint mode operates correctly", () => {
     await expect(sudokuBoard.hintExit).toHaveCount(0);
     await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
     await sudokuBoard.cellIsEnabled(0, 0);
-  });
-
-  test("failed hint persistence does not start a hint or increment statistics", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await expect(sudokuBoard.hints).toContainText("0");
-    await failNextStorageWrite(resumeDrillGame, "active_drill_game");
-
-    await sudokuBoard.hint.click();
-    await expect
-      .poll(() => getFailedStorageOperationCount(resumeDrillGame))
-      .toBe(1);
-    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
-    await expect(sudokuBoard.hintExit).toHaveCount(0);
-    await expect(sudokuBoard.hints).toContainText("0");
-
-    await sudokuBoard.hint.click();
-    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
-    await expect(sudokuBoard.hints).toContainText("1");
-  });
-
-  test("ordinary keyboard input is ignored while hint start is persisted", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[7][6].click();
-    const cellContentBeforeHint =
-      await sudokuBoard.cell[7][6].getAttribute("data-testid");
-    await dispatchKeysDuringNextStorageWrite(
-      resumeDrillGame,
-      "active_drill_game",
-      ["u", "p", "n", "2", "Backspace", "ArrowRight", "r"],
-    );
-
-    await sudokuBoard.hint.click();
-    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
-    await sudokuBoard.hintExit.click();
-    await expect(sudokuBoard.cell[7][6]).toHaveAttribute(
-      "data-testid",
-      cellContentBeforeHint!,
-    );
   });
 });
 

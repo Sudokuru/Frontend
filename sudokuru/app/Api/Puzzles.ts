@@ -26,8 +26,9 @@ export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
  * Given a game saves it to AsyncStorage
  * @param game - activeGame JSON object
  */
-export const saveGame = (game: BoardObjectProps) =>
+export const saveGame = (game: BoardObjectProps) => {
   storeData(`active_${game.variant}_game`, JSON.stringify([game]));
+};
 
 /**
  * Completes the game by removing the active game from storage and updating user statistics.

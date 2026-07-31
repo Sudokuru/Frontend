@@ -65,8 +65,6 @@ const SudokuBoard = (props: Board) => {
   const [gameOver, setGameOver] = useState(false);
   const navigation = useNavigation();
 
-  const [hintTransitionPending, setHintTransitionPending] = useState(false);
-
   const {
     strategyHintOrderSetting,
     featurePreviewSetting,
@@ -85,7 +83,6 @@ const SudokuBoard = (props: Board) => {
     eraseSelectedRef,
     updateHintStageRef,
     sudokuBoardRef,
-    hintTransitionPendingRef,
     gameOverRef,
     setBoardSelectedCellsRef,
   } = useKeyboardHotkeys({
@@ -110,7 +107,7 @@ const SudokuBoard = (props: Board) => {
       if (game == null) {
         return;
       }
-      await saveGame(game);
+      saveGame(game);
       setSudokuBoard(game);
     }
 
@@ -141,7 +138,7 @@ const SudokuBoard = (props: Board) => {
    * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
    */
   const undo = () => {
-    if (sudokuBoard.activeHint || hintTransitionPendingRef.current) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     // Adding previous moves back to the board
@@ -163,7 +160,7 @@ const SudokuBoard = (props: Board) => {
   };
 
   const reset = () => {
-    if (sudokuBoard.activeHint || hintTransitionPendingRef.current) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     if (boardMethods[props.type].hasResetActionButton() === true) {
@@ -187,43 +184,37 @@ const SudokuBoard = (props: Board) => {
    * The hint information is stored in the component's state, including the hint stage and
    * maximum stages for hint visualization.
    */
-  const getHint = async () => {
-    if (sudokuBoard.activeHint || hintTransitionPendingRef.current) {
+  const getHint = () => {
+    if (sudokuBoard.activeHint) {
       return;
     }
 
-    hintTransitionPendingRef.current = true;
-    setHintTransitionPending(true);
-    try {
-      const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
-      const boardForHint: BoardObjectProps = JSON.parse(
-        JSON.stringify(sudokuBoard),
-      );
-      const { hint, updatedBoard } = boardMethods[
-        props.type
-      ].getSudokuBoardHint(boardForHint, [...strategyHintOrderSetting]);
-      const activeHint: ActiveHintState = {
-        stage: 1,
-        maxStage: 5,
-        hint: {
-          ...hint,
-          simplifyNotesAfterPlacement:
-            simplifyNotesSetting && featurePreviewSetting,
-        },
-        puzzleStateBeforeHint,
-      };
-      const nextBoard = {
-        ...updatedBoard,
-        selectedCells: [],
-        activeHint,
-      };
+    const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
+    const boardForHint: BoardObjectProps = JSON.parse(
+      JSON.stringify(sudokuBoard),
+    );
+    const { hint, updatedBoard } = boardMethods[props.type].getSudokuBoardHint(
+      boardForHint,
+      [...strategyHintOrderSetting],
+    );
+    const activeHint: ActiveHintState = {
+      stage: 1,
+      maxStage: 5,
+      hint: {
+        ...hint,
+        simplifyNotesAfterPlacement:
+          simplifyNotesSetting && featurePreviewSetting,
+      },
+      puzzleStateBeforeHint,
+    };
+    const nextBoard = {
+      ...updatedBoard,
+      selectedCells: [],
+      activeHint,
+    };
 
-      await saveGame(nextBoard);
-      setSudokuBoard(nextBoard);
-    } finally {
-      hintTransitionPendingRef.current = false;
-      setHintTransitionPending(false);
-    }
+    saveGame(nextBoard);
+    setSudokuBoard(nextBoard);
   };
 
   /**
@@ -232,7 +223,7 @@ const SudokuBoard = (props: Board) => {
    * user can enter values into the cells of the board.
    */
   const toggleNoteMode = () => {
-    if (sudokuBoard.activeHint || hintTransitionPendingRef.current) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
@@ -266,11 +257,7 @@ const SudokuBoard = (props: Board) => {
    * @param inputValue User input value (0-9) to be inserted into the selected cells.
    */
   const updateCellEntry = async (inputValue: number) => {
-    if (
-      sudokuBoard.activeHint ||
-      hintTransitionPendingRef.current ||
-      sudokuBoard.selectedCells.length === 0
-    ) {
+    if (sudokuBoard.activeHint || sudokuBoard.selectedCells.length === 0) {
       return;
     }
 
@@ -469,7 +456,7 @@ const SudokuBoard = (props: Board) => {
   };
 
   const setBoardSelectedCells = (cells: CellLocation[]) => {
-    if (sudokuBoard.activeHint || hintTransitionPendingRef.current) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     setSudokuBoard({
@@ -494,7 +481,6 @@ const SudokuBoard = (props: Board) => {
         RenderCell={RenderCell}
         sudokuBoard={sudokuBoard}
         sudokuHint={sudokuBoard.activeHint}
-        boardDisabled={hintTransitionPending}
         setBoardSelectedCells={setBoardSelectedCells}
         boardMethods={boardMethods[props.type]}
       />
@@ -507,7 +493,7 @@ const SudokuBoard = (props: Board) => {
    * Number buttons are disabled if we are in value mode and multiple cells are selected.
    */
   const renderNumberControl = () => {
-    if (sudokuBoard.activeHint || hintTransitionPending) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     let currentSelectedCells: CellProps[] = [];
@@ -555,7 +541,7 @@ const SudokuBoard = (props: Board) => {
    * @returns The rendered action row component.
    */
   const renderActions = () => {
-    if (sudokuBoard.activeHint || hintTransitionPending) {
+    if (sudokuBoard.activeHint) {
       return;
     }
     const inNoteMode = sudokuBoard.inNoteMode;
@@ -578,11 +564,9 @@ const SudokuBoard = (props: Board) => {
         eraseSelected={eraseSelected}
         reset={reset}
         getHint={getHint}
-        handlePause={() => {
-          if (!sudokuBoard.activeHint && !hintTransitionPendingRef.current) {
-            boardMethods[props.type].handlePause(sudokuBoard, navigation);
-          }
-        }}
+        handlePause={() =>
+          boardMethods[props.type].handlePause(sudokuBoard, navigation)
+        }
         boardHasConflict={boardHasConflict}
         hasResetButton={boardMethods[props.type].hasResetActionButton()}
         hasEraseButton={boardMethods[props.type].hasEraseActionButton()}
@@ -727,70 +711,63 @@ const SudokuBoard = (props: Board) => {
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => {
     const activeHint = sudokuBoard.activeHint;
-    if (!activeHint || hintTransitionPendingRef.current) {
+    if (!activeHint) {
       return;
     }
 
-    hintTransitionPendingRef.current = true;
-    setHintTransitionPending(true);
-    try {
-      if (stageOffset === 0 || activeHint.stage + stageOffset === 0) {
-        const nextBoard = {
-          ...sudokuBoard,
-          puzzleState: clonePuzzleState(activeHint.puzzleStateBeforeHint),
-          activeHint: null,
-        };
-        await saveGame(nextBoard);
-        setSudokuBoard(nextBoard);
-        return;
-      }
-
-      const nextStage = activeHint.stage + stageOffset;
-      if (nextStage === activeHint.maxStage + 1) {
-        const finalPuzzleState = buildHintPreview(activeHint, 5);
-        const hintAction = getHintAction(
-          activeHint.puzzleStateBeforeHint,
-          finalPuzzleState,
-        );
-        const nextBoard: BoardObjectProps = {
-          ...sudokuBoard,
-          puzzleState: finalPuzzleState,
-          actionHistory:
-            hintAction.length === 0
-              ? sudokuBoard.actionHistory
-              : [...sudokuBoard.actionHistory, hintAction],
-          activeHint: null,
-        };
-
-        if (isGameSolved(nextBoard)) {
-          nextBoard.statistics = (await finishSudokuGame(
-            nextBoard.statistics,
-            props.type,
-          )) as typeof nextBoard.statistics;
-          setSudokuBoard(nextBoard);
-          setGameOver(true);
-        } else {
-          await saveGame(nextBoard);
-          setSudokuBoard(nextBoard);
-        }
-        return;
-      }
-      const targetStage = nextStage as ActiveHintState["stage"];
-      const nextActiveHint: ActiveHintState = {
-        ...activeHint,
-        stage: targetStage,
-      };
+    if (stageOffset === 0 || activeHint.stage + stageOffset === 0) {
       const nextBoard = {
         ...sudokuBoard,
-        puzzleState: buildHintPreview(activeHint, targetStage),
-        activeHint: nextActiveHint,
+        puzzleState: clonePuzzleState(activeHint.puzzleStateBeforeHint),
+        activeHint: null,
       };
-      await saveGame(nextBoard);
+      saveGame(nextBoard);
       setSudokuBoard(nextBoard);
-    } finally {
-      hintTransitionPendingRef.current = false;
-      setHintTransitionPending(false);
+      return;
     }
+
+    const nextStage = activeHint.stage + stageOffset;
+    if (nextStage === activeHint.maxStage + 1) {
+      const finalPuzzleState = buildHintPreview(activeHint, 5);
+      const hintAction = getHintAction(
+        activeHint.puzzleStateBeforeHint,
+        finalPuzzleState,
+      );
+      const nextBoard: BoardObjectProps = {
+        ...sudokuBoard,
+        puzzleState: finalPuzzleState,
+        actionHistory:
+          hintAction.length === 0
+            ? sudokuBoard.actionHistory
+            : [...sudokuBoard.actionHistory, hintAction],
+        activeHint: null,
+      };
+
+      if (isGameSolved(nextBoard)) {
+        nextBoard.statistics = (await finishSudokuGame(
+          nextBoard.statistics,
+          props.type,
+        )) as typeof nextBoard.statistics;
+        setSudokuBoard(nextBoard);
+        setGameOver(true);
+      } else {
+        saveGame(nextBoard);
+        setSudokuBoard(nextBoard);
+      }
+      return;
+    }
+    const targetStage = nextStage as ActiveHintState["stage"];
+    const nextActiveHint: ActiveHintState = {
+      ...activeHint,
+      stage: targetStage,
+    };
+    const nextBoard = {
+      ...sudokuBoard,
+      puzzleState: buildHintPreview(activeHint, targetStage),
+      activeHint: nextActiveHint,
+    };
+    saveGame(nextBoard);
+    setSudokuBoard(nextBoard);
   };
 
   // Sync keyboard handler refs on every render to access fresh state and functions

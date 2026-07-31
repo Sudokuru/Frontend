@@ -31,7 +31,6 @@ export const useKeyboardHotkeys = ({
   const eraseSelectedRef = useRef<any>(null);
   const updateHintStageRef = useRef<any>(null);
   const sudokuBoardRef = useRef<any>(null);
-  const hintTransitionPendingRef = useRef(false);
   const gameOverRef = useRef<boolean>(false);
   const setBoardSelectedCellsRef = useRef<
     ((cells: CellLocation[]) => void) | null
@@ -175,11 +174,6 @@ export const useKeyboardHotkeys = ({
       const board = sudokuBoardRef.current;
       const hint = board.activeHint;
 
-      if (hintTransitionPendingRef.current) {
-        event.preventDefault();
-        return;
-      }
-
       if (hint) {
         if (inputValue === "h" || inputValue === "H") {
           updateHintStageRef.current?.(
@@ -246,7 +240,6 @@ export const useKeyboardHotkeys = ({
     eraseSelectedRef,
     updateHintStageRef,
     sudokuBoardRef,
-    hintTransitionPendingRef,
     gameOverRef,
     setBoardSelectedCellsRef,
   };

@@ -19,7 +19,6 @@ const RenderCell = (
   sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
   sudokuHint: ActiveHintState | null,
-  boardDisabled: boolean,
   r: number,
   c: number,
   boardMethods: SudokuVariantMethods,
@@ -34,7 +33,7 @@ const RenderCell = (
     boardMethods.doesCellHaveConflict,
     theme,
   );
-  const disable: boolean = boardDisabled || isBoardDisabled(sudokuHint);
+  const disable: boolean = isBoardDisabled(sudokuHint);
   const noteColor: string[] = getCellNotesColor(sudokuHint, r, c, theme);
   const backgroundNotesColor: string[] =
     getCellBackgroundNotesColor(cellBackgroundColor);

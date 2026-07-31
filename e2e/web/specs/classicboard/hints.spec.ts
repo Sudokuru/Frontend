@@ -53,11 +53,6 @@ import { HeaderComponent } from "../../components/header.component";
 import { PlayPage } from "../../page/play.page";
 import { HomePage } from "../../page/home.page";
 import { expect } from "@playwright/test";
-import {
-  dispatchKeysDuringNextStorageWrite,
-  failNextStorageWrite,
-  getFailedStorageOperationCount,
-} from "../../storage-test-helpers";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -110,46 +105,6 @@ test.describe("hint mode operates correctly", () => {
     await expect(sudokuBoard.hintExit).toHaveCount(0);
     await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
     await sudokuBoard.cellIsEnabled(0, 0);
-  });
-
-  test("failed hint persistence does not start a hint or increment statistics", async ({
-    resumeClassicGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-    await expect(sudokuBoard.hints).toContainText("0");
-    await failNextStorageWrite(resumeClassicGame, "active_classic_game");
-
-    await sudokuBoard.hint.click();
-    await expect
-      .poll(() => getFailedStorageOperationCount(resumeClassicGame))
-      .toBe(1);
-    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
-    await expect(sudokuBoard.hintExit).toHaveCount(0);
-    await expect(sudokuBoard.hints).toContainText("0");
-
-    await sudokuBoard.hint.click();
-    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
-    await expect(sudokuBoard.hints).toContainText("1");
-  });
-
-  test("ordinary keyboard input is ignored while hint start is persisted", async ({
-    resumeClassicGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
-    await sudokuBoard.cell[0][0].click();
-    await sudokuBoard.note.click();
-    await sudokuBoard.cell[0][0].press("1");
-    await sudokuBoard.cellHasNotes(0, 0, "1");
-    await dispatchKeysDuringNextStorageWrite(
-      resumeClassicGame,
-      "active_classic_game",
-      ["u", "p", "n", "2", "Backspace", "ArrowRight", "r"],
-    );
-
-    await sudokuBoard.hint.click();
-    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
-    await sudokuBoard.hintExit.click();
-    await sudokuBoard.cellHasNotes(0, 0, "1");
   });
 
   test("exit button restores the stage five hint action", async ({

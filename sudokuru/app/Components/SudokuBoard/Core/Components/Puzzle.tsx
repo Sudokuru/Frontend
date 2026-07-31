@@ -14,7 +14,6 @@ interface PuzzleProps {
     sudokuBoard: BoardObjectProps,
     setBoardSelectedCells: (cells: CellLocation[]) => void,
     sudokuHint: ActiveHintState | null,
-    boardDisabled: boolean,
     r: number,
     c: number,
     boardMethods: SudokuVariantMethods,
@@ -23,7 +22,6 @@ interface PuzzleProps {
   sudokuBoard: BoardObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
   sudokuHint: ActiveHintState | null;
-  boardDisabled: boolean;
   boardMethods: SudokuVariantMethods;
 }
 
@@ -34,7 +32,6 @@ const Puzzle = (props: PuzzleProps) => {
     sudokuBoard,
     setBoardSelectedCells,
     sudokuHint,
-    boardDisabled,
     boardMethods,
   } = props;
 
@@ -47,7 +44,6 @@ const Puzzle = (props: PuzzleProps) => {
           sudokuBoard,
           setBoardSelectedCells,
           sudokuHint,
-          boardDisabled,
           r,
           c,
           boardMethods,
