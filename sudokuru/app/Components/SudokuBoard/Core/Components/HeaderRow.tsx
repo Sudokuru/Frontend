@@ -7,6 +7,7 @@ import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 import { useLogo } from "../../../../Styling/logos";
+import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
 
 let fallbackHeight = 30;
 
@@ -184,7 +185,7 @@ const HeaderRow = (props: HeaderRowProps) => {
         >
           <MaterialCommunityIcons
             name="alert-circle"
-            color="#FF6B6B"
+            color={MISTAKE_COLOR}
             size={statusIconSize}
           />
           <Text
@@ -217,7 +218,7 @@ const HeaderRow = (props: HeaderRowProps) => {
         >
           <MaterialCommunityIcons
             name="lightbulb-on-outline"
-            color="#D9A05B"
+            color={GOLD_COLOR}
             size={statusIconSize}
           />
           <Text
