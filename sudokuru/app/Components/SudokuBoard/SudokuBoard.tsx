@@ -138,9 +138,6 @@ const SudokuBoard = (props: Board) => {
    * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
    */
   const undo = () => {
-    if (sudokuBoard.activeHint) {
-      return;
-    }
     // Adding previous moves back to the board
     const moves = sudokuBoard.actionHistory.pop();
     if (!moves || moves.length === 0) {
@@ -185,10 +182,6 @@ const SudokuBoard = (props: Board) => {
    * maximum stages for hint visualization.
    */
   const getHint = () => {
-    if (sudokuBoard.activeHint) {
-      return;
-    }
-
     const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
     const boardForHint: BoardObjectProps = JSON.parse(
       JSON.stringify(sudokuBoard),
@@ -257,7 +250,7 @@ const SudokuBoard = (props: Board) => {
    * @param inputValue User input value (0-9) to be inserted into the selected cells.
    */
   const updateCellEntry = (inputValue: number) => {
-    if (sudokuBoard.activeHint || sudokuBoard.selectedCells.length === 0) {
+    if (sudokuBoard.selectedCells.length === 0) {
       return;
     }
 
@@ -710,10 +703,7 @@ const SudokuBoard = (props: Board) => {
     stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => {
-    const activeHint = sudokuBoard.activeHint;
-    if (!activeHint) {
-      return;
-    }
+    const activeHint = sudokuBoard.activeHint!;
 
     if (stageOffset === 0 || activeHint.stage + stageOffset === 0) {
       const nextBoard = {
