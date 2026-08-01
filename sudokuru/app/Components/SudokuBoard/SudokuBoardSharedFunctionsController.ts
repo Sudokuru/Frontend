@@ -7,6 +7,7 @@ import {
   CellProps,
   ClassicObjectProps,
   PersistedHintPayload,
+  ActiveHintState,
 } from "./../../Functions/LocalDatabase";
 
 import {
@@ -72,6 +73,10 @@ export interface SudokuVariantMethods {
   hasResetActionButton(): boolean;
   hasEraseActionButton(): boolean;
   getInitialPuzzleState(sudokuBoard: BoardObjectProps): CellProps[][];
+  getHintPreviewBase(
+    sudokuBoard: BoardObjectProps,
+    activeHint: ActiveHintState,
+  ): CellProps[][];
   getSudokuBoardHint: (
     sudokuBoard: BoardObjectProps,
     strategyArray: SudokuStrategy[],
@@ -123,6 +128,12 @@ const defaultMethods: SudokuVariantMethods = {
     return Array.from({ length: 9 }, () =>
       Array.from({ length: 9 }, () => ({}) as CellProps),
     );
+  },
+  getHintPreviewBase(
+    sudokuBoard: ClassicObjectProps,
+    activeHint: ActiveHintState,
+  ) {
+    return activeHint.puzzleStateBeforeHint;
   },
   hasEraseActionButton(): boolean {
     return true;
@@ -177,6 +188,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
       return true;
     },
     getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
+      return drillGetInitialPuzzleState(sudokuBoard);
+    },
+    getHintPreviewBase(sudokuBoard: DrillObjectProps) {
       return drillGetInitialPuzzleState(sudokuBoard);
     },
     hasEraseActionButton(): boolean {

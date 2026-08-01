@@ -603,10 +603,10 @@ const SudokuBoard = (props: Board) => {
     activeHint: ActiveHintState,
     stage: ActiveHintState["stage"],
   ): CellProps[][] => {
-    const previewBase =
-      sudokuBoard.variant === "drill"
-        ? boardMethods[props.type].getInitialPuzzleState(sudokuBoard)
-        : activeHint.puzzleStateBeforeHint;
+    const previewBase = boardMethods[props.type].getHintPreviewBase(
+      sudokuBoard,
+      activeHint,
+    );
     const puzzleState = clonePuzzleState(previewBase);
     const { hint } = activeHint;
 
