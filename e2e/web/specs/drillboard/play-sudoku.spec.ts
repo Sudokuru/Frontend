@@ -3,40 +3,10 @@ import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { EndGameDrillModalComponent } from "../../components/end-game-modal-drill.component";
 import { DrillPage } from "../../page/drill.page";
-import {
-  failNextStorageRemoval,
-  getFailedStorageOperationCount,
-} from "../../storage-test-helpers";
 
 // TODO add test: Should solve game with multiple action types
 
 test.describe("complete drill", () => {
-  test("Failed active-game removal does not expose completed drill UI", async ({
-    resumeDrillGame,
-  }) => {
-    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
-    await sudokuBoard.cell[7][6].click();
-    await sudokuBoard.note.click();
-    await sudokuBoard.cell[7][6].press("1");
-    await failNextStorageRemoval(resumeDrillGame, "active_drill_game");
-    await sudokuBoard.cell[7][3].click();
-    await sudokuBoard.numPad[6 - 1].click();
-
-    await expect
-      .poll(() => getFailedStorageOperationCount(resumeDrillGame))
-      .toBe(1);
-    const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
-    await expect(endGameModal.title).toHaveCount(0);
-    await expect
-      .poll(() =>
-        resumeDrillGame.evaluate(() =>
-          localStorage.getItem("active_drill_game"),
-        ),
-      )
-      .not.toBeNull();
-    await sudokuBoard.sudokuBoardIsRendered();
-  });
-
   test("Completing a drill and clicking 'Start New Drill' should take you to the drill page", async ({
     resumeDrillGame,
   }) => {

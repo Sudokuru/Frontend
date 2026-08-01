@@ -58,7 +58,7 @@ export interface SudokuVariantMethods {
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
     variant: GameVariant,
-  ): Promise<ClassicGameStatistics | DrillGameStatistics>;
+  ): ClassicGameStatistics | DrillGameStatistics;
   generateGame(
     board: Board,
     initializeNotes: boolean,
@@ -97,11 +97,11 @@ const defaultMethods: SudokuVariantMethods = {
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
   },
-  async finishSudokuGame(
+  finishSudokuGame(
     statistics: ClassicGameStatistics,
     variant: GameVariant,
-  ): Promise<ClassicGameStatistics> {
-    return await coreFinishGameStatistics(statistics, variant);
+  ): ClassicGameStatistics {
+    return coreFinishGameStatistics(statistics, variant);
   },
   generateGame(
     board: ClassicBoard,
@@ -155,11 +155,11 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },
-    async finishSudokuGame(
+    finishSudokuGame(
       statistics: DrillGameStatistics,
       variant: GameVariant,
-    ): Promise<DrillGameStatistics> {
-      return await drillFinishGameStatistics(statistics, variant);
+    ): DrillGameStatistics {
+      return drillFinishGameStatistics(statistics, variant);
     },
     generateGame(
       board: DrillBoard,

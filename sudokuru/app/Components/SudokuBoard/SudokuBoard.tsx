@@ -256,7 +256,7 @@ const SudokuBoard = (props: Board) => {
    *
    * @param inputValue User input value (0-9) to be inserted into the selected cells.
    */
-  const updateCellEntry = async (inputValue: number) => {
+  const updateCellEntry = (inputValue: number) => {
     if (sudokuBoard.activeHint || sudokuBoard.selectedCells.length === 0) {
       return;
     }
@@ -369,7 +369,7 @@ const SudokuBoard = (props: Board) => {
     sudokuBoard.actionHistory.push(newActionHistory);
 
     if (isGameSolved(sudokuBoard)) {
-      const statistics = await boardMethods[props.type].finishSudokuGame(
+      const statistics = boardMethods[props.type].finishSudokuGame(
         sudokuBoard.statistics,
         props.type,
       );
@@ -706,7 +706,7 @@ const SudokuBoard = (props: Board) => {
     return action;
   };
 
-  const updateHintStage = async (
+  const updateHintStage = (
     stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => {
@@ -744,10 +744,10 @@ const SudokuBoard = (props: Board) => {
       };
 
       if (isGameSolved(nextBoard)) {
-        nextBoard.statistics = (await finishSudokuGame(
+        nextBoard.statistics = finishSudokuGame(
           nextBoard.statistics,
           props.type,
-        )) as typeof nextBoard.statistics;
+        ) as typeof nextBoard.statistics;
         setSudokuBoard(nextBoard);
         setGameOver(true);
       } else {
