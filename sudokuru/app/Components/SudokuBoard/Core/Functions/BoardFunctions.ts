@@ -9,9 +9,15 @@ import { calculateGameScore } from "./DifficultyFunctions";
 import { finishGame, saveGame } from "../../../../Api/Puzzles";
 import { isEqual } from "../../Drill/Functions/CellFunctions";
 import {
+  ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP,
+  ACTION_ROW_HEIGHT_IN_CELLS_MOBILE,
+  HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP,
+  HEADER_ROW_HEIGHT_IN_CELLS_MOBILE,
   MOBILE_BREAKPOINT,
   NAV_HEADER_HEIGHT,
   NAV_HEADER_SAFETY_PADDING,
+  NUMBER_CONTROL_HEIGHT_IN_CELLS,
+  PUZZLE_HEIGHT_IN_CELLS,
   isNavHeaderVisible,
 } from "../../../../Functions/GameLayout";
 /**
@@ -22,12 +28,6 @@ import {
 const MAX_BOARD_SIZE = 640;
 const BOARD_EDGE_PADDING = 1;
 
-const HEADER_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.75;
-const HEADER_ROW_HEIGHT_IN_CELLS_MOBILE = 1.3;
-const PUZZLE_HEIGHT_IN_CELLS = 9;
-const ACTION_ROW_HEIGHT_IN_CELLS_DESKTOP = 1.6;
-const ACTION_ROW_HEIGHT_IN_CELLS_MOBILE = 1.45;
-const NUMBER_CONTROL_HEIGHT_IN_CELLS = 1.65;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_DESKTOP = 0.92;
 const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
 
