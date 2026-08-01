@@ -5,7 +5,7 @@ import { ThemeName, ThemeNames } from "../Styling/theme";
 
 export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
   variant: "drill";
-  version: 1;
+  version: number;
   activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
   statistics: DrillGameStatistics;
@@ -25,7 +25,7 @@ export interface DrillGameStatistics {
 
 export interface ClassicObjectProps extends SudokuObjectProps<"classic"> {
   variant: "classic";
-  version: 1;
+  version: number;
   activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
   statistics: ClassicGameStatistics;
