@@ -478,6 +478,7 @@ const SudokuBoard = (props: Board) => {
       <HeaderRow
         sudokuBoard={sudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
+        headerRowHintCount={boardMethods[props.type].headerRowHintCount}
       />
     );
   };

@@ -11,22 +11,15 @@ import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
   headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
+  headerRowHintCount: (sudokuBoard: BoardObjectProps) => string;
 }
-
-const getHintStatValue = (sudokuBoard: BoardObjectProps): string => {
-  if ("numHintsUsed" in sudokuBoard.statistics) {
-    return `${sudokuBoard.statistics.numHintsUsed}`;
-  }
-
-  return sudokuBoard.statistics.hintUsed ? "1" : "0";
-};
 
 const getMistakeStatValue = (sudokuBoard: BoardObjectProps): string => {
   return `${sudokuBoard.statistics.numWrongCellsPlayed}`;
 };
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, headerRowTitle } = props;
+  const { sudokuBoard, headerRowTitle, headerRowHintCount } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
@@ -201,7 +194,7 @@ const HeaderRow = (props: HeaderRowProps) => {
               fontSize: statusTextSize,
             }}
           >
-            {getHintStatValue(sudokuBoard)}
+            {headerRowHintCount(sudokuBoard)}
           </Text>
         </View>
 
