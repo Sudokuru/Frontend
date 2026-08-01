@@ -9,7 +9,11 @@
       "The action row has been re-styled. The pause button is now grouped with the other game actions on the action row.",
       "Reorganized the number controls into two rows instead of one row. This will make it easier to select a value since the buttons are now wider.",
       "The hint display now lets the user exit at any stage of the hint. The hint display formatting has also been restructured to fit better on smaller screens.",
+      "Hint progress is now automatically saved, so resuming a paused game that had a hint active will return the user to the same stage of the hint.",
       "Made notes darker and easier to read on the Sudoku board."
+    ],
+    "bug fixes": [
+      "If a user paused their game or drill on the last stage of a hint for a drill, resuming the drill would show the user the completed drill without any indication that the drill had already been completed. This is fixed by having the Sudoku board remember the exact hint position to return the user to."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
