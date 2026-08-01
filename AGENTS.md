@@ -4,6 +4,6 @@ Use `toBeInViewport({ ratio: 1 })`, not `toBeVisible()`, when asserting that UI 
 
 # Sudoku Board Architecture
 
-Conditional logic based on Sudoku board varient type shouldn't live in SudokuBoard.tsx or elsewhere. It should be handled by `SudokuBoardSharedFunctionsController.ts`.
+Conditional logic based on Sudoku board variant type must not live in `SudokuBoard.tsx` or any other file. `SudokuBoardSharedFunctionsController.ts` must handle it. 
 
-SudokuBoard state should only directly be updated in SudokuBoard.tsx file (usage of setSudokuBoard() function)
+Update SudokuBoard state directly only in `SudokuBoard.tsx`, using the `setSudokuBoard()` function.  
