@@ -16,12 +16,12 @@ export const EndGameModal = ({
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
-  const resultsWidth =
-    size.width >= 1000
-      ? Math.min(size.width * 0.54, 540)
-      : size.width >= 700
-        ? Math.min(size.width * 0.58, 460)
-        : size.width * 0.9;
+  let resultsWidth = size.width * 0.9;
+  if (size.width >= 1000) {
+    resultsWidth = Math.min(size.width * 0.54, 540);
+  } else if (size.width >= 700) {
+    resultsWidth = Math.min(size.width * 0.58, 460);
+  }
 
   const navigation: any = useNavigation();
 
