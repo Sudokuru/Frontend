@@ -109,8 +109,6 @@ export const ReleaseNote = ({ item, width }: ReleaseNoteProps) => {
     <View
       style={{
         backgroundColor: releaseCardSurfaceColor,
-        borderColor: theme.colors.primary,
-        borderWidth: 1,
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
