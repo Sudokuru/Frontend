@@ -46,11 +46,9 @@ export const useKeyboardHotkeys = ({
     ({
       inputValue,
       board,
-      hint,
     }: {
       inputValue: string;
       board: BoardObjectProps;
-      hint: any;
     }) => {
       switch (inputValue) {
         case "u":
@@ -75,14 +73,7 @@ export const useKeyboardHotkeys = ({
               boardMethods[boardType].doesCellHaveConflict,
             )
           ) {
-            if (hint) {
-              updateHintStageRef.current?.(
-                1,
-                boardMethods[boardType].finishSudokuGame,
-              );
-            } else {
-              getHintRef.current?.();
-            }
+            getHintRef.current?.();
           }
           return true;
         case "R":
@@ -185,13 +176,7 @@ export const useKeyboardHotkeys = ({
         return;
       }
 
-      if (
-        handleGeneralHotkeys({
-          inputValue,
-          board,
-          hint,
-        })
-      ) {
+      if (handleGeneralHotkeys({ inputValue, board })) {
         event.preventDefault();
         return;
       }
