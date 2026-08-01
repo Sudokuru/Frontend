@@ -19,6 +19,13 @@ test.describe("mistake counter", () => {
     await sudokuBoard.cell[7][6].press("2");
     await sudokuBoard.cell[7][6].press("1");
     await expect(sudokuBoard.mistakes).toContainText("2");
+
+    await sudokuBoard.cell[7][2].click();
+    await sudokuBoard.cell[7][2].press("5");
+    await expect(sudokuBoard.mistakes).toContainText("3");
+
+    await sudokuBoard.cell[7][2].press("5");
+    await expect(sudokuBoard.mistakes).toContainText("3");
   });
 });
 
