@@ -57,6 +57,8 @@ export class EndGameModalComponent {
     const valueElement = this.page.getByTestId(testID);
 
     await expect(row).toBeInViewport({ ratio: 1 });
+    await expect(labelElement).toBeInViewport({ ratio: 1 });
+    await expect(valueElement).toBeInViewport({ ratio: 1 });
     await expect(labelElement).toHaveText(label);
     await expect(valueElement).toHaveText(value);
   }
