@@ -157,9 +157,6 @@ const SudokuBoard = (props: Board) => {
   };
 
   const reset = () => {
-    if (sudokuBoard.activeHint) {
-      return;
-    }
     if (boardMethods[props.type].hasResetActionButton() === true) {
       setSudokuBoard({
         ...sudokuBoard,
@@ -216,9 +213,6 @@ const SudokuBoard = (props: Board) => {
    * user can enter values into the cells of the board.
    */
   const toggleNoteMode = () => {
-    if (sudokuBoard.activeHint) {
-      return;
-    }
     sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
     setSudokuBoard({
       ...sudokuBoard,
@@ -449,9 +443,6 @@ const SudokuBoard = (props: Board) => {
   };
 
   const setBoardSelectedCells = (cells: CellLocation[]) => {
-    if (sudokuBoard.activeHint) {
-      return;
-    }
     setSudokuBoard({
       ...sudokuBoard,
       selectedCells: cells,
