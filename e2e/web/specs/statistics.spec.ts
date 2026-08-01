@@ -20,12 +20,12 @@ test.describe("statistics page hints breakdown", () => {
       await statistics.hintsBreakdownIsCollapsed();
 
       await statistics.expandHintsBreakdown();
-      await statistics.breakdownStatisticIsVisible(
+      await statistics.statisticIsFullyVisible(
         "hintsUsedSIMPLIFY_NOTES",
         "Simplify Notes: ",
         "3",
       );
-      await statistics.breakdownStatisticIsVisible(
+      await statistics.statisticIsFullyVisible(
         "hintsUsedOBVIOUS_SINGLE",
         "Obvious Single: ",
         "2",

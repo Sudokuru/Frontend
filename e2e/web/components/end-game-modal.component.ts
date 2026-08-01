@@ -47,22 +47,6 @@ export class EndGameModalComponent {
     await expect(this.page.getByTestId("numHintsUsed")).toHaveText(value);
   }
 
-  async breakdownStatisticIsVisible(
-    testID: string,
-    label: string | RegExp,
-    value: string | RegExp,
-  ) {
-    const row = this.page.getByTestId(`${testID}Row`);
-    const labelElement = this.page.getByTestId(`${testID}Label`);
-    const valueElement = this.page.getByTestId(testID);
-
-    await expect(row).toBeInViewport({ ratio: 1 });
-    await expect(labelElement).toBeInViewport({ ratio: 1 });
-    await expect(valueElement).toBeInViewport({ ratio: 1 });
-    await expect(labelElement).toHaveText(label);
-    await expect(valueElement).toHaveText(value);
-  }
-
   async expandHintsBreakdown() {
     await this.expandableHintsRow.click();
   }

@@ -39,7 +39,7 @@ export class StatisticsPage {
     await expect(this.page.getByTestId("numHintsUsed")).toHaveText(value);
   }
 
-  async breakdownStatisticIsVisible(
+  async statisticIsFullyVisible(
     testID: string,
     label: string | RegExp,
     value: string | RegExp,
@@ -49,6 +49,8 @@ export class StatisticsPage {
     const valueElement = this.page.getByTestId(testID);
 
     await expect(row).toBeInViewport({ ratio: 1 });
+    await expect(labelElement).toBeInViewport({ ratio: 1 });
+    await expect(valueElement).toBeInViewport({ ratio: 1 });
     await expect(labelElement).toHaveText(label);
     await expect(valueElement).toHaveText(value);
   }

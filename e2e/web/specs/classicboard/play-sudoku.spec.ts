@@ -107,12 +107,12 @@ test.describe("complete game", () => {
     await endGameModal.expandableHintsChevronIsVisible();
     await endGameModal.hintsBreakdownIsCollapsed();
     await endGameModal.expandHintsBreakdown();
-    await endGameModal.breakdownStatisticIsVisible(
+    await endGameModal.statisticIsFullyVisible(
       "hintsUsedSIMPLIFY_NOTES",
       /Simplify Notes:/,
       "1",
     );
-    await endGameModal.breakdownStatisticIsVisible(
+    await endGameModal.statisticIsFullyVisible(
       "hintsUsedOBVIOUS_SINGLE",
       /Obvious Single:/,
       "1",
