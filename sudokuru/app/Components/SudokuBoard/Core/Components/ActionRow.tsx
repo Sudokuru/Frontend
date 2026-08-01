@@ -77,6 +77,7 @@ const ActionButton = ({
         />
         <Text
           ellipsizeMode={isMobileLayout ? "clip" : undefined}
+          selectable={false}
           style={{
             color: iconColor,
             fontSize: labelSize,
