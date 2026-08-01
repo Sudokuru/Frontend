@@ -205,13 +205,10 @@ test.describe("complete game", () => {
     await expect(
       statistics.page.getByText("Total Hints Used: 2"),
     ).toBeInViewport({ ratio: 1 });
-    const expandableHintsRow = statistics.page.getByTestId(
-      "expandableNumHintsUsed",
-    );
-    await expect(
-      statistics.page.getByTestId("expandableNumHintsChevron"),
-    ).toBeInViewport({ ratio: 1 });
-    await expandableHintsRow.click();
+    await expect(statistics.expandableHintsChevron).toBeInViewport({
+      ratio: 1,
+    });
+    await statistics.expandableHintsRow.click();
     await expect(statistics.page.getByText("Simplify Notes: 1")).toBeInViewport(
       { ratio: 1 },
     );
