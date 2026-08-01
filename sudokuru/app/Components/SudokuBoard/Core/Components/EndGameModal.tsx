@@ -22,9 +22,9 @@ export const EndGameModal = ({
   const navigation: any = useNavigation();
 
   return (
-    <View
-      style={{
-        flex: 1,
+    <ScrollView
+      testID="endGameResults"
+      contentContainerStyle={{
         alignItems: "center",
         justifyContent: "flex-start",
         paddingTop: 30,
@@ -120,7 +120,7 @@ export const EndGameModal = ({
           New Game
         </Button>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

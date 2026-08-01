@@ -21,14 +21,18 @@ const Statistic = (props: StatisticProps) => {
 
   return (
     <View
+      testID={`${props.testID}Row`}
       style={{
         flexDirection: "row",
         alignItems: "baseline",
         flexWrap: "wrap",
         marginBottom: 8,
+        // Prevent macOS WebKit from rounding the row's right edge inward.
+        marginRight: 0.5,
       }}
     >
       <Text
+        testID={`${props.testID}Label`}
         style={{
           fontSize,
           lineHeight: fontSize * 1.2,
