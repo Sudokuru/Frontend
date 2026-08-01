@@ -1,6 +1,7 @@
 import React from "react";
 import { View, useWindowDimensions } from "react-native";
-import { List, Text, TouchableRipple } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Text, TouchableRipple } from "react-native-paper";
 import { SudokuStrategy } from "sudokuru";
 import { useTheme } from "../../Contexts/ThemeContext";
 import { NumHintsUsedPerStrategy } from "../NumHintsUsedPerStrategy";
@@ -38,6 +39,7 @@ const ExpandableHintsUsedStatistic = ({
           setHintsBreakdownExpanded(!isHintsBreakdownExpanded)
         }
         disabled={numHintsUsed === 0}
+        testID="expandableNumHintsUsed"
         style={{ marginBottom: 8 }}
         rippleColor={theme.colors.border}
       >
@@ -72,10 +74,11 @@ const ExpandableHintsUsedStatistic = ({
               {numHintsUsed}
             </Text>
             {numHintsUsed > 0 ? (
-              <List.Icon
-                icon={isHintsBreakdownExpanded ? "chevron-up" : "chevron-down"}
+              <MaterialCommunityIcons
+                testID="expandableNumHintsChevron"
+                name={isHintsBreakdownExpanded ? "chevron-up" : "chevron-down"}
                 color={theme.semantic.text.primary}
-                style={{ margin: 0 }}
+                size={24}
               />
             ) : null}
           </View>
