@@ -135,7 +135,7 @@ const ActionRow = (props: ActionRowProps) => {
     : theme.colors.surface;
   const noteIcon: React.ComponentProps<typeof MaterialCommunityIcons>["name"] =
     inNoteMode ? "pencil-outline" : "pencil-off-outline";
-  const noteLabel = inNoteMode ? "VALUE" : "NOTE";
+  const noteLabel = inNoteMode ? "NOTE" : "VALUE";
 
   type ActionButtonConfig = {
     key: string;

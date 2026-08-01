@@ -51,6 +51,19 @@ test.describe("pause", () => {
   }
 });
 
+test.describe("note mode toggle", () => {
+  test("note button label reflects the active mode", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await expect(sudokuBoard.note).toContainText("VALUE");
+    await sudokuBoard.note.click();
+    await expect(sudokuBoard.note).toContainText("NOTE");
+    await sudokuBoard.note.click();
+    await expect(sudokuBoard.note).toContainText("VALUE");
+  });
+});
+
 test.describe("typing", () => {
   for (let i = 1; i <= 9; i++) {
     test(`typing ${i} should fill cell with ${i} number`, async ({
