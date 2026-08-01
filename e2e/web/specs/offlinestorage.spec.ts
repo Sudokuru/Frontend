@@ -73,6 +73,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
+    await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
@@ -88,6 +89,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(featurePreview);
     await homePage.startDrills.click();
     const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
     await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
@@ -99,6 +101,7 @@ test.describe("Offline Storage", () => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.statistics.click();
     const statisticsPage = new StatisticsPage(page);
+    await statisticsPage.statisticsPageIsRendered();
     await expect(statisticsPage.page.getByText("-10")).not.toBeInViewport({
       ratio: 1,
     });
@@ -112,6 +115,7 @@ test.describe("Offline Storage", () => {
     const headerComponent = new HeaderComponent(page);
     await headerComponent.profile.click();
     const profilePage = new ProfilePage(page);
+    await profilePage.profilePageIsRendered();
     await expect(profilePage.page.getByText("banana")).not.toBeInViewport({
       ratio: 1,
     });
@@ -127,6 +131,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
+    await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
@@ -142,6 +147,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(featurePreview);
     await homePage.startDrills.click();
     const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
     await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
@@ -154,6 +160,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
     const playPage = new PlayPage(page);
+    await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
@@ -168,6 +175,7 @@ test.describe("Offline Storage", () => {
     const homePage = new HomePage(featurePreview);
     await homePage.startDrills.click();
     const drillPage = new DrillPage(featurePreview);
+    await drillPage.drillPageIsRendered();
     await expect(drillPage.resume).not.toBeInViewport({ ratio: 1 });
   });
 });
