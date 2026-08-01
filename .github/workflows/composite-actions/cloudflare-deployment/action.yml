@@ -18,9 +18,14 @@ outputs:
 runs:
   using: composite
   steps:
-    # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
-    - run: npm i -d wrangler
+    - name: Verify Wrangler installation
       shell: bash
+      run: |
+        if [[ ! -f node_modules/wrangler/wrangler-dist/cli.js ]]; then
+          echo "::error::Wrangler is not installed. Run 'npm ci --ignore-scripts' at the repository root before this action."
+          exit 1
+        fi
+    # workaround documented here: https://github.com/cloudflare/workers-sdk/issues/3615
     - run: sed '/"\*\*\/node_modules",/d' cli.js > cliv2.js
       working-directory: node_modules/wrangler/wrangler-dist
       shell: bash

@@ -62,18 +62,24 @@ jobs:
 
   code_scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Lint Check
-        run: npx eslint .
+        run: npm run lint
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Typescript Check
         working-directory: sudokuru
-        run: npx tsc
+        run: npm run tsc
 
   app_preview_dev:
     runs-on: ubuntu-latest
@@ -86,7 +92,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: 🏗 Setup Expo
@@ -96,7 +102,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
@@ -150,13 +156,13 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: install dependencies
-        run: npm i
+        run: npm ci --ignore-scripts
       - name: Install Playwright Browsers
         run: npm run playwright:init:deps
       - name: Playwright run
-        run: npx playwright test --project="${{ matrix.project }}"
+        run: npm run playwright:test -- --project="${{ matrix.project }}"
         working-directory: e2e/web
         env:
           BASE_URL: ${{ needs.app_preview_dev.outputs.deployment-url }}
@@ -192,16 +198,16 @@ jobs:
     name: Merge Playwright reports
     runs-on: ubuntu-latest
     needs: [ website_test_dev ]
-    if: always()
+    if: ${{ !cancelled() && needs.website_test_dev.result != 'skipped' }}
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: install dependencies
-        run: npm i
+        run: npm ci --ignore-scripts
       - name: Download blob reports
         uses: actions/download-artifact@v8
         with:
@@ -219,7 +225,7 @@ jobs:
           pattern: monocart-report-*
           path: e2e/web/all-monocart-reports
       - name: Merge Playwright HTML report
-        run: npx playwright merge-reports --reporter=html ./all-blob-reports
+        run: npm run playwright:merge-reports -- --reporter=html ./all-blob-reports
         working-directory: e2e/web
       # for now codecov will handle coverage merging automatically with multiple codecov.json files
       # future enhancement handle ourselves for viewing merged reports in the pipeline and not rely on codecov's UI
@@ -234,7 +240,7 @@ jobs:
         working-directory: e2e/web
       - name: Upload all coverage reports to Codecov
         if: always()
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
         with:
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -260,7 +266,7 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - uses: actions/setup-java@v5
@@ -274,7 +280,7 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: sudokuru
@@ -303,7 +309,7 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 26.5.0
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: install Rust stable
@@ -316,7 +322,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
         id: tauri_build
         with:
@@ -348,10 +354,12 @@ jobs:
           mv bundle/*.apk bundle/$ITCH_GAME_ID-alpha-${{matrix.binary_name}}.apk
         env:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
-      - name: Install Butler
+      - &install_butler
+        name: Install Butler
         run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
+          curl --fail --show-error --location --proto '=https' --proto-redir '=https' --output butler.zip https://github.com/itchio/butler/releases/download/v15.27.0/butler-linux-amd64.zip
+          echo "b78ca81ed566c2daa54d68b7e300dd32888168163212293909ce90f16e0ec75d  butler.zip" | sha256sum --check --strict -
+          unzip -j butler.zip
           chmod +x butler
           ./butler -V
       - name: Update Itch.io ${{matrix.binary_name}} Alpha App
@@ -382,12 +390,7 @@ jobs:
           mv bundle/*.apk bundle/$ITCH_GAME_ID-stable-${{matrix.binary_name}}.apk
         env:
           ITCH_GAME_ID: ${{ secrets.ITCH_GAME_ID }}
-      - name: Install Butler
-        run: |
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
+      - *install_butler
       - name: Update Itch.io ${{matrix.binary_name}} Prod App
         run: ./butler push bundle $ITCH_USERNAME/$ITCH_GAME_ID:stable-${{matrix.binary_name}}
         env:
@@ -403,7 +406,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
+      - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
@@ -422,7 +429,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - run: npm ci
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
+      - run: npm ci --ignore-scripts
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
