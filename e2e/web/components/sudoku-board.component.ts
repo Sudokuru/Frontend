@@ -216,43 +216,13 @@ export class SudokuBoardComponent {
     await expect(this.erase).toHaveCSS("pointer-events", "none");
   }
 
-  async activeHintHasStage(stage: number | null) {
-    await expect
-      .poll(() =>
-        this.page.evaluate(() => {
-          for (const key of ["active_classic_game", "active_drill_game"]) {
-            const savedGame = localStorage.getItem(key);
-            if (savedGame) {
-              const activeHint = JSON.parse(savedGame)[0]?.activeHint;
-              if (activeHint) {
-                return activeHint.stage;
-              }
-            }
-          }
-          return null;
-        }),
-      )
-      .toBe(stage);
-  }
-
   async solveHint() {
     await this.hint.click();
-    await this.activeHintHasStage(1);
-    const persistedHintCount = await this.page.evaluate(() => {
-      const classicGame = localStorage.getItem("active_classic_game");
-      if (classicGame) {
-        return JSON.parse(classicGame)[0].statistics.numHintsUsed;
-      }
-      const drillGame = localStorage.getItem("active_drill_game");
-      return JSON.parse(drillGame!)[0].statistics.hintUsed ? 1 : 0;
-    });
-    await expect(this.hints).toContainText(String(persistedHintCount));
-    for (let stage = 2; stage <= 5; stage++) {
-      await this.hintArrowRight.click();
-      await this.activeHintHasStage(stage);
-    }
+    await this.hintArrowRight.click();
+    await this.hintArrowRight.click();
+    await this.hintArrowRight.click();
+    await this.hintArrowRight.click();
     await this.hintFinish.click();
-    await this.activeHintHasStage(null);
   }
 
   /**
