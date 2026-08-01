@@ -9,8 +9,6 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 import { useLogo } from "../../../../Styling/logos";
 import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
 
-let fallbackHeight = 30;
-
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
   setSudokuBoard: (sudokuBoard: any) => void;
@@ -39,10 +37,8 @@ const HeaderRow = (props: HeaderRowProps) => {
   const mobileSpacingScale = 0.5;
   const headerHeightMultiplier = 1.05;
 
-  const boardWidth = cellSize ? cellSize * 9 : fallbackHeight * 9;
-  const headerHeight = cellSize
-    ? cellSize * headerHeightMultiplier
-    : fallbackHeight * headerHeightMultiplier;
+  const boardWidth = cellSize * 9;
+  const headerHeight = cellSize * headerHeightMultiplier;
   const headerTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
@@ -52,29 +48,20 @@ const HeaderRow = (props: HeaderRowProps) => {
   const statPillTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.info;
-  const statusIconSize =
-    (cellSize ? cellSize * 0.48 : fallbackHeight * 0.48) * mobileCompactScale;
-  const statusTextSize =
-    (cellSize ? cellSize * 0.49 : fallbackHeight * 0.49) * mobileCompactScale;
-  const pillHorizontalPadding = cellSize
-    ? cellSize * 0.2 * mobileCompactScale * mobileSpacingScale
-    : fallbackHeight * 0.2 * mobileCompactScale * mobileSpacingScale;
-  const pillVerticalPadding = cellSize
-    ? cellSize * 0.035 * mobileCompactScale * mobileSpacingScale
-    : fallbackHeight * 0.035 * mobileCompactScale * mobileSpacingScale;
-  const pillBorderRadius = cellSize ? cellSize * 0.15 : fallbackHeight * 0.15;
-  const pillGap =
-    (cellSize ? cellSize * 0.08 : fallbackHeight * 0.08) *
-    mobileCompactScale *
-    mobileSpacingScale;
-  const iconOnlyPillSize =
-    statusIconSize +
-    (cellSize ? cellSize * 0.2 : fallbackHeight * 0.2) * mobileCompactScale;
+  const statusIconSize = cellSize * 0.48 * mobileCompactScale;
+  const statusTextSize = cellSize * 0.49 * mobileCompactScale;
+  const pillHorizontalPadding =
+    cellSize * 0.2 * mobileCompactScale * mobileSpacingScale;
+  const pillVerticalPadding =
+    cellSize * 0.035 * mobileCompactScale * mobileSpacingScale;
+  const pillBorderRadius = cellSize * 0.15;
+  const pillGap = cellSize * 0.08 * mobileCompactScale * mobileSpacingScale;
+  const iconOnlyPillSize = statusIconSize + cellSize * 0.2 * mobileCompactScale;
   const mobileStatPillGap = pillGap;
-  const mobileHeaderPuzzleGapOffset = (cellSize || fallbackHeight) * 0.08;
+  const mobileHeaderPuzzleGapOffset = cellSize * 0.08;
 
   const logoSource = useLogo();
-  const logoHeight = cellSize ? cellSize * 0.65 : fallbackHeight * 0.65;
+  const logoHeight = cellSize * 0.65;
   const logoWidth = logoHeight * (100 / 45);
   const logoPillWidth = logoWidth + pillHorizontalPadding * 2;
 
