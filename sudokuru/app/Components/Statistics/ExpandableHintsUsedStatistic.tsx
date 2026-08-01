@@ -33,7 +33,11 @@ const ExpandableHintsUsedStatistic = ({
   return (
     <>
       <TouchableRipple
-        onPress={() => setHintsBreakdownExpanded(!isHintsBreakdownExpanded)}
+        onPress={() =>
+          numHintsUsed > 0 &&
+          setHintsBreakdownExpanded(!isHintsBreakdownExpanded)
+        }
+        disabled={numHintsUsed === 0}
         style={{ marginBottom: 8 }}
         rippleColor={theme.colors.border}
       >
@@ -67,11 +71,13 @@ const ExpandableHintsUsedStatistic = ({
             >
               {numHintsUsed}
             </Text>
-            <List.Icon
-              icon={isHintsBreakdownExpanded ? "chevron-up" : "chevron-down"}
-              color={theme.semantic.text.primary}
-              style={{ margin: 0 }}
-            />
+            {numHintsUsed > 0 ? (
+              <List.Icon
+                icon={isHintsBreakdownExpanded ? "chevron-up" : "chevron-down"}
+                color={theme.semantic.text.primary}
+                style={{ margin: 0 }}
+              />
+            ) : null}
           </View>
         </View>
       </TouchableRipple>

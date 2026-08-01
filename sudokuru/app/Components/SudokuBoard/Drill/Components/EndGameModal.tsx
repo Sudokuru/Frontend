@@ -93,7 +93,7 @@ export const EndGameModal = ({
           onPress={() => navigation.navigate("DrillPage")}
           style={{ marginTop: 16, alignSelf: "center" }}
         >
-          Change Drill
+          Change Strategy
         </Button>
         <Button
           mode="contained"
