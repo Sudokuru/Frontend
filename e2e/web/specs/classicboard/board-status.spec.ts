@@ -1,6 +1,7 @@
 import { expect } from "@playwright/test";
 import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { test } from "../../fixture";
+import { AMEND_NOTES_EMPTY_CELL_GAME } from "../../data";
 
 test.describe("mistake counter", () => {
   test("displays and updates the classic game mistake count", async ({
@@ -15,8 +16,11 @@ test.describe("mistake counter", () => {
     await sudokuBoard.cell[7][6].press("7");
     await expect(sudokuBoard.mistakes).toContainText("236");
 
+    await sudokuBoard.cell[7][6].press("9");
+    await expect(sudokuBoard.mistakes).toContainText("237");
+
     await sudokuBoard.cell[7][6].press("8");
-    await expect(sudokuBoard.mistakes).toContainText("236");
+    await expect(sudokuBoard.mistakes).toContainText("237");
   });
 });
 
@@ -41,6 +45,25 @@ test.describe("hint counter", () => {
 
     await sudokuBoard.hint.click();
     await expect(sudokuBoard.hints).toContainText("2");
+  });
+
+  test.describe("completed hints", () => {
+    test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
+
+    test("hint count is incremented when multiple hints are completed", async ({
+      resumeClassicGame,
+    }) => {
+      const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+
+      await expect(sudokuBoard.hints).toContainText("0");
+      await expect(sudokuBoard.hints).toBeInViewport({ ratio: 1 });
+
+      await sudokuBoard.solveHint();
+      await expect(sudokuBoard.hints).toContainText("1");
+
+      await sudokuBoard.solveHint();
+      await expect(sudokuBoard.hints).toContainText("2");
+    });
   });
 });
 
