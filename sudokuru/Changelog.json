@@ -1,5 +1,17 @@
 [
   {
+    "version": "1.35.0",
+    "date": "#{date}#",
+    "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
+    "features": [
+      "After finishing a classic Sudoku game, a 'New Game' button lets the user start a new game immediately.",
+      "After finishing a drill, a 'New Drill' button lets the user start a new drill of the same strategy immediately.",
+      "The 'Total Hints Used' statistic is now collapsed by default and can be expanded to show how many hints were used for each strategy. The expansion is hidden when no hints have been used."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.34.0",
     "date": "May 7th, 2026",
     "summary": "Users can now toggle the Sudokuru site theme by pressing t twice.",
