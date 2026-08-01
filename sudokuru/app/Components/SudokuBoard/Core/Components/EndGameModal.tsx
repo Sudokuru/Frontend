@@ -57,35 +57,32 @@ export const EndGameModal = ({
             borderRadius: 10,
             paddingHorizontal: 20,
             paddingVertical: 16,
-            maxHeight: size.height * 0.5,
           }}
         >
-          <ScrollView>
-            <Statistic
-              statisticName="Score: "
-              statisticValue={statistics.score}
-              testID="score"
-            />
-            <Statistic
-              statisticName="Time Spent: "
-              statisticValue={formatTime(statistics.time)}
-              testID="time"
-            />
-            <Statistic
-              statisticName="Mistakes Made: "
-              statisticValue={statistics.numWrongCellsPlayed}
-              testID="numWrongCellsPlayed"
-            />
-            <Statistic
-              statisticName="Difficulty: "
-              statisticValue={statistics.difficulty}
-              testID="difficulty"
-            />
-            <ExpandableHintsUsedStatistic
-              numHintsUsed={statistics.numHintsUsed}
-              numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
-            />
-          </ScrollView>
+          <Statistic
+            statisticName="Score: "
+            statisticValue={statistics.score}
+            testID="score"
+          />
+          <Statistic
+            statisticName="Time Spent: "
+            statisticValue={formatTime(statistics.time)}
+            testID="time"
+          />
+          <Statistic
+            statisticName="Mistakes Made: "
+            statisticValue={statistics.numWrongCellsPlayed}
+            testID="numWrongCellsPlayed"
+          />
+          <Statistic
+            statisticName="Difficulty: "
+            statisticValue={statistics.difficulty}
+            testID="difficulty"
+          />
+          <ExpandableHintsUsedStatistic
+            numHintsUsed={statistics.numHintsUsed}
+            numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
+          />
         </View>
 
         <Button

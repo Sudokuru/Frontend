@@ -57,31 +57,28 @@ export const EndGameModal = ({
             borderRadius: 10,
             paddingHorizontal: 12,
             paddingVertical: 16,
-            maxHeight: size.height * 0.5,
           }}
         >
-          <ScrollView>
-            <Statistic
-              statisticName="Time Spent: "
-              statisticValue={formatTime(statistics.time)}
-              testID="time"
-            />
-            <Statistic
-              statisticName="Strategy: "
-              statisticValue={toTitle(statistics.difficulty)}
-              testID="strategy"
-            />
-            <Statistic
-              statisticName="Mistakes Made: "
-              statisticValue={statistics.numWrongCellsPlayed}
-              testID="numWrongCellsPlayed"
-            />
-            <Statistic
-              statisticName="Hint Used: "
-              statisticValue={statistics.hintUsed ? "Yes" : "No"}
-              testID="numHintsUsed"
-            />
-          </ScrollView>
+          <Statistic
+            statisticName="Time Spent: "
+            statisticValue={formatTime(statistics.time)}
+            testID="time"
+          />
+          <Statistic
+            statisticName="Strategy: "
+            statisticValue={toTitle(statistics.difficulty)}
+            testID="strategy"
+          />
+          <Statistic
+            statisticName="Mistakes Made: "
+            statisticValue={statistics.numWrongCellsPlayed}
+            testID="numWrongCellsPlayed"
+          />
+          <Statistic
+            statisticName="Hint Used: "
+            statisticValue={statistics.hintUsed ? "Yes" : "No"}
+            testID="numHintsUsed"
+          />
         </View>
 
         <Button
