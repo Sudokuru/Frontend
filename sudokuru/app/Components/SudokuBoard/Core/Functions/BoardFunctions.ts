@@ -86,8 +86,14 @@ export function useCellSize(): number {
 
   const maxCellSizeFromWidth = maxBoardWidth / 9;
 
+  const navHeaderShown = isNavHeaderVisible(width, height);
+  const availableHeightWithHeader =
+    height - NAV_HEADER_HEIGHT - NAV_HEADER_SAFETY_PADDING;
+
   const maxCellSizeFromHeight =
-    (height * boardVerticalViewportFraction) / boardLayoutHeightInCells;
+    ((navHeaderShown ? availableHeightWithHeader : height) *
+      boardVerticalViewportFraction) /
+    boardLayoutHeightInCells;
 
   return Math.min(maxCellSizeFromWidth, maxCellSizeFromHeight);
 }
