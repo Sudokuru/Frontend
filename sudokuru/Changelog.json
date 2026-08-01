@@ -4,7 +4,10 @@
     "date": "#{date}#",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
     "bug fixes": [
-      "Lesson, difficulty, drill, and release note cards now use theme aware colors that display correctly in light mode."
+      "Lesson, difficulty, and release note cards now use theme aware colors that display correctly in light mode."
+    ],
+    "preview features": [
+      "Drill cards now use theme aware colors that display correctly in light mode."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
