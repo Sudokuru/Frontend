@@ -17,7 +17,7 @@ import {
 } from "../../Functions/LocalDatabase";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
 import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
 import { saveGame } from "../../Api/Puzzles";
@@ -117,6 +117,30 @@ const SudokuBoard = (props: Board) => {
 
   // Keep keyboard hotkey game-over guard fresh even when this component early-returns
   gameOverRef.current = gameOver;
+
+  // Run the game timer while the screen is focused and a game is in progress
+  useFocusEffect(
+    React.useCallback(() => {
+      const interval = setInterval(() => {
+        if (sudokuBoardRef.current == null || gameOverRef.current) {
+          return;
+        }
+        setSudokuBoard((prevState) => {
+          if (prevState == null) {
+            return prevState;
+          }
+          return {
+            ...prevState,
+            statistics: {
+              ...prevState.statistics,
+              time: prevState.statistics.time + 1,
+            },
+          } as BoardObjectProps;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [setSudokuBoard, gameOverRef, sudokuBoardRef]),
+  );
 
   // if we are loading then we return the loading icon
   if (sudokuBoard == null) {
@@ -453,7 +477,6 @@ const SudokuBoard = (props: Board) => {
     return (
       <HeaderRow
         sudokuBoard={sudokuBoard}
-        setSudokuBoard={setSudokuBoard}
         headerRowTitle={boardMethods[props.type].headerRowTitle}
       />
     );

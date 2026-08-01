@@ -1,4 +1,3 @@
-import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
 import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
@@ -11,7 +10,6 @@ import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
 
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
-  setSudokuBoard: (sudokuBoard: any) => void;
   headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
 }
 
@@ -28,7 +26,7 @@ const getMistakeStatValue = (sudokuBoard: BoardObjectProps): string => {
 };
 
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard, headerRowTitle } = props;
+  const { sudokuBoard, headerRowTitle } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
@@ -64,24 +62,6 @@ const HeaderRow = (props: HeaderRowProps) => {
   const logoHeight = cellSize * 0.65;
   const logoWidth = logoHeight * (100 / 45);
   const logoPillWidth = logoWidth + pillHorizontalPadding * 2;
-
-  useFocusEffect(
-    React.useCallback(() => {
-      let interval = setInterval(() => {
-        setSudokuBoard(
-          (prevState: BoardObjectProps) =>
-            ({
-              ...prevState,
-              statistics: {
-                ...prevState.statistics,
-                time: prevState.statistics.time + 1,
-              },
-            }) as BoardObjectProps,
-        );
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [setSudokuBoard]),
-  );
 
   return (
     <View
