@@ -2,9 +2,9 @@
   {
     "version": "1.34.1",
     "date": "#{date}#",
-    "summary": "Fixed the background color on web so it always matches your selected theme.",
+    "summary": "Fixed the background color on web so it always matches the user's selected theme.",
     "bug fixes": [
-      "Fixed the background color on web so it always matches your selected theme."
+      "Fixed the background color on web so it always matches the user's selected theme."
     ],
     "targets": ["web"],
     "contributors": ["Thomas-Gallant"]
