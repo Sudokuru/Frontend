@@ -11,11 +11,11 @@ export const NOTE_TEXT_COLOR = "#000000";
 export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
 export const HINT_NOT_HIGHLIGHTED_COLOR = "#808080";
 
-export const VERY_EASY_COLOR = "#4CBB17";
-export const EASY_COLOR = "#7CFC00";
-export const INTERMEDIATE_COLOR = "#FFFF00";
-export const HARD_COLOR = "#FFA500";
-export const VERY_HARD_COLOR = "#FF0000";
+export const VERY_EASY_COLOR = "#008850";
+export const EASY_COLOR = "#4D8400";
+export const INTERMEDIATE_COLOR = "#8C7500";
+export const HARD_COLOR = "#BA5D00";
+export const VERY_HARD_COLOR = "#EE0000";
 
 export const DARK_BACKGROUND_COLOR = "#025E73";
 export const LIGHT_BACKGROUND_COLOR = "#F2F2F2";
