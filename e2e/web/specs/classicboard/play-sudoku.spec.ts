@@ -15,7 +15,7 @@ import {
 // TODO add test: Completing multiple games should display correct statistics
 
 test.describe("complete game", () => {
-  test("Completing a game and clicking 'Start New Game' should take you to the play game page", async ({
+  test("Completing a game and clicking 'New Game' should start a new game", async ({
     resumeClassicGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -28,6 +28,25 @@ test.describe("complete game", () => {
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
+    await sudokuBoard.sudokuBoardIsRendered();
+    await expect(
+      resumeClassicGame.getByText("Difficulty: novice"),
+    ).toBeInViewport({ ratio: 1 });
+  });
+
+  test("Completing a game and clicking 'Change Difficulty' should take you to the play game page", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.cell[7][6].press("8");
+    await sudokuBoard.cell[7][7].click();
+    await sudokuBoard.numPad[2 - 1].click();
+    await sudokuBoard.cell[7][8].click();
+    await sudokuBoard.cell[7][8].press("4");
+    const endGameModal = new EndGameModalComponent(resumeClassicGame);
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.changeDifficulty.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.playPageIsRendered();
   });
@@ -50,11 +69,9 @@ test.describe("complete game", () => {
       /Time Spent:/,
       /^06:1[4-9]$/,
     );
-    await endGameModal.statisticIsFullyVisible(
-      "numHintsUsed",
-      /Number of Hints Used:/,
-      "0",
-    );
+    await endGameModal.totalHintsUsedIsFullyVisible("0");
+    await endGameModal.expandableHintsChevronIsHidden();
+    await endGameModal.expandableHintsRowIsDisabled();
     await endGameModal.statisticIsFullyVisible(
       "numWrongCellsPlayed",
       /Mistakes Made:/,
@@ -86,11 +103,10 @@ test.describe("complete game", () => {
       /Time Spent:/,
       /^06:1[4-9]$/,
     );
-    await endGameModal.statisticIsFullyVisible(
-      "numHintsUsed",
-      /Number of Hints Used:/,
-      "2",
-    );
+    await endGameModal.totalHintsUsedIsFullyVisible("2");
+    await endGameModal.expandableHintsChevronIsVisible();
+    await endGameModal.hintsBreakdownIsCollapsed();
+    await endGameModal.expandHintsBreakdown();
     await endGameModal.statisticIsFullyVisible(
       "hintsUsedSIMPLIFY_NOTES",
       /Simplify Notes:/,
@@ -101,6 +117,8 @@ test.describe("complete game", () => {
       /Obvious Single:/,
       "1",
     );
+    await endGameModal.expandHintsBreakdown();
+    await endGameModal.hintsBreakdownIsCollapsed();
     await endGameModal.statisticIsFullyVisible(
       "numWrongCellsPlayed",
       /Mistakes Made:/,
@@ -187,6 +205,10 @@ test.describe("complete game", () => {
     await expect(
       statistics.page.getByText("Total Hints Used: 2"),
     ).toBeInViewport({ ratio: 1 });
+    await expect(statistics.expandableHintsChevron).toBeInViewport({
+      ratio: 1,
+    });
+    await statistics.expandableHintsRow.click();
     await expect(statistics.page.getByText("Simplify Notes: 1")).toBeInViewport(
       { ratio: 1 },
     );
