@@ -108,6 +108,7 @@ export const convertPuzzleToSudokuObject = (
   let game: ClassicObjectProps = {
     variant: "classic",
     version: 1,
+    activeHint: null,
     selectedCells: [],
     puzzleState: [],
     puzzleSolution: [],

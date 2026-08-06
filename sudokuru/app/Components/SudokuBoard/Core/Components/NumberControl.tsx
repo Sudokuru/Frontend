@@ -1,14 +1,12 @@
 import { Pressable, Text, View } from "react-native";
-import { range } from "../../SudokuBoardFunctions";
 import React from "react";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import { DEFAULT_FONT } from "../../../../Styling/theme";
 
 let fallbackHeight = 30;
-
-// todo rewrite
 
 interface NumberControlProps {
   areNumberButtonsDisabled: boolean;
@@ -31,97 +29,135 @@ const NumberControl = (props: NumberControlProps) => {
   } = props;
   const cellSize = useCellSize();
   const { theme } = useTheme();
+  const baseSize = cellSize || fallbackHeight;
+  const keyHeight = baseSize * 0.77;
+  const visualKeyWidth = baseSize * (100 / 60);
+  const touchKeyWidth = visualKeyWidth;
+  const rowGap = keyHeight * 0.1;
+  const controlWidth = baseSize * 9;
+  const keyGap = Math.max((controlWidth - touchKeyWidth * 5) / 4, 0);
+
+  const renderNumberButton = (number: number) => {
+    const onClick = () => {
+      updateEntry(number);
+    };
+
+    const numberText = (
+      <Text
+        style={{
+          fontFamily: DEFAULT_FONT,
+          fontSize: baseSize * 0.62,
+          color: theme.semantic.text.info,
+        }}
+        selectable={false}
+      >
+        {number}
+      </Text>
+    );
+
+    if (progressIndicatorSetting) {
+      return (
+        <Pressable
+          key={number}
+          onPress={onClick}
+          disabled={areNumberButtonsDisabled} // disable also if cell is correct.
+          style={{
+            width: touchKeyWidth,
+            height: keyHeight,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          testID={"numberControl" + number}
+        >
+          <LinearGradient
+            colors={[
+              theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.colors.onSurface,
+              theme.colors.primary,
+            ]}
+            locations={[
+              1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
+              1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
+            ]}
+            style={{
+              width: visualKeyWidth,
+              height: keyHeight,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: baseSize * (10 / 60),
+            }}
+          >
+            {numberText}
+          </LinearGradient>
+        </Pressable>
+      );
+    }
+
+    return (
+      <Pressable
+        key={number}
+        onPress={onClick}
+        disabled={areNumberButtonsDisabled} // disable also if cell is correct.
+        style={{
+          width: touchKeyWidth,
+          height: keyHeight,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        testID={"numberControl" + number}
+      >
+        <View
+          style={{
+            width: visualKeyWidth,
+            height: keyHeight,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: theme.colors.primary,
+            borderRadius: baseSize * (10 / 60),
+          }}
+        >
+          {numberText}
+        </View>
+      </Pressable>
+    );
+  };
 
   return (
     <View
       style={{
-        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize || fallbackHeight,
-        flexDirection: "row",
+        width: controlWidth,
+        height: keyHeight * 2 + rowGap,
         justifyContent: "space-between",
-        alignItems: "center",
       }}
     >
-      {range(9).map((i) => {
-        const number = i + 1;
-        const onClick = () => {
-          updateEntry(number);
-        };
-
-        const numberText = (
-          <Text
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {[1, 2, 3, 4, 5].map(renderNumberButton)}
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {[6, 7, 8, 9].map((number, index) => (
+          <View
+            key={number}
             style={{
-              fontFamily: "Inter_400Regular",
-              fontSize: cellSize
-                ? cellSize * (3 / 4) + 1
-                : fallbackHeight * (3 / 4) + 1,
-              color: theme.semantic.text.info,
+              marginRight: index < 3 ? keyGap : 0,
             }}
-            selectable={false}
           >
-            {number}
-          </Text>
-        );
-
-        if (progressIndicatorSetting) {
-          return (
-            // Number Keys
-            <Pressable
-              key={number}
-              onPress={onClick}
-              disabled={areNumberButtonsDisabled} // disable also if cell is correct.
-              testID={"numberControl" + number}
-            >
-              <LinearGradient
-                colors={[
-                  theme.useDarkTheme
-                    ? theme.semantic.text.inverse
-                    : theme.colors.onSurface,
-                  theme.colors.primary,
-                ]}
-                locations={[
-                  1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
-                  1 - getRemainingCellCountOfValue(sudokuBoard, number) / 9,
-                ]}
-                style={{
-                  width: cellSize
-                    ? cellSize * (50 / 60)
-                    : fallbackHeight * (50 / 60),
-                  height: cellSize || fallbackHeight,
-                  alignItems: "center",
-                  borderRadius: cellSize
-                    ? cellSize * (10 / 60)
-                    : fallbackHeight * (10 / 60),
-                }}
-              >
-                {numberText}
-              </LinearGradient>
-            </Pressable>
-          );
-        } else {
-          return (
-            <Pressable
-              key={number}
-              onPress={onClick}
-              disabled={areNumberButtonsDisabled} // disable also if cell is correct.
-              style={{
-                width: cellSize
-                  ? cellSize * (50 / 60)
-                  : fallbackHeight * (50 / 60),
-                height: cellSize || fallbackHeight,
-                alignItems: "center",
-                backgroundColor: theme.colors.primary,
-                borderRadius: cellSize
-                  ? cellSize * (10 / 60)
-                  : fallbackHeight * (10 / 60),
-              }}
-              testID={"numberControl" + number}
-            >
-              {numberText}
-            </Pressable>
-          );
-        }
-      })}
+            {renderNumberButton(number)}
+          </View>
+        ))}
+      </View>
     </View>
   );
 };

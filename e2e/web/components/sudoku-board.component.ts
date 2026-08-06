@@ -15,7 +15,11 @@ export class SudokuBoardComponent {
   readonly numColumns: number;
 
   readonly sudokuBoard: Locator;
+  readonly sudokuLogo: Locator;
 
+  readonly difficulty: Locator;
+  readonly hints: Locator;
+  readonly mistakes: Locator;
   readonly timer: Locator;
   readonly pause: Locator;
   readonly undo: Locator;
@@ -43,9 +47,13 @@ export class SudokuBoardComponent {
     this.numColumns = numColumns ? numColumns : 9;
 
     this.sudokuBoard = page.getByTestId("sudokuBoard");
+    this.sudokuLogo = page.getByTestId("sudokuBoardLogo");
 
-    this.timer = page.getByText("Time: ");
-    this.pause = page.getByTestId("PauseButton");
+    this.difficulty = page.getByTestId("difficultyCounter");
+    this.hints = page.getByTestId("hintsCounter");
+    this.mistakes = page.getByTestId("mistakesCounter");
+    this.timer = page.getByTestId("timeCounter");
+    this.pause = page.getByTestId("pauseButton");
     this.undo = page.getByTestId("undoButton");
     this.reset = page.getByTestId("resetButton");
     this.note = page.getByTestId("toggleNoteModeButton");
@@ -70,7 +78,7 @@ export class SudokuBoardComponent {
   }
 
   async sudokuBoardIsRendered() {
-    await expect(this.timer).toBeInViewport({ ratio: 1 });
+    await expect(this.sudokuLogo).toBeInViewport({ ratio: 1 });
   }
 
   async sudokuBoardContainsText(text: string | RegExp) {

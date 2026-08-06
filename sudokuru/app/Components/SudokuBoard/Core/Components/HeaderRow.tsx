@@ -1,91 +1,236 @@
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React from "react";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useCellSize, formatTime } from "../Functions/BoardFunctions";
-import PauseButton from "./PauseButton";
 import { useTheme } from "../../../../Contexts/ThemeContext";
-
-let fallbackHeight = 30;
+import { useLogo } from "../../../../Styling/logos";
+import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
+import { DEFAULT_FONT } from "../../../../Styling/theme";
 
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
-  setSudokuBoard: (sudokuBoard: any) => void;
   headerRowTitle: (sudokuBoard: BoardObjectProps) => string;
-  handlePause: (sudokuBoard: BoardObjectProps, navigation: any) => void;
+  headerRowHintCount: (sudokuBoard: BoardObjectProps) => string;
 }
 
+const getMistakeStatValue = (sudokuBoard: BoardObjectProps): string => {
+  return `${sudokuBoard.statistics.numWrongCellsPlayed}`;
+};
+
 const HeaderRow = (props: HeaderRowProps) => {
-  const { sudokuBoard, setSudokuBoard, headerRowTitle, handlePause } = props;
+  const { sudokuBoard, headerRowTitle, headerRowHintCount } = props;
 
   const currentTime = sudokuBoard.statistics.time;
   const cellSize = useCellSize();
-  const navigation = useNavigation();
-
   const { theme } = useTheme();
+  const mobileCompactScale = 0.75;
+  const mobileSpacingScale = 0.5;
+  const headerHeightMultiplier = 1.05;
 
-  useFocusEffect(
-    React.useCallback(() => {
-      let interval = setInterval(() => {
-        sudokuBoard.statistics.time = sudokuBoard.statistics.time + 1;
-        setSudokuBoard((prevState: BoardObjectProps) => ({
-          ...prevState,
-          statistics: sudokuBoard.statistics,
-        }));
-      }, 1000);
-      return () => clearInterval(interval);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sudokuBoard.statistics.time]),
-  );
+  const boardWidth = cellSize * 9;
+  const headerHeight = cellSize * headerHeightMultiplier;
+  const headerTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
+  const statPillBackgroundColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const statPillTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
+  const statusIconSize = cellSize * 0.48 * mobileCompactScale;
+  const statusTextSize = cellSize * 0.49 * mobileCompactScale;
+  const pillHorizontalPadding =
+    cellSize * 0.2 * mobileCompactScale * mobileSpacingScale;
+  const pillVerticalPadding =
+    cellSize * 0.035 * mobileCompactScale * mobileSpacingScale;
+  const pillBorderRadius = cellSize * 0.15;
+  const pillGap = cellSize * 0.08 * mobileCompactScale * mobileSpacingScale;
+  const iconOnlyPillSize = statusIconSize + cellSize * 0.2 * mobileCompactScale;
+  const mobileStatPillGap = pillGap;
+  const mobileHeaderPuzzleGapOffset = cellSize * 0.08;
+
+  const logoSource = useLogo();
+  const logoHeight = cellSize * 0.65;
+  const logoWidth = logoHeight * (100 / 45);
+  const logoPillWidth = logoWidth + pillHorizontalPadding * 2;
 
   return (
     <View
       style={{
         alignSelf: "center",
-        width: cellSize ? cellSize * 9 : fallbackHeight * 9,
-        height: cellSize ? cellSize * (3 / 4) : fallbackHeight * (3 / 4),
-        justifyContent: "space-between",
+        width: boardWidth,
+        height: headerHeight,
+        marginBottom: -mobileHeaderPuzzleGapOffset,
+        justifyContent: "flex-end",
         alignItems: "center",
         flexDirection: "row",
-        marginTop: cellSize ? cellSize * (1 / 2) : fallbackHeight * (1 / 2),
       }}
     >
-      <View style={{ width: cellSize * 3 }}>
-        <Text
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          position: "relative",
+          paddingRight: logoPillWidth + mobileStatPillGap,
+        }}
+      >
+        <View
           style={{
-            fontFamily: "Inter_400Regular",
-            fontSize: cellSize
-              ? cellSize * (1 / 3) + 1
-              : fallbackHeight * (1 / 3) + 1,
-            color: theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info,
+            position: "absolute",
+            right: 0,
+            top: 0,
+            paddingHorizontal: pillHorizontalPadding,
+            paddingVertical: pillVerticalPadding * 0.1,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          Time: {formatTime(currentTime)}
-        </Text>
-      </View>
-      <View style={{ width: cellSize * 3, alignItems: "center" }}>
-        <Text
+          <Image
+            testID="sudokuBoardLogo"
+            source={logoSource}
+            style={{
+              height: logoHeight,
+              width: logoWidth,
+              resizeMode: "contain",
+            }}
+          />
+        </View>
+        <View
+          testID="difficultyCounter"
           style={{
-            fontFamily: "Inter_400Regular",
-            fontSize: cellSize
-              ? cellSize * (1 / 3.5) + 1
-              : fallbackHeight * (1 / 3.5) + 1,
-            color: theme.useDarkTheme
-              ? theme.semantic.text.inverse
-              : theme.semantic.text.info,
+            paddingHorizontal: pillHorizontalPadding,
+            paddingVertical: pillVerticalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
-          {headerRowTitle(sudokuBoard)}
-        </Text>
-      </View>
-      <View style={{ width: cellSize * 3, alignItems: "flex-end" }}>
-        <PauseButton
-          handlePause={() => handlePause(sudokuBoard, navigation)}
-          isPaused={false}
-        />
+          <MaterialCommunityIcons
+            name="signal-cellular-3"
+            color={theme.colors.primary}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: DEFAULT_FONT,
+              fontSize: statusTextSize,
+            }}
+          >
+            {headerRowTitle(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="mistakesCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="alert-circle"
+            color={MISTAKE_COLOR}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: DEFAULT_FONT,
+              fontSize: statusTextSize,
+            }}
+          >
+            {getMistakeStatValue(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="hintsCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="lightbulb-on-outline"
+            color={GOLD_COLOR}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: DEFAULT_FONT,
+              fontSize: statusTextSize,
+            }}
+          >
+            {headerRowHintCount(sudokuBoard)}
+          </Text>
+        </View>
+
+        <View
+          testID="timeCounter"
+          style={{
+            marginLeft: mobileStatPillGap,
+            minWidth: iconOnlyPillSize,
+            height: iconOnlyPillSize,
+            paddingHorizontal: pillHorizontalPadding,
+            borderRadius: pillBorderRadius,
+            overflow: "hidden",
+            backgroundColor: statPillBackgroundColor,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexDirection: "row",
+          }}
+        >
+          <MaterialCommunityIcons
+            name="clock-outline"
+            color={headerTextColor}
+            size={statusIconSize}
+          />
+          <Text
+            numberOfLines={1}
+            style={{
+              marginLeft: pillGap,
+              color: statPillTextColor,
+              fontFamily: DEFAULT_FONT,
+              fontSize: statusTextSize,
+            }}
+          >
+            {formatTime(currentTime)}
+          </Text>
+        </View>
       </View>
     </View>
   );

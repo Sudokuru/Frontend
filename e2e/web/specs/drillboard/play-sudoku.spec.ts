@@ -129,18 +129,18 @@ test.describe("start drill", () => {
     drill,
   }) => {
     await drill.getByText("Obvious Single").click();
-    await expect(drill.getByText("Drill: Obvious Single")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(drill);
+    await expect(sudokuBoard.difficulty).toContainText("Obvious Single");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 
   test("Clicking on button with obvious pair text should start obvious pair drill", async ({
     drill,
   }) => {
     await drill.getByText("Obvious Pair").click();
-    await expect(drill.getByText("Drill: Obvious Pair")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(drill);
+    await expect(sudokuBoard.difficulty).toContainText("Obvious Pair");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 });
 
@@ -152,8 +152,7 @@ test.describe("resume drill", () => {
     await sudokuBoard.pause.click();
     await drillPage.resumeButtonIsVisible();
     await drillPage.resume.click();
-    await expect(drill.getByText("Drill: Obvious Single")).toBeInViewport({
-      ratio: 1,
-    });
+    await expect(sudokuBoard.difficulty).toContainText("Obvious Single");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 });

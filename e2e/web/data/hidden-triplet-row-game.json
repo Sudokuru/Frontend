@@ -2,6 +2,7 @@
     {
         "variant": "classic",
         "version": 1,
+        "activeHint": null,
         "selectedCells": [],
         "puzzleState": [
             [
