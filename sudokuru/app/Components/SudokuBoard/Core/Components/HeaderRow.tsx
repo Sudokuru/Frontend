@@ -7,6 +7,7 @@ import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 import { useLogo } from "../../../../Styling/logos";
 import { GOLD_COLOR, MISTAKE_COLOR } from "../../../../Styling/HighlightColors";
+import { DEFAULT_FONT } from "../../../../Styling/theme";
 
 interface HeaderRowProps {
   sudokuBoard: BoardObjectProps;
@@ -124,7 +125,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             style={{
               marginLeft: pillGap,
               color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
+              fontFamily: DEFAULT_FONT,
               fontSize: statusTextSize,
             }}
           >
@@ -157,7 +158,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             style={{
               marginLeft: pillGap,
               color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
+              fontFamily: DEFAULT_FONT,
               fontSize: statusTextSize,
             }}
           >
@@ -190,7 +191,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             style={{
               marginLeft: pillGap,
               color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
+              fontFamily: DEFAULT_FONT,
               fontSize: statusTextSize,
             }}
           >
@@ -223,7 +224,7 @@ const HeaderRow = (props: HeaderRowProps) => {
             style={{
               marginLeft: pillGap,
               color: statPillTextColor,
-              fontFamily: "Inter_400Regular",
+              fontFamily: DEFAULT_FONT,
               fontSize: statusTextSize,
             }}
           >

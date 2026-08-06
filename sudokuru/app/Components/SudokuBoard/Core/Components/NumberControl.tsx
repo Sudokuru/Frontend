@@ -4,6 +4,7 @@ import { useCellSize } from "../Functions/BoardFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useTheme } from "../../../../Contexts/ThemeContext";
+import { DEFAULT_FONT } from "../../../../Styling/theme";
 
 let fallbackHeight = 30;
 
@@ -44,7 +45,7 @@ const NumberControl = (props: NumberControlProps) => {
     const numberText = (
       <Text
         style={{
-          fontFamily: "Inter_400Regular",
+          fontFamily: DEFAULT_FONT,
           fontSize: baseSize * 0.62,
           color: theme.semantic.text.info,
         }}
