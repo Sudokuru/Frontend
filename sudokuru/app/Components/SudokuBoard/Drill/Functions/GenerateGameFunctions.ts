@@ -102,6 +102,7 @@ const createEmptyDrillGame = (strategy: DrillStrategy): DrillObjectProps => {
   return {
     variant: "drill",
     version: 1,
+    activeHint: null,
     selectedCells: [],
     initialPuzzleState: [],
     puzzleState: [],

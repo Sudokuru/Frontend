@@ -6,6 +6,8 @@ import {
   GameVariant,
   CellProps,
   ClassicObjectProps,
+  PersistedHintPayload,
+  ActiveHintState,
 } from "./../../Functions/LocalDatabase";
 
 import {
@@ -17,8 +19,14 @@ import {
   isMoveCorrect as drillIsMoveCorrect,
 } from "./Drill/Functions/CellFunctions";
 
-import { headerRowTitle as coreHeaderRowTitle } from "./Core/Functions/HeaderRowFunctions";
-import { headerRowTitle as drillHeaderRowTitle } from "./Drill/Functions/HeaderRowFunctions";
+import {
+  headerRowHintCount as coreHeaderRowHintCount,
+  headerRowTitle as coreHeaderRowTitle,
+} from "./Core/Functions/HeaderRowFunctions";
+import {
+  headerRowHintCount as drillHeaderRowHintCount,
+  headerRowTitle as drillHeaderRowTitle,
+} from "./Drill/Functions/HeaderRowFunctions";
 import {
   finishSudokuGame as coreFinishGameStatistics,
   handlePause as coreHandlePause,
@@ -37,7 +45,7 @@ import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameMod
 import { getSudokuBoardHint as coreGetSudokuBoardHint } from "./Core/Functions/HintFunctions";
 import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions/HintFunctions";
 
-import { Board, ClassicBoard, DrillBoard, HintProps } from "./SudokuBoard";
+import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 
@@ -54,6 +62,7 @@ export interface SudokuVariantMethods {
     currentEntry: CellProps,
   ): boolean;
   headerRowTitle(sudokuBoard: BoardObjectProps): string;
+  headerRowHintCount(sudokuBoard: BoardObjectProps): string;
   finishSudokuGame(
     statistics: ClassicGameStatistics | DrillGameStatistics,
     variant: GameVariant,
@@ -71,11 +80,15 @@ export interface SudokuVariantMethods {
   hasResetActionButton(): boolean;
   hasEraseActionButton(): boolean;
   getInitialPuzzleState(sudokuBoard: BoardObjectProps): CellProps[][];
+  getHintPreviewBase(
+    sudokuBoard: BoardObjectProps,
+    activeHint: ActiveHintState,
+  ): CellProps[][];
   getSudokuBoardHint: (
     sudokuBoard: BoardObjectProps,
     strategyArray: SudokuStrategy[],
   ) => {
-    hint: HintProps;
+    hint: PersistedHintPayload;
     updatedBoard: BoardObjectProps;
   };
 }
@@ -95,6 +108,9 @@ const defaultMethods: SudokuVariantMethods = {
   },
   headerRowTitle(sudokuBoard: BoardObjectProps) {
     return coreHeaderRowTitle(sudokuBoard);
+  },
+  headerRowHintCount(sudokuBoard: BoardObjectProps) {
+    return coreHeaderRowHintCount(sudokuBoard as ClassicObjectProps);
   },
   finishSudokuGame(
     statistics: ClassicGameStatistics,
@@ -122,6 +138,12 @@ const defaultMethods: SudokuVariantMethods = {
     return Array.from({ length: 9 }, () =>
       Array.from({ length: 9 }, () => ({}) as CellProps),
     );
+  },
+  getHintPreviewBase(
+    sudokuBoard: ClassicObjectProps,
+    activeHint: ActiveHintState,
+  ) {
+    return activeHint.puzzleStateBeforeHint;
   },
   hasEraseActionButton(): boolean {
     return true;
@@ -154,6 +176,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
     headerRowTitle(sudokuBoard: DrillObjectProps) {
       return drillHeaderRowTitle(sudokuBoard);
     },
+    headerRowHintCount(sudokuBoard: DrillObjectProps) {
+      return drillHeaderRowHintCount(sudokuBoard);
+    },
     finishSudokuGame(
       statistics: DrillGameStatistics,
       variant: GameVariant,
@@ -176,6 +201,9 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
       return true;
     },
     getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
+      return drillGetInitialPuzzleState(sudokuBoard);
+    },
+    getHintPreviewBase(sudokuBoard: DrillObjectProps) {
       return drillGetInitialPuzzleState(sudokuBoard);
     },
     hasEraseActionButton(): boolean {
