@@ -1,38 +1,100 @@
 import { Text } from "react-native-paper";
-import { HintObjectProps } from "../../SudokuBoard";
+import { ActiveHintState } from "../../../../Functions/LocalDatabase";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
-import { Platform, Pressable, View } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 
-interface HintProps extends HintObjectProps {
+interface HintProps
+  extends Pick<ActiveHintState, "stage" | "maxStage" | "hint"> {
   incrementStage: (
-    stageOffset: number,
+    stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => void;
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
 }
 
+type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+
+interface NavButtonProps {
+  testID: string;
+  icon: IconName;
+  onPress: () => void;
+  hitSlop:
+    | number
+    | { top: number; right: number; bottom: number; left: number };
+  buttonSize: number;
+  backgroundColor: string;
+  iconColor: string;
+  iconSize: number;
+  iconStyle: object;
+  style?: object;
+}
+
+const NavButton = ({
+  testID,
+  icon,
+  onPress,
+  hitSlop,
+  buttonSize,
+  backgroundColor,
+  iconColor,
+  iconSize,
+  iconStyle,
+  style,
+}: NavButtonProps) => (
+  <Pressable
+    onPress={onPress}
+    testID={testID}
+    hitSlop={hitSlop}
+    style={[
+      {
+        width: buttonSize,
+        height: buttonSize,
+        borderRadius: buttonSize * 0.22,
+        backgroundColor,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      style,
+    ]}
+  >
+    <MaterialCommunityIcons
+      color={iconColor}
+      name={icon}
+      size={iconSize}
+      style={iconStyle}
+    />
+  </Pressable>
+);
+
 const Hint = (hintProps: HintProps) => {
   const { stage, hint, maxStage, incrementStage, finishSudokuGame } = hintProps;
 
   const cellSize = useCellSize();
+  const { height } = useWindowDimensions();
   const { theme } = useTheme();
 
-  const sizeConst = Platform.OS === "web" ? 1.5 : 1;
-  let FALLBACK_HEIGHT = 30;
-
-  const STRATEGY_FONT_SIZE = 30;
+  const FALLBACK_HEIGHT = 30;
+  const MIN_HEIGHT_FOR_SCALE = 620;
+  const MAX_HEIGHT_FOR_SCALE = 980;
+  const rawScale =
+    1 +
+    (height - MIN_HEIGHT_FOR_SCALE) /
+      (MAX_HEIGHT_FOR_SCALE - MIN_HEIGHT_FOR_SCALE);
+  const hintScale = Math.max(1, Math.min(2, rawScale));
+  const strategyFontSize = 18 * hintScale;
+  const contentFontSize = 14 * hintScale;
 
   const hintTitle = (
     <Text
       style={{
         textAlign: "center",
-        fontSize: STRATEGY_FONT_SIZE,
-        marginBottom: 10,
+        fontSize: strategyFontSize,
+        marginBottom: 2,
         color: theme.semantic.text.primary,
       }}
     >
@@ -62,7 +124,7 @@ const Hint = (hintProps: HintProps) => {
           <Text
             style={{
               textAlign: "center",
-              fontSize: 16,
+              fontSize: contentFontSize,
               color: theme.useDarkTheme
                 ? theme.semantic.text.inverse
                 : theme.semantic.text.info,
@@ -77,26 +139,28 @@ const Hint = (hintProps: HintProps) => {
 
   const hintContent = renderHintStageContent(stage);
 
-  type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
-
   interface ButtonConfig {
     testId: string;
     icon: IconName;
+    action: -1 | 0 | 1;
   }
 
   const getButtonConfigs = (
     stage: number,
     maxStage: number,
-  ): [ButtonConfig, ButtonConfig] => [
-    // left button
-    stage === 1
-      ? { testId: "hintExit", icon: "alpha-x-circle-outline" }
-      : { testId: "hintArrowLeft", icon: "arrow-left-circle-outline" },
-    // right button
-    stage === maxStage
-      ? { testId: "hintFinish", icon: "check-circle-outline" }
-      : { testId: "hintArrowRight", icon: "arrow-right-circle-outline" },
-  ];
+  ): [ButtonConfig, ButtonConfig] => {
+    const leftButton: ButtonConfig =
+      stage === 1
+        ? { testId: "hintExit", icon: "close", action: 0 }
+        : { testId: "hintArrowLeft", icon: "arrow-left", action: -1 };
+
+    const rightButton: ButtonConfig =
+      stage === maxStage
+        ? { testId: "hintFinish", icon: "check", action: 1 }
+        : { testId: "hintArrowRight", icon: "arrow-right", action: 1 };
+
+    return [leftButton, rightButton];
+  };
 
   const [leftButton, rightButton] = getButtonConfigs(stage, maxStage);
 
@@ -105,55 +169,109 @@ const Hint = (hintProps: HintProps) => {
     return baseSize * multiplier;
   };
 
+  const navButtonSize = getResponsiveSize(0.82);
+  const navButtonGap = getResponsiveSize(0.12);
+  const navIconSize = navButtonSize * 0.72;
+  const navIconColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
+  const navIconStyle = {
+    width: navButtonSize,
+    height: navButtonSize,
+    lineHeight: navButtonSize,
+    textAlign: "center" as const,
+    textAlignVertical: "center" as const,
+  };
+  const navButtonBackgroundColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const showHintExit = stage > 1;
+  const leftButtonHitSlop = showHintExit
+    ? { top: 12, right: 12, bottom: 0, left: 12 }
+    : 12;
+  const exitButtonHitSlop = { top: 0, right: 12, bottom: 12, left: 12 };
+
   return (
-    <>
-      <View
+    <View
+      style={{
+        position: "relative",
+        width: getResponsiveSize(8.8),
+        minHeight: getResponsiveSize(1),
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: getResponsiveSize(0.2),
+      }}
+    >
+      <NavButton
+        testID={leftButton.testId}
+        icon={leftButton.icon}
+        onPress={() => incrementStage(leftButton.action, finishSudokuGame)}
+        hitSlop={leftButtonHitSlop}
+        buttonSize={navButtonSize}
+        backgroundColor={navButtonBackgroundColor}
+        iconColor={navIconColor}
+        iconSize={navIconSize}
+        iconStyle={navIconStyle}
         style={{
-          flexDirection: "row",
-          width: getResponsiveSize(8),
-          justifyContent: "space-evenly",
+          position: "absolute",
+          left: 0,
+          top: getResponsiveSize(0.05),
+          zIndex: 2,
         }}
-      >
-        <Pressable
-          onPress={() => incrementStage(-1, finishSudokuGame)}
-          testID={leftButton.testId}
-        >
-          <MaterialCommunityIcons
-            color={
-              theme.useDarkTheme
-                ? theme.semantic.text.inverse
-                : theme.semantic.text.info
-            }
-            name={leftButton.icon}
-            size={cellSize / sizeConst}
-          />
-        </Pressable>
-        <Pressable
-          onPress={() => incrementStage(1, finishSudokuGame)}
-          testID={rightButton.testId}
-        >
-          <MaterialCommunityIcons
-            color={
-              theme.useDarkTheme
-                ? theme.semantic.text.inverse
-                : theme.semantic.text.info
-            }
-            name={rightButton.icon}
-            size={cellSize / sizeConst}
-          />
-        </Pressable>
-      </View>
+      />
+
+      {showHintExit && (
+        <NavButton
+          testID="hintExit"
+          icon="close"
+          onPress={() => incrementStage(0, finishSudokuGame)}
+          hitSlop={exitButtonHitSlop}
+          buttonSize={navButtonSize}
+          backgroundColor={navButtonBackgroundColor}
+          iconColor={navIconColor}
+          iconSize={navIconSize}
+          iconStyle={navIconStyle}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: getResponsiveSize(0.05) + navButtonSize + navButtonGap,
+            zIndex: 2,
+          }}
+        />
+      )}
+
       <View
+        pointerEvents="none"
         style={{
-          maxWidth: getResponsiveSize(8),
+          width: "100%",
+          minHeight: getResponsiveSize(1),
+          minWidth: 0,
+          paddingHorizontal: getResponsiveSize(1),
           alignItems: "center",
-          flexDirection: "column",
-          marginBottom: getResponsiveSize(0.25),
+          justifyContent: "flex-start",
         }}
       >
         {hintContent}
       </View>
-    </>
+
+      <NavButton
+        testID={rightButton.testId}
+        icon={rightButton.icon}
+        onPress={() => incrementStage(rightButton.action, finishSudokuGame)}
+        hitSlop={12}
+        buttonSize={navButtonSize}
+        backgroundColor={navButtonBackgroundColor}
+        iconColor={navIconColor}
+        iconSize={navIconSize}
+        iconStyle={navIconStyle}
+        style={{
+          position: "absolute",
+          right: 0,
+          top: getResponsiveSize(0.05),
+          zIndex: 2,
+        }}
+      />
+    </View>
   );
 };
 

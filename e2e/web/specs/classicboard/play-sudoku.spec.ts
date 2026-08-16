@@ -94,6 +94,7 @@ test.describe("complete game", () => {
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
+    await expect(sudokuBoard.hints).toContainText("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.endGameModalIsRendered();
@@ -180,6 +181,7 @@ test.describe("complete game", () => {
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
+    await expect(sudokuBoard.hints).toContainText("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.newGame.click();
@@ -228,9 +230,9 @@ test.describe("start game", () => {
     play,
   }) => {
     await play.getByText("Novice").click();
-    await expect(play.getByText("Difficulty: novice")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(play);
+    await expect(sudokuBoard.difficulty).toContainText("Novice");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 
   test("Clicking on button with intermediate text should start protege game in large viewport", async ({
@@ -239,9 +241,9 @@ test.describe("start game", () => {
     const viewPort = play.viewportSize();
     if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
       await play.getByText("Intermediate").click();
-      await expect(play.getByText("Difficulty: protege")).toBeInViewport({
-        ratio: 1,
-      });
+      const sudokuBoard = new SudokuBoardComponent(play);
+      await expect(sudokuBoard.difficulty).toContainText("Protege");
+      await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
     } else {
       await expect(await play.getByText("Intermediate")).not.toBeInViewport({
         ratio: 1,
@@ -258,7 +260,8 @@ test.describe("resume game", () => {
     await sudokuBoard.pause.click();
     await playPage.resumeButtonIsVisible();
     await playPage.resume.click();
-    await expect(sudokuBoard.sudokuBoard).toContainText("novice");
+    await expect(sudokuBoard.difficulty).toContainText("Novice");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 });
 
@@ -266,9 +269,9 @@ test.describe("game is saved on start", () => {
   test("Starting a game should save it to resume later", async ({ play }) => {
     const playPage = new PlayPage(play);
     await playPage.page.getByText("Amateur").click();
-    await expect(play.getByText("Difficulty: amateur")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(play);
+    await expect(sudokuBoard.difficulty).toContainText("Amateur");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
     await play.reload();
     const homePage = new HomePage(play);
     await homePage.playSudoku.click();

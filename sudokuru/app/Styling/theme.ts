@@ -116,3 +116,5 @@ export const THEME_OPTIONS: readonly ThemeOption[] = [
   { key: "light", label: "Light Mode", theme: light },
   { key: "dark", label: "Dark Mode", theme: dark },
 ];
+
+export const DEFAULT_FONT: string = "Inter_400Regular";

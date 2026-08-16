@@ -2,8 +2,8 @@ import { getHint, SudokuStrategy } from "sudokuru";
 import {
   CellProps,
   ClassicObjectProps,
+  PersistedHintPayload,
 } from "../../../../Functions/LocalDatabase";
-import { HintProps } from "../../SudokuBoard";
 import { generateBoxIndex } from "./CellFunctions";
 
 /**
@@ -19,10 +19,10 @@ export const getSudokuHint = (
   puzzle: CellProps[][],
   strategies: SudokuStrategy[],
   solution?: number[][],
-): HintProps => {
+): PersistedHintPayload => {
   const puzzleState = convertPuzzleStateToSudokuruFormat(puzzle);
 
-  let hint: HintProps;
+  let hint: PersistedHintPayload;
   if (solution) {
     const puzzleSolution = convertPuzzleSolutionToSudokuruFormat(solution);
     hint = getHint(
@@ -30,16 +30,16 @@ export const getSudokuHint = (
       puzzleState.puzzleNotes,
       strategies,
       puzzleSolution,
-    ) as unknown as HintProps;
+    ) as unknown as PersistedHintPayload;
   } else {
     hint = getHint(
       puzzleState.puzzleValues,
       puzzleState.puzzleNotes,
       strategies,
-    ) as unknown as HintProps;
+    ) as unknown as PersistedHintPayload;
   }
   hint = hintInjections(hint);
-  return hint;
+  return { ...hint, simplifyNotesAfterPlacement: false };
 };
 
 /**
@@ -49,7 +49,7 @@ export const getSudokuHint = (
  * @param hint Hint object returned from sudokuru package
  * @returns Updated Hint object
  */
-export const hintInjections = (hint: HintProps) => {
+export const hintInjections = (hint: PersistedHintPayload) => {
   if (hint.strategy === "OBVIOUS_SINGLE") {
     hint.groups.push([2, generateBoxIndex(hint.cause[0][0], hint.cause[0][1])]);
   }

@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.35.0",
+    "version": "1.36.0",
     "date": "#{date}#",
     "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
     "features": [
@@ -9,6 +9,25 @@
     ],
     "preview features": [
       "After finishing a drill, a 'New Drill' button lets the user start a new drill of the same strategy immediately."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.35.0",
+    "date": "August 15th, 2026",
+    "summary": "Redesigned the Sudoku game interface to fit more screen sizes, improved board controls and status information, and made hints easier to use.",
+    "features": [
+      "Redesigned Sudoku game interface to fit on mobile screen sizes. On short mobile screens, the navigation header is hidden while playing to provide more room for the game. Users will still be able to navigate away from the page with the pause button.",
+      "The Sudoku board header row has been re-styled and now displays number of hints used, mistakes made, and the Sudokuru logo. The Pause button has been moved to the action row located below the Sudoku board.",
+      "The action row has been re-styled. The pause button is now grouped with the other game actions on the action row.",
+      "Reorganized the number controls into two rows instead of one row. This will make it easier to select a value since the buttons are now wider.",
+      "The hint display now lets the user exit at any stage of the hint. The hint display formatting has also been restructured to fit better on smaller screens.",
+      "Hint progress is now automatically saved, so resuming a paused game that had a hint active will return the user to the same stage of the hint.",
+      "Made notes darker and easier to read on the Sudoku board."
+    ],
+    "bug fixes": [
+      "If a user paused their game or drill on the last stage of a hint for a drill, resuming the drill would show the user the completed drill without any indication that the drill had already been completed. This is fixed by having the Sudoku board remember the exact hint position to return the user to."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
