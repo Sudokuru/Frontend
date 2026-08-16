@@ -29,9 +29,7 @@ test.describe("complete game", () => {
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
     await sudokuBoard.sudokuBoardIsRendered();
-    await expect(
-      resumeClassicGame.getByText("Difficulty: novice"),
-    ).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.difficulty).toContainText("Novice");
   });
 
   test("Completing a game and clicking 'Change Difficulty' should take you to the play game page", async ({

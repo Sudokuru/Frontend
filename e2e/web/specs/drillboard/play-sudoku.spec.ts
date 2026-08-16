@@ -20,9 +20,7 @@ test.describe("complete drill", () => {
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
     await sudokuBoard.sudokuBoardIsRendered();
-    await expect(
-      resumeDrillGame.getByText("Drill: Pointing Pair"),
-    ).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.difficulty).toContainText("Pointing Pair");
   });
 
   test("Completing a drill and clicking 'Change Strategy' should take you to the drill page", async ({
