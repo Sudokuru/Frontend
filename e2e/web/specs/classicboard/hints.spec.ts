@@ -51,6 +51,7 @@ import {
 import { ProfilePage } from "../../page/profile.page";
 import { HeaderComponent } from "../../components/header.component";
 import { PlayPage } from "../../page/play.page";
+import { HomePage } from "../../page/home.page";
 import { expect } from "@playwright/test";
 
 test.describe("hint mode operates correctly", () => {
@@ -73,6 +74,96 @@ test.describe("hint mode operates correctly", () => {
     await sudokuBoard.cellIsEnabled(0, 0);
     await sudokuBoard.hint.click();
     await sudokuBoard.cellIsDisabled(0, 0);
+  });
+
+  test("exit button is visible on every hint stage", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintArrowLeft).toHaveCount(0);
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+      await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+      await expect(sudokuBoard.hintArrowLeft).toBeInViewport({ ratio: 1 });
+    }
+
+    await expect(sudokuBoard.hintFinish).toBeInViewport({ ratio: 1 });
+  });
+
+  test("exit button leaves hint mode", async ({ resumeClassicGame }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hint).toHaveCount(0);
+    await sudokuBoard.hintExit.click();
+
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+    await sudokuBoard.cellIsEnabled(0, 0);
+  });
+
+  test("exit button restores the stage five hint action", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await sudokuBoard.hintExit.click();
+
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await sudokuBoard.verifyAllCellsInBoard((row, column) =>
+      sudokuBoard.cellHasColor(row, column, NOT_HIGHLIGHTED_COLOR_RGB),
+    );
+  });
+
+  test("AMEND_NOTES stage four persists through reload and exit", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 4; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+    await resumeClassicGame.reload();
+    const homePage = new HomePage(resumeClassicGame);
+    await homePage.playSudoku.click();
+    const playPage = new PlayPage(resumeClassicGame);
+    await playPage.resume.click();
+    await sudokuBoard.sudokuBoardIsRendered();
+
+    await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintArrowLeft).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintArrowRight).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintFinish).toHaveCount(0);
+    await sudokuBoard.cellHasNotes(0, 0, "1");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+
+    await resumeClassicGame.reload();
+    await homePage.playSudoku.click();
+    await playPage.resume.click();
+    await sudokuBoard.sudokuBoardIsRendered();
+
+    await sudokuBoard.cellIsEmpty(0, 0);
+    await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
+    await expect(sudokuBoard.hintExit).toHaveCount(0);
   });
 });
 
@@ -146,6 +237,29 @@ test.describe("board AMEND_NOTES", () => {
 test.describe("board AMEND_NOTES", () => {
   test.use({ classicGametoResume: AMEND_NOTES_CORRECT_CELL_GAME });
 
+  test("undo is ignored during stage four and exit restores the pre-hint board", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cell[0][6].press("6");
+    await sudokuBoard.cell[0][6].press("8");
+    await sudokuBoard.cell[0][6].press("9");
+    await sudokuBoard.cell[0][6].press("9");
+    await sudokuBoard.cellHasNotes(0, 6, "2568");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 4; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(0, 6, "25689");
+    await sudokuBoard.page.keyboard.press("u");
+    await sudokuBoard.cellHasNotes(0, 6, "25689");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellHasNotes(0, 6, "2568");
+  });
+
   test("with correct notes and 2 groups (row and box)", async ({
     resumeClassicGame,
   }) => {
@@ -178,6 +292,29 @@ test.describe("board AMEND_NOTES", () => {
 test.describe("board AMEND_NOTES", () => {
   test.use({
     classicGametoResume: AMEND_NOTES_CORRECT_AND_INCORRECT_CELL_GAME,
+  });
+
+  test("undo is ignored during stage five and exit restores the pre-hint board", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.cell[0][8].click();
+    await sudokuBoard.cell[0][8].press("8");
+    await sudokuBoard.cell[0][8].press("9");
+    await sudokuBoard.cell[0][8].press("8");
+    await sudokuBoard.cellHasNotes(0, 8, "1249");
+    await sudokuBoard.hint.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+
+    await sudokuBoard.cellHasNotes(0, 8, "289");
+    await sudokuBoard.page.keyboard.press("u");
+    await sudokuBoard.cellHasNotes(0, 8, "289");
+
+    await sudokuBoard.hintExit.click();
+    await sudokuBoard.cellHasNotes(0, 8, "1249");
   });
 
   test("with incorrect and correct notes and 2 groups (rows)", async ({
@@ -337,6 +474,53 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
     await sudokuBoard.solveHint();
+    await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
+  });
+
+  test("resumed hint retains enabled simplify-notes behavior", async ({
+    resumeClassicGame,
+  }) => {
+    const header = new HeaderComponent(resumeClassicGame);
+    await header.profile.click();
+    const profilePage = new ProfilePage(resumeClassicGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await header.drawer.click();
+    await header.drawerPlay.click();
+    const playPage = new PlayPage(resumeClassicGame);
+    await playPage.resume.click();
+
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+    await header.profile.click();
+    await profilePage.featurePreviewSwitchEnabled.click();
+    await header.drawer.click();
+    await header.drawerPlay.click();
+    await playPage.resume.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
+    await sudokuBoard.cellHasContent(0, 5, "568", "notes");
+  });
+
+  test("resumed hint retains disabled simplify-notes behavior", async ({
+    resumeClassicGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
+    await sudokuBoard.hint.click();
+
+    const header = new HeaderComponent(resumeClassicGame);
+    await header.profile.click();
+    const profilePage = new ProfilePage(resumeClassicGame);
+    await profilePage.featurePreviewSwitchDisabled.click();
+    await header.drawer.click();
+    await header.drawerPlay.click();
+    const playPage = new PlayPage(resumeClassicGame);
+    await playPage.resume.click();
+
+    for (let stage = 2; stage <= 5; stage++) {
+      await sudokuBoard.hintArrowRight.click();
+    }
     await sudokuBoard.cellHasContent(0, 5, "1568", "notes");
   });
 });

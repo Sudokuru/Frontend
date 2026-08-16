@@ -7,6 +7,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { IconButton, Text } from "react-native-paper";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useLogo } from "../Styling/logos";
 
 const Header = () => {
   const navigation: any = useNavigation();
@@ -19,10 +20,7 @@ const Header = () => {
   const minSize = Math.min(size.width, size.height);
   const featurePreviewText = minSize >= 500 ? "Feature Preview" : "FP";
 
-  const DARK_LOGO = require("../../.assets/goldLogoText.png");
-  const LIGHT_LOGO = require("../../.assets/lightBlueLogoText.png");
-
-  const logoUrl = theme.useDarkTheme ? DARK_LOGO : LIGHT_LOGO;
+  const logoUrl = useLogo();
 
   const statisticsButton = (currentPage: string) => {
     if (currentPage !== "StatisticsPage") {

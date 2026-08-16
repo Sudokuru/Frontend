@@ -21,6 +21,7 @@ export const DARK_BACKGROUND_COLOR = "#025E73";
 export const LIGHT_BACKGROUND_COLOR = "#F2F2F2";
 export const GOLD_COLOR = "#D9A05B";
 export const PURPLE_COLOR = "#025E73";
+export const MISTAKE_COLOR = "#FF6B6B";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {

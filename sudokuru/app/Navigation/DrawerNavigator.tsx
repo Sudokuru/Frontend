@@ -16,11 +16,15 @@ import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useWindowDimensions } from "react-native";
+import { isNavHeaderVisible } from "../Functions/GameLayout";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const { theme } = useTheme();
+  const { width, height } = useWindowDimensions();
+  const shouldShowGamePageHeader = isNavHeaderVisible(width, height);
 
   return (
     <SafeAreaProvider>
@@ -44,10 +48,18 @@ const DrawerNavigator = () => {
         >
           <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
-          <Drawer.Screen name="SudokuPage" component={SudokuPage} />
+          <Drawer.Screen
+            name="SudokuPage"
+            component={SudokuPage}
+            options={{ headerShown: shouldShowGamePageHeader }}
+          />
           <Drawer.Screen name="ContactPage" component={ContactPage} />
           <Drawer.Screen name="DrillPage" component={DrillPage} />
-          <Drawer.Screen name="DrillGame" component={DrillGame} />
+          <Drawer.Screen
+            name="DrillGame"
+            component={DrillGame}
+            options={{ headerShown: shouldShowGamePageHeader }}
+          />
           <Drawer.Screen name="LearnPage" component={LearnPage} />
           {/* @ts-ignore */}
           <Drawer.Screen name="Lesson" component={Lesson} />
