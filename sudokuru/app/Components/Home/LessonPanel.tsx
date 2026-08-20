@@ -111,7 +111,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
         getSubtitle={(lesson) => getLessonDifficulty(lesson)}
         getSubtitleTestID={() => "difficulty"}
         getSubtitleColor={(lesson) =>
-          getDifficultyColor(getLessonDifficulty(lesson))
+          getDifficultyColor(getLessonDifficulty(lesson), theme.useDarkTheme)
         }
         renderImageContent={(lesson, _, shrinkage) => (
           <MaterialCommunityIcons

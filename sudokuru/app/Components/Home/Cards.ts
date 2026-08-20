@@ -1,9 +1,14 @@
 import {
   EASY_COLOR,
+  EASY_COLOR_DARK_SURFACE,
   HARD_COLOR,
+  HARD_COLOR_DARK_SURFACE,
   INTERMEDIATE_COLOR,
+  INTERMEDIATE_COLOR_DARK_SURFACE,
   VERY_EASY_COLOR,
+  VERY_EASY_COLOR_DARK_SURFACE,
   VERY_HARD_COLOR,
+  VERY_HARD_COLOR_DARK_SURFACE,
 } from "../../Styling/HighlightColors";
 
 export const CARD_WIDTH: number = 300;
@@ -56,9 +61,29 @@ export type difficulty =
   | "Very Hard";
 
 /**
- * Given a difficulty returns the corresponding color
+ * Given a difficulty returns the corresponding color.
+ * The palette is selected based on the surface the subtitle is rendered on:
+ * dark-backed themes (classic and dark) render subtitles on surfaceAlt and
+ * need the brighter palette to remain readable.
  */
-export function getDifficultyColor(difficulty: difficulty): string {
+export function getDifficultyColor(
+  difficulty: difficulty,
+  useDarkTheme: boolean,
+): string {
+  if (useDarkTheme) {
+    switch (difficulty) {
+      case "Very Easy":
+        return VERY_EASY_COLOR_DARK_SURFACE;
+      case "Easy":
+        return EASY_COLOR_DARK_SURFACE;
+      case "Intermediate":
+        return INTERMEDIATE_COLOR_DARK_SURFACE;
+      case "Hard":
+        return HARD_COLOR_DARK_SURFACE;
+      default:
+        return VERY_HARD_COLOR_DARK_SURFACE;
+    }
+  }
   switch (difficulty) {
     case "Very Easy":
       return VERY_EASY_COLOR;
