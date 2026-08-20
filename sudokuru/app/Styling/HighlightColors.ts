@@ -21,7 +21,7 @@ export const VERY_HARD_COLOR = "#EE0000";
 // Difficulty colors tuned for dark card surfaces (classic and dark themes)
 export const VERY_EASY_COLOR_DARK_SURFACE = "#4CBB17";
 export const EASY_COLOR_DARK_SURFACE = "#7CFC00";
-export const INTERMEDIATE_COLOR_DARK_SURFACE = "#D4A017";
+export const INTERMEDIATE_COLOR_DARK_SURFACE = "#FFD700";
 export const HARD_COLOR_DARK_SURFACE = "#FFA500";
 export const VERY_HARD_COLOR_DARK_SURFACE = "#FF0000";
 
