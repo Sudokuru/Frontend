@@ -28,7 +28,9 @@ export class AboutUsPage {
       this.page.waitForEvent("popup"),
       this.page.getByTestId("button-" + name).click(),
     ]);
-    expect(newPage.url()).toContain(url);
+    await expect(newPage).toHaveURL((actualUrl) =>
+      actualUrl.href.includes(url),
+    );
   }
 
   async mediaButtonsWork() {
