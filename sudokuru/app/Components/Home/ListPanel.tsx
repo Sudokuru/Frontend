@@ -67,6 +67,9 @@ interface RenderCardBodyArgs {
 
 function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
   const { shrinkage, content, theme } = args;
+  const cardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
   const {
     title,
     titleTestID,
@@ -106,7 +109,7 @@ function renderCardBody(args: RenderCardBodyArgs): React.ReactNode {
         testID={titleTestID}
         style={{
           alignSelf: "center",
-          color: theme.semantic.text.inverse,
+          color: cardTextColor,
         }}
       >
         {title}
@@ -144,6 +147,9 @@ const ListPanel = <T,>({
   renderCompactContent,
 }: ListPanelProps<T>) => {
   const { theme } = useTheme();
+  const listCardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
 
   const listButtonArray: { rowKey: string; elements: React.ReactNode[] }[] = [];
   let subArray: React.ReactNode[] = [];
@@ -204,7 +210,7 @@ const ListPanel = <T,>({
             mode="outlined"
             theme={{
               colors: {
-                surface: theme.colors.surfaceAlt,
+                surface: listCardSurfaceColor,
               },
             }}
           >

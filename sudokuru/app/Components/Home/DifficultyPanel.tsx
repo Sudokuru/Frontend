@@ -1,6 +1,7 @@
 import { ImageURISource } from "react-native";
 import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
+import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
 
 const difficulties: string[] = [
@@ -85,6 +86,7 @@ function getDifficultyCardData(level: string): {
 }
 
 const DifficultyPanel = (props: DifficultyPanelProps) => {
+  const { theme } = useTheme();
   return (
     <ListPanel
       width={props.width}
@@ -96,7 +98,10 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
       getSubtitle={(level) => getDifficultyCardData(level).description}
       getSubtitleTestID={(level) => `${level}Description`}
       getSubtitleColor={(level) =>
-        getDifficultyColor(getDifficultyCardData(level).description)
+        getDifficultyColor(
+          getDifficultyCardData(level).description,
+          theme.useDarkTheme,
+        )
       }
       getCardImage={(level) => getDifficultyCardData(level).image}
       getImageAccessibilityLabel={(level) => getDifficultyCardData(level).alt}

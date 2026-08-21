@@ -44,6 +44,9 @@ interface LessonPanelProps {
 
 const LessonPanel = ({ width, height }: LessonPanelProps) => {
   const { theme } = useTheme();
+  const cardTitleColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
 
   const navigation: any = useNavigation();
 
@@ -83,7 +86,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
 
   function getLessonIconColor(lesson: string): string {
     if (learnedLessons.includes(lesson)) return "green";
-    if (lockedLessons.includes(lesson)) return theme.semantic.text.inverse;
+    if (lockedLessons.includes(lesson)) return cardTitleColor;
     return theme.semantic.text.primary;
   }
 
@@ -108,7 +111,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
         getSubtitle={(lesson) => getLessonDifficulty(lesson)}
         getSubtitleTestID={() => "difficulty"}
         getSubtitleColor={(lesson) =>
-          getDifficultyColor(getLessonDifficulty(lesson))
+          getDifficultyColor(getLessonDifficulty(lesson), theme.useDarkTheme)
         }
         renderImageContent={(lesson, _, shrinkage) => (
           <MaterialCommunityIcons
@@ -148,7 +151,7 @@ const LessonPanel = ({ width, height }: LessonPanelProps) => {
               style={{
                 flex: 1,
                 textAlign: "center",
-                color: theme.semantic.text.inverse,
+                color: cardTitleColor,
               }}
             >
               {formatOneLessonName(lesson)}

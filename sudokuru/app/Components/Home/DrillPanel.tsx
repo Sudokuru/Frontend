@@ -13,6 +13,7 @@ import {
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import { getGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
+import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
 
 function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
@@ -85,6 +86,7 @@ interface DrillCardItem {
 
 const DrillPanel = ({ width, height }: DrillPanelProps) => {
   const navigation: any = useNavigation();
+  const { theme } = useTheme();
 
   const [visible, setVisible] = React.useState(false);
 
@@ -163,7 +165,9 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
         getTestID={(item) => item.strategy}
         getTitle={(item) => toTitle(item.strategy)}
         getSubtitle={(item) => item.difficulty}
-        getSubtitleColor={(item) => getDifficultyColor(item.difficulty)}
+        getSubtitleColor={(item) =>
+          getDifficultyColor(item.difficulty, theme.useDarkTheme)
+        }
         getCardImage={(item) => getDrillDifficultyImage(item.difficulty)}
         onPress={(item) => {
           showTutorialIfNotDismissed().then(() => {
