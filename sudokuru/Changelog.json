@@ -1,7 +1,20 @@
 [
   {
-    "version": "1.35.0",
+    "version": "1.35.1",
     "date": "#{date}#",
+    "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
+    "bug fixes": [
+      "Lesson, difficulty, and release note cards now use theme aware colors that display correctly in light mode."
+    ],
+    "preview features": [
+      "Drill cards now use theme aware colors that display correctly in light mode."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.35.0",
+    "date": "August 15th, 2026",
     "summary": "Redesigned the Sudoku game interface to fit more screen sizes, improved board controls and status information, and made hints easier to use.",
     "features": [
       "Redesigned Sudoku game interface to fit on mobile screen sizes. On short mobile screens, the navigation header is hidden while playing to provide more room for the game. Users will still be able to navigate away from the page with the pause button.",
