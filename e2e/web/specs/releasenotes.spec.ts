@@ -1,9 +1,16 @@
-import { ReleaseNotesPage } from "./../page/releasenotes.page";
+import {
+  INITIAL_RELEASE_NOTES_COUNT,
+  ReleaseNotesPage,
+} from "./../page/releasenotes.page";
 import { test } from "../fixture";
 import { expect } from "@playwright/test";
 import json from "../../../sudokuru/Changelog.json";
 import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
 const releaseNotes: ReleaseNoteInterface[] = json;
+const initiallyRenderedReleaseNotes = releaseNotes.slice(
+  0,
+  INITIAL_RELEASE_NOTES_COUNT,
+);
 
 test.describe("release notes", () => {
   test("first release note renders", async ({ page }) => {
@@ -164,9 +171,10 @@ test.describe("release note filters", () => {
     await releaseNotesPage.firstReleaseNoteIsRendered(
       allFilterMatches[0].version,
     );
-    const nonMatchingRelease = releaseNotes.find(
+    const nonMatchingRelease = initiallyRenderedReleaseNotes.find(
       (note) => !allFilterMatches.includes(note),
     );
+    expect(nonMatchingRelease).toBeDefined();
     if (nonMatchingRelease) {
       await releaseNotesPage.releaseNoteIsNotRendered(
         nonMatchingRelease.version,
@@ -210,13 +218,14 @@ test.describe("release note filters", () => {
     await releaseNotesPage.firstReleaseNoteIsRendered(
       expectedReleases[0].version,
     );
-    const outOfRangeRelease = releaseNotes.find((note) => {
+    const outOfRangeRelease = initiallyRenderedReleaseNotes.find((note) => {
       const releaseDate = releaseNotesPage.parseChangelogDate(note.date);
       return (
         !Number.isNaN(releaseDate.getTime()) &&
         (releaseDate < startDate || releaseDate > endDate)
       );
     });
+    expect(outOfRangeRelease).toBeDefined();
     if (outOfRangeRelease) {
       await releaseNotesPage.releaseNoteIsNotRendered(
         outOfRangeRelease.version,

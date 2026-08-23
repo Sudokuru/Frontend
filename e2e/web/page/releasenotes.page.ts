@@ -3,6 +3,8 @@ import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNo
 import { parseChangelogDate } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNoteFunctions";
 import { HeaderComponent } from "../components/header.component";
 
+export const INITIAL_RELEASE_NOTES_COUNT = 9;
+
 export class ReleaseNotesPage {
   readonly page: Page;
   readonly title: Locator;
@@ -220,17 +222,17 @@ export class ReleaseNotesPage {
     version: string,
   ) {
     let index = 0;
-    const LOADED_RELEASE_NOTES = 9;
     for (const [key, note] of notes.entries()) {
       if (note.version === version) {
         index = key;
       }
     }
-    const numberOfLoads = Math.ceil(index / LOADED_RELEASE_NOTES);
+    const numberOfLoads = Math.ceil(index / INITIAL_RELEASE_NOTES_COUNT);
 
     for (let i = 0; i < numberOfLoads; i++) {
       const loaderLocator = this.page.getByTestId(
-        notes[LOADED_RELEASE_NOTES + LOADED_RELEASE_NOTES * i].version,
+        notes[INITIAL_RELEASE_NOTES_COUNT + INITIAL_RELEASE_NOTES_COUNT * i]
+          .version,
       );
       await loaderLocator.scrollIntoViewIfNeeded();
     }
