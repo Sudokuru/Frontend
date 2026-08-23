@@ -140,6 +140,11 @@ export const ReleaseNotesFilter = ({
       : theme.colors.surface,
   };
 
+  const selectionMenuMaxWidth = Math.max(
+    200,
+    Math.min(280, componentWidth - 120),
+  );
+
   const dateSelectorButtonProps = {
     mode: "outlined" as const,
     buttonColor: theme.colors.surfaceAlt,
@@ -242,6 +247,7 @@ export const ReleaseNotesFilter = ({
     >
       {/* Keyword search */}
       <Searchbar
+        testID="ReleaseNotesSearch"
         placeholder="Search release notes…"
         value={keyword}
         onChangeText={setKeyword}
@@ -270,6 +276,7 @@ export const ReleaseNotesFilter = ({
             anchor={
               <View style={filterButtonContainerStyle}>
                 <Button
+                  testID="ReleaseNotesTargetsFilterButton"
                   {...filterButtonProps(selectedTargets.size > 0)}
                   compact
                   onPress={() => setOpenMenu("targets")}
@@ -280,6 +287,7 @@ export const ReleaseNotesFilter = ({
             }
           >
             <View
+              testID="ReleaseNotesTargetsFilterMenu"
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -303,6 +311,7 @@ export const ReleaseNotesFilter = ({
                   Targets
                 </Text>
                 <IconButton
+                  testID="ReleaseNotesTargetsFilterCloseButton"
                   icon="close"
                   size={16}
                   onPress={() => setOpenMenu(null)}
@@ -312,6 +321,7 @@ export const ReleaseNotesFilter = ({
               </View>
               {ALL_TARGETS.map((target) => (
                 <Chip
+                  testID={`ReleaseNotesTargetOption-${target}`}
                   key={target}
                   selected={selectedTargets.has(target)}
                   onPress={() =>
@@ -333,6 +343,7 @@ export const ReleaseNotesFilter = ({
             anchor={
               <View style={filterButtonContainerStyle}>
                 <Button
+                  testID="ReleaseNotesCategoriesFilterButton"
                   {...filterButtonProps(selectedCategories.size > 0)}
                   compact
                   onPress={() => setOpenMenu("categories")}
@@ -343,12 +354,13 @@ export const ReleaseNotesFilter = ({
             }
           >
             <View
+              testID="ReleaseNotesCategoriesFilterMenu"
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 8,
                 padding: 10,
-                maxWidth: 320,
+                maxWidth: selectionMenuMaxWidth,
               }}
             >
               <View
@@ -366,6 +378,7 @@ export const ReleaseNotesFilter = ({
                   Categories
                 </Text>
                 <IconButton
+                  testID="ReleaseNotesCategoriesFilterCloseButton"
                   icon="close"
                   size={16}
                   onPress={() => setOpenMenu(null)}
@@ -375,6 +388,7 @@ export const ReleaseNotesFilter = ({
               </View>
               {ALL_CATEGORIES.map((cat) => (
                 <Chip
+                  testID={`ReleaseNotesCategoryOption-${cat}`}
                   key={cat}
                   selected={selectedCategories.has(cat)}
                   onPress={() =>
@@ -396,6 +410,7 @@ export const ReleaseNotesFilter = ({
             anchor={
               <View style={filterButtonContainerStyle}>
                 <Button
+                  testID="ReleaseNotesContributorsFilterButton"
                   {...filterButtonProps(selectedContributors.size > 0)}
                   compact
                   onPress={() => setOpenMenu("contributors")}
@@ -406,12 +421,13 @@ export const ReleaseNotesFilter = ({
             }
           >
             <View
+              testID="ReleaseNotesContributorsFilterMenu"
               style={{
                 flexDirection: "row",
                 flexWrap: "wrap",
                 gap: 8,
                 padding: 10,
-                maxWidth: 340,
+                maxWidth: selectionMenuMaxWidth,
               }}
             >
               <View
@@ -429,6 +445,7 @@ export const ReleaseNotesFilter = ({
                   Contributors
                 </Text>
                 <IconButton
+                  testID="ReleaseNotesContributorsFilterCloseButton"
                   icon="close"
                   size={16}
                   onPress={() => setOpenMenu(null)}
@@ -438,6 +455,7 @@ export const ReleaseNotesFilter = ({
               </View>
               {allContributors.map((contributor) => (
                 <Chip
+                  testID={`ReleaseNotesContributorOption-${contributor}`}
                   key={contributor}
                   selected={selectedContributors.has(contributor)}
                   onPress={() =>
@@ -461,6 +479,7 @@ export const ReleaseNotesFilter = ({
             anchor={
               <View style={filterButtonContainerStyle}>
                 <Button
+                  testID="ReleaseNotesStartDateFilterButton"
                   {...filterButtonProps(selectedStartMonth != null)}
                   compact
                   onPress={openStartDateMenu}
@@ -472,7 +491,10 @@ export const ReleaseNotesFilter = ({
               </View>
             }
           >
-            <View style={{ width: 260 }}>
+            <View
+              testID="ReleaseNotesStartDateFilterMenu"
+              style={{ width: 260 }}
+            >
               <View
                 style={{
                   width: "100%",
@@ -489,6 +511,7 @@ export const ReleaseNotesFilter = ({
                   Start Date
                 </Text>
                 <IconButton
+                  testID="ReleaseNotesStartDateFilterCloseButton"
                   icon="close"
                   size={16}
                   onPress={() => setOpenDateMenu(null)}
@@ -517,6 +540,7 @@ export const ReleaseNotesFilter = ({
                     contentStyle={menuContentStyle}
                     anchor={
                       <Button
+                        testID="ReleaseNotesStartYearButton"
                         {...dateSelectorButtonProps}
                         compact
                         onPress={() => setStartYearMenuOpen(true)}
@@ -528,6 +552,7 @@ export const ReleaseNotesFilter = ({
                     <ScrollView style={{ maxHeight: 180 }}>
                       {availableYears.map((year) => (
                         <Menu.Item
+                          testID={`ReleaseNotesStartYearOption-${year}`}
                           key={`start-year-${year}`}
                           title={String(year)}
                           dense
@@ -558,6 +583,7 @@ export const ReleaseNotesFilter = ({
                     contentStyle={menuContentStyle}
                     anchor={
                       <Button
+                        testID="ReleaseNotesStartMonthButton"
                         {...dateSelectorButtonProps}
                         compact
                         onPress={() => setStartMonthMenuOpen(true)}
@@ -569,6 +595,7 @@ export const ReleaseNotesFilter = ({
                     <ScrollView style={{ maxHeight: 180 }}>
                       {monthsForYear(startDraftYear).map((month) => (
                         <Menu.Item
+                          testID={`ReleaseNotesStartMonthOption-${month}`}
                           key={`start-month-${month}`}
                           title={month}
                           dense
@@ -597,6 +624,7 @@ export const ReleaseNotesFilter = ({
             anchor={
               <View style={filterButtonContainerStyle}>
                 <Button
+                  testID="ReleaseNotesEndDateFilterButton"
                   {...filterButtonProps(selectedEndMonth != null)}
                   compact
                   onPress={openEndDateMenu}
@@ -608,7 +636,7 @@ export const ReleaseNotesFilter = ({
               </View>
             }
           >
-            <View style={{ width: 260 }}>
+            <View testID="ReleaseNotesEndDateFilterMenu" style={{ width: 260 }}>
               <View
                 style={{
                   width: "100%",
@@ -625,6 +653,7 @@ export const ReleaseNotesFilter = ({
                   End Date
                 </Text>
                 <IconButton
+                  testID="ReleaseNotesEndDateFilterCloseButton"
                   icon="close"
                   size={16}
                   onPress={() => setOpenDateMenu(null)}
@@ -653,6 +682,7 @@ export const ReleaseNotesFilter = ({
                     contentStyle={menuContentStyle}
                     anchor={
                       <Button
+                        testID="ReleaseNotesEndYearButton"
                         {...dateSelectorButtonProps}
                         compact
                         onPress={() => setEndYearMenuOpen(true)}
@@ -664,6 +694,7 @@ export const ReleaseNotesFilter = ({
                     <ScrollView style={{ maxHeight: 180 }}>
                       {availableYears.map((year) => (
                         <Menu.Item
+                          testID={`ReleaseNotesEndYearOption-${year}`}
                           key={`end-year-${year}`}
                           title={String(year)}
                           dense
@@ -694,6 +725,7 @@ export const ReleaseNotesFilter = ({
                     contentStyle={menuContentStyle}
                     anchor={
                       <Button
+                        testID="ReleaseNotesEndMonthButton"
                         {...dateSelectorButtonProps}
                         compact
                         onPress={() => setEndMonthMenuOpen(true)}
@@ -705,6 +737,7 @@ export const ReleaseNotesFilter = ({
                     <ScrollView style={{ maxHeight: 180 }}>
                       {monthsForYear(endDraftYear).map((month) => (
                         <Menu.Item
+                          testID={`ReleaseNotesEndMonthOption-${month}`}
                           key={`end-month-${month}`}
                           title={month}
                           dense
@@ -732,6 +765,7 @@ export const ReleaseNotesFilter = ({
         >
           {hasActiveFilters && (
             <Button
+              testID="ReleaseNotesClearFiltersButton"
               mode="text"
               compact
               onPress={onClearAll}
@@ -741,6 +775,7 @@ export const ReleaseNotesFilter = ({
             </Button>
           )}
           <Text
+            testID="ReleaseNotesResultCount"
             style={{
               color: theme.colors.primary,
               fontSize: 13,
