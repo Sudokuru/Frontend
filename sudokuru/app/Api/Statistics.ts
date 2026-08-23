@@ -6,13 +6,15 @@ import { StatisticsSchema } from "../Functions/LocalDatabase";
  * retrieves the user's learned lessons
  * @returns promise of puzzle JSON object
  */
-export const getLearnedLessons = async (): Promise<JSON> => {
+export const getLearnedLessons = async (): Promise<string[]> => {
   const value = await getKeyJSON("learned_lessons");
-  if (!value) {
-    return JSON.parse(JSON.stringify(["NONE"]));
-  } else {
-    return value;
+  if (
+    !Array.isArray(value) ||
+    !value.every((lesson): lesson is string => typeof lesson === "string")
+  ) {
+    return ["NONE"];
   }
+  return value;
 };
 
 /**

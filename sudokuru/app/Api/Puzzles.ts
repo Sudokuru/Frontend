@@ -14,12 +14,31 @@ import { SudokuStrategy } from "sudokuru";
  * Given the sudoku game variant - retrieves the users active game or returns null if the user doesn't have an active game
  * @returns promise of activeGame JSON object
  */
-export const getGame = (variant: GameVariant): Promise<BoardObjectProps[]> => {
+export const getGame = async (
+  variant: GameVariant,
+): Promise<BoardObjectProps[] | null> => {
   if (variant === "classic") {
-    return getKeyJSON(`active_${variant}_game`, SudokuBoardActiveGameSchema);
+    return (
+      (await getKeyJSON(
+        `active_${variant}_game`,
+        SudokuBoardActiveGameSchema,
+      )) ?? null
+    );
   } else {
-    return getKeyJSON(`active_${variant}_game`, SudokuBoardDrillGameSchema);
+    return (
+      (await getKeyJSON(
+        `active_${variant}_game`,
+        SudokuBoardDrillGameSchema,
+      )) ?? null
+    );
   }
+};
+
+export const getActiveGame = async (
+  variant: GameVariant,
+): Promise<BoardObjectProps | null> => {
+  const games = await getGame(variant);
+  return games?.[0] ?? null;
 };
 
 /**

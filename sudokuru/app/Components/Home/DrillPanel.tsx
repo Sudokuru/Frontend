@@ -10,8 +10,7 @@ import {
   removeData,
   storeData,
 } from "../../Functions/AsyncStorage";
-import { BoardObjectProps } from "../../Functions/LocalDatabase";
-import { getGame } from "../../Api/Puzzles";
+import { getActiveGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
@@ -101,7 +100,7 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
 
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
-    const game: BoardObjectProps[] = await getGame("drill");
+    const game = await getActiveGame("drill");
     if (game != null) {
       showResumeButton();
       return true;

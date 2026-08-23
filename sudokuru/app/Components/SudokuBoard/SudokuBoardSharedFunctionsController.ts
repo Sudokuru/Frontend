@@ -28,6 +28,7 @@ import {
   headerRowTitle as drillHeaderRowTitle,
 } from "./Drill/Functions/HeaderRowFunctions";
 import {
+  formatTime,
   finishSudokuGame as coreFinishGameStatistics,
   handlePause as coreHandlePause,
 } from "./Core/Functions/BoardFunctions";
@@ -45,9 +46,189 @@ import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameMod
 import { getSudokuBoardHint as coreGetSudokuBoardHint } from "./Core/Functions/HintFunctions";
 import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions/HintFunctions";
 
-import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
+import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
+import { toTitle } from "../../Functions/Utils";
+
+export interface DashboardNavigationAction {
+  screen: string;
+  currentPage: string;
+  params?: Record<string, string>;
+}
+
+export type HomeDashboardIcon =
+  | "grid"
+  | "image-filter-center-focus"
+  | "school-outline"
+  | "target";
+
+export interface HomeDashboardCardDescriptor {
+  id: string;
+  title: string;
+  description: string;
+  icon: HomeDashboardIcon;
+  testID: string;
+  badge?: string;
+  status: "available" | "comingSoon";
+  action?: DashboardNavigationAction;
+}
+
+export interface HomeResumeDescriptor {
+  id: string;
+  title: string;
+  description: string;
+  metadata: string;
+  icon: HomeDashboardIcon;
+  testID: string;
+  category: "play" | "practice";
+  action: DashboardNavigationAction;
+}
+
+export interface HomeDashboardFlags {
+  featurePreview: boolean;
+  drillMode: boolean;
+}
+
+export interface HomeDashboardConfig {
+  variants: HomeDashboardCardDescriptor[];
+  skills: HomeDashboardCardDescriptor[];
+  activeGameVariants: BoardObjectProps["variant"][];
+}
+
+export interface HomeHeroAction {
+  label: string;
+  action: DashboardNavigationAction;
+}
+
+export const getHomeDashboardConfig = (
+  flags: HomeDashboardFlags,
+  completedLessons: number,
+  totalLessons: number,
+): HomeDashboardConfig => {
+  const drillAvailable = flags.featurePreview && flags.drillMode;
+  const skills: HomeDashboardCardDescriptor[] = [
+    {
+      id: "learn",
+      title: "Learn Sudoku",
+      description: `${completedLessons} of ${totalLessons} lessons complete`,
+      icon: "school-outline",
+      testID: "HomeLearnButton",
+      status: "available",
+      action: {
+        screen: "LearnPage",
+        currentPage: "LearnPage",
+      },
+    },
+  ];
+
+  if (drillAvailable) {
+    skills.push({
+      id: "drill",
+      title: "Practice a Strategy",
+      description: "Build confidence with focused, hands-on drills.",
+      icon: "target",
+      testID: "HomeDrillButton",
+      badge: "Preview",
+      status: "available",
+      action: {
+        screen: "DrillPage",
+        currentPage: "DrillPage",
+      },
+    });
+  }
+
+  return {
+    variants: [
+      {
+        id: "classic",
+        title: "Classic Sudoku",
+        description: "Choose from nine levels and solve at your own pace.",
+        icon: "grid",
+        testID: "HomePlayButton",
+        status: "available",
+        action: {
+          screen: "PlayPage",
+          currentPage: "PlayPage",
+        },
+      },
+      {
+        id: "focus",
+        title: "Focus Sudoku",
+        description: "Sudoku with the next region focused for fast play.",
+        icon: "image-filter-center-focus",
+        testID: "HomeFocusVariantCard",
+        badge: "Coming soon",
+        status: "comingSoon",
+      },
+    ],
+    skills,
+    activeGameVariants: drillAvailable ? ["classic", "drill"] : ["classic"],
+  };
+};
+
+export const getHomeResumeDescriptor = (
+  game: BoardObjectProps,
+): HomeResumeDescriptor => {
+  switch (game.variant) {
+    case "classic":
+      return {
+        id: "classic",
+        title: "Classic Sudoku",
+        description: `${toTitle(game.statistics.difficulty)} puzzle`,
+        metadata: formatTime(game.statistics.time),
+        icon: "grid",
+        testID: "HomeResumeClassicButton",
+        category: "play",
+        action: {
+          screen: "SudokuPage",
+          currentPage: "SudokuPage",
+          params: { action: "ResumeGame" },
+        },
+      };
+    case "drill":
+      return {
+        id: "drill",
+        title: "Strategy Drill",
+        description: `${toTitle(game.statistics.difficulty)} practice`,
+        metadata: formatTime(game.statistics.time),
+        icon: "target",
+        testID: "HomeResumeDrillButton",
+        category: "practice",
+        action: {
+          screen: "DrillGame",
+          currentPage: "DrillGame",
+          params: { action: "ResumeGame" },
+        },
+      };
+  }
+};
+
+export const getHomeHeroAction = (
+  resumes: HomeResumeDescriptor[],
+  variants: HomeDashboardCardDescriptor[],
+): HomeHeroAction => {
+  const playableResumes = resumes.filter((item) => item.category === "play");
+  if (playableResumes.length === 1) {
+    return {
+      label: `Resume ${playableResumes[0].title}`,
+      action: playableResumes[0].action,
+    };
+  }
+
+  const firstAvailableVariant = variants.find(
+    (variant) => variant.status === "available" && variant.action,
+  );
+  return {
+    label: firstAvailableVariant
+      ? `Play ${firstAvailableVariant.title}`
+      : "Explore Sudoku",
+    action: firstAvailableVariant?.action ?? {
+      screen: "HomePage",
+      currentPage: "HomePage",
+    },
+  };
+};
 
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
