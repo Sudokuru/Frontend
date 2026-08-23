@@ -122,12 +122,42 @@ export const ReleaseNotesFilter = ({
   const filterButtonLabel = (label: string, count: number) =>
     count > 0 ? `${label} (${count})` : label;
 
+  const filterButtonProps = (selected: boolean) => ({
+    mode: selected ? ("contained" as const) : ("outlined" as const),
+    buttonColor: selected ? theme.colors.primary : undefined,
+    textColor: selected ? theme.semantic.text.inverse : theme.colors.primary,
+  });
+
+  const filterButtonContainerStyle = {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    marginRight: 6,
+  };
+
+  const menuContentStyle = {
+    backgroundColor: theme.useDarkTheme
+      ? theme.colors.surfaceAlt
+      : theme.colors.surface,
+  };
+
+  const dateSelectorButtonProps = {
+    mode: "outlined" as const,
+    buttonColor: theme.colors.surfaceAlt,
+    textColor: theme.semantic.text.inverse,
+    style: {
+      alignSelf: "flex-start" as const,
+      marginBottom: 8,
+    },
+  };
+
   const chipProps = (selected: boolean) => ({
+    mode: selected ? ("flat" as const) : ("outlined" as const),
     selectedColor: theme.semantic.text.inverse,
     style: {
       backgroundColor: selected
         ? theme.colors.primary
         : theme.colors.surfaceAlt,
+      borderColor: theme.colors.border,
     },
     textStyle: { color: theme.semantic.text.inverse },
   });
@@ -143,12 +173,6 @@ export const ReleaseNotesFilter = ({
       (pair) =>
         !Number.isNaN(pair.year) &&
         MONTH_NAMES.includes(pair.month as (typeof MONTH_NAMES)[number]),
-    );
-
-  const sortedMonthOptions = releaseMonthYearPairs
-    .map((pair) => `${pair.month} ${pair.year}`)
-    .sort(
-      (a, b) => new Date(`${b} 1`).getTime() - new Date(`${a} 1`).getTime(),
     );
 
   const availableYears = Array.from(
@@ -242,27 +266,13 @@ export const ReleaseNotesFilter = ({
           <Menu
             visible={openMenu === "targets"}
             onDismiss={() => setOpenMenu(null)}
-            contentStyle={{ backgroundColor: theme.colors.surface }}
+            contentStyle={menuContentStyle}
             anchor={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginRight: 6,
-                }}
-              >
+              <View style={filterButtonContainerStyle}>
                 <Button
-                  mode={selectedTargets.size > 0 ? "contained" : "outlined"}
+                  {...filterButtonProps(selectedTargets.size > 0)}
                   compact
                   onPress={() => setOpenMenu("targets")}
-                  buttonColor={
-                    selectedTargets.size > 0 ? theme.colors.primary : undefined
-                  }
-                  textColor={
-                    selectedTargets.size > 0
-                      ? theme.semantic.text.secondary
-                      : theme.colors.primary
-                  }
                 >
                   {filterButtonLabel("Targets", selectedTargets.size)}
                 </Button>
@@ -319,29 +329,13 @@ export const ReleaseNotesFilter = ({
           <Menu
             visible={openMenu === "categories"}
             onDismiss={() => setOpenMenu(null)}
-            contentStyle={{ backgroundColor: theme.colors.surface }}
+            contentStyle={menuContentStyle}
             anchor={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginRight: 6,
-                }}
-              >
+              <View style={filterButtonContainerStyle}>
                 <Button
-                  mode={selectedCategories.size > 0 ? "contained" : "outlined"}
+                  {...filterButtonProps(selectedCategories.size > 0)}
                   compact
                   onPress={() => setOpenMenu("categories")}
-                  buttonColor={
-                    selectedCategories.size > 0
-                      ? theme.colors.primary
-                      : undefined
-                  }
-                  textColor={
-                    selectedCategories.size > 0
-                      ? theme.semantic.text.secondary
-                      : theme.colors.primary
-                  }
                 >
                   {filterButtonLabel("Categories", selectedCategories.size)}
                 </Button>
@@ -398,31 +392,13 @@ export const ReleaseNotesFilter = ({
           <Menu
             visible={openMenu === "contributors"}
             onDismiss={() => setOpenMenu(null)}
-            contentStyle={{ backgroundColor: theme.colors.surface }}
+            contentStyle={menuContentStyle}
             anchor={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginRight: 6,
-                }}
-              >
+              <View style={filterButtonContainerStyle}>
                 <Button
-                  mode={
-                    selectedContributors.size > 0 ? "contained" : "outlined"
-                  }
+                  {...filterButtonProps(selectedContributors.size > 0)}
                   compact
                   onPress={() => setOpenMenu("contributors")}
-                  buttonColor={
-                    selectedContributors.size > 0
-                      ? theme.colors.primary
-                      : undefined
-                  }
-                  textColor={
-                    selectedContributors.size > 0
-                      ? theme.semantic.text.secondary
-                      : theme.colors.primary
-                  }
                 >
                   {filterButtonLabel("Contributors", selectedContributors.size)}
                 </Button>
@@ -481,29 +457,13 @@ export const ReleaseNotesFilter = ({
           <Menu
             visible={openDateMenu === "startDate"}
             onDismiss={() => setOpenDateMenu(null)}
-            contentStyle={{ backgroundColor: theme.colors.surface }}
+            contentStyle={menuContentStyle}
             anchor={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginRight: 6,
-                }}
-              >
+              <View style={filterButtonContainerStyle}>
                 <Button
-                  mode={selectedStartMonth != null ? "contained" : "outlined"}
+                  {...filterButtonProps(selectedStartMonth != null)}
                   compact
                   onPress={openStartDateMenu}
-                  buttonColor={
-                    selectedStartMonth != null
-                      ? theme.colors.primary
-                      : undefined
-                  }
-                  textColor={
-                    selectedStartMonth != null
-                      ? theme.semantic.text.secondary
-                      : theme.colors.primary
-                  }
                 >
                   {selectedStartMonth
                     ? `Start Date: ${selectedStartMonth}`
@@ -554,14 +514,12 @@ export const ReleaseNotesFilter = ({
                   <Menu
                     visible={startYearMenuOpen}
                     onDismiss={() => setStartYearMenuOpen(false)}
-                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    contentStyle={menuContentStyle}
                     anchor={
                       <Button
-                        mode="outlined"
+                        {...dateSelectorButtonProps}
                         compact
                         onPress={() => setStartYearMenuOpen(true)}
-                        textColor={theme.colors.primary}
-                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
                       >
                         {String(startDraftYear)}
                       </Button>
@@ -597,14 +555,12 @@ export const ReleaseNotesFilter = ({
                   <Menu
                     visible={startMonthMenuOpen}
                     onDismiss={() => setStartMonthMenuOpen(false)}
-                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    contentStyle={menuContentStyle}
                     anchor={
                       <Button
-                        mode="outlined"
+                        {...dateSelectorButtonProps}
                         compact
                         onPress={() => setStartMonthMenuOpen(true)}
-                        textColor={theme.colors.primary}
-                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
                       >
                         {startDraftMonth}
                       </Button>
@@ -637,27 +593,13 @@ export const ReleaseNotesFilter = ({
           <Menu
             visible={openDateMenu === "endDate"}
             onDismiss={() => setOpenDateMenu(null)}
-            contentStyle={{ backgroundColor: theme.colors.surface }}
+            contentStyle={menuContentStyle}
             anchor={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginRight: 6,
-                }}
-              >
+              <View style={filterButtonContainerStyle}>
                 <Button
-                  mode={selectedEndMonth != null ? "contained" : "outlined"}
+                  {...filterButtonProps(selectedEndMonth != null)}
                   compact
                   onPress={openEndDateMenu}
-                  buttonColor={
-                    selectedEndMonth != null ? theme.colors.primary : undefined
-                  }
-                  textColor={
-                    selectedEndMonth != null
-                      ? theme.semantic.text.secondary
-                      : theme.colors.primary
-                  }
                 >
                   {selectedEndMonth
                     ? `End Date: ${selectedEndMonth}`
@@ -696,7 +638,7 @@ export const ReleaseNotesFilter = ({
                   flexDirection: "row",
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
-                  gap: 6,
+                  gap: 8,
                 }}
               >
                 <View>
@@ -708,14 +650,12 @@ export const ReleaseNotesFilter = ({
                   <Menu
                     visible={endYearMenuOpen}
                     onDismiss={() => setEndYearMenuOpen(false)}
-                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    contentStyle={menuContentStyle}
                     anchor={
                       <Button
-                        mode="outlined"
+                        {...dateSelectorButtonProps}
                         compact
                         onPress={() => setEndYearMenuOpen(true)}
-                        textColor={theme.colors.primary}
-                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
                       >
                         {String(endDraftYear)}
                       </Button>
@@ -751,14 +691,12 @@ export const ReleaseNotesFilter = ({
                   <Menu
                     visible={endMonthMenuOpen}
                     onDismiss={() => setEndMonthMenuOpen(false)}
-                    contentStyle={{ backgroundColor: theme.colors.surface }}
+                    contentStyle={menuContentStyle}
                     anchor={
                       <Button
-                        mode="outlined"
+                        {...dateSelectorButtonProps}
                         compact
                         onPress={() => setEndMonthMenuOpen(true)}
-                        textColor={theme.colors.primary}
-                        style={{ alignSelf: "flex-start", marginBottom: 8 }}
                       >
                         {endDraftMonth}
                       </Button>
@@ -793,7 +731,12 @@ export const ReleaseNotesFilter = ({
           style={{ flexDirection: "row", alignItems: "center", paddingLeft: 6 }}
         >
           {hasActiveFilters && (
-            <Button mode="text" compact onPress={onClearAll}>
+            <Button
+              mode="text"
+              compact
+              onPress={onClearAll}
+              textColor={theme.colors.primary}
+            >
               Clear
             </Button>
           )}
