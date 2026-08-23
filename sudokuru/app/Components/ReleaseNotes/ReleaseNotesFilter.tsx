@@ -131,7 +131,6 @@ export const ReleaseNotesFilter = ({
   const filterButtonContainerStyle = {
     flexDirection: "row" as const,
     alignItems: "center" as const,
-    marginRight: 6,
   };
 
   const menuContentStyle = {
@@ -260,531 +259,513 @@ export const ReleaseNotesFilter = ({
         placeholderTextColor={theme.colors.onSurface}
       />
 
-      {/* Horizontal filter bar + fixed right side */}
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ alignItems: "center", paddingVertical: 2 }}
-          style={{ flex: 1 }}
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
+          gap: 6,
+          paddingVertical: 2,
+        }}
+      >
+        {/* Targets */}
+        <Menu
+          visible={openMenu === "targets"}
+          onDismiss={() => setOpenMenu(null)}
+          contentStyle={menuContentStyle}
+          anchor={
+            <View style={filterButtonContainerStyle}>
+              <Button
+                testID="ReleaseNotesTargetsFilterButton"
+                {...filterButtonProps(selectedTargets.size > 0)}
+                compact
+                onPress={() => setOpenMenu("targets")}
+              >
+                {filterButtonLabel("Targets", selectedTargets.size)}
+              </Button>
+            </View>
+          }
         >
-          {/* Targets */}
-          <Menu
-            visible={openMenu === "targets"}
-            onDismiss={() => setOpenMenu(null)}
-            contentStyle={menuContentStyle}
-            anchor={
-              <View style={filterButtonContainerStyle}>
-                <Button
-                  testID="ReleaseNotesTargetsFilterButton"
-                  {...filterButtonProps(selectedTargets.size > 0)}
-                  compact
-                  onPress={() => setOpenMenu("targets")}
-                >
-                  {filterButtonLabel("Targets", selectedTargets.size)}
-                </Button>
-              </View>
-            }
-          >
-            <View
-              testID="ReleaseNotesTargetsFilterMenu"
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 8,
-                padding: 10,
-                maxWidth: 260,
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 6,
-                }}
-              >
-                <Text
-                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
-                >
-                  Targets
-                </Text>
-                <IconButton
-                  testID="ReleaseNotesTargetsFilterCloseButton"
-                  icon="close"
-                  size={16}
-                  onPress={() => setOpenMenu(null)}
-                  style={{ margin: 0 }}
-                  iconColor={theme.colors.primary}
-                />
-              </View>
-              {ALL_TARGETS.map((target) => (
-                <Chip
-                  testID={`ReleaseNotesTargetOption-${target}`}
-                  key={target}
-                  selected={selectedTargets.has(target)}
-                  onPress={() =>
-                    setSelectedTargets(toggleItem(selectedTargets, target))
-                  }
-                  {...chipProps(selectedTargets.has(target))}
-                >
-                  {target}
-                </Chip>
-              ))}
-            </View>
-          </Menu>
-
-          {/* Categories */}
-          <Menu
-            visible={openMenu === "categories"}
-            onDismiss={() => setOpenMenu(null)}
-            contentStyle={menuContentStyle}
-            anchor={
-              <View style={filterButtonContainerStyle}>
-                <Button
-                  testID="ReleaseNotesCategoriesFilterButton"
-                  {...filterButtonProps(selectedCategories.size > 0)}
-                  compact
-                  onPress={() => setOpenMenu("categories")}
-                >
-                  {filterButtonLabel("Categories", selectedCategories.size)}
-                </Button>
-              </View>
-            }
-          >
-            <View
-              testID="ReleaseNotesCategoriesFilterMenu"
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 8,
-                padding: 10,
-                maxWidth: selectionMenuMaxWidth,
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 6,
-                }}
-              >
-                <Text
-                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
-                >
-                  Categories
-                </Text>
-                <IconButton
-                  testID="ReleaseNotesCategoriesFilterCloseButton"
-                  icon="close"
-                  size={16}
-                  onPress={() => setOpenMenu(null)}
-                  style={{ margin: 0 }}
-                  iconColor={theme.colors.primary}
-                />
-              </View>
-              {ALL_CATEGORIES.map((cat) => (
-                <Chip
-                  testID={`ReleaseNotesCategoryOption-${cat}`}
-                  key={cat}
-                  selected={selectedCategories.has(cat)}
-                  onPress={() =>
-                    setSelectedCategories(toggleItem(selectedCategories, cat))
-                  }
-                  {...chipProps(selectedCategories.has(cat))}
-                >
-                  {CATEGORY_LABELS[cat]}
-                </Chip>
-              ))}
-            </View>
-          </Menu>
-
-          {/* Contributors */}
-          <Menu
-            visible={openMenu === "contributors"}
-            onDismiss={() => setOpenMenu(null)}
-            contentStyle={menuContentStyle}
-            anchor={
-              <View style={filterButtonContainerStyle}>
-                <Button
-                  testID="ReleaseNotesContributorsFilterButton"
-                  {...filterButtonProps(selectedContributors.size > 0)}
-                  compact
-                  onPress={() => setOpenMenu("contributors")}
-                >
-                  {filterButtonLabel("Contributors", selectedContributors.size)}
-                </Button>
-              </View>
-            }
-          >
-            <View
-              testID="ReleaseNotesContributorsFilterMenu"
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 8,
-                padding: 10,
-                maxWidth: selectionMenuMaxWidth,
-              }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 6,
-                }}
-              >
-                <Text
-                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
-                >
-                  Contributors
-                </Text>
-                <IconButton
-                  testID="ReleaseNotesContributorsFilterCloseButton"
-                  icon="close"
-                  size={16}
-                  onPress={() => setOpenMenu(null)}
-                  style={{ margin: 0 }}
-                  iconColor={theme.colors.primary}
-                />
-              </View>
-              {allContributors.map((contributor) => (
-                <Chip
-                  testID={`ReleaseNotesContributorOption-${contributor}`}
-                  key={contributor}
-                  selected={selectedContributors.has(contributor)}
-                  onPress={() =>
-                    setSelectedContributors(
-                      toggleItem(selectedContributors, contributor),
-                    )
-                  }
-                  {...chipProps(selectedContributors.has(contributor))}
-                >
-                  {contributor}
-                </Chip>
-              ))}
-            </View>
-          </Menu>
-
-          {/* Start Date */}
-          <Menu
-            visible={openDateMenu === "startDate"}
-            onDismiss={() => setOpenDateMenu(null)}
-            contentStyle={menuContentStyle}
-            anchor={
-              <View style={filterButtonContainerStyle}>
-                <Button
-                  testID="ReleaseNotesStartDateFilterButton"
-                  {...filterButtonProps(selectedStartMonth != null)}
-                  compact
-                  onPress={openStartDateMenu}
-                >
-                  {selectedStartMonth
-                    ? `Start Date: ${selectedStartMonth}`
-                    : "Start Date"}
-                </Button>
-              </View>
-            }
-          >
-            <View
-              testID="ReleaseNotesStartDateFilterMenu"
-              style={{ width: 260 }}
-            >
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingHorizontal: 8,
-                  paddingTop: 6,
-                }}
-              >
-                <Text
-                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
-                >
-                  Start Date
-                </Text>
-                <IconButton
-                  testID="ReleaseNotesStartDateFilterCloseButton"
-                  icon="close"
-                  size={16}
-                  onPress={() => setOpenDateMenu(null)}
-                  style={{ margin: 0 }}
-                  iconColor={theme.colors.primary}
-                />
-              </View>
-              <View
-                style={{
-                  paddingHorizontal: 8,
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  gap: 8,
-                }}
-              >
-                <View>
-                  <Text
-                    style={{ color: theme.colors.primary, marginBottom: 4 }}
-                  >
-                    Year
-                  </Text>
-                  <Menu
-                    visible={startYearMenuOpen}
-                    onDismiss={() => setStartYearMenuOpen(false)}
-                    contentStyle={menuContentStyle}
-                    anchor={
-                      <Button
-                        testID="ReleaseNotesStartYearButton"
-                        {...dateSelectorButtonProps}
-                        compact
-                        onPress={() => setStartYearMenuOpen(true)}
-                      >
-                        {String(startDraftYear)}
-                      </Button>
-                    }
-                  >
-                    <ScrollView style={{ maxHeight: 180 }}>
-                      {availableYears.map((year) => (
-                        <Menu.Item
-                          testID={`ReleaseNotesStartYearOption-${year}`}
-                          key={`start-year-${year}`}
-                          title={String(year)}
-                          dense
-                          titleStyle={{ color: theme.colors.primary }}
-                          onPress={() => {
-                            const months = monthsForYear(year);
-                            setStartDraftYear(year);
-                            if (!months.includes(startDraftMonth)) {
-                              setStartDraftMonth(months[0] ?? MONTH_NAMES[0]);
-                            }
-                            setStartYearMenuOpen(false);
-                          }}
-                        />
-                      ))}
-                    </ScrollView>
-                  </Menu>
-                </View>
-
-                <View>
-                  <Text
-                    style={{ color: theme.colors.primary, marginBottom: 4 }}
-                  >
-                    Month
-                  </Text>
-                  <Menu
-                    visible={startMonthMenuOpen}
-                    onDismiss={() => setStartMonthMenuOpen(false)}
-                    contentStyle={menuContentStyle}
-                    anchor={
-                      <Button
-                        testID="ReleaseNotesStartMonthButton"
-                        {...dateSelectorButtonProps}
-                        compact
-                        onPress={() => setStartMonthMenuOpen(true)}
-                      >
-                        {startDraftMonth}
-                      </Button>
-                    }
-                  >
-                    <ScrollView style={{ maxHeight: 180 }}>
-                      {monthsForYear(startDraftYear).map((month) => (
-                        <Menu.Item
-                          testID={`ReleaseNotesStartMonthOption-${month}`}
-                          key={`start-month-${month}`}
-                          title={month}
-                          dense
-                          titleStyle={{ color: theme.colors.primary }}
-                          onPress={() => {
-                            setStartDraftMonth(month);
-                            setSelectedStartMonth(`${month} ${startDraftYear}`);
-                            setStartYearMenuOpen(false);
-                            setStartMonthMenuOpen(false);
-                            setOpenDateMenu(null);
-                          }}
-                        />
-                      ))}
-                    </ScrollView>
-                  </Menu>
-                </View>
-              </View>
-            </View>
-          </Menu>
-
-          {/* End Date */}
-          <Menu
-            visible={openDateMenu === "endDate"}
-            onDismiss={() => setOpenDateMenu(null)}
-            contentStyle={menuContentStyle}
-            anchor={
-              <View style={filterButtonContainerStyle}>
-                <Button
-                  testID="ReleaseNotesEndDateFilterButton"
-                  {...filterButtonProps(selectedEndMonth != null)}
-                  compact
-                  onPress={openEndDateMenu}
-                >
-                  {selectedEndMonth
-                    ? `End Date: ${selectedEndMonth}`
-                    : "End Date"}
-                </Button>
-              </View>
-            }
-          >
-            <View testID="ReleaseNotesEndDateFilterMenu" style={{ width: 260 }}>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingHorizontal: 8,
-                  paddingTop: 6,
-                }}
-              >
-                <Text
-                  style={{ color: theme.colors.primary, fontWeight: "bold" }}
-                >
-                  End Date
-                </Text>
-                <IconButton
-                  testID="ReleaseNotesEndDateFilterCloseButton"
-                  icon="close"
-                  size={16}
-                  onPress={() => setOpenDateMenu(null)}
-                  style={{ margin: 0 }}
-                  iconColor={theme.colors.primary}
-                />
-              </View>
-              <View
-                style={{
-                  paddingHorizontal: 8,
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  gap: 8,
-                }}
-              >
-                <View>
-                  <Text
-                    style={{ color: theme.colors.primary, marginBottom: 4 }}
-                  >
-                    Year
-                  </Text>
-                  <Menu
-                    visible={endYearMenuOpen}
-                    onDismiss={() => setEndYearMenuOpen(false)}
-                    contentStyle={menuContentStyle}
-                    anchor={
-                      <Button
-                        testID="ReleaseNotesEndYearButton"
-                        {...dateSelectorButtonProps}
-                        compact
-                        onPress={() => setEndYearMenuOpen(true)}
-                      >
-                        {String(endDraftYear)}
-                      </Button>
-                    }
-                  >
-                    <ScrollView style={{ maxHeight: 180 }}>
-                      {availableYears.map((year) => (
-                        <Menu.Item
-                          testID={`ReleaseNotesEndYearOption-${year}`}
-                          key={`end-year-${year}`}
-                          title={String(year)}
-                          dense
-                          titleStyle={{ color: theme.colors.primary }}
-                          onPress={() => {
-                            const months = monthsForYear(year);
-                            setEndDraftYear(year);
-                            if (!months.includes(endDraftMonth)) {
-                              setEndDraftMonth(months[0] ?? MONTH_NAMES[0]);
-                            }
-                            setEndYearMenuOpen(false);
-                          }}
-                        />
-                      ))}
-                    </ScrollView>
-                  </Menu>
-                </View>
-
-                <View>
-                  <Text
-                    style={{ color: theme.colors.primary, marginBottom: 4 }}
-                  >
-                    Month
-                  </Text>
-                  <Menu
-                    visible={endMonthMenuOpen}
-                    onDismiss={() => setEndMonthMenuOpen(false)}
-                    contentStyle={menuContentStyle}
-                    anchor={
-                      <Button
-                        testID="ReleaseNotesEndMonthButton"
-                        {...dateSelectorButtonProps}
-                        compact
-                        onPress={() => setEndMonthMenuOpen(true)}
-                      >
-                        {endDraftMonth}
-                      </Button>
-                    }
-                  >
-                    <ScrollView style={{ maxHeight: 180 }}>
-                      {monthsForYear(endDraftYear).map((month) => (
-                        <Menu.Item
-                          testID={`ReleaseNotesEndMonthOption-${month}`}
-                          key={`end-month-${month}`}
-                          title={month}
-                          dense
-                          titleStyle={{ color: theme.colors.primary }}
-                          onPress={() => {
-                            setEndDraftMonth(month);
-                            setSelectedEndMonth(`${month} ${endDraftYear}`);
-                            setEndYearMenuOpen(false);
-                            setEndMonthMenuOpen(false);
-                            setOpenDateMenu(null);
-                          }}
-                        />
-                      ))}
-                    </ScrollView>
-                  </Menu>
-                </View>
-              </View>
-            </View>
-          </Menu>
-        </ScrollView>
-
-        {/* Fixed right: result count + clear */}
-        <View
-          style={{ flexDirection: "row", alignItems: "center", paddingLeft: 6 }}
-        >
-          {hasActiveFilters && (
-            <Button
-              testID="ReleaseNotesClearFiltersButton"
-              mode="text"
-              compact
-              onPress={onClearAll}
-              textColor={theme.colors.primary}
-            >
-              Clear
-            </Button>
-          )}
-          <Text
-            testID="ReleaseNotesResultCount"
+          <View
+            testID="ReleaseNotesTargetsFilterMenu"
             style={{
-              color: theme.colors.primary,
-              fontSize: 13,
-              marginRight: 2,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 8,
+              padding: 10,
+              maxWidth: 260,
             }}
           >
-            {resultCount} releases
-          </Text>
-        </View>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 6,
+              }}
+            >
+              <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                Targets
+              </Text>
+              <IconButton
+                testID="ReleaseNotesTargetsFilterCloseButton"
+                icon="close"
+                size={16}
+                onPress={() => setOpenMenu(null)}
+                style={{ margin: 0 }}
+                iconColor={theme.colors.primary}
+              />
+            </View>
+            {ALL_TARGETS.map((target) => (
+              <Chip
+                testID={`ReleaseNotesTargetOption-${target}`}
+                key={target}
+                selected={selectedTargets.has(target)}
+                onPress={() =>
+                  setSelectedTargets(toggleItem(selectedTargets, target))
+                }
+                {...chipProps(selectedTargets.has(target))}
+              >
+                {target}
+              </Chip>
+            ))}
+          </View>
+        </Menu>
+
+        {/* Categories */}
+        <Menu
+          visible={openMenu === "categories"}
+          onDismiss={() => setOpenMenu(null)}
+          contentStyle={menuContentStyle}
+          anchor={
+            <View style={filterButtonContainerStyle}>
+              <Button
+                testID="ReleaseNotesCategoriesFilterButton"
+                {...filterButtonProps(selectedCategories.size > 0)}
+                compact
+                onPress={() => setOpenMenu("categories")}
+              >
+                {filterButtonLabel("Categories", selectedCategories.size)}
+              </Button>
+            </View>
+          }
+        >
+          <View
+            testID="ReleaseNotesCategoriesFilterMenu"
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 8,
+              padding: 10,
+              maxWidth: selectionMenuMaxWidth,
+            }}
+          >
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 6,
+              }}
+            >
+              <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                Categories
+              </Text>
+              <IconButton
+                testID="ReleaseNotesCategoriesFilterCloseButton"
+                icon="close"
+                size={16}
+                onPress={() => setOpenMenu(null)}
+                style={{ margin: 0 }}
+                iconColor={theme.colors.primary}
+              />
+            </View>
+            {ALL_CATEGORIES.map((cat) => (
+              <Chip
+                testID={`ReleaseNotesCategoryOption-${cat}`}
+                key={cat}
+                selected={selectedCategories.has(cat)}
+                onPress={() =>
+                  setSelectedCategories(toggleItem(selectedCategories, cat))
+                }
+                {...chipProps(selectedCategories.has(cat))}
+              >
+                {CATEGORY_LABELS[cat]}
+              </Chip>
+            ))}
+          </View>
+        </Menu>
+
+        {/* Contributors */}
+        <Menu
+          visible={openMenu === "contributors"}
+          onDismiss={() => setOpenMenu(null)}
+          contentStyle={menuContentStyle}
+          anchor={
+            <View style={filterButtonContainerStyle}>
+              <Button
+                testID="ReleaseNotesContributorsFilterButton"
+                {...filterButtonProps(selectedContributors.size > 0)}
+                compact
+                onPress={() => setOpenMenu("contributors")}
+              >
+                {filterButtonLabel("Contributors", selectedContributors.size)}
+              </Button>
+            </View>
+          }
+        >
+          <View
+            testID="ReleaseNotesContributorsFilterMenu"
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 8,
+              padding: 10,
+              maxWidth: selectionMenuMaxWidth,
+            }}
+          >
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 6,
+              }}
+            >
+              <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                Contributors
+              </Text>
+              <IconButton
+                testID="ReleaseNotesContributorsFilterCloseButton"
+                icon="close"
+                size={16}
+                onPress={() => setOpenMenu(null)}
+                style={{ margin: 0 }}
+                iconColor={theme.colors.primary}
+              />
+            </View>
+            {allContributors.map((contributor) => (
+              <Chip
+                testID={`ReleaseNotesContributorOption-${contributor}`}
+                key={contributor}
+                selected={selectedContributors.has(contributor)}
+                onPress={() =>
+                  setSelectedContributors(
+                    toggleItem(selectedContributors, contributor),
+                  )
+                }
+                {...chipProps(selectedContributors.has(contributor))}
+              >
+                {contributor}
+              </Chip>
+            ))}
+          </View>
+        </Menu>
+
+        {/* Start Date */}
+        <Menu
+          visible={openDateMenu === "startDate"}
+          onDismiss={() => setOpenDateMenu(null)}
+          contentStyle={menuContentStyle}
+          anchor={
+            <View style={filterButtonContainerStyle}>
+              <Button
+                testID="ReleaseNotesStartDateFilterButton"
+                {...filterButtonProps(selectedStartMonth != null)}
+                compact
+                onPress={openStartDateMenu}
+              >
+                {selectedStartMonth
+                  ? `Start Date: ${selectedStartMonth}`
+                  : "Start Date"}
+              </Button>
+            </View>
+          }
+        >
+          <View testID="ReleaseNotesStartDateFilterMenu" style={{ width: 260 }}>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingHorizontal: 8,
+                paddingTop: 6,
+              }}
+            >
+              <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                Start Date
+              </Text>
+              <IconButton
+                testID="ReleaseNotesStartDateFilterCloseButton"
+                icon="close"
+                size={16}
+                onPress={() => setOpenDateMenu(null)}
+                style={{ margin: 0 }}
+                iconColor={theme.colors.primary}
+              />
+            </View>
+            <View
+              style={{
+                paddingHorizontal: 8,
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                gap: 8,
+              }}
+            >
+              <View>
+                <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
+                  Year
+                </Text>
+                <Menu
+                  visible={startYearMenuOpen}
+                  onDismiss={() => setStartYearMenuOpen(false)}
+                  contentStyle={menuContentStyle}
+                  anchor={
+                    <Button
+                      testID="ReleaseNotesStartYearButton"
+                      {...dateSelectorButtonProps}
+                      compact
+                      onPress={() => setStartYearMenuOpen(true)}
+                    >
+                      {String(startDraftYear)}
+                    </Button>
+                  }
+                >
+                  <ScrollView style={{ maxHeight: 180 }}>
+                    {availableYears.map((year) => (
+                      <Menu.Item
+                        testID={`ReleaseNotesStartYearOption-${year}`}
+                        key={`start-year-${year}`}
+                        title={String(year)}
+                        dense
+                        titleStyle={{ color: theme.colors.primary }}
+                        onPress={() => {
+                          const months = monthsForYear(year);
+                          setStartDraftYear(year);
+                          if (!months.includes(startDraftMonth)) {
+                            setStartDraftMonth(months[0] ?? MONTH_NAMES[0]);
+                          }
+                          setStartYearMenuOpen(false);
+                        }}
+                      />
+                    ))}
+                  </ScrollView>
+                </Menu>
+              </View>
+
+              <View>
+                <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
+                  Month
+                </Text>
+                <Menu
+                  visible={startMonthMenuOpen}
+                  onDismiss={() => setStartMonthMenuOpen(false)}
+                  contentStyle={menuContentStyle}
+                  anchor={
+                    <Button
+                      testID="ReleaseNotesStartMonthButton"
+                      {...dateSelectorButtonProps}
+                      compact
+                      onPress={() => setStartMonthMenuOpen(true)}
+                    >
+                      {startDraftMonth}
+                    </Button>
+                  }
+                >
+                  <ScrollView style={{ maxHeight: 180 }}>
+                    {monthsForYear(startDraftYear).map((month) => (
+                      <Menu.Item
+                        testID={`ReleaseNotesStartMonthOption-${month}`}
+                        key={`start-month-${month}`}
+                        title={month}
+                        dense
+                        titleStyle={{ color: theme.colors.primary }}
+                        onPress={() => {
+                          setStartDraftMonth(month);
+                          setSelectedStartMonth(`${month} ${startDraftYear}`);
+                          setStartYearMenuOpen(false);
+                          setStartMonthMenuOpen(false);
+                          setOpenDateMenu(null);
+                        }}
+                      />
+                    ))}
+                  </ScrollView>
+                </Menu>
+              </View>
+            </View>
+          </View>
+        </Menu>
+
+        {/* End Date */}
+        <Menu
+          visible={openDateMenu === "endDate"}
+          onDismiss={() => setOpenDateMenu(null)}
+          contentStyle={menuContentStyle}
+          anchor={
+            <View style={filterButtonContainerStyle}>
+              <Button
+                testID="ReleaseNotesEndDateFilterButton"
+                {...filterButtonProps(selectedEndMonth != null)}
+                compact
+                onPress={openEndDateMenu}
+              >
+                {selectedEndMonth
+                  ? `End Date: ${selectedEndMonth}`
+                  : "End Date"}
+              </Button>
+            </View>
+          }
+        >
+          <View testID="ReleaseNotesEndDateFilterMenu" style={{ width: 260 }}>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingHorizontal: 8,
+                paddingTop: 6,
+              }}
+            >
+              <Text style={{ color: theme.colors.primary, fontWeight: "bold" }}>
+                End Date
+              </Text>
+              <IconButton
+                testID="ReleaseNotesEndDateFilterCloseButton"
+                icon="close"
+                size={16}
+                onPress={() => setOpenDateMenu(null)}
+                style={{ margin: 0 }}
+                iconColor={theme.colors.primary}
+              />
+            </View>
+            <View
+              style={{
+                paddingHorizontal: 8,
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                gap: 8,
+              }}
+            >
+              <View>
+                <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
+                  Year
+                </Text>
+                <Menu
+                  visible={endYearMenuOpen}
+                  onDismiss={() => setEndYearMenuOpen(false)}
+                  contentStyle={menuContentStyle}
+                  anchor={
+                    <Button
+                      testID="ReleaseNotesEndYearButton"
+                      {...dateSelectorButtonProps}
+                      compact
+                      onPress={() => setEndYearMenuOpen(true)}
+                    >
+                      {String(endDraftYear)}
+                    </Button>
+                  }
+                >
+                  <ScrollView style={{ maxHeight: 180 }}>
+                    {availableYears.map((year) => (
+                      <Menu.Item
+                        testID={`ReleaseNotesEndYearOption-${year}`}
+                        key={`end-year-${year}`}
+                        title={String(year)}
+                        dense
+                        titleStyle={{ color: theme.colors.primary }}
+                        onPress={() => {
+                          const months = monthsForYear(year);
+                          setEndDraftYear(year);
+                          if (!months.includes(endDraftMonth)) {
+                            setEndDraftMonth(months[0] ?? MONTH_NAMES[0]);
+                          }
+                          setEndYearMenuOpen(false);
+                        }}
+                      />
+                    ))}
+                  </ScrollView>
+                </Menu>
+              </View>
+
+              <View>
+                <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
+                  Month
+                </Text>
+                <Menu
+                  visible={endMonthMenuOpen}
+                  onDismiss={() => setEndMonthMenuOpen(false)}
+                  contentStyle={menuContentStyle}
+                  anchor={
+                    <Button
+                      testID="ReleaseNotesEndMonthButton"
+                      {...dateSelectorButtonProps}
+                      compact
+                      onPress={() => setEndMonthMenuOpen(true)}
+                    >
+                      {endDraftMonth}
+                    </Button>
+                  }
+                >
+                  <ScrollView style={{ maxHeight: 180 }}>
+                    {monthsForYear(endDraftYear).map((month) => (
+                      <Menu.Item
+                        testID={`ReleaseNotesEndMonthOption-${month}`}
+                        key={`end-month-${month}`}
+                        title={month}
+                        dense
+                        titleStyle={{ color: theme.colors.primary }}
+                        onPress={() => {
+                          setEndDraftMonth(month);
+                          setSelectedEndMonth(`${month} ${endDraftYear}`);
+                          setEndYearMenuOpen(false);
+                          setEndMonthMenuOpen(false);
+                          setOpenDateMenu(null);
+                        }}
+                      />
+                    ))}
+                  </ScrollView>
+                </Menu>
+              </View>
+            </View>
+          </View>
+        </Menu>
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          alignSelf: "flex-end",
+        }}
+      >
+        {hasActiveFilters && (
+          <Button
+            testID="ReleaseNotesClearFiltersButton"
+            mode="text"
+            compact
+            onPress={onClearAll}
+            textColor={theme.colors.primary}
+          >
+            Clear
+          </Button>
+        )}
+        <Text
+          testID="ReleaseNotesResultCount"
+          style={{
+            color: theme.colors.primary,
+            fontSize: 13,
+            marginRight: 2,
+          }}
+        >
+          {resultCount} releases
+        </Text>
       </View>
 
       <Divider style={{ marginTop: 8 }} />
