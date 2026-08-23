@@ -1815,7 +1815,7 @@
       "The number buttons for the board are now horizontal instead of vertical."
     ],
     "targets": ["web", "mobile"],
-    "contributors": ["denielcosentino", "Thomas-Gallant"]
+    "contributors": ["danielcosentino", "Thomas-Gallant"]
   },
   {
     "version": "0.2.0",

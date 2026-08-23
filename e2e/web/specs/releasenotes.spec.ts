@@ -228,7 +228,10 @@ test.describe("release note filters", () => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();
 
-    await releaseNotesPage.search.fill("Sudoku");
+    await expect(releaseNotesPage.searchClear).toHaveCount(0);
+    await releaseNotesPage.searchFor("Sudoku");
+    await releaseNotesPage.clearSearch();
+    await releaseNotesPage.searchFor("Sudoku");
     await releaseNotesPage.openMenu(
       releaseNotesPage.targetsFilter,
       releaseNotesPage.targetsMenu,

@@ -6,6 +6,7 @@ export class ReleaseNotesPage {
   readonly page: Page;
   readonly title: Locator;
   readonly search: Locator;
+  readonly searchClear: Locator;
   readonly resultCount: Locator;
   readonly clearFilters: Locator;
   readonly targetsFilter: Locator;
@@ -32,6 +33,7 @@ export class ReleaseNotesPage {
     this.page = page;
     this.title = page.getByTestId("ReleaseNotesTitle");
     this.search = page.getByPlaceholder("Search release notes…");
+    this.searchClear = page.getByTestId("ReleaseNotesSearchClearButton");
     this.resultCount = page.getByTestId("ReleaseNotesResultCount");
     this.clearFilters = page.getByTestId("ReleaseNotesClearFiltersButton");
     this.targetsFilter = page.getByTestId("ReleaseNotesTargetsFilterButton");
@@ -108,6 +110,17 @@ export class ReleaseNotesPage {
     await headerComponent.drawer.click();
     await headerComponent.releaseNotes.click();
     await this.releaseNotesPageIsRendered();
+  }
+
+  async searchFor(keyword: string) {
+    await this.search.fill(keyword);
+    await expect(this.searchClear).toBeInViewport({ ratio: 1 });
+  }
+
+  async clearSearch() {
+    await this.searchClear.click();
+    await expect(this.search).toHaveValue("");
+    await expect(this.searchClear).toHaveCount(0);
   }
 
   parseChangelogDate(date: string) {

@@ -137,6 +137,7 @@ export const ReleaseNotesFilter = ({
     backgroundColor: theme.useDarkTheme
       ? theme.colors.surfaceAlt
       : theme.colors.surface,
+    borderRadius: 16,
   };
 
   const selectionMenuMaxWidth = Math.max(
@@ -250,6 +251,18 @@ export const ReleaseNotesFilter = ({
         placeholder="Search release notes…"
         value={keyword}
         onChangeText={setKeyword}
+        right={({ color, style }) =>
+          keyword.length > 0 ? (
+            <IconButton
+              testID="ReleaseNotesSearchClearButton"
+              accessibilityLabel="Clear search"
+              icon="close"
+              iconColor={color}
+              onPress={() => setKeyword("")}
+              style={style}
+            />
+          ) : null
+        }
         style={{ marginBottom: 8 }}
         inputStyle={{
           color: theme.useDarkTheme
@@ -760,7 +773,8 @@ export const ReleaseNotesFilter = ({
           testID="ReleaseNotesResultCount"
           style={{
             color: theme.colors.primary,
-            fontSize: 13,
+            fontSize: 14,
+            lineHeight: 20,
             marginRight: 2,
           }}
         >
