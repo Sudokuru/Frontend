@@ -230,6 +230,15 @@ export const getHomeHeroAction = (
   };
 };
 
+export const getHomeSupportingResumes = (
+  resumes: HomeResumeDescriptor[],
+): HomeResumeDescriptor[] => {
+  const playableResumes = resumes.filter((item) => item.category === "play");
+  return playableResumes.length === 1
+    ? resumes.filter((item) => item.category !== "play")
+    : resumes;
+};
+
 export interface SudokuVariantMethods {
   doesCellHaveConflict(
     sudokuBoard: BoardObjectProps,

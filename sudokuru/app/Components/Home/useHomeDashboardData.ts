@@ -9,6 +9,7 @@ import {
   getHomeDashboardConfig,
   getHomeHeroAction,
   getHomeResumeDescriptor,
+  getHomeSupportingResumes,
   HomeDashboardFlags,
 } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
 
@@ -42,6 +43,7 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
   );
   const resumes = state.activeGames.map(getHomeResumeDescriptor);
   const heroAction = getHomeHeroAction(resumes, config.variants);
+  const supportingResumes = getHomeSupportingResumes(resumes);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -107,6 +109,7 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
     totalLessons: lessons.length,
     config,
     resumes,
+    supportingResumes,
     heroAction,
     refresh: () => setRefreshRequest((request) => request + 1),
   };
