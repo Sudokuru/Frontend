@@ -21,7 +21,33 @@ const parseChangelogDate = (dateStr: string): Date => {
 const formatMonthYear = (date: Date): string =>
   date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-const parseMonthYear = (value: string): Date => new Date(`${value} 1`);
+const MONTH_NAMES = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+const parseMonthYear = (value: string): Date => {
+  const separatorIndex = value.lastIndexOf(" ");
+  const month = value.slice(0, separatorIndex);
+  const monthIndex = MONTH_NAMES.indexOf(month as (typeof MONTH_NAMES)[number]);
+  const year = Number(value.slice(separatorIndex + 1));
+
+  if (separatorIndex < 0 || monthIndex < 0 || Number.isNaN(year)) {
+    return new Date(Number.NaN);
+  }
+
+  return new Date(year, monthIndex, 1);
+};
 
 const ALL_CONTRIBUTORS = Array.from(
   new Set((json as ReleaseNoteInterface[]).flatMap((r) => r.contributors)),
