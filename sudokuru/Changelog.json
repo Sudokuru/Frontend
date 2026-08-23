@@ -1,7 +1,17 @@
 [
   {
-    "version": "1.35.1",
+    "version": "1.36.0",
     "date": "#{date}#",
+    "summary": "Added ability to filter and search release notes",
+    "features": [
+      "Added ability to filter and search release notes."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.35.1",
+    "date": "August 20th, 2026",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
     "bug fixes": [
       "Lesson, difficulty, and release note cards now use theme aware colors that display correctly in light mode."
