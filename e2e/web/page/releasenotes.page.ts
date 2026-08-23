@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
+import { parseChangelogDate } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNoteFunctions";
 import { HeaderComponent } from "../components/header.component";
 
 export class ReleaseNotesPage {
@@ -124,7 +125,7 @@ export class ReleaseNotesPage {
   }
 
   parseChangelogDate(date: string) {
-    return new Date(date.replace(/(\d+)(st|nd|rd|th)/, "$1"));
+    return parseChangelogDate(date);
   }
 
   async openMenu(button: Locator, menu: Locator) {

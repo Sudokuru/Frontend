@@ -2,21 +2,7 @@ import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Button, IconButton, Menu, Text } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
-
-export const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-] as const;
+import { MONTH_NAMES } from "./ReleaseNoteFunctions";
 
 interface DateFilterMenuProps {
   label: string;

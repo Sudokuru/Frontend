@@ -8,8 +8,9 @@ import {
   Text,
 } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { DateFilterMenu, MONTH_NAMES } from "./DateFilterMenu";
+import { DateFilterMenu } from "./DateFilterMenu";
 import { MultiSelectFilterMenu } from "./MultiSelectFilterMenu";
+import { MONTH_NAMES } from "./ReleaseNoteFunctions";
 
 export type Category = "features" | "preview features" | "bug fixes";
 
@@ -45,6 +46,8 @@ const CATEGORY_LABELS: Record<Category, string> = {
   "preview features": "Preview Features",
   "bug fixes": "Bug Fixes",
 };
+
+const hideSearchbarRight = () => null;
 
 export const ReleaseNotesFilter = ({
   allContributors,
@@ -119,31 +122,31 @@ export const ReleaseNotesFilter = ({
         marginBottom: 10,
       }}
     >
-      <Searchbar
-        testID="ReleaseNotesSearch"
-        placeholder="Search release notes…"
-        value={keyword}
-        onChangeText={setKeyword}
-        right={({ color, style }) =>
-          keyword.length > 0 ? (
-            <IconButton
-              testID="ReleaseNotesSearchClearButton"
-              accessibilityLabel="Clear search"
-              icon="close"
-              iconColor={color}
-              onPress={() => setKeyword("")}
-              style={style}
-            />
-          ) : null
-        }
-        style={{ marginBottom: 8 }}
-        inputStyle={{
-          color: theme.useDarkTheme
-            ? theme.semantic.text.inverse
-            : theme.semantic.text.info,
-        }}
-        placeholderTextColor={theme.colors.onSurface}
-      />
+      <View style={{ marginBottom: 8 }}>
+        <Searchbar
+          testID="ReleaseNotesSearch"
+          placeholder="Search release notes…"
+          value={keyword}
+          onChangeText={setKeyword}
+          right={hideSearchbarRight}
+          inputStyle={{
+            color: theme.useDarkTheme
+              ? theme.semantic.text.inverse
+              : theme.semantic.text.info,
+          }}
+          placeholderTextColor={theme.colors.onSurface}
+        />
+        {keyword.length > 0 && (
+          <IconButton
+            testID="ReleaseNotesSearchClearButton"
+            accessibilityLabel="Clear search"
+            icon="close"
+            iconColor={theme.colors.primary}
+            onPress={() => setKeyword("")}
+            style={{ position: "absolute", right: 4, top: 4, margin: 0 }}
+          />
+        )}
+      </View>
 
       <View
         style={{
