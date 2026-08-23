@@ -34,7 +34,13 @@ const BulletComponent = (point: string, key: number, textColor: string) => {
       key={key}
     >
       <Text style={{ fontSize: 14, color: textColor }}>•</Text>
-      <Text style={{ fontSize: 14, paddingLeft: 5, color: textColor }}>
+      <Text
+        style={{
+          fontSize: 14,
+          paddingLeft: 5,
+          color: textColor,
+        }}
+      >
         {point}
       </Text>
     </View>
@@ -56,16 +62,53 @@ const BulletedListComponent = (points: string[], textColor: string) => {
 
 export const ReleaseNote = ({ item, width }: ReleaseNoteProps) => {
   const { theme } = useTheme();
-  const textColor = theme.semantic.text.inverse;
 
-  const featureList = item.features ?? ["None"];
-  const previewFeatureList = item["preview features"] ?? ["None"];
-  const bugList = item["bug fixes"] ?? ["None"];
+  const releaseCardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const releaseCardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
+
+  let featureList = ["None"];
+  if (item.features) {
+    featureList = item.features;
+  }
+
+  const featureListComponent = BulletedListComponent(
+    featureList,
+    releaseCardTextColor,
+  );
+
+  let previewFeatureList = ["None"];
+  if (item["preview features"]) {
+    previewFeatureList = item["preview features"];
+  }
+
+  const previewFeatureListComponent = BulletedListComponent(
+    previewFeatureList,
+    releaseCardTextColor,
+  );
+
+  let bugList = ["None"];
+  if (item["bug fixes"]) {
+    bugList = item["bug fixes"];
+  }
+
+  const bugListComponent = BulletedListComponent(bugList, releaseCardTextColor);
+  const targetPlatformsString = BulletedListComponent(
+    item.targets,
+    releaseCardTextColor,
+  );
+  const contributorsString = BulletedListComponent(
+    item.contributors,
+    releaseCardTextColor,
+  );
 
   return (
     <View
       style={{
-        backgroundColor: theme.colors.surfaceAlt,
+        backgroundColor: releaseCardSurfaceColor,
         borderRadius: 20,
         padding: 10,
         marginBottom: 10,
@@ -74,32 +117,46 @@ export const ReleaseNote = ({ item, width }: ReleaseNoteProps) => {
       }}
       testID={item.version}
     >
-      <Text style={{ fontSize: 20, color: textColor }}>
+      <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
         Version: {item.version}
       </Text>
-      <Text style={{ fontSize: 20, color: textColor }}>
+      <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
         Release Date: {item.date}
       </Text>
       <Divider style={{ marginBottom: 10 }} />
       <>
-        <Text style={{ fontSize: 20, color: textColor }}>Summary: </Text>
-        <Text style={{ paddingLeft: 20, fontSize: 14, color: textColor }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
+          Summary:{" "}
+        </Text>
+        <Text
+          style={{
+            paddingLeft: 20,
+            fontSize: 14,
+            color: releaseCardTextColor,
+          }}
+        >
           {item.summary}
         </Text>
-        <Text style={{ fontSize: 20, color: textColor }}>Features: </Text>
-        {BulletedListComponent(featureList, textColor)}
-        <Text style={{ fontSize: 20, color: textColor }}>
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
+          Features:{" "}
+        </Text>
+        {featureListComponent}
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Preview Features:{" "}
         </Text>
-        {BulletedListComponent(previewFeatureList, textColor)}
-        <Text style={{ fontSize: 20, color: textColor }}>Bug Fixes: </Text>
-        {BulletedListComponent(bugList, textColor)}
-        <Text style={{ fontSize: 20, color: textColor }}>
+        {previewFeatureListComponent}
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
+          Bug Fixes:{" "}
+        </Text>
+        {bugListComponent}
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
           Target Platforms:{" "}
         </Text>
-        {BulletedListComponent(item.targets, textColor)}
-        <Text style={{ fontSize: 20, color: textColor }}>Contributors: </Text>
-        {BulletedListComponent(item.contributors, textColor)}
+        {targetPlatformsString}
+        <Text style={{ fontSize: 20, color: releaseCardTextColor }}>
+          Contributors:{" "}
+        </Text>
+        {contributorsString}
       </>
     </View>
   );

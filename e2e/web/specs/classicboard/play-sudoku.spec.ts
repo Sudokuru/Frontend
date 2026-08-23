@@ -43,21 +43,28 @@ test.describe("complete game", () => {
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.cell[7][8].press("4");
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
-    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
-      ratio: 1,
-    });
-    await expect(
-      endGameModal.page.getByText("Time Spent: 06:1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Number of Hints Used: 0"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Mistakes Made: 235"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Difficulty: novice"),
-    ).toBeInViewport({ ratio: 1 });
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.statisticIsFullyVisible("score", /Score:/, "24");
+    await endGameModal.statisticIsFullyVisible(
+      "time",
+      /Time Spent:/,
+      /^06:1[4-9]$/,
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numHintsUsed",
+      /Number of Hints Used:/,
+      "0",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numWrongCellsPlayed",
+      /Mistakes Made:/,
+      "235",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "difficulty",
+      /Difficulty:/,
+      "novice",
+    );
   });
 
   test("Completing a game with hint should display correct game results", async ({
@@ -70,29 +77,41 @@ test.describe("complete game", () => {
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
+    await expect(sudokuBoard.hints).toContainText("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
-    await expect(endGameModal.page.getByText("Score: 24")).toBeInViewport({
-      ratio: 1,
-    });
-    await expect(
-      endGameModal.page.getByText("Time Spent: 06:1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Number of Hints Used: 2"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Simplify Notes: 1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Obvious Single: 1"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Mistakes Made: 235"),
-    ).toBeInViewport({ ratio: 1 });
-    await expect(
-      endGameModal.page.getByText("Difficulty: novice"),
-    ).toBeInViewport({ ratio: 1 });
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.statisticIsFullyVisible("score", /Score:/, "24");
+    await endGameModal.statisticIsFullyVisible(
+      "time",
+      /Time Spent:/,
+      /^06:1[4-9]$/,
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numHintsUsed",
+      /Number of Hints Used:/,
+      "2",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "hintsUsedSIMPLIFY_NOTES",
+      /Simplify Notes:/,
+      "1",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "hintsUsedOBVIOUS_SINGLE",
+      /Obvious Single:/,
+      "1",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "numWrongCellsPlayed",
+      /Mistakes Made:/,
+      "235",
+    );
+    await endGameModal.statisticIsFullyVisible(
+      "difficulty",
+      /Difficulty:/,
+      "novice",
+    );
   });
 
   test("Completing a game should display correct statistics", async ({
@@ -144,6 +163,7 @@ test.describe("complete game", () => {
     await sudokuBoard.numPad[2 - 1].click();
     await sudokuBoard.cell[7][8].click();
     await sudokuBoard.solveHint();
+    await expect(sudokuBoard.hints).toContainText("1");
     await sudokuBoard.solveHint();
     const endGameModal = new EndGameModalComponent(resumeClassicGame);
     await endGameModal.newGame.click();
@@ -188,9 +208,9 @@ test.describe("start game", () => {
     play,
   }) => {
     await play.getByText("Novice").click();
-    await expect(play.getByText("Difficulty: novice")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(play);
+    await expect(sudokuBoard.difficulty).toContainText("Novice");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 
   test("Clicking on button with intermediate text should start protege game in large viewport", async ({
@@ -199,9 +219,9 @@ test.describe("start game", () => {
     const viewPort = play.viewportSize();
     if (viewPort && viewPort.width > MOBILE_WIDTH_LESS_THAN) {
       await play.getByText("Intermediate").click();
-      await expect(play.getByText("Difficulty: protege")).toBeInViewport({
-        ratio: 1,
-      });
+      const sudokuBoard = new SudokuBoardComponent(play);
+      await expect(sudokuBoard.difficulty).toContainText("Protege");
+      await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
     } else {
       await expect(await play.getByText("Intermediate")).not.toBeInViewport({
         ratio: 1,
@@ -218,7 +238,8 @@ test.describe("resume game", () => {
     await sudokuBoard.pause.click();
     await playPage.resumeButtonIsVisible();
     await playPage.resume.click();
-    await expect(sudokuBoard.sudokuBoard).toContainText("novice");
+    await expect(sudokuBoard.difficulty).toContainText("Novice");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
   });
 });
 
@@ -226,9 +247,9 @@ test.describe("game is saved on start", () => {
   test("Starting a game should save it to resume later", async ({ play }) => {
     const playPage = new PlayPage(play);
     await playPage.page.getByText("Amateur").click();
-    await expect(play.getByText("Difficulty: amateur")).toBeInViewport({
-      ratio: 1,
-    });
+    const sudokuBoard = new SudokuBoardComponent(play);
+    await expect(sudokuBoard.difficulty).toContainText("Amateur");
+    await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
     await play.reload();
     const homePage = new HomePage(play);
     await homePage.playSudoku.click();

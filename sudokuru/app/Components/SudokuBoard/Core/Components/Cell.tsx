@@ -2,6 +2,7 @@ import { useCellSize } from "../Functions/BoardFunctions";
 import React from "react";
 import { Pressable, StyleProp, Text, TextStyle, View } from "react-native";
 import { CellType } from "../../../../Functions/LocalDatabase";
+import { DEFAULT_FONT } from "../../../../Styling/theme";
 
 let fallbackHeight = 30;
 
@@ -38,7 +39,7 @@ const NoteGrid = (props: {
     if (entry.includes(noteIndex)) {
       const styleVal: StyleProp<TextStyle> = {
         fontSize: cellSize ? cellSize / 4.5 : fallbackHeight / 4,
-        fontFamily: "Inter_200ExtraLight",
+        fontFamily: DEFAULT_FONT,
         color: noteColor[noteIndex - 1],
       };
       return (
@@ -180,7 +181,7 @@ const Cell = (props: {
       ) : entry !== 0 ? (
         <Text
           style={{
-            fontFamily: "Inter_400Regular",
+            fontFamily: DEFAULT_FONT,
             fontSize: cellSize
               ? cellSize * (3 / 4) + 1
               : fallbackHeight * (3 / 4) + 1,

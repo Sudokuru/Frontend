@@ -1,9 +1,9 @@
 import {
+  ActiveHintState,
   BoardObjectProps,
   CellProps,
   CellLocation,
 } from "../../../../Functions/LocalDatabase";
-import { HintObjectProps } from "../../SudokuBoard";
 import { isBoardDisabled } from "../../SudokuBoardFunctions";
 import { isValueCorrect } from "./BoardFunctions";
 
@@ -91,7 +91,7 @@ export const getSelectedCells = (
 export const toggleSelectCell = (
   sudokuBoard: BoardObjectProps,
   setBoardSelectedCells: (cells: CellLocation[]) => void,
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
   r: number,
   c: number,
   event: any,

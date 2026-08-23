@@ -14,8 +14,16 @@ const Statistic = (props: StatisticProps) => {
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
   return (
-    <View style={{ flexDirection: "row" }}>
+    <View
+      testID={`${props.testID}Row`}
+      style={{
+        flexDirection: "row",
+        // Prevent macOS WebKit from rounding the row's right edge inward.
+        marginRight: 0.5,
+      }}
+    >
       <Text
+        testID={`${props.testID}Label`}
         style={{
           fontSize: reSize ? reSize / 20 : 20,
           color: theme.semantic.text.quaternary,

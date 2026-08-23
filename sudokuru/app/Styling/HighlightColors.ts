@@ -11,16 +11,25 @@ export const NOTE_TEXT_COLOR = "#000000";
 export const NOT_HIGHLIGHTED_COLOR = "#FFFFFF";
 export const HINT_NOT_HIGHLIGHTED_COLOR = "#808080";
 
-export const VERY_EASY_COLOR = "#4CBB17";
-export const EASY_COLOR = "#7CFC00";
-export const INTERMEDIATE_COLOR = "#FFFF00";
-export const HARD_COLOR = "#FFA500";
-export const VERY_HARD_COLOR = "#FF0000";
+// Difficulty colors tuned for white card surfaces
+export const VERY_EASY_COLOR = "#008850";
+export const EASY_COLOR = "#4D8400";
+export const INTERMEDIATE_COLOR = "#8C7500";
+export const HARD_COLOR = "#BA5D00";
+export const VERY_HARD_COLOR = "#EE0000";
+
+// Difficulty colors tuned for dark card surfaces (classic and dark themes)
+export const VERY_EASY_COLOR_DARK_SURFACE = "#4CBB17";
+export const EASY_COLOR_DARK_SURFACE = "#7CFC00";
+export const INTERMEDIATE_COLOR_DARK_SURFACE = "#FFD700";
+export const HARD_COLOR_DARK_SURFACE = "#FFA500";
+export const VERY_HARD_COLOR_DARK_SURFACE = "#FF0000";
 
 export const DARK_BACKGROUND_COLOR = "#025E73";
 export const LIGHT_BACKGROUND_COLOR = "#F2F2F2";
 export const GOLD_COLOR = "#D9A05B";
 export const PURPLE_COLOR = "#025E73";
+export const MISTAKE_COLOR = "#FF6B6B";
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRGB(hex: string) {

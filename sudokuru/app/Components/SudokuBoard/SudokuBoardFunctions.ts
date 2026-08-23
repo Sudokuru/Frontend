@@ -1,6 +1,8 @@
-import { BoardObjectProps } from "../../Functions/LocalDatabase";
+import {
+  ActiveHintState,
+  BoardObjectProps,
+} from "../../Functions/LocalDatabase";
 import { isValueCorrect } from "./Core/Functions/BoardFunctions";
-import { HintObjectProps } from "./SudokuBoard";
 
 /**
  * Determines if the game has been solved by iterating through the
@@ -50,7 +52,7 @@ export const doesBoardHaveConflict = (
   return false;
 };
 
-export const isBoardDisabled = (sudokuHint: HintObjectProps | undefined) => {
+export const isBoardDisabled = (sudokuHint: ActiveHintState | null) => {
   if (sudokuHint != null) {
     return true;
   } else {

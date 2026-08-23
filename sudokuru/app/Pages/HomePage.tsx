@@ -1,14 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import {
-  Inter_100Thin,
-  Inter_200ExtraLight,
-  Inter_300Light,
-  Inter_400Regular,
-  Inter_500Medium,
-  Inter_700Bold,
-  useFonts,
-} from "@expo-google-fonts/inter";
+import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
 import {
   useMinWindowDimensions,
   useNewWindowDimensions,
@@ -42,12 +34,7 @@ const HomePage = () => {
   const DARK_BLUE_START_DRILLS_LOGO = require("../../.assets/lightBlueStartDrillsLogo.png");
 
   let [fontsLoaded] = useFonts({
-    Inter_100Thin,
-    Inter_200ExtraLight,
-    Inter_300Light,
     Inter_400Regular,
-    Inter_500Medium,
-    Inter_700Bold,
   });
 
   const isFocused = useIsFocused();

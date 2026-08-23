@@ -1,6 +1,7 @@
 import React from "react";
 import { PreferencesContext } from "../../../../Contexts/PreferencesContext";
 import {
+  ActiveHintState,
   CellProps,
   CellLocation,
   BoardObjectProps,
@@ -15,7 +16,6 @@ import {
   HINT_SELECTED_COLOR,
   HINT_NOT_HIGHLIGHTED_COLOR,
 } from "../../../../Styling/HighlightColors";
-import { HintObjectProps } from "../../SudokuBoard";
 import {
   areCellsInSameBox,
   areCellsInSameColumn,
@@ -37,7 +37,7 @@ import { Theme } from "../../../../Styling/theme";
  * determined
  */
 export const getCellNotesColor = (
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
   r: number,
   c: number,
   theme: Theme,
@@ -78,7 +78,7 @@ export const getCellBackgroundNotesColor = (cellBackgroundColor: string) => {
  */
 export const useCellBackgroundColor = (
   sudokuBoard: BoardObjectProps,
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
   r: number,
   c: number,
   doesCellHaveConflict: (
@@ -135,7 +135,7 @@ export const useCellBackgroundColor = (
  * @returns True if the cell is a cause of the hint, false otherwise
  */
 const isCellAHintCause = (
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
   r: number,
   c: number,
 ): boolean => {
@@ -158,7 +158,7 @@ const isCellAHintCause = (
  * @returns True if the cell is a focus of the hint, false otherwise.
  */
 const isCellAHintFocus = (
-  sudokuHint: HintObjectProps | undefined,
+  sudokuHint: ActiveHintState | null,
   r: number,
   c: number,
 ): boolean => {

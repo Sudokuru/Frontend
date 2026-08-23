@@ -60,18 +60,25 @@
 ## ⚙️ General Setup:
 
 1. Git clone this repository
-2. Install Node.js `v24.8.0` or later
-3. Install npm `11.6.0` or later
+2. Install Node.js `v26.5.0` or later
+3. Install npm `11.17.0` or later
 4. Run `npm i` in the root folder
 5. [Install pre-commit hooks](https://pre-commit.com/#install)
 
 6. Run `pre-commit install` to setup pre-commit hooks. Pre-commit hooks can be run manually with `npm run pre-commit`, but will always run before git commit and git push if setup correctly.
+
+**Optional:** If you have Nix installed, you can run `nix develop` in the project root to automatically install all required development packages in a reproducible environment. (nix config has only been tested on mac)
 
 ## 📲 Mobile Setup (not needed to run website):
 
 1. Contact Thomas to get added to the Expo organization so that you can log in with your own email and password.
 2. Download the expo app on your mobile device.
 3. On your development device, e.g., laptop, login by running: `expo login` and fill out the parameters.
+
+## 🖥️ Desktop Setup (for Tauri development)
+
+1. Install Rust
+2. Install Cargo
 
 ## 🏃‍♂️ Running the Application Locally
 
