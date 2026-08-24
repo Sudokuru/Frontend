@@ -50,6 +50,8 @@ import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 import { toTitle } from "../../Functions/Utils";
+import type { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
+import { DRILL_STRATEGIES } from "../../Functions/DrillStrategies";
 
 export interface DashboardNavigationAction {
   screen: string;
@@ -67,7 +69,8 @@ export type HomeDashboardIcon =
   | "account-group-outline"
   | "lan"
   | "chart-line"
-  | "account-cog-outline";
+  | "account-cog-outline"
+  | "puzzle-outline";
 
 export interface HomeDashboardCardDescriptor {
   id: string;
@@ -132,6 +135,50 @@ export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
     status: "comingSoon",
   },
 ];
+
+const CLASSIC_DIFFICULTIES: readonly GameDifficulty[] = [
+  "novice",
+  "amateur",
+  "layman",
+  "trainee",
+  "protege",
+  "professional",
+  "pundit",
+  "master",
+  "grandmaster",
+];
+
+const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
+  CLASSIC_DIFFICULTIES.map((difficulty) => ({
+    id: `classic-${difficulty}`,
+    title: `${toTitle(difficulty)} Puzzle`,
+    description: `Start a Classic Sudoku puzzle at ${toTitle(difficulty)} difficulty.`,
+    icon: "puzzle-outline",
+    testID: `HomeClassic${toTitle(difficulty).replaceAll(" ", "")}Shortcut`,
+    badge: "Classic",
+    status: "available",
+    action: {
+      screen: "SudokuPage",
+      currentPage: "SudokuPage",
+      params: { action: "StartGame", difficulty },
+    },
+  }));
+
+const getDrillStrategyShortcuts = (): HomeDashboardCardDescriptor[] =>
+  DRILL_STRATEGIES.map((strategy) => ({
+    id: `drill-${strategy.toLowerCase().replaceAll("_", "-")}`,
+    title: `${toTitle(strategy)} Drill`,
+    description: `Start a focused ${toTitle(strategy)} strategy drill.`,
+    icon: "target",
+    testID: `Home${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
+    badge: "Drill",
+    status: "available",
+    action: {
+      screen: "DrillGame",
+      currentPage: "DrillGame",
+      params: { action: "StartGame", params: strategy },
+    },
+  }));
 
 export const getHomeDashboardConfig = (
   flags: HomeDashboardFlags,
@@ -233,6 +280,8 @@ export const getHomeDashboardConfig = (
     },
   ];
 
+  shortcutCatalogue.push(...getClassicDifficultyShortcuts());
+
   if (drillAvailable) {
     shortcutCatalogue.splice(2, 0, {
       id: "drill",
@@ -247,6 +296,7 @@ export const getHomeDashboardConfig = (
         currentPage: "DrillPage",
       },
     });
+    shortcutCatalogue.push(...getDrillStrategyShortcuts());
   }
 
   return {

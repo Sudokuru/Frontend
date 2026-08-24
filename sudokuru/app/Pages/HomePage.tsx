@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Image, Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
 import { useNavigation } from "@react-navigation/native";
@@ -108,30 +108,22 @@ const HomePage = () => {
   );
 
   const normalCardCount = selectedShortcuts.length + 1;
-  const columnCount = isMobile ? 2 : Math.min(4, Math.max(2, normalCardCount));
+  const columnCount = isMobile ? 1 : Math.min(4, Math.max(2, normalCardCount));
   const rowCount = Math.ceil(normalCardCount / columnCount);
   const headerHeight = isEditing
     ? isShort
       ? 66
       : 78
     : dashboard.resumes.length > 0
-      ? isShort
-        ? 82
-        : 100
-      : 72;
+      ? isMobile
+        ? 190
+        : 150
+      : isMobile
+        ? 145
+        : 120;
   const sectionHeadingHeight = isShort ? 22 : 28;
   const progressHeight = isShort ? 54 : 64;
-  const availableGridHeight =
-    windowSize.height -
-    outerPadding * 2 -
-    headerHeight -
-    sectionHeadingHeight -
-    progressHeight -
-    gap * 3;
-  const cardHeight = Math.max(
-    58,
-    Math.min(150, (availableGridHeight - gap * (rowCount - 1)) / rowCount),
-  );
+  const cardHeight = isMobile ? 116 : 130;
   const cardWidth = (contentWidth - gap * (columnCount - 1)) / columnCount;
   const gridHeight = cardHeight * rowCount + gap * (rowCount - 1);
   const statistics = dashboard.statistics;
@@ -222,253 +214,342 @@ const HomePage = () => {
       style={{
         width: windowSize.width,
         height: windowSize.height,
-        alignItems: "center",
-        padding: outerPadding,
-        overflow: "hidden",
         backgroundColor: theme.colors.bg,
       }}
     >
-      <View
-        style={{
-          width: contentWidth,
-          height: "100%",
-          justifyContent: "center",
+      <ScrollView
+        style={{ width: windowSize.width, height: windowSize.height }}
+        contentContainerStyle={{
+          alignItems: "center",
+          paddingHorizontal: outerPadding,
+          paddingVertical: outerPadding,
+          minHeight: windowSize.height,
         }}
       >
-        <View
-          style={{
-            height: headerHeight,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 12,
-          }}
-        >
-          <View style={{ flex: 1, minWidth: 0 }}>
-            <Text
-              accessibilityRole="header"
-              variant={isMobile ? "headlineSmall" : "headlineMedium"}
-              style={{
-                color: theme.semantic.text.tertiary,
-                fontWeight: "800",
-              }}
-            >
-              {isEditing ? "Edit Home" : "Sudoku shortcuts"}
-            </Text>
-            {isEditing ? (
-              <Text
-                numberOfLines={1}
-                variant="bodySmall"
-                style={{ color: theme.semantic.text.tertiary, opacity: 0.7 }}
-              >
-                Drag shortcuts to rearrange them.
-              </Text>
-            ) : dashboard.resumes.length > 0 ? (
-              <View
-                style={{
-                  marginTop: 6,
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  gap: 6,
-                }}
-              >
-                {dashboard.resumes.map((resume) => (
-                  <Button
-                    key={resume.id}
-                    testID={resume.testID}
-                    compact
-                    mode="outlined"
-                    icon={resume.icon}
-                    textColor={theme.semantic.text.tertiary}
-                    style={{ borderColor: theme.colors.border }}
-                    onPress={() => navigateTo(resume.action)}
-                  >
-                    Resume {resume.title}
-                  </Button>
-                ))}
-              </View>
-            ) : null}
-          </View>
-          {isEditing ? (
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-            >
-              <Button
-                testID="HomeResetShortcutsButton"
-                compact
-                textColor={theme.colors.primary}
-                onPress={resetShortcuts}
-              >
-                Reset
-              </Button>
-              <Button
-                testID="HomeCustomizeDoneButton"
-                mode="contained"
-                buttonColor={theme.colors.primary}
-                textColor={theme.semantic.text.info}
-                onPress={finishEditing}
-              >
-                Done
-              </Button>
-            </View>
-          ) : null}
-        </View>
-
-        <View style={{ height: gap }} />
-
-        <Text
-          variant={isShort ? "titleSmall" : "titleMedium"}
-          style={{
-            height: sectionHeadingHeight,
-            color: theme.semantic.text.tertiary,
-            fontWeight: "800",
-          }}
-        >
-          {isEditing ? "Your layout" : "Your Home"}
-        </Text>
-        <View
-          style={{
-            height: gridHeight,
-            position: "relative",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            gap,
-          }}
-        >
-          {renderedShortcuts.map((shortcut) => (
-            <HomeShortcutCard
-              key={shortcut.id}
-              shortcut={shortcut}
-              width={cardWidth}
-              height={cardHeight}
-              index={visibleShortcutIds.indexOf(shortcut.id as HomeShortcutId)}
-              columns={columnCount}
-              total={selectedShortcuts.length}
-              gap={gap}
-              editing={isEditing}
-              onPress={() => shortcut.action && navigateTo(shortcut.action)}
-              onLongPress={beginEditing}
-              onRemove={() => removeShortcut(shortcut.id as HomeShortcutId)}
-              onDragPreview={previewShortcutOrder}
-              onDragEnd={() => {
-                const previewOrder = previewShortcutIdsRef.current;
-                if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
-              }}
-              onDragCancel={() =>
-                setPreviewOrder([...persistedVisibleShortcutIds])
-              }
-            />
-          ))}
-          <Pressable
-            testID="HomeCustomizeButton"
-            accessibilityRole="button"
-            accessibilityLabel={
-              isEditing ? "Add a Home shortcut" : "Customize Home"
-            }
-            accessibilityHint={
-              isEditing
-                ? "Open the shortcut library"
-                : "Edit and add Home shortcuts"
-            }
-            onFocus={() => setCustomizeFocused(true)}
-            onBlur={() => setCustomizeFocused(false)}
-            onPress={openLibrary}
+        <View style={{ width: contentWidth }}>
+          <View
             style={{
-              position: isEditing ? "absolute" : "relative",
-              left: isEditing
-                ? (selectedShortcuts.length % columnCount) * (cardWidth + gap)
-                : undefined,
-              top: isEditing
-                ? Math.floor(selectedShortcuts.length / columnCount) *
-                  (cardHeight + gap)
-                : undefined,
-              width: cardWidth,
-              height: cardHeight,
+              minHeight: headerHeight,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
             }}
           >
-            {({ hovered, pressed }: any) => (
-              <View
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 7,
-                  borderRadius: 14,
-                  borderWidth: hovered || customizeFocused ? 2 : 1,
-                  borderStyle: "dashed",
-                  borderColor: theme.colors.primary,
-                  opacity: pressed ? 0.7 : 1,
-                  transform: [{ rotate: isEditing ? "0.35deg" : "0deg" }],
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="plus"
-                  size={isShort ? 28 : 36}
-                  color={theme.colors.primary}
-                />
-                {cardHeight >= 82 ? (
+            <View style={{ flex: 1, minWidth: 0 }}>
+              {isEditing ? (
+                <>
                   <Text
-                    variant="labelLarge"
+                    accessibilityRole="header"
+                    variant={isMobile ? "headlineSmall" : "headlineMedium"}
                     style={{
                       color: theme.semantic.text.tertiary,
                       fontWeight: "800",
                     }}
                   >
-                    {isEditing ? "Add shortcut" : "Customize"}
+                    Edit Home
                   </Text>
-                ) : null}
-              </View>
-            )}
-          </Pressable>
-        </View>
-
-        <View style={{ height: gap }} />
-
-        <Surface
-          elevation={1}
-          style={{
-            height: progressHeight,
-            paddingHorizontal: isShort ? 12 : 18,
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: theme.colors.border,
-            backgroundColor: theme.colors.surfaceAlt,
-            opacity: isEditing ? 0.58 : 1,
-          }}
-        >
-          {dashboard.isLoading && !statistics ? (
-            <ActivityIndicator
-              color={theme.colors.primary}
-              size="small"
-              style={{ marginRight: 10 }}
-            />
-          ) : null}
-          {progressItems.map((item) => (
-            <View key={item.label} style={{ flex: 1, minWidth: 0 }}>
-              <Text
-                numberOfLines={1}
-                variant={isShort ? "titleSmall" : "titleMedium"}
-                style={{ color: theme.colors.primary, fontWeight: "800" }}
-              >
-                {item.value}
-              </Text>
-              <Text
-                numberOfLines={1}
-                variant="labelSmall"
-                style={{
-                  color: theme.semantic.text.inverse,
-                  opacity: 0.68,
-                }}
-              >
-                {item.label}
-              </Text>
+                  <Text
+                    numberOfLines={1}
+                    variant="bodySmall"
+                    style={{
+                      color: theme.semantic.text.tertiary,
+                      opacity: 0.7,
+                    }}
+                  >
+                    Drag shortcuts to rearrange them.
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 14,
+                    }}
+                  >
+                    <Image
+                      accessible={false}
+                      source={require("../../.assets/goldLogoNoText.png")}
+                      style={{
+                        width: isMobile ? 52 : 64,
+                        height: isMobile ? 52 : 64,
+                        resizeMode: "contain",
+                      }}
+                    />
+                    <View style={{ flex: 1, minWidth: 0 }}>
+                      <Text
+                        accessibilityRole="header"
+                        variant={isMobile ? "headlineSmall" : "headlineMedium"}
+                        style={{
+                          color: theme.semantic.text.tertiary,
+                          fontWeight: "800",
+                        }}
+                      >
+                        Sudoku Home
+                      </Text>
+                      <Text
+                        variant="bodyMedium"
+                        style={{
+                          marginTop: 2,
+                          color: theme.semantic.text.tertiary,
+                          opacity: 0.72,
+                        }}
+                      >
+                        Play puzzles, learn solving strategies, and practice
+                        with focused drills.
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      marginTop: 9,
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: 12,
+                    }}
+                  >
+                    {(
+                      [
+                        ["grid", "Classic puzzles"],
+                        ["school-outline", "Guided lessons"],
+                        ["target", "Strategy drills"],
+                      ] as const
+                    ).map(([icon, label]) => (
+                      <View
+                        key={label}
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 5,
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name={icon}
+                          size={16}
+                          color={theme.colors.primary}
+                        />
+                        <Text
+                          variant="labelMedium"
+                          style={{ color: theme.semantic.text.tertiary }}
+                        >
+                          {label}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                  {dashboard.resumes.length > 0 ? (
+                    <View
+                      style={{
+                        marginTop: 8,
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        gap: 6,
+                      }}
+                    >
+                      {dashboard.resumes.map((resume) => (
+                        <Button
+                          key={resume.id}
+                          testID={resume.testID}
+                          compact
+                          mode="outlined"
+                          icon={resume.icon}
+                          textColor={theme.semantic.text.tertiary}
+                          style={{ borderColor: theme.colors.border }}
+                          onPress={() => navigateTo(resume.action)}
+                        >
+                          Resume {resume.title}
+                        </Button>
+                      ))}
+                    </View>
+                  ) : null}
+                </>
+              )}
             </View>
-          ))}
-        </Surface>
-      </View>
+            {isEditing ? (
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
+                <Button
+                  testID="HomeResetShortcutsButton"
+                  compact
+                  textColor={theme.colors.primary}
+                  onPress={resetShortcuts}
+                >
+                  Reset
+                </Button>
+                <Button
+                  testID="HomeCustomizeDoneButton"
+                  mode="contained"
+                  buttonColor={theme.colors.primary}
+                  textColor={theme.semantic.text.info}
+                  onPress={finishEditing}
+                >
+                  Done
+                </Button>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={{ height: gap }} />
+
+          <Surface
+            elevation={1}
+            style={{
+              height: progressHeight,
+              paddingHorizontal: isShort ? 12 : 18,
+              flexDirection: "row",
+              alignItems: "center",
+              borderRadius: 12,
+              borderWidth: 1,
+              borderColor: theme.colors.border,
+              backgroundColor: theme.colors.surfaceAlt,
+              opacity: isEditing ? 0.58 : 1,
+            }}
+          >
+            {dashboard.isLoading && !statistics ? (
+              <ActivityIndicator
+                color={theme.colors.primary}
+                size="small"
+                style={{ marginRight: 10 }}
+              />
+            ) : null}
+            {progressItems.map((item) => (
+              <View key={item.label} style={{ flex: 1, minWidth: 0 }}>
+                <Text
+                  numberOfLines={1}
+                  variant={isShort ? "titleSmall" : "titleMedium"}
+                  style={{ color: theme.colors.primary, fontWeight: "800" }}
+                >
+                  {item.value}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  variant="labelSmall"
+                  style={{
+                    color: theme.semantic.text.inverse,
+                    opacity: 0.68,
+                  }}
+                >
+                  {item.label}
+                </Text>
+              </View>
+            ))}
+          </Surface>
+
+          <View style={{ height: gap }} />
+
+          <Text
+            variant={isShort ? "titleSmall" : "titleMedium"}
+            style={{
+              height: sectionHeadingHeight,
+              color: theme.semantic.text.tertiary,
+              fontWeight: "800",
+            }}
+          >
+            {isEditing ? "Your layout" : "Your Home"}
+          </Text>
+          <View
+            style={{
+              height: gridHeight,
+              position: "relative",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap,
+            }}
+          >
+            {renderedShortcuts.map((shortcut) => (
+              <HomeShortcutCard
+                key={shortcut.id}
+                shortcut={shortcut}
+                width={cardWidth}
+                height={cardHeight}
+                index={visibleShortcutIds.indexOf(
+                  shortcut.id as HomeShortcutId,
+                )}
+                columns={columnCount}
+                total={selectedShortcuts.length}
+                gap={gap}
+                editing={isEditing}
+                onPress={() => shortcut.action && navigateTo(shortcut.action)}
+                onLongPress={beginEditing}
+                onRemove={() => removeShortcut(shortcut.id as HomeShortcutId)}
+                onDragPreview={previewShortcutOrder}
+                onDragEnd={() => {
+                  const previewOrder = previewShortcutIdsRef.current;
+                  if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
+                }}
+                onDragCancel={() =>
+                  setPreviewOrder([...persistedVisibleShortcutIds])
+                }
+              />
+            ))}
+            <Pressable
+              testID="HomeCustomizeButton"
+              accessibilityRole="button"
+              accessibilityLabel={
+                isEditing ? "Add a Home shortcut" : "Customize Home"
+              }
+              accessibilityHint={
+                isEditing
+                  ? "Open the shortcut library"
+                  : "Edit and add Home shortcuts"
+              }
+              onFocus={() => setCustomizeFocused(true)}
+              onBlur={() => setCustomizeFocused(false)}
+              onPress={openLibrary}
+              style={{
+                position: isEditing ? "absolute" : "relative",
+                left: isEditing
+                  ? (selectedShortcuts.length % columnCount) * (cardWidth + gap)
+                  : undefined,
+                top: isEditing
+                  ? Math.floor(selectedShortcuts.length / columnCount) *
+                    (cardHeight + gap)
+                  : undefined,
+                width: cardWidth,
+                height: cardHeight,
+              }}
+            >
+              {({ hovered, pressed }: any) => (
+                <View
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 7,
+                    borderRadius: 14,
+                    borderWidth: hovered || customizeFocused ? 2 : 1,
+                    borderStyle: "dashed",
+                    borderColor: theme.colors.primary,
+                    opacity: pressed ? 0.7 : 1,
+                    transform: [{ rotate: isEditing ? "0.35deg" : "0deg" }],
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="plus"
+                    size={isShort ? 28 : 36}
+                    color={theme.colors.primary}
+                  />
+                  {cardHeight >= 82 ? (
+                    <Text
+                      variant="labelLarge"
+                      style={{
+                        color: theme.semantic.text.tertiary,
+                        fontWeight: "800",
+                      }}
+                    >
+                      {isEditing ? "Add shortcut" : "Customize"}
+                    </Text>
+                  ) : null}
+                </View>
+              )}
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
 
       <Portal>
         <Modal

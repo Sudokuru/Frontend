@@ -2,7 +2,6 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, ImageURISource } from "react-native";
 import { Button, Checkbox, Dialog, Portal, Text } from "react-native-paper";
-import { SudokuStrategy } from "sudokuru";
 import { difficulty, getDifficultyColor } from "./Cards";
 import { toTitle } from "../../Functions/Utils";
 import {
@@ -14,25 +13,10 @@ import { getActiveGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
-
-function defineDrillStrategies<T extends readonly SudokuStrategy[]>(arr: T): T {
-  return arr;
-}
-
-export const DRILL_STRATEGIES = defineDrillStrategies([
-  "OBVIOUS_SINGLE",
-  "OBVIOUS_PAIR",
-  "OBVIOUS_TRIPLET",
-  "OBVIOUS_QUADRUPLET",
-  "HIDDEN_SINGLE",
-  "HIDDEN_PAIR",
-  "HIDDEN_TRIPLET",
-  "HIDDEN_QUADRUPLET",
-  "POINTING_PAIR",
-  "POINTING_TRIPLET",
-] as const);
-
-export type DrillStrategy = (typeof DRILL_STRATEGIES)[number];
+import {
+  DRILL_STRATEGIES,
+  DrillStrategy,
+} from "../../Functions/DrillStrategies";
 
 const drillImages: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/3points.png"),

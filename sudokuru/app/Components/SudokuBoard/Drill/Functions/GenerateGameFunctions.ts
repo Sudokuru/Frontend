@@ -7,7 +7,7 @@ import {
 } from "../../../../Functions/LocalDatabase";
 import { DrillBoard } from "../../SudokuBoard";
 import { getSudokuHint } from "../../Core/Functions/HintFunctions";
-import { DrillStrategy } from "../../../Home/DrillPanel";
+import { DrillStrategy } from "../../../../Functions/DrillStrategies";
 import { OBVIOUS_PAIR_DRILLS } from "../../../../Data/drills/obvious_pair_drills";
 import { OBVIOUS_TRIPLET_DRILLS } from "../../../../Data/drills/obvious_triplet_drills";
 import { OBVIOUS_QUADRUPLET_DRILLS } from "../../../../Data/drills/obvious_quadruplet_drills";
