@@ -1,10 +1,22 @@
 import React from "react";
-import { Pressable, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
 import { useNavigation } from "@react-navigation/native";
-import { ActivityIndicator, Button, Surface, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Button,
+  IconButton,
+  Modal,
+  Portal,
+  Searchbar,
+  Surface,
+  Text,
+} from "react-native-paper";
+import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
+import HomeShortcutCard from "../Components/Home/HomeShortcutCard";
 import { useHomeDashboardData } from "../Components/Home/useHomeDashboardData";
+import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
 import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
@@ -19,16 +31,22 @@ const HomePage = () => {
   const { theme } = useTheme();
   const windowSize = useNewWindowDimensions();
   const isMobile = windowSize.width < HOME_MOBILE_BREAKPOINT;
-  const isVeryShort = windowSize.height < 480;
-  const isShort = windowSize.height < 620;
-  const outerPadding = isVeryShort ? 6 : isShort ? 10 : isMobile ? 16 : 24;
-  const sectionGap = isVeryShort ? 6 : isShort ? 10 : 16;
-  const cardGap = isVeryShort ? 6 : isShort ? 8 : 12;
+  const isShort = windowSize.height < 590;
+  const outerPadding = isShort ? 10 : isMobile ? 16 : 24;
+  const gap = isShort ? 8 : 12;
   const contentWidth = Math.min(
     HOME_MAX_WIDTH,
     Math.max(windowSize.width - outerPadding * 2, 0),
   );
-  const [focusedAction, setFocusedAction] = React.useState<string | null>(null);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = React.useState(false);
+  const [query, setQuery] = React.useState("");
+  const [customizeFocused, setCustomizeFocused] = React.useState(false);
+  const [previewShortcutIds, setPreviewShortcutIds] = React.useState<
+    HomeShortcutId[] | null
+  >(null);
+  const previewShortcutIdsRef = React.useRef<HomeShortcutId[] | null>(null);
+  const deferredQuery = React.useDeferredValue(query.trim().toLowerCase());
 
   const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
     React.useContext(PreferencesContext);
@@ -36,6 +54,7 @@ const HomePage = () => {
     featurePreview: featurePreviewSetting,
     drillMode: drillModeSetting,
   });
+  const shortcuts = useHomeShortcuts();
   const [fontsLoaded] = useFonts({ Inter_400Regular });
 
   const navigateTo = (action: DashboardNavigationAction) => {
@@ -43,7 +62,7 @@ const HomePage = () => {
     navigation.navigate(action.screen, action.params);
   };
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || shortcuts.isLoading) {
     return (
       <View
         style={{
@@ -58,46 +77,68 @@ const HomePage = () => {
     );
   }
 
-  const homeActions = dashboard.config.homeActions;
-  const columnCount = isMobile ? 2 : homeActions.length;
-  const rowCount = Math.ceil(homeActions.length / columnCount);
-  const actionSectionHeight = isMobile
-    ? isVeryShort
-      ? 138
-      : Math.min(isShort ? 220 : 270, windowSize.height * 0.43)
-    : isVeryShort
-      ? 88
-      : Math.min(isShort ? 128 : 176, windowSize.height * 0.29);
-  const actionHeadingHeight = isVeryShort ? 18 : isShort ? 22 : 28;
-  const actionCardHeight = Math.max(
-    isVeryShort ? 52 : 72,
-    (actionSectionHeight -
-      actionHeadingHeight -
-      cardGap -
-      cardGap * (rowCount - 1)) /
-      rowCount,
+  const shortcutById = new Map(
+    dashboard.config.shortcutCatalogue.map((shortcut) => [
+      shortcut.id,
+      shortcut,
+    ]),
   );
-  const actionCardWidth =
-    (contentWidth - cardGap * (columnCount - 1)) / columnCount;
-  const progressHeight = isVeryShort ? 48 : isShort ? 58 : 70;
-  const availableHeroHeight =
+  const persistedVisibleShortcutIds = shortcuts.shortcutIds.filter(
+    (shortcutId) => shortcutById.has(shortcutId),
+  );
+  const visibleShortcutIds =
+    isEditing && previewShortcutIds
+      ? previewShortcutIds
+      : persistedVisibleShortcutIds;
+  const selectedShortcuts = visibleShortcutIds.flatMap((shortcutId) => {
+    const shortcut = shortcutById.get(shortcutId);
+    return shortcut ? [shortcut] : [];
+  });
+  const renderedShortcuts = isEditing
+    ? dashboard.config.shortcutCatalogue.filter((shortcut) =>
+        visibleShortcutIds.includes(shortcut.id as HomeShortcutId),
+      )
+    : selectedShortcuts;
+  const availableShortcuts = dashboard.config.shortcutCatalogue.filter(
+    (shortcut) =>
+      !shortcuts.shortcutIds.includes(shortcut.id as HomeShortcutId) &&
+      `${shortcut.title} ${shortcut.description} ${shortcut.badge ?? ""}`
+        .toLowerCase()
+        .includes(deferredQuery),
+  );
+
+  const normalCardCount = selectedShortcuts.length + 1;
+  const columnCount = isMobile ? 2 : Math.min(4, Math.max(2, normalCardCount));
+  const rowCount = Math.ceil(normalCardCount / columnCount);
+  const headerHeight = isEditing
+    ? isShort
+      ? 66
+      : 78
+    : dashboard.resumes.length > 0
+      ? isShort
+        ? 82
+        : 100
+      : 72;
+  const sectionHeadingHeight = isShort ? 22 : 28;
+  const progressHeight = isShort ? 54 : 64;
+  const availableGridHeight =
     windowSize.height -
     outerPadding * 2 -
-    sectionGap * 2 -
-    actionSectionHeight -
-    progressHeight;
-  const heroHeight = Math.max(
-    isVeryShort ? 92 : 118,
-    Math.min(isMobile ? 220 : 250, availableHeroHeight),
+    headerHeight -
+    sectionHeadingHeight -
+    progressHeight -
+    gap * 3;
+  const cardHeight = Math.max(
+    58,
+    Math.min(150, (availableGridHeight - gap * (rowCount - 1)) / rowCount),
   );
-  const compactHero = heroHeight < 240;
-  const showActionDescriptions = !isVeryShort && actionCardHeight >= 92;
+  const cardWidth = (contentWidth - gap * (columnCount - 1)) / columnCount;
+  const gridHeight = cardHeight * rowCount + gap * (rowCount - 1);
   const statistics = dashboard.statistics;
   const progressItems = [
     {
       value: statistics ? statistics.numGamesPlayed.toString() : "-",
       label: "Solved",
-      testID: "HomeProgressGamesPlayed",
     },
     {
       value:
@@ -105,18 +146,79 @@ const HomePage = () => {
           ? formatTime(statistics.fastestSolveTime)
           : "-",
       label: "Best time",
-      testID: "HomeProgressFastestSolveTime",
     },
     {
       value: `${dashboard.completedLessons}/${dashboard.totalLessons}`,
       label: "Lessons",
-      testID: "HomeProgressLessons",
     },
   ];
 
+  const setPreviewOrder = (shortcutIds: HomeShortcutId[]) => {
+    previewShortcutIdsRef.current = shortcutIds;
+    setPreviewShortcutIds(shortcutIds);
+  };
+
+  const previewShortcutOrder = (shortcutId: string, toIndex: number) => {
+    const currentOrder =
+      previewShortcutIdsRef.current ?? persistedVisibleShortcutIds;
+    const fromIndex = currentOrder.indexOf(shortcutId as HomeShortcutId);
+    if (fromIndex < 0 || fromIndex === toIndex) return;
+
+    const nextShortcuts = [...currentOrder];
+    const [movedShortcut] = nextShortcuts.splice(fromIndex, 1);
+    nextShortcuts.splice(toIndex, 0, movedShortcut);
+    setPreviewOrder(nextShortcuts);
+  };
+
+  const beginEditing = () => {
+    setPreviewOrder([...persistedVisibleShortcutIds]);
+    setIsEditing(true);
+  };
+
+  const openLibrary = () => {
+    if (!isEditing) beginEditing();
+    setIsLibraryOpen(true);
+  };
+
+  const finishEditing = () => {
+    const previewOrder = previewShortcutIdsRef.current;
+    if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
+    setQuery("");
+    setIsLibraryOpen(false);
+    setIsEditing(false);
+    previewShortcutIdsRef.current = null;
+    setPreviewShortcutIds(null);
+  };
+
+  const resetShortcuts = () => {
+    shortcuts.resetShortcuts();
+    setPreviewOrder(
+      DEFAULT_HOME_SHORTCUTS.filter((shortcutId) =>
+        shortcutById.has(shortcutId),
+      ),
+    );
+  };
+
+  const removeShortcut = (shortcutId: HomeShortcutId) => {
+    const nextPreview = (
+      previewShortcutIdsRef.current ?? persistedVisibleShortcutIds
+    ).filter((id) => id !== shortcutId);
+    setPreviewOrder(nextPreview);
+    shortcuts.removeShortcut(shortcutId);
+  };
+
+  const addShortcut = (shortcutId: HomeShortcutId) => {
+    const currentPreview =
+      previewShortcutIdsRef.current ?? persistedVisibleShortcutIds;
+    if (!currentPreview.includes(shortcutId)) {
+      setPreviewOrder([...currentPreview, shortcutId]);
+    }
+    shortcuts.addShortcut(shortcutId);
+  };
+
   return (
     <View
-      testID="HomeDashboard"
+      testID={isEditing ? "HomeCustomizeMode" : "HomeDashboard"}
       style={{
         width: windowSize.width,
         height: windowSize.height,
@@ -135,397 +237,402 @@ const HomePage = () => {
       >
         <View
           style={{
-            height: heroHeight,
+            height: headerHeight,
+            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
+            gap: 12,
           }}
         >
-          <View style={{ width: "100%", maxWidth: 820 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: isVeryShort ? 12 : 18,
-              }}
-            >
-              <View
-                style={{
-                  width: isVeryShort ? 44 : isMobile ? 56 : 68,
-                  height: isVeryShort ? 44 : isMobile ? 56 : 68,
-                  flexShrink: 0,
-                  borderRadius: 12,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderWidth: 2,
-                  borderColor: theme.colors.primary,
-                  backgroundColor: theme.colors.surfaceAlt,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="grid"
-                  size={isVeryShort ? 27 : isMobile ? 34 : 42}
-                  color={theme.colors.primary}
-                />
-              </View>
-              <View style={{ flex: 1, minWidth: 0 }}>
-                {!isVeryShort ? (
-                  <Text
-                    variant="labelSmall"
-                    style={{
-                      marginBottom: 2,
-                      color: theme.colors.primary,
-                      fontWeight: "800",
-                      letterSpacing: 1.2,
-                    }}
-                  >
-                    SUDOKU
-                  </Text>
-                ) : null}
-                <Text
-                  testID="HomeHeroTitle"
-                  accessibilityRole="header"
-                  numberOfLines={isVeryShort ? 1 : 2}
-                  adjustsFontSizeToFit
-                  style={{
-                    color: theme.semantic.text.tertiary,
-                    fontSize: isMobile
-                      ? isVeryShort
-                        ? 26
-                        : compactHero
-                          ? 32
-                          : 40
-                      : isVeryShort
-                        ? 30
-                        : compactHero
-                          ? 40
-                          : 56,
-                    lineHeight: isMobile
-                      ? isVeryShort
-                        ? 29
-                        : compactHero
-                          ? 35
-                          : 43
-                      : isVeryShort
-                        ? 33
-                        : compactHero
-                          ? 43
-                          : 59,
-                    fontWeight: "800",
-                    letterSpacing: -1.4,
-                  }}
-                >
-                  {dashboard.heroAction.title}
-                </Text>
-              </View>
-            </View>
-            {!compactHero && !isVeryShort ? (
-              <Text
-                variant="bodyLarge"
-                numberOfLines={2}
-                style={{
-                  marginTop: 10,
-                  maxWidth: 620,
-                  marginLeft: isMobile ? 74 : 86,
-                  color: theme.semantic.text.tertiary,
-                  opacity: 0.72,
-                }}
-              >
-                {dashboard.heroAction.description}
-              </Text>
-            ) : null}
-            <View
-              style={{
-                marginTop: isVeryShort ? 6 : compactHero ? 12 : 18,
-                marginLeft: isVeryShort ? 56 : isMobile ? 74 : 86,
-                flexDirection: "row",
-                flexWrap: "wrap",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <Button
-                testID="HomeHeroPrimaryButton"
-                mode="contained"
-                buttonColor={theme.colors.primary}
-                textColor={theme.semantic.text.info}
-                contentStyle={{
-                  minHeight: isVeryShort ? 36 : compactHero ? 42 : 48,
-                }}
-                labelStyle={{ fontWeight: "800" }}
-                onPress={() => navigateTo(dashboard.heroAction.action)}
-              >
-                {dashboard.heroAction.label}
-              </Button>
-              {dashboard.supportingResumes.map((resume) => (
-                <Button
-                  key={resume.id}
-                  testID={resume.testID}
-                  compact={compactHero || isVeryShort}
-                  mode="outlined"
-                  icon={resume.icon}
-                  textColor={theme.semantic.text.tertiary}
-                  style={{ borderColor: theme.colors.border }}
-                  contentStyle={{
-                    minHeight: isVeryShort ? 36 : compactHero ? 42 : 48,
-                  }}
-                  onPress={() => navigateTo(resume.action)}
-                >
-                  Resume drill
-                </Button>
-              ))}
-            </View>
-          </View>
-        </View>
-
-        <View style={{ height: sectionGap }} />
-
-        <View style={{ height: actionSectionHeight }}>
-          <View
-            style={{
-              height: actionHeadingHeight,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={{ flex: 1, minWidth: 0 }}>
             <Text
               accessibilityRole="header"
-              variant={isShort ? "titleSmall" : "titleMedium"}
+              variant={isMobile ? "headlineSmall" : "headlineMedium"}
               style={{
                 color: theme.semantic.text.tertiary,
                 fontWeight: "800",
               }}
             >
-              Sudoku puzzles and lessons
+              {isEditing ? "Edit Home" : "Sudoku shortcuts"}
             </Text>
+            {isEditing ? (
+              <Text
+                numberOfLines={1}
+                variant="bodySmall"
+                style={{ color: theme.semantic.text.tertiary, opacity: 0.7 }}
+              >
+                Drag shortcuts to rearrange them.
+              </Text>
+            ) : dashboard.resumes.length > 0 ? (
+              <View
+                style={{
+                  marginTop: 6,
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 6,
+                }}
+              >
+                {dashboard.resumes.map((resume) => (
+                  <Button
+                    key={resume.id}
+                    testID={resume.testID}
+                    compact
+                    mode="outlined"
+                    icon={resume.icon}
+                    textColor={theme.semantic.text.tertiary}
+                    style={{ borderColor: theme.colors.border }}
+                    onPress={() => navigateTo(resume.action)}
+                  >
+                    Resume {resume.title}
+                  </Button>
+                ))}
+              </View>
+            ) : null}
           </View>
-          <View
+          {isEditing ? (
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            >
+              <Button
+                testID="HomeResetShortcutsButton"
+                compact
+                textColor={theme.colors.primary}
+                onPress={resetShortcuts}
+              >
+                Reset
+              </Button>
+              <Button
+                testID="HomeCustomizeDoneButton"
+                mode="contained"
+                buttonColor={theme.colors.primary}
+                textColor={theme.semantic.text.info}
+                onPress={finishEditing}
+              >
+                Done
+              </Button>
+            </View>
+          ) : null}
+        </View>
+
+        <View style={{ height: gap }} />
+
+        <Text
+          variant={isShort ? "titleSmall" : "titleMedium"}
+          style={{
+            height: sectionHeadingHeight,
+            color: theme.semantic.text.tertiary,
+            fontWeight: "800",
+          }}
+        >
+          {isEditing ? "Your layout" : "Your Home"}
+        </Text>
+        <View
+          style={{
+            height: gridHeight,
+            position: "relative",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap,
+          }}
+        >
+          {renderedShortcuts.map((shortcut) => (
+            <HomeShortcutCard
+              key={shortcut.id}
+              shortcut={shortcut}
+              width={cardWidth}
+              height={cardHeight}
+              index={visibleShortcutIds.indexOf(shortcut.id as HomeShortcutId)}
+              columns={columnCount}
+              total={selectedShortcuts.length}
+              gap={gap}
+              editing={isEditing}
+              onPress={() => shortcut.action && navigateTo(shortcut.action)}
+              onLongPress={beginEditing}
+              onRemove={() => removeShortcut(shortcut.id as HomeShortcutId)}
+              onDragPreview={previewShortcutOrder}
+              onDragEnd={() => {
+                const previewOrder = previewShortcutIdsRef.current;
+                if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
+              }}
+              onDragCancel={() =>
+                setPreviewOrder([...persistedVisibleShortcutIds])
+              }
+            />
+          ))}
+          <Pressable
+            testID="HomeCustomizeButton"
+            accessibilityRole="button"
+            accessibilityLabel={
+              isEditing ? "Add a Home shortcut" : "Customize Home"
+            }
+            accessibilityHint={
+              isEditing
+                ? "Open the shortcut library"
+                : "Edit and add Home shortcuts"
+            }
+            onFocus={() => setCustomizeFocused(true)}
+            onBlur={() => setCustomizeFocused(false)}
+            onPress={openLibrary}
             style={{
-              marginTop: cardGap,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: cardGap,
+              position: isEditing ? "absolute" : "relative",
+              left: isEditing
+                ? (selectedShortcuts.length % columnCount) * (cardWidth + gap)
+                : undefined,
+              top: isEditing
+                ? Math.floor(selectedShortcuts.length / columnCount) *
+                  (cardHeight + gap)
+                : undefined,
+              width: cardWidth,
+              height: cardHeight,
             }}
           >
-            {homeActions.map((item, index) => {
-              const disabled = item.status === "comingSoon";
-              const focused = focusedAction === item.testID;
-              const isLastOddMobileCard =
-                isMobile &&
-                homeActions.length % 2 === 1 &&
-                index === homeActions.length - 1;
-              return (
+            {({ hovered, pressed }: any) => (
+              <View
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 7,
+                  borderRadius: 14,
+                  borderWidth: hovered || customizeFocused ? 2 : 1,
+                  borderStyle: "dashed",
+                  borderColor: theme.colors.primary,
+                  opacity: pressed ? 0.7 : 1,
+                  transform: [{ rotate: isEditing ? "0.35deg" : "0deg" }],
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="plus"
+                  size={isShort ? 28 : 36}
+                  color={theme.colors.primary}
+                />
+                {cardHeight >= 82 ? (
+                  <Text
+                    variant="labelLarge"
+                    style={{
+                      color: theme.semantic.text.tertiary,
+                      fontWeight: "800",
+                    }}
+                  >
+                    {isEditing ? "Add shortcut" : "Customize"}
+                  </Text>
+                ) : null}
+              </View>
+            )}
+          </Pressable>
+        </View>
+
+        <View style={{ height: gap }} />
+
+        <Surface
+          elevation={1}
+          style={{
+            height: progressHeight,
+            paddingHorizontal: isShort ? 12 : 18,
+            flexDirection: "row",
+            alignItems: "center",
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: theme.colors.border,
+            backgroundColor: theme.colors.surfaceAlt,
+            opacity: isEditing ? 0.58 : 1,
+          }}
+        >
+          {dashboard.isLoading && !statistics ? (
+            <ActivityIndicator
+              color={theme.colors.primary}
+              size="small"
+              style={{ marginRight: 10 }}
+            />
+          ) : null}
+          {progressItems.map((item) => (
+            <View key={item.label} style={{ flex: 1, minWidth: 0 }}>
+              <Text
+                numberOfLines={1}
+                variant={isShort ? "titleSmall" : "titleMedium"}
+                style={{ color: theme.colors.primary, fontWeight: "800" }}
+              >
+                {item.value}
+              </Text>
+              <Text
+                numberOfLines={1}
+                variant="labelSmall"
+                style={{
+                  color: theme.semantic.text.inverse,
+                  opacity: 0.68,
+                }}
+              >
+                {item.label}
+              </Text>
+            </View>
+          ))}
+        </Surface>
+      </View>
+
+      <Portal>
+        <Modal
+          visible={isLibraryOpen}
+          onDismiss={() => {
+            setQuery("");
+            setIsLibraryOpen(false);
+          }}
+          contentContainerStyle={{
+            width: isMobile ? "100%" : Math.min(640, windowSize.width - 48),
+            maxHeight: windowSize.height * 0.78,
+            alignSelf: "center",
+            marginTop: "auto",
+            marginBottom: isMobile ? 0 : "auto",
+            padding: isMobile ? 18 : 24,
+            borderTopLeftRadius: 22,
+            borderTopRightRadius: 22,
+            borderBottomLeftRadius: isMobile ? 0 : 22,
+            borderBottomRightRadius: isMobile ? 0 : 22,
+            borderWidth: 1,
+            borderColor: theme.colors.border,
+            backgroundColor: theme.colors.bg,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Text
+                accessibilityRole="header"
+                variant="headlineSmall"
+                style={{
+                  color: theme.semantic.text.tertiary,
+                  fontWeight: "800",
+                }}
+              >
+                Shortcut library
+              </Text>
+              <Text
+                variant="bodySmall"
+                style={{ color: theme.semantic.text.tertiary, opacity: 0.7 }}
+              >
+                Tap a shortcut to add it to Home.
+              </Text>
+            </View>
+            <IconButton
+              testID="CloseHomeShortcutLibrary"
+              accessibilityLabel="Close shortcut library"
+              icon="close"
+              iconColor={theme.colors.primary}
+              onPress={() => {
+                setQuery("");
+                setIsLibraryOpen(false);
+              }}
+            />
+          </View>
+          <Searchbar
+            testID="HomeShortcutSearchInput"
+            placeholder="Search shortcuts"
+            value={query}
+            onChangeText={setQuery}
+            style={{
+              marginTop: 14,
+              backgroundColor: theme.colors.surfaceAlt,
+              borderWidth: 1,
+              borderColor: theme.colors.border,
+            }}
+            inputStyle={{ color: theme.semantic.text.inverse }}
+            iconColor={theme.colors.primary}
+            placeholderTextColor={theme.semantic.text.inverse}
+          />
+          <ScrollView style={{ marginTop: 12 }}>
+            {availableShortcuts.length > 0 ? (
+              availableShortcuts.map((shortcut, index) => (
                 <Pressable
-                  key={item.id}
-                  testID={item.testID}
+                  key={shortcut.id}
+                  testID={`Add${shortcut.testID}`}
                   accessibilityRole="button"
-                  accessibilityLabel={item.title}
-                  accessibilityHint={disabled ? item.badge : item.description}
-                  accessibilityState={{ disabled }}
-                  disabled={disabled}
-                  onFocus={() => setFocusedAction(item.testID)}
-                  onBlur={() => setFocusedAction(null)}
-                  onPress={() => item.action && navigateTo(item.action)}
-                  style={{
-                    width: isLastOddMobileCard ? contentWidth : actionCardWidth,
-                    height: actionCardHeight,
-                  }}
+                  accessibilityLabel={`Add ${shortcut.title}`}
+                  onPress={() => addShortcut(shortcut.id as HomeShortcutId)}
                 >
                   {({ hovered, pressed }: any) => (
-                    <Surface
-                      elevation={disabled ? 0 : pressed ? 1 : 2}
+                    <View
                       style={{
-                        width: "100%",
-                        height: "100%",
-                        paddingHorizontal: isShort ? 12 : 16,
-                        paddingVertical: isVeryShort ? 6 : isShort ? 10 : 14,
+                        minHeight: 72,
+                        paddingHorizontal: 12,
+                        paddingVertical: 10,
                         flexDirection: "row",
                         alignItems: "center",
-                        gap: isShort ? 10 : 14,
-                        borderRadius: 12,
-                        borderWidth: hovered || focused ? 2 : 1,
-                        borderStyle: disabled ? "dashed" : "solid",
-                        borderColor:
-                          hovered || focused
-                            ? theme.colors.primary
-                            : theme.colors.border,
-                        backgroundColor: disabled
-                          ? theme.colors.bg
-                          : theme.colors.surfaceAlt,
-                        opacity: pressed ? 0.8 : 1,
+                        gap: 12,
+                        borderTopWidth: index === 0 ? 0 : 1,
+                        borderColor: theme.colors.border,
+                        backgroundColor: hovered
+                          ? theme.colors.surfaceAlt
+                          : theme.colors.bg,
+                        opacity: pressed ? 0.75 : 1,
                       }}
                     >
                       <View
                         style={{
-                          width: isVeryShort ? 30 : isShort ? 36 : 42,
-                          height: isVeryShort ? 30 : isShort ? 36 : 42,
-                          flexShrink: 0,
-                          borderRadius: isVeryShort ? 8 : 10,
+                          width: 40,
+                          height: 40,
+                          borderRadius: 10,
                           alignItems: "center",
                           justifyContent: "center",
-                          backgroundColor: disabled
-                            ? theme.colors.surfaceAlt
-                            : theme.colors.bg,
+                          backgroundColor: theme.colors.surfaceAlt,
                         }}
                       >
                         <MaterialCommunityIcons
-                          name={item.icon}
-                          size={isVeryShort ? 18 : isShort ? 22 : 25}
+                          name={shortcut.icon}
+                          size={24}
                           color={theme.colors.primary}
                         />
                       </View>
                       <View style={{ flex: 1, minWidth: 0 }}>
-                        {item.badge ? (
-                          <Text
-                            numberOfLines={1}
-                            variant="labelSmall"
-                            style={{
-                              marginBottom: 2,
-                              color: theme.colors.primary,
-                              fontWeight: "800",
-                            }}
-                          >
-                            {item.badge.toUpperCase()}
-                          </Text>
-                        ) : null}
                         <Text
-                          numberOfLines={1}
-                          variant={isShort ? "titleSmall" : "titleMedium"}
+                          variant="titleSmall"
                           style={{
-                            color: disabled
-                              ? theme.semantic.text.tertiary
-                              : theme.semantic.text.inverse,
+                            color: theme.semantic.text.tertiary,
                             fontWeight: "800",
                           }}
                         >
-                          {item.title}
+                          {shortcut.title}
                         </Text>
-                        {showActionDescriptions ? (
-                          <Text
-                            numberOfLines={2}
-                            variant="bodySmall"
-                            style={{
-                              marginTop: 3,
-                              color: disabled
-                                ? theme.semantic.text.tertiary
-                                : theme.semantic.text.inverse,
-                              opacity: 0.68,
-                            }}
-                          >
-                            {item.description}
-                          </Text>
-                        ) : null}
+                        <Text
+                          numberOfLines={1}
+                          variant="bodySmall"
+                          style={{
+                            color: theme.semantic.text.tertiary,
+                            opacity: 0.68,
+                          }}
+                        >
+                          {shortcut.description}
+                        </Text>
                       </View>
-                      {!disabled ? (
-                        <MaterialCommunityIcons
-                          name="arrow-right"
-                          size={20}
-                          color={theme.colors.primary}
-                        />
-                      ) : null}
-                    </Surface>
+                      <MaterialCommunityIcons
+                        name="plus-circle-outline"
+                        size={26}
+                        color={theme.colors.primary}
+                      />
+                    </View>
                   )}
                 </Pressable>
-              );
-            })}
-          </View>
-        </View>
-
-        <View style={{ height: sectionGap }} />
-
-        <Pressable
-          testID="HomeViewStatisticsButton"
-          accessibilityRole="button"
-          accessibilityLabel="View statistics"
-          onFocus={() => setFocusedAction("HomeViewStatisticsButton")}
-          onBlur={() => setFocusedAction(null)}
-          onPress={() =>
-            navigateTo({
-              screen: "StatisticsPage",
-              currentPage: "StatisticsPage",
-            })
-          }
-          style={{ height: progressHeight }}
-        >
-          {({ hovered, pressed }: any) => (
-            <Surface
-              testID="HomeProgressSummary"
-              elevation={1}
-              style={{
-                height: "100%",
-                paddingHorizontal: isShort ? 12 : 18,
-                flexDirection: "row",
-                alignItems: "center",
-                borderRadius: 12,
-                borderWidth:
-                  hovered || focusedAction === "HomeViewStatisticsButton"
-                    ? 2
-                    : 1,
-                borderColor:
-                  hovered || focusedAction === "HomeViewStatisticsButton"
-                    ? theme.colors.primary
-                    : theme.colors.border,
-                backgroundColor: theme.colors.surfaceAlt,
-                opacity: pressed ? 0.8 : 1,
-              }}
-            >
-              {dashboard.isLoading && !statistics ? (
-                <ActivityIndicator
-                  testID="HomeLoading"
-                  color={theme.colors.primary}
-                  size="small"
-                  style={{ marginRight: 12 }}
-                />
-              ) : null}
-              {progressItems.map((item) => (
-                <View
-                  key={item.label}
-                  testID={item.testID}
-                  style={{ flex: 1, minWidth: 0 }}
+              ))
+            ) : (
+              <View style={{ paddingVertical: 28, alignItems: "center" }}>
+                <Text
+                  variant="bodyMedium"
+                  style={{ color: theme.semantic.text.tertiary }}
                 >
-                  <Text
-                    numberOfLines={1}
-                    variant={isShort ? "titleSmall" : "titleMedium"}
-                    style={{
-                      color: theme.colors.primary,
-                      fontWeight: "800",
-                    }}
-                  >
-                    {item.value}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    variant="labelSmall"
-                    style={{
-                      color: theme.semantic.text.inverse,
-                      opacity: 0.68,
-                    }}
-                  >
-                    {item.label}
-                  </Text>
-                </View>
-              ))}
-              <MaterialCommunityIcons
-                name="chart-line"
-                size={isShort ? 20 : 24}
-                color={theme.colors.primary}
-              />
-            </Surface>
-          )}
-        </Pressable>
-
-        {dashboard.hasError ? (
-          <Button
-            testID="HomeRetryButton"
-            compact
-            textColor={theme.colors.primary}
-            style={{ position: "absolute", right: 4, top: 4 }}
-            onPress={dashboard.refresh}
-          >
-            Retry progress
-          </Button>
-        ) : null}
-      </View>
+                  {query
+                    ? `No shortcuts match “${query}”.`
+                    : "All available shortcuts are already on Home."}
+                </Text>
+              </View>
+            )}
+          </ScrollView>
+        </Modal>
+      </Portal>
     </View>
   );
 };

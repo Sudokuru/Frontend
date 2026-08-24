@@ -62,12 +62,13 @@ const MULTIPLAYER_MODES: GameChoice[] = [
   },
 ];
 
-const PlayModesPage = () => {
+const PlayModesPage = ({ route }: any) => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const windowSize = useNewWindowDimensions();
-  const [query, setQuery] = React.useState("");
+  const requestedQuery = route.params?.query ?? "";
+  const [query, setQuery] = React.useState(requestedQuery);
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
   const deferredQuery = React.useDeferredValue(query.trim().toLowerCase());
   const filterChoices = (choices: GameChoice[], categoryTerms: string) =>
@@ -88,6 +89,10 @@ const PlayModesPage = () => {
   const hasResults =
     variants.length > 0 || lanModes.length > 0 || multiplayerModes.length > 0;
   const horizontalPadding = windowSize.width < 760 ? 18 : 32;
+
+  React.useEffect(() => {
+    setQuery(requestedQuery);
+  }, [requestedQuery]);
 
   const navigateTo = (action: DashboardNavigationAction) => {
     updateCurrentPage(action.currentPage);

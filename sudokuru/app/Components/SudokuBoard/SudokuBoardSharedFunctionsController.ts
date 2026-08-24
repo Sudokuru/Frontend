@@ -62,7 +62,12 @@ export type HomeDashboardIcon =
   | "image-filter-center-focus"
   | "school-outline"
   | "target"
-  | "gamepad-variant-outline";
+  | "gamepad-variant-outline"
+  | "account-multiple-outline"
+  | "account-group-outline"
+  | "lan"
+  | "chart-line"
+  | "account-cog-outline";
 
 export interface HomeDashboardCardDescriptor {
   id: string;
@@ -93,7 +98,7 @@ export interface HomeDashboardFlags {
 
 export interface HomeDashboardConfig {
   variants: HomeDashboardCardDescriptor[];
-  homeActions: HomeDashboardCardDescriptor[];
+  shortcutCatalogue: HomeDashboardCardDescriptor[];
   activeGameVariants: BoardObjectProps["variant"][];
 }
 
@@ -134,29 +139,18 @@ export const getHomeDashboardConfig = (
   totalLessons: number,
 ): HomeDashboardConfig => {
   const drillAvailable = flags.featurePreview && flags.drillMode;
-  const homeActions: HomeDashboardCardDescriptor[] = [
+  const shortcutCatalogue: HomeDashboardCardDescriptor[] = [
     {
-      id: "classic-shortcut",
-      title: "New Puzzle",
-      description: "Choose a Classic Sudoku difficulty.",
-      icon: "grid",
-      testID: "HomePlayButton",
-      status: "available",
-      action: {
-        screen: "PlayPage",
-        currentPage: "PlayPage",
-      },
-    },
-    {
-      id: "choose-game",
-      title: "Choose Game",
-      description: "Browse Sudoku variants, LAN, and multiplayer modes.",
+      id: "play",
+      title: "Play",
+      description: "Choose a Sudoku variant or multiplayer mode.",
       icon: "gamepad-variant-outline",
-      testID: "HomeChooseGameButton",
+      testID: "HomePlayButton",
       status: "available",
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
+        params: { query: "" },
       },
     },
     {
@@ -171,10 +165,76 @@ export const getHomeDashboardConfig = (
         currentPage: "LearnPage",
       },
     },
+    {
+      id: "multiplayer",
+      title: "Multiplayer",
+      description: "Browse online Battle and Co-op / Team modes.",
+      icon: "account-multiple-outline",
+      testID: "HomeMultiplayerButton",
+      badge: "Coming soon",
+      status: "available",
+      action: {
+        screen: "PlayModesPage",
+        currentPage: "PlayModesPage",
+        params: { query: "multiplayer" },
+      },
+    },
+    {
+      id: "coop",
+      title: "Co-op / Team",
+      description: "Browse collaborative LAN and online modes.",
+      icon: "account-group-outline",
+      testID: "HomeCoopButton",
+      badge: "Coming soon",
+      status: "available",
+      action: {
+        screen: "PlayModesPage",
+        currentPage: "PlayModesPage",
+        params: { query: "co-op / team" },
+      },
+    },
+    {
+      id: "lan",
+      title: "LAN",
+      description: "Browse local network Battle and Co-op / Team modes.",
+      icon: "lan",
+      testID: "HomeLanButton",
+      badge: "Coming soon",
+      status: "available",
+      action: {
+        screen: "PlayModesPage",
+        currentPage: "PlayModesPage",
+        params: { query: "lan" },
+      },
+    },
+    {
+      id: "statistics",
+      title: "Statistics",
+      description: "Review your scores and solving progress.",
+      icon: "chart-line",
+      testID: "HomeStatisticsButton",
+      status: "available",
+      action: {
+        screen: "StatisticsPage",
+        currentPage: "StatisticsPage",
+      },
+    },
+    {
+      id: "profile",
+      title: "Profile",
+      description: "Manage themes, preferences, and solving options.",
+      icon: "account-cog-outline",
+      testID: "HomeProfileButton",
+      status: "available",
+      action: {
+        screen: "ProfilePage",
+        currentPage: "ProfilePage",
+      },
+    },
   ];
 
   if (drillAvailable) {
-    homeActions.push({
+    shortcutCatalogue.splice(2, 0, {
       id: "drill",
       title: "Practice a Strategy",
       description: "Practice individual Sudoku strategies.",
@@ -191,7 +251,7 @@ export const getHomeDashboardConfig = (
 
   return {
     variants: getSudokuVariantCatalogue(),
-    homeActions,
+    shortcutCatalogue,
     activeGameVariants: drillAvailable ? ["classic", "drill"] : ["classic"],
   };
 };
