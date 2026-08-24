@@ -61,7 +61,8 @@ export type HomeDashboardIcon =
   | "grid"
   | "image-filter-center-focus"
   | "school-outline"
-  | "target";
+  | "target"
+  | "gamepad-variant-outline";
 
 export interface HomeDashboardCardDescriptor {
   id: string;
@@ -92,14 +93,40 @@ export interface HomeDashboardFlags {
 
 export interface HomeDashboardConfig {
   variants: HomeDashboardCardDescriptor[];
-  skills: HomeDashboardCardDescriptor[];
+  homeActions: HomeDashboardCardDescriptor[];
   activeGameVariants: BoardObjectProps["variant"][];
 }
 
 export interface HomeHeroAction {
+  title: string;
+  description: string;
   label: string;
   action: DashboardNavigationAction;
 }
+
+export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
+  {
+    id: "classic",
+    title: "Classic Sudoku",
+    description: "Choose a difficulty and start a new puzzle.",
+    icon: "grid",
+    testID: "VariantClassicButton",
+    status: "available",
+    action: {
+      screen: "PlayPage",
+      currentPage: "PlayPage",
+    },
+  },
+  {
+    id: "focus",
+    title: "Focus Sudoku",
+    description: "Sudoku with the next region focused for fast play.",
+    icon: "image-filter-center-focus",
+    testID: "VariantFocusButton",
+    badge: "Coming soon",
+    status: "comingSoon",
+  },
+];
 
 export const getHomeDashboardConfig = (
   flags: HomeDashboardFlags,
@@ -107,7 +134,31 @@ export const getHomeDashboardConfig = (
   totalLessons: number,
 ): HomeDashboardConfig => {
   const drillAvailable = flags.featurePreview && flags.drillMode;
-  const skills: HomeDashboardCardDescriptor[] = [
+  const homeActions: HomeDashboardCardDescriptor[] = [
+    {
+      id: "classic-shortcut",
+      title: "New Puzzle",
+      description: "Choose a Classic Sudoku difficulty.",
+      icon: "grid",
+      testID: "HomePlayButton",
+      status: "available",
+      action: {
+        screen: "PlayPage",
+        currentPage: "PlayPage",
+      },
+    },
+    {
+      id: "choose-game",
+      title: "Choose Game",
+      description: "Browse Sudoku variants, LAN, and multiplayer modes.",
+      icon: "gamepad-variant-outline",
+      testID: "HomeChooseGameButton",
+      status: "available",
+      action: {
+        screen: "PlayModesPage",
+        currentPage: "PlayModesPage",
+      },
+    },
     {
       id: "learn",
       title: "Learn Sudoku",
@@ -123,10 +174,10 @@ export const getHomeDashboardConfig = (
   ];
 
   if (drillAvailable) {
-    skills.push({
+    homeActions.push({
       id: "drill",
       title: "Practice a Strategy",
-      description: "Build confidence with focused, hands-on drills.",
+      description: "Practice individual Sudoku strategies.",
       icon: "target",
       testID: "HomeDrillButton",
       badge: "Preview",
@@ -139,30 +190,8 @@ export const getHomeDashboardConfig = (
   }
 
   return {
-    variants: [
-      {
-        id: "classic",
-        title: "Classic Sudoku",
-        description: "Choose from nine levels and solve at your own pace.",
-        icon: "grid",
-        testID: "HomePlayButton",
-        status: "available",
-        action: {
-          screen: "PlayPage",
-          currentPage: "PlayPage",
-        },
-      },
-      {
-        id: "focus",
-        title: "Focus Sudoku",
-        description: "Sudoku with the next region focused for fast play.",
-        icon: "image-filter-center-focus",
-        testID: "HomeFocusVariantCard",
-        badge: "Coming soon",
-        status: "comingSoon",
-      },
-    ],
-    skills,
+    variants: getSudokuVariantCatalogue(),
+    homeActions,
     activeGameVariants: drillAvailable ? ["classic", "drill"] : ["classic"],
   };
 };
@@ -211,6 +240,9 @@ export const getHomeHeroAction = (
   const playableResumes = resumes.filter((item) => item.category === "play");
   if (playableResumes.length === 1) {
     return {
+      title: "Resume your puzzle",
+      description:
+        "Resume your saved Sudoku puzzle or choose another activity.",
       label: `Resume ${playableResumes[0].title}`,
       action: playableResumes[0].action,
     };
@@ -220,6 +252,9 @@ export const getHomeHeroAction = (
     (variant) => variant.status === "available" && variant.action,
   );
   return {
+    title: "Play Sudoku",
+    description:
+      "Choose a difficulty, take a lesson, or practice a solving strategy.",
     label: firstAvailableVariant
       ? `Play ${firstAvailableVariant.title}`
       : "Explore Sudoku",

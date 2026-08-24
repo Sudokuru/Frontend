@@ -1,15 +1,11 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, Button, Surface, Text } from "react-native-paper";
-import HomePuzzleArtwork from "../Components/Home/HomePuzzleArtwork";
 import { useHomeDashboardData } from "../Components/Home/useHomeDashboardData";
-import type {
-  DashboardNavigationAction,
-  HomeDashboardIcon,
-} from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
+import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 import { formatTime } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
@@ -23,16 +19,15 @@ const HomePage = () => {
   const { theme } = useTheme();
   const windowSize = useNewWindowDimensions();
   const isMobile = windowSize.width < HOME_MOBILE_BREAKPOINT;
-  const horizontalPadding = isMobile ? 20 : 40;
+  const isVeryShort = windowSize.height < 480;
+  const isShort = windowSize.height < 620;
+  const outerPadding = isVeryShort ? 6 : isShort ? 10 : isMobile ? 16 : 24;
+  const sectionGap = isVeryShort ? 6 : isShort ? 10 : 16;
+  const cardGap = isVeryShort ? 6 : isShort ? 8 : 12;
   const contentWidth = Math.min(
     HOME_MAX_WIDTH,
-    Math.max(windowSize.width - horizontalPadding * 2, 0),
+    Math.max(windowSize.width - outerPadding * 2, 0),
   );
-  const artworkSize = isMobile
-    ? Math.min(330, Math.max(contentWidth - 8, 210))
-    : Math.min(390, contentWidth * 0.38);
-  const scrollViewRef = React.useRef<ScrollView>(null);
-  const [variantSectionOffset, setVariantSectionOffset] = React.useState(0);
   const [focusedAction, setFocusedAction] = React.useState<string | null>(null);
 
   const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
@@ -63,160 +58,189 @@ const HomePage = () => {
     );
   }
 
+  const homeActions = dashboard.config.homeActions;
+  const columnCount = isMobile ? 2 : homeActions.length;
+  const rowCount = Math.ceil(homeActions.length / columnCount);
+  const actionSectionHeight = isMobile
+    ? isVeryShort
+      ? 138
+      : Math.min(isShort ? 220 : 270, windowSize.height * 0.43)
+    : isVeryShort
+      ? 88
+      : Math.min(isShort ? 128 : 176, windowSize.height * 0.29);
+  const actionHeadingHeight = isVeryShort ? 18 : isShort ? 22 : 28;
+  const actionCardHeight = Math.max(
+    isVeryShort ? 52 : 72,
+    (actionSectionHeight -
+      actionHeadingHeight -
+      cardGap -
+      cardGap * (rowCount - 1)) /
+      rowCount,
+  );
+  const actionCardWidth =
+    (contentWidth - cardGap * (columnCount - 1)) / columnCount;
+  const progressHeight = isVeryShort ? 48 : isShort ? 58 : 70;
+  const availableHeroHeight =
+    windowSize.height -
+    outerPadding * 2 -
+    sectionGap * 2 -
+    actionSectionHeight -
+    progressHeight;
+  const heroHeight = Math.max(
+    isVeryShort ? 92 : 118,
+    Math.min(isMobile ? 220 : 250, availableHeroHeight),
+  );
+  const compactHero = heroHeight < 240;
+  const showActionDescriptions = !isVeryShort && actionCardHeight >= 92;
   const statistics = dashboard.statistics;
   const progressItems = [
     {
       value: statistics ? statistics.numGamesPlayed.toString() : "-",
-      label: "Classic puzzles solved",
+      label: "Solved",
       testID: "HomeProgressGamesPlayed",
     },
     {
       value:
         statistics && statistics.fastestSolveTime > 0
           ? formatTime(statistics.fastestSolveTime)
-          : statistics
-            ? "Not yet"
-            : "-",
-      label: "Fastest solve",
+          : "-",
+      label: "Best time",
       testID: "HomeProgressFastestSolveTime",
     },
     {
-      value: `${dashboard.completedLessons} / ${dashboard.totalLessons}`,
-      label: "Lessons complete",
+      value: `${dashboard.completedLessons}/${dashboard.totalLessons}`,
+      label: "Lessons",
       testID: "HomeProgressLessons",
-    },
-  ];
-  const utilityActions: {
-    id: string;
-    title: string;
-    description: string;
-    icon: HomeDashboardIcon | "chart-line";
-    testID: string;
-    action: DashboardNavigationAction;
-  }[] = [
-    ...dashboard.config.skills.flatMap((skill) =>
-      skill.action
-        ? [
-            {
-              id: skill.id,
-              title: skill.title,
-              description: skill.description,
-              icon: skill.icon,
-              testID: skill.testID,
-              action: skill.action,
-            },
-          ]
-        : [],
-    ),
-    {
-      id: "statistics",
-      title: "See Your Progress",
-      description: "Review your scores, solve times, hints, and mistakes.",
-      icon: "chart-line",
-      testID: "HomeViewStatisticsButton",
-      action: {
-        screen: "StatisticsPage",
-        currentPage: "StatisticsPage",
-      },
     },
   ];
 
   return (
-    <ScrollView
-      ref={scrollViewRef}
+    <View
       testID="HomeDashboard"
       style={{
         width: windowSize.width,
         height: windowSize.height,
+        alignItems: "center",
+        padding: outerPadding,
+        overflow: "hidden",
         backgroundColor: theme.colors.bg,
       }}
-      contentContainerStyle={{
-        alignItems: "center",
-        paddingHorizontal: horizontalPadding,
-        paddingBottom: 64,
-      }}
     >
-      <View style={{ width: contentWidth }}>
+      <View
+        style={{
+          width: contentWidth,
+          height: "100%",
+          justifyContent: "center",
+        }}
+      >
         <View
           style={{
-            minHeight: isMobile ? undefined : 570,
-            paddingVertical: isMobile ? 36 : 48,
-            flexDirection: isMobile ? "column" : "row",
+            height: heroHeight,
             alignItems: "center",
-            gap: isMobile ? 46 : 62,
+            justifyContent: "center",
           }}
         >
-          <View style={{ flex: isMobile ? undefined : 1, width: "100%" }}>
+          <View style={{ width: "100%", maxWidth: 820 }}>
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                gap: 10,
+                gap: isVeryShort ? 12 : 18,
               }}
             >
               <View
                 style={{
-                  width: 32,
-                  height: 3,
-                  backgroundColor: theme.colors.primary,
-                }}
-              />
-              <Text
-                variant="labelLarge"
-                style={{
-                  color: theme.colors.primary,
-                  fontWeight: "800",
-                  letterSpacing: 1.4,
+                  width: isVeryShort ? 44 : isMobile ? 56 : 68,
+                  height: isVeryShort ? 44 : isMobile ? 56 : 68,
+                  flexShrink: 0,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderWidth: 2,
+                  borderColor: theme.colors.primary,
+                  backgroundColor: theme.colors.surfaceAlt,
                 }}
               >
-                THINK IN PATTERNS
-              </Text>
+                <MaterialCommunityIcons
+                  name="grid"
+                  size={isVeryShort ? 27 : isMobile ? 34 : 42}
+                  color={theme.colors.primary}
+                />
+              </View>
+              <View style={{ flex: 1, minWidth: 0 }}>
+                {!isVeryShort ? (
+                  <Text
+                    variant="labelSmall"
+                    style={{
+                      marginBottom: 2,
+                      color: theme.colors.primary,
+                      fontWeight: "800",
+                      letterSpacing: 1.2,
+                    }}
+                  >
+                    SUDOKU
+                  </Text>
+                ) : null}
+                <Text
+                  testID="HomeHeroTitle"
+                  accessibilityRole="header"
+                  numberOfLines={isVeryShort ? 1 : 2}
+                  adjustsFontSizeToFit
+                  style={{
+                    color: theme.semantic.text.tertiary,
+                    fontSize: isMobile
+                      ? isVeryShort
+                        ? 26
+                        : compactHero
+                          ? 32
+                          : 40
+                      : isVeryShort
+                        ? 30
+                        : compactHero
+                          ? 40
+                          : 56,
+                    lineHeight: isMobile
+                      ? isVeryShort
+                        ? 29
+                        : compactHero
+                          ? 35
+                          : 43
+                      : isVeryShort
+                        ? 33
+                        : compactHero
+                          ? 43
+                          : 59,
+                    fontWeight: "800",
+                    letterSpacing: -1.4,
+                  }}
+                >
+                  {dashboard.heroAction.title}
+                </Text>
+              </View>
             </View>
-            <Text
-              testID="HomeHeroTitle"
-              accessibilityRole="header"
-              style={{
-                marginTop: 20,
-                maxWidth: 630,
-                color: theme.semantic.text.tertiary,
-                fontSize: isMobile ? 46 : 68,
-                lineHeight: isMobile ? 49 : 70,
-                fontWeight: "800",
-                letterSpacing: isMobile ? -1.5 : -2.5,
-              }}
-            >
-              Learn the pattern.{"\n"}
+            {!compactHero && !isVeryShort ? (
               <Text
+                variant="bodyLarge"
+                numberOfLines={2}
                 style={{
-                  color: theme.colors.primary,
-                  fontSize: isMobile ? 46 : 68,
-                  lineHeight: isMobile ? 49 : 70,
-                  fontWeight: "800",
-                  letterSpacing: isMobile ? -1.5 : -2.5,
+                  marginTop: 10,
+                  maxWidth: 620,
+                  marginLeft: isMobile ? 74 : 86,
+                  color: theme.semantic.text.tertiary,
+                  opacity: 0.72,
                 }}
               >
-                Solve with purpose.
+                {dashboard.heroAction.description}
               </Text>
-            </Text>
-            <Text
-              variant={isMobile ? "bodyLarge" : "titleMedium"}
-              style={{
-                marginTop: 22,
-                maxWidth: 560,
-                color: theme.semantic.text.tertiary,
-                opacity: 0.78,
-                lineHeight: isMobile ? 26 : 29,
-              }}
-            >
-              Guided lessons when you want to learn. Thoughtful hints when you
-              get stuck. A clean grid when you are ready to solve.
-            </Text>
+            ) : null}
             <View
               style={{
-                marginTop: 30,
+                marginTop: isVeryShort ? 6 : compactHero ? 12 : 18,
+                marginLeft: isVeryShort ? 56 : isMobile ? 74 : 86,
                 flexDirection: "row",
                 flexWrap: "wrap",
-                gap: 12,
+                alignItems: "center",
+                gap: 8,
               }}
             >
               <Button
@@ -224,296 +248,181 @@ const HomePage = () => {
                 mode="contained"
                 buttonColor={theme.colors.primary}
                 textColor={theme.semantic.text.info}
-                contentStyle={{ minHeight: 52, paddingHorizontal: 8 }}
-                labelStyle={{ fontWeight: "800", fontSize: 15 }}
+                contentStyle={{
+                  minHeight: isVeryShort ? 36 : compactHero ? 42 : 48,
+                }}
+                labelStyle={{ fontWeight: "800" }}
                 onPress={() => navigateTo(dashboard.heroAction.action)}
               >
                 {dashboard.heroAction.label}
               </Button>
-              <Button
-                testID="HomeExploreVariantsButton"
-                mode="text"
-                icon="arrow-down"
-                textColor={theme.semantic.text.tertiary}
-                contentStyle={{ minHeight: 52 }}
-                labelStyle={{ fontWeight: "700" }}
-                onPress={() =>
-                  scrollViewRef.current?.scrollTo({
-                    y: Math.max(variantSectionOffset - 20, 0),
-                    animated: true,
-                  })
-                }
-              >
-                Choose a grid
-              </Button>
-            </View>
-          </View>
-          <HomePuzzleArtwork size={artworkSize} />
-        </View>
-
-        {dashboard.supportingResumes.length > 0 ? (
-          <View style={{ marginBottom: 34 }}>
-            <Text
-              variant="labelMedium"
-              style={{
-                color: theme.colors.primary,
-                fontWeight: "800",
-                letterSpacing: 1.1,
-              }}
-            >
-              STILL IN PROGRESS
-            </Text>
-            <View
-              style={{
-                marginTop: 10,
-                flexDirection: "row",
-                flexWrap: "wrap",
-                gap: 12,
-              }}
-            >
               {dashboard.supportingResumes.map((resume) => (
-                <Pressable
+                <Button
                   key={resume.id}
                   testID={resume.testID}
-                  accessibilityRole="button"
-                  accessibilityLabel={`Resume ${resume.title}`}
+                  compact={compactHero || isVeryShort}
+                  mode="outlined"
+                  icon={resume.icon}
+                  textColor={theme.semantic.text.tertiary}
+                  style={{ borderColor: theme.colors.border }}
+                  contentStyle={{
+                    minHeight: isVeryShort ? 36 : compactHero ? 42 : 48,
+                  }}
                   onPress={() => navigateTo(resume.action)}
-                  onFocus={() => setFocusedAction(resume.testID)}
-                  onBlur={() => setFocusedAction(null)}
                 >
-                  {({ hovered, pressed }: any) => (
-                    <View
-                      style={{
-                        minHeight: 52,
-                        paddingHorizontal: 16,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 10,
-                        borderRadius: 999,
-                        borderWidth: focusedAction === resume.testID ? 2 : 1,
-                        borderColor:
-                          hovered || focusedAction === resume.testID
-                            ? theme.colors.primary
-                            : theme.colors.border,
-                        backgroundColor: theme.colors.surfaceAlt,
-                        opacity: pressed ? 0.78 : 1,
-                      }}
-                    >
-                      <MaterialCommunityIcons
-                        name={resume.icon}
-                        size={20}
-                        color={theme.colors.primary}
-                      />
-                      <Text
-                        variant="labelLarge"
-                        style={{ color: theme.semantic.text.inverse }}
-                      >
-                        Resume {resume.description}
-                      </Text>
-                      <Text
-                        variant="labelMedium"
-                        style={{ color: theme.colors.primary }}
-                      >
-                        {resume.metadata}
-                      </Text>
-                    </View>
-                  )}
-                </Pressable>
+                  Resume drill
+                </Button>
               ))}
             </View>
           </View>
-        ) : null}
-
-        <View
-          testID="HomeProgressSummary"
-          style={{
-            paddingVertical: 22,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            borderTopWidth: 1,
-            borderBottomWidth: 1,
-            borderColor: theme.colors.border,
-            rowGap: 20,
-          }}
-        >
-          {dashboard.isLoading && !statistics ? (
-            <ActivityIndicator
-              testID="HomeLoading"
-              color={theme.colors.primary}
-              style={{ marginRight: 24 }}
-            />
-          ) : null}
-          {progressItems.map((item) => (
-            <View
-              key={item.label}
-              testID={item.testID}
-              style={{
-                minWidth: isMobile ? "50%" : 190,
-                flexGrow: 1,
-                paddingRight: 24,
-              }}
-            >
-              <Text
-                variant="titleLarge"
-                style={{
-                  color: theme.colors.primary,
-                  fontWeight: "800",
-                }}
-              >
-                {item.value}
-              </Text>
-              <Text
-                variant="bodySmall"
-                style={{
-                  marginTop: 2,
-                  color: theme.semantic.text.tertiary,
-                  opacity: 0.76,
-                }}
-              >
-                {item.label}
-              </Text>
-            </View>
-          ))}
         </View>
 
-        <View
-          onLayout={(event) =>
-            setVariantSectionOffset(event.nativeEvent.layout.y)
-          }
-          style={{ paddingTop: isMobile ? 54 : 72 }}
-        >
-          <Text
-            variant="labelLarge"
-            style={{
-              color: theme.colors.primary,
-              fontWeight: "800",
-              letterSpacing: 1.2,
-            }}
-          >
-            WAYS TO PLAY
-          </Text>
-          <Text
-            accessibilityRole="header"
-            style={{
-              marginTop: 8,
-              color: theme.semantic.text.tertiary,
-              fontSize: isMobile ? 34 : 44,
-              lineHeight: isMobile ? 39 : 49,
-              fontWeight: "800",
-              letterSpacing: -1,
-            }}
-          >
-            Choose your kind of challenge.
-          </Text>
+        <View style={{ height: sectionGap }} />
+
+        <View style={{ height: actionSectionHeight }}>
           <View
             style={{
-              marginTop: 26,
+              height: actionHeadingHeight,
               flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 18,
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {dashboard.config.variants.map((variant) => {
-              const disabled = variant.status === "comingSoon";
-              const focused = focusedAction === variant.testID;
+            <Text
+              accessibilityRole="header"
+              variant={isShort ? "titleSmall" : "titleMedium"}
+              style={{
+                color: theme.semantic.text.tertiary,
+                fontWeight: "800",
+              }}
+            >
+              Sudoku puzzles and lessons
+            </Text>
+          </View>
+          <View
+            style={{
+              marginTop: cardGap,
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: cardGap,
+            }}
+          >
+            {homeActions.map((item, index) => {
+              const disabled = item.status === "comingSoon";
+              const focused = focusedAction === item.testID;
+              const isLastOddMobileCard =
+                isMobile &&
+                homeActions.length % 2 === 1 &&
+                index === homeActions.length - 1;
               return (
                 <Pressable
-                  key={variant.id}
-                  testID={variant.testID}
+                  key={item.id}
+                  testID={item.testID}
                   accessibilityRole="button"
-                  accessibilityLabel={variant.title}
-                  accessibilityHint={
-                    disabled ? variant.badge : variant.description
-                  }
+                  accessibilityLabel={item.title}
+                  accessibilityHint={disabled ? item.badge : item.description}
                   accessibilityState={{ disabled }}
                   disabled={disabled}
-                  onFocus={() => setFocusedAction(variant.testID)}
+                  onFocus={() => setFocusedAction(item.testID)}
                   onBlur={() => setFocusedAction(null)}
-                  onPress={() => variant.action && navigateTo(variant.action)}
+                  onPress={() => item.action && navigateTo(item.action)}
                   style={{
-                    flexGrow: 1,
-                    flexBasis: isMobile ? "100%" : 360,
+                    width: isLastOddMobileCard ? contentWidth : actionCardWidth,
+                    height: actionCardHeight,
                   }}
                 >
                   {({ hovered, pressed }: any) => (
                     <Surface
-                      elevation={disabled ? 0 : pressed ? 1 : 3}
+                      elevation={disabled ? 0 : pressed ? 1 : 2}
                       style={{
-                        minHeight: isMobile ? 210 : 240,
-                        padding: isMobile ? 24 : 30,
-                        justifyContent: "space-between",
-                        borderRadius: 10,
-                        borderWidth: focused || hovered ? 3 : 1,
+                        width: "100%",
+                        height: "100%",
+                        paddingHorizontal: isShort ? 12 : 16,
+                        paddingVertical: isVeryShort ? 6 : isShort ? 10 : 14,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: isShort ? 10 : 14,
+                        borderRadius: 12,
+                        borderWidth: hovered || focused ? 2 : 1,
                         borderStyle: disabled ? "dashed" : "solid",
                         borderColor:
-                          focused || hovered
+                          hovered || focused
                             ? theme.colors.primary
                             : theme.colors.border,
                         backgroundColor: disabled
                           ? theme.colors.bg
                           : theme.colors.surfaceAlt,
-                        opacity: pressed ? 0.84 : 1,
+                        opacity: pressed ? 0.8 : 1,
                       }}
                     >
                       <View
                         style={{
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "flex-start",
+                          width: isVeryShort ? 30 : isShort ? 36 : 42,
+                          height: isVeryShort ? 30 : isShort ? 36 : 42,
+                          flexShrink: 0,
+                          borderRadius: isVeryShort ? 8 : 10,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: disabled
+                            ? theme.colors.surfaceAlt
+                            : theme.colors.bg,
                         }}
                       >
                         <MaterialCommunityIcons
-                          name={variant.icon}
-                          size={40}
+                          name={item.icon}
+                          size={isVeryShort ? 18 : isShort ? 22 : 25}
                           color={theme.colors.primary}
                         />
-                        {variant.badge ? (
+                      </View>
+                      <View style={{ flex: 1, minWidth: 0 }}>
+                        {item.badge ? (
                           <Text
-                            variant="labelMedium"
+                            numberOfLines={1}
+                            variant="labelSmall"
                             style={{
+                              marginBottom: 2,
                               color: theme.colors.primary,
                               fontWeight: "800",
-                              letterSpacing: 0.8,
                             }}
                           >
-                            {variant.badge.toUpperCase()}
+                            {item.badge.toUpperCase()}
                           </Text>
-                        ) : (
-                          <MaterialCommunityIcons
-                            name="arrow-top-right"
-                            size={26}
-                            color={theme.colors.primary}
-                          />
-                        )}
-                      </View>
-                      <View>
+                        ) : null}
                         <Text
+                          numberOfLines={1}
+                          variant={isShort ? "titleSmall" : "titleMedium"}
                           style={{
                             color: disabled
                               ? theme.semantic.text.tertiary
                               : theme.semantic.text.inverse,
-                            fontSize: isMobile ? 28 : 34,
-                            lineHeight: isMobile ? 32 : 38,
                             fontWeight: "800",
                           }}
                         >
-                          {variant.title}
+                          {item.title}
                         </Text>
-                        <Text
-                          variant="bodyLarge"
-                          style={{
-                            marginTop: 8,
-                            maxWidth: 430,
-                            color: disabled
-                              ? theme.semantic.text.tertiary
-                              : theme.semantic.text.inverse,
-                            opacity: 0.72,
-                          }}
-                        >
-                          {variant.description}
-                        </Text>
+                        {showActionDescriptions ? (
+                          <Text
+                            numberOfLines={2}
+                            variant="bodySmall"
+                            style={{
+                              marginTop: 3,
+                              color: disabled
+                                ? theme.semantic.text.tertiary
+                                : theme.semantic.text.inverse,
+                              opacity: 0.68,
+                            }}
+                          >
+                            {item.description}
+                          </Text>
+                        ) : null}
                       </View>
+                      {!disabled ? (
+                        <MaterialCommunityIcons
+                          name="arrow-right"
+                          size={20}
+                          color={theme.colors.primary}
+                        />
+                      ) : null}
                     </Surface>
                   )}
                 </Pressable>
@@ -522,138 +431,102 @@ const HomePage = () => {
           </View>
         </View>
 
-        <View style={{ paddingTop: isMobile ? 54 : 72 }}>
-          <Text
-            variant="labelLarge"
-            style={{
-              color: theme.colors.primary,
-              fontWeight: "800",
-              letterSpacing: 1.2,
-            }}
-          >
-            YOUR TOOLKIT
-          </Text>
-          <Text
-            accessibilityRole="header"
-            style={{
-              marginTop: 8,
-              color: theme.semantic.text.tertiary,
-              fontSize: isMobile ? 34 : 44,
-              lineHeight: isMobile ? 39 : 49,
-              fontWeight: "800",
-              letterSpacing: -1,
-            }}
-          >
-            More than a blank grid.
-          </Text>
-          <Surface
-            elevation={2}
-            style={{
-              marginTop: 26,
-              overflow: "hidden",
-              borderRadius: 10,
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              backgroundColor: theme.colors.surfaceAlt,
-            }}
-          >
-            {utilityActions.map((item, index) => (
-              <Pressable
-                key={item.id}
-                testID={item.testID}
-                accessibilityRole="button"
-                accessibilityLabel={item.title}
-                accessibilityHint={item.description}
-                onFocus={() => setFocusedAction(item.testID)}
-                onBlur={() => setFocusedAction(null)}
-                onPress={() => navigateTo(item.action)}
-              >
-                {({ hovered, pressed }: any) => (
-                  <View
+        <View style={{ height: sectionGap }} />
+
+        <Pressable
+          testID="HomeViewStatisticsButton"
+          accessibilityRole="button"
+          accessibilityLabel="View statistics"
+          onFocus={() => setFocusedAction("HomeViewStatisticsButton")}
+          onBlur={() => setFocusedAction(null)}
+          onPress={() =>
+            navigateTo({
+              screen: "StatisticsPage",
+              currentPage: "StatisticsPage",
+            })
+          }
+          style={{ height: progressHeight }}
+        >
+          {({ hovered, pressed }: any) => (
+            <Surface
+              testID="HomeProgressSummary"
+              elevation={1}
+              style={{
+                height: "100%",
+                paddingHorizontal: isShort ? 12 : 18,
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 12,
+                borderWidth:
+                  hovered || focusedAction === "HomeViewStatisticsButton"
+                    ? 2
+                    : 1,
+                borderColor:
+                  hovered || focusedAction === "HomeViewStatisticsButton"
+                    ? theme.colors.primary
+                    : theme.colors.border,
+                backgroundColor: theme.colors.surfaceAlt,
+                opacity: pressed ? 0.8 : 1,
+              }}
+            >
+              {dashboard.isLoading && !statistics ? (
+                <ActivityIndicator
+                  testID="HomeLoading"
+                  color={theme.colors.primary}
+                  size="small"
+                  style={{ marginRight: 12 }}
+                />
+              ) : null}
+              {progressItems.map((item) => (
+                <View
+                  key={item.label}
+                  testID={item.testID}
+                  style={{ flex: 1, minWidth: 0 }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    variant={isShort ? "titleSmall" : "titleMedium"}
                     style={{
-                      minHeight: isMobile ? 104 : 92,
-                      paddingHorizontal: isMobile ? 20 : 28,
-                      paddingVertical: 18,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 18,
-                      borderTopWidth: index === 0 ? 0 : 1,
-                      borderColor: theme.colors.border,
-                      backgroundColor:
-                        hovered || focusedAction === item.testID
-                          ? theme.colors.bg
-                          : theme.colors.surfaceAlt,
-                      opacity: pressed ? 0.78 : 1,
+                      color: theme.colors.primary,
+                      fontWeight: "800",
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name={item.icon}
-                      size={28}
-                      color={theme.colors.primary}
-                    />
-                    <View style={{ flex: 1 }}>
-                      <Text
-                        variant="titleMedium"
-                        style={{
-                          color: theme.semantic.text.inverse,
-                          fontWeight: "800",
-                        }}
-                      >
-                        {item.title}
-                      </Text>
-                      <Text
-                        variant="bodyMedium"
-                        style={{
-                          marginTop: 3,
-                          color: theme.semantic.text.inverse,
-                          opacity: 0.68,
-                        }}
-                      >
-                        {item.description}
-                      </Text>
-                    </View>
-                    <MaterialCommunityIcons
-                      name="arrow-right"
-                      size={24}
-                      color={theme.colors.primary}
-                    />
-                  </View>
-                )}
-              </Pressable>
-            ))}
-          </Surface>
-        </View>
+                    {item.value}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    variant="labelSmall"
+                    style={{
+                      color: theme.semantic.text.inverse,
+                      opacity: 0.68,
+                    }}
+                  >
+                    {item.label}
+                  </Text>
+                </View>
+              ))}
+              <MaterialCommunityIcons
+                name="chart-line"
+                size={isShort ? 20 : 24}
+                color={theme.colors.primary}
+              />
+            </Surface>
+          )}
+        </Pressable>
 
         {dashboard.hasError ? (
-          <View
-            testID="HomeError"
-            accessibilityLiveRegion="polite"
-            style={{
-              marginTop: 24,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: 8,
-            }}
+          <Button
+            testID="HomeRetryButton"
+            compact
+            textColor={theme.colors.primary}
+            style={{ position: "absolute", right: 4, top: 4 }}
+            onPress={dashboard.refresh}
           >
-            <Text
-              variant="bodyMedium"
-              style={{ color: theme.semantic.text.tertiary }}
-            >
-              Some progress could not be loaded.
-            </Text>
-            <Button
-              testID="HomeRetryButton"
-              compact
-              textColor={theme.colors.primary}
-              onPress={dashboard.refresh}
-            >
-              Retry
-            </Button>
-          </View>
+            Retry progress
+          </Button>
         ) : null}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
