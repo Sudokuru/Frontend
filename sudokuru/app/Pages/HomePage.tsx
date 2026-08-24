@@ -121,7 +121,7 @@ const HomePage = () => {
       : isMobile
         ? 145
         : 120;
-  const sectionHeadingHeight = isShort ? 22 : 28;
+  const sectionHeadingHeight = 40;
   const progressHeight = isShort ? 54 : 64;
   const cardHeight = isMobile ? 116 : 130;
   const cardWidth = (contentWidth - gap * (columnCount - 1)) / columnCount;
@@ -440,16 +440,35 @@ const HomePage = () => {
 
           <View style={{ height: gap }} />
 
-          <Text
-            variant={isShort ? "titleSmall" : "titleMedium"}
+          <View
             style={{
               height: sectionHeadingHeight,
-              color: theme.semantic.text.tertiary,
-              fontWeight: "800",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            {isEditing ? "Your layout" : "Your Home"}
-          </Text>
+            <Text
+              variant={isShort ? "titleSmall" : "titleMedium"}
+              style={{
+                color: theme.semantic.text.tertiary,
+                fontWeight: "800",
+              }}
+            >
+              {isEditing ? "Your layout" : "Your Home"}
+            </Text>
+            {!isEditing ? (
+              <Button
+                testID="HomeEditShortcutsButton"
+                compact
+                icon="pencil-outline"
+                textColor={theme.colors.primary}
+                onPress={beginEditing}
+              >
+                Edit
+              </Button>
+            ) : null}
+          </View>
           <View
             style={{
               height: gridHeight,
@@ -488,14 +507,8 @@ const HomePage = () => {
             <Pressable
               testID="HomeCustomizeButton"
               accessibilityRole="button"
-              accessibilityLabel={
-                isEditing ? "Add a Home shortcut" : "Customize Home"
-              }
-              accessibilityHint={
-                isEditing
-                  ? "Open the shortcut library"
-                  : "Edit and add Home shortcuts"
-              }
+              accessibilityLabel="Add a Home shortcut"
+              accessibilityHint="Open the shortcut library"
               onFocus={() => setCustomizeFocused(true)}
               onBlur={() => setCustomizeFocused(false)}
               onPress={openLibrary}
@@ -541,7 +554,7 @@ const HomePage = () => {
                         fontWeight: "800",
                       }}
                     >
-                      {isEditing ? "Add shortcut" : "Customize"}
+                      Add shortcut
                     </Text>
                   ) : null}
                 </View>
