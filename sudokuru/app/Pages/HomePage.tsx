@@ -10,7 +10,6 @@ import {
   Modal,
   Portal,
   Searchbar,
-  Surface,
   Text,
 } from "react-native-paper";
 import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
