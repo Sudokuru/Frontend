@@ -16,13 +16,25 @@ import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
 import HomeShortcutCard from "../Components/Home/HomeShortcutCard";
 import { useHomeDashboardData } from "../Components/Home/useHomeDashboardData";
 import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
-import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
+import type {
+  DashboardNavigationAction,
+  HomeShortcutCategory,
+} from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const HOME_MAX_WIDTH = 1160;
 const HOME_MOBILE_BREAKPOINT = 760;
+const SHORTCUT_LIBRARY_CATEGORIES: {
+  id: HomeShortcutCategory;
+  title: string;
+}[] = [
+  { id: "activities", title: "Activities" },
+  { id: "difficulties", title: "Classic Difficulties" },
+  { id: "strategies", title: "Strategy Practice" },
+  { id: "account", title: "Account" },
+];
 
 const HomePage = () => {
   const navigation: any = useNavigation();
@@ -39,7 +51,10 @@ const HomePage = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isLibraryOpen, setIsLibraryOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
-  const [customizeFocused, setCustomizeFocused] = React.useState(false);
+  const [expandedLibraryCategories, setExpandedLibraryCategories] =
+    React.useState<Set<HomeShortcutCategory>>(
+      () => new Set(["activities", "account"]),
+    );
   const [previewShortcutIds, setPreviewShortcutIds] = React.useState<
     HomeShortcutId[] | null
   >(null);
@@ -104,25 +119,25 @@ const HomePage = () => {
         .toLowerCase()
         .includes(deferredQuery),
   );
+  const availableShortcutGroups = SHORTCUT_LIBRARY_CATEGORIES.flatMap(
+    (category) => {
+      const items = availableShortcuts.filter(
+        (shortcut) => shortcut.shortcutCategory === category.id,
+      );
+      return items.length > 0 ? [{ ...category, items }] : [];
+    },
+  );
 
-  const normalCardCount = selectedShortcuts.length + 1;
-  const columnCount = isMobile ? 1 : Math.min(4, Math.max(2, normalCardCount));
-  const rowCount = Math.ceil(normalCardCount / columnCount);
-  const headerHeight = isEditing
-    ? isShort
-      ? 66
-      : 78
-    : dashboard.resumes.length > 0
-      ? isMobile
-        ? 190
-        : 150
-      : isMobile
-        ? 145
-        : 120;
+  const columnCount = isMobile
+    ? 1
+    : Math.min(4, Math.max(2, selectedShortcuts.length));
+  const rowCount = Math.ceil(selectedShortcuts.length / columnCount);
+  const headerHeight = isEditing ? (isShort ? 66 : 78) : undefined;
   const sectionHeadingHeight = 40;
   const cardHeight = isMobile ? 116 : 130;
   const cardWidth = (contentWidth - gap * (columnCount - 1)) / columnCount;
-  const gridHeight = cardHeight * rowCount + gap * (rowCount - 1);
+  const gridHeight =
+    rowCount > 0 ? cardHeight * rowCount + gap * (rowCount - 1) : 0;
 
   const setPreviewOrder = (shortcutIds: HomeShortcutId[]) => {
     previewShortcutIdsRef.current = shortcutIds;
@@ -185,6 +200,15 @@ const HomePage = () => {
       setPreviewOrder([...currentPreview, shortcutId]);
     }
     shortcuts.addShortcut(shortcutId);
+  };
+
+  const toggleLibraryCategory = (category: HomeShortcutCategory) => {
+    setExpandedLibraryCategories((current) => {
+      const next = new Set(current);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
   };
 
   return (
@@ -283,13 +307,51 @@ const HomePage = () => {
                   </View>
                   <View
                     style={{
-                      marginTop: 9,
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      gap: 12,
+                      marginTop: 14,
+                      padding: isMobile ? 14 : 18,
+                      flexDirection: isMobile ? "column" : "row",
+                      alignItems: isMobile ? "stretch" : "center",
+                      gap: 16,
+                      borderRadius: 14,
+                      borderWidth: 1,
+                      borderColor: theme.colors.border,
+                      backgroundColor: theme.colors.surfaceAlt,
                     }}
-                  ></View>
-                  {dashboard.resumes.length > 0 ? (
+                  >
+                    <View style={{ flex: 1, minWidth: 0 }}>
+                      <Text
+                        variant={isMobile ? "titleMedium" : "titleLarge"}
+                        style={{
+                          color: theme.semantic.text.inverse,
+                          fontWeight: "800",
+                        }}
+                      >
+                        {dashboard.heroAction.title}
+                      </Text>
+                      <Text
+                        variant="bodySmall"
+                        style={{
+                          marginTop: 3,
+                          color: theme.semantic.text.inverse,
+                          opacity: 0.7,
+                        }}
+                      >
+                        {dashboard.heroAction.description}
+                      </Text>
+                    </View>
+                    <Button
+                      testID={dashboard.heroAction.testID}
+                      mode="contained"
+                      icon="arrow-right"
+                      contentStyle={{ flexDirection: "row-reverse" }}
+                      buttonColor={theme.colors.primary}
+                      textColor={theme.semantic.text.info}
+                      onPress={() => navigateTo(dashboard.heroAction.action)}
+                    >
+                      {dashboard.heroAction.label}
+                    </Button>
+                  </View>
+                  {dashboard.supportingResumes.length > 0 ? (
                     <View
                       style={{
                         marginTop: 8,
@@ -298,7 +360,7 @@ const HomePage = () => {
                         gap: 6,
                       }}
                     >
-                      {dashboard.resumes.map((resume) => (
+                      {dashboard.supportingResumes.map((resume) => (
                         <Button
                           key={resume.id}
                           testID={resume.testID}
@@ -363,15 +425,25 @@ const HomePage = () => {
             </Text>
             {!isEditing ? (
               <Button
-                testID="HomeEditShortcutsButton"
+                testID="HomeCustomizeButton"
                 compact
                 icon="pencil-outline"
                 textColor={theme.colors.primary}
                 onPress={beginEditing}
               >
-                Edit
+                Customize home
               </Button>
-            ) : null}
+            ) : (
+              <Button
+                testID="HomeAddShortcutButton"
+                compact
+                icon="plus"
+                textColor={theme.colors.primary}
+                onPress={openLibrary}
+              >
+                Add shortcut
+              </Button>
+            )}
           </View>
           <View
             style={{
@@ -408,62 +480,6 @@ const HomePage = () => {
                 }
               />
             ))}
-            <Pressable
-              testID="HomeCustomizeButton"
-              accessibilityRole="button"
-              accessibilityLabel="Add a Home shortcut"
-              accessibilityHint="Open the shortcut library"
-              onFocus={() => setCustomizeFocused(true)}
-              onBlur={() => setCustomizeFocused(false)}
-              onPress={openLibrary}
-              style={{
-                position: isEditing ? "absolute" : "relative",
-                left: isEditing
-                  ? (selectedShortcuts.length % columnCount) * (cardWidth + gap)
-                  : undefined,
-                top: isEditing
-                  ? Math.floor(selectedShortcuts.length / columnCount) *
-                    (cardHeight + gap)
-                  : undefined,
-                width: cardWidth,
-                height: cardHeight,
-              }}
-            >
-              {({ hovered, pressed }: any) => (
-                <View
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 7,
-                    borderRadius: 14,
-                    borderWidth: hovered || customizeFocused ? 2 : 1,
-                    borderStyle: "dashed",
-                    borderColor: theme.colors.primary,
-                    opacity: pressed ? 0.7 : 1,
-                    transform: [{ rotate: isEditing ? "0.35deg" : "0deg" }],
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="plus"
-                    size={isShort ? 28 : 36}
-                    color={theme.colors.primary}
-                  />
-                  {cardHeight >= 82 ? (
-                    <Text
-                      variant="labelLarge"
-                      style={{
-                        color: theme.semantic.text.tertiary,
-                        fontWeight: "800",
-                      }}
-                    >
-                      Add shortcut
-                    </Text>
-                  ) : null}
-                </View>
-              )}
-            </Pressable>
           </View>
         </View>
       </ScrollView>
@@ -544,78 +560,145 @@ const HomePage = () => {
             placeholderTextColor={theme.semantic.text.inverse}
           />
           <ScrollView style={{ marginTop: 12 }}>
-            {availableShortcuts.length > 0 ? (
-              availableShortcuts.map((shortcut, index) => (
-                <Pressable
-                  key={shortcut.id}
-                  testID={`Add${shortcut.testID}`}
-                  accessibilityRole="button"
-                  accessibilityLabel={`Add ${shortcut.title}`}
-                  onPress={() => addShortcut(shortcut.id as HomeShortcutId)}
-                >
-                  {({ hovered, pressed }: any) => (
-                    <View
-                      style={{
-                        minHeight: 72,
-                        paddingHorizontal: 12,
-                        paddingVertical: 10,
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 12,
-                        borderTopWidth: index === 0 ? 0 : 1,
-                        borderColor: theme.colors.border,
-                        backgroundColor: hovered
-                          ? theme.colors.surfaceAlt
-                          : theme.colors.bg,
-                        opacity: pressed ? 0.75 : 1,
+            {availableShortcutGroups.length > 0 ? (
+              availableShortcutGroups.map((category) => {
+                const isExpanded =
+                  deferredQuery.length > 0 ||
+                  expandedLibraryCategories.has(category.id);
+                return (
+                  <View key={category.id}>
+                    <Pressable
+                      testID={`HomeShortcutCategory-${category.id}`}
+                      accessibilityRole="button"
+                      accessibilityState={{
+                        disabled: deferredQuery.length > 0,
+                        expanded: isExpanded,
                       }}
+                      disabled={deferredQuery.length > 0}
+                      onPress={() => toggleLibraryCategory(category.id)}
                     >
-                      <View
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 10,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: theme.colors.surfaceAlt,
-                        }}
-                      >
-                        <MaterialCommunityIcons
-                          name={shortcut.icon}
-                          size={24}
-                          color={theme.colors.primary}
-                        />
-                      </View>
-                      <View style={{ flex: 1, minWidth: 0 }}>
-                        <Text
-                          variant="titleSmall"
+                      {({ hovered, pressed }: any) => (
+                        <View
                           style={{
-                            color: theme.semantic.text.tertiary,
-                            fontWeight: "800",
+                            minHeight: 50,
+                            paddingHorizontal: 12,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 8,
+                            borderBottomWidth: isExpanded ? 1 : 0,
+                            borderColor: theme.colors.border,
+                            backgroundColor: hovered
+                              ? theme.colors.surfaceAlt
+                              : theme.colors.bg,
+                            opacity: pressed ? 0.75 : 1,
                           }}
                         >
-                          {shortcut.title}
-                        </Text>
-                        <Text
-                          numberOfLines={1}
-                          variant="bodySmall"
-                          style={{
-                            color: theme.semantic.text.tertiary,
-                            opacity: 0.68,
-                          }}
-                        >
-                          {shortcut.description}
-                        </Text>
-                      </View>
-                      <MaterialCommunityIcons
-                        name="plus-circle-outline"
-                        size={26}
-                        color={theme.colors.primary}
-                      />
-                    </View>
-                  )}
-                </Pressable>
-              ))
+                          <Text
+                            variant="titleSmall"
+                            style={{
+                              flex: 1,
+                              color: theme.semantic.text.tertiary,
+                              fontWeight: "800",
+                            }}
+                          >
+                            {category.title}
+                          </Text>
+                          <Text
+                            variant="labelMedium"
+                            style={{
+                              color: theme.semantic.text.tertiary,
+                              opacity: 0.6,
+                            }}
+                          >
+                            {category.items.length}
+                          </Text>
+                          <MaterialCommunityIcons
+                            name={isExpanded ? "chevron-up" : "chevron-down"}
+                            size={22}
+                            color={theme.colors.primary}
+                          />
+                        </View>
+                      )}
+                    </Pressable>
+                    {isExpanded
+                      ? category.items.map((shortcut, index) => (
+                          <Pressable
+                            key={shortcut.id}
+                            testID={`Add${shortcut.testID}`}
+                            accessibilityRole="button"
+                            accessibilityLabel={`Add ${shortcut.title}`}
+                            onPress={() =>
+                              addShortcut(shortcut.id as HomeShortcutId)
+                            }
+                          >
+                            {({ hovered, pressed }: any) => (
+                              <View
+                                style={{
+                                  minHeight: 72,
+                                  paddingHorizontal: 12,
+                                  paddingVertical: 10,
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  gap: 12,
+                                  borderBottomWidth:
+                                    index === category.items.length - 1 ? 0 : 1,
+                                  borderColor: theme.colors.border,
+                                  backgroundColor: hovered
+                                    ? theme.colors.surfaceAlt
+                                    : theme.colors.bg,
+                                  opacity: pressed ? 0.75 : 1,
+                                }}
+                              >
+                                <View
+                                  style={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 10,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    backgroundColor: theme.colors.surfaceAlt,
+                                  }}
+                                >
+                                  <MaterialCommunityIcons
+                                    name={shortcut.icon}
+                                    size={24}
+                                    color={theme.colors.primary}
+                                  />
+                                </View>
+                                <View style={{ flex: 1, minWidth: 0 }}>
+                                  <Text
+                                    variant="titleSmall"
+                                    style={{
+                                      color: theme.semantic.text.tertiary,
+                                      fontWeight: "800",
+                                    }}
+                                  >
+                                    {shortcut.title}
+                                  </Text>
+                                  <Text
+                                    numberOfLines={1}
+                                    variant="bodySmall"
+                                    style={{
+                                      color: theme.semantic.text.tertiary,
+                                      opacity: 0.68,
+                                    }}
+                                  >
+                                    {shortcut.description}
+                                  </Text>
+                                </View>
+                                <MaterialCommunityIcons
+                                  name="plus-circle-outline"
+                                  size={26}
+                                  color={theme.colors.primary}
+                                />
+                              </View>
+                            )}
+                          </Pressable>
+                        ))
+                      : null}
+                  </View>
+                );
+              })
             ) : (
               <View style={{ paddingVertical: 28, alignItems: "center" }}>
                 <Text

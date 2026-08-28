@@ -72,6 +72,12 @@ export type HomeDashboardIcon =
   | "account-cog-outline"
   | "puzzle-outline";
 
+export type HomeShortcutCategory =
+  | "activities"
+  | "difficulties"
+  | "strategies"
+  | "account";
+
 export interface HomeDashboardCardDescriptor {
   id: string;
   title: string;
@@ -81,6 +87,7 @@ export interface HomeDashboardCardDescriptor {
   badge?: string;
   status: "available" | "comingSoon";
   action?: DashboardNavigationAction;
+  shortcutCategory?: HomeShortcutCategory;
 }
 
 export interface HomeResumeDescriptor {
@@ -109,6 +116,7 @@ export interface HomeHeroAction {
   title: string;
   description: string;
   label: string;
+  testID: string;
   action: DashboardNavigationAction;
 }
 
@@ -157,6 +165,7 @@ const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
     testID: `HomeClassic${toTitle(difficulty).replaceAll(" ", "")}Shortcut`,
     badge: "Classic",
     status: "available",
+    shortcutCategory: "difficulties",
     action: {
       screen: "SudokuPage",
       currentPage: "SudokuPage",
@@ -173,6 +182,7 @@ const getDrillStrategyShortcuts = (): HomeDashboardCardDescriptor[] =>
     testID: `Home${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
     badge: "Drill",
     status: "available",
+    shortcutCategory: "strategies",
     action: {
       screen: "DrillGame",
       currentPage: "DrillGame",
@@ -194,6 +204,7 @@ export const getHomeDashboardConfig = (
       icon: "gamepad-variant-outline",
       testID: "HomePlayButton",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
@@ -207,6 +218,7 @@ export const getHomeDashboardConfig = (
       icon: "school-outline",
       testID: "HomeLearnButton",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "LearnPage",
         currentPage: "LearnPage",
@@ -220,6 +232,7 @@ export const getHomeDashboardConfig = (
       testID: "HomeMultiplayerButton",
       badge: "Coming soon",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
@@ -234,6 +247,7 @@ export const getHomeDashboardConfig = (
       testID: "HomeCoopButton",
       badge: "Coming soon",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
@@ -248,6 +262,7 @@ export const getHomeDashboardConfig = (
       testID: "HomeLanButton",
       badge: "Coming soon",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
@@ -261,6 +276,7 @@ export const getHomeDashboardConfig = (
       icon: "chart-line",
       testID: "HomeStatisticsButton",
       status: "available",
+      shortcutCategory: "account",
       action: {
         screen: "StatisticsPage",
         currentPage: "StatisticsPage",
@@ -273,6 +289,7 @@ export const getHomeDashboardConfig = (
       icon: "account-cog-outline",
       testID: "HomeProfileButton",
       status: "available",
+      shortcutCategory: "account",
       action: {
         screen: "ProfilePage",
         currentPage: "ProfilePage",
@@ -291,6 +308,7 @@ export const getHomeDashboardConfig = (
       testID: "HomeDrillButton",
       badge: "Preview",
       status: "available",
+      shortcutCategory: "activities",
       action: {
         screen: "DrillPage",
         currentPage: "DrillPage",
@@ -354,6 +372,7 @@ export const getHomeHeroAction = (
       description:
         "Resume your saved Sudoku puzzle or choose another activity.",
       label: `Resume ${playableResumes[0].title}`,
+      testID: playableResumes[0].testID,
       action: playableResumes[0].action,
     };
   }
@@ -365,9 +384,8 @@ export const getHomeHeroAction = (
     title: "Play Sudoku",
     description:
       "Choose a difficulty, take a lesson, or practice a solving strategy.",
-    label: firstAvailableVariant
-      ? `Play ${firstAvailableVariant.title}`
-      : "Explore Sudoku",
+    label: firstAvailableVariant ? "Play Sudoku" : "Explore Sudoku",
+    testID: "HomeHeroActionButton",
     action: firstAvailableVariant?.action ?? {
       screen: "HomePage",
       currentPage: "HomePage",
