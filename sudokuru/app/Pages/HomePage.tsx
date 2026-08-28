@@ -267,7 +267,7 @@ const HomePage = () => {
                           fontWeight: "800",
                         }}
                       >
-                        Sudoku Home
+                        Sudokuru
                       </Text>
                       <Text
                         variant="bodyMedium"
@@ -289,36 +289,7 @@ const HomePage = () => {
                       flexWrap: "wrap",
                       gap: 12,
                     }}
-                  >
-                    {(
-                      [
-                        ["grid", "Classic puzzles"],
-                        ["school-outline", "Guided lessons"],
-                        ["target", "Strategy drills"],
-                      ] as const
-                    ).map(([icon, label]) => (
-                      <View
-                        key={label}
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 5,
-                        }}
-                      >
-                        <MaterialCommunityIcons
-                          name={icon}
-                          size={16}
-                          color={theme.colors.primary}
-                        />
-                        <Text
-                          variant="labelMedium"
-                          style={{ color: theme.semantic.text.tertiary }}
-                        >
-                          {label}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
+                  ></View>
                   {dashboard.resumes.length > 0 ? (
                     <View
                       style={{
