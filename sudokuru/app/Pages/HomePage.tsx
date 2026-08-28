@@ -20,7 +20,6 @@ import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
 import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
-import { formatTime } from "../Components/SudokuBoard/Core/Functions/BoardFunctions";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
 const HOME_MAX_WIDTH = 1160;
@@ -122,28 +121,9 @@ const HomePage = () => {
         ? 145
         : 120;
   const sectionHeadingHeight = 40;
-  const progressHeight = isShort ? 54 : 64;
   const cardHeight = isMobile ? 116 : 130;
   const cardWidth = (contentWidth - gap * (columnCount - 1)) / columnCount;
   const gridHeight = cardHeight * rowCount + gap * (rowCount - 1);
-  const statistics = dashboard.statistics;
-  const progressItems = [
-    {
-      value: statistics ? statistics.numGamesPlayed.toString() : "-",
-      label: "Solved",
-    },
-    {
-      value:
-        statistics && statistics.fastestSolveTime > 0
-          ? formatTime(statistics.fastestSolveTime)
-          : "-",
-      label: "Best time",
-    },
-    {
-      value: `${dashboard.completedLessons}/${dashboard.totalLessons}`,
-      label: "Lessons",
-    },
-  ];
 
   const setPreviewOrder = (shortcutIds: HomeShortcutId[]) => {
     previewShortcutIdsRef.current = shortcutIds;
@@ -391,52 +371,6 @@ const HomePage = () => {
               </View>
             ) : null}
           </View>
-
-          <View style={{ height: gap }} />
-
-          <Surface
-            elevation={1}
-            style={{
-              height: progressHeight,
-              paddingHorizontal: isShort ? 12 : 18,
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: theme.colors.border,
-              backgroundColor: theme.colors.surfaceAlt,
-              opacity: isEditing ? 0.58 : 1,
-            }}
-          >
-            {dashboard.isLoading && !statistics ? (
-              <ActivityIndicator
-                color={theme.colors.primary}
-                size="small"
-                style={{ marginRight: 10 }}
-              />
-            ) : null}
-            {progressItems.map((item) => (
-              <View key={item.label} style={{ flex: 1, minWidth: 0 }}>
-                <Text
-                  numberOfLines={1}
-                  variant={isShort ? "titleSmall" : "titleMedium"}
-                  style={{ color: theme.colors.primary, fontWeight: "800" }}
-                >
-                  {item.value}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  variant="labelSmall"
-                  style={{
-                    color: theme.semantic.text.inverse,
-                    opacity: 0.68,
-                  }}
-                >
-                  {item.label}
-                </Text>
-              </View>
-            ))}
-          </Surface>
 
           <View style={{ height: gap }} />
 

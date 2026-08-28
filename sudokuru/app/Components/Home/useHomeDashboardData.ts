@@ -1,8 +1,7 @@
 import React from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { getActiveGame } from "../../Api/Puzzles";
-import { Statistics } from "../../Api/Puzzle.Types";
-import { getLearnedLessons, getStatistics } from "../../Api/Statistics";
+import { getLearnedLessons } from "../../Api/Statistics";
 import { getStrategies } from "../../Api/Lessons";
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import {
@@ -15,7 +14,6 @@ import {
 
 interface HomeDashboardState {
   activeGames: BoardObjectProps[];
-  statistics: Statistics | null;
   learnedLessons: string[];
   isLoading: boolean;
   hasError: boolean;
@@ -26,7 +24,6 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
   const [refreshRequest, setRefreshRequest] = React.useState(0);
   const [state, setState] = React.useState<HomeDashboardState>({
     activeGames: [],
-    statistics: null,
     learnedLessons: [],
     isLoading: true,
     hasError: false,
@@ -63,13 +60,10 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
         const activeGamesPromise = Promise.allSettled(
           loadingConfig.activeGameVariants.map(getActiveGame),
         );
-        const dashboardDataPromise = Promise.allSettled([
-          getStatistics(),
-          getLearnedLessons(),
-        ]);
-        const [activeGameResults, dashboardDataResults] = await Promise.all([
+        const lessonsPromise = Promise.allSettled([getLearnedLessons()]);
+        const [activeGameResults, lessonsResults] = await Promise.all([
           activeGamesPromise,
-          dashboardDataPromise,
+          lessonsPromise,
         ]);
 
         if (!shouldUpdate) return;
@@ -77,22 +71,17 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
         const activeGames = activeGameResults.flatMap((result) =>
           result.status === "fulfilled" && result.value ? [result.value] : [],
         );
-        const statisticsResult = dashboardDataResults[0];
-        const lessonsResult = dashboardDataResults[1];
 
         setState({
           activeGames,
-          statistics:
-            statisticsResult.status === "fulfilled"
-              ? statisticsResult.value
-              : null,
           learnedLessons:
-            lessonsResult.status === "fulfilled" ? lessonsResult.value : [],
+            lessonsResults[0].status === "fulfilled"
+              ? lessonsResults[0].value
+              : [],
           isLoading: false,
-          hasError:
-            activeGameResults.some((result) => result.status === "rejected") ||
-            statisticsResult.status === "rejected" ||
-            lessonsResult.status === "rejected",
+          hasError: activeGameResults.some(
+            (result) => result.status === "rejected",
+          ),
         });
       };
 
