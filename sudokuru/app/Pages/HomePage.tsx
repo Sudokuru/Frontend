@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Button,
   IconButton,
+  Menu,
   Modal,
   Portal,
   Searchbar,
@@ -15,6 +16,7 @@ import {
 import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
 import HomeShortcutCard from "../Components/Home/HomeShortcutCard";
 import { useHomeDashboardData } from "../Components/Home/useHomeDashboardData";
+import { useHomeDifficulty } from "../Components/Home/useHomeDifficulty";
 import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
 import type {
   DashboardNavigationAction,
@@ -50,6 +52,7 @@ const HomePage = () => {
   );
   const [isEditing, setIsEditing] = React.useState(false);
   const [isLibraryOpen, setIsLibraryOpen] = React.useState(false);
+  const [isDifficultyMenuOpen, setIsDifficultyMenuOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [expandedLibraryCategories, setExpandedLibraryCategories] =
     React.useState<Set<HomeShortcutCategory>>(
@@ -63,10 +66,15 @@ const HomePage = () => {
 
   const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
     React.useContext(PreferencesContext);
-  const dashboard = useHomeDashboardData({
-    featurePreview: featurePreviewSetting,
-    drillMode: drillModeSetting,
-  });
+  const homeDifficulty = useHomeDifficulty();
+  const selectedDifficulty = homeDifficulty.difficulty;
+  const dashboard = useHomeDashboardData(
+    {
+      featurePreview: featurePreviewSetting,
+      drillMode: drillModeSetting,
+    },
+    selectedDifficulty,
+  );
   const shortcuts = useHomeShortcuts();
   const [fontsLoaded] = useFonts({ Inter_400Regular });
 
@@ -75,7 +83,7 @@ const HomePage = () => {
     navigation.navigate(action.screen, action.params);
   };
 
-  if (!fontsLoaded || shortcuts.isLoading) {
+  if (!fontsLoaded || shortcuts.isLoading || homeDifficulty.isLoading) {
     return (
       <View
         style={{
@@ -126,6 +134,9 @@ const HomePage = () => {
       );
       return items.length > 0 ? [{ ...category, items }] : [];
     },
+  );
+  const selectedDifficultyOption = dashboard.heroAction.difficultyOptions?.find(
+    (option) => option.value === selectedDifficulty,
   );
 
   const columnCount = isMobile
@@ -339,17 +350,76 @@ const HomePage = () => {
                         {dashboard.heroAction.description}
                       </Text>
                     </View>
-                    <Button
-                      testID={dashboard.heroAction.testID}
-                      mode="contained"
-                      icon="arrow-right"
-                      contentStyle={{ flexDirection: "row-reverse" }}
-                      buttonColor={theme.colors.primary}
-                      textColor={theme.semantic.text.info}
-                      onPress={() => navigateTo(dashboard.heroAction.action)}
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        gap: 8,
+                      }}
                     >
-                      {dashboard.heroAction.label}
-                    </Button>
+                      {dashboard.heroAction.difficultyOptions ? (
+                        <Menu
+                          visible={isDifficultyMenuOpen}
+                          onDismiss={() => setIsDifficultyMenuOpen(false)}
+                          anchor={
+                            <Button
+                              testID="HomeDifficultySelector"
+                              accessibilityLabel={`Difficulty: ${selectedDifficultyOption?.label ?? selectedDifficulty}`}
+                              mode="outlined"
+                              icon="chevron-down"
+                              textColor={theme.colors.primary}
+                              style={{
+                                minWidth: 140,
+                                borderColor: theme.colors.primary,
+                              }}
+                              onPress={() => setIsDifficultyMenuOpen(true)}
+                            >
+                              {selectedDifficultyOption?.label ??
+                                selectedDifficulty}
+                            </Button>
+                          }
+                          contentStyle={{ backgroundColor: theme.colors.bg }}
+                        >
+                          <ScrollView style={{ maxHeight: 320 }}>
+                            {dashboard.heroAction.difficultyOptions.map(
+                              (option) => (
+                                <Menu.Item
+                                  key={option.value}
+                                  testID={`HomeDifficulty-${option.value}`}
+                                  title={option.label}
+                                  leadingIcon={
+                                    option.value === selectedDifficulty
+                                      ? "check"
+                                      : undefined
+                                  }
+                                  titleStyle={{
+                                    color: theme.semantic.text.tertiary,
+                                  }}
+                                  onPress={() => {
+                                    homeDifficulty.updateDifficulty(
+                                      option.value,
+                                    );
+                                    setIsDifficultyMenuOpen(false);
+                                  }}
+                                />
+                              ),
+                            )}
+                          </ScrollView>
+                        </Menu>
+                      ) : null}
+                      <Button
+                        testID={dashboard.heroAction.testID}
+                        mode="contained"
+                        icon="arrow-right"
+                        contentStyle={{ flexDirection: "row-reverse" }}
+                        buttonColor={theme.colors.primary}
+                        textColor={theme.semantic.text.info}
+                        onPress={() => navigateTo(dashboard.heroAction.action)}
+                      >
+                        {dashboard.heroAction.label}
+                      </Button>
+                    </View>
                   </View>
                   {dashboard.supportingResumes.length > 0 ? (
                     <View

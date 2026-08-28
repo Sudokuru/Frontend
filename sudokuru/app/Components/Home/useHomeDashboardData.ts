@@ -9,7 +9,11 @@ import {
   getHomeHeroAction,
   getHomeResumeDescriptor,
   getHomeSupportingResumes,
+  HOME_DEFAULT_DIFFICULTY,
+} from "../SudokuBoard/SudokuBoardSharedFunctionsController";
+import type {
   HomeDashboardFlags,
+  HomeDifficulty,
 } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
 
 interface HomeDashboardState {
@@ -19,7 +23,10 @@ interface HomeDashboardState {
   hasError: boolean;
 }
 
-export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
+export const useHomeDashboardData = (
+  flags: HomeDashboardFlags,
+  selectedDifficulty: HomeDifficulty = HOME_DEFAULT_DIFFICULTY,
+) => {
   const { featurePreview, drillMode } = flags;
   const [refreshRequest, setRefreshRequest] = React.useState(0);
   const [state, setState] = React.useState<HomeDashboardState>({
@@ -39,7 +46,11 @@ export const useHomeDashboardData = (flags: HomeDashboardFlags) => {
     lessons.length,
   );
   const resumes = state.activeGames.map(getHomeResumeDescriptor);
-  const heroAction = getHomeHeroAction(resumes, config.variants);
+  const heroAction = getHomeHeroAction(
+    resumes,
+    config.variants,
+    selectedDifficulty,
+  );
   const supportingResumes = getHomeSupportingResumes(resumes);
 
   useFocusEffect(

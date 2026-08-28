@@ -50,8 +50,15 @@ import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 import { toTitle } from "../../Functions/Utils";
-import type { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
 import { DRILL_STRATEGIES } from "../../Functions/DrillStrategies";
+import {
+  HOME_DEFAULT_DIFFICULTY,
+  HOME_DIFFICULTIES,
+} from "../../Api/HomePreferences";
+import type { HomeDifficulty } from "../../Api/HomePreferences";
+
+export { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
+export type { HomeDifficulty } from "../../Api/HomePreferences";
 
 export interface DashboardNavigationAction {
   screen: string;
@@ -77,6 +84,11 @@ export type HomeShortcutCategory =
   | "difficulties"
   | "strategies"
   | "account";
+
+export interface HomeDifficultyOption {
+  label: string;
+  value: HomeDifficulty;
+}
 
 export interface HomeDashboardCardDescriptor {
   id: string;
@@ -118,6 +130,7 @@ export interface HomeHeroAction {
   label: string;
   testID: string;
   action: DashboardNavigationAction;
+  difficultyOptions?: readonly HomeDifficultyOption[];
 }
 
 export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
@@ -144,20 +157,14 @@ export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
   },
 ];
 
-const CLASSIC_DIFFICULTIES: readonly GameDifficulty[] = [
-  "novice",
-  "amateur",
-  "layman",
-  "trainee",
-  "protege",
-  "professional",
-  "pundit",
-  "master",
-  "grandmaster",
-];
+const HOME_DIFFICULTY_OPTIONS: readonly HomeDifficultyOption[] =
+  HOME_DIFFICULTIES.map((difficulty) => ({
+    label: toTitle(difficulty),
+    value: difficulty,
+  }));
 
 const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
-  CLASSIC_DIFFICULTIES.map((difficulty) => ({
+  HOME_DIFFICULTIES.map((difficulty) => ({
     id: `classic-${difficulty}`,
     title: `${toTitle(difficulty)} Puzzle`,
     description: `Start a Classic Sudoku puzzle at ${toTitle(difficulty)} difficulty.`,
@@ -364,14 +371,14 @@ export const getHomeResumeDescriptor = (
 export const getHomeHeroAction = (
   resumes: HomeResumeDescriptor[],
   variants: HomeDashboardCardDescriptor[],
+  selectedDifficulty: HomeDifficulty = HOME_DEFAULT_DIFFICULTY,
 ): HomeHeroAction => {
   const playableResumes = resumes.filter((item) => item.category === "play");
   if (playableResumes.length === 1) {
     return {
       title: "Resume your puzzle",
-      description:
-        "Resume your saved Sudoku puzzle or choose another activity.",
-      label: `Resume ${playableResumes[0].title}`,
+      description: "Resume your saved Sudoku puzzle.",
+      label: "Resume Puzzle",
       testID: playableResumes[0].testID,
       action: playableResumes[0].action,
     };
@@ -380,16 +387,23 @@ export const getHomeHeroAction = (
   const firstAvailableVariant = variants.find(
     (variant) => variant.status === "available" && variant.action,
   );
+  const startsClassicGame = firstAvailableVariant?.id === "classic";
   return {
     title: "Play Sudoku",
-    description:
-      "Choose a difficulty, take a lesson, or practice a solving strategy.",
+    description: "Choose a difficulty and start a new Sudoku puzzle.",
     label: firstAvailableVariant ? "Play Sudoku" : "Explore Sudoku",
     testID: "HomeHeroActionButton",
-    action: firstAvailableVariant?.action ?? {
-      screen: "HomePage",
-      currentPage: "HomePage",
-    },
+    action: startsClassicGame
+      ? {
+          screen: "SudokuPage",
+          currentPage: "SudokuPage",
+          params: { action: "StartGame", difficulty: selectedDifficulty },
+        }
+      : (firstAvailableVariant?.action ?? {
+          screen: "HomePage",
+          currentPage: "HomePage",
+        }),
+    difficultyOptions: startsClassicGame ? HOME_DIFFICULTY_OPTIONS : undefined,
   };
 };
 

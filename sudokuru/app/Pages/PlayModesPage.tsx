@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Searchbar, Surface, Text } from "react-native-paper";
+import { Surface, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { getSudokuVariantCatalogue } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
@@ -67,15 +67,13 @@ const PlayModesPage = ({ route }: any) => {
   const { theme } = useTheme();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const windowSize = useNewWindowDimensions();
-  const requestedQuery = route.params?.query ?? "";
-  const [query, setQuery] = React.useState(requestedQuery);
+  const query = route.params?.query?.trim().toLowerCase() ?? "";
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
-  const deferredQuery = React.useDeferredValue(query.trim().toLowerCase());
   const filterChoices = (choices: GameChoice[], categoryTerms: string) =>
     choices.filter((choice) =>
       `${categoryTerms} ${choice.title} ${choice.description}`
         .toLowerCase()
-        .includes(deferredQuery),
+        .includes(query),
     );
   const variants = filterChoices(
     getSudokuVariantCatalogue(),
@@ -89,10 +87,6 @@ const PlayModesPage = ({ route }: any) => {
   const hasResults =
     variants.length > 0 || lanModes.length > 0 || multiplayerModes.length > 0;
   const horizontalPadding = windowSize.width < 760 ? 18 : 32;
-
-  React.useEffect(() => {
-    setQuery(requestedQuery);
-  }, [requestedQuery]);
 
   const navigateTo = (action: DashboardNavigationAction) => {
     updateCurrentPage(action.currentPage);
@@ -226,22 +220,6 @@ const PlayModesPage = ({ route }: any) => {
         >
           Choose a game
         </Text>
-        <Searchbar
-          testID="GameSearchInput"
-          placeholder="Search variants and modes"
-          value={query}
-          onChangeText={setQuery}
-          style={{
-            marginTop: 20,
-            backgroundColor: theme.colors.surfaceAlt,
-            borderWidth: 1,
-            borderColor: theme.colors.border,
-          }}
-          inputStyle={{ color: theme.semantic.text.inverse }}
-          iconColor={theme.colors.primary}
-          placeholderTextColor={theme.semantic.text.inverse}
-        />
-
         {variants.length > 0 ? (
           <>
             <Text
