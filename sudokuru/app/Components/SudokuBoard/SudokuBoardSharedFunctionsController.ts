@@ -72,9 +72,6 @@ export type HomeDashboardIcon =
   | "school-outline"
   | "target"
   | "gamepad-variant-outline"
-  | "account-multiple-outline"
-  | "account-group-outline"
-  | "lan"
   | "chart-line"
   | "account-cog-outline"
   | "puzzle-outline";
@@ -207,7 +204,7 @@ export const getHomeDashboardConfig = (
     {
       id: "play",
       title: "Play",
-      description: "Choose a Sudoku variant or multiplayer mode.",
+      description: "Choose a Sudoku variant.",
       icon: "gamepad-variant-outline",
       testID: "HomePlayButton",
       status: "available",
@@ -215,7 +212,6 @@ export const getHomeDashboardConfig = (
       action: {
         screen: "PlayModesPage",
         currentPage: "PlayModesPage",
-        params: { query: "" },
       },
     },
     {
@@ -229,51 +225,6 @@ export const getHomeDashboardConfig = (
       action: {
         screen: "LearnPage",
         currentPage: "LearnPage",
-      },
-    },
-    {
-      id: "multiplayer",
-      title: "Multiplayer",
-      description: "Browse online Battle and Co-op / Team modes.",
-      icon: "account-multiple-outline",
-      testID: "HomeMultiplayerButton",
-      badge: "Coming soon",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "PlayModesPage",
-        currentPage: "PlayModesPage",
-        params: { query: "multiplayer" },
-      },
-    },
-    {
-      id: "coop",
-      title: "Co-op / Team",
-      description: "Browse collaborative LAN and online modes.",
-      icon: "account-group-outline",
-      testID: "HomeCoopButton",
-      badge: "Coming soon",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "PlayModesPage",
-        currentPage: "PlayModesPage",
-        params: { query: "co-op / team" },
-      },
-    },
-    {
-      id: "lan",
-      title: "LAN",
-      description: "Browse local network Battle and Co-op / Team modes.",
-      icon: "lan",
-      testID: "HomeLanButton",
-      badge: "Coming soon",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "PlayModesPage",
-        currentPage: "PlayModesPage",
-        params: { query: "lan" },
       },
     },
     {

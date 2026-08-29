@@ -4,88 +4,21 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Surface, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { getSudokuVariantCatalogue } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
-import type { DashboardNavigationAction } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
+import type {
+  DashboardNavigationAction,
+  HomeDashboardCardDescriptor,
+} from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
-interface GameChoice {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
-  testID: string;
-  status: "available" | "comingSoon";
-  badge?: string;
-  action?: DashboardNavigationAction;
-}
-
-const LAN_MODES: GameChoice[] = [
-  {
-    id: "lan-battle",
-    title: "Battle",
-    description: "Compete with people on your local network.",
-    icon: "sword-cross",
-    testID: "LanBattleModeButton",
-    status: "comingSoon",
-    badge: "Coming soon",
-  },
-  {
-    id: "lan-coop",
-    title: "Co-op / Team",
-    description: "Solve a puzzle together on your local network.",
-    icon: "account-group-outline",
-    testID: "LanCoopModeButton",
-    status: "comingSoon",
-    badge: "Coming soon",
-  },
-];
-
-const MULTIPLAYER_MODES: GameChoice[] = [
-  {
-    id: "multiplayer-battle",
-    title: "Battle",
-    description: "Compete with other players online.",
-    icon: "sword-cross",
-    testID: "MultiplayerBattleModeButton",
-    status: "comingSoon",
-    badge: "Coming soon",
-  },
-  {
-    id: "multiplayer-coop",
-    title: "Co-op / Team",
-    description: "Solve a puzzle together with other players online.",
-    icon: "account-group-outline",
-    testID: "MultiplayerCoopModeButton",
-    status: "comingSoon",
-    badge: "Coming soon",
-  },
-];
-
-const PlayModesPage = ({ route }: any) => {
+const PlayModesPage = () => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const windowSize = useNewWindowDimensions();
-  const query = route.params?.query?.trim().toLowerCase() ?? "";
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
-  const filterChoices = (choices: GameChoice[], categoryTerms: string) =>
-    choices.filter((choice) =>
-      `${categoryTerms} ${choice.title} ${choice.description}`
-        .toLowerCase()
-        .includes(query),
-    );
-  const variants = filterChoices(
-    getSudokuVariantCatalogue(),
-    "sudoku variants single player",
-  );
-  const lanModes = filterChoices(LAN_MODES, "lan local network");
-  const multiplayerModes = filterChoices(
-    MULTIPLAYER_MODES,
-    "multiplayer online",
-  );
-  const hasResults =
-    variants.length > 0 || lanModes.length > 0 || multiplayerModes.length > 0;
+  const variants = getSudokuVariantCatalogue();
   const horizontalPadding = windowSize.width < 760 ? 18 : 32;
 
   const navigateTo = (action: DashboardNavigationAction) => {
@@ -93,7 +26,7 @@ const PlayModesPage = ({ route }: any) => {
     navigation.navigate(action.screen, action.params);
   };
 
-  const renderChoices = (choices: GameChoice[]) => (
+  const renderChoices = (choices: HomeDashboardCardDescriptor[]) => (
     <Surface
       elevation={2}
       style={{
@@ -220,95 +153,18 @@ const PlayModesPage = ({ route }: any) => {
         >
           Choose a game
         </Text>
-        {variants.length > 0 ? (
-          <>
-            <Text
-              accessibilityRole="header"
-              variant="titleLarge"
-              style={{
-                marginTop: 24,
-                color: theme.semantic.text.tertiary,
-                fontWeight: "800",
-              }}
-            >
-              Sudoku variants
-            </Text>
-            {renderChoices(variants)}
-          </>
-        ) : null}
-
-        {lanModes.length > 0 ? (
-          <>
-            <Text
-              accessibilityRole="header"
-              variant="titleLarge"
-              style={{
-                marginTop: 28,
-                color: theme.semantic.text.tertiary,
-                fontWeight: "800",
-              }}
-            >
-              LAN
-            </Text>
-            <Text
-              variant="bodyMedium"
-              style={{
-                marginTop: 3,
-                color: theme.semantic.text.tertiary,
-                opacity: 0.68,
-              }}
-            >
-              Play with people on your local network.
-            </Text>
-            {renderChoices(lanModes)}
-          </>
-        ) : null}
-
-        {multiplayerModes.length > 0 ? (
-          <>
-            <Text
-              accessibilityRole="header"
-              variant="titleLarge"
-              style={{
-                marginTop: 28,
-                color: theme.semantic.text.tertiary,
-                fontWeight: "800",
-              }}
-            >
-              Multiplayer
-            </Text>
-            <Text
-              variant="bodyMedium"
-              style={{
-                marginTop: 3,
-                color: theme.semantic.text.tertiary,
-                opacity: 0.68,
-              }}
-            >
-              Play with other people online.
-            </Text>
-            {renderChoices(multiplayerModes)}
-          </>
-        ) : null}
-
-        {!hasResults ? (
-          <Surface
-            style={{
-              marginTop: 20,
-              padding: 24,
-              alignItems: "center",
-              borderRadius: 12,
-              backgroundColor: theme.colors.surfaceAlt,
-            }}
-          >
-            <Text
-              variant="bodyLarge"
-              style={{ color: theme.semantic.text.inverse }}
-            >
-              No games match “{query}”.
-            </Text>
-          </Surface>
-        ) : null}
+        <Text
+          accessibilityRole="header"
+          variant="titleLarge"
+          style={{
+            marginTop: 24,
+            color: theme.semantic.text.tertiary,
+            fontWeight: "800",
+          }}
+        >
+          Sudoku variants
+        </Text>
+        {renderChoices(variants)}
       </View>
     </ScrollView>
   );
