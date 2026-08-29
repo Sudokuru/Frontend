@@ -15,6 +15,7 @@ import { AboutUsPage } from "./page/aboutus.page";
 import { LearnPage } from "./page/learn.page";
 import { CODE_COVERAGE } from "./playwright.config";
 import { DrillPage } from "./page/drill.page";
+import { PlayModesPage } from "./page/play-modes.page";
 
 // Declare the interfaces of your fixtures.
 interface MyFixtures {
@@ -40,6 +41,9 @@ interface MyStorageOptions {
   activeDrillGameStorage?: any;
   profileStorage?: any;
   statisticsStorage?: any;
+  homeShortcutsStorage?: any;
+  homeDifficultyStorage?: any;
+  learnedLessonsStorage?: any;
 }
 
 // See https://playwright.dev/docs/test-fixtures and https://playwright.dev/docs/test-parameterize
@@ -56,6 +60,9 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
   activeDrillGameStorage: [null, { option: true }],
   profileStorage: [null, { option: true }],
   statisticsStorage: [null, { option: true }],
+  homeShortcutsStorage: [null, { option: true }],
+  homeDifficultyStorage: [null, { option: true }],
+  learnedLessonsStorage: [null, { option: true }],
 
   // this article saving the day: https://testomat.io/blog/what-is-the-use-of-fixtures-in-playwright/
   storageState: async (
@@ -64,6 +71,9 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       activeDrillGameStorage,
       profileStorage,
       statisticsStorage,
+      homeShortcutsStorage,
+      homeDifficultyStorage,
+      learnedLessonsStorage,
       baseURL,
     },
     use,
@@ -75,10 +85,13 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       { key: "active_drill_game", value: activeDrillGameStorage },
       { key: "profile", value: profileStorage },
       { key: "statistics", value: statisticsStorage },
+      { key: "home_shortcuts", value: homeShortcutsStorage },
+      { key: "home_difficulty", value: homeDifficultyStorage },
+      { key: "learned_lessons", value: learnedLessonsStorage },
     ];
 
     for (const item of storageItems) {
-      if (item.value) {
+      if (item.value !== null && item.value !== undefined) {
         localStorage.push({
           name: item.key,
           value: JSON.stringify(item.value),
@@ -132,10 +145,9 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
         JSON.stringify(classicGametoResume),
       );
     }, classicGametoResume as JSON);
+    await page.reload();
     const homePage = new HomePage(page);
-    await homePage.playSudoku.click();
-    const playPage = new PlayPage(page);
-    await playPage.page.getByText("Resume Puzzle").click();
+    await homePage.resumeClassic.click();
     const sudokuBoard = new SudokuBoardComponent(page);
     await sudokuBoard.sudokuBoardIsRendered();
     await use(page);
@@ -170,6 +182,8 @@ export const test = newBase.extend<MyFixtures & MyOptions>({
     const headerComponent = new HeaderComponent(page);
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await use(page);

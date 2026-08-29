@@ -6,6 +6,7 @@ import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
 import { PlayPage } from "../page/play.page";
 import { DrillPage } from "../page/drill.page";
+import { PlayModesPage } from "../page/play-modes.page";
 import {
   ALMOST_FINISHED_GAME,
   INVALID_ACTIVE_GAME_DATA,
@@ -72,6 +73,8 @@ test.describe("Offline Storage", () => {
     await page.reload();
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -130,6 +133,8 @@ test.describe("Offline Storage", () => {
     await page.reload();
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -159,6 +164,8 @@ test.describe("Offline Storage", () => {
   }) => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -185,6 +192,8 @@ test.describe("Offline Storage", () => {
   test("Resume Game with invalid data does not crash app", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await page.evaluate(
       (INVALID_ACTIVE_GAME_DATA: JSON) => {

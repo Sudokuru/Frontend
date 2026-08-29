@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Surface, Text } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { getSudokuVariantCatalogue } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import type {
   DashboardNavigationAction,
@@ -20,11 +20,14 @@ const PlayModesPage = () => {
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
   const variants = getSudokuVariantCatalogue();
   const horizontalPadding = windowSize.width < 760 ? 18 : 32;
+  const isFocused = useIsFocused();
 
   const navigateTo = (action: DashboardNavigationAction) => {
     updateCurrentPage(action.currentPage);
     navigation.navigate(action.screen, action.params);
   };
+
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   const renderChoices = (choices: HomeDashboardCardDescriptor[]) => (
     <Surface

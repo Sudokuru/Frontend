@@ -53,6 +53,7 @@ import { HeaderComponent } from "../../components/header.component";
 import { PlayPage } from "../../page/play.page";
 import { HomePage } from "../../page/home.page";
 import { expect } from "@playwright/test";
+import { PlayModesPage } from "../../page/play-modes.page";
 
 test.describe("hint mode operates correctly", () => {
   test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -141,9 +142,7 @@ test.describe("hint mode operates correctly", () => {
     await sudokuBoard.cellHasNotes(0, 0, "1");
     await resumeClassicGame.reload();
     const homePage = new HomePage(resumeClassicGame);
-    await homePage.playSudoku.click();
-    const playPage = new PlayPage(resumeClassicGame);
-    await playPage.resume.click();
+    await homePage.resumeClassic.click();
     await sudokuBoard.sudokuBoardIsRendered();
 
     await expect(sudokuBoard.hintExit).toBeInViewport({ ratio: 1 });
@@ -157,8 +156,7 @@ test.describe("hint mode operates correctly", () => {
     await expect(sudokuBoard.hint).toBeInViewport({ ratio: 1 });
 
     await resumeClassicGame.reload();
-    await homePage.playSudoku.click();
-    await playPage.resume.click();
+    await homePage.resumeClassic.click();
     await sudokuBoard.sudokuBoardIsRendered();
 
     await sudokuBoard.cellIsEmpty(0, 0);
@@ -457,6 +455,8 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -470,6 +470,8 @@ test.describe("board OBVIOUS_SINGLE", () => {
     const headerComponent = new HeaderComponent(resumeClassicGame);
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -486,6 +488,8 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await profilePage.featurePreviewSwitchDisabled.click();
     await header.drawer.click();
     await header.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
 
@@ -495,6 +499,7 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await profilePage.featurePreviewSwitchEnabled.click();
     await header.drawer.click();
     await header.drawerPlay.click();
+    await playModesPage.classic.click();
     await playPage.resume.click();
 
     for (let stage = 2; stage <= 5; stage++) {
@@ -515,6 +520,8 @@ test.describe("board OBVIOUS_SINGLE", () => {
     await profilePage.featurePreviewSwitchDisabled.click();
     await header.drawer.click();
     await header.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
 

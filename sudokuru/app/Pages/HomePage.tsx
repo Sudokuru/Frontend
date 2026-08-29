@@ -2,7 +2,7 @@ import React from "react";
 import { Image, Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   ActivityIndicator,
   Button,
@@ -77,11 +77,14 @@ const HomePage = () => {
   );
   const shortcuts = useHomeShortcuts();
   const [fontsLoaded] = useFonts({ Inter_400Regular });
+  const isFocused = useIsFocused();
 
   const navigateTo = (action: DashboardNavigationAction) => {
     updateCurrentPage(action.currentPage);
     navigation.navigate(action.screen, action.params);
   };
+
+  if (!isFocused) return <Text>Error Loading Page</Text>;
 
   if (!fontsLoaded || shortcuts.isLoading || homeDifficulty.isLoading) {
     return (

@@ -252,11 +252,7 @@ test.describe("game is saved on start", () => {
     await expect(sudokuBoard.difficulty).toBeInViewport({ ratio: 1 });
     await play.reload();
     const homePage = new HomePage(play);
-    await homePage.playSudoku.click();
-    const secondSessionPlayPage = new PlayPage(play);
-    await expect(
-      secondSessionPlayPage.page.getByText("Resume Puzzle"),
-    ).toBeInViewport({ ratio: 1 });
+    await expect(homePage.resumeClassic).toBeInViewport({ ratio: 1 });
   });
 });
 
