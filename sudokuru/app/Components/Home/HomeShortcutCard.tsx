@@ -2,7 +2,7 @@ import React from "react";
 import { Animated, PanResponder, Pressable, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { IconButton, Surface, Text } from "react-native-paper";
-import type { HomeDashboardCardDescriptor } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
+import type { HomeDashboardCardDescriptor } from "./HomeDashboard";
 import { useTheme } from "../../Contexts/ThemeContext";
 
 interface HomeShortcutCardProps {

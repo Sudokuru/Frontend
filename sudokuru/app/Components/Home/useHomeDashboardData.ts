@@ -1,6 +1,5 @@
 import React from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { getActiveGame } from "../../Api/Puzzles";
 import { getLearnedLessons } from "../../Api/Statistics";
 import { getStrategies } from "../../Api/Lessons";
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
@@ -9,10 +8,12 @@ import {
   getHomeHeroAction,
   getHomeResumeDescriptor,
   getHomeSupportingResumes,
-  HOME_DEFAULT_DIFFICULTY,
-} from "../SudokuBoard/SudokuBoardSharedFunctionsController";
-import type { HomeDashboardFlags } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
-import type { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
+} from "./HomeDashboard";
+import type { HomeDashboardFlags } from "./HomeDashboard";
+import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
+import { getSudokuResumeSnapshot } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
+import { getSudokuModeResumeProviders } from "../../SudokuModes/SudokuModeRegistry";
+import type { GameDifficulty } from "../../Functions/GameDifficulties";
 
 interface HomeDashboardState {
   activeGames: BoardObjectProps[];
@@ -43,10 +44,12 @@ export const useHomeDashboardData = (
     completedLessons,
     lessons.length,
   );
-  const resumes = state.activeGames.map(getHomeResumeDescriptor);
+  const resumes = state.activeGames.map((game) =>
+    getHomeResumeDescriptor(getSudokuResumeSnapshot(game)),
+  );
   const heroAction = getHomeHeroAction(
     resumes,
-    config.variants,
+    { featurePreview, drillMode },
     selectedDifficulty,
   );
   const supportingResumes = getHomeSupportingResumes(resumes);
@@ -61,13 +64,10 @@ export const useHomeDashboardData = (
       }));
 
       const loadDashboard = async () => {
-        const loadingConfig = getHomeDashboardConfig(
-          { featurePreview, drillMode },
-          0,
-          lessons.length,
-        );
         const activeGamesPromise = Promise.allSettled(
-          loadingConfig.activeGameVariants.map(getActiveGame),
+          getSudokuModeResumeProviders({ featurePreview, drillMode }).map(
+            (getActiveGame) => getActiveGame(),
+          ),
         );
         const lessonsPromise = Promise.allSettled([getLearnedLessons()]);
         const [activeGameResults, lessonsResults] = await Promise.all([
@@ -98,7 +98,7 @@ export const useHomeDashboardData = (
       return () => {
         shouldUpdate = false;
       };
-    }, [featurePreview, drillMode, lessons.length, refreshRequest]),
+    }, [featurePreview, drillMode, refreshRequest]),
   );
 
   return {

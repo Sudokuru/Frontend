@@ -4,7 +4,7 @@ import {
   HOME_DEFAULT_DIFFICULTY,
   saveHomeDifficulty,
 } from "../../Api/HomePreferences";
-import type { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
+import type { GameDifficulty } from "../../Functions/GameDifficulties";
 
 export const useHomeDifficulty = () => {
   const [difficulty, setDifficulty] = React.useState<GameDifficulty>(

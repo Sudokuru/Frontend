@@ -3,6 +3,8 @@ import {
   BoardObjectProps,
   GameVariant,
   SudokuBoardDrillGameSchema,
+  ClassicObjectProps,
+  DrillObjectProps,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
@@ -10,36 +12,23 @@ import { Statistics } from "./Puzzle.Types";
 import { getStatistics, saveStatisitics } from "./Statistics";
 import { SudokuStrategy } from "sudokuru";
 
-/**
- * Given the sudoku game variant - retrieves the users active game or returns null if the user doesn't have an active game
- * @returns promise of activeGame JSON object
- */
-export const getGame = async (
-  variant: GameVariant,
-): Promise<BoardObjectProps[] | null> => {
-  if (variant === "classic") {
-    return (
-      (await getKeyJSON(
-        `active_${variant}_game`,
-        SudokuBoardActiveGameSchema,
-      )) ?? null
+export const getActiveClassicGame =
+  async (): Promise<ClassicObjectProps | null> => {
+    const games = await getKeyJSON(
+      "active_classic_game",
+      SudokuBoardActiveGameSchema,
     );
-  } else {
-    return (
-      (await getKeyJSON(
-        `active_${variant}_game`,
-        SudokuBoardDrillGameSchema,
-      )) ?? null
-    );
-  }
-};
+    return games?.[0] ?? null;
+  };
 
-export const getActiveGame = async (
-  variant: GameVariant,
-): Promise<BoardObjectProps | null> => {
-  const games = await getGame(variant);
-  return games?.[0] ?? null;
-};
+export const getActiveDrillGame =
+  async (): Promise<DrillObjectProps | null> => {
+    const games = await getKeyJSON(
+      "active_drill_game",
+      SudokuBoardDrillGameSchema,
+    );
+    return games?.[0] ?? null;
+  };
 
 /**
  * Given a game saves it to AsyncStorage

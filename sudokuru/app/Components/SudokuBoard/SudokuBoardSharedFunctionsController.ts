@@ -28,7 +28,6 @@ import {
   headerRowTitle as drillHeaderRowTitle,
 } from "./Drill/Functions/HeaderRowFunctions";
 import {
-  formatTime,
   finishSudokuGame as coreFinishGameStatistics,
   handlePause as coreHandlePause,
 } from "./Core/Functions/BoardFunctions";
@@ -50,325 +49,15 @@ import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 import { toTitle } from "../../Functions/Utils";
-import { DRILL_STRATEGIES } from "../../Functions/DrillStrategies";
-import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
-import { GAME_DIFFICULTIES } from "./Core/Functions/DifficultyFunctions";
-import type { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
-import {
-  getClassicHomeShortcutId,
-  getDrillHomeShortcutId,
-} from "../../Api/HomeShortcuts";
 
-export { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
-
-export interface DashboardNavigationAction {
-  screen: string;
-  currentPage: string;
-  params?: Record<string, string>;
+export interface SudokuResumeSnapshot {
+  modeId: BoardObjectProps["variant"];
+  detail: string;
+  elapsedSeconds: number;
 }
-
-export type HomeDashboardIcon =
-  | "grid"
-  | "image-filter-center-focus"
-  | "school-outline"
-  | "target"
-  | "gamepad-variant-outline"
-  | "chart-line"
-  | "account-cog-outline"
-  | "puzzle-outline";
-
-export type HomeShortcutCategory =
-  | "activities"
-  | "difficulties"
-  | "strategies"
-  | "account";
-
-export interface HomeDifficultyOption {
-  label: string;
-  value: GameDifficulty;
-}
-
-export interface HomeDashboardCardDescriptor {
-  id: string;
-  title: string;
-  description: string;
-  icon: HomeDashboardIcon;
-  testID: string;
-  badge?: string;
-  status: "available" | "comingSoon";
-  action?: DashboardNavigationAction;
-  shortcutCategory?: HomeShortcutCategory;
-}
-
-export interface HomeResumeDescriptor {
-  id: string;
-  title: string;
-  description: string;
-  metadata: string;
-  icon: HomeDashboardIcon;
-  testID: string;
-  category: "play" | "practice";
-  action: DashboardNavigationAction;
-}
-
-export interface HomeDashboardFlags {
-  featurePreview: boolean;
-  drillMode: boolean;
-}
-
-export interface HomeDashboardConfig {
-  variants: HomeDashboardCardDescriptor[];
-  shortcutCatalogue: HomeDashboardCardDescriptor[];
-  activeGameVariants: BoardObjectProps["variant"][];
-}
-
-export interface HomeHeroAction {
-  title: string;
-  description: string;
-  label: string;
-  testID: string;
-  action: DashboardNavigationAction;
-  difficultyOptions?: readonly HomeDifficultyOption[];
-}
-
-export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
-  {
-    id: "classic",
-    title: "Classic Sudoku",
-    description: "Choose a difficulty and start a new puzzle.",
-    icon: "grid",
-    testID: "VariantClassicButton",
-    status: "available",
-    action: {
-      screen: "PlayPage",
-      currentPage: "PlayPage",
-    },
-  },
-  {
-    id: "focus",
-    title: "Focus Sudoku",
-    description: "Sudoku with the next region focused for fast play.",
-    icon: "image-filter-center-focus",
-    testID: "VariantFocusButton",
-    badge: "Coming soon",
-    status: "comingSoon",
-  },
-];
-
-const HOME_DIFFICULTY_OPTIONS: readonly HomeDifficultyOption[] =
-  GAME_DIFFICULTIES.map((difficulty) => ({
-    label: toTitle(difficulty),
-    value: difficulty,
-  }));
-
-const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
-  GAME_DIFFICULTIES.map((difficulty) => ({
-    id: getClassicHomeShortcutId(difficulty),
-    title: `${toTitle(difficulty)} Puzzle`,
-    description: `Start a Classic Sudoku puzzle at ${toTitle(difficulty)} difficulty.`,
-    icon: "puzzle-outline",
-    testID: `HomeClassic${toTitle(difficulty).replaceAll(" ", "")}Shortcut`,
-    badge: "Classic",
-    status: "available",
-    shortcutCategory: "difficulties",
-    action: {
-      screen: "SudokuPage",
-      currentPage: "SudokuPage",
-      params: { action: "StartGame", difficulty },
-    },
-  }));
-
-const getDrillStrategyShortcuts = (): HomeDashboardCardDescriptor[] =>
-  DRILL_STRATEGIES.map((strategy) => ({
-    id: getDrillHomeShortcutId(strategy),
-    title: `${toTitle(strategy)} Drill`,
-    description: `Start a focused ${toTitle(strategy)} strategy drill.`,
-    icon: "target",
-    testID: `Home${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
-    badge: "Drill",
-    status: "available",
-    shortcutCategory: "strategies",
-    action: {
-      screen: "DrillGame",
-      currentPage: "DrillGame",
-      params: { action: "StartGame", params: strategy },
-    },
-  }));
-
-export const getHomeDashboardConfig = (
-  flags: HomeDashboardFlags,
-  completedLessons: number,
-  totalLessons: number,
-): HomeDashboardConfig => {
-  const drillAvailable = flags.featurePreview && flags.drillMode;
-  const shortcutCatalogue: HomeDashboardCardDescriptor[] = [
-    {
-      id: "play",
-      title: "Play",
-      description: "Choose a Sudoku variant.",
-      icon: "gamepad-variant-outline",
-      testID: "HomePlayButton",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "PlayModesPage",
-        currentPage: "PlayModesPage",
-      },
-    },
-    {
-      id: "learn",
-      title: "Learn Sudoku",
-      description: `${completedLessons} of ${totalLessons} lessons complete`,
-      icon: "school-outline",
-      testID: "HomeLearnButton",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "LearnPage",
-        currentPage: "LearnPage",
-      },
-    },
-    {
-      id: "statistics",
-      title: "Statistics",
-      description: "Review your scores and solving progress.",
-      icon: "chart-line",
-      testID: "HomeStatisticsButton",
-      status: "available",
-      shortcutCategory: "account",
-      action: {
-        screen: "StatisticsPage",
-        currentPage: "StatisticsPage",
-      },
-    },
-    {
-      id: "profile",
-      title: "Profile",
-      description: "Manage themes, preferences, and solving options.",
-      icon: "account-cog-outline",
-      testID: "HomeProfileButton",
-      status: "available",
-      shortcutCategory: "account",
-      action: {
-        screen: "ProfilePage",
-        currentPage: "ProfilePage",
-      },
-    },
-  ];
-
-  shortcutCatalogue.push(...getClassicDifficultyShortcuts());
-
-  if (drillAvailable) {
-    shortcutCatalogue.splice(2, 0, {
-      id: "drill",
-      title: "Practice a Strategy",
-      description: "Practice individual Sudoku strategies.",
-      icon: "target",
-      testID: "HomeDrillButton",
-      badge: "Preview",
-      status: "available",
-      shortcutCategory: "activities",
-      action: {
-        screen: "DrillPage",
-        currentPage: "DrillPage",
-      },
-    });
-    shortcutCatalogue.push(...getDrillStrategyShortcuts());
-  }
-
-  return {
-    variants: getSudokuVariantCatalogue(),
-    shortcutCatalogue,
-    activeGameVariants: drillAvailable ? ["classic", "drill"] : ["classic"],
-  };
-};
-
-export const getHomeResumeDescriptor = (
-  game: BoardObjectProps,
-): HomeResumeDescriptor => {
-  switch (game.variant) {
-    case "classic":
-      return {
-        id: "classic",
-        title: "Classic Sudoku",
-        description: `${toTitle(game.statistics.difficulty)} puzzle`,
-        metadata: formatTime(game.statistics.time),
-        icon: "grid",
-        testID: "HomeResumeClassicButton",
-        category: "play",
-        action: {
-          screen: "SudokuPage",
-          currentPage: "SudokuPage",
-          params: { action: "ResumeGame" },
-        },
-      };
-    case "drill":
-      return {
-        id: "drill",
-        title: "Strategy Drill",
-        description: `${toTitle(game.statistics.difficulty)} practice`,
-        metadata: formatTime(game.statistics.time),
-        icon: "target",
-        testID: "HomeResumeDrillButton",
-        category: "practice",
-        action: {
-          screen: "DrillGame",
-          currentPage: "DrillGame",
-          params: { action: "ResumeGame" },
-        },
-      };
-  }
-};
-
-export const getHomeHeroAction = (
-  resumes: HomeResumeDescriptor[],
-  variants: HomeDashboardCardDescriptor[],
-  selectedDifficulty: GameDifficulty = HOME_DEFAULT_DIFFICULTY,
-): HomeHeroAction => {
-  const playableResumes = resumes.filter((item) => item.category === "play");
-  if (playableResumes.length === 1) {
-    return {
-      title: "Resume your puzzle",
-      description: "Resume your saved Sudoku puzzle.",
-      label: "Resume Puzzle",
-      testID: playableResumes[0].testID,
-      action: playableResumes[0].action,
-    };
-  }
-
-  const firstAvailableVariant = variants.find(
-    (variant) => variant.status === "available" && variant.action,
-  );
-  const startsClassicGame = firstAvailableVariant?.id === "classic";
-  return {
-    title: "Play Sudoku",
-    description: "Choose a difficulty and start a new Sudoku puzzle.",
-    label: firstAvailableVariant ? "Play Sudoku" : "Explore Sudoku",
-    testID: "HomeHeroActionButton",
-    action: startsClassicGame
-      ? {
-          screen: "SudokuPage",
-          currentPage: "SudokuPage",
-          params: { action: "StartGame", difficulty: selectedDifficulty },
-        }
-      : (firstAvailableVariant?.action ?? {
-          screen: "HomePage",
-          currentPage: "HomePage",
-        }),
-    difficultyOptions: startsClassicGame ? HOME_DIFFICULTY_OPTIONS : undefined,
-  };
-};
-
-export const getHomeSupportingResumes = (
-  resumes: HomeResumeDescriptor[],
-): HomeResumeDescriptor[] => {
-  const playableResumes = resumes.filter((item) => item.category === "play");
-  return playableResumes.length === 1
-    ? resumes.filter((item) => item.category !== "play")
-    : resumes;
-};
 
 export interface SudokuVariantMethods {
+  getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot;
   doesCellHaveConflict(
     sudokuBoard: BoardObjectProps,
     r: number,
@@ -414,6 +103,15 @@ export interface SudokuVariantMethods {
 
 // Default methods for all variants
 const defaultMethods: SudokuVariantMethods = {
+  getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot {
+    return {
+      modeId: "classic",
+      detail: toTitle(
+        (sudokuBoard as ClassicObjectProps).statistics.difficulty,
+      ),
+      elapsedSeconds: sudokuBoard.statistics.time,
+    };
+  },
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
   },
@@ -478,9 +176,18 @@ const defaultMethods: SudokuVariantMethods = {
   },
 };
 
-// Any per‐variant overrides (only override what you really need)
-const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
+// Any per-variant overrides (only override what you really need)
+const overrides: Record<GameVariant, Partial<SudokuVariantMethods>> = {
   drill: {
+    getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot {
+      return {
+        modeId: "drill",
+        detail: toTitle(
+          (sudokuBoard as DrillObjectProps).statistics.difficulty,
+        ),
+        elapsedSeconds: sudokuBoard.statistics.time,
+      };
+    },
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },
@@ -542,11 +249,10 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   classic: {},
 };
 
-// Build the final runtime lookup by merging defaults + overrides
-export const boardMethods: { [V in GameVariant]: SudokuVariantMethods } =
-  Object.fromEntries(
-    (Object.keys(overrides) as GameVariant[]).map((v) => [
-      v,
-      { ...defaultMethods, ...overrides[v] },
-    ]),
-  ) as { [V in GameVariant]: SudokuVariantMethods };
+export const boardMethods = {
+  classic: { ...defaultMethods, ...overrides.classic },
+  drill: { ...defaultMethods, ...overrides.drill },
+} satisfies Record<GameVariant, SudokuVariantMethods>;
+
+export const getSudokuResumeSnapshot = (sudokuBoard: BoardObjectProps) =>
+  boardMethods[sudokuBoard.variant].getResumeSnapshot(sudokuBoard);

@@ -6,7 +6,7 @@ import ListPanel from "./ListPanel";
 import {
   GAME_DIFFICULTIES,
   GameDifficulty,
-} from "../SudokuBoard/Core/Functions/DifficultyFunctions";
+} from "../../Functions/GameDifficulties";
 import { toTitle } from "../../Functions/Utils";
 
 const difficultyStars: ImageURISource[] = [

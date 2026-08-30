@@ -1,7 +1,4 @@
-import {
-  GAME_DIFFICULTIES,
-  GameDifficulty,
-} from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import { GAME_DIFFICULTIES, GameDifficulty } from "./GameDifficulties";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
@@ -73,9 +70,9 @@ export interface ClassicGameStatistics {
   }[];
 }
 
-export type GameVariant = "demo" | "drill" | "classic";
+export type GameVariant = "drill" | "classic";
 
-export const SUDOKU_GAME_VARIANTS = ["demo", "drill", "classic"];
+export const SUDOKU_GAME_VARIANTS = ["drill", "classic"];
 
 export type CellProps = CellWithValue | CellWithNotes;
 

@@ -21,7 +21,7 @@ import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
 import type {
   DashboardNavigationAction,
   HomeShortcutCategory,
-} from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
+} from "../Components/Home/HomeDashboard";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";

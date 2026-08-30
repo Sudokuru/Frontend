@@ -1,16 +1,4 @@
-export const GAME_DIFFICULTIES = [
-  "novice",
-  "amateur",
-  "layman",
-  "trainee",
-  "protege",
-  "professional",
-  "pundit",
-  "master",
-  "grandmaster",
-] as const;
-
-export type GameDifficulty = (typeof GAME_DIFFICULTIES)[number];
+import type { GameDifficulty } from "../../../../Functions/GameDifficulties";
 
 export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 

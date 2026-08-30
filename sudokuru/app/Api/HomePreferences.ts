@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
-import { GAME_DIFFICULTIES } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
-import type { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import { GAME_DIFFICULTIES } from "../Functions/GameDifficulties";
+import type { GameDifficulty } from "../Functions/GameDifficulties";
 
 export const HOME_DEFAULT_DIFFICULTY: GameDifficulty = "novice";
 

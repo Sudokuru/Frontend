@@ -3,11 +3,11 @@ import { Pressable, ScrollView, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Surface, Text } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { getSudokuVariantCatalogue } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 import type {
   DashboardNavigationAction,
-  HomeDashboardCardDescriptor,
-} from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
+  SudokuModeCardDescriptor,
+} from "../SudokuModes/SudokuModeRegistry";
+import { getSudokuModeCatalogue } from "../SudokuModes/SudokuModeRegistry";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useNewWindowDimensions } from "../Functions/WindowDimensions";
@@ -21,10 +21,14 @@ const PlayModesPage = () => {
   const cardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;
-  const { updateCurrentPage } = React.useContext(PreferencesContext);
+  const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
+    React.useContext(PreferencesContext);
   const windowSize = useNewWindowDimensions();
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
-  const variants = getSudokuVariantCatalogue();
+  const variants = getSudokuModeCatalogue({
+    featurePreview: featurePreviewSetting,
+    drillMode: drillModeSetting,
+  });
   const horizontalPadding = windowSize.width < 760 ? 18 : 32;
   const isFocused = useIsFocused();
 
@@ -35,7 +39,7 @@ const PlayModesPage = () => {
 
   if (!isFocused) return <Text>Error Loading Page</Text>;
 
-  const renderChoices = (choices: HomeDashboardCardDescriptor[]) => (
+  const renderChoices = (choices: SudokuModeCardDescriptor[]) => (
     <Surface
       elevation={2}
       style={{

@@ -19,7 +19,7 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import HeaderRow from "./Core/Components/HeaderRow";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import Hint from "./Core/Components/Hint";
-import { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
+import { GameDifficulty } from "../../Functions/GameDifficulties";
 import { saveGame } from "../../Api/Puzzles";
 import RenderCell from "./Core/Components/RenderCell";
 import { isEraseButtonDisabled } from "./Core/Functions/ActionRowFunctions";
