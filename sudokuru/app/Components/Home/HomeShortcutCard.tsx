@@ -54,6 +54,9 @@ const HomeShortcutCard = ({
   const cardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;
+  const primaryButtonTextColor = theme.useDarkTheme
+    ? theme.semantic.text.info
+    : theme.semantic.text.inverse;
   const [focused, setFocused] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const pan = React.useRef(new Animated.ValueXY()).current;
@@ -374,7 +377,7 @@ const HomeShortcutCard = ({
         accessibilityLabel={`Remove ${shortcut.title}`}
         icon="minus"
         size={17}
-        iconColor={theme.semantic.text.info}
+        iconColor={primaryButtonTextColor}
         containerColor={theme.colors.primary}
         style={{
           position: "absolute",

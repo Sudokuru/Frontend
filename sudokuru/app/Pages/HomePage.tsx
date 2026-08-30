@@ -47,6 +47,9 @@ const HomePage = () => {
   const cardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;
+  const primaryButtonTextColor = theme.useDarkTheme
+    ? theme.semantic.text.info
+    : theme.semantic.text.inverse;
   const windowSize = useNewWindowDimensions();
   const isMobile = windowSize.width < HOME_MOBILE_BREAKPOINT;
   const isShort = windowSize.height < 590;
@@ -423,7 +426,7 @@ const HomePage = () => {
                         icon="arrow-right"
                         contentStyle={{ flexDirection: "row-reverse" }}
                         buttonColor={theme.colors.primary}
-                        textColor={theme.semantic.text.info}
+                        textColor={primaryButtonTextColor}
                         onPress={() => navigateTo(dashboard.heroAction.action)}
                       >
                         {dashboard.heroAction.label}
@@ -474,7 +477,7 @@ const HomePage = () => {
                   testID="HomeCustomizeDoneButton"
                   mode="contained"
                   buttonColor={theme.colors.primary}
-                  textColor={theme.semantic.text.info}
+                  textColor={primaryButtonTextColor}
                   onPress={finishEditing}
                 >
                   Done
