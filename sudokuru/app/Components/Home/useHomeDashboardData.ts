@@ -11,10 +11,8 @@ import {
   getHomeSupportingResumes,
   HOME_DEFAULT_DIFFICULTY,
 } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
-import type {
-  HomeDashboardFlags,
-  HomeDifficulty,
-} from "../SudokuBoard/SudokuBoardSharedFunctionsController";
+import type { HomeDashboardFlags } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
+import type { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
 
 interface HomeDashboardState {
   activeGames: BoardObjectProps[];
@@ -25,7 +23,7 @@ interface HomeDashboardState {
 
 export const useHomeDashboardData = (
   flags: HomeDashboardFlags,
-  selectedDifficulty: HomeDifficulty = HOME_DEFAULT_DIFFICULTY,
+  selectedDifficulty: GameDifficulty = HOME_DEFAULT_DIFFICULTY,
 ) => {
   const { featurePreview, drillMode } = flags;
   const [refreshRequest, setRefreshRequest] = React.useState(0);

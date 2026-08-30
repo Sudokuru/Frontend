@@ -4,10 +4,10 @@ import {
   HOME_DEFAULT_DIFFICULTY,
   saveHomeDifficulty,
 } from "../../Api/HomePreferences";
-import type { HomeDifficulty } from "../../Api/HomePreferences";
+import type { GameDifficulty } from "../SudokuBoard/Core/Functions/DifficultyFunctions";
 
 export const useHomeDifficulty = () => {
-  const [difficulty, setDifficulty] = React.useState<HomeDifficulty>(
+  const [difficulty, setDifficulty] = React.useState<GameDifficulty>(
     HOME_DEFAULT_DIFFICULTY,
   );
   const [isLoading, setIsLoading] = React.useState(true);
@@ -25,7 +25,7 @@ export const useHomeDifficulty = () => {
     };
   }, []);
 
-  const updateDifficulty = (nextDifficulty: HomeDifficulty) => {
+  const updateDifficulty = (nextDifficulty: GameDifficulty) => {
     setDifficulty(nextDifficulty);
     void saveHomeDifficulty(nextDifficulty);
   };

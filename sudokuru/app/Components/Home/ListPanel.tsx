@@ -21,7 +21,7 @@ const CARD_MARGIN = 5;
 interface ListPanelProps<T> {
   width: number;
   height: number;
-  items: T[];
+  items: readonly T[];
   getKey: (item: T, index: number) => string;
   getTestID?: (item: T, index: number) => string;
   getTitle: (item: T, index: number) => string;

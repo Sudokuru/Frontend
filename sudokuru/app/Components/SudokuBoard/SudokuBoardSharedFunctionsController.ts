@@ -51,14 +51,11 @@ import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 import { toTitle } from "../../Functions/Utils";
 import { DRILL_STRATEGIES } from "../../Functions/DrillStrategies";
-import {
-  HOME_DEFAULT_DIFFICULTY,
-  HOME_DIFFICULTIES,
-} from "../../Api/HomePreferences";
-import type { HomeDifficulty } from "../../Api/HomePreferences";
+import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
+import { GAME_DIFFICULTIES } from "./Core/Functions/DifficultyFunctions";
+import type { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
 
 export { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
-export type { HomeDifficulty } from "../../Api/HomePreferences";
 
 export interface DashboardNavigationAction {
   screen: string;
@@ -84,7 +81,7 @@ export type HomeShortcutCategory =
 
 export interface HomeDifficultyOption {
   label: string;
-  value: HomeDifficulty;
+  value: GameDifficulty;
 }
 
 export interface HomeDashboardCardDescriptor {
@@ -155,13 +152,13 @@ export const getSudokuVariantCatalogue = (): HomeDashboardCardDescriptor[] => [
 ];
 
 const HOME_DIFFICULTY_OPTIONS: readonly HomeDifficultyOption[] =
-  HOME_DIFFICULTIES.map((difficulty) => ({
+  GAME_DIFFICULTIES.map((difficulty) => ({
     label: toTitle(difficulty),
     value: difficulty,
   }));
 
 const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
-  HOME_DIFFICULTIES.map((difficulty) => ({
+  GAME_DIFFICULTIES.map((difficulty) => ({
     id: `classic-${difficulty}`,
     title: `${toTitle(difficulty)} Puzzle`,
     description: `Start a Classic Sudoku puzzle at ${toTitle(difficulty)} difficulty.`,
@@ -322,7 +319,7 @@ export const getHomeResumeDescriptor = (
 export const getHomeHeroAction = (
   resumes: HomeResumeDescriptor[],
   variants: HomeDashboardCardDescriptor[],
-  selectedDifficulty: HomeDifficulty = HOME_DEFAULT_DIFFICULTY,
+  selectedDifficulty: GameDifficulty = HOME_DEFAULT_DIFFICULTY,
 ): HomeHeroAction => {
   const playableResumes = resumes.filter((item) => item.category === "play");
   if (playableResumes.length === 1) {

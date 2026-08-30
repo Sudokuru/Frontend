@@ -1,4 +1,7 @@
-import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import {
+  GAME_DIFFICULTIES,
+  GameDifficulty,
+} from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
@@ -108,18 +111,6 @@ export interface ActiveHintState {
   puzzleStateBeforeHint: CellProps[][];
 }
 
-const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
-  "novice",
-  "amateur",
-  "layman",
-  "trainee",
-  "protege",
-  "professional",
-  "pundit",
-  "master",
-  "grandmaster",
-];
-
 const SudokuBoardCellSchema = z.union([
   z.object({
     type: z.literal("given"),
@@ -190,9 +181,7 @@ export const SudokuBoardClassicSchema = z.object({
   activeHint: ActiveHintSchema.nullable(),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
-    difficulty: z.enum(
-      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]],
-    ),
+    difficulty: z.enum(GAME_DIFFICULTIES),
     internalDifficulty: z.number().int().finite().safe(),
     numHintsUsed: z.number().int().nonnegative().finite().safe(),
     numHintsUsedPerStrategy: z.array(

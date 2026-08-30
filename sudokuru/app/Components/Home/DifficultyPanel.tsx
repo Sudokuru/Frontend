@@ -3,18 +3,11 @@ import { difficulty, getDifficultyColor } from "./Cards";
 import React from "react";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
-
-const difficulties: string[] = [
-  "Novice",
-  "Amateur",
-  "Layman",
-  "Trainee",
-  "Protege",
-  "Professional",
-  "Pundit",
-  "Master",
-  "Grandmaster",
-];
+import {
+  GAME_DIFFICULTIES,
+  GameDifficulty,
+} from "../SudokuBoard/Core/Functions/DifficultyFunctions";
+import { toTitle } from "../../Functions/Utils";
 
 const difficultyStars: ImageURISource[] = [
   require("../../../.assets/DifficultyStars/3points.png"),
@@ -43,34 +36,34 @@ interface DifficultyPanelProps {
   navigation: any;
 }
 
-function getDifficultyCardData(level: string): {
+function getDifficultyCardData(level: GameDifficulty): {
   description: difficulty;
   image: ImageURISource;
   alt: string;
 } {
   switch (level) {
-    case "Novice":
-    case "Amateur":
+    case "novice":
+    case "amateur":
       return {
         description: "Very Easy",
         image: difficultyStars[0],
         alt: "3 Point Star",
       };
-    case "Layman":
-    case "Trainee":
+    case "layman":
+    case "trainee":
       return {
         description: "Easy",
         image: difficultyStars[1],
         alt: "4 Point Star",
       };
-    case "Protege":
+    case "protege":
       return {
         description: "Intermediate",
         image: difficultyStars[2],
         alt: "5 Point Star",
       };
-    case "Professional":
-    case "Pundit":
+    case "professional":
+    case "pundit":
       return {
         description: "Hard",
         image: difficultyStars[3],
@@ -91,12 +84,12 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
     <ListPanel
       width={props.width}
       height={props.height}
-      items={difficulties}
+      items={GAME_DIFFICULTIES}
       getKey={(level) => level}
-      getTestID={(level) => level}
-      getTitle={(level) => level}
+      getTestID={(level) => toTitle(level)}
+      getTitle={(level) => toTitle(level)}
       getSubtitle={(level) => getDifficultyCardData(level).description}
-      getSubtitleTestID={(level) => `${level}Description`}
+      getSubtitleTestID={(level) => `${toTitle(level)}Description`}
       getSubtitleColor={(level) =>
         getDifficultyColor(
           getDifficultyCardData(level).description,
@@ -108,7 +101,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
       onPress={(level) => {
         props.navigation.navigate("SudokuPage", {
           action: "StartGame",
-          difficulty: level.toLowerCase(),
+          difficulty: level,
         });
       }}
     />
