@@ -15,12 +15,13 @@ export interface DashboardNavigationAction {
 export type DashboardIcon =
   | "grid"
   | "image-filter-center-focus"
-  | "school-outline"
   | "target"
-  | "gamepad-variant-outline"
+  | "puzzle-outline"
+  | "play"
+  | "book-open-page-variant"
   | "chart-line"
-  | "account-cog-outline"
-  | "puzzle-outline";
+  | "account-details"
+  | "whistle";
 
 export type HomeShortcutCategory =
   | "activities"
@@ -140,7 +141,7 @@ const DRILL_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] = [
     id: "drill",
     title: "Practice a Strategy",
     description: "Practice individual Sudoku strategies.",
-    icon: "target",
+    icon: "whistle",
     testID: "HomeDrillButton",
     badge: "Preview",
     status: "available",
@@ -155,7 +156,7 @@ const DRILL_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] = [
     id: getDrillHomeShortcutId(strategy),
     title: `${toTitle(strategy)} Drill`,
     description: `Start a focused ${toTitle(strategy)} strategy drill.`,
-    icon: "target" as const,
+    icon: "whistle" as const,
     testID: `Home${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
     badge: "Drill",
     status: "available" as const,
