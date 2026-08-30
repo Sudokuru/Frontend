@@ -547,7 +547,6 @@ const HomePage = () => {
                 gap={gap}
                 editing={isEditing}
                 onPress={() => shortcut.action && navigateTo(shortcut.action)}
-                onLongPress={beginEditing}
                 onRemove={() => removeShortcut(shortcut.id as HomeShortcutId)}
                 onDragPreview={previewShortcutOrder}
                 onDragEnd={() => {

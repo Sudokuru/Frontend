@@ -15,7 +15,6 @@ interface HomeShortcutCardProps {
   gap: number;
   editing: boolean;
   onPress: () => void;
-  onLongPress: () => void;
   onRemove: () => void;
   onDragPreview: (shortcutId: string, toIndex: number) => void;
   onDragEnd: () => void;
@@ -43,7 +42,6 @@ const HomeShortcutCard = ({
   gap,
   editing,
   onPress,
-  onLongPress,
   onRemove,
   onDragPreview,
   onDragEnd,
@@ -58,7 +56,6 @@ const HomeShortcutCard = ({
     : theme.semantic.text.quaternary;
   const [focused, setFocused] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
-  const longPressTriggered = React.useRef(false);
   const pan = React.useRef(new Animated.ValueXY()).current;
   const position = React.useRef(
     new Animated.ValueXY(getGridPosition(index, columns, width, height, gap)),
@@ -294,18 +291,7 @@ const HomeShortcutCard = ({
         accessibilityHint={shortcut.description}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        onPress={() => {
-          if (longPressTriggered.current) {
-            longPressTriggered.current = false;
-            return;
-          }
-          onPress();
-        }}
-        onLongPress={() => {
-          longPressTriggered.current = true;
-          onLongPress();
-        }}
-        delayLongPress={350}
+        onPress={onPress}
         style={{ width, height }}
       >
         {({ hovered, pressed }: any) => (
