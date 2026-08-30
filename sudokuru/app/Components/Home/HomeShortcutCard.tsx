@@ -304,6 +304,7 @@ const HomeShortcutCard = ({
       >
         {({ hovered, pressed }: any) => (
           <Surface
+            testID={`${shortcut.testID}Surface`}
             elevation={pressed ? 1 : 3}
             style={{
               width: "100%",

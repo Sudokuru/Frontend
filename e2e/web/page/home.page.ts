@@ -69,6 +69,10 @@ export class HomePage {
     return this.page.getByTestId(`Add${shortcutTestId}`);
   }
 
+  shortcutSurface(shortcutTestId: string) {
+    return this.page.getByTestId(`${shortcutTestId}Surface`);
+  }
+
   async dragShortcut(sourceTestId: string, targetTestId: string) {
     const source = await this.editingShortcut(sourceTestId).boundingBox();
     const target = await this.editingShortcut(targetTestId).boundingBox();

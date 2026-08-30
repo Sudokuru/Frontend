@@ -154,13 +154,13 @@ test.describe("home shortcut order", () => {
 test.describe("navigation buttons", () => {
   test("hover over navigation buttons", async ({ page }) => {
     const homePage = new HomePage(page);
-    const buttons = [
-      homePage.startLessons,
+    const shortcuts = [
+      [homePage.startLessons, "HomeLearnButton"],
       // homePage.startDrills, // TODO: uncomment this once drills are out of feature preview
-      homePage.playSudoku,
-    ];
-    for (const button of buttons) {
-      const card = button.locator(":scope > div");
+      [homePage.playSudoku, "HomePlayButton"],
+    ] as const;
+    for (const [button, testId] of shortcuts) {
+      const card = homePage.shortcutSurface(testId);
       await expect(card).toHaveCSS("border-width", "1px");
       await button.hover();
       await expect(card).toHaveCSS("border-width", "2px");
