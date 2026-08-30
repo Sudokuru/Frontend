@@ -1,31 +1,39 @@
 import { z } from "zod";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
+import { GAME_DIFFICULTIES } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import type { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import { DRILL_STRATEGIES } from "../Functions/DrillStrategies";
+import type { DrillStrategy } from "../Functions/DrillStrategies";
 
-export const HOME_SHORTCUT_IDS = [
+type KebabCase<Value extends string> =
+  Value extends `${infer Head}_${infer Tail}`
+    ? `${Lowercase<Head>}-${KebabCase<Tail>}`
+    : Lowercase<Value>;
+
+type ClassicHomeShortcutId = `classic-${GameDifficulty}`;
+type DrillHomeShortcutId = `drill-${KebabCase<DrillStrategy>}`;
+
+export const getClassicHomeShortcutId = (
+  difficulty: GameDifficulty,
+): ClassicHomeShortcutId => `classic-${difficulty}`;
+
+export const getDrillHomeShortcutId = (
+  strategy: DrillStrategy,
+): DrillHomeShortcutId =>
+  `drill-${strategy.toLowerCase().replaceAll("_", "-")}` as DrillHomeShortcutId;
+
+const STATIC_HOME_SHORTCUT_IDS = [
   "play",
   "learn",
   "drill",
   "statistics",
   "profile",
-  "classic-novice",
-  "classic-amateur",
-  "classic-layman",
-  "classic-trainee",
-  "classic-protege",
-  "classic-professional",
-  "classic-pundit",
-  "classic-master",
-  "classic-grandmaster",
-  "drill-obvious-single",
-  "drill-obvious-pair",
-  "drill-obvious-triplet",
-  "drill-obvious-quadruplet",
-  "drill-hidden-single",
-  "drill-hidden-pair",
-  "drill-hidden-triplet",
-  "drill-hidden-quadruplet",
-  "drill-pointing-pair",
-  "drill-pointing-triplet",
+] as const;
+
+export const HOME_SHORTCUT_IDS = [
+  ...STATIC_HOME_SHORTCUT_IDS,
+  ...GAME_DIFFICULTIES.map(getClassicHomeShortcutId),
+  ...DRILL_STRATEGIES.map(getDrillHomeShortcutId),
 ] as const;
 
 export type HomeShortcutId = (typeof HOME_SHORTCUT_IDS)[number];

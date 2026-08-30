@@ -54,6 +54,10 @@ import { DRILL_STRATEGIES } from "../../Functions/DrillStrategies";
 import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
 import { GAME_DIFFICULTIES } from "./Core/Functions/DifficultyFunctions";
 import type { GameDifficulty } from "./Core/Functions/DifficultyFunctions";
+import {
+  getClassicHomeShortcutId,
+  getDrillHomeShortcutId,
+} from "../../Api/HomeShortcuts";
 
 export { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
 
@@ -159,7 +163,7 @@ const HOME_DIFFICULTY_OPTIONS: readonly HomeDifficultyOption[] =
 
 const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
   GAME_DIFFICULTIES.map((difficulty) => ({
-    id: `classic-${difficulty}`,
+    id: getClassicHomeShortcutId(difficulty),
     title: `${toTitle(difficulty)} Puzzle`,
     description: `Start a Classic Sudoku puzzle at ${toTitle(difficulty)} difficulty.`,
     icon: "puzzle-outline",
@@ -176,7 +180,7 @@ const getClassicDifficultyShortcuts = (): HomeDashboardCardDescriptor[] =>
 
 const getDrillStrategyShortcuts = (): HomeDashboardCardDescriptor[] =>
   DRILL_STRATEGIES.map((strategy) => ({
-    id: `drill-${strategy.toLowerCase().replaceAll("_", "-")}`,
+    id: getDrillHomeShortcutId(strategy),
     title: `${toTitle(strategy)} Drill`,
     description: `Start a focused ${toTitle(strategy)} strategy drill.`,
     icon: "target",
