@@ -15,6 +15,12 @@ import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 const PlayModesPage = () => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
+  const cardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const cardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
   const { updateCurrentPage } = React.useContext(PreferencesContext);
   const windowSize = useNewWindowDimensions();
   const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
@@ -38,7 +44,7 @@ const PlayModesPage = () => {
         borderRadius: 12,
         borderWidth: 1,
         borderColor: theme.colors.border,
-        backgroundColor: theme.colors.surfaceAlt,
+        backgroundColor: cardSurfaceColor,
       }}
     >
       {choices.map((choice, index) => {
@@ -70,9 +76,7 @@ const PlayModesPage = () => {
                   borderLeftWidth: focused ? 4 : 0,
                   borderColor: theme.colors.border,
                   backgroundColor:
-                    hovered || focused
-                      ? theme.colors.bg
-                      : theme.colors.surfaceAlt,
+                    hovered || focused ? theme.colors.bg : cardSurfaceColor,
                   opacity: disabled ? 0.68 : pressed ? 0.8 : 1,
                 }}
               >
@@ -85,7 +89,7 @@ const PlayModesPage = () => {
                   <Text
                     variant="titleMedium"
                     style={{
-                      color: theme.semantic.text.inverse,
+                      color: cardTextColor,
                       fontWeight: "800",
                     }}
                   >
@@ -96,7 +100,7 @@ const PlayModesPage = () => {
                     variant="bodyMedium"
                     style={{
                       marginTop: 3,
-                      color: theme.semantic.text.inverse,
+                      color: cardTextColor,
                       opacity: 0.68,
                     }}
                   >

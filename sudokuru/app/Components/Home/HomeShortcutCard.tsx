@@ -50,6 +50,12 @@ const HomeShortcutCard = ({
   onDragCancel,
 }: HomeShortcutCardProps) => {
   const { theme } = useTheme();
+  const cardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const cardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
   const [focused, setFocused] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
   const longPressTriggered = React.useRef(false);
@@ -255,7 +261,7 @@ const HomeShortcutCard = ({
           numberOfLines={1}
           variant={compact ? "titleSmall" : "titleMedium"}
           style={{
-            color: theme.semantic.text.inverse,
+            color: cardTextColor,
             fontWeight: "800",
           }}
         >
@@ -268,7 +274,7 @@ const HomeShortcutCard = ({
             variant="bodySmall"
             style={{
               marginTop: 3,
-              color: theme.semantic.text.inverse,
+              color: cardTextColor,
               opacity: 0.68,
             }}
           >
@@ -317,7 +323,7 @@ const HomeShortcutCard = ({
               borderWidth: hovered || focused ? 2 : 1,
               borderColor:
                 hovered || focused ? theme.colors.primary : theme.colors.border,
-              backgroundColor: theme.colors.surfaceAlt,
+              backgroundColor: cardSurfaceColor,
               opacity: pressed ? 0.8 : 1,
             }}
           >
@@ -366,7 +372,7 @@ const HomeShortcutCard = ({
           borderRadius: 14,
           borderWidth: 2,
           borderColor: theme.colors.primary,
-          backgroundColor: theme.colors.surfaceAlt,
+          backgroundColor: cardSurfaceColor,
         }}
       >
         {cardContent}

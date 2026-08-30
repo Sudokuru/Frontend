@@ -41,6 +41,12 @@ const SHORTCUT_LIBRARY_CATEGORIES: {
 const HomePage = () => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
+  const cardSurfaceColor = theme.useDarkTheme
+    ? theme.colors.surfaceAlt
+    : theme.colors.surface;
+  const cardTextColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
   const windowSize = useNewWindowDimensions();
   const isMobile = windowSize.width < HOME_MOBILE_BREAKPOINT;
   const isShort = windowSize.height < 590;
@@ -329,14 +335,14 @@ const HomePage = () => {
                       borderRadius: 14,
                       borderWidth: 1,
                       borderColor: theme.colors.border,
-                      backgroundColor: theme.colors.surfaceAlt,
+                      backgroundColor: cardSurfaceColor,
                     }}
                   >
                     <View style={{ flex: 1, minWidth: 0 }}>
                       <Text
                         variant={isMobile ? "titleMedium" : "titleLarge"}
                         style={{
-                          color: theme.semantic.text.inverse,
+                          color: cardTextColor,
                           fontWeight: "800",
                         }}
                       >
@@ -346,7 +352,7 @@ const HomePage = () => {
                         variant="bodySmall"
                         style={{
                           marginTop: 3,
-                          color: theme.semantic.text.inverse,
+                          color: cardTextColor,
                           opacity: 0.7,
                         }}
                       >
@@ -624,13 +630,13 @@ const HomePage = () => {
             onChangeText={setQuery}
             style={{
               marginTop: 14,
-              backgroundColor: theme.colors.surfaceAlt,
+              backgroundColor: cardSurfaceColor,
               borderWidth: 1,
               borderColor: theme.colors.border,
             }}
-            inputStyle={{ color: theme.semantic.text.inverse }}
+            inputStyle={{ color: cardTextColor }}
             iconColor={theme.colors.primary}
-            placeholderTextColor={theme.semantic.text.inverse}
+            placeholderTextColor={cardTextColor}
           />
           <ScrollView style={{ marginTop: 12 }}>
             {availableShortcutGroups.length > 0 ? (
@@ -661,7 +667,7 @@ const HomePage = () => {
                             borderBottomWidth: isExpanded ? 1 : 0,
                             borderColor: theme.colors.border,
                             backgroundColor: hovered
-                              ? theme.colors.surfaceAlt
+                              ? cardSurfaceColor
                               : theme.colors.bg,
                             opacity: pressed ? 0.75 : 1,
                           }}
@@ -717,7 +723,7 @@ const HomePage = () => {
                                     index === category.items.length - 1 ? 0 : 1,
                                   borderColor: theme.colors.border,
                                   backgroundColor: hovered
-                                    ? theme.colors.surfaceAlt
+                                    ? cardSurfaceColor
                                     : theme.colors.bg,
                                   opacity: pressed ? 0.75 : 1,
                                 }}
@@ -729,7 +735,7 @@ const HomePage = () => {
                                     borderRadius: 10,
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    backgroundColor: theme.colors.surfaceAlt,
+                                    backgroundColor: cardSurfaceColor,
                                   }}
                                 >
                                   <MaterialCommunityIcons
