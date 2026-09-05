@@ -24,15 +24,16 @@ const PlayPage = () => {
   const reSize = Math.min(windowSize.width, windowSize.height) / 25;
 
   const { theme } = useTheme();
+  const [resumeVisible, setResumeVisible] = React.useState(false);
 
   // This determines if user has active game and displays resume button conditionally.
   async function showOrHideResumeButton() {
     const game: BoardObjectProps[] = await getGame("classic");
     if (game != null) {
-      showResumeButton();
+      setResumeVisible(true);
       return true;
     } else {
-      hideResumeButton();
+      setResumeVisible(false);
       return false;
     }
   }
@@ -40,13 +41,8 @@ const PlayPage = () => {
   useFocusEffect(
     React.useCallback(() => {
       showOrHideResumeButton();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
-
-  const [resumeVisible, setResumeVisible] = React.useState(false);
-  const showResumeButton = () => setResumeVisible(true);
-  const hideResumeButton = () => setResumeVisible(false);
 
   const isFocused = useIsFocused();
   if (!isFocused) return <Text>Error Loading Page</Text>;

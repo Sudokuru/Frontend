@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Modal } from "react-native";
 import { ActivityIndicator, Text, Button } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {

@@ -1,4 +1,6 @@
-# React Native Worklets error temporary workaround
+# React Native Worklets error temporary workaround (resolved)
+
+This was resolved with the upgrade to expo 57
 
 The `react-native-reanimated` is now using a later version of the `react-native-worklets` library than the `Expo Go` Client.
 
