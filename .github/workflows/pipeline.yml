@@ -73,8 +73,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 26.5.0
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: "1.4.2"
       - name: 📦 Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Lint Check
         run: npm run lint
       - name: Setup Changelog
