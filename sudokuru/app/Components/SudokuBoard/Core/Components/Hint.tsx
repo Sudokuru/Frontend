@@ -3,7 +3,9 @@ import { ActiveHintState } from "../../../../Functions/LocalDatabase";
 import { formatOneLessonName } from "../../../../Functions/learnedLessons";
 import { Pressable, View, useWindowDimensions } from "react-native";
 import { useCellSize } from "../Functions/BoardFunctions";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons, {
+  MaterialDesignIconsIconName,
+} from "@react-native-vector-icons/material-design-icons";
 import React from "react";
 import { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import { useTheme } from "../../../../Contexts/ThemeContext";
@@ -17,11 +19,9 @@ interface HintProps
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
 }
 
-type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
-
 interface NavButtonProps {
   testID: string;
-  icon: IconName;
+  icon: MaterialDesignIconsIconName;
   onPress: () => void;
   hitSlop:
     | number
@@ -141,7 +141,7 @@ const Hint = (hintProps: HintProps) => {
 
   interface ButtonConfig {
     testId: string;
-    icon: IconName;
+    icon: MaterialDesignIconsIconName;
     action: -1 | 0 | 1;
   }
 

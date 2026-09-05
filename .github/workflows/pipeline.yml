@@ -67,6 +67,8 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -89,6 +91,8 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -263,6 +267,8 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -306,6 +312,8 @@ jobs:
     needs: [ code_scan, analyze ]
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: setup node
         uses: actions/setup-node@v6
         with:
@@ -406,6 +414,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -429,6 +439,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: Setup Node
         uses: actions/setup-node@v6
         with:

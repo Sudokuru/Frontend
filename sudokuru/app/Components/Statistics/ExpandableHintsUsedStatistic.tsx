@@ -1,6 +1,6 @@
 import React from "react";
 import { View, useWindowDimensions } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { Text, TouchableRipple } from "react-native-paper";
 import { SudokuStrategy } from "sudokuru";
 import { useTheme } from "../../Contexts/ThemeContext";

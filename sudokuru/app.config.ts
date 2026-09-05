@@ -24,11 +24,11 @@ export default {
     bundler: "metro",
   },
   ios: {
-    bundleIdentifier: "sudokuru.vercel.app",
+    bundleIdentifier: "com.opengamesonline.sudokuru",
     supportsTablet: true,
   },
   android: {
-    package: "sudokuru.vercel.app",
+    package: "com.opengamesonline.sudokuru",
   },
   extra: {
     eas: {
