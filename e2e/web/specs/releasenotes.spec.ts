@@ -300,6 +300,25 @@ test.describe("release note filters", () => {
     await expect(equalMonth).toBeEnabled();
   });
 
+  test("changing only the year applies the retained month", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.selectStartDate(2025, "March");
+    await releaseNotesPage.openMenu(
+      releaseNotesPage.startDateFilter,
+      releaseNotesPage.startDateMenu,
+    );
+    await releaseNotesPage.startYear.click();
+    await releaseNotesPage.startYearOption(2026).press("Enter");
+
+    await releaseNotesPage.filterButtonLabelIs(
+      releaseNotesPage.startDateFilter,
+      "Start Date: March 2026",
+    );
+  });
+
   test("clear button resets all active filters", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();

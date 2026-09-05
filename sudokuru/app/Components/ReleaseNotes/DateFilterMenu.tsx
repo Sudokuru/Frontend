@@ -146,7 +146,13 @@ export const DateFilterMenu = ({
                     onPress={() => {
                       const months = monthsForYear(year);
                       setDraftYear(year);
-                      if (!months.includes(draftMonth)) {
+                      if (
+                        selectedMonth != null &&
+                        months.includes(draftMonth) &&
+                        !isMonthDisabled(year, draftMonth)
+                      ) {
+                        onChange(`${draftMonth} ${year}`);
+                      } else if (!months.includes(draftMonth)) {
                         setDraftMonth(months[0] ?? MONTH_NAMES[0]);
                       }
                       setYearMenuOpen(false);
