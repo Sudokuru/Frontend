@@ -3,9 +3,9 @@ import { useWindowDimensions, View } from "react-native";
 import Statistic from "./Statistic";
 import { formatTime } from "../SudokuBoard/Core/Functions/BoardFunctions";
 import { SudokuStrategy } from "sudokuru";
-import React from "react";
-import { NumHintsUsedPerStrategy } from "../NumHintsUsedPerStrategy";
+import ExpandableHintsUsedStatistic from "./ExpandableHintsUsedStatistic";
 import { useTheme } from "../../Contexts/ThemeContext";
+import React from "react";
 
 export interface TotalStatisticsProps {
   totalScore: number;
@@ -82,12 +82,8 @@ const TotalStatistics = (props: TotalStatisticsProps) => {
           statisticValue={props.numWrongCellsPlayed}
           testID="numWrongCellsPlayed"
         />
-        <Statistic
-          statisticName="Total Hints Used: "
-          statisticValue={props.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <NumHintsUsedPerStrategy
+        <ExpandableHintsUsedStatistic
+          numHintsUsed={props.numHintsUsed}
           numHintsUsedPerStrategy={props.numHintsUsedPerStrategy}
         />
       </View>

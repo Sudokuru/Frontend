@@ -1,7 +1,21 @@
 [
   {
-    "version": "1.35.1",
-    "date": "August 20th, 2026",
+    "version": "1.36.0",
+    "date": "#{date}#",
+    "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
+    "features": [
+      "After finishing a classic Sudoku game, a 'New Game' button lets the user start a new game immediately.",
+      "The 'Total Hints Used' statistic is now collapsed by default and can be expanded to show how many hints were used for each strategy. The expansion is hidden when no hints have been used."
+    ],
+    "preview features": [
+      "After finishing a drill, a 'New Drill' button lets the user start a new drill of the same strategy immediately."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.35.0",
+    "date": "August 15th, 2026",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
     "bug fixes": [
       "Lesson, difficulty, and release note cards now use theme aware colors that display correctly in light mode."

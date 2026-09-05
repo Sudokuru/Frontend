@@ -13,11 +13,20 @@ const Statistic = (props: StatisticProps) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  const isLargeScreen = size.width >= 800;
+  const fontSize = Math.max(
+    16,
+    Math.min(reSize / (isLargeScreen ? 19 : 23), isLargeScreen ? 30 : 24),
+  );
+
   return (
     <View
       testID={`${props.testID}Row`}
       style={{
         flexDirection: "row",
+        alignItems: "baseline",
+        flexWrap: "wrap",
+        marginBottom: 8,
         // Prevent macOS WebKit from rounding the row's right edge inward.
         marginRight: 0.5,
       }}
@@ -25,17 +34,21 @@ const Statistic = (props: StatisticProps) => {
       <Text
         testID={`${props.testID}Label`}
         style={{
-          fontSize: reSize ? reSize / 20 : 20,
+          fontSize,
+          lineHeight: fontSize * 1.2,
           color: theme.semantic.text.quaternary,
+          marginRight: 2,
         }}
       >
         {props.statisticName}
       </Text>
       <Text
         style={{
-          fontSize: reSize ? reSize / 20 : 20,
+          fontSize,
+          lineHeight: fontSize * 1.2,
           fontWeight: "bold",
           color: theme.semantic.text.primary,
+          flexShrink: 1,
         }}
         testID={props.testID}
       >

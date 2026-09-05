@@ -1,5 +1,6 @@
 {
   "editor.tabSize": 2,
+  "git.addAICoAuthor": "off",
   "json.schemas": [
     {
       "fileMatch": ["Changelog.json"],
