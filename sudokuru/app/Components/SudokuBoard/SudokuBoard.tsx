@@ -37,6 +37,11 @@ import {
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
+import {
+  cloneBoard,
+  cloneCell,
+  clonePuzzleState,
+} from "./Core/Functions/CloneFunctions";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -54,19 +59,6 @@ export interface CoreBoard<T extends GameVariant> {
 }
 
 export type Board = DrillBoard | ClassicBoard;
-
-const cloneCell = (cell: CellProps): CellProps =>
-  cell.type === "note" ? { type: "note", entry: [...cell.entry] } : { ...cell };
-
-const clonePuzzleState = (puzzleState: CellProps[][]): CellProps[][] =>
-  puzzleState.map((row) => row.map(cloneCell));
-
-const cloneBoard = <T extends BoardObjectProps>(board: T): T => ({
-  ...board,
-  puzzleState: clonePuzzleState(board.puzzleState),
-  actionHistory: [...board.actionHistory],
-  statistics: { ...board.statistics },
-});
 
 const SudokuBoard = (props: Board) => {
   const { theme } = useTheme();
@@ -244,9 +236,7 @@ const SudokuBoard = (props: Board) => {
     }
 
     const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
-    const boardForHint: BoardObjectProps = JSON.parse(
-      JSON.stringify(sudokuBoard),
-    );
+    const boardForHint = cloneBoard(sudokuBoard);
     const { hint, updatedBoard } = boardMethods[props.type].getSudokuBoardHint(
       boardForHint,
       [...strategyHintOrderSetting],
@@ -743,7 +733,7 @@ const SudokuBoard = (props: Board) => {
         if (JSON.stringify(previousCell) !== JSON.stringify(finalCell)) {
           action.push({
             cellLocation: { r: row, c: column },
-            cell: JSON.parse(JSON.stringify(previousCell)),
+            cell: cloneCell(previousCell),
           });
         }
       }

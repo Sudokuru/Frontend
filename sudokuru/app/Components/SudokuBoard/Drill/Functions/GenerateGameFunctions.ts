@@ -193,11 +193,12 @@ const applyNoteRemovals = (
 ): void => {
   for (const removal of removals) {
     const [row, col] = removal;
-    const noteCell = { type: "note" as const, entry: notes };
-
-    game.puzzleState[row][col] = noteCell;
-    game.puzzleSolution[row][col] = noteCell;
-    game.initialPuzzleState[row][col] = noteCell;
+    game.puzzleState[row][col] = { type: "note", entry: [...notes] };
+    game.puzzleSolution[row][col] = { type: "note", entry: [...notes] };
+    game.initialPuzzleState[row][col] = {
+      type: "note",
+      entry: [...notes],
+    };
   }
 };
 
@@ -323,6 +324,5 @@ export const convertPuzzleToSudokuObject = (
   initializeBoardWithNotes(game, strategy);
   finalizeDrillSolution(game, strategy);
 
-  // Return a deep clone to prevent mutations
-  return JSON.parse(JSON.stringify(game));
+  return game;
 };

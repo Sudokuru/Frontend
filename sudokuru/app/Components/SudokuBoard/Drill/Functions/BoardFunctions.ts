@@ -6,6 +6,7 @@ import {
   DrillObjectProps,
   GameVariant,
 } from "../../../../Functions/LocalDatabase";
+import { clonePuzzleState } from "../../Core/Functions/CloneFunctions";
 
 // This function does nothing to override default classic function
 export function finishSudokuGame(
@@ -22,5 +23,5 @@ export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
 }
 
 export function getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
-  return JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState));
+  return clonePuzzleState(sudokuBoard.initialPuzzleState);
 }

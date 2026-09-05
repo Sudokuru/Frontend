@@ -45,10 +45,8 @@ export const getCellNotesColor = (
   const notesToReturn = new Array(9).fill(theme.semantic.text.info);
   // change note color to red for note removals as part of hint
   if (sudokuHint && sudokuHint.stage === 4) {
-    const hintNotes = JSON.parse(JSON.stringify(sudokuHint.hint.removals));
-    for (const notes of hintNotes) {
-      if (notes[0] === r && notes[1] === c) {
-        notes.splice(0, 2);
+    for (const [row, column, ...notes] of sudokuHint.hint.removals) {
+      if (row === r && column === c) {
         for (const note of notes) {
           notesToReturn[note - 1] = theme.colors.error;
         }

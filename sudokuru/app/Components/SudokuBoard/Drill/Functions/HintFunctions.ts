@@ -1,6 +1,7 @@
 import { SudokuStrategy } from "sudokuru";
 import { DrillObjectProps } from "../../../../Functions/LocalDatabase";
 import { getSudokuHint } from "../../Core/Functions/HintFunctions";
+import { clonePuzzleState } from "../../Core/Functions/CloneFunctions";
 
 /**
  * Retrieves a hint for the current drill puzzle and resets the puzzle state to the initial state.
@@ -23,7 +24,7 @@ export const getSudokuBoardHint = (
     hint,
     updatedBoard: {
       ...sudokuBoard,
-      puzzleState: JSON.parse(JSON.stringify(sudokuBoard.initialPuzzleState)),
+      puzzleState: clonePuzzleState(sudokuBoard.initialPuzzleState),
     },
   };
 };
