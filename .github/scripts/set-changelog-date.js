@@ -29,6 +29,21 @@ console.log(formattedDate);
 
 const firstDate = changelog[0].date;
 const isFirstDateReplaced = firstDate === "#{date}#";
+const hasDatePlaceholder = changelog.some(({ date }) => date === "#{date}#");
+
+if (hasDatePlaceholder) {
+  const changelogDiff = await $`git diff --quiet HEAD^ HEAD -- sudokuru/Changelog.json`.nothrow();
+
+  if (changelogDiff.exitCode > 1) {
+    throw new Error("Unable to determine whether Changelog.json was modified in this commit.");
+  }
+
+  if (changelogDiff.exitCode === 0) {
+    const errorMessage = "Changelog.json contains a #{date}# placeholder but was not modified in this commit!";
+    await $`echo "::error file=sudokuru/Changelog.json,title=STALE-CHANGELOG-DATE::${errorMessage}"`;
+    throw new Error(errorMessage);
+  }
+}
 
 const vars = { DATE: formattedDate };
 

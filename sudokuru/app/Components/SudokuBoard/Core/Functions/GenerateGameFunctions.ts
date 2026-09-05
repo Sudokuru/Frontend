@@ -171,6 +171,5 @@ export const convertPuzzleToSudokuObject = (
     }
   }
 
-  // Return a clone here so that this is a clone.
-  return JSON.parse(JSON.stringify(game));
+  return game;
 };
