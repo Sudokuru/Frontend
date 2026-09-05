@@ -1,4 +1,4 @@
-import { ReleaseNoteInterface } from "./ReleaseNote";
+import type { ReleaseNoteInterface } from "./ReleaseNoteValidation";
 
 export const MONTH_NAMES = [
   "January",
@@ -15,17 +15,44 @@ export const MONTH_NAMES = [
   "December",
 ] as const;
 
-export const parseChangelogDate = (value: string): Date => {
-  const [monthName, dayWithSuffix, yearWithComma] = value.split(" ");
-  const month = MONTH_NAMES.indexOf(monthName as (typeof MONTH_NAMES)[number]);
-  const day = Number.parseInt(dayWithSuffix ?? "", 10);
-  const year = Number.parseInt(yearWithComma ?? "", 10);
+export const PENDING_CHANGELOG_DATE = "#{date}#";
 
-  if (month < 0 || Number.isNaN(day) || Number.isNaN(year)) {
-    return new Date(Number.NaN);
+const getDaySuffix = (day: number): string => {
+  if (day >= 11 && day <= 13) return "th";
+
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+export const parseChangelogDate = (value: string): Date => {
+  const match = /^(\w+) (\d{1,2})(st|nd|rd|th), (\d{4})$/.exec(value);
+  if (!match) throw new Error(`Invalid changelog date: "${value}"`);
+
+  const [, monthName, dayValue, suffix, yearValue] = match;
+  const month = MONTH_NAMES.findIndex((name) => name === monthName);
+  const day = Number(dayValue);
+  const year = Number(yearValue);
+  const date = new Date(year, month, day);
+
+  if (
+    month < 0 ||
+    suffix !== getDaySuffix(day) ||
+    date.getFullYear() !== year ||
+    date.getMonth() !== month ||
+    date.getDate() !== day
+  ) {
+    throw new Error(`Invalid changelog date: "${value}"`);
   }
 
-  return new Date(year, month, day);
+  return date;
 };
 
 export const parseMonthYear = (value: string): Date => {
@@ -75,8 +102,8 @@ export const matchesDateRange = (
 ): boolean => {
   if (!startDate && !endDate) return true;
 
+  if (note.date === PENDING_CHANGELOG_DATE) return false;
   const releaseDate = parseChangelogDate(note.date);
-  if (Number.isNaN(releaseDate.getTime())) return false;
 
   const isBeforeStart = startDate != null && releaseDate < startDate;
   const isAfterEnd = endDate != null && releaseDate > endDate;

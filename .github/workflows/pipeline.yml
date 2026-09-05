@@ -79,6 +79,9 @@ jobs:
         run: npm run lint
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
+      - name: Release Notes Tests
+        working-directory: sudokuru
+        run: npm test
       - name: Typescript Check
         working-directory: sudokuru
         run: npm run tsc

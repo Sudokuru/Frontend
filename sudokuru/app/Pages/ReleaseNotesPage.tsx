@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
 import json from "../../Changelog.json";
-import {
-  ReleaseNoteInterface,
-  ReleaseNote,
-} from "../Components/ReleaseNotes/ReleaseNote";
+import { ReleaseNote } from "../Components/ReleaseNotes/ReleaseNote";
+import { parseReleaseNotes } from "../Components/ReleaseNotes/ReleaseNoteValidation";
+import type { ReleaseNoteInterface } from "../Components/ReleaseNotes/ReleaseNoteValidation";
 import {
   ReleaseNotesFilter,
   Category,
@@ -16,6 +15,7 @@ import {
   matchesDateRange,
   matchesKeyword,
   matchesSelection,
+  PENDING_CHANGELOG_DATE,
   parseChangelogDate,
   parseMonthYear,
 } from "../Components/ReleaseNotes/ReleaseNoteFunctions";
@@ -23,7 +23,7 @@ import {
 const formatMonthYear = (date: Date): string =>
   date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-const RELEASE_NOTES: ReleaseNoteInterface[] = json;
+const RELEASE_NOTES = parseReleaseNotes(json);
 
 const ALL_CONTRIBUTORS = Array.from(
   new Set(RELEASE_NOTES.flatMap((release) => release.contributors)),
@@ -31,8 +31,8 @@ const ALL_CONTRIBUTORS = Array.from(
 
 const ALL_RELEASE_MONTHS = Array.from(
   new Set(
-    RELEASE_NOTES.map((release) => parseChangelogDate(release.date))
-      .filter((date) => !Number.isNaN(date.getTime()))
+    RELEASE_NOTES.filter((release) => release.date !== PENDING_CHANGELOG_DATE)
+      .map((release) => parseChangelogDate(release.date))
       .map((date) => formatMonthYear(date)),
   ),
 ).sort((a, b) => parseMonthYear(b).getTime() - parseMonthYear(a).getTime());

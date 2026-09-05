@@ -2,17 +2,9 @@ import React from "react";
 import { View } from "react-native";
 import { Divider, Text } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
+import type { ReleaseNoteInterface } from "./ReleaseNoteValidation";
 
-export interface ReleaseNoteInterface {
-  version: string;
-  date: string;
-  summary: string;
-  features?: string[];
-  "preview features"?: string[];
-  "bug fixes"?: string[];
-  targets: string[];
-  contributors: string[];
-}
+export type { ReleaseNoteInterface } from "./ReleaseNoteValidation";
 
 export interface ReleaseNoteProps {
   item: ReleaseNoteInterface;

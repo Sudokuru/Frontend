@@ -6,6 +6,7 @@ import { test } from "../fixture";
 import { expect } from "@playwright/test";
 import json from "../../../sudokuru/Changelog.json";
 import { ReleaseNoteInterface } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNote";
+import { PENDING_CHANGELOG_DATE } from "../../../sudokuru/app/Components/ReleaseNotes/ReleaseNoteFunctions";
 const releaseNotes: ReleaseNoteInterface[] = json;
 const initiallyRenderedReleaseNotes = releaseNotes.slice(
   0,
@@ -194,12 +195,9 @@ test.describe("release note filters", () => {
     const startDate = new Date(startYear, 2, 1);
     const endDate = new Date(endYear, 3, 0, 23, 59, 59, 999);
     const expectedReleases = releaseNotes.filter((note) => {
+      if (note.date === PENDING_CHANGELOG_DATE) return false;
       const releaseDate = releaseNotesPage.parseChangelogDate(note.date);
-      return (
-        !Number.isNaN(releaseDate.getTime()) &&
-        releaseDate >= startDate &&
-        releaseDate <= endDate
-      );
+      return releaseDate >= startDate && releaseDate <= endDate;
     });
 
     await releaseNotesPage.selectStartDate(startYear, startMonth);
@@ -219,11 +217,9 @@ test.describe("release note filters", () => {
       expectedReleases[0].version,
     );
     const outOfRangeRelease = initiallyRenderedReleaseNotes.find((note) => {
+      if (note.date === PENDING_CHANGELOG_DATE) return false;
       const releaseDate = releaseNotesPage.parseChangelogDate(note.date);
-      return (
-        !Number.isNaN(releaseDate.getTime()) &&
-        (releaseDate < startDate || releaseDate > endDate)
-      );
+      return releaseDate < startDate || releaseDate > endDate;
     });
     expect(outOfRangeRelease).toBeDefined();
     if (outOfRangeRelease) {
