@@ -98,6 +98,20 @@ export const ReleaseNotesFilter = ({
       ),
     ).sort((a, b) => MONTH_NAMES.indexOf(a) - MONTH_NAMES.indexOf(b));
 
+  const isEndMonthDisabled = (
+    year: number,
+    month: (typeof MONTH_NAMES)[number],
+  ) =>
+    selectedStartMonth != null &&
+    parseMonthYear(`${month} ${year}`) < parseMonthYear(selectedStartMonth);
+
+  const isStartMonthDisabled = (
+    year: number,
+    month: (typeof MONTH_NAMES)[number],
+  ) =>
+    selectedEndMonth != null &&
+    parseMonthYear(`${month} ${year}`) > parseMonthYear(selectedEndMonth);
+
   const selectionMenuMaxWidth = Math.max(
     200,
     Math.min(280, componentWidth - 120),
@@ -178,6 +192,7 @@ export const ReleaseNotesFilter = ({
           testIDPrefix="Contributors"
         />
         <DateFilterMenu
+          isMonthDisabled={isStartMonthDisabled}
           label="Start Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedStartMonth}
@@ -186,6 +201,7 @@ export const ReleaseNotesFilter = ({
           years={availableYears}
         />
         <DateFilterMenu
+          isMonthDisabled={isEndMonthDisabled}
           label="End Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedEndMonth}

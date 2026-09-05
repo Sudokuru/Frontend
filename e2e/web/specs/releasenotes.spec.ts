@@ -256,6 +256,50 @@ test.describe("release note filters", () => {
     }
   });
 
+  test("end date options do not precede the selected start date", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.selectStartDate(2025, "March");
+    await releaseNotesPage.openMenu(
+      releaseNotesPage.endDateFilter,
+      releaseNotesPage.endDateMenu,
+    );
+    await releaseNotesPage.endYear.click();
+    await releaseNotesPage.endYearOption(2025).click();
+    await releaseNotesPage.endMonth.click();
+
+    const earlierMonth = releaseNotesPage.endMonthOption("February");
+    const equalMonth = releaseNotesPage.endMonthOption("March");
+    await expect(earlierMonth).toBeInViewport({ ratio: 1 });
+    await expect(earlierMonth).toBeDisabled();
+    await expect(equalMonth).toBeInViewport({ ratio: 1 });
+    await expect(equalMonth).toBeEnabled();
+  });
+
+  test("start date options do not follow the selected end date", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.selectEndDate(2026, "March");
+    await releaseNotesPage.openMenu(
+      releaseNotesPage.startDateFilter,
+      releaseNotesPage.startDateMenu,
+    );
+    await releaseNotesPage.startYear.click();
+    await releaseNotesPage.startYearOption(2026).click();
+    await releaseNotesPage.startMonth.click();
+
+    const laterMonth = releaseNotesPage.startMonthOption("May");
+    const equalMonth = releaseNotesPage.startMonthOption("March");
+    await expect(laterMonth).toBeInViewport({ ratio: 1 });
+    await expect(laterMonth).toBeDisabled();
+    await expect(equalMonth).toBeInViewport({ ratio: 1 });
+    await expect(equalMonth).toBeEnabled();
+  });
+
   test("clear button resets all active filters", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();

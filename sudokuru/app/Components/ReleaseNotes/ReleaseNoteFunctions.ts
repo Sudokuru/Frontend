@@ -17,7 +17,7 @@ export const MONTH_NAMES = [
 
 export const PENDING_CHANGELOG_DATE = "#{date}#";
 
-type MonthName = (typeof MONTH_NAMES)[number];
+export type MonthName = (typeof MONTH_NAMES)[number];
 const monthNamesForLookup: readonly string[] = MONTH_NAMES;
 
 const isMonthName = (value: string): value is MonthName =>

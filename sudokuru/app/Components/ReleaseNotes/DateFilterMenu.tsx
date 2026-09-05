@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Button, IconButton, Menu, Text } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { MONTH_NAMES } from "./ReleaseNoteFunctions";
+import { MONTH_NAMES, parseMonthYear } from "./ReleaseNoteFunctions";
+import type { MonthName } from "./ReleaseNoteFunctions";
 
 interface DateFilterMenuProps {
+  isMonthDisabled: (year: number, month: MonthName) => boolean;
   label: string;
-  monthsForYear: (year: number) => string[];
+  monthsForYear: (year: number) => MonthName[];
   onChange: (value: string | null) => void;
   selectedMonth: string | null;
   testIDPrefix: "Start" | "End";
@@ -14,6 +16,7 @@ interface DateFilterMenuProps {
 }
 
 export const DateFilterMenu = ({
+  isMonthDisabled,
   label,
   monthsForYear,
   onChange,
@@ -26,7 +29,7 @@ export const DateFilterMenu = ({
   const [yearMenuOpen, setYearMenuOpen] = useState(false);
   const [monthMenuOpen, setMonthMenuOpen] = useState(false);
   const [draftYear, setDraftYear] = useState(new Date().getFullYear());
-  const [draftMonth, setDraftMonth] = useState<string>(MONTH_NAMES[0]);
+  const [draftMonth, setDraftMonth] = useState<MonthName>(MONTH_NAMES[0]);
 
   const menuContentStyle = {
     backgroundColor: theme.useDarkTheme
@@ -36,12 +39,12 @@ export const DateFilterMenu = ({
   };
 
   const openMenu = () => {
-    const separatorIndex = selectedMonth?.lastIndexOf(" ") ?? -1;
-    const selectedYear = Number(selectedMonth?.slice(separatorIndex + 1));
-    const selectedMonthName = selectedMonth?.slice(0, separatorIndex);
-    const year = Number.isNaN(selectedYear)
-      ? (years[0] ?? new Date().getFullYear())
-      : selectedYear;
+    const selectedDate = selectedMonth ? parseMonthYear(selectedMonth) : null;
+    const selectedMonthName = selectedDate
+      ? MONTH_NAMES[selectedDate.getMonth()]
+      : null;
+    const year =
+      selectedDate?.getFullYear() ?? years[0] ?? new Date().getFullYear();
     const months = monthsForYear(year);
 
     setDraftYear(year);
@@ -182,6 +185,7 @@ export const DateFilterMenu = ({
                     key={month}
                     title={month}
                     dense
+                    disabled={isMonthDisabled(draftYear, month)}
                     titleStyle={{ color: theme.colors.primary }}
                     onPress={() => {
                       setDraftMonth(month);
