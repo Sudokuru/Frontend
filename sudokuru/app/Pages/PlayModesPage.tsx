@@ -1,6 +1,6 @@
 import React from "react";
 import { Pressable, ScrollView, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { Surface, Text } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import type {

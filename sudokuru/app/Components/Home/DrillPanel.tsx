@@ -78,6 +78,7 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
   const hideDialog = () => setVisible(false);
 
   const [checked, setChecked] = React.useState(false);
+  const [resumeVisible, setResumeVisible] = React.useState(false);
 
   const minWindowSize = useMinWindowDimensions();
   const newSize = minWindowSize / 25;
@@ -86,10 +87,10 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
   async function showOrHideResumeButton() {
     const game = await getActiveDrillGame();
     if (game != null) {
-      showResumeButton();
+      setResumeVisible(true);
       return true;
     } else {
-      hideResumeButton();
+      setResumeVisible(false);
       return false;
     }
   }
@@ -97,13 +98,8 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
   useFocusEffect(
     React.useCallback(() => {
       showOrHideResumeButton();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
-
-  const [resumeVisible, setResumeVisible] = React.useState(false);
-  const showResumeButton = () => setResumeVisible(true);
-  const hideResumeButton = () => setResumeVisible(false);
 
   async function showTutorialIfNotDismissed() {
     await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {

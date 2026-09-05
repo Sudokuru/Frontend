@@ -1,7 +1,7 @@
 import { useCellSize } from "../Functions/BoardFunctions";
 import { MOBILE_BREAKPOINT } from "../../../../Functions/GameLayout";
 import { Pressable, View, useWindowDimensions } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import React from "react";
 import { Text } from "react-native-paper";
 import { useTheme } from "../../../../Contexts/ThemeContext";

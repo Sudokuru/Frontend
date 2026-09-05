@@ -13,8 +13,6 @@ export const useMinWindowDimensions = (): number => {
 
 export function useNewWindowDimensions(): ScaledSize {
   const size = useWindowDimensions();
-  const clone = JSON.parse(JSON.stringify(size));
   const headerHeight = useHeaderHeight();
-  clone.height = size.height - headerHeight;
-  return clone;
+  return { ...size, height: size.height - headerHeight };
 }

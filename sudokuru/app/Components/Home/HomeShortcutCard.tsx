@@ -1,6 +1,6 @@
 import React from "react";
 import { Animated, PanResponder, Pressable, View } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { IconButton, Surface, Text } from "react-native-paper";
 import type { HomeDashboardCardDescriptor } from "./HomeDashboard";
 import { useTheme } from "../../Contexts/ThemeContext";
@@ -59,10 +59,11 @@ const HomeShortcutCard = ({
     : theme.semantic.text.inverse;
   const [focused, setFocused] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
-  const pan = React.useRef(new Animated.ValueXY()).current;
-  const position = React.useRef(
-    new Animated.ValueXY(getGridPosition(index, columns, width, height, gap)),
-  ).current;
+  const [pan] = React.useState(() => new Animated.ValueXY());
+  const [position] = React.useState(
+    () =>
+      new Animated.ValueXY(getGridPosition(index, columns, width, height, gap)),
+  );
   const dragStartIndex = React.useRef(index);
   const lastPreviewIndex = React.useRef(index);
   const dragOrigin = React.useRef(
@@ -80,18 +81,21 @@ const HomeShortcutCard = ({
     onDragEnd,
     onDragCancel,
   });
-  latestProps.current = {
-    index,
-    columns,
-    total,
-    gap,
-    width,
-    height,
-    editing,
-    onDragPreview,
-    onDragEnd,
-    onDragCancel,
-  };
+
+  React.useEffect(() => {
+    latestProps.current = {
+      index,
+      columns,
+      total,
+      gap,
+      width,
+      height,
+      editing,
+      onDragPreview,
+      onDragEnd,
+      onDragCancel,
+    };
+  });
 
   React.useEffect(() => {
     const targetPosition = getGridPosition(index, columns, width, height, gap);
@@ -108,7 +112,9 @@ const HomeShortcutCard = ({
     }).start();
   }, [columns, dragging, editing, gap, height, index, position, width]);
 
-  const panResponder = React.useRef(
+  // PanResponder stores these callbacks and does not invoke them during render.
+  // eslint-disable-next-line react-hooks/refs
+  const [panResponder] = React.useState(() =>
     PanResponder.create({
       onStartShouldSetPanResponder: () => false,
       onMoveShouldSetPanResponder: (_, gesture) => {
@@ -219,7 +225,7 @@ const HomeShortcutCard = ({
         }).start(() => setDragging(false));
       },
     }),
-  ).current;
+  );
 
   const compact = height < 104;
   const cardContent = (

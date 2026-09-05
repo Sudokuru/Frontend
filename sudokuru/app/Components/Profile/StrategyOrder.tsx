@@ -134,16 +134,18 @@ const StrategyOrder = () => {
     // converting back 0 based index instead of 1 based index
     index = index - 1;
 
+    const updatedStrategyHintOrder = [...strategyHintOrderSetting];
+
     // using array destructuring syntax to swap values in strategy array
     // https://www.slingacademy.com/article/javascript-ways-to-swap-elements-in-an-array/
     [
-      strategyHintOrderSetting[index],
-      strategyHintOrderSetting[index + increment],
+      updatedStrategyHintOrder[index],
+      updatedStrategyHintOrder[index + increment],
     ] = [
-      strategyHintOrderSetting[index + increment],
-      strategyHintOrderSetting[index],
+      updatedStrategyHintOrder[index + increment],
+      updatedStrategyHintOrder[index],
     ];
-    updateStrategyHintOrder(strategyHintOrderSetting);
+    updateStrategyHintOrder(updatedStrategyHintOrder);
     setSelectedElement(index + 1 + increment);
   };
 
