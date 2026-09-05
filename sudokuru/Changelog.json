@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.36.0",
+    "date": "#{date}#",
+    "summary": "Added ability to filter and search release notes",
+    "features": [
+      "Added ability to filter and search release notes."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.35.1",
     "date": "August 20th, 2026",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
@@ -1815,7 +1825,7 @@
       "The number buttons for the board are now horizontal instead of vertical."
     ],
     "targets": ["web", "mobile"],
-    "contributors": ["denielcosentino", "Thomas-Gallant"]
+    "contributors": ["danielcosentino", "Thomas-Gallant"]
   },
   {
     "version": "0.2.0",
