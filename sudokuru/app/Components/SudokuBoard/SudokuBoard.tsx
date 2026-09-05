@@ -38,7 +38,7 @@ import {
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
 import {
-  cloneBoard,
+  cloneBoardForUpdate,
   cloneCell,
   clonePuzzleState,
 } from "./Core/Functions/CloneFunctions";
@@ -220,15 +220,9 @@ const SudokuBoard = (props: Board) => {
   }
 
   /**
-   * Provides a hint for the current sudoku puzzle state by determining the next possible move
-   * based on the specified strategy order. The hint is generated using the current puzzle state,
-   * solution, and an updated strategy array which prioritizes the "AMEND_NOTES" strategy.
-   *
-   * Updates the hint statistics, including total hints used and hints used per strategy.
-   * Clears the currently selected cells on the board to prepare for hint visualization.
-   *
-   * The hint information is stored in the component's state, including the hint stage and
-   * maximum stages for hint visualization.
+   * Requests a variant-specific hint using copies of the current board and strategy order.
+   * Stores the returned board with cleared selections and a new active-hint preview without
+   * mutating the current board. Variant-specific hint bookkeeping is handled by the controller.
    */
   function getHint() {
     if (sudokuBoard == null) {
@@ -236,7 +230,7 @@ const SudokuBoard = (props: Board) => {
     }
 
     const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
-    const boardForHint = cloneBoard(sudokuBoard);
+    const boardForHint = cloneBoardForUpdate(sudokuBoard);
     const { hint, updatedBoard } = boardMethods[props.type].getSudokuBoardHint(
       boardForHint,
       [...strategyHintOrderSetting],
@@ -290,13 +284,13 @@ const SudokuBoard = (props: Board) => {
 
   /**
    * Updates the entries of the selected cells based on the user input value.
-   * Handles both note and value modes, and updates game state accordingly.
+   * Builds and commits a new board after applying the input to eligible selected cells.
    *
    * - If no cells are selected, the function returns immediately.
    * - Prevents multiple value entries if not in note mode.
    * - Skips any cells that are marked as 'given' or already have the correct value.
    * - Updates the cell entry value and type, and tracks changes in the action history.
-   * - If a wrong value is inserted, increments the numWrongCellsPlayed statistic.
+   * - If the board variant reports an incorrect input, increments numWrongCellsPlayed.
    * - Saves the current game state after updates.
    * - Checks if the game is solved upon updating values and updates the game over state.
    *
@@ -320,7 +314,7 @@ const SudokuBoard = (props: Board) => {
       return;
     }
 
-    const nextBoard = cloneBoard(sudokuBoard);
+    const nextBoard = cloneBoardForUpdate(sudokuBoard);
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
@@ -439,11 +433,11 @@ const SudokuBoard = (props: Board) => {
   }
 
   /**
-   * Sub function of @function updateCellEntry
-   * Updates the selected cell updated based on the user input value and what is currently in the cell
-   * @param inputValue User input 0-9
+   * Returns a new cell with the user input applied without mutating the current cell.
+   * @param inputValue A digit from 1-9, or 0 to clear the cell
    * @param currentCell The current cell value and type
    * @param inNoteMode Whether note mode is enabled
+   * @returns A new cell containing the updated type and entry
    */
   function getUpdatedCell(
     inputValue: number,
@@ -769,7 +763,7 @@ const SudokuBoard = (props: Board) => {
         activeHint.puzzleStateBeforeHint,
         finalPuzzleState,
       );
-      const nextBoard = cloneBoard(sudokuBoard);
+      const nextBoard = cloneBoardForUpdate(sudokuBoard);
       nextBoard.puzzleState = finalPuzzleState;
       nextBoard.actionHistory =
         hintAction.length === 0

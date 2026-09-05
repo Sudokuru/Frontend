@@ -22,6 +22,7 @@ export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   navigation.navigate("DrillPage");
 }
 
+/** Returns an independent cell-by-cell copy of the initial puzzle state. */
 export function getInitialPuzzleState(sudokuBoard: DrillObjectProps) {
   return clonePuzzleState(sudokuBoard.initialPuzzleState);
 }

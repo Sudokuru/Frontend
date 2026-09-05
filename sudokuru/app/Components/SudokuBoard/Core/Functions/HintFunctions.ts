@@ -107,13 +107,11 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
 };
 
 /**
- * Retrieves a hint for the current sudoku puzzle board and updates the board's hint statistics.
- * The hint is generated using the current puzzle state, solution, and a strategy array that determines
- * the priority order of hint strategies. Per-strategy hint counts are incremented to track which
- * strategies have been used throughout the game.
+ * Retrieves a classic hint after prioritizing note-maintenance strategies.
+ * Returns new board and statistics objects with updated hint counts without mutating the inputs.
  * @param sudokuBoard - current sudoku board state including puzzle state and statistics
- * @param strategyArray - order of strategies to use for generating the hint
- * @returns Object containing the hint information and the updated board with incremented statistics
+ * @param strategyArray - base strategy order after the note-maintenance strategies
+ * @returns The hint and a new board containing the incremented statistics
  */
 export const getSudokuBoardHint = (
   sudokuBoard: ClassicObjectProps,

@@ -184,7 +184,7 @@ const calculateRemainingNotes = (
 };
 
 /**
- * Applies note removals to all affected cells in the game state
+ * Assigns independent note cells to each affected game-state location.
  */
 const applyNoteRemovals = (
   game: DrillObjectProps,

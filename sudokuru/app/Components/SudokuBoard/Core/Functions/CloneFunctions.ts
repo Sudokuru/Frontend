@@ -9,7 +9,12 @@ export const cloneCell = (cell: CellProps): CellProps =>
 export const clonePuzzleState = (puzzleState: CellProps[][]): CellProps[][] =>
   puzzleState.map((row) => row.map(cloneCell));
 
-export const cloneBoard = <T extends BoardObjectProps>(board: T): T => ({
+/**
+ * Copies the board branches modified by SudokuBoard updates. Other nested fields remain shared.
+ */
+export const cloneBoardForUpdate = <T extends BoardObjectProps>(
+  board: T,
+): T => ({
   ...board,
   puzzleState: clonePuzzleState(board.puzzleState),
   actionHistory: board.actionHistory.map((action) =>
