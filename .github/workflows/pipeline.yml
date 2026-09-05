@@ -157,8 +157,6 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 2
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
@@ -269,6 +267,8 @@ jobs:
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
       - name: 🏗 Setup Node
         uses: actions/setup-node@v6
         with:
