@@ -85,7 +85,7 @@ jobs:
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Release Notes Tests
         working-directory: sudokuru
-        run: npm test
+        run: bun test
       - name: Typescript Check
         working-directory: sudokuru
         run: npm run tsc
