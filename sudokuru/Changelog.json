@@ -15,7 +15,7 @@
   },
   {
     "version": "1.35.1",
-    "date": "August 15th, 2026",
+    "date": "August 20th, 2026",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
     "bug fixes": [
       "Lesson, difficulty, and release note cards now use theme aware colors that display correctly in light mode."
