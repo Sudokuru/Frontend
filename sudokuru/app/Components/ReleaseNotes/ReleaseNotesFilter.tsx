@@ -10,7 +10,7 @@ import {
 import { useTheme } from "../../Contexts/ThemeContext";
 import { DateFilterMenu } from "./DateFilterMenu";
 import { MultiSelectFilterMenu } from "./MultiSelectFilterMenu";
-import { MONTH_NAMES } from "./ReleaseNoteFunctions";
+import { MONTH_NAMES, parseMonthYear } from "./ReleaseNoteFunctions";
 
 export type Category = "features" | "preview features" | "bug fixes";
 
@@ -77,19 +77,13 @@ export const ReleaseNotesFilter = ({
     selectedContributors.size > 0 ||
     selectedCategories.size > 0;
 
-  const releaseMonthYearPairs = allReleaseMonths
-    .map((value) => {
-      const separatorIndex = value.lastIndexOf(" ");
-      return {
-        month: value.slice(0, separatorIndex),
-        year: Number(value.slice(separatorIndex + 1)),
-      };
-    })
-    .filter(
-      ({ month, year }) =>
-        !Number.isNaN(year) &&
-        MONTH_NAMES.includes(month as (typeof MONTH_NAMES)[number]),
-    );
+  const releaseMonthYearPairs = allReleaseMonths.map((value) => {
+    const date = parseMonthYear(value);
+    return {
+      month: MONTH_NAMES[date.getMonth()],
+      year: date.getFullYear(),
+    };
+  });
 
   const availableYears = Array.from(
     new Set(releaseMonthYearPairs.map(({ year }) => year)),
@@ -102,11 +96,7 @@ export const ReleaseNotesFilter = ({
           .filter((pair) => pair.year === year)
           .map(({ month }) => month),
       ),
-    ).sort(
-      (a, b) =>
-        MONTH_NAMES.indexOf(a as (typeof MONTH_NAMES)[number]) -
-        MONTH_NAMES.indexOf(b as (typeof MONTH_NAMES)[number]),
-    );
+    ).sort((a, b) => MONTH_NAMES.indexOf(a) - MONTH_NAMES.indexOf(b));
 
   const selectionMenuMaxWidth = Math.max(
     200,

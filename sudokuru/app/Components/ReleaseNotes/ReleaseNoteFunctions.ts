@@ -17,6 +17,11 @@ export const MONTH_NAMES = [
 
 export const PENDING_CHANGELOG_DATE = "#{date}#";
 
+type MonthName = (typeof MONTH_NAMES)[number];
+
+const isMonthName = (value: string): value is MonthName =>
+  MONTH_NAMES.some((monthName) => monthName === value);
+
 const getDaySuffix = (day: number): string => {
   if (day >= 11 && day <= 13) return "th";
 
@@ -37,13 +42,16 @@ export const parseChangelogDate = (value: string): Date => {
   if (!match) throw new Error(`Invalid changelog date: "${value}"`);
 
   const [, monthName, dayValue, suffix, yearValue] = match;
-  const month = MONTH_NAMES.findIndex((name) => name === monthName);
+  if (!isMonthName(monthName)) {
+    throw new Error(`Invalid changelog date: "${value}"`);
+  }
+
+  const month = MONTH_NAMES.indexOf(monthName);
   const day = Number(dayValue);
   const year = Number(yearValue);
   const date = new Date(year, month, day);
 
   if (
-    month < 0 ||
     suffix !== getDaySuffix(day) ||
     date.getFullYear() !== year ||
     date.getMonth() !== month ||
@@ -56,16 +64,23 @@ export const parseChangelogDate = (value: string): Date => {
 };
 
 export const parseMonthYear = (value: string): Date => {
-  const separatorIndex = value.lastIndexOf(" ");
-  const monthName = value.slice(0, separatorIndex);
-  const month = MONTH_NAMES.indexOf(monthName as (typeof MONTH_NAMES)[number]);
-  const year = Number(value.slice(separatorIndex + 1));
+  const match = /^(\w+) (\d{4})$/.exec(value);
+  if (!match) throw new Error(`Invalid changelog month and year: "${value}"`);
 
-  if (separatorIndex < 0 || month < 0 || Number.isNaN(year)) {
-    return new Date(Number.NaN);
+  const [, monthName, yearValue] = match;
+  if (!isMonthName(monthName)) {
+    throw new Error(`Invalid changelog month and year: "${value}"`);
   }
 
-  return new Date(year, month, 1);
+  const month = MONTH_NAMES.indexOf(monthName);
+  const year = Number(yearValue);
+  const date = new Date(year, month, 1);
+
+  if (date.getFullYear() !== year) {
+    throw new Error(`Invalid changelog month and year: "${value}"`);
+  }
+
+  return date;
 };
 
 export const matchesKeyword = (
