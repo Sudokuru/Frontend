@@ -34,10 +34,7 @@ const ExpandableHintsUsedStatistic = ({
   return (
     <>
       <TouchableRipple
-        onPress={() =>
-          numHintsUsed > 0 &&
-          setHintsBreakdownExpanded(!isHintsBreakdownExpanded)
-        }
+        onPress={() => setHintsBreakdownExpanded((previous) => !previous)}
         disabled={numHintsUsed === 0}
         testID="expandableNumHintsUsed"
         style={{ marginBottom: 8 }}

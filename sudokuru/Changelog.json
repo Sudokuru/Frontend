@@ -14,7 +14,7 @@
     "contributors": ["Thomas-Gallant"]
   },
   {
-    "version": "1.35.0",
+    "version": "1.35.1",
     "date": "August 15th, 2026",
     "summary": "Improved light mode theming for cards on the Home, Lesson, and Release Notes pages.",
     "bug fixes": [
