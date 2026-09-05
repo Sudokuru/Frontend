@@ -26,8 +26,7 @@ export const DateFilterMenu = ({
 }: DateFilterMenuProps) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
-  const [yearMenuOpen, setYearMenuOpen] = useState(false);
-  const [monthMenuOpen, setMonthMenuOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<"year" | "month" | null>(null);
   const [draftYear, setDraftYear] = useState(new Date().getFullYear());
   const [draftMonth, setDraftMonth] = useState<MonthName>(MONTH_NAMES[0]);
 
@@ -56,10 +55,15 @@ export const DateFilterMenu = ({
     setVisible(true);
   };
 
+  const closeMenu = () => {
+    setOpenSubmenu(null);
+    setVisible(false);
+  };
+
   return (
     <Menu
       visible={visible}
-      onDismiss={() => setVisible(false)}
+      onDismiss={closeMenu}
       contentStyle={menuContentStyle}
       anchor={
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -99,7 +103,7 @@ export const DateFilterMenu = ({
             testID={`ReleaseNotes${testIDPrefix}DateFilterCloseButton`}
             icon="close"
             size={16}
-            onPress={() => setVisible(false)}
+            onPress={closeMenu}
             style={{ margin: 0 }}
             iconColor={theme.colors.primary}
           />
@@ -118,8 +122,8 @@ export const DateFilterMenu = ({
               Year
             </Text>
             <Menu
-              visible={yearMenuOpen}
-              onDismiss={() => setYearMenuOpen(false)}
+              visible={openSubmenu === "year"}
+              onDismiss={() => setOpenSubmenu(null)}
               contentStyle={menuContentStyle}
               anchor={
                 <Button
@@ -129,7 +133,7 @@ export const DateFilterMenu = ({
                   textColor={theme.semantic.text.inverse}
                   style={{ alignSelf: "flex-start", marginBottom: 8 }}
                   compact
-                  onPress={() => setYearMenuOpen(true)}
+                  onPress={() => setOpenSubmenu("year")}
                 >
                   {String(draftYear)}
                 </Button>
@@ -155,7 +159,7 @@ export const DateFilterMenu = ({
                       } else if (!months.includes(draftMonth)) {
                         setDraftMonth(months[0] ?? MONTH_NAMES[0]);
                       }
-                      setYearMenuOpen(false);
+                      setOpenSubmenu(null);
                     }}
                   />
                 ))}
@@ -167,8 +171,8 @@ export const DateFilterMenu = ({
               Month
             </Text>
             <Menu
-              visible={monthMenuOpen}
-              onDismiss={() => setMonthMenuOpen(false)}
+              visible={openSubmenu === "month"}
+              onDismiss={() => setOpenSubmenu(null)}
               contentStyle={menuContentStyle}
               anchor={
                 <Button
@@ -178,7 +182,7 @@ export const DateFilterMenu = ({
                   textColor={theme.semantic.text.inverse}
                   style={{ alignSelf: "flex-start", marginBottom: 8 }}
                   compact
-                  onPress={() => setMonthMenuOpen(true)}
+                  onPress={() => setOpenSubmenu("month")}
                 >
                   {draftMonth}
                 </Button>
@@ -196,9 +200,7 @@ export const DateFilterMenu = ({
                     onPress={() => {
                       setDraftMonth(month);
                       onChange(`${month} ${draftYear}`);
-                      setYearMenuOpen(false);
-                      setMonthMenuOpen(false);
-                      setVisible(false);
+                      closeMenu();
                     }}
                   />
                 ))}
