@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, View } from "react-native";
 import { Text } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { BoardObjectProps } from "../../../../Functions/LocalDatabase";
 import { useCellSize, formatTime } from "../Functions/BoardFunctions";
 import { useTheme } from "../../../../Contexts/ThemeContext";

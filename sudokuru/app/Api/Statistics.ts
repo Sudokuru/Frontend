@@ -3,13 +3,13 @@ import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 import { StatisticsSchema } from "../Functions/LocalDatabase";
 
 /**
- * retrieves the user's learned lessons
- * @returns promise of puzzle JSON object
+ * Retrieves the user's learned lesson identifiers.
+ * @returns The stored identifiers, or ["NONE"] when none are stored
  */
-export const getLearnedLessons = async (): Promise<JSON> => {
+export const getLearnedLessons = async (): Promise<string[]> => {
   const value = await getKeyJSON("learned_lessons");
   if (!value) {
-    return JSON.parse(JSON.stringify(["NONE"]));
+    return ["NONE"];
   } else {
     return value;
   }

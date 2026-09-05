@@ -10,7 +10,6 @@ import {
   ActiveHintState,
   CellLocation,
   CellProps,
-  CellType,
   GameAction,
   GameVariant,
   BoardObjectProps,
@@ -38,6 +37,11 @@ import {
 } from "./SudokuBoardSharedFunctionsController";
 import { DrillStrategy } from "../Home/DrillPanel";
 import { useKeyboardHotkeys } from "./Core/Functions/useKeyboardHotkeys";
+import {
+  cloneBoardForUpdate,
+  cloneCell,
+  clonePuzzleState,
+} from "./Core/Functions/CloneFunctions";
 
 export interface DrillBoard extends CoreBoard<"drill"> {
   action: "StartGame" | "ResumeGame";
@@ -55,9 +59,6 @@ export interface CoreBoard<T extends GameVariant> {
 }
 
 export type Board = DrillBoard | ClassicBoard;
-
-const clonePuzzleState = (puzzleState: CellProps[][]): CellProps[][] =>
-  JSON.parse(JSON.stringify(puzzleState));
 
 const SudokuBoard = (props: Board) => {
   const { theme } = useTheme();
@@ -115,8 +116,23 @@ const SudokuBoard = (props: Board) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Keep keyboard hotkey game-over guard fresh even when this component early-returns
-  gameOverRef.current = gameOver;
+  useEffect(() => {
+    gameOverRef.current = gameOver;
+
+    if (sudokuBoard == null || gameOver) {
+      return;
+    }
+
+    undoRef.current = undo;
+    toggleNoteModeRef.current = toggleNoteMode;
+    getHintRef.current = getHint;
+    resetRef.current = reset;
+    updateCellEntryRef.current = updateCellEntry;
+    eraseSelectedRef.current = eraseSelected;
+    updateHintStageRef.current = updateHintStage;
+    sudokuBoardRef.current = sudokuBoard;
+    setBoardSelectedCellsRef.current = setBoardSelectedCells;
+  });
 
   // Run the game timer while the screen is focused and a game is in progress
   useFocusEffect(
@@ -161,26 +177,38 @@ const SudokuBoard = (props: Board) => {
    * actionHistory: r0c0 = 0, r1c1 = 0, r1c1 = 6
    * Undo will insert 6 into r1c1, then insert 0 into r1c1, then insert 0 into r0c0
    */
-  const undo = () => {
-    // Adding previous moves back to the board
-    const moves = sudokuBoard.actionHistory.pop();
-    if (!moves || moves.length === 0) {
+  function undo() {
+    setSudokuBoard((currentBoard) => {
+      if (currentBoard == null) {
+        return currentBoard;
+      }
+
+      const moves =
+        currentBoard.actionHistory[currentBoard.actionHistory.length - 1];
+      if (!moves || moves.length === 0) {
+        return currentBoard;
+      }
+
+      const puzzleState = clonePuzzleState(currentBoard.puzzleState);
+      for (const move of moves) {
+        puzzleState[move.cellLocation.r][move.cellLocation.c] = cloneCell(
+          move.cell,
+        );
+      }
+
+      return {
+        ...currentBoard,
+        puzzleState,
+        actionHistory: currentBoard.actionHistory.slice(0, -1),
+      };
+    });
+  }
+
+  function reset() {
+    if (sudokuBoard == null) {
       return;
     }
-    for (const move of moves) {
-      sudokuBoard.puzzleState[move.cellLocation.r][move.cellLocation.c].type =
-        move.cell.type;
-      sudokuBoard.puzzleState[move.cellLocation.r][move.cellLocation.c].entry =
-        move.cell.entry;
-    }
-    // remove from move history
-    setSudokuBoard({
-      ...sudokuBoard,
-      actionHistory: sudokuBoard.actionHistory,
-    });
-  };
 
-  const reset = () => {
     if (boardMethods[props.type].hasResetActionButton() === true) {
       setSudokuBoard({
         ...sudokuBoard,
@@ -189,24 +217,20 @@ const SudokuBoard = (props: Board) => {
           boardMethods[props.type].getInitialPuzzleState(sudokuBoard),
       });
     }
-  };
+  }
 
   /**
-   * Provides a hint for the current sudoku puzzle state by determining the next possible move
-   * based on the specified strategy order. The hint is generated using the current puzzle state,
-   * solution, and an updated strategy array which prioritizes the "AMEND_NOTES" strategy.
-   *
-   * Updates the hint statistics, including total hints used and hints used per strategy.
-   * Clears the currently selected cells on the board to prepare for hint visualization.
-   *
-   * The hint information is stored in the component's state, including the hint stage and
-   * maximum stages for hint visualization.
+   * Requests a variant-specific hint using copies of the current board and strategy order.
+   * Stores the returned board with cleared selections and a new active-hint preview without
+   * mutating the current board. Variant-specific hint bookkeeping is handled by the controller.
    */
-  const getHint = () => {
+  function getHint() {
+    if (sudokuBoard == null) {
+      return;
+    }
+
     const puzzleStateBeforeHint = clonePuzzleState(sudokuBoard.puzzleState);
-    const boardForHint: BoardObjectProps = JSON.parse(
-      JSON.stringify(sudokuBoard),
-    );
+    const boardForHint = cloneBoardForUpdate(sudokuBoard);
     const { hint, updatedBoard } = boardMethods[props.type].getSudokuBoardHint(
       boardForHint,
       [...strategyHintOrderSetting],
@@ -229,45 +253,54 @@ const SudokuBoard = (props: Board) => {
 
     saveGame(nextBoard);
     setSudokuBoard(nextBoard);
-  };
+  }
 
   /**
    * Toggles whether or not the board is in note mode. In note mode, the user can
    * enter notes into the cells of the board. If the board is not in note mode, the
    * user can enter values into the cells of the board.
    */
-  const toggleNoteMode = () => {
-    sudokuBoard.inNoteMode = !sudokuBoard.inNoteMode;
-    setSudokuBoard({
-      ...sudokuBoard,
-      inNoteMode: sudokuBoard.inNoteMode,
+  function toggleNoteMode() {
+    setSudokuBoard((currentBoard) => {
+      if (currentBoard == null) {
+        return currentBoard;
+      }
+
+      return {
+        ...currentBoard,
+        inNoteMode: !currentBoard.inNoteMode,
+      };
     });
-  };
+  }
 
   /**
    * Called when the user hits the 'erase' button
    * If notes are present in selected cell, removes all notes
    * If value is present in selected cell, removes value if value is incorrect
    */
-  const eraseSelected = () => {
+  function eraseSelected() {
     updateCellEntry(0);
-  };
+  }
 
   /**
    * Updates the entries of the selected cells based on the user input value.
-   * Handles both note and value modes, and updates game state accordingly.
+   * Builds and commits a new board after applying the input to eligible selected cells.
    *
    * - If no cells are selected, the function returns immediately.
    * - Prevents multiple value entries if not in note mode.
    * - Skips any cells that are marked as 'given' or already have the correct value.
    * - Updates the cell entry value and type, and tracks changes in the action history.
-   * - If a wrong value is inserted, increments the numWrongCellsPlayed statistic.
+   * - If the board variant reports an incorrect input, increments numWrongCellsPlayed.
    * - Saves the current game state after updates.
    * - Checks if the game is solved upon updating values and updates the game over state.
    *
    * @param inputValue User input value (0-9) to be inserted into the selected cells.
    */
-  const updateCellEntry = (inputValue: number) => {
+  function updateCellEntry(inputValue: number) {
+    if (sudokuBoard == null) {
+      return;
+    }
+
     if (sudokuBoard.selectedCells.length === 0) {
       return;
     }
@@ -281,10 +314,11 @@ const SudokuBoard = (props: Board) => {
       return;
     }
 
+    const nextBoard = cloneBoardForUpdate(sudokuBoard);
     const newActionHistory: GameAction[] = [];
     let cellsHaveUpdates = false;
 
-    const currentSelectedCells = getSelectedCells(sudokuBoard);
+    const currentSelectedCells = getSelectedCells(nextBoard);
 
     // We do not need to take action if this is a given value
     for (let i = 0; i < currentSelectedCells.length; i++) {
@@ -292,15 +326,15 @@ const SudokuBoard = (props: Board) => {
         continue;
       }
 
-      const r: number = sudokuBoard.selectedCells[i].r;
-      const c: number = sudokuBoard.selectedCells[i].c;
+      const r: number = nextBoard.selectedCells[i].r;
+      const c: number = nextBoard.selectedCells[i].c;
       const currentEntry = currentSelectedCells[i].entry;
       const currentType = currentSelectedCells[i].type;
 
       // We do not need to take action if value is correct
       if (
         currentType === "value" &&
-        isValueCorrect(sudokuBoard.puzzleSolution[r][c], currentEntry as number)
+        isValueCorrect(nextBoard.puzzleSolution[r][c], currentEntry as number)
       ) {
         continue;
       }
@@ -308,21 +342,26 @@ const SudokuBoard = (props: Board) => {
       cellsHaveUpdates = true;
 
       // Set new Cell Value
-      setCellEntryValue(inputValue, currentType, currentEntry, r, c);
+      const previousCell = cloneCell(currentSelectedCells[i]);
+      nextBoard.puzzleState[r][c] = getUpdatedCell(
+        inputValue,
+        currentSelectedCells[i],
+        nextBoard.inNoteMode,
+      );
 
       // Incrementing numWrongCellsPlayed value
       const isMoveCorrect = boardMethods[props.type].isMoveCorrect(
-        sudokuBoard,
+        nextBoard,
         r,
         c,
-        { entry: currentEntry, type: currentType } as CellProps,
+        previousCell,
       );
       if (!isMoveCorrect) {
-        sudokuBoard.statistics.numWrongCellsPlayed++;
+        nextBoard.statistics.numWrongCellsPlayed += 1;
       }
 
       newActionHistory.push({
-        cell: { entry: currentEntry, type: currentType } as CellProps, // annoying typescript casting workaround
+        cell: previousCell,
         cellLocation: { c: c, r: r },
       });
 
@@ -333,10 +372,10 @@ const SudokuBoard = (props: Board) => {
       if (
         simplifyNotesSetting &&
         featurePreviewSetting &&
-        !sudokuBoard.inNoteMode &&
-        isValueCorrect(sudokuBoard.puzzleSolution[r][c], inputValue)
+        !nextBoard.inNoteMode &&
+        isValueCorrect(nextBoard.puzzleSolution[r][c], inputValue)
       ) {
-        for (const [rowIndex, row] of sudokuBoard.puzzleState.entries()) {
+        for (const [rowIndex, row] of nextBoard.puzzleState.entries()) {
           for (const [columnIndex, cell] of row.entries()) {
             if (
               areCellsInSameRow(
@@ -350,18 +389,18 @@ const SudokuBoard = (props: Board) => {
               areCellsInSameBox({ r: rowIndex, c: columnIndex }, { r: r, c: c })
             ) {
               if (cell.type === "note" && cell.entry.includes(inputValue)) {
-                const updatedNotesArray = cell.entry.filter(
-                  (entry: number) => entry !== inputValue,
-                );
-                const existingNotesArray =
-                  sudokuBoard.puzzleState[rowIndex][columnIndex].entry;
-                sudokuBoard.puzzleState[rowIndex][columnIndex].entry =
-                  updatedNotesArray;
+                const existingNotesArray = [...cell.entry];
+                nextBoard.puzzleState[rowIndex][columnIndex] = {
+                  type: "note",
+                  entry: cell.entry.filter(
+                    (entry: number) => entry !== inputValue,
+                  ),
+                };
                 newActionHistory.push({
                   cell: {
                     entry: existingNotesArray,
                     type: "note",
-                  } as CellProps, // annoying typescript casting workaround
+                  },
                   cellLocation: { c: columnIndex, r: rowIndex },
                 });
               }
@@ -377,101 +416,83 @@ const SudokuBoard = (props: Board) => {
     }
 
     // Storing old value in actionHistory
-    sudokuBoard.actionHistory.push(newActionHistory);
+    nextBoard.actionHistory.push(newActionHistory);
 
-    if (isGameSolved(sudokuBoard)) {
-      const statistics = boardMethods[props.type].finishSudokuGame(
-        sudokuBoard.statistics,
+    if (isGameSolved(nextBoard)) {
+      nextBoard.statistics = boardMethods[props.type].finishSudokuGame(
+        nextBoard.statistics,
         props.type,
       );
-      setSudokuBoard({
-        ...sudokuBoard,
-        puzzleState: sudokuBoard.puzzleState,
-        actionHistory: sudokuBoard.actionHistory,
-        statistics,
-      } as BoardObjectProps);
+      setSudokuBoard(nextBoard);
+      gameOverRef.current = true;
       setGameOver(true);
     } else {
-      saveGame(sudokuBoard);
-      setSudokuBoard({
-        ...sudokuBoard,
-        puzzleState: sudokuBoard.puzzleState,
-        actionHistory: sudokuBoard.actionHistory,
-        // @ts-ignore
-        statistics: sudokuBoard.statistics,
-      });
+      saveGame(nextBoard);
+      setSudokuBoard(nextBoard);
     }
-  };
+  }
 
   /**
-   * Sub function of @function updateCellEntry
-   * Updates the selected cell updated based on the user input value and what is currently in the cell
-   * @param inputValue User input 0-9
-   * @param currentType Type of the current cell ("value" or "note")
-   * @param currentEntry The current entry in the cell (number or array of numbers)
-   * @param r Row index of the current cell
-   * @param c Column index of the current cell
+   * Returns a new cell with the user input applied without mutating the current cell.
+   * @param inputValue A digit from 1-9, or 0 to clear the cell
+   * @param currentCell The current cell value and type
+   * @param inNoteMode Whether note mode is enabled
+   * @returns A new cell containing the updated type and entry
    */
-  const setCellEntryValue = (
+  function getUpdatedCell(
     inputValue: number,
-    currentType: CellType,
-    currentEntry: number | number[],
-    r: number,
-    c: number,
-  ) => {
-    if (sudokuBoard.selectedCells.length === 0) {
+    currentCell: CellProps,
+    inNoteMode: boolean,
+  ): CellProps {
+    if (inputValue === 0) {
+      return { type: "value", entry: 0 };
+    }
+
+    if (!inNoteMode) {
+      return { type: "value", entry: inputValue };
+    }
+
+    if (currentCell.type === "value") {
+      return { type: "note", entry: [inputValue] };
+    }
+
+    // handling case where there is one note remaining
+    // and that is removed via note press
+    if (
+      currentCell.type === "note" &&
+      currentCell.entry.length === 1 &&
+      currentCell.entry[0] === inputValue
+    ) {
+      return { type: "value", entry: 0 };
+    }
+
+    if (currentCell.type === "note") {
+      const updatedNotes = [...currentCell.entry];
+      if (updatedNotes.includes(inputValue)) {
+        return {
+          type: "note",
+          entry: updatedNotes.filter((note: number) => note !== inputValue),
+        };
+      }
+
+      updatedNotes.push(inputValue);
+      updatedNotes.sort((a: number, b: number) => a - b);
+      return { type: "note", entry: updatedNotes };
+    }
+
+    return cloneCell(currentCell);
+  }
+
+  function setBoardSelectedCells(cells: CellLocation[]) {
+    if (sudokuBoard == null) {
       return;
     }
 
-    // This value will be overridden if we are in note mode
-    let newCellEntry: number | number[] = inputValue;
-    // update type of selected cell
-    if (
-      (!sudokuBoard.inNoteMode && currentType === "note") ||
-      inputValue === 0
-    ) {
-      sudokuBoard.puzzleState[r][c].type = "value";
-    }
-    // update type and newCellEntry of selected cell
-    else if (sudokuBoard.inNoteMode && currentType === "value") {
-      sudokuBoard.puzzleState[r][c].type = "note";
-      newCellEntry = [inputValue];
-    }
-    // handling case where there is one note remaining
-    // and that is removed via note press
-    else if (
-      sudokuBoard.inNoteMode &&
-      currentType === "note" &&
-      (currentEntry as number[]).length === 1 &&
-      (currentEntry as number[])[0] === inputValue
-    ) {
-      sudokuBoard.puzzleState[r][c].type = "value";
-      newCellEntry = 0;
-    }
-    // set new note value
-    else if (sudokuBoard.inNoteMode) {
-      const currentEntryCopy = JSON.parse(JSON.stringify(currentEntry));
-      if (currentEntryCopy.includes(inputValue)) {
-        newCellEntry = currentEntryCopy.filter(
-          (note: number) => note !== inputValue,
-        );
-      } else {
-        currentEntryCopy.push(inputValue);
-        currentEntryCopy.sort((a: number, b: number) => a - b);
-        newCellEntry = currentEntryCopy;
-      }
-    }
-
-    // updating board entry
-    sudokuBoard.puzzleState[r][c].entry = newCellEntry;
-  };
-
-  const setBoardSelectedCells = (cells: CellLocation[]) => {
     setSudokuBoard({
       ...sudokuBoard,
       selectedCells: cells,
     });
-  };
+  }
 
   const renderTopBar = () => {
     return (
@@ -706,7 +727,7 @@ const SudokuBoard = (props: Board) => {
         if (JSON.stringify(previousCell) !== JSON.stringify(finalCell)) {
           action.push({
             cellLocation: { r: row, c: column },
-            cell: JSON.parse(JSON.stringify(previousCell)),
+            cell: cloneCell(previousCell),
           });
         }
       }
@@ -714,10 +735,14 @@ const SudokuBoard = (props: Board) => {
     return action;
   };
 
-  const updateHintStage = (
+  function updateHintStage(
     stageOffset: -1 | 0 | 1,
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
-  ) => {
+  ) {
+    if (sudokuBoard == null) {
+      return;
+    }
+
     const activeHint = sudokuBoard.activeHint!;
 
     if (stageOffset === 0 || activeHint.stage + stageOffset === 0) {
@@ -738,22 +763,21 @@ const SudokuBoard = (props: Board) => {
         activeHint.puzzleStateBeforeHint,
         finalPuzzleState,
       );
-      const nextBoard: BoardObjectProps = {
-        ...sudokuBoard,
-        puzzleState: finalPuzzleState,
-        actionHistory:
-          hintAction.length === 0
-            ? sudokuBoard.actionHistory
-            : [...sudokuBoard.actionHistory, hintAction],
-        activeHint: null,
-      };
+      const nextBoard = cloneBoardForUpdate(sudokuBoard);
+      nextBoard.puzzleState = finalPuzzleState;
+      nextBoard.actionHistory =
+        hintAction.length === 0
+          ? sudokuBoard.actionHistory
+          : [...sudokuBoard.actionHistory, hintAction];
+      nextBoard.activeHint = null;
 
       if (isGameSolved(nextBoard)) {
         nextBoard.statistics = finishSudokuGame(
           nextBoard.statistics,
           props.type,
-        ) as typeof nextBoard.statistics;
+        );
         setSudokuBoard(nextBoard);
+        gameOverRef.current = true;
         setGameOver(true);
       } else {
         saveGame(nextBoard);
@@ -773,18 +797,7 @@ const SudokuBoard = (props: Board) => {
     };
     saveGame(nextBoard);
     setSudokuBoard(nextBoard);
-  };
-
-  // Sync keyboard handler refs on every render to access fresh state and functions
-  undoRef.current = undo;
-  toggleNoteModeRef.current = toggleNoteMode;
-  getHintRef.current = getHint;
-  resetRef.current = reset;
-  updateCellEntryRef.current = updateCellEntry;
-  eraseSelectedRef.current = eraseSelected;
-  updateHintStageRef.current = updateHintStage;
-  sudokuBoardRef.current = sudokuBoard;
-  setBoardSelectedCellsRef.current = setBoardSelectedCells;
+  }
 
   return (
     <View

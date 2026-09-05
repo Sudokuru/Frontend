@@ -43,7 +43,7 @@
   "productName": "sudokuru-frontend",
   "mainBinaryName": "sudokuru-frontend",
   "version": "0.1.0",
-  "identifier": "sudokuru.vercel.app",
+  "identifier": "com.opengamesonline.sudokuru",
   "plugins": {},
   "app": {
     "windows": [
