@@ -93,6 +93,33 @@ test.describe("release note filters", () => {
     await releaseNotesPage.resultCountIs(releaseNotes.length);
   });
 
+  test("keyword search only renders matching releases", async ({ page }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+
+    await releaseNotesPage.searchFor(
+      "Sudoku board hotkeys now work when board is not selected. However, the board needs to have been selected at least once.",
+    );
+
+    await releaseNotesPage.resultCountIs(1);
+    await releaseNotesPage.firstReleaseNoteIsRendered("1.19.2");
+    await releaseNotesPage.releaseNoteIsNotRendered(releaseNotes[0].version);
+  });
+
+  test("keyword search renders no releases when none match", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+
+    await releaseNotesPage.searchFor(
+      "This phrase should not match any Sudokuru release note",
+    );
+
+    await releaseNotesPage.resultCountIs(0);
+    await releaseNotesPage.releaseNoteIsNotRendered(releaseNotes[0].version);
+  });
+
   test("target, category, and contributor options filter releases", async ({
     page,
   }) => {
