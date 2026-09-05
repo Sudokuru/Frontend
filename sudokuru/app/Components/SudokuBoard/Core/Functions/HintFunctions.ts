@@ -119,34 +119,44 @@ export const getSudokuBoardHint = (
   sudokuBoard: ClassicObjectProps,
   strategyArray: SudokuStrategy[],
 ) => {
-  strategyArray.unshift("SIMPLIFY_NOTES");
-  strategyArray.unshift("AMEND_NOTES");
-
   const hint = getSudokuHint(
     sudokuBoard.puzzleState,
-    strategyArray,
+    ["AMEND_NOTES", "SIMPLIFY_NOTES", ...strategyArray],
     sudokuBoard.puzzleSolution,
   );
-  sudokuBoard.statistics.numHintsUsed++;
 
-  // increment per-strategy hints
-  let incrementedStrategy = false;
-  for (const [
-    i,
-    strategies,
-  ] of sudokuBoard.statistics.numHintsUsedPerStrategy.entries()) {
-    if (strategies.hintStrategy === hint.strategy) {
-      sudokuBoard.statistics.numHintsUsedPerStrategy[i].numHintsUsed++;
-      incrementedStrategy = true;
-      break;
-    }
-  }
-  if (!incrementedStrategy) {
-    sudokuBoard.statistics.numHintsUsedPerStrategy.push({
-      hintStrategy: hint.strategy,
-      numHintsUsed: 1,
-    });
+  const strategyIndex =
+    sudokuBoard.statistics.numHintsUsedPerStrategy.findIndex(
+      ({ hintStrategy }) => hintStrategy === hint.strategy,
+    );
+  let numHintsUsedPerStrategy;
+  if (strategyIndex === -1) {
+    numHintsUsedPerStrategy = [
+      ...sudokuBoard.statistics.numHintsUsedPerStrategy,
+      {
+        hintStrategy: hint.strategy,
+        numHintsUsed: 1,
+      },
+    ];
+  } else {
+    numHintsUsedPerStrategy =
+      sudokuBoard.statistics.numHintsUsedPerStrategy.map((strategy, index) => {
+        if (index === strategyIndex) {
+          return { ...strategy, numHintsUsed: strategy.numHintsUsed + 1 };
+        }
+        return strategy;
+      });
   }
 
-  return { hint, updatedBoard: sudokuBoard };
+  return {
+    hint,
+    updatedBoard: {
+      ...sudokuBoard,
+      statistics: {
+        ...sudokuBoard.statistics,
+        numHintsUsed: sudokuBoard.statistics.numHintsUsed + 1,
+        numHintsUsedPerStrategy,
+      },
+    },
+  };
 };

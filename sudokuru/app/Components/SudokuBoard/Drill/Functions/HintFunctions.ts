@@ -18,13 +18,16 @@ export const getSudokuBoardHint = (
   const hint = getSudokuHint(sudokuBoard.initialPuzzleState, [
     sudokuBoard.statistics.difficulty,
   ]);
-  sudokuBoard.statistics.hintUsed = true;
 
   return {
     hint,
     updatedBoard: {
       ...sudokuBoard,
       puzzleState: clonePuzzleState(sudokuBoard.initialPuzzleState),
+      statistics: {
+        ...sudokuBoard.statistics,
+        hintUsed: true,
+      },
     },
   };
 };
