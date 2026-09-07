@@ -14,6 +14,7 @@
     "web:prod": "npx expo start --web --clear --no-dev --minify",
     "web:serve:prod": "npm run build:metro-web && npx serve dist -l 8081",
     "build:metro-web": "npx expo export --platform web --dump-sourcemap",
+    "test": "bun test",
     "tauri:run": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
@@ -47,6 +48,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "bun": "1.4.2",
     "@babel/core": "^7.29.0",
     "@tauri-apps/cli": "^2.9.6",
     "@types/node": "^20.11.17",

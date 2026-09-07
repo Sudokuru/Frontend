@@ -1,6 +1,6 @@
 [
   {
-    "version": "1.36.0",
+    "version": "1.37.0",
     "date": "#{date}#",
     "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
     "features": [
@@ -9,6 +9,16 @@
     ],
     "preview features": [
       "After finishing a drill, a 'New Drill' button lets the user start a new drill of the same strategy immediately."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.36.0",
+    "date": "September 7th, 2026",
+    "summary": "Added ability to filter and search release notes",
+    "features": [
+      "Added ability to filter and search release notes."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
@@ -1829,7 +1839,7 @@
       "The number buttons for the board are now horizontal instead of vertical."
     ],
     "targets": ["web", "mobile"],
-    "contributors": ["denielcosentino", "Thomas-Gallant"]
+    "contributors": ["danielcosentino", "Thomas-Gallant"]
   },
   {
     "version": "0.2.0",
