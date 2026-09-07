@@ -11,6 +11,7 @@ interface StatisticProps {
   rowTestID?: string;
   onPress?: () => void;
   disabled?: boolean;
+  expanded?: boolean;
   accessory?: React.ReactNode;
 }
 
@@ -81,6 +82,11 @@ const Statistic = (props: StatisticProps) => {
         testID={rowTestID}
         style={{ marginBottom: 8 }}
         rippleColor={theme.colors.border}
+        accessibilityRole="button"
+        accessibilityState={{
+          expanded: props.expanded ?? false,
+          disabled: props.disabled ?? false,
+        }}
       >
         {rowContent}
       </TouchableRipple>

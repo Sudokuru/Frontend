@@ -32,6 +32,7 @@ const ExpandableHintsUsedStatistic = ({
         rowTestID="expandableNumHintsUsed"
         onPress={() => setHintsBreakdownExpanded((previous) => !previous)}
         disabled={numHintsUsed === 0}
+        expanded={isHintsBreakdownExpanded}
         accessory={
           numHintsUsed > 0 ? (
             <MaterialCommunityIcons
