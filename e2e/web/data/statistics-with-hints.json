@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "totalScore": 100,
+  "numGamesPlayed": 3,
+  "fastestSolveTime": 300,
+  "averageSolveTime": 400,
+  "totalSolveTime": 1200,
+  "numHintsUsed": 5,
+  "numHintsUsedPerStrategy": [
+    {
+      "hintStrategy": "SIMPLIFY_NOTES",
+      "numHintsUsed": 3
+    },
+    {
+      "hintStrategy": "OBVIOUS_SINGLE",
+      "numHintsUsed": 2
+    }
+  ],
+  "numWrongCellsPlayed": 10
+}

@@ -7,7 +7,7 @@ import { DrillPage } from "../../page/drill.page";
 // TODO add test: Should solve game with multiple action types
 
 test.describe("complete drill", () => {
-  test("Completing a drill and clicking 'Start New Drill' should take you to the drill page", async ({
+  test("Completing a drill and clicking 'New Drill' should start a new drill", async ({
     resumeDrillGame,
   }) => {
     const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
@@ -19,8 +19,24 @@ test.describe("complete drill", () => {
     const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
     await endGameModal.endGameModalIsRendered();
     await endGameModal.newGame.click();
-    const playPage = new DrillPage(resumeDrillGame);
-    await playPage.drillPageIsRendered();
+    await sudokuBoard.sudokuBoardIsRendered();
+    await expect(sudokuBoard.difficulty).toContainText("Pointing Pair");
+  });
+
+  test("Completing a drill and clicking 'Change Strategy' should take you to the drill page", async ({
+    resumeDrillGame,
+  }) => {
+    const sudokuBoard = new SudokuBoardComponent(resumeDrillGame);
+    await sudokuBoard.cell[7][6].click();
+    await sudokuBoard.note.click();
+    await sudokuBoard.cell[7][6].press("1");
+    await sudokuBoard.cell[7][3].click();
+    await sudokuBoard.numPad[6 - 1].click();
+    const endGameModal = new EndGameDrillModalComponent(resumeDrillGame);
+    await endGameModal.endGameModalIsRendered();
+    await endGameModal.changeStrategy.click();
+    const drillPage = new DrillPage(resumeDrillGame);
+    await drillPage.drillPageIsRendered();
   });
 
   test("Completing a drill should display correct drill results", async ({

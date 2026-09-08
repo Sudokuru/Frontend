@@ -88,6 +88,10 @@ export { default as INVALID_STATISTICS_DATA } from "./data/invalid-statistics-da
 export { default as INVALID_PROFILE_DATA } from "./data/invalid-profile-data.json";
 export { default as INVALID_ACTIVE_GAME_DATA } from "./data/invalid-active-game-data.json";
 
+// STATISTICS DATA
+
+export { default as STATISTICS_WITH_HINTS } from "./data/statistics-with-hints.json";
+
 // Generic Drill Game
 
 export { default as POINTING_PAIR_DRILL_GAME } from "./data/drill/pointing-pair-drill-game-incorrect-cell.json";
