@@ -53,7 +53,7 @@ export const finishGame = async (
   time: number,
   score: number,
   variant: GameVariant,
-) => {
+): Promise<void> => {
   // remove the game from storage
   await removeData(`active_${variant}_game`);
 
@@ -88,5 +88,5 @@ export const finishGame = async (
     }
   }
 
-  saveStatisitics(statistics);
+  await saveStatisitics(statistics);
 };
