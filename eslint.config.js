@@ -46,6 +46,9 @@ module.exports = defineConfig([
       ".DS_Store",
       ".vercel",
       "**/target/",
+      "sudokuru/modules/**",
+      "sudokuru/android/**",
+      "sudokuru/ios/**",
     ],
   },
 ]);
