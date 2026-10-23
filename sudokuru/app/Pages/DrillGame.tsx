@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import { Text } from "react-native-paper";
 import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
+import DrillTutorialGate from "../Components/Home/DrillTutorialGate";
 
 const Drill = (props: any) => {
   const strategy = props.route.params
@@ -33,7 +34,13 @@ const Drill = (props: any) => {
         }}
       >
         {/* The game now required the info about it to be rendered, which is given in generateGame() */}
-        <SudokuBoard type="drill" action={action} strategy={strategy} />
+        {action === "StartGame" ? (
+          <DrillTutorialGate>
+            <SudokuBoard type="drill" action={action} strategy={strategy} />
+          </DrillTutorialGate>
+        ) : (
+          <SudokuBoard type="drill" action={action} strategy={strategy} />
+        )}
         <StatusBar style="auto" />
       </View>
     </View>

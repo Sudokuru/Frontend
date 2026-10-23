@@ -44,6 +44,7 @@ interface MyStorageOptions {
   homeShortcutsStorage?: any;
   homeDifficultyStorage?: any;
   learnedLessonsStorage?: any;
+  drillTutorialStorage?: boolean | null;
 }
 
 // See https://playwright.dev/docs/test-fixtures and https://playwright.dev/docs/test-parameterize
@@ -63,6 +64,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
   homeShortcutsStorage: [null, { option: true }],
   homeDifficultyStorage: [null, { option: true }],
   learnedLessonsStorage: [null, { option: true }],
+  drillTutorialStorage: [null, { option: true }],
 
   // this article saving the day: https://testomat.io/blog/what-is-the-use-of-fixtures-in-playwright/
   storageState: async (
@@ -74,6 +76,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       homeShortcutsStorage,
       homeDifficultyStorage,
       learnedLessonsStorage,
+      drillTutorialStorage,
       baseURL,
     },
     use,
@@ -88,6 +91,7 @@ const newBase = base.extend<AppFixtures & MyStorageOptions>({
       { key: "home_shortcuts", value: homeShortcutsStorage },
       { key: "home_difficulty", value: homeDifficultyStorage },
       { key: "learned_lessons", value: learnedLessonsStorage },
+      { key: "dismissDrillTutorial", value: drillTutorialStorage },
     ];
 
     for (const item of storageItems) {

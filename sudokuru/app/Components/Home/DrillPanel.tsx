@@ -1,14 +1,9 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, ImageURISource } from "react-native";
-import { Button, Checkbox, Dialog, Portal, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
 import { difficulty, getDifficultyColor } from "./Cards";
 import { toTitle } from "../../Functions/Utils";
-import {
-  getKeyJSON,
-  removeData,
-  storeData,
-} from "../../Functions/AsyncStorage";
 import { getActiveDrillGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 import { useTheme } from "../../Contexts/ThemeContext";
@@ -71,13 +66,6 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
 
-  const [visible, setVisible] = React.useState(false);
-
-  const showDialog = () => setVisible(true);
-
-  const hideDialog = () => setVisible(false);
-
-  const [checked, setChecked] = React.useState(false);
   const [resumeVisible, setResumeVisible] = React.useState(false);
 
   const minWindowSize = useMinWindowDimensions();
@@ -101,16 +89,6 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
     }, []),
   );
 
-  async function showTutorialIfNotDismissed() {
-    await getKeyJSON("dismissDrillTutorial").then((dismiss: any) => {
-      if (!dismiss) {
-        showDialog();
-      }
-    });
-  }
-
-  const dialogWidth = width > 800 ? width * 0.4 : Math.min(600, width);
-  const checkboxWidth = width > 800 ? width * 0.2 : Math.min(300, width);
   const drillItems: DrillCardItem[] = DRILL_STRATEGIES.map((strategy) => ({
     strategy,
     difficulty: getDrillDifficulty(strategy),
@@ -149,67 +127,12 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
         }
         getCardImage={(item) => getDrillDifficultyImage(item.difficulty)}
         onPress={(item) => {
-          showTutorialIfNotDismissed().then(() => {
-            navigation.navigate("DrillGame", {
-              params: item.strategy,
-              action: "StartGame",
-            });
+          navigation.navigate("DrillGame", {
+            params: item.strategy,
+            action: "StartGame",
           });
         }}
       />
-      <Portal>
-        <Dialog
-          visible={visible}
-          onDismiss={hideDialog}
-          style={{
-            alignSelf: "center",
-            alignItems: "center",
-            width: dialogWidth,
-          }}
-        >
-          <Dialog.Title>How Drills Work</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyLarge">
-              Drills are like do it yourself hints. Just alter the board to
-              match what you think would happen if you applied the hint for the
-              given strategy and then click submit to check your work.
-              Can&apos;t figure it out? No worries, just click the hint ? button
-              to get the solution.
-            </Text>
-            <Checkbox.Item
-              label="Don't show this again"
-              status={checked ? "checked" : "unchecked"}
-              mode="android" // iOS doesn't have box around checkbox so best to just tell it to use android
-              style={{
-                alignSelf: "center",
-                width: checkboxWidth,
-              }}
-              testID="dismissDrillTutorial"
-              onPress={() => {
-                async function dismissTutorial() {
-                  if (!checked) {
-                    await storeData("dismissDrillTutorial", "true");
-                  } else {
-                    await removeData("dismissDrillTutorial");
-                  }
-                }
-                dismissTutorial().then(() => {
-                  setChecked(!checked);
-                });
-              }}
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button
-              onPress={hideDialog}
-              testID="hideDrillTutorialButton"
-              labelStyle={{ fontSize: 20 }}
-            >
-              Ok
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
     </View>
   );
 };

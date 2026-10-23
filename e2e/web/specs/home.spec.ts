@@ -4,6 +4,7 @@ import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
 import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import { ALMOST_FINISHED_GAME, POINTING_PAIR_DRILL_GAME } from "../data";
+import { ProfilePage } from "../page/profile.page";
 
 test.describe("home dashboard", () => {
   test.use({ learnedLessonsStorage: ["SUDOKU_101"] });
@@ -165,5 +166,197 @@ test.describe("navigation buttons", () => {
       await button.hover();
       await expect(card).toHaveCSS("border-width", "2px");
     }
+  });
+});
+
+test.describe("both saved games", () => {
+  test.use({
+    activeGameStorage: ALMOST_FINISHED_GAME,
+    activeDrillGameStorage: POINTING_PAIR_DRILL_GAME,
+  });
+
+  test("resumes each saved board without replacing the other", async ({
+    featurePreview,
+  }) => {
+    const header = new HeaderComponent(featurePreview);
+    const home = new HomePage(featurePreview);
+    const board = new SudokuBoardComponent(featurePreview);
+    await header.home.click();
+    await expect(home.resumeClassic).toBeInViewport({ ratio: 1 });
+    await expect(home.resumeDrill).toBeInViewport({ ratio: 1 });
+    await home.resumeClassic.click();
+    await board.sudokuBoardIsRendered();
+    await board.cellHasValue(0, 0, "1");
+    await expect(board.mistakes).toContainText("235");
+    await featurePreview.reload();
+    await home.resumeDrill.click();
+    await board.sudokuBoardIsRendered();
+    await board.cellHasValue(0, 0, "6");
+    await board.cellHasNotes(7, 6, "1236");
+    await featurePreview.reload();
+    await home.resumeClassic.click();
+    await board.sudokuBoardIsRendered();
+    await board.cellHasValue(0, 0, "1");
+    await expect(board.mistakes).toContainText("235");
+  });
+});
+
+test.describe("drill feature gating", () => {
+  test.use({
+    activeDrillGameStorage: POINTING_PAIR_DRILL_GAME,
+    homeShortcutsStorage: ["play", "learn", "drill", "drill-obvious-single"],
+  });
+
+  for (const setting of ["preview", "drills"] as const) {
+    test(`${setting} hides drills without deleting saved games or shortcuts`, async ({
+      featurePreview,
+    }) => {
+      const header = new HeaderComponent(featurePreview);
+      const home = new HomePage(featurePreview);
+      const profile = new ProfilePage(featurePreview);
+      await header.home.click();
+      await expect(home.resumeDrill).toBeInViewport({ ratio: 1 });
+      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
+        1,
+      );
+      await header.profile.click();
+      await (
+        setting === "preview"
+          ? profile.featurePreviewSwitchEnabled
+          : profile.drillsSwitchEnabled
+      ).click();
+      await header.home.click();
+      await expect(home.resumeDrill).toHaveCount(0);
+      await expect(home.startDrills).toHaveCount(0);
+      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
+        0,
+      );
+      await featurePreview.reload();
+      await expect(home.resumeDrill).toHaveCount(0);
+      await header.profile.click();
+      await (
+        setting === "preview"
+          ? profile.featurePreviewSwitchDisabled
+          : profile.drillsSwitchDisabled
+      ).click();
+      await header.home.click();
+      await expect(home.resumeDrill).toBeInViewport({ ratio: 1 });
+      await expect(home.startDrills).toHaveCount(1);
+      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
+        1,
+      );
+      const expectedOrder = [
+        "HomePlayButton",
+        "HomeLearnButton",
+        "HomeDrillButton",
+        "HomeObviousSingleDrillShortcut",
+      ];
+      await expect
+        .poll(() => home.shortcutOrder(expectedOrder))
+        .toEqual(expectedOrder);
+      await home.resumeDrill.click();
+      const board = new SudokuBoardComponent(featurePreview);
+      await board.sudokuBoardIsRendered();
+      await board.cellHasValue(0, 0, "6");
+      await board.cellHasNotes(7, 6, "1236");
+    });
+  }
+});
+
+test.describe("combined shortcut changes", () => {
+  test.use({ homeShortcutsStorage: ["play", "learn", "statistics"] });
+
+  test("preserves a reordered layout when adding and removing shortcuts", async ({
+    page,
+  }) => {
+    const home = new HomePage(page);
+    await home.customize.click();
+    await home.dragShortcut("HomePlayButton", "HomeStatisticsButton");
+    await home.addLibraryShortcut("HomeProfileButton", "Profile");
+    await home.removeShortcut("HomeLearnButton").click();
+    await home.customizeDone.click();
+    const expected = [
+      "HomeStatisticsButton",
+      "HomePlayButton",
+      "HomeProfileButton",
+    ];
+    await expect.poll(() => home.shortcutOrder(expected)).toEqual(expected);
+    await page.reload();
+    await expect.poll(() => home.shortcutOrder(expected)).toEqual(expected);
+    await expect(home.startLessons).toHaveCount(0);
+  });
+});
+
+test("persists an empty layout", async ({ page }) => {
+  const home = new HomePage(page);
+  await home.customize.click();
+  await home.removeShortcut("HomePlayButton").click();
+  await home.removeShortcut("HomeLearnButton").click();
+  await home.customizeDone.click();
+  await expect(home.dashboard).toBeInViewport({ ratio: 1 });
+  await expect(home.playSudoku).toHaveCount(0);
+  await expect(home.startLessons).toHaveCount(0);
+  await page.reload();
+  await expect(home.dashboard).toBeInViewport({ ratio: 1 });
+  await expect(home.playSudoku).toHaveCount(0);
+  await expect(home.startLessons).toHaveCount(0);
+});
+
+test.describe("reset an empty layout", () => {
+  test.use({ homeShortcutsStorage: [] });
+
+  test("restores and persists the default shortcuts", async ({ page }) => {
+    const home = new HomePage(page);
+    await expect(home.dashboard).toBeInViewport({ ratio: 1 });
+    await expect(home.playSudoku).toHaveCount(0);
+    await expect(home.startLessons).toHaveCount(0);
+    await home.customize.click();
+    await home.resetShortcuts.click();
+    await expect(home.editingShortcut("HomePlayButton")).toBeInViewport({
+      ratio: 1,
+    });
+    await expect(home.editingShortcut("HomeLearnButton")).toBeInViewport({
+      ratio: 1,
+    });
+    await home.customizeDone.click();
+    await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
+    await expect(home.startLessons).toBeInViewport({ ratio: 1 });
+    await page.reload();
+    await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
+    await expect(home.startLessons).toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("multi-row shortcut order", () => {
+  test.use({
+    homeShortcutsStorage: [
+      "play",
+      "learn",
+      "statistics",
+      "profile",
+      "classic-novice",
+      "classic-amateur",
+    ],
+  });
+
+  test("moves a shortcut across rows and persists the order", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1024, height: 1000 });
+    const home = new HomePage(page);
+    await home.customize.click();
+    await home.dragShortcut("HomePlayButton", "HomeClassicAmateurShortcut");
+    await home.customizeDone.click();
+    const expected = [
+      "HomeLearnButton",
+      "HomeStatisticsButton",
+      "HomeProfileButton",
+      "HomeClassicNoviceShortcut",
+      "HomeClassicAmateurShortcut",
+      "HomePlayButton",
+    ];
+    await expect.poll(() => home.shortcutOrder(expected)).toEqual(expected);
+    await page.reload();
+    await expect.poll(() => home.shortcutOrder(expected)).toEqual(expected);
   });
 });

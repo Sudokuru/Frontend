@@ -73,6 +73,28 @@ export class HomePage {
     return this.page.getByTestId(`${shortcutTestId}Surface`);
   }
 
+  shortcut(testId: string) {
+    return this.page.getByTestId(testId);
+  }
+
+  async addLibraryShortcut(testId: string, search: string) {
+    await this.addShortcut.click();
+    await this.shortcutSearch.fill(search);
+    await this.libraryShortcut(testId).click();
+    await this.closeShortcutLibrary.click();
+  }
+
+  private async nextDragFrame() {
+    // Give PanResponder and its animated preview separate rendered frames;
+    // WebKit can otherwise batch the synthetic moves and lose displacement.
+    await this.page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
+    );
+  }
+
   async dragShortcut(sourceTestId: string, targetTestId: string) {
     const source = await this.editingShortcut(sourceTestId).boundingBox();
     const target = await this.editingShortcut(targetTestId).boundingBox();
@@ -84,12 +106,19 @@ export class HomePage {
       source.y + source.height / 2,
     );
     await this.page.mouse.down();
-    await this.page.mouse.move(
-      target.x + target.width / 2,
-      target.y + target.height / 2,
-      { steps: 12 },
-    );
+    for (let step = 1; step <= 24; step++) {
+      await this.page.mouse.move(
+        source.x + source.width / 2 + ((target.x - source.x) * step) / 24,
+        source.y + source.height / 2 + ((target.y - source.y) * step) / 24,
+      );
+      await this.nextDragFrame();
+      await expect(this.editingShortcut(sourceTestId)).toHaveCSS(
+        "z-index",
+        "10",
+      );
+    }
     await this.page.mouse.up();
+    await expect(this.editingShortcut(sourceTestId)).toHaveCSS("z-index", "1");
   }
 
   async shortcutOrder(shortcutTestIds: string[]) {

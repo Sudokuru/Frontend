@@ -4,6 +4,8 @@ import { SudokuBoardComponent } from "../../components/sudoku-board.component";
 import { EndGameDrillModalComponent } from "../../components/end-game-modal-drill.component";
 import { DrillPage } from "../../page/drill.page";
 
+test.use({ drillTutorialStorage: true });
+
 // TODO add test: Should solve game with multiple action types
 
 test.describe("complete drill", () => {
