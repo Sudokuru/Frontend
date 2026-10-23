@@ -1,4 +1,4 @@
-import { getGame } from "../../../../Api/Puzzles";
+import { getActiveClassicGame } from "../../../../Api/Puzzles";
 import { AMATEUR_PUZZLES } from "../../../../Data/puzzles/amateur_puzzles";
 import { GRANDMASTER_PUZZLES } from "../../../../Data/puzzles/grandmaster_puzzles";
 import { LAYMAN_PUZZLES } from "../../../../Data/puzzles/layman_puzzles";
@@ -14,7 +14,7 @@ import {
   ClassicObjectProps,
 } from "../../../../Functions/LocalDatabase";
 import { ClassicBoard } from "../../SudokuBoard";
-import { GameDifficulty } from "./DifficultyFunctions";
+import { GameDifficulty } from "../../../../Functions/GameDifficulties";
 import { getSudokuHint } from "./HintFunctions";
 
 export async function generateGame(
@@ -26,13 +26,13 @@ export async function generateGame(
     // return returnGameOfDifficulty("dev", initializeNotes);
     return returnGameOfDifficulty(props.difficulty, initializeNotes);
   } else if (props.action === "ResumeGame") {
-    const gameData: BoardObjectProps[] = await getGame(props.type);
+    const gameData = await getActiveClassicGame();
     // If game object is not returned, you get redirected to Main Page
     if (gameData == null) {
       // If resume game data is invalid, we start a novice game
       return returnGameOfDifficulty("novice", initializeNotes);
     }
-    return gameData[0];
+    return gameData;
   }
   return null;
 }
