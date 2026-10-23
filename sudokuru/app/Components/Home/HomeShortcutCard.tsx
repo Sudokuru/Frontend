@@ -32,6 +32,75 @@ const getGridPosition = (
   y: Math.floor(index / columns) * (height + gap),
 });
 
+const HomeShortcutCardContent = ({
+  shortcut,
+  compact,
+}: {
+  shortcut: HomeDashboardCardDescriptor;
+  compact: boolean;
+}) => {
+  const { theme } = useTheme();
+  const textColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.quaternary;
+
+  return (
+    <>
+      <View
+        style={{
+          width: compact ? 36 : 44,
+          height: compact ? 36 : 44,
+          flexShrink: 0,
+          borderRadius: 11,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: theme.colors.bg,
+        }}
+      >
+        <MaterialCommunityIcons
+          name={shortcut.icon}
+          size={compact ? 22 : 27}
+          color={theme.colors.primary}
+        />
+      </View>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        {shortcut.badge ? (
+          <Text
+            selectable={false}
+            numberOfLines={1}
+            variant="labelSmall"
+            style={{
+              marginBottom: 1,
+              color: theme.colors.primary,
+              fontWeight: "800",
+            }}
+          >
+            {shortcut.badge.toUpperCase()}
+          </Text>
+        ) : null}
+        <Text
+          selectable={false}
+          numberOfLines={1}
+          variant={compact ? "titleSmall" : "titleMedium"}
+          style={{ color: textColor, fontWeight: "800" }}
+        >
+          {shortcut.title}
+        </Text>
+        {!compact ? (
+          <Text
+            selectable={false}
+            numberOfLines={2}
+            variant="bodySmall"
+            style={{ marginTop: 3, color: textColor, opacity: 0.68 }}
+          >
+            {shortcut.description}
+          </Text>
+        ) : null}
+      </View>
+    </>
+  );
+};
+
 const HomeShortcutCard = ({
   shortcut,
   width,
@@ -51,9 +120,6 @@ const HomeShortcutCard = ({
   const cardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
-  const cardTextColor = theme.useDarkTheme
-    ? theme.semantic.text.inverse
-    : theme.semantic.text.quaternary;
   const primaryButtonTextColor = theme.useDarkTheme
     ? theme.semantic.text.info
     : theme.semantic.text.inverse;
@@ -229,66 +295,7 @@ const HomeShortcutCard = ({
 
   const compact = height < 104;
   const cardContent = (
-    <>
-      <View
-        style={{
-          width: compact ? 36 : 44,
-          height: compact ? 36 : 44,
-          flexShrink: 0,
-          borderRadius: 11,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: theme.colors.bg,
-        }}
-      >
-        <MaterialCommunityIcons
-          name={shortcut.icon}
-          size={compact ? 22 : 27}
-          color={theme.colors.primary}
-        />
-      </View>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        {shortcut.badge ? (
-          <Text
-            selectable={false}
-            numberOfLines={1}
-            variant="labelSmall"
-            style={{
-              marginBottom: 1,
-              color: theme.colors.primary,
-              fontWeight: "800",
-            }}
-          >
-            {shortcut.badge.toUpperCase()}
-          </Text>
-        ) : null}
-        <Text
-          selectable={false}
-          numberOfLines={1}
-          variant={compact ? "titleSmall" : "titleMedium"}
-          style={{
-            color: cardTextColor,
-            fontWeight: "800",
-          }}
-        >
-          {shortcut.title}
-        </Text>
-        {!compact ? (
-          <Text
-            selectable={false}
-            numberOfLines={2}
-            variant="bodySmall"
-            style={{
-              marginTop: 3,
-              color: cardTextColor,
-              opacity: 0.68,
-            }}
-          >
-            {shortcut.description}
-          </Text>
-        ) : null}
-      </View>
-    </>
+    <HomeShortcutCardContent shortcut={shortcut} compact={compact} />
   );
 
   if (!editing) {

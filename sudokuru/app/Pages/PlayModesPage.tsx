@@ -67,69 +67,74 @@ const PlayModesPage = () => {
             onBlur={() => setFocusedChoice(null)}
             onPress={() => choice.action && navigateTo(choice.action)}
           >
-            {({ hovered, pressed }: any) => (
-              <View
-                style={{
-                  minHeight: 84,
-                  paddingHorizontal: 18,
-                  paddingVertical: 13,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 16,
-                  borderTopWidth: index === 0 ? 0 : 1,
-                  borderLeftWidth: focused ? 4 : 0,
-                  borderColor: theme.colors.border,
-                  backgroundColor:
-                    hovered || focused ? theme.colors.bg : cardSurfaceColor,
-                  opacity: disabled ? 0.68 : pressed ? 0.8 : 1,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name={choice.icon}
-                  size={28}
-                  color={theme.colors.primary}
-                />
-                <View style={{ flex: 1, minWidth: 0 }}>
-                  <Text
-                    variant="titleMedium"
-                    style={{
-                      color: cardTextColor,
-                      fontWeight: "800",
-                    }}
-                  >
-                    {choice.title}
-                  </Text>
-                  <Text
-                    numberOfLines={2}
-                    variant="bodyMedium"
-                    style={{
-                      marginTop: 3,
-                      color: cardTextColor,
-                      opacity: 0.68,
-                    }}
-                  >
-                    {choice.description}
-                  </Text>
-                </View>
-                {choice.badge ? (
-                  <Text
-                    variant="labelSmall"
-                    style={{
-                      color: theme.colors.primary,
-                      fontWeight: "800",
-                    }}
-                  >
-                    {choice.badge.toUpperCase()}
-                  </Text>
-                ) : (
+            {({ hovered, pressed }: any) => {
+              let opacity = 1;
+              if (disabled) opacity = 0.68;
+              else if (pressed) opacity = 0.8;
+              return (
+                <View
+                  style={{
+                    minHeight: 84,
+                    paddingHorizontal: 18,
+                    paddingVertical: 13,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 16,
+                    borderTopWidth: index === 0 ? 0 : 1,
+                    borderLeftWidth: focused ? 4 : 0,
+                    borderColor: theme.colors.border,
+                    backgroundColor:
+                      hovered || focused ? theme.colors.bg : cardSurfaceColor,
+                    opacity,
+                  }}
+                >
                   <MaterialCommunityIcons
-                    name="arrow-right"
-                    size={22}
+                    name={choice.icon}
+                    size={28}
                     color={theme.colors.primary}
                   />
-                )}
-              </View>
-            )}
+                  <View style={{ flex: 1, minWidth: 0 }}>
+                    <Text
+                      variant="titleMedium"
+                      style={{
+                        color: cardTextColor,
+                        fontWeight: "800",
+                      }}
+                    >
+                      {choice.title}
+                    </Text>
+                    <Text
+                      numberOfLines={2}
+                      variant="bodyMedium"
+                      style={{
+                        marginTop: 3,
+                        color: cardTextColor,
+                        opacity: 0.68,
+                      }}
+                    >
+                      {choice.description}
+                    </Text>
+                  </View>
+                  {choice.badge ? (
+                    <Text
+                      variant="labelSmall"
+                      style={{
+                        color: theme.colors.primary,
+                        fontWeight: "800",
+                      }}
+                    >
+                      {choice.badge.toUpperCase()}
+                    </Text>
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="arrow-right"
+                      size={22}
+                      color={theme.colors.primary}
+                    />
+                  )}
+                </View>
+              );
+            }}
           </Pressable>
         );
       })}

@@ -106,29 +106,28 @@ export class HomePage {
       source.y + source.height / 2,
     );
     await this.page.mouse.down();
+    const draggedCard = this.editingShortcut(sourceTestId);
     for (let step = 1; step <= 24; step++) {
-      await this.page.mouse.move(
-        source.x + source.width / 2 + ((target.x - source.x) * step) / 24,
-        source.y + source.height / 2 + ((target.y - source.y) * step) / 24,
-      );
-      await this.nextDragFrame();
-      await expect(this.editingShortcut(sourceTestId)).toHaveCSS(
-        "z-index",
-        "10",
-      );
+      const x =
+        source.x + source.width / 2 + ((target.x - source.x) * step) / 24;
+      const y =
+        source.y + source.height / 2 + ((target.y - source.y) * step) / 24;
+      await this.page.mouse.move(x, y); // NOSONAR: Gesture steps must be sequential.
+      await this.nextDragFrame(); // NOSONAR: Wait for this movement to render before sending the next one.
+      await expect(draggedCard).toHaveCSS("z-index", "10"); // NOSONAR: Verify this step before advancing.
     }
     await this.page.mouse.up();
     await expect(this.editingShortcut(sourceTestId)).toHaveCSS("z-index", "1");
   }
 
-  async shortcutOrder(shortcutTestIds: string[]) {
+  shortcutOrder(shortcutTestIds: string[]) {
     const selector = shortcutTestIds
       .map((testId) => `[data-testid="${testId}"]`)
       .join(", ");
     return this.page
       .locator(selector)
       .evaluateAll((shortcuts) =>
-        shortcuts.map((shortcut) => shortcut.getAttribute("data-testid")),
+        shortcuts.map((shortcut) => shortcut.dataset.testid),
       );
   }
 }
