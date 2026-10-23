@@ -15,6 +15,7 @@ import {
 } from "react-native-paper";
 import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
 import HomeShortcutCard from "../Components/Home/HomeShortcutCard";
+import HomeActionCard from "../Components/Home/HomeActionCard";
 import { useHomeDashboardData } from "../Components/Home/useHomeDashboardData";
 import { useHomeDifficulty } from "../Components/Home/useHomeDifficulty";
 import { useHomeShortcuts } from "../Components/Home/useHomeShortcuts";
@@ -328,136 +329,74 @@ const HomePage = () => {
                       </Text>
                     </View>
                   </View>
-                  <View
-                    style={{
-                      marginTop: 14,
-                      padding: isMobile ? 14 : 18,
-                      flexDirection: isMobile ? "column" : "row",
-                      alignItems: isMobile ? "stretch" : "center",
-                      gap: 16,
-                      borderRadius: 14,
-                      borderWidth: 1,
-                      borderColor: theme.colors.border,
-                      backgroundColor: cardSurfaceColor,
-                    }}
+                  <HomeActionCard
+                    action={dashboard.heroAction}
+                    isMobile={isMobile}
+                    onPress={() => navigateTo(dashboard.heroAction.action)}
                   >
-                    <View style={{ flex: 1, minWidth: 0 }}>
-                      <Text
-                        variant={isMobile ? "titleMedium" : "titleLarge"}
-                        style={{
-                          color: cardTextColor,
-                          fontWeight: "800",
-                        }}
+                    {dashboard.heroAction.difficultyOptions ? (
+                      <Menu
+                        visible={isDifficultyMenuOpen}
+                        onDismiss={() => setIsDifficultyMenuOpen(false)}
+                        anchor={
+                          <Button
+                            testID="HomeDifficultySelector"
+                            accessibilityLabel={`Difficulty: ${selectedDifficultyOption?.label ?? selectedDifficulty}`}
+                            mode="outlined"
+                            icon="chevron-down"
+                            textColor={theme.colors.primary}
+                            style={{
+                              minWidth: 140,
+                              borderColor: theme.colors.primary,
+                            }}
+                            onPress={() => setIsDifficultyMenuOpen(true)}
+                          >
+                            {selectedDifficultyOption?.label ??
+                              selectedDifficulty}
+                          </Button>
+                        }
+                        contentStyle={{ backgroundColor: theme.colors.bg }}
                       >
-                        {dashboard.heroAction.title}
-                      </Text>
-                      <Text
-                        variant="bodySmall"
-                        style={{
-                          marginTop: 3,
-                          color: cardTextColor,
-                          opacity: 0.7,
-                        }}
-                      >
-                        {dashboard.heroAction.description}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        alignItems: "center",
-                        gap: 8,
+                        <ScrollView style={{ maxHeight: 320 }}>
+                          {dashboard.heroAction.difficultyOptions.map(
+                            (option) => (
+                              <Menu.Item
+                                key={option.value}
+                                testID={`HomeDifficulty-${option.value}`}
+                                title={option.label}
+                                leadingIcon={
+                                  option.value === selectedDifficulty
+                                    ? "check"
+                                    : undefined
+                                }
+                                titleStyle={{
+                                  color: theme.semantic.text.tertiary,
+                                }}
+                                onPress={() => {
+                                  homeDifficulty.updateDifficulty(option.value);
+                                  setIsDifficultyMenuOpen(false);
+                                }}
+                              />
+                            ),
+                          )}
+                        </ScrollView>
+                      </Menu>
+                    ) : null}
+                  </HomeActionCard>
+                  {dashboard.supportingResumes.map((resume) => (
+                    <HomeActionCard
+                      key={resume.id}
+                      action={{
+                        title: `Resume ${resume.title}`,
+                        description: resume.description,
+                        label: `Resume ${resume.title}`,
+                        testID: resume.testID,
+                        action: resume.action,
                       }}
-                    >
-                      {dashboard.heroAction.difficultyOptions ? (
-                        <Menu
-                          visible={isDifficultyMenuOpen}
-                          onDismiss={() => setIsDifficultyMenuOpen(false)}
-                          anchor={
-                            <Button
-                              testID="HomeDifficultySelector"
-                              accessibilityLabel={`Difficulty: ${selectedDifficultyOption?.label ?? selectedDifficulty}`}
-                              mode="outlined"
-                              icon="chevron-down"
-                              textColor={theme.colors.primary}
-                              style={{
-                                minWidth: 140,
-                                borderColor: theme.colors.primary,
-                              }}
-                              onPress={() => setIsDifficultyMenuOpen(true)}
-                            >
-                              {selectedDifficultyOption?.label ??
-                                selectedDifficulty}
-                            </Button>
-                          }
-                          contentStyle={{ backgroundColor: theme.colors.bg }}
-                        >
-                          <ScrollView style={{ maxHeight: 320 }}>
-                            {dashboard.heroAction.difficultyOptions.map(
-                              (option) => (
-                                <Menu.Item
-                                  key={option.value}
-                                  testID={`HomeDifficulty-${option.value}`}
-                                  title={option.label}
-                                  leadingIcon={
-                                    option.value === selectedDifficulty
-                                      ? "check"
-                                      : undefined
-                                  }
-                                  titleStyle={{
-                                    color: theme.semantic.text.tertiary,
-                                  }}
-                                  onPress={() => {
-                                    homeDifficulty.updateDifficulty(
-                                      option.value,
-                                    );
-                                    setIsDifficultyMenuOpen(false);
-                                  }}
-                                />
-                              ),
-                            )}
-                          </ScrollView>
-                        </Menu>
-                      ) : null}
-                      <Button
-                        testID={dashboard.heroAction.testID}
-                        mode="contained"
-                        icon="arrow-right"
-                        contentStyle={{ flexDirection: "row-reverse" }}
-                        buttonColor={theme.colors.primary}
-                        textColor={primaryButtonTextColor}
-                        onPress={() => navigateTo(dashboard.heroAction.action)}
-                      >
-                        {dashboard.heroAction.label}
-                      </Button>
-                    </View>
-                  </View>
-                  {dashboard.supportingResumes.length > 0 ? (
-                    <View
-                      style={{
-                        marginTop: 8,
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        gap: 6,
-                      }}
-                    >
-                      {dashboard.supportingResumes.map((resume) => (
-                        <Button
-                          key={resume.id}
-                          testID={resume.testID}
-                          compact
-                          mode="outlined"
-                          icon={resume.icon}
-                          textColor={theme.semantic.text.tertiary}
-                          style={{ borderColor: theme.colors.border }}
-                          onPress={() => navigateTo(resume.action)}
-                        >
-                          Resume {resume.title}
-                        </Button>
-                      ))}
-                    </View>
-                  ) : null}
+                      isMobile={isMobile}
+                      onPress={() => navigateTo(resume.action)}
+                    />
+                  ))}
                 </>
               )}
             </View>
