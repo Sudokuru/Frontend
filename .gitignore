@@ -17,6 +17,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# expo native/generated project folders
+sudokuru/android/
+sudokuru/ios/
+sudokuru/modules/
 # playwright
 test-results/
 playwright-report/

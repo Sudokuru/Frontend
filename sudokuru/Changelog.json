@@ -1,7 +1,7 @@
 [
   {
     "version": "1.37.0",
-    "date": "#{date}#",
+    "date": "September 7th, 2026",
     "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
     "features": [
       "After finishing a classic Sudoku game, a 'New Game' button lets the user start a new game immediately.",
