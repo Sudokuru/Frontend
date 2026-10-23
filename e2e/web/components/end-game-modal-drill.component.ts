@@ -6,12 +6,14 @@ export class EndGameDrillModalComponent {
   readonly title: Locator;
   readonly results: Locator;
   readonly newGame: Locator;
+  readonly changeStrategy: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Drill Results");
     this.results = page.getByTestId("endGameResults");
-    this.newGame = page.getByText("Start New Drill");
+    this.newGame = page.getByTestId("StartNewDrillGame");
+    this.changeStrategy = page.getByTestId("ChangeDrillButton");
   }
 
   async endGameModalIsRendered() {

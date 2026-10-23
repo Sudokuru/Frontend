@@ -10,5 +10,4 @@
     "types": ["node", "react-native-web"],
     "noEmit": false
   },
-  "exclude": ["./node_modules", "**/*.test.ts"]
-}
+  "exclude": ["./node_modules", "**/*.test.ts", "./modules", "./android", "./ios"]}

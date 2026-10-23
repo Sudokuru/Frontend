@@ -16,6 +16,12 @@ export const EndGameModal = ({
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  let resultsWidth = size.width * 0.9;
+  if (size.width >= 1000) {
+    resultsWidth = Math.min(size.width * 0.54, 540);
+  } else if (size.width >= 700) {
+    resultsWidth = Math.min(size.width * 0.58, 460);
+  }
 
   const navigation: any = useNavigation();
 
@@ -24,8 +30,9 @@ export const EndGameModal = ({
       testID="endGameResults"
       contentContainerStyle={{
         alignItems: "center",
-        justifyContent: "center",
-        marginVertical: 30,
+        justifyContent: "flex-start",
+        paddingTop: 30,
+        paddingBottom: 20,
       }}
     >
       <Text
@@ -40,41 +47,76 @@ export const EndGameModal = ({
       </Text>
       <View
         style={{
-          backgroundColor: theme.colors.surface,
-          borderRadius: 10,
-          padding: 20,
+          width: resultsWidth,
+          alignSelf: "center",
         }}
       >
-        <Statistic
-          statisticName="Time Spent: "
-          statisticValue={formatTime(statistics.time)}
-          testID="time"
-        />
-        <Statistic
-          statisticName="Strategy: "
-          statisticValue={toTitle(statistics.difficulty)}
-          testID="strategy"
-        />
-        <Statistic
-          statisticName="Mistakes Made: "
-          statisticValue={statistics.numWrongCellsPlayed}
-          testID="numWrongCellsPlayed"
-        />
-        <Statistic
-          statisticName="Hint Used: "
-          statisticValue={statistics.hintUsed ? "Yes" : "No"}
-          testID="numHintsUsed"
-        />
+        <View
+          style={{
+            backgroundColor: theme.colors.surface,
+            borderRadius: 10,
+            paddingHorizontal: 12,
+            paddingVertical: 16,
+          }}
+        >
+          <Statistic
+            statisticName="Time Spent: "
+            statisticValue={formatTime(statistics.time)}
+            testID="time"
+          />
+          <Statistic
+            statisticName="Strategy: "
+            statisticValue={toTitle(statistics.difficulty)}
+            testID="strategy"
+          />
+          <Statistic
+            statisticName="Mistakes Made: "
+            statisticValue={statistics.numWrongCellsPlayed}
+            testID="numWrongCellsPlayed"
+          />
+          <Statistic
+            statisticName="Hint Used: "
+            statisticValue={statistics.hintUsed ? "Yes" : "No"}
+            testID="numHintsUsed"
+          />
+        </View>
+
+        <Button
+          mode="contained"
+          testID="ChangeDrillButton"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
+          onPress={() => navigation.navigate("DrillPage")}
+          style={{ marginTop: 16, alignSelf: "center" }}
+        >
+          Change Strategy
+        </Button>
+        <Button
+          mode="contained"
+          testID="StartNewDrillGame"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "DrillGame",
+                  params: {
+                    params: statistics.difficulty,
+                    action: "StartGame",
+                  },
+                },
+              ],
+            });
+          }}
+          style={{ marginTop: 12, alignSelf: "center" }}
+        >
+          New Drill
+        </Button>
       </View>
-      <Button
-        mode="contained"
-        testID="StartNewDrillGame"
-        textColor={theme.semantic.text.inverse}
-        onPress={() => navigation.navigate("DrillPage")}
-        style={{ marginTop: 20 }}
-      >
-        Start New Drill
-      </Button>
     </ScrollView>
   );
 };

@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import Statistic from "../../../Statistics/Statistic";
 import { formatTime } from "../Functions/BoardFunctions";
 import React from "react";
-import { NumHintsUsedPerStrategy } from "../../../NumHintsUsedPerStrategy";
+import ExpandableHintsUsedStatistic from "../../../Statistics/ExpandableHintsUsedStatistic";
 import { useTheme } from "../../../../Contexts/ThemeContext";
 import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
@@ -16,6 +16,12 @@ export const EndGameModal = ({
   const { theme } = useTheme();
   const size = useWindowDimensions();
   const reSize = Math.min(size.width, size.height);
+  let resultsMaxWidth = 460;
+  if (size.width >= 1100) {
+    resultsMaxWidth = 540;
+  } else if (size.width >= 800) {
+    resultsMaxWidth = 500;
+  }
 
   const navigation: any = useNavigation();
 
@@ -24,8 +30,9 @@ export const EndGameModal = ({
       testID="endGameResults"
       contentContainerStyle={{
         alignItems: "center",
-        justifyContent: "center",
-        marginVertical: 30,
+        justifyContent: "flex-start",
+        paddingTop: 30,
+        paddingBottom: 20,
       }}
     >
       <Text
@@ -40,50 +47,80 @@ export const EndGameModal = ({
       </Text>
       <View
         style={{
-          backgroundColor: theme.colors.surface,
-          borderRadius: 10,
-          padding: 20,
+          width: "84%",
+          maxWidth: resultsMaxWidth,
         }}
       >
-        <Statistic
-          statisticName="Score: "
-          statisticValue={statistics.score}
-          testID="score"
-        />
-        <Statistic
-          statisticName="Time Spent: "
-          statisticValue={formatTime(statistics.time)}
-          testID="time"
-        />
-        <Statistic
-          statisticName="Mistakes Made: "
-          statisticValue={statistics.numWrongCellsPlayed}
-          testID="numWrongCellsPlayed"
-        />
-        <Statistic
-          statisticName="Difficulty: "
-          statisticValue={statistics.difficulty}
-          testID="difficulty"
-        />
-        <Statistic
-          statisticName="Number of Hints Used: "
-          statisticValue={statistics.numHintsUsed}
-          testID="numHintsUsed"
-        />
-        <NumHintsUsedPerStrategy
-          numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
-        />
+        <View
+          style={{
+            backgroundColor: theme.colors.surface,
+            borderRadius: 10,
+            paddingHorizontal: 20,
+            paddingVertical: 16,
+          }}
+        >
+          <Statistic
+            statisticName="Score: "
+            statisticValue={statistics.score}
+            testID="score"
+          />
+          <Statistic
+            statisticName="Time Spent: "
+            statisticValue={formatTime(statistics.time)}
+            testID="time"
+          />
+          <Statistic
+            statisticName="Mistakes Made: "
+            statisticValue={statistics.numWrongCellsPlayed}
+            testID="numWrongCellsPlayed"
+          />
+          <Statistic
+            statisticName="Difficulty: "
+            statisticValue={statistics.difficulty}
+            testID="difficulty"
+          />
+          <ExpandableHintsUsedStatistic
+            numHintsUsed={statistics.numHintsUsed}
+            numHintsUsedPerStrategy={statistics.numHintsUsedPerStrategy}
+          />
+        </View>
+
+        <Button
+          mode="contained"
+          testID="ChangeDifficultyButton"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
+          onPress={() => navigation.navigate("PlayPage")}
+          style={{ marginTop: 16, alignSelf: "center" }}
+        >
+          Change Difficulty
+        </Button>
+        <Button
+          mode="contained"
+          testID="StartNewGameButton"
+          textColor={theme.semantic.text.inverse}
+          labelStyle={{ fontSize: 20, fontWeight: "700" }}
+          contentStyle={{ paddingHorizontal: 16 }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "SudokuPage",
+                  params: {
+                    action: "StartGame",
+                    difficulty: statistics.difficulty,
+                  },
+                },
+              ],
+            });
+          }}
+          style={{ marginTop: 12, alignSelf: "center" }}
+        >
+          New Game
+        </Button>
       </View>
-      <Button
-        mode="contained"
-        testID="StartNewGameButton"
-        textColor={theme.semantic.text.inverse}
-        labelStyle={{ fontSize: 20, fontWeight: "700" }}
-        onPress={() => navigation.navigate("PlayPage")}
-        style={{ marginTop: 20 }}
-      >
-        Play New Game
-      </Button>
     </ScrollView>
   );
 };
