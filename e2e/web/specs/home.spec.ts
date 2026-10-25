@@ -81,6 +81,41 @@ test.describe("home drill resume action", () => {
 });
 
 test.describe("home shortcut customization", () => {
+  test("expands and collapses a library category and adds a shortcut", async ({
+    page,
+  }) => {
+    const home = new HomePage(page);
+    const category = home.libraryCategory("difficulties");
+    const novice = home.libraryShortcut("HomeClassicNoviceShortcut");
+    const amateur = home.libraryShortcut("HomeClassicAmateurShortcut");
+
+    await home.customize.click();
+    await home.addShortcut.click();
+    await expect(home.shortcutSearch).toHaveValue("");
+    await expect(category).toBeInViewport({ ratio: 1 });
+    await expect(novice).toHaveCount(0);
+    await expect(amateur).toHaveCount(0);
+
+    await category.click();
+    await expect(novice).toBeInViewport({ ratio: 1 });
+    await expect(amateur).toBeInViewport({ ratio: 1 });
+
+    await category.click();
+    await expect(novice).toHaveCount(0);
+    await expect(amateur).toHaveCount(0);
+
+    await category.click();
+    await expect(novice).toBeInViewport({ ratio: 1 });
+    await novice.click();
+    await expect(novice).toHaveCount(0);
+    await home.closeShortcutLibrary.click();
+    await home.customizeDone.click();
+
+    const shortcut = home.shortcut("HomeClassicNoviceShortcut");
+    await shortcut.scrollIntoViewIfNeeded();
+    await expect(shortcut).toBeInViewport({ ratio: 1 });
+  });
+
   test("adds, removes, searches, and persists shortcuts", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.customize.click();

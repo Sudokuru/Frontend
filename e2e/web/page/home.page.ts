@@ -69,6 +69,10 @@ export class HomePage {
     return this.page.getByTestId(`Add${shortcutTestId}`);
   }
 
+  libraryCategory(category: string) {
+    return this.page.getByTestId(`HomeShortcutCategory-${category}`);
+  }
+
   shortcutSurface(shortcutTestId: string) {
     return this.page.getByTestId(`${shortcutTestId}Surface`);
   }
