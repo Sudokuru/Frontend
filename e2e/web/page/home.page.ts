@@ -89,9 +89,11 @@ export class HomePage {
   }
 
   async expectEditingShortcutsInRow(shortcutTestIds: string[]) {
-    for (const testId of shortcutTestIds) {
-      await expect(this.editingShortcut(testId)).toBeInViewport({ ratio: 1 });
-    }
+    await Promise.all(
+      shortcutTestIds.map((testId) =>
+        expect(this.editingShortcut(testId)).toBeInViewport({ ratio: 1 }),
+      ),
+    );
 
     await expect
       .poll(async () => {
