@@ -95,6 +95,25 @@ export class HomePage {
     );
   }
 
+  private async moveDragStep(
+    draggedCard: Locator,
+    start: { x: number; y: number },
+    end: { x: number; y: number },
+    step = 1,
+  ): Promise<void> {
+    const steps = 24;
+    const x = start.x + ((end.x - start.x) * step) / steps;
+    const y = start.y + ((end.y - start.y) * step) / steps;
+
+    await this.page.mouse.move(x, y);
+    await this.nextDragFrame();
+    await expect(draggedCard).toHaveCSS("z-index", "10");
+
+    if (step < steps) {
+      await this.moveDragStep(draggedCard, start, end, step + 1);
+    }
+  }
+
   async dragShortcut(sourceTestId: string, targetTestId: string) {
     const source = await this.editingShortcut(sourceTestId).boundingBox();
     const target = await this.editingShortcut(targetTestId).boundingBox();
@@ -106,16 +125,11 @@ export class HomePage {
       source.y + source.height / 2,
     );
     await this.page.mouse.down();
-    const draggedCard = this.editingShortcut(sourceTestId);
-    for (let step = 1; step <= 24; step++) {
-      const x =
-        source.x + source.width / 2 + ((target.x - source.x) * step) / 24;
-      const y =
-        source.y + source.height / 2 + ((target.y - source.y) * step) / 24;
-      await this.page.mouse.move(x, y); // NOSONAR: Gesture steps must be sequential.
-      await this.nextDragFrame(); // NOSONAR: Wait for this movement to render before sending the next one.
-      await expect(draggedCard).toHaveCSS("z-index", "10"); // NOSONAR: Verify this step before advancing.
-    }
+    await this.moveDragStep(
+      this.editingShortcut(sourceTestId),
+      { x: source.x + source.width / 2, y: source.y + source.height / 2 },
+      { x: target.x + source.width / 2, y: target.y + source.height / 2 },
+    );
     await this.page.mouse.up();
     await expect(this.editingShortcut(sourceTestId)).toHaveCSS("z-index", "1");
   }

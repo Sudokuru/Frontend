@@ -161,7 +161,7 @@ const Cell = (props: {
           justifyContent: "center",
           borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
           backgroundColor: backgroundColor,
-          outline: "none",
+          outlineWidth: 0,
         },
         c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
         r % 3 === 0 ? { borderTopWidth: getOutsideBorderWidth() } : null,

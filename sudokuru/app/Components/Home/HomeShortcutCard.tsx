@@ -1,9 +1,15 @@
 import React from "react";
 import { Animated, PanResponder, Pressable, View } from "react-native";
+import type { TextStyle, ViewStyle } from "react-native";
 import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { IconButton, Surface, Text } from "react-native-paper";
 import type { HomeDashboardCardDescriptor } from "./HomeDashboard";
 import { useTheme } from "../../Contexts/ThemeContext";
+
+// React Native Web also supports this text-style property on Views.
+const nonSelectableStyle: ViewStyle & Pick<TextStyle, "userSelect"> = {
+  userSelect: "none",
+};
 
 interface HomeShortcutCardProps {
   shortcut: HomeDashboardCardDescriptor;
@@ -345,37 +351,41 @@ const HomeShortcutCard = ({
     <Animated.View
       testID={`Editing${shortcut.testID}`}
       {...panResponder.panHandlers}
-      style={{
-        position: "absolute",
-        left: position.x,
-        top: position.y,
-        width,
-        height,
-        zIndex: dragging ? 10 : 1,
-        userSelect: "none",
-        transform: [
-          { translateX: pan.x },
-          { translateY: pan.y },
-          { scale: dragging ? 1.04 : 1 },
-        ],
-      }}
+      style={[
+        nonSelectableStyle,
+        {
+          position: "absolute",
+          left: position.x,
+          top: position.y,
+          width,
+          height,
+          zIndex: dragging ? 10 : 1,
+          transform: [
+            { translateX: pan.x },
+            { translateY: pan.y },
+            { scale: dragging ? 1.04 : 1 },
+          ],
+        },
+      ]}
     >
       <Surface
         elevation={dragging ? 5 : 3}
-        style={{
-          width: "100%",
-          height: "100%",
-          userSelect: "none",
-          padding: compact ? 12 : 16,
-          paddingRight: compact ? 30 : 36,
-          flexDirection: "row",
-          alignItems: "center",
-          gap: compact ? 10 : 14,
-          borderRadius: 14,
-          borderWidth: 2,
-          borderColor: theme.colors.primary,
-          backgroundColor: cardSurfaceColor,
-        }}
+        style={[
+          nonSelectableStyle,
+          {
+            width: "100%",
+            height: "100%",
+            padding: compact ? 12 : 16,
+            paddingRight: compact ? 30 : 36,
+            flexDirection: "row",
+            alignItems: "center",
+            gap: compact ? 10 : 14,
+            borderRadius: 14,
+            borderWidth: 2,
+            borderColor: theme.colors.primary,
+            backgroundColor: cardSurfaceColor,
+          },
+        ]}
       >
         {cardContent}
         <MaterialCommunityIcons
