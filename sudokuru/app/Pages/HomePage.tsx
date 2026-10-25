@@ -1,7 +1,11 @@
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { Inter_400Regular, useFonts } from "@expo-google-fonts/inter";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from "@react-navigation/native";
 import { ActivityIndicator, Button, Text } from "react-native-paper";
 import { DEFAULT_HOME_SHORTCUTS, HomeShortcutId } from "../Api/HomeShortcuts";
 import HomeShortcutCard from "../Components/Home/HomeShortcutCard";
@@ -48,6 +52,20 @@ const HomePage = () => {
   const shortcuts = useHomeShortcuts();
   const [fontsLoaded] = useFonts({ Inter_400Regular });
   const isFocused = useIsFocused();
+
+  const clearCustomization = React.useCallback(() => {
+    setIsLibraryOpen(false);
+    setIsEditing(false);
+    setCardTouched(false);
+    previewShortcutIdsRef.current = null;
+    setPreviewShortcutIds(null);
+  }, []);
+
+  // Discard only the temporary preview on blur. Returning Home must rebuild
+  // the visible order using the current feature flags and saved shortcuts.
+  useFocusEffect(
+    React.useCallback(() => clearCustomization, [clearCustomization]),
+  );
 
   const navigateTo = (action: DashboardNavigationAction) => {
     updateCurrentPage(action.currentPage);
@@ -142,11 +160,7 @@ const HomePage = () => {
   const finishEditing = () => {
     const previewOrder = previewShortcutIdsRef.current;
     if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
-    setIsLibraryOpen(false);
-    setIsEditing(false);
-    setCardTouched(false);
-    previewShortcutIdsRef.current = null;
-    setPreviewShortcutIds(null);
+    clearCustomization();
   };
 
   const resetShortcuts = () => {

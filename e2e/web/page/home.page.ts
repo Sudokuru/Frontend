@@ -88,6 +88,39 @@ export class HomePage {
     await this.closeShortcutLibrary.click();
   }
 
+  async expectEditingShortcutsInRow(shortcutTestIds: string[]) {
+    for (const testId of shortcutTestIds) {
+      await expect(this.editingShortcut(testId)).toBeInViewport({ ratio: 1 });
+    }
+
+    await expect
+      .poll(async () => {
+        const cards = await Promise.all(
+          shortcutTestIds.map((testId) =>
+            this.editingShortcut(testId).boundingBox(),
+          ),
+        );
+        const first = cards[0];
+        const grid = await this.editingShortcut(shortcutTestIds[0])
+          .locator("..")
+          .boundingBox();
+        if (!first || !grid) return false;
+        const spacing =
+          cards.length > 1
+            ? (grid.width - first.width) / (cards.length - 1)
+            : 0;
+
+        return cards.every((card, index) => {
+          return (
+            card &&
+            Math.abs(card.y - first.y) < 1 &&
+            Math.abs(card.x - (grid.x + index * spacing)) < 1
+          );
+        });
+      })
+      .toBe(true);
+  }
+
   private async nextDragFrame() {
     // Give PanResponder and its animated preview separate rendered frames;
     // WebKit can otherwise batch the synthetic moves and lose displacement.

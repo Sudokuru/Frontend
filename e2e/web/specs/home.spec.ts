@@ -298,6 +298,108 @@ test.describe("drill feature gating", () => {
   }
 });
 
+test.describe("customization across drill setting changes", () => {
+  test.use({
+    homeShortcutsStorage: [
+      "play",
+      "drill",
+      "learn",
+      "drill-obvious-single",
+      "statistics",
+    ],
+  });
+
+  for (const setting of ["preview", "drills"] as const) {
+    test(`${setting} changes close customization and preserve hidden shortcuts`, async ({
+      featurePreview,
+    }) => {
+      await featurePreview.setViewportSize({ width: 1024, height: 1000 });
+      const header = new HeaderComponent(featurePreview);
+      const home = new HomePage(featurePreview);
+      const profile = new ProfilePage(featurePreview);
+
+      await header.home.click();
+      await home.customize.click();
+      await expect(home.editingShortcut("HomeDrillButton")).toBeInViewport({
+        ratio: 1,
+      });
+      await expect(
+        home.editingShortcut("HomeObviousSingleDrillShortcut"),
+      ).toBeInViewport({ ratio: 1 });
+
+      // Leave without clicking Done so the previous editing preview exists
+      // when Profile changes which shortcuts are available.
+      await header.profile.click();
+      await (
+        setting === "preview"
+          ? profile.featurePreviewSwitchEnabled
+          : profile.drillsSwitchEnabled
+      ).click();
+      await header.home.click();
+
+      await expect(home.dashboard).toBeInViewport({ ratio: 1 });
+      await expect(home.customizeMode).toHaveCount(0);
+      await expect(home.startDrills).toHaveCount(0);
+      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
+        0,
+      );
+
+      await home.customize.click();
+      await expect(home.editingShortcut("HomeDrillButton")).toHaveCount(0);
+      await expect(
+        home.editingShortcut("HomeObviousSingleDrillShortcut"),
+      ).toHaveCount(0);
+      await home.expectEditingShortcutsInRow([
+        "HomePlayButton",
+        "HomeLearnButton",
+        "HomeStatisticsButton",
+      ]);
+      await home.dragShortcut("HomePlayButton", "HomeStatisticsButton");
+      await home.expectEditingShortcutsInRow([
+        "HomeLearnButton",
+        "HomeStatisticsButton",
+        "HomePlayButton",
+      ]);
+      await home.customizeDone.click();
+      const regularOrder = [
+        "HomeLearnButton",
+        "HomeStatisticsButton",
+        "HomePlayButton",
+      ];
+      await expect
+        .poll(() => home.shortcutOrder(regularOrder))
+        .toEqual(regularOrder);
+
+      await header.profile.click();
+      await (
+        setting === "preview"
+          ? profile.featurePreviewSwitchDisabled
+          : profile.drillsSwitchDisabled
+      ).click();
+      await header.home.click();
+
+      const restoredOrder = [
+        "HomeLearnButton",
+        "HomeDrillButton",
+        "HomeStatisticsButton",
+        "HomeObviousSingleDrillShortcut",
+        "HomePlayButton",
+      ];
+      await expect
+        .poll(() => home.shortcutOrder(restoredOrder))
+        .toEqual(restoredOrder);
+      await featurePreview.reload();
+      await expect
+        .poll(() => home.shortcutOrder(restoredOrder))
+        .toEqual(restoredOrder);
+      await expect(home.startDrills).toBeInViewport({ ratio: 1 });
+      await expect(
+        home.shortcut("HomeObviousSingleDrillShortcut"),
+      ).toBeInViewport({ ratio: 1 });
+    });
+  }
+});
+
 test.describe("combined shortcut changes", () => {
   test.use({ homeShortcutsStorage: ["play", "learn", "statistics"] });
 
