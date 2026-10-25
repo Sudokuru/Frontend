@@ -238,16 +238,6 @@ const SUDOKU_MODE_REGISTRY = {
 const SUDOKU_MODES: readonly SudokuModeDefinition[] =
   Object.values(SUDOKU_MODE_REGISTRY);
 
-const FOCUS_SUDOKU_PLACEHOLDER: SudokuModeCardDescriptor = {
-  id: "focus",
-  title: "Focus Sudoku",
-  description: "Sudoku with the next region focused for fast play.",
-  icon: "image-filter-center-focus",
-  testID: "VariantFocusButton",
-  badge: "Coming soon",
-  status: "comingSoon",
-};
-
 export const SUDOKU_MODE_SHORTCUT_IDS: readonly SudokuModeShortcutId[] =
   SUDOKU_MODES.flatMap((mode) => mode.shortcuts).map((shortcut) => shortcut.id);
 
@@ -259,14 +249,10 @@ export const getSudokuMode = (modeId: string) =>
 
 export const getSudokuModeCatalogue = (
   flags: SudokuModeFlags,
-): SudokuModeCardDescriptor[] => [
-  ...getAvailableSudokuModes(flags).flatMap((mode) =>
+): SudokuModeCardDescriptor[] =>
+  getAvailableSudokuModes(flags).flatMap((mode) =>
     mode.catalogue ? [mode.catalogue] : [],
-  ),
-  ...(!getSudokuMode(FOCUS_SUDOKU_PLACEHOLDER.id)
-    ? [FOCUS_SUDOKU_PLACEHOLDER]
-    : []),
-];
+  );
 
 export const getSudokuModeShortcuts = (
   flags: SudokuModeFlags,

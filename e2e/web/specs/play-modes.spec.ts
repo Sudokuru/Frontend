@@ -12,7 +12,6 @@ test.describe("Sudoku modes", () => {
 
     await playModesPage.playModesPageIsRendered();
     await expect(playModesPage.classic).toBeEnabled();
-    await expect(playModesPage.focus).toBeDisabled();
   });
 
   test("opens the classic difficulty page", async ({ page }) => {
