@@ -11,6 +11,15 @@ const nonSelectableStyle: ViewStyle & Pick<TextStyle, "userSelect"> = {
   userSelect: "none",
 };
 
+// Touches that start on an editing card must drive the drag instead of the
+// browser's native page scrolling, which otherwise claims the gesture on
+// touch devices and cancels the drag. This is the web equivalent of the
+// native `onShouldBlockNativeResponder` callback below.
+const draggableStyle: ViewStyle & Pick<TextStyle, "userSelect"> = {
+  ...nonSelectableStyle,
+  touchAction: "none",
+};
+
 interface HomeShortcutCardProps {
   shortcut: HomeDashboardCardDescriptor;
   width: number;
@@ -25,6 +34,8 @@ interface HomeShortcutCardProps {
   onDragPreview: (shortcutId: string, toIndex: number) => void;
   onDragEnd: () => void;
   onDragCancel: () => void;
+  onCardTouchStart: () => void;
+  onCardTouchEnd: () => void;
 }
 
 const getGridPosition = (
@@ -121,6 +132,8 @@ const HomeShortcutCard = ({
   onDragPreview,
   onDragEnd,
   onDragCancel,
+  onCardTouchStart,
+  onCardTouchEnd,
 }: HomeShortcutCardProps) => {
   const { theme } = useTheme();
   const cardSurfaceColor = theme.useDarkTheme
@@ -138,6 +151,7 @@ const HomeShortcutCard = ({
   );
   const dragStartIndex = React.useRef(index);
   const lastPreviewIndex = React.useRef(index);
+  const dragStarted = React.useRef(false);
   const dragOrigin = React.useRef(
     getGridPosition(index, columns, width, height, gap),
   );
@@ -152,6 +166,8 @@ const HomeShortcutCard = ({
     onDragPreview,
     onDragEnd,
     onDragCancel,
+    onCardTouchStart,
+    onCardTouchEnd,
   });
 
   React.useEffect(() => {
@@ -166,6 +182,8 @@ const HomeShortcutCard = ({
       onDragPreview,
       onDragEnd,
       onDragCancel,
+      onCardTouchStart,
+      onCardTouchEnd,
     };
   });
 
@@ -188,7 +206,14 @@ const HomeShortcutCard = ({
   // eslint-disable-next-line react-hooks/refs
   const [panResponder] = React.useState(() =>
     PanResponder.create({
-      onStartShouldSetPanResponder: () => false,
+      // Claim the touch as soon as it starts on an editing card so the drag
+      // owns the gesture for its entire lifetime. Native scroll views claim
+      // vertical pans before any move threshold is reached, so the parent
+      // ScrollView is locked through the onCardTouchStart/onCardTouchEnd
+      // callbacks below while a card is being touched. The Remove button is
+      // not affected: it sits deeper in the tree and claims the responder
+      // before these handlers are consulted.
+      onStartShouldSetPanResponder: () => latestProps.current.editing,
       onMoveShouldSetPanResponder: (_, gesture) => {
         const { editing: canDrag } = latestProps.current;
         return canDrag && Math.abs(gesture.dx) + Math.abs(gesture.dy) > 6;
@@ -201,6 +226,7 @@ const HomeShortcutCard = ({
           width: cardWidth,
           height: cardHeight,
           gap: cardGap,
+          onCardTouchStart: handleCardTouchStart,
         } = latestProps.current;
         const origin = getGridPosition(
           currentIndex,
@@ -215,7 +241,8 @@ const HomeShortcutCard = ({
         dragStartIndex.current = currentIndex;
         lastPreviewIndex.current = currentIndex;
         pan.setValue({ x: 0, y: 0 });
-        setDragging(true);
+        dragStarted.current = false;
+        handleCardTouchStart();
       },
       onPanResponderMove: (_, gesture) => {
         const {
@@ -226,6 +253,13 @@ const HomeShortcutCard = ({
           height: cardHeight,
           onDragPreview: handleDragPreview,
         } = latestProps.current;
+        // Keep the drag visuals and preview behind the same move threshold
+        // that used to gate the responder claim.
+        if (!dragStarted.current) {
+          if (Math.abs(gesture.dx) + Math.abs(gesture.dy) <= 6) return;
+          dragStarted.current = true;
+          setDragging(true);
+        }
         const startIndex = dragStartIndex.current;
         const startRow = Math.floor(startIndex / columnCount);
         const startColumn = startIndex % columnCount;
@@ -265,7 +299,13 @@ const HomeShortcutCard = ({
           height: cardHeight,
           gap: cardGap,
           onDragEnd: handleDragEnd,
+          onCardTouchEnd: handleCardTouchEnd,
         } = latestProps.current;
+        handleCardTouchEnd();
+        // Touches that never crossed the move threshold were taps, not
+        // drags: there is nothing to settle or persist.
+        if (!dragStarted.current) return;
+        dragStarted.current = false;
         handleDragEnd();
         const targetPosition = getGridPosition(
           lastPreviewIndex.current,
@@ -290,7 +330,13 @@ const HomeShortcutCard = ({
         });
       },
       onPanResponderTerminate: () => {
-        latestProps.current.onDragCancel();
+        const {
+          onDragCancel: handleDragCancel,
+          onCardTouchEnd: handleCardTouchEnd,
+        } = latestProps.current;
+        dragStarted.current = false;
+        handleDragCancel();
+        handleCardTouchEnd();
         Animated.spring(pan, {
           toValue: { x: 0, y: 0 },
           useNativeDriver: false,
@@ -352,7 +398,7 @@ const HomeShortcutCard = ({
       testID={`Editing${shortcut.testID}`}
       {...panResponder.panHandlers}
       style={[
-        nonSelectableStyle,
+        draggableStyle,
         {
           position: "absolute",
           left: position.x,

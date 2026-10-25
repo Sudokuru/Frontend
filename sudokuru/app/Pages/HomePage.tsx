@@ -53,6 +53,13 @@ const HomePage = () => {
     HomeShortcutId[] | null
   >(null);
   const previewShortcutIdsRef = React.useRef<HomeShortcutId[] | null>(null);
+  // A touch that starts on an editing card owns the gesture for its whole
+  // lifetime: the ScrollView stays locked while a card is touched so native
+  // scroll views cannot claim vertical pans mid-drag. On web this is
+  // belt-and-braces — the editing cards already opt out of browser touch
+  // scrolling through `touch-action` — and it also stops a second finger
+  // from panning the page beneath an active drag.
+  const [cardTouched, setCardTouched] = React.useState(false);
 
   const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
     React.useContext(PreferencesContext);
@@ -162,6 +169,7 @@ const HomePage = () => {
     setQuery("");
     setIsLibraryOpen(false);
     setIsEditing(false);
+    setCardTouched(false);
     previewShortcutIdsRef.current = null;
     setPreviewShortcutIds(null);
   };
@@ -212,6 +220,7 @@ const HomePage = () => {
     >
       <ScrollView
         style={{ width: windowSize.width, height: windowSize.height }}
+        scrollEnabled={!cardTouched}
         contentContainerStyle={{
           alignItems: "center",
           paddingHorizontal: outerPadding,
@@ -306,6 +315,8 @@ const HomePage = () => {
                 onDragCancel={() =>
                   setPreviewOrder([...persistedVisibleShortcutIds])
                 }
+                onCardTouchStart={() => setCardTouched(true)}
+                onCardTouchEnd={() => setCardTouched(false)}
               />
             ))}
           </View>
