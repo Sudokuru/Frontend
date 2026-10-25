@@ -158,11 +158,6 @@ const HomePage = () => {
     setIsEditing(true);
   };
 
-  const openLibrary = () => {
-    if (!isEditing) beginEditing();
-    setIsLibraryOpen(true);
-  };
-
   const finishEditing = () => {
     const previewOrder = previewShortcutIdsRef.current;
     if (previewOrder) shortcuts.reorderShortcuts(previewOrder);
@@ -277,7 +272,7 @@ const HomePage = () => {
                 compact
                 icon="plus"
                 textColor={theme.colors.primary}
-                onPress={openLibrary}
+                onPress={() => setIsLibraryOpen(true)}
               >
                 Add shortcut
               </Button>
