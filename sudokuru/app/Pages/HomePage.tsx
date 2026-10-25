@@ -263,7 +263,9 @@ const HomePage = () => {
               </Button>
             )}
           </View>
+          {/* Rebuild changed grid geometry to clear stale Safari shadows. */}
           <View
+            key={columnCount}
             style={{
               height: gridHeight,
               position: "relative",
