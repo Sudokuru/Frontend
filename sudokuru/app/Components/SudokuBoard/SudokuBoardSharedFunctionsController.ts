@@ -53,7 +53,6 @@ import { toTitle } from "../../Functions/Utils";
 export interface SudokuResumeSnapshot {
   modeId: BoardObjectProps["variant"];
   detail: string;
-  elapsedSeconds: number;
 }
 
 export interface SudokuVariantMethods {
@@ -105,11 +104,8 @@ export interface SudokuVariantMethods {
 const defaultMethods: SudokuVariantMethods = {
   getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot {
     return {
-      modeId: "classic",
-      detail: toTitle(
-        (sudokuBoard as ClassicObjectProps).statistics.difficulty,
-      ),
-      elapsedSeconds: sudokuBoard.statistics.time,
+      modeId: sudokuBoard.variant,
+      detail: toTitle(sudokuBoard.statistics.difficulty),
     };
   },
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
@@ -179,15 +175,6 @@ const defaultMethods: SudokuVariantMethods = {
 // Any per-variant overrides (only override what you really need)
 const overrides: Record<GameVariant, Partial<SudokuVariantMethods>> = {
   drill: {
-    getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot {
-      return {
-        modeId: "drill",
-        detail: toTitle(
-          (sudokuBoard as DrillObjectProps).statistics.difficulty,
-        ),
-        elapsedSeconds: sudokuBoard.statistics.time,
-      };
-    },
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
     },

@@ -19,7 +19,6 @@ interface HomeDashboardState {
   activeGames: BoardObjectProps[];
   learnedLessons: string[];
   isLoading: boolean;
-  hasError: boolean;
 }
 
 export const useHomeDashboardData = (
@@ -27,12 +26,10 @@ export const useHomeDashboardData = (
   selectedDifficulty: GameDifficulty = HOME_DEFAULT_DIFFICULTY,
 ) => {
   const { featurePreview, drillMode } = flags;
-  const [refreshRequest, setRefreshRequest] = React.useState(0);
   const [state, setState] = React.useState<HomeDashboardState>({
     activeGames: [],
     learnedLessons: [],
     isLoading: true,
-    hasError: false,
   });
 
   const lessons = getStrategies();
@@ -60,7 +57,6 @@ export const useHomeDashboardData = (
       setState((current) => ({
         ...current,
         isLoading: true,
-        hasError: refreshRequest === 0 ? current.hasError : false,
       }));
 
       const loadDashboard = async () => {
@@ -88,9 +84,6 @@ export const useHomeDashboardData = (
               ? lessonsResults[0].value
               : [],
           isLoading: false,
-          hasError: activeGameResults.some(
-            (result) => result.status === "rejected",
-          ),
         });
       };
 
@@ -98,17 +91,13 @@ export const useHomeDashboardData = (
       return () => {
         shouldUpdate = false;
       };
-    }, [featurePreview, drillMode, refreshRequest]),
+    }, [featurePreview, drillMode]),
   );
 
   return {
-    ...state,
-    completedLessons,
-    totalLessons: lessons.length,
+    isLoading: state.isLoading,
     config,
-    resumes,
     supportingResumes,
     heroAction,
-    refresh: () => setRefreshRequest((request) => request + 1),
   };
 };
