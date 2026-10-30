@@ -84,7 +84,9 @@ test.describe("drill tutorial", () => {
       const start = async () => {
         await featurePreview.reload();
         if (entry === "home shortcut") {
-          await home.shortcut("HomeObviousSingleDrillShortcut").click();
+          await featurePreview
+            .getByTestId("HomeObviousSingleDrillShortcut")
+            .click();
         } else {
           await home.startDrills.click();
           await drill.getAndClickDrill("OBVIOUS_SINGLE");
@@ -107,7 +109,9 @@ test.describe("drill tutorial", () => {
       await featurePreview.reload();
       // Verify the preference applies to both entry points, not just the one
       // where the tutorial was dismissed.
-      await home.shortcut("HomeObviousSingleDrillShortcut").click();
+      await featurePreview
+        .getByTestId("HomeObviousSingleDrillShortcut")
+        .click();
       await board.sudokuBoardIsRendered();
       await expect(drill.tutorial).toHaveCount(0);
       await featurePreview.reload();

@@ -139,7 +139,7 @@ test.describe("home shortcut customization", () => {
     await home.closeShortcutLibrary.click();
     await home.customizeDone.click();
 
-    const shortcut = home.shortcut("HomeClassicNoviceShortcut");
+    const shortcut = page.getByTestId("HomeClassicNoviceShortcut");
     await shortcut.scrollIntoViewIfNeeded();
     await expect(shortcut).toBeInViewport({ ratio: 1 });
   });
@@ -279,9 +279,9 @@ test.describe("drill feature gating", () => {
       const profile = new ProfilePage(featurePreview);
       await header.home.click();
       await expect(home.resumeDrill).toBeInViewport({ ratio: 1 });
-      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
-        1,
-      );
+      await expect(
+        featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
+      ).toHaveCount(1);
       await header.profile.click();
       await (
         setting === "preview"
@@ -291,9 +291,9 @@ test.describe("drill feature gating", () => {
       await header.home.click();
       await expect(home.resumeDrill).toHaveCount(0);
       await expect(home.startDrills).toHaveCount(0);
-      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
-        0,
-      );
+      await expect(
+        featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
+      ).toHaveCount(0);
       await featurePreview.reload();
       await expect(home.resumeDrill).toHaveCount(0);
       await header.profile.click();
@@ -305,9 +305,9 @@ test.describe("drill feature gating", () => {
       await header.home.click();
       await expect(home.resumeDrill).toBeInViewport({ ratio: 1 });
       await expect(home.startDrills).toHaveCount(1);
-      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
-        1,
-      );
+      await expect(
+        featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
+      ).toHaveCount(1);
       const expectedOrder = [
         "HomePlayButton",
         "HomeLearnButton",
@@ -368,9 +368,9 @@ test.describe("customization across drill setting changes", () => {
       await expect(home.dashboard).toBeInViewport({ ratio: 1 });
       await expect(home.customizeMode).toHaveCount(0);
       await expect(home.startDrills).toHaveCount(0);
-      await expect(home.shortcut("HomeObviousSingleDrillShortcut")).toHaveCount(
-        0,
-      );
+      await expect(
+        featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
+      ).toHaveCount(0);
 
       await home.customize.click();
       await expect(home.editingShortcut("HomeDrillButton")).toHaveCount(0);
@@ -422,7 +422,7 @@ test.describe("customization across drill setting changes", () => {
         .toEqual(restoredOrder);
       await expect(home.startDrills).toBeInViewport({ ratio: 1 });
       await expect(
-        home.shortcut("HomeObviousSingleDrillShortcut"),
+        featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
       ).toBeInViewport({ ratio: 1 });
     });
   }

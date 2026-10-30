@@ -77,10 +77,6 @@ export class HomePage {
     return this.page.getByTestId(`${shortcutTestId}Surface`);
   }
 
-  shortcut(testId: string) {
-    return this.page.getByTestId(testId);
-  }
-
   async addLibraryShortcut(testId: string, search: string) {
     await this.addShortcut.click();
     await this.shortcutSearch.fill(search);
