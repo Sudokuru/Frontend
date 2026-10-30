@@ -472,6 +472,7 @@ test.describe("reset an empty layout", () => {
 
   test("restores and persists the default shortcuts", async ({ page }) => {
     const home = new HomePage(page);
+    const expectedOrder = ["HomePlayButton", "HomeLearnButton"];
     await expect(home.dashboard).toBeInViewport({ ratio: 1 });
     await expect(home.playSudoku).toHaveCount(0);
     await expect(home.startLessons).toHaveCount(0);
@@ -486,9 +487,15 @@ test.describe("reset an empty layout", () => {
     await home.customizeDone.click();
     await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
     await expect(home.startLessons).toBeInViewport({ ratio: 1 });
+    await expect
+      .poll(() => home.shortcutOrder(expectedOrder))
+      .toEqual(expectedOrder);
     await page.reload();
     await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
     await expect(home.startLessons).toBeInViewport({ ratio: 1 });
+    await expect
+      .poll(() => home.shortcutOrder(expectedOrder))
+      .toEqual(expectedOrder);
   });
 });
 
