@@ -24,6 +24,34 @@ test.describe("home dashboard", () => {
     await expect(homePage.startDrills).toHaveCount(0);
   });
 
+  test("reopens the difficulty menu after selecting a difficulty", async ({
+    page,
+  }) => {
+    const homePage = new HomePage(page);
+
+    await expect(homePage.difficultySelector).toHaveAccessibleName(
+      "Difficulty: Novice",
+    );
+    await homePage.difficultySelector.click();
+    await expect(homePage.difficulty("amateur")).toBeInViewport({ ratio: 1 });
+    await homePage.difficulty("amateur").click();
+    await expect(homePage.difficulty("amateur")).toHaveCount(0);
+    await expect(homePage.difficultySelector).toHaveAccessibleName(
+      "Difficulty: Amateur",
+    );
+
+    await homePage.difficultySelector.click();
+    await expect(homePage.difficulty("novice")).toBeInViewport({ ratio: 1 });
+    await homePage.difficulty("novice").click();
+    await expect(homePage.difficulty("novice")).toHaveCount(0);
+    await expect(homePage.difficultySelector).toHaveAccessibleName(
+      "Difficulty: Novice",
+    );
+
+    await homePage.difficultySelector.click();
+    await expect(homePage.difficulty("amateur")).toBeInViewport({ ratio: 1 });
+  });
+
   test("starts a puzzle at the selected difficulty", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.difficultySelector.click();
