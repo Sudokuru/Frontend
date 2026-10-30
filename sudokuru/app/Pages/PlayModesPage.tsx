@@ -167,7 +167,8 @@ const PlayModesPage = () => {
             letterSpacing: -1.2,
           }}
         >
-          Choose a game
+          <Text style={{ color: theme.semantic.text.primary }}>Choose</Text> a
+          game
         </Text>
         <Text
           accessibilityRole="header"
