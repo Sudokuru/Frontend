@@ -43,7 +43,7 @@
   "productName": "sudokuru-frontend",
   "mainBinaryName": "sudokuru-frontend",
   "version": "0.1.0",
-  "identifier": "com.opengamesonline.sudokuru",
+  "identifier": "com.drasolabs.sudokuru",
   "plugins": {},
   "app": {
     "windows": [

@@ -152,8 +152,10 @@ remain manual steps.
 
 ## Identifier change
 
-Both iOS and Android now use `com.drasolabs.sudokuru`. The desktop/Tauri identifier
-is unchanged. Android treats this as a separate app: it cannot update an installed
+iOS, Android, and desktop/Tauri now use `com.drasolabs.sudokuru`. Changing the
+desktop identifier may affect installer identity and app-data locations; existing
+desktop data is not automatically migrated. Android treats this as a separate app:
+it cannot update an installed
 or published `com.opengamesonline.sudokuru` app or automatically inherit its local
 data. If the existing non-interactive Android build cannot find signing
 credentials for the new package, run `npx eas-cli@25.3.0 credentials --platform
