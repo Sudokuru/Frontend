@@ -24,11 +24,14 @@ export default {
     bundler: "metro",
   },
   ios: {
-    bundleIdentifier: "com.opengamesonline.sudokuru",
+    bundleIdentifier: "com.drasolabs.sudokuru",
     supportsTablet: true,
+    infoPlist: {
+      ITSAppUsesNonExemptEncryption: false,
+    },
   },
   android: {
-    package: "com.opengamesonline.sudokuru",
+    package: "com.drasolabs.sudokuru",
   },
   extra: {
     eas: {
