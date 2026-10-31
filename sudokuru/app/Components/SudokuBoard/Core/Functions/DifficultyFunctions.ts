@@ -1,13 +1,4 @@
-export type GameDifficulty =
-  | "novice"
-  | "amateur"
-  | "layman"
-  | "trainee"
-  | "protege"
-  | "professional"
-  | "pundit"
-  | "master"
-  | "grandmaster";
+import type { GameDifficulty } from "../../../../Functions/GameDifficulties";
 
 export type GameDifficultyScore = 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40;
 

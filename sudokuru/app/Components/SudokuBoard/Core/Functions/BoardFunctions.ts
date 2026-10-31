@@ -20,6 +20,7 @@ import {
   PUZZLE_HEIGHT_IN_CELLS,
   isNavHeaderVisible,
 } from "../../../../Functions/GameLayout";
+export { formatTime } from "../../../../Functions/Utils";
 /**
  * This is a temporary place to store functions
  * todo functions will be documented, sorted, and optimized
@@ -106,38 +107,6 @@ export const isValueCorrect = (
     return isEqual(solution.entry, inputValue);
   }
   return solution === inputValue;
-};
-
-// https://stackoverflow.com/questions/36098913/convert-seconds-to-days-hours-minutes-and-seconds
-export const formatTime = (inputSeconds: number) => {
-  // Get minutes and remaining seconds
-  const days = Math.floor(inputSeconds / (3600 * 24));
-  const hours = Math.floor((inputSeconds % (3600 * 24)) / 3600);
-  const minutes = Math.floor((inputSeconds % 3600) / 60);
-  const seconds = Math.floor(inputSeconds % 60);
-  // Pad with zeros if needed
-  const paddedDays = days > 0 ? (days < 10 ? "0" : "") + days + ":" : "";
-  const paddedHours =
-    hours > 0
-      ? (hours < 10 ? "0" : "") + hours + ":"
-      : hours === 0 && days !== 0
-        ? "00:"
-        : "";
-  const paddedMinutes =
-    minutes > 0
-      ? (minutes < 10 ? "0" : "") + minutes + ":"
-      : minutes === 0 && hours !== 0
-        ? "00:"
-        : "";
-  const paddedSeconds =
-    seconds > 0
-      ? (seconds < 10 ? "0" : "") + seconds
-      : seconds === 0 && minutes !== 0
-        ? "00"
-        : "0";
-
-  // Return formatted string
-  return `${paddedDays}${paddedHours}${paddedMinutes}${paddedSeconds}`;
 };
 
 /**

@@ -1,4 +1,4 @@
-import { GameDifficulty } from "../Components/SudokuBoard/Core/Functions/DifficultyFunctions";
+import { GAME_DIFFICULTIES, GameDifficulty } from "./GameDifficulties";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
@@ -70,9 +70,9 @@ export interface ClassicGameStatistics {
   }[];
 }
 
-export type GameVariant = "demo" | "drill" | "classic";
+export type GameVariant = "drill" | "classic";
 
-export const SUDOKU_GAME_VARIANTS = ["demo", "drill", "classic"];
+export const SUDOKU_GAME_VARIANTS = ["drill", "classic"];
 
 export type CellProps = CellWithValue | CellWithNotes;
 
@@ -107,18 +107,6 @@ export interface ActiveHintState {
   hint: PersistedHintPayload;
   puzzleStateBeforeHint: CellProps[][];
 }
-
-const SUDOKU_DIFFICULTIES: GameDifficulty[] = [
-  "novice",
-  "amateur",
-  "layman",
-  "trainee",
-  "protege",
-  "professional",
-  "pundit",
-  "master",
-  "grandmaster",
-];
 
 const SudokuBoardCellSchema = z.union([
   z.object({
@@ -185,14 +173,12 @@ export const ActiveHintSchema = z.object({
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
 // todo make custom schemas perhaps?
 export const SudokuBoardClassicSchema = z.object({
-  variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
+  variant: z.literal("classic"),
   version: z.literal(1),
   activeHint: ActiveHintSchema.nullable(),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
   statistics: z.object({
-    difficulty: z.enum(
-      Object.values(SUDOKU_DIFFICULTIES) as [string, ...string[]],
-    ),
+    difficulty: z.enum(GAME_DIFFICULTIES),
     internalDifficulty: z.number().int().finite().safe(),
     numHintsUsed: z.number().int().nonnegative().finite().safe(),
     numHintsUsedPerStrategy: z.array(
@@ -225,7 +211,7 @@ export const SudokuBoardClassicSchema = z.object({
 // https://github.com/colinhacks/zod/discussions/3115 for workaround used
 // todo make custom schemas perhaps?
 export const SudokuBoardDrillSchema = z.object({
-  variant: z.enum(Object.values(SUDOKU_GAME_VARIANTS) as [string, ...string[]]),
+  variant: z.literal("drill"),
   version: z.literal(1),
   activeHint: ActiveHintSchema.nullable(),
   selectedCells: z.array(SudokuBoardCellLocationSchema),
@@ -260,6 +246,7 @@ export const ThemeSchema = z.enum(ThemeNames as [ThemeName, ...ThemeName[]]);
 
 export const ProfileSchema = z.object({
   version: z.literal(1),
+  drillMode: z.boolean().default(true),
   highlightBox: z.boolean(),
   highlightColumn: z.boolean(),
   highlightRow: z.boolean(),

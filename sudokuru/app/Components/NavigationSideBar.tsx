@@ -60,10 +60,10 @@ const NavigationSideBar = (props: any) => {
         icon={"play"}
         testID="PlayButton"
         label="Play"
-        active={currentPage === "PlayPage"}
+        active={currentPage === "PlayModesPage"}
         onPress={() => {
-          updateCurrentPage("PlayPage");
-          navigation.navigate("PlayPage");
+          updateCurrentPage("PlayModesPage");
+          navigation.navigate("PlayModesPage");
         }}
       />
       <Drawer.Item

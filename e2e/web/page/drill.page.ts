@@ -5,11 +5,17 @@ export class DrillPage {
   readonly page: Page;
   readonly title: Locator;
   readonly resume: Locator;
+  readonly tutorial: Locator;
+  readonly tutorialOptOut: Locator;
+  readonly tutorialContinue: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.title = page.getByText("Drill Sudoku");
     this.resume = page.getByText("Resume Drill");
+    this.tutorial = page.getByTestId("DrillTutorialDialog");
+    this.tutorialOptOut = page.getByTestId("dismissDrillTutorial");
+    this.tutorialContinue = page.getByTestId("hideDrillTutorialButton");
   }
 
   async drillPageIsRendered() {

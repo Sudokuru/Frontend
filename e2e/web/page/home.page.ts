@@ -3,18 +3,43 @@ import { HeaderComponent } from "../components/header.component";
 
 export class HomePage {
   readonly page: Page;
+  readonly dashboard: Locator;
+  readonly customizeMode: Locator;
+  readonly heroAction: Locator;
+  readonly resumeClassic: Locator;
+  readonly resumeDrill: Locator;
+  readonly difficultySelector: Locator;
   readonly startLessons: Locator;
   readonly startDrills: Locator;
   readonly playSudoku: Locator;
+  readonly customize: Locator;
+  readonly customizeDone: Locator;
+  readonly resetShortcuts: Locator;
+  readonly addShortcut: Locator;
+  readonly shortcutSearch: Locator;
+  readonly closeShortcutLibrary: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.dashboard = page.getByTestId("HomeDashboard");
+    this.customizeMode = page.getByTestId("HomeCustomizeMode");
+    this.heroAction = page.getByTestId("HomeHeroActionButton");
+    this.resumeClassic = page.getByTestId("HomeResumeClassicButton");
+    this.resumeDrill = page.getByTestId("HomeResumeDrillButton");
+    this.difficultySelector = page.getByTestId("HomeDifficultySelector");
     this.startLessons = page.getByTestId("HomeLearnButton");
     this.startDrills = page.getByTestId("HomeDrillButton");
     this.playSudoku = page.getByTestId("HomePlayButton");
+    this.customize = page.getByTestId("HomeCustomizeButton");
+    this.customizeDone = page.getByTestId("HomeCustomizeDoneButton");
+    this.resetShortcuts = page.getByTestId("HomeResetShortcutsButton");
+    this.addShortcut = page.getByTestId("HomeAddShortcutButton");
+    this.shortcutSearch = page.getByTestId("HomeShortcutSearchInput");
+    this.closeShortcutLibrary = page.getByTestId("CloseHomeShortcutLibrary");
   }
 
   async homePageIsRendered() {
+    await expect(this.dashboard).toBeInViewport({ ratio: 1 });
     await expect(this.startLessons).toBeInViewport({ ratio: 1 });
     // await expect(this.startDrills).toBeInViewport({ ratio: 1 });
     await expect(this.playSudoku).toBeInViewport({ ratio: 1 });
@@ -26,5 +51,132 @@ export class HomePage {
     await expect(headerComponent.home).not.toBeInViewport({ ratio: 1 });
     await expect(headerComponent.profile).toBeInViewport({ ratio: 1 });
     await expect(headerComponent.statistics).toBeInViewport({ ratio: 1 });
+  }
+
+  difficulty(value: string) {
+    return this.page.getByTestId(`HomeDifficulty-${value}`);
+  }
+
+  editingShortcut(shortcutTestId: string) {
+    return this.page.getByTestId(`Editing${shortcutTestId}`);
+  }
+
+  removeShortcut(shortcutTestId: string) {
+    return this.page.getByTestId(`Remove${shortcutTestId}`);
+  }
+
+  libraryShortcut(shortcutTestId: string) {
+    return this.page.getByTestId(`Add${shortcutTestId}`);
+  }
+
+  libraryCategory(category: string) {
+    return this.page.getByTestId(`HomeShortcutCategory-${category}`);
+  }
+
+  shortcutSurface(shortcutTestId: string) {
+    return this.page.getByTestId(`${shortcutTestId}Surface`);
+  }
+
+  async addLibraryShortcut(testId: string, search: string) {
+    await this.addShortcut.click();
+    await this.shortcutSearch.fill(search);
+    await this.libraryShortcut(testId).click();
+    await this.closeShortcutLibrary.click();
+  }
+
+  async expectEditingShortcutsInRow(shortcutTestIds: string[]) {
+    await Promise.all(
+      shortcutTestIds.map((testId) =>
+        expect(this.editingShortcut(testId)).toBeInViewport({ ratio: 1 }),
+      ),
+    );
+
+    await expect
+      .poll(async () => {
+        const cards = await Promise.all(
+          shortcutTestIds.map((testId) =>
+            this.editingShortcut(testId).boundingBox(),
+          ),
+        );
+        const first = cards[0];
+        const grid = await this.editingShortcut(shortcutTestIds[0])
+          .locator("..")
+          .boundingBox();
+        if (!first || !grid) return false;
+        const spacing =
+          cards.length > 1
+            ? (grid.width - first.width) / (cards.length - 1)
+            : 0;
+
+        return cards.every((card, index) => {
+          return (
+            card &&
+            Math.abs(card.y - first.y) < 1 &&
+            Math.abs(card.x - (grid.x + index * spacing)) < 1
+          );
+        });
+      })
+      .toBe(true);
+  }
+
+  private async nextDragFrame() {
+    // Give PanResponder and its animated preview separate rendered frames;
+    // WebKit can otherwise batch the synthetic moves and lose displacement.
+    await this.page.evaluate(
+      () =>
+        new Promise<void>((resolve) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+        }),
+    );
+  }
+
+  private async moveDragStep(
+    draggedCard: Locator,
+    start: { x: number; y: number },
+    end: { x: number; y: number },
+    step = 1,
+  ): Promise<void> {
+    const steps = 24;
+    const x = start.x + ((end.x - start.x) * step) / steps;
+    const y = start.y + ((end.y - start.y) * step) / steps;
+
+    await this.page.mouse.move(x, y);
+    await this.nextDragFrame();
+    await expect(draggedCard).toHaveCSS("z-index", "10");
+
+    if (step < steps) {
+      await this.moveDragStep(draggedCard, start, end, step + 1);
+    }
+  }
+
+  async dragShortcut(sourceTestId: string, targetTestId: string) {
+    const source = await this.editingShortcut(sourceTestId).boundingBox();
+    const target = await this.editingShortcut(targetTestId).boundingBox();
+
+    if (!source || !target) throw new Error("Shortcut cards are not rendered");
+
+    await this.page.mouse.move(
+      source.x + source.width / 2,
+      source.y + source.height / 2,
+    );
+    await this.page.mouse.down();
+    await this.moveDragStep(
+      this.editingShortcut(sourceTestId),
+      { x: source.x + source.width / 2, y: source.y + source.height / 2 },
+      { x: target.x + source.width / 2, y: target.y + source.height / 2 },
+    );
+    await this.page.mouse.up();
+    await expect(this.editingShortcut(sourceTestId)).toHaveCSS("z-index", "1");
+  }
+
+  shortcutOrder(shortcutTestIds: string[]) {
+    const selector = shortcutTestIds
+      .map((testId) => `[data-testid="${testId}"]`)
+      .join(", ");
+    return this.page
+      .locator(selector)
+      .evaluateAll((shortcuts) =>
+        shortcuts.map((shortcut) => shortcut.dataset.testid),
+      );
   }
 }

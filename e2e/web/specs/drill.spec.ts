@@ -1,5 +1,8 @@
 import { DrillPage } from "./../page/drill.page";
 import { test } from "../fixture";
+import { expect } from "@playwright/test";
+import { HomePage } from "../page/home.page";
+import { SudokuBoardComponent } from "../components/sudoku-board.component";
 
 test.describe("drill", () => {
   test("cards should display correct text", async ({ drill }) => {
@@ -66,4 +69,56 @@ test.describe("drill", () => {
       await drillPage.verifyDrillDifficultyText(strategy, text, difficulty);
     }
   });
+});
+
+test.describe("drill tutorial", () => {
+  test.use({ homeShortcutsStorage: ["play", "drill", "drill-obvious-single"] });
+
+  for (const entry of ["home shortcut", "drill page"] as const) {
+    test(`shows instructions on each start from ${entry} unless opted out`, async ({
+      featurePreview,
+    }) => {
+      const home = new HomePage(featurePreview);
+      const drill = new DrillPage(featurePreview);
+      const board = new SudokuBoardComponent(featurePreview);
+      const start = async () => {
+        await featurePreview.reload();
+        if (entry === "home shortcut") {
+          await featurePreview
+            .getByTestId("HomeObviousSingleDrillShortcut")
+            .click();
+        } else {
+          await home.startDrills.click();
+          await drill.getAndClickDrill("OBVIOUS_SINGLE");
+        }
+      };
+
+      await start();
+      await expect(drill.tutorial).toBeInViewport({ ratio: 1 });
+      await expect(board.sudokuBoard).toHaveCount(0);
+      await drill.tutorialContinue.click();
+      await board.sudokuBoardIsRendered();
+      await expect(board.difficulty).toContainText("Obvious Single");
+
+      await start();
+      await expect(drill.tutorial).toBeInViewport({ ratio: 1 });
+      await drill.tutorialOptOut.click();
+      await drill.tutorialContinue.click();
+      await board.sudokuBoardIsRendered();
+
+      await featurePreview.reload();
+      // Verify the preference applies to both entry points, not just the one
+      // where the tutorial was dismissed.
+      await featurePreview
+        .getByTestId("HomeObviousSingleDrillShortcut")
+        .click();
+      await board.sudokuBoardIsRendered();
+      await expect(drill.tutorial).toHaveCount(0);
+      await featurePreview.reload();
+      await home.startDrills.click();
+      await drill.getAndClickDrill("OBVIOUS_SINGLE");
+      await board.sudokuBoardIsRendered();
+      await expect(drill.tutorial).toHaveCount(0);
+    });
+  }
 });
