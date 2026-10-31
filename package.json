@@ -14,6 +14,7 @@
     "bun@1.4.2": true
   },
   "scripts": {
+    "postinstall": "patch-package --error-on-fail",
     "pre-commit": "pre-commit run --all-files",
     "playwright:test": "npm run playwright:test --workspace=e2e/web",
     "playwright:test:chrome": "npm run playwright:test:chrome --workspace=e2e/web",
@@ -54,5 +55,8 @@
     "snyk": "^1.1294.0",
     "typescript": "6.0.3",
     "wrangler": "4.114.0"
+  },
+  "dependencies": {
+    "patch-package": "8.0.1"
   }
 }
