@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.37.1",
+    "date": "#{date}#",
+    "summary": "🎃 Fixed the Statistics page not immediately updating after statistics are deleted.",
+    "bug fixes": [
+      "The Statistics page now immediately resets after the user deletes their statistics, instead of showing stale values until the page is revisited."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.37.0",
     "date": "September 7th, 2026",
     "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
@@ -17,9 +27,7 @@
     "version": "1.36.0",
     "date": "September 7th, 2026",
     "summary": "Added ability to filter and search release notes",
-    "features": [
-      "Added ability to filter and search release notes."
-    ],
+    "features": ["Added ability to filter and search release notes."],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
   },
