@@ -67,7 +67,7 @@ const PlayModesPage = () => {
             onBlur={() => setFocusedChoice(null)}
             onPress={() => choice.action && navigateTo(choice.action)}
           >
-            {({ hovered, pressed }: any) => {
+            {({ hovered, pressed }) => {
               let opacity = 1;
               if (disabled) opacity = 0.68;
               else if (pressed) opacity = 0.8;

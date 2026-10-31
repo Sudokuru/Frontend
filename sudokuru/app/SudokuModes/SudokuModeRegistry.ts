@@ -107,10 +107,24 @@ const getClassicHomeShortcutId = (
   difficulty: GameDifficulty,
 ): ClassicHomeShortcutId => `classic-${difficulty}`;
 
+const DRILL_HOME_SHORTCUT_IDS: {
+  [Strategy in DrillStrategy]: `drill-${KebabCase<Strategy>}`;
+} = {
+  OBVIOUS_SINGLE: "drill-obvious-single",
+  OBVIOUS_PAIR: "drill-obvious-pair",
+  OBVIOUS_TRIPLET: "drill-obvious-triplet",
+  OBVIOUS_QUADRUPLET: "drill-obvious-quadruplet",
+  HIDDEN_SINGLE: "drill-hidden-single",
+  HIDDEN_PAIR: "drill-hidden-pair",
+  HIDDEN_TRIPLET: "drill-hidden-triplet",
+  HIDDEN_QUADRUPLET: "drill-hidden-quadruplet",
+  POINTING_PAIR: "drill-pointing-pair",
+  POINTING_TRIPLET: "drill-pointing-triplet",
+};
+
 const getDrillHomeShortcutId = (
   strategy: DrillStrategy,
-): DrillStrategyHomeShortcutId =>
-  `drill-${strategy.toLowerCase().replaceAll("_", "-")}` as DrillStrategyHomeShortcutId;
+): DrillStrategyHomeShortcutId => DRILL_HOME_SHORTCUT_IDS[strategy];
 
 const DIFFICULTY_OPTIONS: readonly SudokuDifficultyOption[] =
   GAME_DIFFICULTIES.map((difficulty) => ({

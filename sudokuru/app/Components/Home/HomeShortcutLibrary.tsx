@@ -169,7 +169,7 @@ const HomeShortcutLibrary = ({
                     disabled={deferredQuery.length > 0}
                     onPress={() => toggleLibraryCategory(category.id)}
                   >
-                    {({ hovered, pressed }: any) => (
+                    {({ hovered, pressed }) => (
                       <View
                         style={{
                           minHeight: 50,
@@ -221,7 +221,7 @@ const HomeShortcutLibrary = ({
                           accessibilityLabel={`Add ${shortcut.title}`}
                           onPress={() => addShortcut(shortcut.id)}
                         >
-                          {({ hovered, pressed }: any) => (
+                          {({ hovered, pressed }) => (
                             <View
                               style={{
                                 minHeight: 72,
