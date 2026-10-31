@@ -170,7 +170,9 @@ const PlayModesPage = () => {
           Choose{" "}
           <Text
             style={{
-              color: theme.semantic.text.tertiary,
+              color: theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info,
               letterSpacing: -1.2,
             }}
           >
