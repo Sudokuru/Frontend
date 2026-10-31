@@ -96,9 +96,10 @@ module builds so Metro and consumers of either compiled entry point agree.
 
 The root `postinstall` script runs `patch-package --error-on-fail`, applying the
 patch after normal `npm install` and `npm ci` operations. `patch-package` is a
-root dependency rather than a dev dependency so the hook also works when dev
-dependencies are omitted. Installations that deliberately disable scripts must
-run `npm run postinstall` before starting or building the application.
+root dev dependency because it is installation/build tooling. App builds must
+install dev dependencies; `npm ci --omit=dev` cannot run this hook. Installations
+that deliberately disable scripts must run `npm run postinstall` before starting
+or building the application.
 
 GitHub Actions keeps `npm ci --ignore-scripts` and explicitly runs
 `npm run postinstall` after each root dependency install in

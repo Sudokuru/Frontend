@@ -51,12 +51,10 @@
     "eslint-config-prettier": "10.1.1",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-prettier": "5.2.3",
+    "patch-package": "8.0.1",
     "prettier": "3.5.3",
     "snyk": "^1.1294.0",
     "typescript": "6.0.3",
     "wrangler": "4.114.0"
-  },
-  "dependencies": {
-    "patch-package": "8.0.1"
   }
 }
