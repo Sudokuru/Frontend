@@ -26,7 +26,7 @@ export const DateFilterMenu = ({
 }: DateFilterMenuProps) => {
   const { theme } = useTheme();
   const [visible, setVisible] = useState(false);
-  const [openSubmenu, setOpenSubmenu] = useState<"year" | "month" | null>(null);
+  const [openSection, setOpenSection] = useState<"year" | "month" | null>(null);
   const [draftYear, setDraftYear] = useState(new Date().getFullYear());
   const [draftMonth, setDraftMonth] = useState<MonthName>(MONTH_NAMES[0]);
 
@@ -56,7 +56,7 @@ export const DateFilterMenu = ({
   };
 
   const closeMenu = () => {
-    setOpenSubmenu(null);
+    setOpenSection(null);
     setVisible(false);
   };
 
@@ -121,93 +121,88 @@ export const DateFilterMenu = ({
             <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
               Year
             </Text>
-            <Menu
-              visible={openSubmenu === "year"}
-              onDismiss={() => setOpenSubmenu(null)}
-              contentStyle={menuContentStyle}
-              anchor={
-                <Button
-                  testID={`ReleaseNotes${testIDPrefix}YearButton`}
-                  mode="outlined"
-                  buttonColor={theme.colors.surfaceAlt}
-                  textColor={theme.semantic.text.inverse}
-                  style={{ alignSelf: "flex-start", marginBottom: 8 }}
-                  compact
-                  onPress={() => setOpenSubmenu("year")}
-                >
-                  {String(draftYear)}
-                </Button>
+            <Button
+              testID={`ReleaseNotes${testIDPrefix}YearButton`}
+              mode="outlined"
+              buttonColor={theme.colors.surfaceAlt}
+              textColor={theme.semantic.text.inverse}
+              style={{ alignSelf: "flex-start", marginBottom: 8 }}
+              accessibilityState={{ expanded: openSection === "year" }}
+              compact
+              onPress={() =>
+                setOpenSection(openSection === "year" ? null : "year")
               }
             >
-              <ScrollView style={{ maxHeight: 180 }}>
-                {years.map((year) => (
-                  <Menu.Item
-                    testID={`ReleaseNotes${testIDPrefix}YearOption-${year}`}
-                    key={year}
-                    title={String(year)}
-                    dense
-                    titleStyle={{ color: theme.colors.primary }}
-                    onPress={() => {
-                      const months = monthsForYear(year);
-                      setDraftYear(year);
-                      if (
-                        selectedMonth != null &&
-                        months.includes(draftMonth) &&
-                        !isMonthDisabled(year, draftMonth)
-                      ) {
-                        onChange(`${draftMonth} ${year}`);
-                      } else if (!months.includes(draftMonth)) {
-                        setDraftMonth(months[0] ?? MONTH_NAMES[0]);
-                      }
-                      setOpenSubmenu(null);
-                    }}
-                  />
-                ))}
-              </ScrollView>
-            </Menu>
+              {String(draftYear)}
+            </Button>
           </View>
           <View>
             <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
               Month
             </Text>
-            <Menu
-              visible={openSubmenu === "month"}
-              onDismiss={() => setOpenSubmenu(null)}
-              contentStyle={menuContentStyle}
-              anchor={
-                <Button
-                  testID={`ReleaseNotes${testIDPrefix}MonthButton`}
-                  mode="outlined"
-                  buttonColor={theme.colors.surfaceAlt}
-                  textColor={theme.semantic.text.inverse}
-                  style={{ alignSelf: "flex-start", marginBottom: 8 }}
-                  compact
-                  onPress={() => setOpenSubmenu("month")}
-                >
-                  {draftMonth}
-                </Button>
+            <Button
+              testID={`ReleaseNotes${testIDPrefix}MonthButton`}
+              mode="outlined"
+              buttonColor={theme.colors.surfaceAlt}
+              textColor={theme.semantic.text.inverse}
+              style={{ alignSelf: "flex-start", marginBottom: 8 }}
+              accessibilityState={{ expanded: openSection === "month" }}
+              compact
+              onPress={() =>
+                setOpenSection(openSection === "month" ? null : "month")
               }
             >
-              <ScrollView style={{ maxHeight: 180 }}>
-                {monthsForYear(draftYear).map((month) => (
-                  <Menu.Item
-                    testID={`ReleaseNotes${testIDPrefix}MonthOption-${month}`}
-                    key={month}
-                    title={month}
-                    dense
-                    disabled={isMonthDisabled(draftYear, month)}
-                    titleStyle={{ color: theme.colors.primary }}
-                    onPress={() => {
-                      setDraftMonth(month);
-                      onChange(`${month} ${draftYear}`);
-                      closeMenu();
-                    }}
-                  />
-                ))}
-              </ScrollView>
-            </Menu>
+              {draftMonth}
+            </Button>
           </View>
         </View>
+        {/* Keep choices in one Menu so parent and submenu animations cannot
+            compete for keyboard focus while an option is being activated. */}
+        {openSection === "year" && (
+          <ScrollView style={{ maxHeight: 180 }}>
+            {years.map((year) => (
+              <Menu.Item
+                testID={`ReleaseNotes${testIDPrefix}YearOption-${year}`}
+                key={year}
+                title={String(year)}
+                dense
+                titleStyle={{ color: theme.colors.primary }}
+                onPress={() => {
+                  const months = monthsForYear(year);
+                  setDraftYear(year);
+                  if (
+                    selectedMonth != null &&
+                    months.includes(draftMonth) &&
+                    !isMonthDisabled(year, draftMonth)
+                  ) {
+                    onChange(`${draftMonth} ${year}`);
+                  } else if (!months.includes(draftMonth)) {
+                    setDraftMonth(months[0] ?? MONTH_NAMES[0]);
+                  }
+                }}
+              />
+            ))}
+          </ScrollView>
+        )}
+        {openSection === "month" && (
+          <ScrollView style={{ maxHeight: 180 }}>
+            {monthsForYear(draftYear).map((month) => (
+              <Menu.Item
+                testID={`ReleaseNotes${testIDPrefix}MonthOption-${month}`}
+                key={month}
+                title={month}
+                dense
+                disabled={isMonthDisabled(draftYear, month)}
+                titleStyle={{ color: theme.colors.primary }}
+                onPress={() => {
+                  setDraftMonth(month);
+                  onChange(`${month} ${draftYear}`);
+                  closeMenu();
+                }}
+              />
+            ))}
+          </ScrollView>
+        )}
       </View>
     </Menu>
   );

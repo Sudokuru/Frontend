@@ -54,6 +54,38 @@ test.describe("release notes", () => {
 });
 
 test.describe("release note filters", () => {
+  test("opening a date menu focuses its controls and dismissal restores focus", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.startDateFilter.press("Enter");
+
+    await releaseNotesPage.menuIsOpen(releaseNotesPage.startDateMenu);
+    await expect(releaseNotesPage.startDateMenuClose).toBeFocused();
+    await releaseNotesPage.startDateMenuClose.press("Escape");
+    await releaseNotesPage.menuIsClosed(releaseNotesPage.startDateMenu);
+    await expect(releaseNotesPage.startDateFilter).toBeFocused();
+  });
+
+  test("a date menu stays open when reopened during dismissal", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.startDateFilter.press("Enter");
+    await releaseNotesPage.startDateMenuClose.press("Enter");
+    await releaseNotesPage.startDateFilter.press("Enter");
+
+    await releaseNotesPage.menuIsOpen(releaseNotesPage.startDateMenu);
+    await expect(releaseNotesPage.startDateMenuClose).toBeFocused();
+    await releaseNotesPage.closeMenu(
+      releaseNotesPage.startDateMenuClose,
+      releaseNotesPage.startDateMenu,
+    );
+    await expect(releaseNotesPage.startDateFilter).toBeFocused();
+  });
+
   test("filter menus open and close", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();
@@ -318,6 +350,78 @@ test.describe("release note filters", () => {
       "Start Date: March 2026",
     );
   });
+
+  test("changing only the end year applies the retained month with Enter", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+    await releaseNotesPage.selectEndDate(2025, "March");
+    await releaseNotesPage.openMenu(
+      releaseNotesPage.endDateFilter,
+      releaseNotesPage.endDateMenu,
+    );
+    await releaseNotesPage.endYear.click();
+    await releaseNotesPage.endYearOption(2026).press("Enter");
+
+    await releaseNotesPage.filterButtonLabelIs(
+      releaseNotesPage.endDateFilter,
+      "End Date: March 2026",
+    );
+    await expect(releaseNotesPage.endYearOption(2026)).toBeFocused();
+  });
+
+  for (const boundary of ["start", "end"] as const) {
+    test(`${boundary} month selection with Enter persists when reopened`, async ({
+      page,
+    }) => {
+      const releaseNotesPage = new ReleaseNotesPage(page);
+      await releaseNotesPage.navigateToPage();
+
+      const controls = {
+        start: {
+          filter: releaseNotesPage.startDateFilter,
+          menu: releaseNotesPage.startDateMenu,
+          year: releaseNotesPage.startYear,
+          month: releaseNotesPage.startMonth,
+          option: releaseNotesPage.startMonthOption("April"),
+          close: releaseNotesPage.startDateMenuClose,
+          label: "Start Date: April 2025",
+          selectDate: () => releaseNotesPage.selectStartDate(2025, "March"),
+        },
+        end: {
+          filter: releaseNotesPage.endDateFilter,
+          menu: releaseNotesPage.endDateMenu,
+          year: releaseNotesPage.endYear,
+          month: releaseNotesPage.endMonth,
+          option: releaseNotesPage.endMonthOption("April"),
+          close: releaseNotesPage.endDateMenuClose,
+          label: "End Date: April 2025",
+          selectDate: () => releaseNotesPage.selectEndDate(2025, "March"),
+        },
+      }[boundary];
+
+      await controls.selectDate();
+      await releaseNotesPage.openMenu(controls.filter, controls.menu);
+      await controls.month.click();
+      await controls.option.press("Enter");
+
+      await releaseNotesPage.filterButtonLabelIs(
+        controls.filter,
+        controls.label,
+      );
+      await releaseNotesPage.menuIsClosed(controls.menu);
+      await expect(controls.filter).toBeFocused();
+      await releaseNotesPage.openMenu(controls.filter, controls.menu);
+      await expect(controls.year).toHaveText("2025");
+      await expect(controls.month).toHaveText("April");
+      await releaseNotesPage.closeMenu(controls.close, controls.menu);
+      await releaseNotesPage.filterButtonLabelIs(
+        controls.filter,
+        controls.label,
+      );
+    });
+  }
 
   test("clear button resets all active filters", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);

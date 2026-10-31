@@ -94,6 +94,11 @@ application-level menu remounting.
 The patch covers Paper's TypeScript source and its published CommonJS and ES
 module builds so Metro and consumers of either compiled entry point agree.
 
+The patch file also contains a separate local
+[focus/lifecycle correction](release-notes-date-menu-keyboard-focus.md). Unlike
+the mount initialization change, that extension is not an upstream backport.
+Keep the two fixes distinct when evaluating an upgrade or removing the patch.
+
 The root `postinstall` script runs `patch-package --error-on-fail`, applying the
 patch after normal `npm install` and `npm ci` operations. `patch-package` is a
 root dev dependency because it is installation/build tooling. App builds must
@@ -118,7 +123,10 @@ in retained tests, or increase retries to conceal the underlying problem.
 When a compatible upstream release includes this correction:
 
 1. Verify its published source contains the fix, then update Paper and the lockfile.
-2. Remove `patches/react-native-paper+5.15.3.patch`.
+2. Remove the mount-fix hunks once the published release includes them. Remove
+   `patches/react-native-paper+5.15.3.patch` entirely only when the separate
+   focus/lifecycle correction is also no longer needed; otherwise regenerate the
+   remaining patch against the upgraded version.
 3. If no other patches remain, remove the root `postinstall` hook, the explicit
    patch steps and their temporary comments in `.github/workflows/pipeline.yml`,
    and the `patch-package` dependency, then update the lockfile.
