@@ -160,15 +160,22 @@ const PlayModesPage = () => {
         <Text
           accessibilityRole="header"
           style={{
-            color: theme.semantic.text.tertiary,
+            color: theme.semantic.text.primary,
             fontSize: windowSize.width < 760 ? 36 : 48,
             lineHeight: windowSize.width < 760 ? 40 : 52,
             fontWeight: "800",
             letterSpacing: -1.2,
           }}
         >
-          <Text style={{ color: theme.semantic.text.primary }}>Choose</Text> a
-          game
+          Choose{" "}
+          <Text
+            style={{
+              color: theme.semantic.text.tertiary,
+              letterSpacing: -1.2,
+            }}
+          >
+            a game
+          </Text>
         </Text>
         <Text
           accessibilityRole="header"
