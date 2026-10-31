@@ -130,6 +130,21 @@ export class HomePage {
     );
   }
 
+  // The dragged card must visually track the pointer before the next
+  // synthetic move is dispatched, and must settle on the target slot once
+  // the drag ends. Asserting the rendered card position keeps the check
+  // user-visible and independent of the internal drag implementation.
+  private async expectCardCenteredAt(card: Locator, x: number, y: number) {
+    await expect
+      .poll(async () => {
+        const box = await card.boundingBox();
+        return box === null
+          ? Number.POSITIVE_INFINITY
+          : Math.hypot(box.x + box.width / 2 - x, box.y + box.height / 2 - y);
+      })
+      .toBeLessThan(2);
+  }
+
   private async moveDragStep(
     draggedCard: Locator,
     start: { x: number; y: number },
@@ -142,7 +157,7 @@ export class HomePage {
 
     await this.page.mouse.move(x, y);
     await this.nextDragFrame();
-    await expect(draggedCard).toHaveCSS("z-index", "10");
+    await this.expectCardCenteredAt(draggedCard, x, y);
 
     if (step < steps) {
       await this.moveDragStep(draggedCard, start, end, step + 1);
@@ -166,7 +181,11 @@ export class HomePage {
       { x: target.x + source.width / 2, y: target.y + source.height / 2 },
     );
     await this.page.mouse.up();
-    await expect(this.editingShortcut(sourceTestId)).toHaveCSS("z-index", "1");
+    await this.expectCardCenteredAt(
+      this.editingShortcut(sourceTestId),
+      target.x + target.width / 2,
+      target.y + target.height / 2,
+    );
   }
 
   shortcutOrder(shortcutTestIds: string[]) {
