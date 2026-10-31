@@ -10,7 +10,7 @@ export const getLearnedLessons = async (): Promise<string[]> => {
   const value = await getKeyJSON("learned_lessons");
   if (
     !Array.isArray(value) ||
-    !value.every((lesson): lesson is string => typeof lesson === "string")
+    !value.every((lesson) => typeof lesson === "string")
   ) {
     return ["NONE"];
   }
