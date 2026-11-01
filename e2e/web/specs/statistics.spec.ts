@@ -54,3 +54,59 @@ test.describe("statistics page hints breakdown", () => {
     });
   });
 });
+
+test.describe("delete statistics", () => {
+  test.use({ statisticsStorage: STATISTICS_WITH_HINTS });
+
+  test("Statistics page live updates to zeroed statistics after deletion", async ({
+    page,
+  }) => {
+    const header = new HeaderComponent(page);
+    await header.statistics.click();
+    const statistics = new StatisticsPage(page);
+    await statistics.statisticsPageIsRendered();
+
+    await statistics.statisticIsFullyVisible(
+      "totalScore",
+      "Total Score: ",
+      "100",
+    );
+    await statistics.statisticIsFullyVisible(
+      "numGamesPlayed",
+      "Games Played: ",
+      "3",
+    );
+    await statistics.totalHintsUsedIsFullyVisible("5");
+
+    await statistics.clickDeleteStatsAndPopupButtons(true);
+
+    await statistics.statisticIsFullyVisible(
+      "totalScore",
+      "Total Score: ",
+      "0",
+    );
+    await statistics.statisticIsFullyVisible(
+      "numGamesPlayed",
+      "Games Played: ",
+      "0",
+    );
+    await statistics.totalHintsUsedIsFullyVisible("0");
+    await statistics.expandableHintsChevronIsHidden();
+    await statistics.expandableHintsRowIsDisabled();
+
+    await page.reload();
+    await header.statistics.click();
+    await statistics.statisticsPageIsRendered();
+    await statistics.statisticIsFullyVisible(
+      "totalScore",
+      "Total Score: ",
+      "0",
+    );
+    await statistics.statisticIsFullyVisible(
+      "numGamesPlayed",
+      "Games Played: ",
+      "0",
+    );
+    await statistics.totalHintsUsedIsFullyVisible("0");
+  });
+});

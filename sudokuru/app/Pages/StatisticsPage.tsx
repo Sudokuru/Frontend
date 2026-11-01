@@ -35,6 +35,7 @@ const StatisticsPage = () => {
     await deleteStatistics().then(() => {
       updateLearnedLessons(["NONE"]);
     });
+    await getUserStatistics();
   }
 
   async function getUserStatistics() {
