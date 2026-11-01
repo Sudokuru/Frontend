@@ -33,8 +33,9 @@ install that skipped the postinstall hook silently reintroduced the races.
 Filters now expand inline beneath the filter row, in normal layout flow:
 
 - Only one filter section is expanded at a time (accordion). Expanding a
-  section collapses the previous one, and the toggle button reports its state
-  through `accessibilityState.expanded`.
+  section collapses the previous one. Paper forwards `accessibilityLabel`,
+  but not `accessibilityState`, to a button's focusable touchable, so the
+  toggle's accessible name reports `expanded`/`collapsed`.
 - Selecting an option in a multi-select section keeps the section open so
   several chips can be picked in a row. A month selection in a date section
   applies the date and collapses the section.
@@ -44,6 +45,11 @@ Filters now expand inline beneath the filter row, in normal layout flow:
   year → month drill-down existed only to keep the choices inside a single
   Paper menu so opening animations could not compete for keyboard focus;
   inline, the flat layout is simpler and has no animations at all.
+- Keyboard focus is preserved: a year-only change keeps the open date panel
+  mounted (the focused year chip is not replaced), and collapsing a section
+  from one of its own controls returns focus to that section's toggle.
+- Selected chips use black text on the primary background; white text there
+  measured below the 4.5:1 contrast requirement in every theme.
 
 `ReleaseNotesFilter` owns the single `expandedFilter` state. Selection state
 stays in `ReleaseNotesPage`, unchanged. `MultiSelectFilterMenu` and
@@ -76,8 +82,8 @@ removal conditions.
 `e2e/web/specs/releasenotes.spec.ts` covers expansion and collapse for all
 five sections, accordion behavior, multi-select filtering with sections
 staying open across selections, inclusive date-range filtering, disabled
-boundary months, retained-month year changes, committed values persisting on
-re-expansion, and the Clear button. The popup-era Enter-keyboard tests were
-retired with the component they guarded: their failure mode
-(animation-driven focus changes between `keydown` and `keyup`) cannot occur
-without menu animations.
+boundary months, retained-month year changes, committed values persisting on re-expansion, and
+the Clear button, with the retained-month year changes activated through the
+keyboard. The popup-era Enter-keyboard tests were retired with the component
+they guarded: their failure mode (animation-driven focus changes between
+`keydown` and `keyup`) cannot occur without menu animations.

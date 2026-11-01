@@ -87,7 +87,12 @@ test.describe("release note filters", () => {
 
     for (const section of sections) {
       await releaseNotesPage.expandSection(section.button, section.section);
-      await releaseNotesPage.collapseSection(section.close, section.section);
+      await expect(section.button).toHaveAccessibleName(/expanded$/);
+      await expect(section.close).toHaveAccessibleName(/^Close .+ filter$/);
+      await section.close.press("Enter");
+      await releaseNotesPage.sectionIsCollapsed(section.section);
+      await expect(section.button).toBeFocused();
+      await expect(section.button).toHaveAccessibleName(/collapsed$/);
     }
 
     await releaseNotesPage.resultCountIs(releaseNotes.length);
@@ -339,7 +344,9 @@ test.describe("release note filters", () => {
 
       await controls.selectDate();
       await releaseNotesPage.expandSection(controls.filter, controls.section);
-      await controls.yearOption.click();
+      // Exercise keyboard activation, not just pointer activation.
+      await controls.yearOption.focus();
+      await controls.yearOption.press("Enter");
 
       await releaseNotesPage.filterButtonLabelIs(
         controls.filter,
@@ -347,6 +354,7 @@ test.describe("release note filters", () => {
       );
       // A year-only change keeps the section open for further adjustments.
       await releaseNotesPage.sectionIsExpanded(controls.section);
+      await expect(controls.yearOption).toBeFocused();
     });
   }
 
@@ -382,13 +390,15 @@ test.describe("release note filters", () => {
 
       await controls.selectDate();
       await releaseNotesPage.expandSection(controls.filter, controls.section);
-      await controls.monthOption.click();
+      await controls.monthOption.focus();
+      await controls.monthOption.press("Enter");
 
       await releaseNotesPage.filterButtonLabelIs(
         controls.filter,
         controls.label,
       );
       await releaseNotesPage.sectionIsCollapsed(controls.section);
+      await expect(controls.filter).toBeFocused();
       await releaseNotesPage.expandSection(controls.filter, controls.section);
       // The re-expanded panel reflects the committed date: a month released
       // only in the committed year (January 2025) is offered, while a month

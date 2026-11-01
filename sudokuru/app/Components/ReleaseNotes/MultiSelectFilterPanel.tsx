@@ -70,6 +70,7 @@ export const MultiSelectFilterPanel = <T extends string>({
         <IconButton
           testID={`ReleaseNotes${testIDPrefix}FilterCloseButton`}
           icon="close"
+          accessibilityLabel={`Close ${label} filter`}
           size={16}
           onPress={onCollapse}
           style={{ margin: 0 }}
@@ -78,6 +79,11 @@ export const MultiSelectFilterPanel = <T extends string>({
       </View>
       {options.map((option) => {
         const isSelected = selected.has(option);
+        // Selected chips use black text on the primary background; white
+        // text does not meet contrast requirements there.
+        const chipTextColor = isSelected
+          ? theme.semantic.text.info
+          : theme.semantic.text.inverse;
         return (
           <Chip
             testID={`ReleaseNotes${optionTestIDPrefix}Option-${option}`}
@@ -85,14 +91,14 @@ export const MultiSelectFilterPanel = <T extends string>({
             selected={isSelected}
             onPress={() => toggleOption(option)}
             mode={isSelected ? "flat" : "outlined"}
-            selectedColor={theme.semantic.text.inverse}
+            selectedColor={chipTextColor}
             style={{
               backgroundColor: isSelected
                 ? theme.colors.primary
                 : theme.colors.surfaceAlt,
               borderColor: theme.colors.border,
             }}
-            textStyle={{ color: theme.semantic.text.inverse }}
+            textStyle={{ color: chipTextColor }}
           >
             {optionLabel(option)}
           </Chip>

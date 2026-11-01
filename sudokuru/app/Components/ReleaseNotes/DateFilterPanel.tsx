@@ -39,8 +39,9 @@ export const DateFilterPanel = ({
   const committedYear = committedDate?.getFullYear() ?? null;
   const defaultYear = years[0] ?? new Date().getFullYear();
 
-  // The parent remounts this panel (via `key`) whenever the committed date
-  // changes, so the year context always starts from the committed year.
+  // The section mounts this panel when it expands, so the year context
+  // starts from the committed year; selectYear keeps it current while the
+  // panel stays mounted.
   const [yearContext, setYearContext] = useState(committedYear ?? defaultYear);
 
   const selectYear = (year: number) => {
@@ -89,6 +90,7 @@ export const DateFilterPanel = ({
         <IconButton
           testID={`ReleaseNotes${testIDPrefix}DateFilterCloseButton`}
           icon="close"
+          accessibilityLabel={`Close ${label} filter`}
           size={16}
           onPress={onCollapse}
           style={{ margin: 0 }}
@@ -104,26 +106,33 @@ export const DateFilterPanel = ({
           marginBottom: 8,
         }}
       >
-        {years.map((year) => (
-          <Chip
-            testID={`ReleaseNotes${testIDPrefix}YearOption-${year}`}
-            key={year}
-            selected={yearContext === year}
-            onPress={() => selectYear(year)}
-            mode={yearContext === year ? "flat" : "outlined"}
-            selectedColor={theme.semantic.text.inverse}
-            style={{
-              backgroundColor:
-                yearContext === year
+        {years.map((year) => {
+          const isSelected = yearContext === year;
+          // Selected chips use black text on the primary background; white
+          // text does not meet contrast requirements there.
+          const chipTextColor = isSelected
+            ? theme.semantic.text.info
+            : theme.semantic.text.inverse;
+          return (
+            <Chip
+              testID={`ReleaseNotes${testIDPrefix}YearOption-${year}`}
+              key={year}
+              selected={isSelected}
+              onPress={() => selectYear(year)}
+              mode={isSelected ? "flat" : "outlined"}
+              selectedColor={chipTextColor}
+              style={{
+                backgroundColor: isSelected
                   ? theme.colors.primary
                   : theme.colors.surfaceAlt,
-              borderColor: theme.colors.border,
-            }}
-            textStyle={{ color: theme.semantic.text.inverse }}
-          >
-            {String(year)}
-          </Chip>
-        ))}
+                borderColor: theme.colors.border,
+              }}
+              textStyle={{ color: chipTextColor }}
+            >
+              {String(year)}
+            </Chip>
+          );
+        })}
       </View>
       <Text style={{ color: theme.colors.primary, marginBottom: 4 }}>
         Month
@@ -136,26 +145,34 @@ export const DateFilterPanel = ({
           marginBottom: 2,
         }}
       >
-        {monthsForYear(yearContext).map((month) => (
-          <Chip
-            testID={`ReleaseNotes${testIDPrefix}MonthOption-${month}`}
-            key={month}
-            selected={isMonthSelected(month)}
-            disabled={isMonthDisabled(yearContext, month)}
-            onPress={() => selectMonth(month)}
-            mode={isMonthSelected(month) ? "flat" : "outlined"}
-            selectedColor={theme.semantic.text.inverse}
-            style={{
-              backgroundColor: isMonthSelected(month)
-                ? theme.colors.primary
-                : theme.colors.surfaceAlt,
-              borderColor: theme.colors.border,
-            }}
-            textStyle={{ color: theme.semantic.text.inverse }}
-          >
-            {month}
-          </Chip>
-        ))}
+        {monthsForYear(yearContext).map((month) => {
+          const isSelected = isMonthSelected(month);
+          // Selected chips use black text on the primary background; white
+          // text does not meet contrast requirements there.
+          const chipTextColor = isSelected
+            ? theme.semantic.text.info
+            : theme.semantic.text.inverse;
+          return (
+            <Chip
+              testID={`ReleaseNotes${testIDPrefix}MonthOption-${month}`}
+              key={month}
+              selected={isSelected}
+              disabled={isMonthDisabled(yearContext, month)}
+              onPress={() => selectMonth(month)}
+              mode={isSelected ? "flat" : "outlined"}
+              selectedColor={chipTextColor}
+              style={{
+                backgroundColor: isSelected
+                  ? theme.colors.primary
+                  : theme.colors.surfaceAlt,
+                borderColor: theme.colors.border,
+              }}
+              textStyle={{ color: chipTextColor }}
+            >
+              {month}
+            </Chip>
+          );
+        })}
       </View>
     </View>
   );

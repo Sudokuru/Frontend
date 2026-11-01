@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import {
   Button,
@@ -57,6 +57,10 @@ type ExpandedFilter =
   | "start"
   | "end";
 
+type FilterButtonInstance = React.ComponentRef<typeof View>;
+
+type FilterButtonRef = React.RefObject<FilterButtonInstance | null>;
+
 export const ReleaseNotesFilter = ({
   allContributors,
   allReleaseMonths,
@@ -82,6 +86,15 @@ export const ReleaseNotesFilter = ({
   const [expandedFilter, setExpandedFilter] = useState<ExpandedFilter | null>(
     null,
   );
+
+  // Refs to the toggles' focusable controls. Collapsing a section from one
+  // of its own controls unmounts the focused control, so focus returns to
+  // the section's toggle to keep keyboard users in place.
+  const targetsButtonRef = useRef<FilterButtonInstance>(null);
+  const categoriesButtonRef = useRef<FilterButtonInstance>(null);
+  const contributorsButtonRef = useRef<FilterButtonInstance>(null);
+  const startButtonRef = useRef<FilterButtonInstance>(null);
+  const endButtonRef = useRef<FilterButtonInstance>(null);
 
   const hasActiveFilters =
     keyword.trim().length > 0 ||
@@ -131,7 +144,10 @@ export const ReleaseNotesFilter = ({
       currentlyExpanded === filter ? null : filter,
     );
 
-  const collapseExpanded = () => setExpandedFilter(null);
+  const collapseExpanded = (buttonRef: FilterButtonRef) => {
+    buttonRef.current?.focus();
+    setExpandedFilter(null);
+  };
 
   return (
     <View
@@ -178,6 +194,7 @@ export const ReleaseNotesFilter = ({
         }}
       >
         <FilterToggleButton
+          buttonRef={targetsButtonRef}
           expanded={expandedFilter === "targets"}
           hasSelection={selectedTargets.size > 0}
           label={
@@ -189,6 +206,7 @@ export const ReleaseNotesFilter = ({
           testID="ReleaseNotesTargetsFilterButton"
         />
         <FilterToggleButton
+          buttonRef={categoriesButtonRef}
           expanded={expandedFilter === "categories"}
           hasSelection={selectedCategories.size > 0}
           label={
@@ -200,6 +218,7 @@ export const ReleaseNotesFilter = ({
           testID="ReleaseNotesCategoriesFilterButton"
         />
         <FilterToggleButton
+          buttonRef={contributorsButtonRef}
           expanded={expandedFilter === "contributors"}
           hasSelection={selectedContributors.size > 0}
           label={
@@ -211,6 +230,7 @@ export const ReleaseNotesFilter = ({
           testID="ReleaseNotesContributorsFilterButton"
         />
         <FilterToggleButton
+          buttonRef={startButtonRef}
           expanded={expandedFilter === "start"}
           hasSelection={selectedStartMonth != null}
           label={
@@ -222,6 +242,7 @@ export const ReleaseNotesFilter = ({
           testID="ReleaseNotesStartDateFilterButton"
         />
         <FilterToggleButton
+          buttonRef={endButtonRef}
           expanded={expandedFilter === "end"}
           hasSelection={selectedEndMonth != null}
           label={
@@ -236,7 +257,7 @@ export const ReleaseNotesFilter = ({
         <MultiSelectFilterPanel
           label="Targets"
           onChange={setSelectedTargets}
-          onCollapse={collapseExpanded}
+          onCollapse={() => collapseExpanded(targetsButtonRef)}
           optionLabel={(target) => target}
           optionTestIDPrefix="Target"
           options={ALL_TARGETS}
@@ -248,7 +269,7 @@ export const ReleaseNotesFilter = ({
         <MultiSelectFilterPanel
           label="Categories"
           onChange={setSelectedCategories}
-          onCollapse={collapseExpanded}
+          onCollapse={() => collapseExpanded(categoriesButtonRef)}
           optionLabel={(category) => CATEGORY_LABELS[category]}
           optionTestIDPrefix="Category"
           options={ALL_CATEGORIES}
@@ -260,7 +281,7 @@ export const ReleaseNotesFilter = ({
         <MultiSelectFilterPanel
           label="Contributors"
           onChange={setSelectedContributors}
-          onCollapse={collapseExpanded}
+          onCollapse={() => collapseExpanded(contributorsButtonRef)}
           optionLabel={(contributor) => contributor}
           optionTestIDPrefix="Contributor"
           options={allContributors}
@@ -270,12 +291,11 @@ export const ReleaseNotesFilter = ({
       )}
       {expandedFilter === "start" && (
         <DateFilterPanel
-          key={selectedStartMonth ?? "unselected"}
           isMonthDisabled={isStartMonthDisabled}
           label="Start Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedStartMonth}
-          onCollapse={collapseExpanded}
+          onCollapse={() => collapseExpanded(startButtonRef)}
           selectedMonth={selectedStartMonth}
           testIDPrefix="Start"
           years={availableYears}
@@ -283,12 +303,11 @@ export const ReleaseNotesFilter = ({
       )}
       {expandedFilter === "end" && (
         <DateFilterPanel
-          key={selectedEndMonth ?? "unselected"}
           isMonthDisabled={isEndMonthDisabled}
           label="End Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedEndMonth}
-          onCollapse={collapseExpanded}
+          onCollapse={() => collapseExpanded(endButtonRef)}
           selectedMonth={selectedEndMonth}
           testIDPrefix="End"
           years={availableYears}
