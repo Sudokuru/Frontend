@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, Pressable, View } from "react-native";
+import { Animated, Platform, Pressable, View } from "react-native";
 import type { TextStyle, ViewStyle } from "react-native";
 import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { IconButton, Surface, Text } from "react-native-paper";
@@ -13,13 +13,10 @@ const nonSelectableStyle: ViewStyle & Pick<TextStyle, "userSelect"> = {
   userSelect: "none",
 };
 
-// Touches that start on an editing card must drive the drag instead of the
-// browser's native page scrolling, which otherwise claims the gesture on
-// touch devices and cancels the drag. This is the web equivalent of the
-// native `onShouldBlockNativeResponder` callback below.
+// Leave vertical scrolling available until a long press arms the drag.
 const draggableStyle: ViewStyle & Pick<TextStyle, "userSelect"> = {
   ...nonSelectableStyle,
-  touchAction: "none",
+  touchAction: "pan-y",
 };
 
 interface HomeShortcutCardProps
@@ -106,10 +103,13 @@ const HomeShortcutCard = ({
   columns,
   total,
   gap,
+  getScrollOffset,
   editing,
   onPress,
   onRemove,
   onDragPreview,
+  onDragStart,
+  onDragPosition,
   onDragEnd,
   onDragCancel,
   onCardTouchStart,
@@ -123,21 +123,35 @@ const HomeShortcutCard = ({
     ? theme.semantic.text.info
     : theme.semantic.text.inverse;
   const [focused, setFocused] = React.useState(false);
-  const { dragging, pan, position, panHandlers } = useHomeShortcutDrag({
-    shortcutId: shortcut.id,
-    index,
-    columns,
-    total,
-    gap,
-    width,
-    height,
-    editing,
-    onDragPreview,
-    onDragEnd,
-    onDragCancel,
-    onCardTouchStart,
-    onCardTouchEnd,
-  });
+  const { dragging, holding, wiggle, pan, position, panHandlers } =
+    useHomeShortcutDrag({
+      shortcutId: shortcut.id,
+      index,
+      columns,
+      total,
+      gap,
+      getScrollOffset,
+      width,
+      height,
+      editing,
+      onDragPreview,
+      onDragStart,
+      onDragPosition,
+      onDragEnd,
+      onDragCancel,
+      onCardTouchStart,
+      onCardTouchEnd,
+    });
+
+  // On web, pan-y allows normal swipes to scroll. After a hold, cancel the
+  // browser's scroll on the same touch (touch-action changes alone only take
+  // effect on the next gesture).
+  React.useEffect(() => {
+    if (!editing || !holding || Platform.OS !== "web") return;
+    const preventScroll = (event: TouchEvent) => event.preventDefault();
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+    return () => document.removeEventListener("touchmove", preventScroll);
+  }, [editing, holding]);
 
   const compact = height < 104;
   const cardContent = (
@@ -207,6 +221,12 @@ const HomeShortcutCard = ({
             { translateX: pan.x },
             { translateY: pan.y },
             { scale: dragging ? 1.04 : 1 },
+            {
+              rotate: wiggle.interpolate({
+                inputRange: [-1, 1],
+                outputRange: ["-1.5deg", "1.5deg"],
+              }),
+            },
           ],
         },
       ]}
