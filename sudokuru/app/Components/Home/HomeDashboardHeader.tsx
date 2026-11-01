@@ -2,6 +2,7 @@ import React from "react";
 import { Image, ScrollView, View } from "react-native";
 import { Button, Menu, Text } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
+import { useLogoWithoutText } from "../../Styling/logos";
 import type { GameDifficulty } from "../../Functions/GameDifficulties";
 import HomeActionCard from "./HomeActionCard";
 import type {
@@ -89,6 +90,7 @@ const HomeDashboardHeader = ({
   onDone,
 }: HomeDashboardHeaderProps) => {
   const { theme } = useTheme();
+  const logoSource = useLogoWithoutText();
   const primaryButtonTextColor = theme.useDarkTheme
     ? theme.semantic.text.info
     : theme.semantic.text.inverse;
@@ -130,7 +132,7 @@ const HomeDashboardHeader = ({
             >
               <Image
                 accessible={false}
-                source={require("../../../.assets/goldLogoNoText.png")}
+                source={logoSource}
                 style={{
                   width: logoSize,
                   height: logoSize,

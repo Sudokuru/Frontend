@@ -145,6 +145,9 @@ const HomeShortcutCard = ({
   );
 
   if (!editing) {
+    // React Native Web adds `hovered` to Pressable's callback state; on native
+    // it is absent, so the focus state still provides the highlight there.
+    // https://github.com/necolas/react-native-web/issues/1708
     return (
       <Pressable
         testID={shortcut.testID}
@@ -156,7 +159,7 @@ const HomeShortcutCard = ({
         onPress={onPress}
         style={{ width, height }}
       >
-        {({ hovered, pressed }: any) => (
+        {({ hovered, pressed }) => (
           <Surface
             testID={`${shortcut.testID}Surface`}
             elevation={pressed ? 1 : 3}

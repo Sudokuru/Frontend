@@ -289,12 +289,14 @@ test.describe("drill feature gating", () => {
           : profile.drillsSwitchEnabled
       ).click();
       await header.home.click();
+      await expect(home.dashboard).toBeInViewport({ ratio: 1 });
       await expect(home.resumeDrill).toHaveCount(0);
       await expect(home.startDrills).toHaveCount(0);
       await expect(
         featurePreview.getByTestId("HomeObviousSingleDrillShortcut"),
       ).toHaveCount(0);
       await featurePreview.reload();
+      await expect(home.dashboard).toBeInViewport({ ratio: 1 });
       await expect(home.resumeDrill).toHaveCount(0);
       await header.profile.click();
       await (

@@ -67,7 +67,7 @@ const PlayModesPage = () => {
             onBlur={() => setFocusedChoice(null)}
             onPress={() => choice.action && navigateTo(choice.action)}
           >
-            {({ hovered, pressed }: any) => {
+            {({ hovered, pressed }) => {
               let opacity = 1;
               if (disabled) opacity = 0.68;
               else if (pressed) opacity = 0.8;
@@ -160,15 +160,24 @@ const PlayModesPage = () => {
         <Text
           accessibilityRole="header"
           style={{
-            color: theme.semantic.text.tertiary,
+            color: theme.semantic.text.primary,
             fontSize: windowSize.width < 760 ? 36 : 48,
             lineHeight: windowSize.width < 760 ? 40 : 52,
             fontWeight: "800",
             letterSpacing: -1.2,
           }}
         >
-          <Text style={{ color: theme.semantic.text.primary }}>Choose</Text> a
-          game
+          Choose{" "}
+          <Text
+            style={{
+              color: theme.useDarkTheme
+                ? theme.semantic.text.inverse
+                : theme.semantic.text.info,
+              letterSpacing: -1.2,
+            }}
+          >
+            a game
+          </Text>
         </Text>
         <Text
           accessibilityRole="header"

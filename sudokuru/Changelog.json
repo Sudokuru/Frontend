@@ -11,6 +11,9 @@
     "preview features": [
       "Add shortcuts for individual drill strategies and resume a saved drill directly from the home page. Turning off Feature Preview or Drill Mode hides these shortcuts and resume actions without deleting your saved drill or shortcut preferences."
     ],
+    "bug fixes": [
+      "The game timer and solve time statistics no longer display malformed times of an hour or longer, i.e. one hour displayed as 01:00:0 instead of 01:00:00."
+    ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
   },
