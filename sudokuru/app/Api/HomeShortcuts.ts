@@ -3,20 +3,15 @@ import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 import { SUDOKU_MODE_SHORTCUT_IDS } from "../SudokuModes/SudokuModeRegistry";
 import type { SudokuModeShortcutId } from "../SudokuModes/SudokuModeRegistry";
 
-const STATIC_HOME_SHORTCUT_IDS = [
-  "play",
-  "learn",
-  "statistics",
-  "profile",
-] as const;
+const PAGE_SHORTCUT_IDS = ["play", "learn", "statistics", "profile"] as const;
 
 export const HOME_SHORTCUT_IDS = [
-  ...STATIC_HOME_SHORTCUT_IDS,
+  ...PAGE_SHORTCUT_IDS,
   ...SUDOKU_MODE_SHORTCUT_IDS,
 ] as const;
 
 export type HomeShortcutId =
-  | (typeof STATIC_HOME_SHORTCUT_IDS)[number]
+  | (typeof PAGE_SHORTCUT_IDS)[number]
   | SudokuModeShortcutId;
 
 export const DEFAULT_HOME_SHORTCUTS: HomeShortcutId[] = [

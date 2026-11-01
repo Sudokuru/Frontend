@@ -1,6 +1,6 @@
 # React Native Paper closed-menu mount race (temporary patch)
 
-Investigated October 31, 2026, after the full Playwright suite reported failures
+Investigated October 31, 2026 🎃, after the full Playwright suite reported failures
 in the home page's difficulty selector and release-note menus and scrolling.
 
 ## Symptoms
@@ -54,7 +54,7 @@ was not retained in the application or tests.
 ## Upstream status
 
 Verified against npm metadata, GitHub releases, and tagged source on October 31,
-2026:
+2026: 🎃
 
 | Version                                      | Contains the mount fix? |
 | -------------------------------------------- | ----------------------- |

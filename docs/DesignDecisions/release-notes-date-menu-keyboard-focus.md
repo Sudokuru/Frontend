@@ -1,6 +1,6 @@
 # Release-note date menu keyboard focus race
 
-Investigated October 31, 2026. Work continues from `designs/design-5-view` on
+Investigated October 31, 2026 🎃. Work continues from `designs/design-5-view` on
 `fix/release-notes-date-menu-focus`, independently of the previous PR.
 
 ## Symptoms

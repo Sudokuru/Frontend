@@ -95,10 +95,7 @@ const HomePage = () => {
   }
 
   const shortcutById = new Map(
-    dashboard.config.shortcutCatalogue.map((shortcut) => [
-      shortcut.id,
-      shortcut,
-    ]),
+    dashboard.shortcutCatalogue.map((shortcut) => [shortcut.id, shortcut]),
   );
   const persistedVisibleShortcutIds = shortcuts.shortcutIds.filter(
     (shortcutId) => shortcutById.has(shortcutId),
@@ -112,7 +109,7 @@ const HomePage = () => {
     return shortcut ? [shortcut] : [];
   });
   const renderedShortcuts = isEditing
-    ? dashboard.config.shortcutCatalogue.filter((shortcut) =>
+    ? dashboard.shortcutCatalogue.filter((shortcut) =>
         visibleShortcutIds.includes(shortcut.id),
       )
     : selectedShortcuts;
@@ -307,7 +304,7 @@ const HomePage = () => {
         isLibraryOpen={isLibraryOpen}
         isMobile={isMobile}
         windowSize={windowSize}
-        catalogue={dashboard.config.shortcutCatalogue}
+        catalogue={dashboard.shortcutCatalogue}
         shortcutIds={shortcuts.shortcutIds}
         addShortcut={addShortcut}
         onClose={() => setIsLibraryOpen(false)}

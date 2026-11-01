@@ -2,21 +2,18 @@ import React from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { getLearnedLessons } from "../../Api/Statistics";
 import { getStrategies } from "../../Api/Lessons";
-import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import {
-  getHomeDashboardConfig,
   getHomeHeroAction,
-  getHomeResumeDescriptor,
+  getHomeShortcutCatalogue,
   getHomeSupportingResumes,
 } from "./HomeDashboard";
-import type { HomeDashboardFlags } from "./HomeDashboard";
+import type { HomeDashboardFlags, HomeResumeDescriptor } from "./HomeDashboard";
 import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
-import { getSudokuResumeSnapshot } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
-import { getSudokuModeResumeProviders } from "../../SudokuModes/SudokuModeRegistry";
+import { getSudokuModeResumeCards } from "../../SudokuModes/SudokuModeRegistry";
 import type { GameDifficulty } from "../../Functions/GameDifficulties";
 
 interface HomeDashboardState {
-  activeGames: BoardObjectProps[];
+  resumes: HomeResumeDescriptor[];
   learnedLessons: string[];
   isLoading: boolean;
 }
@@ -27,7 +24,7 @@ export const useHomeDashboardData = (
 ) => {
   const { featurePreview, drillMode } = flags;
   const [state, setState] = React.useState<HomeDashboardState>({
-    activeGames: [],
+    resumes: [],
     learnedLessons: [],
     isLoading: true,
   });
@@ -36,20 +33,17 @@ export const useHomeDashboardData = (
   const completedLessons = lessons.filter((lesson) =>
     state.learnedLessons.includes(lesson),
   ).length;
-  const config = getHomeDashboardConfig(
+  const shortcutCatalogue = getHomeShortcutCatalogue(
     { featurePreview, drillMode },
     completedLessons,
     lessons.length,
   );
-  const resumes = state.activeGames.map((game) =>
-    getHomeResumeDescriptor(getSudokuResumeSnapshot(game)),
-  );
   const heroAction = getHomeHeroAction(
-    resumes,
+    state.resumes,
     { featurePreview, drillMode },
     selectedDifficulty,
   );
-  const supportingResumes = getHomeSupportingResumes(resumes);
+  const supportingResumes = getHomeSupportingResumes(state.resumes);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -60,29 +54,18 @@ export const useHomeDashboardData = (
       }));
 
       const loadDashboard = async () => {
-        const activeGamesPromise = Promise.allSettled(
-          getSudokuModeResumeProviders({ featurePreview, drillMode }).map(
-            (getActiveGame) => getActiveGame(),
-          ),
-        );
-        const lessonsPromise = Promise.allSettled([getLearnedLessons()]);
-        const [activeGameResults, lessonsResults] = await Promise.all([
-          activeGamesPromise,
-          lessonsPromise,
+        const [resumeResults, lessonsResults] = await Promise.allSettled([
+          getSudokuModeResumeCards({ featurePreview, drillMode }),
+          getLearnedLessons(),
         ]);
 
         if (!shouldUpdate) return;
 
-        const activeGames = activeGameResults.flatMap((result) =>
-          result.status === "fulfilled" && result.value ? [result.value] : [],
-        );
-
         setState({
-          activeGames,
+          resumes:
+            resumeResults.status === "fulfilled" ? resumeResults.value : [],
           learnedLessons:
-            lessonsResults[0].status === "fulfilled"
-              ? lessonsResults[0].value
-              : [],
+            lessonsResults.status === "fulfilled" ? lessonsResults.value : [],
           isLoading: false,
         });
       };
@@ -96,7 +79,7 @@ export const useHomeDashboardData = (
 
   return {
     isLoading: state.isLoading,
-    config,
+    shortcutCatalogue,
     supportingResumes,
     heroAction,
   };
