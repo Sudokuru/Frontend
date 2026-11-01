@@ -147,11 +147,11 @@ const HomeShortcutCard = ({
   // browser's scroll on the same touch (touch-action changes alone only take
   // effect on the next gesture).
   React.useEffect(() => {
-    if (!holding || Platform.OS !== "web") return;
+    if (!editing || !holding || Platform.OS !== "web") return;
     const preventScroll = (event: TouchEvent) => event.preventDefault();
     document.addEventListener("touchmove", preventScroll, { passive: false });
     return () => document.removeEventListener("touchmove", preventScroll);
-  }, [holding]);
+  }, [editing, holding]);
 
   const compact = height < 104;
   const cardContent = (

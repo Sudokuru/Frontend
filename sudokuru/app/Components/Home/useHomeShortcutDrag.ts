@@ -59,22 +59,37 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
   const holdTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchArmed = React.useRef(false);
   const touchGesture = React.useRef(false);
+  const responderActive = React.useRef(false);
 
-  const clearHold = () => {
+  const clearHold = React.useCallback(() => {
     if (holdTimer.current) clearTimeout(holdTimer.current);
     holdTimer.current = null;
     if (touchArmed.current) latestOptions.current.onCardTouchEnd();
     touchArmed.current = false;
     touchGesture.current = false;
     setHolding(false);
-  };
+  }, []);
 
   React.useEffect(
     () => () => {
       if (holdTimer.current) clearTimeout(holdTimer.current);
+      if (touchArmed.current) latestOptions.current.onCardTouchEnd();
+      if (responderActive.current) latestOptions.current.onDragCancel();
     },
     [],
   );
+
+  React.useEffect(() => {
+    if (editing) return;
+    if (holdTimer.current || touchArmed.current) clearHold();
+    if (responderActive.current) {
+      responderActive.current = false;
+      dragStarted.current = false;
+      lastGesture.current = null;
+      latestOptions.current.onDragCancel();
+      setDragging(false);
+    }
+  }, [clearHold, editing]);
 
   React.useEffect(() => {
     if (!holding) {
@@ -194,6 +209,7 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
           ("type" in event.nativeEvent &&
             event.nativeEvent.type === "touchstart");
         if (!isTouch) return true;
+        if (touchGesture.current) return false;
         touchGesture.current = true;
         holdTimer.current = setTimeout(() => {
           holdTimer.current = null;
@@ -242,6 +258,7 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
         lastGesture.current = null;
         pan.setValue({ x: 0, y: 0 });
         dragStarted.current = false;
+        responderActive.current = true;
         if (!touchArmed.current) handleCardTouchStart();
         handleDragStart((offset) => {
           if (dragStarted.current && lastGesture.current) {
@@ -266,6 +283,7 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
         latestOptions.current.onDragPosition(gesture.moveY);
       },
       onPanResponderRelease: () => {
+        responderActive.current = false;
         const {
           columns: columnCount,
           width: cardWidth,
@@ -306,6 +324,7 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
         });
       },
       onPanResponderTerminate: () => {
+        responderActive.current = false;
         const {
           onDragCancel: handleDragCancel,
           onCardTouchEnd: handleCardTouchEnd,

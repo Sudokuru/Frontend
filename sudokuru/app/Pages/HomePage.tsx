@@ -26,6 +26,7 @@ const HomePage = () => {
   const { theme } = useTheme();
   const windowSize = useNewWindowDimensions();
   const [isEditing, setIsEditing] = React.useState(false);
+  const isEditingRef = React.useRef(false);
   const [isLibraryOpen, setIsLibraryOpen] = React.useState(false);
   const [previewShortcutIds, setPreviewShortcutIds] = React.useState<
     HomeShortcutId[] | null
@@ -62,12 +63,12 @@ const HomePage = () => {
     const edge = Math.min(80, height / 4);
     const distanceFromTop = pointerY - top;
     const distanceFromBottom = top + height - pointerY;
-    const direction =
-      distanceFromTop < edge
-        ? -Math.min(1, (edge - distanceFromTop) / edge)
-        : distanceFromBottom < edge
-          ? Math.min(1, (edge - distanceFromBottom) / edge)
-          : 0;
+    let direction = 0;
+    if (distanceFromTop < edge) {
+      direction = -Math.min(1, (edge - distanceFromTop) / edge);
+    } else if (distanceFromBottom < edge) {
+      direction = Math.min(1, (edge - distanceFromBottom) / edge);
+    }
     const maxOffset = Math.max(0, scrollContentHeight.current - height);
     const nextOffset = Math.max(
       0,
@@ -113,6 +114,7 @@ const HomePage = () => {
   const isFocused = useIsFocused();
 
   const clearCustomization = React.useCallback(() => {
+    isEditingRef.current = false;
     stopAutoScroll();
     setIsLibraryOpen(false);
     setIsEditing(false);
@@ -211,6 +213,7 @@ const HomePage = () => {
 
   const beginEditing = () => {
     setPreviewOrder([...persistedVisibleShortcutIds]);
+    isEditingRef.current = true;
     setIsEditing(true);
   };
 
@@ -366,7 +369,9 @@ const HomePage = () => {
                 }}
                 onDragCancel={() => {
                   stopAutoScroll();
-                  setPreviewOrder([...persistedVisibleShortcutIds]);
+                  if (isEditingRef.current) {
+                    setPreviewOrder([...persistedVisibleShortcutIds]);
+                  }
                 }}
                 onCardTouchStart={() => setCardTouched(true)}
                 onCardTouchEnd={() => setCardTouched(false)}
