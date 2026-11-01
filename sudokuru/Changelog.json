@@ -4,7 +4,8 @@
     "date": "#{date}#",
     "summary": "Release note filters now expand inline instead of opening popup menus.",
     "bug fixes": [
-      "Release note filters expand inline beneath the filter bar instead of opening popup menus, removing unreliable popup behavior such as menus detaching while the list scrolls, needing two clicks to switch filters, and keyboard selections being lost to menu animations."
+      "Release note filters expand inline beneath the filter bar instead of opening popup menus, removing unreliable popup behavior such as menus detaching while the list scrolls, needing two clicks to switch filters, and keyboard selections being lost to menu animations.",
+      "There is now a visual indicator with disabled options to prevent entering invalid date range filter selections."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
