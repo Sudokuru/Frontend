@@ -1,5 +1,33 @@
 [
   {
+    "version": "1.38.0",
+    "date": "#{date}#",
+    "summary": "🎃 Redesigned the home page with customizable shortcuts, quick-start difficulty selection, saved-game resume actions, and lesson progress.",
+    "features": [
+      "Start a classic Sudoku puzzle directly from the home page at your selected difficulty. Your difficulty selection is remembered between visits, and a saved puzzle can be resumed directly from the home page.",
+      "Customize the home page by adding and removing shortcuts, searching the shortcut library, and dragging shortcuts into your preferred order. Shortcuts include individual classic difficulties, lessons, statistics, and profile settings. Your layout is saved between visits and can be reset to the default.",
+      "The Learn Sudoku shortcut shows how many lessons you have completed."
+    ],
+    "preview features": [
+      "Add shortcuts for individual drill strategies and resume a saved drill directly from the home page. Turning off Feature Preview or Drill Mode hides these shortcuts and resume actions without deleting your saved drill or shortcut preferences."
+    ],
+    "bug fixes": [
+      "The game timer and solve time statistics no longer display malformed times of an hour or longer, i.e. one hour displayed as 01:00:0 instead of 01:00:00."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.37.1",
+    "date": "October 31st, 2026",
+    "summary": "🎃 Fixed the Statistics page not immediately updating after statistics are deleted.",
+    "bug fixes": [
+      "The Statistics page now immediately resets after the user deletes their statistics, instead of showing stale values until the page is revisited."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
     "version": "1.37.0",
     "date": "September 7th, 2026",
     "summary": "After completing a game, users can now start a new game or drill immediately with a single click, and the 'Total Hints Used' statistic can be expanded to show the breakdown of hints used per strategy.",
@@ -17,9 +45,7 @@
     "version": "1.36.0",
     "date": "September 7th, 2026",
     "summary": "Added ability to filter and search release notes",
-    "features": [
-      "Added ability to filter and search release notes."
-    ],
+    "features": ["Added ability to filter and search release notes."],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
   },

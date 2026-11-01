@@ -45,7 +45,7 @@ import { EndGameModal as DrillEndGameModal } from "./Drill/Components/EndGameMod
 import { getSudokuBoardHint as coreGetSudokuBoardHint } from "./Core/Functions/HintFunctions";
 import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions/HintFunctions";
 
-import { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
+import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
 
@@ -159,8 +159,8 @@ const defaultMethods: SudokuVariantMethods = {
   },
 };
 
-// Any per‐variant overrides (only override what you really need)
-const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
+// Any per-variant overrides (only override what you really need)
+const overrides: Record<GameVariant, Partial<SudokuVariantMethods>> = {
   drill: {
     doesCellHaveConflict(sudokuBoard: DrillObjectProps, r: number, c: number) {
       return drillDoesCellHaveConflict(sudokuBoard, r, c);
@@ -223,11 +223,7 @@ const overrides: Partial<Record<GameVariant, Partial<SudokuVariantMethods>>> = {
   classic: {},
 };
 
-// Build the final runtime lookup by merging defaults + overrides
-export const boardMethods: { [V in GameVariant]: SudokuVariantMethods } =
-  Object.fromEntries(
-    (Object.keys(overrides) as GameVariant[]).map((v) => [
-      v,
-      { ...defaultMethods, ...overrides[v] },
-    ]),
-  ) as { [V in GameVariant]: SudokuVariantMethods };
+export const boardMethods = {
+  classic: { ...defaultMethods, ...overrides.classic },
+  drill: { ...defaultMethods, ...overrides.drill },
+} satisfies Record<GameVariant, SudokuVariantMethods>;

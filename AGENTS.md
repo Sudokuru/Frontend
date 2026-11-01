@@ -6,6 +6,8 @@ Avoid typecasting when possible.
 
 Use `toBeInViewport({ ratio: 1 })`, not `toBeVisible()`, when asserting that UI is visible.
 
+Assert user-visible behavior.
+
 # Sudoku Board Architecture
 
 Conditional logic based on Sudoku board variant type must not live in `SudokuBoard.tsx` or any other file. `SudokuBoardSharedFunctionsController.ts` must handle it. 

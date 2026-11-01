@@ -12,6 +12,7 @@ import { SELECTED_IDENTICAL_VALUE_COLOR_RGB } from "../../../../sudokuru/app/Sty
 import { ProfilePage } from "../../page/profile.page";
 import { expect } from "@playwright/test";
 import { HeaderComponent } from "../../components/header.component";
+import { PlayModesPage } from "../../page/play-modes.page";
 
 test.describe("hint", () => {
   test.use({ classicGametoResume: AMEND_NOTES_EMPTY_CELL_GAME });
@@ -201,6 +202,8 @@ test.describe("Initialize Notes", () => {
     const headerComponent = new HeaderComponent(featurePreview);
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(featurePreview);
+    await playModesPage.classic.click();
     await featurePreview.getByText("Novice").click();
     const sudokuBoardComponent = new SudokuBoardComponent(featurePreview);
     await sudokuBoardComponent.verifyAllCellsInBoard(async (r, c) => {
@@ -235,6 +238,8 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -269,6 +274,8 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
@@ -292,6 +299,8 @@ test.describe("Simplify Notes", () => {
     await profilePage.initializeNotesSwitchDisabled.click();
     await headerComponent.drawer.click();
     await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(resumeClassicGame);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(resumeClassicGame);
     await playPage.resume.click();
     const sudokuBoard = new SudokuBoardComponent(resumeClassicGame);
