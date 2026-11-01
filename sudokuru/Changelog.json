@@ -1,7 +1,17 @@
 [
   {
-    "version": "1.38.0",
+    "version": "1.38.1",
     "date": "#{date}#",
+    "summary": "Improved home shortcut rearranging on touch devices so that it is easy to scroll while customizing.",
+    "bug fixes": [
+      "It is now easier to scroll on mobile while re-arranging shortcut cards. Press and hold to rearrange a shortcut, and drag it near the top or bottom of the screen to scroll while moving it."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.38.0",
+    "date": "October 31st, 2026",
     "summary": "🎃 Redesigned the home page with customizable shortcuts, quick-start difficulty selection, saved-game resume actions, and lesson progress.",
     "features": [
       "Start a classic Sudoku puzzle directly from the home page at your selected difficulty. Your difficulty selection is remembered between visits, and a saved puzzle can be resumed directly from the home page.",
