@@ -4,9 +4,9 @@ import { getLearnedLessons } from "../../Api/Statistics";
 import { getStrategies } from "../../Api/Lessons";
 import { BoardObjectProps } from "../../Functions/LocalDatabase";
 import {
-  getHomeDashboardConfig,
   getHomeHeroAction,
   getHomeResumeDescriptor,
+  getHomeShortcutCatalogue,
   getHomeSupportingResumes,
 } from "./HomeDashboard";
 import type { HomeDashboardFlags } from "./HomeDashboard";
@@ -36,7 +36,7 @@ export const useHomeDashboardData = (
   const completedLessons = lessons.filter((lesson) =>
     state.learnedLessons.includes(lesson),
   ).length;
-  const config = getHomeDashboardConfig(
+  const shortcutCatalogue = getHomeShortcutCatalogue(
     { featurePreview, drillMode },
     completedLessons,
     lessons.length,
@@ -96,7 +96,7 @@ export const useHomeDashboardData = (
 
   return {
     isLoading: state.isLoading,
-    config,
+    shortcutCatalogue,
     supportingResumes,
     heroAction,
   };

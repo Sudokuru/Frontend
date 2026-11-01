@@ -38,10 +38,6 @@ export interface HomeResumeDescriptor {
   action: DashboardNavigationAction;
 }
 
-export interface HomeDashboardConfig {
-  shortcutCatalogue: HomeDashboardCardDescriptor[];
-}
-
 export interface HomeHeroAction {
   title: string;
   description: string;
@@ -113,21 +109,17 @@ const STATIC_HOME_SHORTCUTS = (
   },
 ];
 
-export const getHomeDashboardConfig = (
+export const getHomeShortcutCatalogue = (
   flags: SudokuModeFlags,
   completedLessons: number,
   totalLessons: number,
-): HomeDashboardConfig => {
-  const shortcutCatalogue = [
+): HomeDashboardCardDescriptor[] => {
+  return [
     ...STATIC_HOME_SHORTCUTS(completedLessons, totalLessons),
     ...getSudokuModeShortcuts(flags),
   ]
     .sort((left, right) => left.homeOrder - right.homeOrder)
     .map(({ homeOrder, ...shortcut }) => shortcut);
-
-  return {
-    shortcutCatalogue,
-  };
 };
 
 export const getHomeResumeDescriptor = (
