@@ -1,7 +1,18 @@
 [
   {
-    "version": "1.38.0",
+    "version": "1.38.1",
     "date": "#{date}#",
+    "summary": "Release note filters now expand inline instead of opening popup menus.",
+    "bug fixes": [
+      "Release note filters expand inline beneath the filter bar instead of opening popup menus, removing unreliable popup behavior such as menus detaching while the list scrolls, needing two clicks to switch filters, and keyboard selections being lost to menu animations.",
+      "There is now a visual indicator with disabled options to prevent entering invalid date range filter selections."
+    ],
+    "targets": ["web", "mobile", "desktop"],
+    "contributors": ["Thomas-Gallant"]
+  },
+  {
+    "version": "1.38.0",
+    "date": "October 31st, 2026",
     "summary": "🎃 Redesigned the home page with customizable shortcuts, quick-start difficulty selection, saved-game resume actions, and lesson progress.",
     "features": [
       "Start a classic Sudoku puzzle directly from the home page at your selected difficulty. Your difficulty selection is remembered between visits, and a saved puzzle can be resumed directly from the home page.",

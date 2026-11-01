@@ -54,43 +54,71 @@ test.describe("release notes", () => {
 });
 
 test.describe("release note filters", () => {
-  test("filter menus open and close", async ({ page }) => {
+  test("filter sections expand and collapse", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();
-    const menus = [
+    const sections = [
       {
         button: releaseNotesPage.targetsFilter,
-        menu: releaseNotesPage.targetsMenu,
-        close: releaseNotesPage.targetsMenuClose,
+        section: releaseNotesPage.targetsSection,
+        close: releaseNotesPage.targetsSectionClose,
       },
       {
         button: releaseNotesPage.categoriesFilter,
-        menu: releaseNotesPage.categoriesMenu,
-        close: releaseNotesPage.categoriesMenuClose,
+        section: releaseNotesPage.categoriesSection,
+        close: releaseNotesPage.categoriesSectionClose,
       },
       {
         button: releaseNotesPage.contributorsFilter,
-        menu: releaseNotesPage.contributorsMenu,
-        close: releaseNotesPage.contributorsMenuClose,
+        section: releaseNotesPage.contributorsSection,
+        close: releaseNotesPage.contributorsSectionClose,
       },
       {
         button: releaseNotesPage.startDateFilter,
-        menu: releaseNotesPage.startDateMenu,
-        close: releaseNotesPage.startDateMenuClose,
+        section: releaseNotesPage.startDateSection,
+        close: releaseNotesPage.startDateSectionClose,
       },
       {
         button: releaseNotesPage.endDateFilter,
-        menu: releaseNotesPage.endDateMenu,
-        close: releaseNotesPage.endDateMenuClose,
+        section: releaseNotesPage.endDateSection,
+        close: releaseNotesPage.endDateSectionClose,
       },
     ];
 
-    for (const menu of menus) {
-      await releaseNotesPage.openMenu(menu.button, menu.menu);
-      await releaseNotesPage.closeMenu(menu.close, menu.menu);
+    for (const section of sections) {
+      await releaseNotesPage.expandSection(section.button, section.section);
+      await expect(section.button).toHaveAccessibleName(/expanded$/);
+      await expect(section.close).toHaveAccessibleName(/^Close .+ filter$/);
+      await section.close.press("Enter");
+      await releaseNotesPage.sectionIsCollapsed(section.section);
+      await expect(section.button).toBeFocused();
+      await expect(section.button).toHaveAccessibleName(/collapsed$/);
     }
 
     await releaseNotesPage.resultCountIs(releaseNotes.length);
+  });
+
+  test("expanding a filter section collapses the other sections", async ({
+    page,
+  }) => {
+    const releaseNotesPage = new ReleaseNotesPage(page);
+    await releaseNotesPage.navigateToPage();
+
+    await releaseNotesPage.expandSection(
+      releaseNotesPage.targetsFilter,
+      releaseNotesPage.targetsSection,
+    );
+
+    await releaseNotesPage.expandSection(
+      releaseNotesPage.categoriesFilter,
+      releaseNotesPage.categoriesSection,
+    );
+    await releaseNotesPage.sectionIsCollapsed(releaseNotesPage.targetsSection);
+
+    await releaseNotesPage.categoriesFilter.click();
+    await releaseNotesPage.sectionIsCollapsed(
+      releaseNotesPage.categoriesSection,
+    );
   });
 
   test("keyword search only renders matching releases", async ({ page }) => {
@@ -138,9 +166,9 @@ test.describe("release note filters", () => {
       note.contributors.includes(contributor),
     );
 
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.targetsFilter,
-      releaseNotesPage.targetsMenu,
+      releaseNotesPage.targetsSection,
     );
     await releaseNotesPage.toggleTarget(target);
     await releaseNotesPage.filterButtonLabelIs(
@@ -148,6 +176,8 @@ test.describe("release note filters", () => {
       "Targets (1)",
     );
     await releaseNotesPage.resultCountIs(targetMatches.length);
+    // Selecting an option keeps the section open for further selections.
+    await releaseNotesPage.sectionIsExpanded(releaseNotesPage.targetsSection);
     await releaseNotesPage.toggleTarget(target);
     await releaseNotesPage.filterButtonLabelIs(
       releaseNotesPage.targetsFilter,
@@ -155,15 +185,12 @@ test.describe("release note filters", () => {
     );
     await releaseNotesPage.resultCountIs(releaseNotes.length);
     await releaseNotesPage.toggleTarget(target);
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.targetsMenuClose,
-      releaseNotesPage.targetsMenu,
-    );
 
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.categoriesFilter,
-      releaseNotesPage.categoriesMenu,
+      releaseNotesPage.categoriesSection,
     );
+    await releaseNotesPage.sectionIsCollapsed(releaseNotesPage.targetsSection);
     await releaseNotesPage.toggleCategory(category);
     await releaseNotesPage.filterButtonLabelIs(
       releaseNotesPage.categoriesFilter,
@@ -173,14 +200,13 @@ test.describe("release note filters", () => {
     await releaseNotesPage.toggleCategory(category);
     await releaseNotesPage.resultCountIs(targetMatches.length);
     await releaseNotesPage.toggleCategory(category);
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.categoriesMenuClose,
-      releaseNotesPage.categoriesMenu,
-    );
 
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.contributorsFilter,
-      releaseNotesPage.contributorsMenu,
+      releaseNotesPage.contributorsSection,
+    );
+    await releaseNotesPage.sectionIsCollapsed(
+      releaseNotesPage.categoriesSection,
     );
     await releaseNotesPage.toggleContributor(contributor);
     await releaseNotesPage.filterButtonLabelIs(
@@ -191,10 +217,6 @@ test.describe("release note filters", () => {
     await releaseNotesPage.toggleContributor(contributor);
     await releaseNotesPage.resultCountIs(targetAndCategoryMatches.length);
     await releaseNotesPage.toggleContributor(contributor);
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.contributorsMenuClose,
-      releaseNotesPage.contributorsMenu,
-    );
 
     await releaseNotesPage.firstReleaseNoteIsRendered(
       allFilterMatches[0].version,
@@ -262,13 +284,11 @@ test.describe("release note filters", () => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();
     await releaseNotesPage.selectStartDate(2025, "March");
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.endDateFilter,
-      releaseNotesPage.endDateMenu,
+      releaseNotesPage.endDateSection,
     );
-    await releaseNotesPage.endYear.click();
     await releaseNotesPage.endYearOption(2025).click();
-    await releaseNotesPage.endMonth.click();
 
     const earlierMonth = releaseNotesPage.endMonthOption("February");
     const equalMonth = releaseNotesPage.endMonthOption("March");
@@ -284,13 +304,11 @@ test.describe("release note filters", () => {
     const releaseNotesPage = new ReleaseNotesPage(page);
     await releaseNotesPage.navigateToPage();
     await releaseNotesPage.selectEndDate(2026, "March");
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.startDateFilter,
-      releaseNotesPage.startDateMenu,
+      releaseNotesPage.startDateSection,
     );
-    await releaseNotesPage.startYear.click();
     await releaseNotesPage.startYearOption(2026).click();
-    await releaseNotesPage.startMonth.click();
 
     const laterMonth = releaseNotesPage.startMonthOption("May");
     const equalMonth = releaseNotesPage.startMonthOption("March");
@@ -300,24 +318,100 @@ test.describe("release note filters", () => {
     await expect(equalMonth).toBeEnabled();
   });
 
-  test("changing only the year applies the retained month", async ({
-    page,
-  }) => {
-    const releaseNotesPage = new ReleaseNotesPage(page);
-    await releaseNotesPage.navigateToPage();
-    await releaseNotesPage.selectStartDate(2025, "March");
-    await releaseNotesPage.openMenu(
-      releaseNotesPage.startDateFilter,
-      releaseNotesPage.startDateMenu,
-    );
-    await releaseNotesPage.startYear.click();
-    await releaseNotesPage.startYearOption(2026).press("Enter");
+  for (const boundary of ["start", "end"] as const) {
+    test(`changing only the ${boundary} year applies the retained month`, async ({
+      page,
+    }) => {
+      const releaseNotesPage = new ReleaseNotesPage(page);
+      await releaseNotesPage.navigateToPage();
 
-    await releaseNotesPage.filterButtonLabelIs(
-      releaseNotesPage.startDateFilter,
-      "Start Date: March 2026",
-    );
-  });
+      const controls = {
+        start: {
+          filter: releaseNotesPage.startDateFilter,
+          section: releaseNotesPage.startDateSection,
+          yearOption: releaseNotesPage.startYearOption(2026),
+          selectDate: () => releaseNotesPage.selectStartDate(2025, "March"),
+          label: "Start Date: March 2026",
+        },
+        end: {
+          filter: releaseNotesPage.endDateFilter,
+          section: releaseNotesPage.endDateSection,
+          yearOption: releaseNotesPage.endYearOption(2026),
+          selectDate: () => releaseNotesPage.selectEndDate(2025, "March"),
+          label: "End Date: March 2026",
+        },
+      }[boundary];
+
+      await controls.selectDate();
+      await releaseNotesPage.expandSection(controls.filter, controls.section);
+      // Exercise keyboard activation, not just pointer activation.
+      await controls.yearOption.focus();
+      await controls.yearOption.press("Enter");
+
+      await releaseNotesPage.filterButtonLabelIs(
+        controls.filter,
+        controls.label,
+      );
+      // A year-only change keeps the section open for further adjustments.
+      await releaseNotesPage.sectionIsExpanded(controls.section);
+      await expect(controls.yearOption).toBeFocused();
+    });
+  }
+
+  for (const boundary of ["start", "end"] as const) {
+    test(`${boundary} month selection persists when the section is re-expanded`, async ({
+      page,
+    }) => {
+      const releaseNotesPage = new ReleaseNotesPage(page);
+      await releaseNotesPage.navigateToPage();
+
+      const controls = {
+        start: {
+          filter: releaseNotesPage.startDateFilter,
+          section: releaseNotesPage.startDateSection,
+          close: releaseNotesPage.startDateSectionClose,
+          monthOption: releaseNotesPage.startMonthOption("April"),
+          committedYearMonth: releaseNotesPage.startMonthOption("January"),
+          otherYearMonth: releaseNotesPage.startMonthOption("May"),
+          selectDate: () => releaseNotesPage.selectStartDate(2025, "March"),
+          label: "Start Date: April 2025",
+        },
+        end: {
+          filter: releaseNotesPage.endDateFilter,
+          section: releaseNotesPage.endDateSection,
+          close: releaseNotesPage.endDateSectionClose,
+          monthOption: releaseNotesPage.endMonthOption("April"),
+          committedYearMonth: releaseNotesPage.endMonthOption("January"),
+          otherYearMonth: releaseNotesPage.endMonthOption("May"),
+          selectDate: () => releaseNotesPage.selectEndDate(2025, "March"),
+          label: "End Date: April 2025",
+        },
+      }[boundary];
+
+      await controls.selectDate();
+      await releaseNotesPage.expandSection(controls.filter, controls.section);
+      await controls.monthOption.focus();
+      await controls.monthOption.press("Enter");
+
+      await releaseNotesPage.filterButtonLabelIs(
+        controls.filter,
+        controls.label,
+      );
+      await releaseNotesPage.sectionIsCollapsed(controls.section);
+      await expect(controls.filter).toBeFocused();
+      await releaseNotesPage.expandSection(controls.filter, controls.section);
+      // The re-expanded panel reflects the committed date: a month released
+      // only in the committed year (January 2025) is offered, while a month
+      // released only in another year (May 2026) is not.
+      await expect(controls.committedYearMonth).toBeInViewport({ ratio: 1 });
+      await expect(controls.otherYearMonth).toHaveCount(0);
+      await releaseNotesPage.collapseSection(controls.close, controls.section);
+      await releaseNotesPage.filterButtonLabelIs(
+        controls.filter,
+        controls.label,
+      );
+    });
+  }
 
   test("clear button resets all active filters", async ({ page }) => {
     const releaseNotesPage = new ReleaseNotesPage(page);
@@ -327,33 +421,21 @@ test.describe("release note filters", () => {
     await releaseNotesPage.searchFor("Sudoku");
     await releaseNotesPage.clearSearch();
     await releaseNotesPage.searchFor("Sudoku");
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.targetsFilter,
-      releaseNotesPage.targetsMenu,
+      releaseNotesPage.targetsSection,
     );
     await releaseNotesPage.toggleTarget("web");
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.targetsMenuClose,
-      releaseNotesPage.targetsMenu,
-    );
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.categoriesFilter,
-      releaseNotesPage.categoriesMenu,
+      releaseNotesPage.categoriesSection,
     );
     await releaseNotesPage.toggleCategory("bug fixes");
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.categoriesMenuClose,
-      releaseNotesPage.categoriesMenu,
-    );
-    await releaseNotesPage.openMenu(
+    await releaseNotesPage.expandSection(
       releaseNotesPage.contributorsFilter,
-      releaseNotesPage.contributorsMenu,
+      releaseNotesPage.contributorsSection,
     );
     await releaseNotesPage.toggleContributor("Thomas-Gallant");
-    await releaseNotesPage.closeMenu(
-      releaseNotesPage.contributorsMenuClose,
-      releaseNotesPage.contributorsMenu,
-    );
     await releaseNotesPage.selectStartDate(2025, "March");
 
     await releaseNotesPage.clearFilters.click();
