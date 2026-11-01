@@ -13,24 +13,20 @@ export class ReleaseNotesPage {
   readonly resultCount: Locator;
   readonly clearFilters: Locator;
   readonly targetsFilter: Locator;
-  readonly targetsMenu: Locator;
-  readonly targetsMenuClose: Locator;
+  readonly targetsSection: Locator;
+  readonly targetsSectionClose: Locator;
   readonly categoriesFilter: Locator;
-  readonly categoriesMenu: Locator;
-  readonly categoriesMenuClose: Locator;
+  readonly categoriesSection: Locator;
+  readonly categoriesSectionClose: Locator;
   readonly contributorsFilter: Locator;
-  readonly contributorsMenu: Locator;
-  readonly contributorsMenuClose: Locator;
+  readonly contributorsSection: Locator;
+  readonly contributorsSectionClose: Locator;
   readonly startDateFilter: Locator;
-  readonly startDateMenu: Locator;
-  readonly startDateMenuClose: Locator;
-  readonly startYear: Locator;
-  readonly startMonth: Locator;
+  readonly startDateSection: Locator;
+  readonly startDateSectionClose: Locator;
   readonly endDateFilter: Locator;
-  readonly endDateMenu: Locator;
-  readonly endDateMenuClose: Locator;
-  readonly endYear: Locator;
-  readonly endMonth: Locator;
+  readonly endDateSection: Locator;
+  readonly endDateSectionClose: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -40,42 +36,42 @@ export class ReleaseNotesPage {
     this.resultCount = page.getByTestId("ReleaseNotesResultCount");
     this.clearFilters = page.getByTestId("ReleaseNotesClearFiltersButton");
     this.targetsFilter = page.getByTestId("ReleaseNotesTargetsFilterButton");
-    this.targetsMenu = page.getByTestId("ReleaseNotesTargetsFilterMenu");
-    this.targetsMenuClose = page.getByTestId(
+    this.targetsSection = page.getByTestId("ReleaseNotesTargetsFilterSection");
+    this.targetsSectionClose = page.getByTestId(
       "ReleaseNotesTargetsFilterCloseButton",
     );
     this.categoriesFilter = page.getByTestId(
       "ReleaseNotesCategoriesFilterButton",
     );
-    this.categoriesMenu = page.getByTestId("ReleaseNotesCategoriesFilterMenu");
-    this.categoriesMenuClose = page.getByTestId(
+    this.categoriesSection = page.getByTestId(
+      "ReleaseNotesCategoriesFilterSection",
+    );
+    this.categoriesSectionClose = page.getByTestId(
       "ReleaseNotesCategoriesFilterCloseButton",
     );
     this.contributorsFilter = page.getByTestId(
       "ReleaseNotesContributorsFilterButton",
     );
-    this.contributorsMenu = page.getByTestId(
-      "ReleaseNotesContributorsFilterMenu",
+    this.contributorsSection = page.getByTestId(
+      "ReleaseNotesContributorsFilterSection",
     );
-    this.contributorsMenuClose = page.getByTestId(
+    this.contributorsSectionClose = page.getByTestId(
       "ReleaseNotesContributorsFilterCloseButton",
     );
     this.startDateFilter = page.getByTestId(
       "ReleaseNotesStartDateFilterButton",
     );
-    this.startDateMenu = page.getByTestId("ReleaseNotesStartDateFilterMenu");
-    this.startDateMenuClose = page.getByTestId(
+    this.startDateSection = page.getByTestId(
+      "ReleaseNotesStartDateFilterSection",
+    );
+    this.startDateSectionClose = page.getByTestId(
       "ReleaseNotesStartDateFilterCloseButton",
     );
-    this.startYear = page.getByTestId("ReleaseNotesStartYearButton");
-    this.startMonth = page.getByTestId("ReleaseNotesStartMonthButton");
     this.endDateFilter = page.getByTestId("ReleaseNotesEndDateFilterButton");
-    this.endDateMenu = page.getByTestId("ReleaseNotesEndDateFilterMenu");
-    this.endDateMenuClose = page.getByTestId(
+    this.endDateSection = page.getByTestId("ReleaseNotesEndDateFilterSection");
+    this.endDateSectionClose = page.getByTestId(
       "ReleaseNotesEndDateFilterCloseButton",
     );
-    this.endYear = page.getByTestId("ReleaseNotesEndYearButton");
-    this.endMonth = page.getByTestId("ReleaseNotesEndMonthButton");
   }
 
   targetOption(target: string) {
@@ -130,14 +126,14 @@ export class ReleaseNotesPage {
     return parseChangelogDate(date);
   }
 
-  async openMenu(button: Locator, menu: Locator) {
+  async expandSection(button: Locator, section: Locator) {
     await button.click();
-    await this.menuIsOpen(menu);
+    await this.sectionIsExpanded(section);
   }
 
-  async closeMenu(closeButton: Locator, menu: Locator) {
+  async collapseSection(closeButton: Locator, section: Locator) {
     await closeButton.click();
-    await this.menuIsClosed(menu);
+    await this.sectionIsCollapsed(section);
   }
 
   async toggleTarget(target: string) {
@@ -159,29 +155,25 @@ export class ReleaseNotesPage {
   }
 
   async selectStartDate(year: number, month: string) {
-    await this.openMenu(this.startDateFilter, this.startDateMenu);
-    await this.startYear.click();
+    await this.expandSection(this.startDateFilter, this.startDateSection);
     const yearOption = this.startYearOption(year);
     await expect(yearOption).toBeInViewport({ ratio: 1 });
     await yearOption.click();
-    await this.startMonth.click();
     const monthOption = this.startMonthOption(month);
     await expect(monthOption).toBeInViewport({ ratio: 1 });
     await monthOption.click();
-    await this.menuIsClosed(this.startDateMenu);
+    await this.sectionIsCollapsed(this.startDateSection);
   }
 
   async selectEndDate(year: number, month: string) {
-    await this.openMenu(this.endDateFilter, this.endDateMenu);
-    await this.endYear.click();
+    await this.expandSection(this.endDateFilter, this.endDateSection);
     const yearOption = this.endYearOption(year);
     await expect(yearOption).toBeInViewport({ ratio: 1 });
     await yearOption.click();
-    await this.endMonth.click();
     const monthOption = this.endMonthOption(month);
     await expect(monthOption).toBeInViewport({ ratio: 1 });
     await monthOption.click();
-    await this.menuIsClosed(this.endDateMenu);
+    await this.sectionIsCollapsed(this.endDateSection);
   }
 
   async releaseNotesPageIsRendered() {
@@ -204,12 +196,12 @@ export class ReleaseNotesPage {
     await expect(button).toHaveText(label);
   }
 
-  async menuIsOpen(menu: Locator) {
-    await expect(menu).toBeInViewport({ ratio: 1 });
+  async sectionIsExpanded(section: Locator) {
+    await expect(section).toBeInViewport({ ratio: 1 });
   }
 
-  async menuIsClosed(menu: Locator) {
-    await expect(menu).not.toBeInViewport({ ratio: 1 });
+  async sectionIsCollapsed(section: Locator) {
+    await expect(section).not.toBeInViewport({ ratio: 1 });
   }
 
   /**

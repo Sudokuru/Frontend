@@ -1,3 +1,0 @@
-# Patch files use a single space as the context marker for empty lines, which
-# whitespace checks report as trailing whitespace. Do not check or rewrite them.
-patches/*.patch -whitespace

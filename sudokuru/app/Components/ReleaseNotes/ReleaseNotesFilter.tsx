@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import {
   Button,
@@ -8,8 +8,9 @@ import {
   Text,
 } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
-import { DateFilterMenu } from "./DateFilterMenu";
-import { MultiSelectFilterMenu } from "./MultiSelectFilterMenu";
+import { DateFilterPanel } from "./DateFilterPanel";
+import { FilterToggleButton } from "./FilterToggleButton";
+import { MultiSelectFilterPanel } from "./MultiSelectFilterPanel";
 import { MONTH_NAMES, parseMonthYear } from "./ReleaseNoteFunctions";
 
 export type Category = "features" | "preview features" | "bug fixes";
@@ -49,6 +50,13 @@ const CATEGORY_LABELS: Record<Category, string> = {
 
 const hideSearchbarRight = () => null;
 
+type ExpandedFilter =
+  | "targets"
+  | "categories"
+  | "contributors"
+  | "start"
+  | "end";
+
 export const ReleaseNotesFilter = ({
   allContributors,
   allReleaseMonths,
@@ -69,6 +77,12 @@ export const ReleaseNotesFilter = ({
   componentWidth,
 }: ReleaseNotesFilterProps) => {
   const { theme } = useTheme();
+  // Filters expand inline under the button row instead of opening popup
+  // menus; only one section is expanded at a time.
+  const [expandedFilter, setExpandedFilter] = useState<ExpandedFilter | null>(
+    null,
+  );
+
   const hasActiveFilters =
     keyword.trim().length > 0 ||
     selectedStartMonth != null ||
@@ -112,10 +126,12 @@ export const ReleaseNotesFilter = ({
     selectedEndMonth != null &&
     parseMonthYear(`${month} ${year}`) > parseMonthYear(selectedEndMonth);
 
-  const selectionMenuMaxWidth = Math.max(
-    200,
-    Math.min(280, componentWidth - 120),
-  );
+  const toggleExpanded = (filter: ExpandedFilter) =>
+    setExpandedFilter((currentlyExpanded) =>
+      currentlyExpanded === filter ? null : filter,
+    );
+
+  const collapseExpanded = () => setExpandedFilter(null);
 
   return (
     <View
@@ -161,55 +177,123 @@ export const ReleaseNotesFilter = ({
           paddingVertical: 2,
         }}
       >
-        <MultiSelectFilterMenu
+        <FilterToggleButton
+          expanded={expandedFilter === "targets"}
+          hasSelection={selectedTargets.size > 0}
+          label={
+            selectedTargets.size > 0
+              ? `Targets (${selectedTargets.size})`
+              : "Targets"
+          }
+          onPress={() => toggleExpanded("targets")}
+          testID="ReleaseNotesTargetsFilterButton"
+        />
+        <FilterToggleButton
+          expanded={expandedFilter === "categories"}
+          hasSelection={selectedCategories.size > 0}
+          label={
+            selectedCategories.size > 0
+              ? `Categories (${selectedCategories.size})`
+              : "Categories"
+          }
+          onPress={() => toggleExpanded("categories")}
+          testID="ReleaseNotesCategoriesFilterButton"
+        />
+        <FilterToggleButton
+          expanded={expandedFilter === "contributors"}
+          hasSelection={selectedContributors.size > 0}
+          label={
+            selectedContributors.size > 0
+              ? `Contributors (${selectedContributors.size})`
+              : "Contributors"
+          }
+          onPress={() => toggleExpanded("contributors")}
+          testID="ReleaseNotesContributorsFilterButton"
+        />
+        <FilterToggleButton
+          expanded={expandedFilter === "start"}
+          hasSelection={selectedStartMonth != null}
+          label={
+            selectedStartMonth
+              ? `Start Date: ${selectedStartMonth}`
+              : "Start Date"
+          }
+          onPress={() => toggleExpanded("start")}
+          testID="ReleaseNotesStartDateFilterButton"
+        />
+        <FilterToggleButton
+          expanded={expandedFilter === "end"}
+          hasSelection={selectedEndMonth != null}
+          label={
+            selectedEndMonth ? `End Date: ${selectedEndMonth}` : "End Date"
+          }
+          onPress={() => toggleExpanded("end")}
+          testID="ReleaseNotesEndDateFilterButton"
+        />
+      </View>
+
+      {expandedFilter === "targets" && (
+        <MultiSelectFilterPanel
           label="Targets"
-          maxWidth={Math.min(260, selectionMenuMaxWidth)}
           onChange={setSelectedTargets}
+          onCollapse={collapseExpanded}
           optionLabel={(target) => target}
           optionTestIDPrefix="Target"
           options={ALL_TARGETS}
           selected={selectedTargets}
           testIDPrefix="Targets"
         />
-        <MultiSelectFilterMenu
+      )}
+      {expandedFilter === "categories" && (
+        <MultiSelectFilterPanel
           label="Categories"
-          maxWidth={selectionMenuMaxWidth}
           onChange={setSelectedCategories}
+          onCollapse={collapseExpanded}
           optionLabel={(category) => CATEGORY_LABELS[category]}
           optionTestIDPrefix="Category"
           options={ALL_CATEGORIES}
           selected={selectedCategories}
           testIDPrefix="Categories"
         />
-        <MultiSelectFilterMenu
+      )}
+      {expandedFilter === "contributors" && (
+        <MultiSelectFilterPanel
           label="Contributors"
-          maxWidth={selectionMenuMaxWidth}
           onChange={setSelectedContributors}
+          onCollapse={collapseExpanded}
           optionLabel={(contributor) => contributor}
           optionTestIDPrefix="Contributor"
           options={allContributors}
           selected={selectedContributors}
           testIDPrefix="Contributors"
         />
-        <DateFilterMenu
+      )}
+      {expandedFilter === "start" && (
+        <DateFilterPanel
+          key={selectedStartMonth ?? "unselected"}
           isMonthDisabled={isStartMonthDisabled}
           label="Start Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedStartMonth}
+          onCollapse={collapseExpanded}
           selectedMonth={selectedStartMonth}
           testIDPrefix="Start"
           years={availableYears}
         />
-        <DateFilterMenu
+      )}
+      {expandedFilter === "end" && (
+        <DateFilterPanel
+          key={selectedEndMonth ?? "unselected"}
           isMonthDisabled={isEndMonthDisabled}
           label="End Date"
           monthsForYear={monthsForYear}
           onChange={setSelectedEndMonth}
+          onCollapse={collapseExpanded}
           selectedMonth={selectedEndMonth}
           testIDPrefix="End"
           years={availableYears}
         />
-      </View>
+      )}
 
       <View
         style={{

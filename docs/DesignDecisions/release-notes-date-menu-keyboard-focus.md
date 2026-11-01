@@ -1,7 +1,17 @@
-# Release-note date menu keyboard focus race
+# Release-note date menu keyboard focus race (resolved by inline filters)
 
 Investigated October 31, 2026 🎃. Work continues from `designs/design-5-view` on
 `fix/release-notes-date-menu-focus`, independently of the previous PR.
+
+> **Resolution (November 1, 2026):** the release-note filters no longer use
+> Paper menus at all; they expand inline beneath the filter row. See
+> [release-notes-inline-filters.md](release-notes-inline-filters.md). The
+> temporary focus/lifecycle patch extension described below was reverted with
+> that change, along with the `.gitattributes` whitespace exemption and the
+> pipeline-comment edits that accompanied it, and the Enter-key regression
+> tests were retired. The upstream mount-race backport remains patched for the
+> home page difficulty selector. This report is kept as the record of the
+> investigation.
 
 ## Symptoms
 
@@ -91,77 +101,40 @@ exact report or confirmed fix for this parent-menu keydown/keyup race.
 
 Nothing was reported, commented on, or submitted upstream during this work.
 
-## Local correction
+## Interim correction (reverted November 1, 2026)
 
-### One floating date picker
+The branch first kept the floating menus and addressed the race in two steps,
+both superseded by the inline redesign:
 
-Use a single Paper Menu with year and month choices expanded inline below their
-selector buttons. Only one choice section is open at a time. This removes the
-unsupported nested Portal arrangement while keeping floating filters. The other
-filter controls are not redesigned, and normal menu animations remain enabled.
+1. **One floating date picker.** A single Paper Menu with year and month choices
+   expanded inline below their selector buttons, only one choice section open at
+   a time. This removed the unsupported nested Portal arrangement while keeping
+   floating filters.
+2. **Temporary Paper focus/lifecycle patch.** `patches/react-native-paper+5.15.3.patch`
+   carried a local extension alongside the upstream hidden-mount backport:
+   capturing browser focus at the start of each opening, focusing the first
+   control only if focus had not moved and was not already inside the menu,
+   identifying each show/hide operation so stale callbacks could not affect a
+   newer cycle, ignoring queued operations that disagreed with current
+   visibility or ran after unmounting, and clearing the internal shown flag when
+   hiding began. The hide cleanup remained independent of the animation's
+   `finished` flag.
 
-An initial application workaround stabilized the anchor through context and
-memoization. That workaround was removed in favor of fixing the library's delayed
-callbacks. Application components no longer need to preserve anchor identity to
-avoid focus being stolen during a selection.
+When the release-note filters moved to inline sections, the page stopped using
+`Menu` entirely, this failure mode became unreachable on the page, and the
+extension was reverted from the patch file. The extension was never an
+upstream-approved fix; nothing needs to be reassessed upstream for its removal.
+The remaining patch content is solely the mount-race backport, which the home
+page difficulty selector still requires.
 
-Preserve the existing behavior:
+## Regression coverage (retired with the popup UI)
 
-- A year-only change applies the retained month when it exists and is allowed.
-- An unavailable month falls back to an available draft month without committing
-  an invalid date.
-- Disabled months still enforce the start/end date boundaries.
-- Choosing a month applies the date and closes the menu.
-- Reopening reflects the selected year and month.
-- The year choices stay expanded after a selection so keyboard focus remains on
-  the activated option; switching to month choices replaces the inline list.
-  Closing after a month selection returns focus to the date-filter button.
-
-### Temporary Paper focus/lifecycle patch
-
-`patches/react-native-paper+5.15.3.patch` includes a local extension alongside the
-upstream hidden-mount backport. It covers source, CommonJS, and ES module builds.
-The local extension is not an upstream-approved fix or a released backport.
-
-- Capture browser focus at the start of each opening, not on each rerender.
-- On successful opening completion, focus the first control only if focus has
-  not moved since opening and is not already inside the menu. A user's keyboard
-  or pointer interaction must take precedence over delayed autofocus.
-- Identify each show/hide operation so stale measurements, animation-frame work,
-  and completion callbacks cannot change a newer visibility cycle.
-- Ignore queued operations that disagree with the current visibility or run
-  after unmounting.
-- Clear the internal shown flag when hiding begins so a quick reopening can
-  start a new show operation. A previous hide callback cannot then remove it or
-  restore focus to its trigger.
-
-The hide cleanup remains independent of the animation's `finished` flag, preserving
-the native reopening fix. Focus code remains web-only; native platforms still
-need manual verification because the lifecycle guards also affect native
-animations.
-
-The existing root `postinstall` and explicit CI patch steps apply this combined
-patch. We are waiting for compatible upstream releases to cover both the mount
-fix and the locally corrected behavior. Reassess each part independently: an
-upstream release containing #5139 alone is not sufficient to remove the focus
-extension. Do not remove `patch-package` or the CI steps while either fix is still
-needed.
-
-## Regression coverage and verification
-
-Keep the original Enter-key test in `e2e/web/specs/releasenotes.spec.ts` unchanged.
-Additional coverage checks retained-month end-year selection with Enter and
-keyboard month selection, closing, and reopening for both date boundaries. It also
-checks normal opening focus, restoring focus after Escape, preserving focus on
-the activated year option, and reopening during dismissal. Reuse the existing
-page-object locators; do not replace Enter with clicks or add sleeps.
-
-Before the UI change, the original retained-month test failed in all three
-repeated WebKit runs. Removing the anchor workaround also reproduced focus loss
-after year activation and failure to focus the reopened menu during dismissal.
-The initial combined patch passed all six focused WebKit lifecycle/keyboard
-checks without the application workaround.
-
-Run the home page and release-note specs across all browser projects, repeat the
-keyboard cases, and check the picker manually in Expo Go before merging. The full
-application suite remains a separate final check.
+The branch added Enter-key coverage for retained-month year selection and
+keyboard month selection, closing, and reopening for both date boundaries,
+plus checks for opening focus, restoring focus after Escape, preserving focus
+on the activated year option, and reopening during dismissal. That coverage
+guarded the patched menu animations; with no menus and no animations on the
+page, the equivalent user-visible guarantees (retained month on year-only
+change, boundary-disabled months, committed values on re-expansion) are covered
+by plain-interaction tests in `e2e/web/specs/releasenotes.spec.ts`. See
+[release-notes-inline-filters.md](release-notes-inline-filters.md).

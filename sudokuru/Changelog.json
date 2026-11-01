@@ -2,11 +2,11 @@
   {
     "version": "1.38.1",
     "date": "#{date}#",
-    "summary": "Fixed keyboard selection in release note date filters.",
+    "summary": "Release note filters now expand inline instead of opening popup menus.",
     "bug fixes": [
-      "Release note date filters now reliably apply year and month selections made with the keyboard, without losing focus to an opening menu."
+      "Release note filters expand inline beneath the filter bar instead of opening popup menus, removing unreliable popup behavior such as menus detaching while the list scrolls, needing two clicks to switch filters, and keyboard selections being lost to menu animations."
     ],
-    "targets": ["web"],
+    "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
   },
   {
