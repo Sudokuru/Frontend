@@ -79,6 +79,10 @@ jobs:
           bun-version: "1.4.2"
       - name: 📦 Install dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: Lint Check
         run: npm run lint
       - name: Setup Changelog
@@ -114,6 +118,10 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: 🚀 Publish App preview
         if: ${{ contains(fromJSON('["pull_request"]'), github.event_name)}}
         uses: expo/expo-github-action/preview@b184ff86a3c926240f1b6db41764c83a01c02eef
@@ -170,6 +178,10 @@ jobs:
           node-version: 26.5.0
       - name: install dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: Install Playwright Browsers
         run: npm run playwright:init:deps
       - name: Playwright run
@@ -219,6 +231,10 @@ jobs:
           node-version: 26.5.0
       - name: install dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: Download blob reports
         uses: actions/download-artifact@v8
         with:
@@ -294,6 +310,10 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
       - name: 📦 Install dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: 🚀 Build app
         run: eas build --non-interactive --platform android --local
         working-directory: sudokuru
@@ -338,6 +358,10 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
         run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - uses: tauri-apps/tauri-action@e839bb55b23d177d8cb537c2e10f41decb2d1089
         id: tauri_build
         with:
@@ -428,6 +452,10 @@ jobs:
         with:
           node-version: 26.5.0
       - run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment
@@ -453,6 +481,10 @@ jobs:
         with:
           node-version: 26.5.0
       - run: npm ci --ignore-scripts
+      # Temporary until Paper releases fix #5139; keep dependency scripts disabled.
+      # See docs/DesignDecisions/react-native-paper-menu-mount-race.md.
+      - name: Apply temporary dependency patches
+        run: npm run postinstall
       - name: Setup Changelog
         uses: ./.github/workflows/composite-actions/set-changelog-date
       - name: Cloudflare dev preview deployment

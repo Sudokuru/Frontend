@@ -2,7 +2,7 @@ import { LearnPage } from "./../page/learn.page";
 import { HomePage } from "./../page/home.page";
 import { test } from "../fixture";
 import { HeaderComponent } from "../components/header.component";
-import { PlayPage } from "./../page/play.page";
+import { PlayModesPage } from "./../page/play-modes.page";
 import { StatisticsPage } from "../page/statistics.page";
 import { ProfilePage } from "../page/profile.page";
 import { ContactPage } from "../page/contact.page";
@@ -29,8 +29,8 @@ test.describe("home page", () => {
   test("play sudoku button", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
-    const playPage = new PlayPage(page);
-    await playPage.playPageIsRendered();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.playModesPageIsRendered();
   });
 
   test("header renders correctly", async ({ page }) => {
@@ -70,7 +70,13 @@ test.describe("home page", () => {
 
   test("sidebar drill button", async ({ page }) => {});
 
-  test("sidebar play button", async ({ page }) => {});
+  test("sidebar play button", async ({ page }) => {
+    const headerComponent = new HeaderComponent(page);
+    await headerComponent.drawer.click();
+    await headerComponent.drawerPlay.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.playModesPageIsRendered();
+  });
 
   test("sidebar contact button", async ({ page }) => {
     const headerComponent = new HeaderComponent(page);

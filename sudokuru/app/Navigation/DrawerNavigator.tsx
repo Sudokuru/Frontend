@@ -15,6 +15,7 @@ import DrillGame from "../Pages/DrillGame";
 import ContactPage from "../Pages/ContactPage";
 import ReleaseNotesPage from "../Pages/ReleaseNotesPage";
 import AboutUsPage from "../Pages/AboutUsPage";
+import PlayModesPage from "../Pages/PlayModesPage";
 import { useTheme } from "../Contexts/ThemeContext";
 import { useWindowDimensions } from "react-native";
 import { isNavHeaderVisible } from "../Functions/GameLayout";
@@ -48,6 +49,7 @@ const DrawerNavigator = () => {
         >
           <Drawer.Screen name="HomePage" component={HomePage} />
           <Drawer.Screen name="PlayPage" component={PlayPage} />
+          <Drawer.Screen name="PlayModesPage" component={PlayModesPage} />
           <Drawer.Screen
             name="SudokuPage"
             component={SudokuPage}

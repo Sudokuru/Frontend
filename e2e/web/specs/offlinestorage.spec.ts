@@ -6,6 +6,8 @@ import { ProfilePage } from "../page/profile.page";
 import { HomePage } from "../page/home.page";
 import { PlayPage } from "../page/play.page";
 import { DrillPage } from "../page/drill.page";
+import { PlayModesPage } from "../page/play-modes.page";
+import { SudokuBoardComponent } from "../components/sudoku-board.component";
 import {
   ALMOST_FINISHED_GAME,
   INVALID_ACTIVE_GAME_DATA,
@@ -42,6 +44,92 @@ const INVALID_DRILL_ACTIVE_HINT = withOutOfRangeActiveHint(
   POINTING_PAIR_DRILL_GAME,
 );
 
+test.describe("Home preference recovery", () => {
+  test.use({
+    homeDifficultyStorage: "invalid-difficulty",
+    homeShortcutsStorage: { invalid: true },
+  });
+
+  test("restores default difficulty and shortcuts from malformed preferences", async ({
+    page,
+  }) => {
+    const home = new HomePage(page);
+    await expect(home.difficultySelector).toHaveAccessibleName(
+      "Difficulty: Novice",
+    );
+    await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
+    await expect(home.startLessons).toBeInViewport({ ratio: 1 });
+    await page.reload();
+    await expect(home.difficultySelector).toHaveAccessibleName(
+      "Difficulty: Novice",
+    );
+    await expect(home.playSudoku).toBeInViewport({ ratio: 1 });
+  });
+});
+
+test.describe("Duplicate home shortcuts", () => {
+  test.use({ homeShortcutsStorage: ["play", "play", "learn", "learn"] });
+
+  test("renders each saved shortcut only once", async ({ page }) => {
+    const home = new HomePage(page);
+    await expect(home.playSudoku).toHaveCount(1);
+    await expect(home.startLessons).toHaveCount(1);
+    await home.customize.click();
+    await home.customizeDone.click();
+    await page.reload();
+    await expect(home.playSudoku).toHaveCount(1);
+    await expect(home.startLessons).toHaveCount(1);
+  });
+});
+
+const homeResumeRecoveryCases = [
+  {
+    name: "invalid classic save with a valid drill",
+    storage: {
+      activeGameStorage: INVALID_ACTIVE_GAME_DATA,
+      activeDrillGameStorage: POINTING_PAIR_DRILL_GAME,
+    },
+    invalidResume: "resumeClassic",
+    validResume: "resumeDrill",
+    savedFirstCell: "6",
+  },
+  {
+    name: "invalid drill save with a valid classic puzzle",
+    storage: {
+      activeGameStorage: ALMOST_FINISHED_GAME,
+      activeDrillGameStorage: INVALID_ACTIVE_GAME_DATA,
+    },
+    invalidResume: "resumeDrill",
+    validResume: "resumeClassic",
+    savedFirstCell: "1",
+  },
+] as const;
+
+for (const scenario of homeResumeRecoveryCases) {
+  test.describe(`Home recovery: ${scenario.name}`, () => {
+    test.use(scenario.storage);
+
+    test("hides only the invalid resume and preserves the valid game", async ({
+      featurePreview,
+    }) => {
+      const header = new HeaderComponent(featurePreview);
+      const home = new HomePage(featurePreview);
+      await header.home.click();
+      const invalidResume = home[scenario.invalidResume];
+      const validResume = home[scenario.validResume];
+      await expect(validResume).toBeInViewport({ ratio: 1 });
+      await expect(invalidResume).toHaveCount(0);
+      await featurePreview.reload();
+      await expect(validResume).toBeInViewport({ ratio: 1 });
+      await expect(invalidResume).toHaveCount(0);
+      await validResume.click();
+      const board = new SudokuBoardComponent(featurePreview);
+      await board.sudokuBoardIsRendered();
+      await board.cellHasValue(0, 0, scenario.savedFirstCell);
+    });
+  });
+}
+
 test.describe("Offline Storage", () => {
   test.use({ statisticsStorage: {} });
   test("Invalid statistics object does not crash app", async ({ page }) => {
@@ -72,6 +160,8 @@ test.describe("Offline Storage", () => {
     await page.reload();
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -130,6 +220,8 @@ test.describe("Offline Storage", () => {
     await page.reload();
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -159,6 +251,8 @@ test.describe("Offline Storage", () => {
   }) => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await playPage.playPageIsRendered();
     await expect(playPage.resume).not.toBeInViewport({ ratio: 1 });
@@ -185,6 +279,8 @@ test.describe("Offline Storage", () => {
   test("Resume Game with invalid data does not crash app", async ({ page }) => {
     const homePage = new HomePage(page);
     await homePage.playSudoku.click();
+    const playModesPage = new PlayModesPage(page);
+    await playModesPage.classic.click();
     const playPage = new PlayPage(page);
     await page.evaluate(
       (INVALID_ACTIVE_GAME_DATA: JSON) => {

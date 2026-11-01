@@ -15,6 +15,8 @@ import { DrillPage } from "../../page/drill.page";
 import { HeaderComponent } from "../../components/header.component";
 import { ProfilePage } from "../../page/profile.page";
 
+test.use({ drillTutorialStorage: true });
+
 test.describe("hint", () => {
   test.use({ drillGametoResume: POINTING_PAIR_CORRECT_DRILL_GAME });
   const keys = ["h", "H"];
