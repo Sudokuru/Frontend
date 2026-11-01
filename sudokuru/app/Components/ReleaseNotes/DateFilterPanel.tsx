@@ -147,6 +147,7 @@ export const DateFilterPanel = ({
       >
         {monthsForYear(yearContext).map((month) => {
           const isSelected = isMonthSelected(month);
+          const disabled = isMonthDisabled(yearContext, month);
           // Selected chips use black text on the primary background; white
           // text does not meet contrast requirements there.
           const chipTextColor = isSelected
@@ -157,7 +158,7 @@ export const DateFilterPanel = ({
               testID={`ReleaseNotes${testIDPrefix}MonthOption-${month}`}
               key={month}
               selected={isSelected}
-              disabled={isMonthDisabled(yearContext, month)}
+              disabled={disabled}
               onPress={() => selectMonth(month)}
               mode={isSelected ? "flat" : "outlined"}
               selectedColor={chipTextColor}
@@ -166,6 +167,7 @@ export const DateFilterPanel = ({
                   ? theme.colors.primary
                   : theme.colors.surfaceAlt,
                 borderColor: theme.colors.border,
+                opacity: disabled ? 0.5 : 1,
               }}
               textStyle={{ color: chipTextColor }}
             >
