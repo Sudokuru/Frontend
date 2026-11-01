@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Keyboard, Platform, Pressable, ScrollView, View } from "react-native";
 import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { IconButton, Modal, Portal, Searchbar, Text } from "react-native-paper";
 import type { HomeShortcutId } from "../../Api/HomeShortcuts";
@@ -18,6 +18,16 @@ const SHORTCUT_LIBRARY_CATEGORIES: {
   { id: "strategies", title: "Strategy Practice" },
   { id: "account", title: "Account" },
 ];
+
+// Paper's Modal does not avoid the software keyboard, so this sheet lifts
+// itself above it and shrinks its max height to the visible area. The
+// will-show variants run before the iOS keyboard animation; Android only
+// emits the did-show variants. These events never fire on web.
+// See docs/DesignDecisions/react-native-paper-modal-keyboard-avoidance.md.
+const KEYBOARD_SHOW_EVENT =
+  Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+const KEYBOARD_HIDE_EVENT =
+  Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
 
 interface HomeShortcutLibraryProps {
   isLibraryOpen: boolean;
@@ -44,6 +54,20 @@ const HomeShortcutLibrary = ({
     React.useState<Set<HomeShortcutCategory>>(
       () => new Set(["activities", "account"]),
     );
+  const [keyboardHeight, setKeyboardHeight] = React.useState(0);
+
+  React.useEffect(() => {
+    const showListener = Keyboard.addListener(KEYBOARD_SHOW_EVENT, (event) =>
+      setKeyboardHeight(event.endCoordinates.height),
+    );
+    const hideListener = Keyboard.addListener(KEYBOARD_HIDE_EVENT, () =>
+      setKeyboardHeight(0),
+    );
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
   const cardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
@@ -88,10 +112,10 @@ const HomeShortcutLibrary = ({
         onDismiss={closeLibrary}
         contentContainerStyle={{
           width: isMobile ? "100%" : Math.min(640, windowSize.width - 48),
-          maxHeight: windowSize.height * 0.78,
+          maxHeight: windowSize.height * 0.78 - keyboardHeight,
           alignSelf: "center",
           marginTop: "auto",
-          marginBottom: isMobile ? 0 : "auto",
+          marginBottom: isMobile ? keyboardHeight : "auto",
           padding: isMobile ? 18 : 24,
           borderTopLeftRadius: 22,
           borderTopRightRadius: 22,
@@ -151,7 +175,10 @@ const HomeShortcutLibrary = ({
           iconColor={theme.colors.primary}
           placeholderTextColor={cardTextColor}
         />
-        <ScrollView style={{ marginTop: 12 }}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          style={{ marginTop: 12 }}
+        >
           {availableShortcutGroups.length > 0 ? (
             availableShortcutGroups.map((category) => {
               const isExpanded =
