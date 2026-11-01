@@ -1,16 +1,14 @@
 import { HOME_DEFAULT_DIFFICULTY } from "../../Api/HomePreferences";
 import type { HomeShortcutId } from "../../Api/HomeShortcuts";
 import type { GameDifficulty } from "../../Functions/GameDifficulties";
-import type { SudokuResumeSnapshot } from "../SudokuBoard/SudokuBoardSharedFunctionsController";
 import {
   getQuickStartSudokuMode,
-  getSudokuMode,
   getSudokuModeCatalogue,
   getSudokuModeShortcuts,
 } from "../../SudokuModes/SudokuModeRegistry";
 import type {
-  DashboardIcon,
   DashboardNavigationAction,
+  HomeResumeDescriptor,
   HomeShortcutCategory,
   SudokuDifficultyOption,
   SudokuModeCardDescriptor,
@@ -19,6 +17,7 @@ import type {
 
 export type {
   DashboardNavigationAction,
+  HomeResumeDescriptor,
   HomeShortcutCategory,
   SudokuModeFlags as HomeDashboardFlags,
 };
@@ -26,16 +25,6 @@ export type {
 export interface HomeDashboardCardDescriptor extends SudokuModeCardDescriptor {
   id: HomeShortcutId;
   shortcutCategory: HomeShortcutCategory;
-}
-
-export interface HomeResumeDescriptor {
-  id: string;
-  title: string;
-  description: string;
-  icon: DashboardIcon;
-  testID: string;
-  category: "play" | "practice";
-  action: DashboardNavigationAction;
 }
 
 export interface HomeHeroAction {
@@ -120,23 +109,6 @@ export const getHomeShortcutCatalogue = (
   ]
     .sort((left, right) => left.homeOrder - right.homeOrder)
     .map(({ homeOrder, ...shortcut }) => shortcut);
-};
-
-export const getHomeResumeDescriptor = (
-  snapshot: SudokuResumeSnapshot,
-): HomeResumeDescriptor => {
-  const mode = getSudokuMode(snapshot.modeId);
-  if (!mode) throw new Error(`Unknown Sudoku mode: ${snapshot.modeId}`);
-
-  return {
-    id: mode.id,
-    title: mode.resume.title,
-    description: `${snapshot.detail} ${mode.resume.descriptionSuffix}`,
-    icon: mode.resume.icon,
-    testID: mode.resume.testID,
-    category: mode.resume.category,
-    action: mode.resume.action,
-  };
 };
 
 export const getHomeHeroAction = (

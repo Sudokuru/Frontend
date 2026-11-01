@@ -48,15 +48,8 @@ import { getSudokuBoardHint as drillGetSudokuBoardHint } from "./Drill/Functions
 import type { Board, ClassicBoard, DrillBoard } from "./SudokuBoard";
 import React, { JSX } from "react";
 import { SudokuStrategy } from "sudokuru";
-import { toTitle } from "../../Functions/Utils";
-
-export interface SudokuResumeSnapshot {
-  modeId: BoardObjectProps["variant"];
-  detail: string;
-}
 
 export interface SudokuVariantMethods {
-  getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot;
   doesCellHaveConflict(
     sudokuBoard: BoardObjectProps,
     r: number,
@@ -102,12 +95,6 @@ export interface SudokuVariantMethods {
 
 // Default methods for all variants
 const defaultMethods: SudokuVariantMethods = {
-  getResumeSnapshot(sudokuBoard: BoardObjectProps): SudokuResumeSnapshot {
-    return {
-      modeId: sudokuBoard.variant,
-      detail: toTitle(sudokuBoard.statistics.difficulty),
-    };
-  },
   doesCellHaveConflict(sudokuBoard: BoardObjectProps, r: number, c: number) {
     return coreDoesCellHaveConflict(sudokuBoard, r, c);
   },
@@ -240,6 +227,3 @@ export const boardMethods = {
   classic: { ...defaultMethods, ...overrides.classic },
   drill: { ...defaultMethods, ...overrides.drill },
 } satisfies Record<GameVariant, SudokuVariantMethods>;
-
-export const getSudokuResumeSnapshot = (sudokuBoard: BoardObjectProps) =>
-  boardMethods[sudokuBoard.variant].getResumeSnapshot(sudokuBoard);

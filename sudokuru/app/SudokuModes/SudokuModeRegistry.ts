@@ -66,10 +66,10 @@ interface SudokuModeQuickStart {
   getAction: (difficulty: GameDifficulty) => DashboardNavigationAction;
 }
 
-interface SudokuModeResumeDefinition {
+export interface HomeResumeDescriptor {
+  id: string;
   title: string;
-  descriptionSuffix: string;
-  icon: DashboardIcon;
+  description: string;
   testID: string;
   category: "play" | "practice";
   action: DashboardNavigationAction;
@@ -81,7 +81,7 @@ interface SudokuModeDefinition {
   catalogue?: SudokuModeCardDescriptor;
   quickStart?: SudokuModeQuickStart;
   shortcuts: readonly SudokuModeShortcutDescriptor[];
-  resume: SudokuModeResumeDefinition;
+  getResumeCard: (game: BoardObjectProps) => HomeResumeDescriptor;
   getActiveGame: () => Promise<BoardObjectProps | null>;
 }
 
@@ -214,10 +214,10 @@ const SUDOKU_MODE_REGISTRY = {
       }),
     },
     shortcuts: CLASSIC_SHORTCUTS,
-    resume: {
+    getResumeCard: (game) => ({
+      id: "classic",
       title: "Classic Sudoku",
-      descriptionSuffix: "puzzle",
-      icon: "grid",
+      description: `${toTitle(game.statistics.difficulty)} puzzle`,
       testID: "HomeResumeClassicButton",
       category: "play",
       action: {
@@ -225,7 +225,7 @@ const SUDOKU_MODE_REGISTRY = {
         currentPage: "SudokuPage",
         params: { action: "ResumeGame" },
       },
-    },
+    }),
     getActiveGame: getActiveClassicGame,
   },
   drill: {
@@ -233,10 +233,10 @@ const SUDOKU_MODE_REGISTRY = {
     isAvailable: (flags: SudokuModeFlags) =>
       flags.featurePreview && flags.drillMode,
     shortcuts: DRILL_SHORTCUTS,
-    resume: {
+    getResumeCard: (game) => ({
+      id: "drill",
       title: "Strategy Drill",
-      descriptionSuffix: "practice",
-      icon: "target",
+      description: `${toTitle(game.statistics.difficulty)} practice`,
       testID: "HomeResumeDrillButton",
       category: "practice",
       action: {
@@ -244,7 +244,7 @@ const SUDOKU_MODE_REGISTRY = {
         currentPage: "DrillGame",
         params: { action: "ResumeGame" },
       },
-    },
+    }),
     getActiveGame: getActiveDrillGame,
   },
 } satisfies SudokuModeRegistry;
@@ -275,8 +275,19 @@ export const getSudokuModeShortcuts = (
     .flatMap((mode) => [...mode.shortcuts])
     .sort((left, right) => left.homeOrder - right.homeOrder);
 
-export const getSudokuModeResumeProviders = (flags: SudokuModeFlags) =>
-  getAvailableSudokuModes(flags).map((mode) => mode.getActiveGame);
+export const getSudokuModeResumeCards = async (
+  flags: SudokuModeFlags,
+): Promise<HomeResumeDescriptor[]> => {
+  const results = await Promise.allSettled(
+    getAvailableSudokuModes(flags).map(async (mode) => {
+      const game = await mode.getActiveGame();
+      return game ? mode.getResumeCard(game) : null;
+    }),
+  );
+  return results.flatMap((result) =>
+    result.status === "fulfilled" && result.value ? [result.value] : [],
+  );
+};
 
 export const getQuickStartSudokuMode = (flags: SudokuModeFlags) =>
   getAvailableSudokuModes(flags)
