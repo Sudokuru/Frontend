@@ -325,6 +325,71 @@ jobs:
           name: android binary
           path: sudokuru/Build/*.apk
 
+  app_release_ios:
+    name: Build iOS and submit to TestFlight
+    runs-on: macos-26
+    needs: [ deploy_website_dev, deploy_app_dev ]
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    timeout-minutes: 120
+    environment: testflight
+    permissions:
+      contents: read
+    concurrency:
+      group: ios-testflight-production
+      cancel-in-progress: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.5.0
+      - name: Select Xcode
+        run: sudo xcode-select --switch /Applications/Xcode_26.4.app/Contents/Developer
+      - name: Verify native build tools
+        run: |
+          xcodebuild -version
+          pod --version
+          fastlane --version
+      - name: Verify Expo token is configured
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [[ -z "$EXPO_TOKEN" ]]; then
+            echo '::error::Set EXPO_TOKEN in the testflight environment secrets. See docs/Deployment/iOS.md.'
+            exit 1
+          fi
+      - name: Setup Changelog
+        uses: ./.github/workflows/composite-actions/set-changelog-date
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@b184ff86a3c926240f1b6db41764c83a01c02eef
+        with:
+          eas-version: '25.3.0'
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build iOS locally using Expo-managed signing credentials
+        working-directory: sudokuru
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          NPM_CONFIG_IGNORE_SCRIPTS: 'true'
+        run: eas build --platform ios --profile production --local --non-interactive --output "$RUNNER_TEMP/sudokuru.ipa"
+      - name: Upload signed iOS artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sudokuru-ios-${{ github.run_number }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sudokuru.ipa
+          if-no-files-found: error
+          retention-days: 14
+      - name: Submit this build to TestFlight through EAS
+        working-directory: sudokuru
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas submit --platform ios --profile production --path "$RUNNER_TEMP/sudokuru.ipa" --non-interactive --wait --no-auto-testflight-setup
+
   app_build_desktop:
     name: app_build_desktop ${{ matrix.name }}
     strategy:
