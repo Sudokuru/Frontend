@@ -75,6 +75,8 @@
 2. Download the expo app on your mobile device.
 3. On your development device, e.g., laptop, login by running: `expo login` and fill out the parameters.
 
+For signed iOS builds and automatic TestFlight delivery, see the [iOS deployment setup](docs/Deployment/iOS.md).
+
 ## 🖥️ Desktop Setup (for Tauri development)
 
 1. Install Rust
