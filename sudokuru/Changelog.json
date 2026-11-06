@@ -4,7 +4,7 @@
     "date": "#{date}#",
     "summary": "Improved home shortcut rearranging on touch devices so that it is easy to scroll while customizing.",
     "bug fixes": [
-      "It is now easier to scroll on mobile while re-arranging shortcut cards. Press and hold to rearrange a shortcut, and drag it near the top or bottom of the screen to scroll while moving it."
+      "It is now easier to scroll on mobile while rearranging shortcut cards. Press and hold to rearrange a shortcut, and drag it near the top or bottom of the screen to scroll while moving it."
     ],
     "targets": ["web", "mobile", "desktop"],
     "contributors": ["Thomas-Gallant"]
