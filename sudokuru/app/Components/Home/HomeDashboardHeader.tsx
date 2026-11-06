@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ScrollView, View } from "react-native";
+import { Image, Platform, ScrollView, View } from "react-native";
 import { Button, Menu, Text } from "react-native-paper";
 import { useTheme } from "../../Contexts/ThemeContext";
 import { useLogoWithoutText } from "../../Styling/logos";
@@ -96,6 +96,10 @@ const HomeDashboardHeader = ({
     : theme.semantic.text.inverse;
   const headingVariant = isMobile ? "headlineSmall" : "headlineMedium";
   const logoSize = isMobile ? 52 : 64;
+  const supportsTouch =
+    Platform.OS !== "web" ||
+    (typeof window !== "undefined" &&
+      window.matchMedia("(any-pointer: coarse)").matches);
 
   return (
     <View
@@ -118,11 +122,13 @@ const HomeDashboardHeader = ({
               Edit Home
             </Text>
             <Text
-              numberOfLines={1}
+              numberOfLines={supportsTouch ? 2 : 1}
               variant="bodySmall"
               style={{ color: theme.semantic.text.tertiary, opacity: 0.7 }}
             >
-              Drag shortcuts to rearrange them.
+              {supportsTouch
+                ? "Hold, then drag to rearrange shortcuts."
+                : "Drag shortcuts to rearrange them."}
             </Text>
           </>
         ) : (

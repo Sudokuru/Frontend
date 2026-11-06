@@ -1,5 +1,10 @@
 import React from "react";
-import { Animated, PanResponder } from "react-native";
+import {
+  AccessibilityInfo,
+  Animated,
+  PanResponder,
+  Platform,
+} from "react-native";
 import type { HomeShortcutId } from "../../Api/HomeShortcuts";
 
 export interface HomeShortcutDragOptions {
@@ -10,7 +15,10 @@ export interface HomeShortcutDragOptions {
   columns: number;
   total: number;
   gap: number;
+  getScrollOffset: () => number;
   editing: boolean;
+  onDragStart: (onScroll: (offset: number) => void) => void;
+  onDragPosition: (pointerY: number) => void;
   onDragPreview: (shortcutId: HomeShortcutId, toIndex: number) => void;
   onDragEnd: () => void;
   onDragCancel: () => void;
@@ -32,7 +40,9 @@ const getGridPosition = (
 export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
   const { index, columns, width, height, gap, editing } = options;
   const [dragging, setDragging] = React.useState(false);
+  const [holding, setHolding] = React.useState(false);
   const [pan] = React.useState(() => new Animated.ValueXY());
+  const [wiggle] = React.useState(() => new Animated.Value(0));
   const [position] = React.useState(
     () =>
       new Animated.ValueXY(getGridPosition(index, columns, width, height, gap)),
@@ -43,11 +53,133 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
   const dragOrigin = React.useRef(
     getGridPosition(index, columns, width, height, gap),
   );
+  const dragStartScrollOffset = React.useRef(options.getScrollOffset());
+  const lastGesture = React.useRef<{ dx: number; dy: number } | null>(null);
   const latestOptions = React.useRef(options);
+  const holdTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const touchArmed = React.useRef(false);
+  const touchGesture = React.useRef(false);
+  const responderActive = React.useRef(false);
+
+  const clearHold = React.useCallback(() => {
+    if (holdTimer.current) clearTimeout(holdTimer.current);
+    holdTimer.current = null;
+    if (touchArmed.current) latestOptions.current.onCardTouchEnd();
+    touchArmed.current = false;
+    touchGesture.current = false;
+    setHolding(false);
+  }, []);
+
+  React.useEffect(
+    () => () => {
+      if (holdTimer.current) clearTimeout(holdTimer.current);
+      if (touchArmed.current) latestOptions.current.onCardTouchEnd();
+      if (responderActive.current) latestOptions.current.onDragCancel();
+    },
+    [],
+  );
+
+  React.useEffect(() => {
+    if (editing) return;
+    if (holdTimer.current || touchArmed.current) clearHold();
+    if (responderActive.current) {
+      responderActive.current = false;
+      dragStarted.current = false;
+      lastGesture.current = null;
+      latestOptions.current.onDragCancel();
+      setDragging(false);
+    }
+  }, [clearHold, editing]);
+
+  React.useEffect(() => {
+    if (!holding) {
+      wiggle.stopAnimation();
+      wiggle.setValue(0);
+      return;
+    }
+    let active = true;
+    let animation: Animated.CompositeAnimation | undefined;
+    AccessibilityInfo.isReduceMotionEnabled().then((reducedMotion) => {
+      if (!active || reducedMotion) return;
+      animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(wiggle, {
+            toValue: -1,
+            duration: 95,
+            useNativeDriver: false,
+          }),
+          Animated.timing(wiggle, {
+            toValue: 1,
+            duration: 190,
+            useNativeDriver: false,
+          }),
+          Animated.timing(wiggle, {
+            toValue: 0,
+            duration: 95,
+            useNativeDriver: false,
+          }),
+        ]),
+      );
+      animation.start();
+    });
+    return () => {
+      active = false;
+      animation?.stop();
+      wiggle.setValue(0);
+    };
+  }, [holding, wiggle]);
 
   React.useEffect(() => {
     latestOptions.current = options;
   });
+
+  const updateDrag = React.useCallback(
+    (dx: number, dy: number, currentScrollOffset: number) => {
+      const {
+        shortcutId,
+        columns: columnCount,
+        total: itemCount,
+        gap: cardGap,
+        width: cardWidth,
+        height: cardHeight,
+        onDragPreview: handleDragPreview,
+      } = latestOptions.current;
+      const scrollDelta = currentScrollOffset - dragStartScrollOffset.current;
+      const startIndex = dragStartIndex.current;
+      const startRow = Math.floor(startIndex / columnCount);
+      const startColumn = startIndex % columnCount;
+      const rawColumn =
+        (startColumn * (cardWidth + cardGap) + dx) / (cardWidth + cardGap);
+      const rawRow =
+        (startRow * (cardHeight + cardGap) + dy + scrollDelta) /
+        (cardHeight + cardGap);
+      const lastRow = Math.floor(lastPreviewIndex.current / columnCount);
+      const lastColumn = lastPreviewIndex.current % columnCount;
+      let targetColumn = lastColumn;
+      let targetRow = lastRow;
+
+      while (rawColumn > targetColumn + 0.6) targetColumn += 1;
+      while (rawColumn < targetColumn - 0.6) targetColumn -= 1;
+      while (rawRow > targetRow + 0.6) targetRow += 1;
+      while (rawRow < targetRow - 0.6) targetRow -= 1;
+
+      targetColumn = Math.max(0, Math.min(columnCount - 1, targetColumn));
+      targetRow = Math.max(0, targetRow);
+      const targetIndex = Math.min(
+        itemCount - 1,
+        targetRow * columnCount + targetColumn,
+      );
+      // Scrolling moves the grid under the finger, so compensate the card's
+      // position even while the finger is stationary at the viewport edge.
+      pan.setValue({ x: dx, y: dy + scrollDelta });
+
+      if (targetIndex !== lastPreviewIndex.current) {
+        lastPreviewIndex.current = targetIndex;
+        handleDragPreview(shortcutId, targetIndex);
+      }
+    },
+    [pan],
+  );
 
   React.useEffect(() => {
     const targetPosition = getGridPosition(index, columns, width, height, gap);
@@ -68,17 +200,35 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
   // eslint-disable-next-line react-hooks/refs
   const [panResponder] = React.useState(() =>
     PanResponder.create({
-      // Claim the touch as soon as it starts on an editing card so the drag
-      // owns the gesture for its entire lifetime. Native scroll views claim
-      // vertical pans before any move threshold is reached, so the parent
-      // ScrollView is locked through the onCardTouchStart/onCardTouchEnd
-      // callbacks below while a card is being touched. The Remove button is
-      // not affected: it sits deeper in the tree and claims the responder
-      // before these handlers are consulted.
-      onStartShouldSetPanResponder: () => latestOptions.current.editing,
+      // Mouse drags begin immediately. Touches leave scrolling available until
+      // a stationary long press arms the card; movement before then cancels it.
+      onStartShouldSetPanResponder: (event) => {
+        if (!latestOptions.current.editing) return false;
+        const isTouch =
+          Platform.OS !== "web" ||
+          ("type" in event.nativeEvent &&
+            event.nativeEvent.type === "touchstart");
+        if (!isTouch) return true;
+        if (touchGesture.current) return false;
+        touchGesture.current = true;
+        holdTimer.current = setTimeout(() => {
+          holdTimer.current = null;
+          touchArmed.current = true;
+          latestOptions.current.onCardTouchStart();
+          setHolding(true);
+        }, 400);
+        return false;
+      },
       onMoveShouldSetPanResponder: (_, gesture) => {
         const { editing: canDrag } = latestOptions.current;
-        return canDrag && Math.abs(gesture.dx) + Math.abs(gesture.dy) > 6;
+        if (!canDrag) return false;
+        if (touchGesture.current && !touchArmed.current) {
+          if (Math.abs(gesture.dx) + Math.abs(gesture.dy) > 8) clearHold();
+          return false;
+        }
+        return (
+          touchArmed.current && Math.abs(gesture.dx) + Math.abs(gesture.dy) > 6
+        );
       },
       onShouldBlockNativeResponder: () => true,
       onPanResponderGrant: () => {
@@ -88,6 +238,8 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
           width: cardWidth,
           height: cardHeight,
           gap: cardGap,
+          getScrollOffset,
+          onDragStart: handleDragStart,
           onCardTouchStart: handleCardTouchStart,
         } = latestOptions.current;
         const origin = getGridPosition(
@@ -102,20 +254,19 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
         dragOrigin.current = origin;
         dragStartIndex.current = currentIndex;
         lastPreviewIndex.current = currentIndex;
+        dragStartScrollOffset.current = getScrollOffset();
+        lastGesture.current = null;
         pan.setValue({ x: 0, y: 0 });
         dragStarted.current = false;
-        handleCardTouchStart();
+        responderActive.current = true;
+        if (!touchArmed.current) handleCardTouchStart();
+        handleDragStart((offset) => {
+          if (dragStarted.current && lastGesture.current) {
+            updateDrag(lastGesture.current.dx, lastGesture.current.dy, offset);
+          }
+        });
       },
       onPanResponderMove: (_, gesture) => {
-        const {
-          shortcutId,
-          columns: columnCount,
-          total: itemCount,
-          gap: cardGap,
-          width: cardWidth,
-          height: cardHeight,
-          onDragPreview: handleDragPreview,
-        } = latestOptions.current;
         // Keep the drag visuals and preview behind the same move threshold
         // that used to gate the responder claim.
         if (!dragStarted.current) {
@@ -123,39 +274,16 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
           dragStarted.current = true;
           setDragging(true);
         }
-        const startIndex = dragStartIndex.current;
-        const startRow = Math.floor(startIndex / columnCount);
-        const startColumn = startIndex % columnCount;
-        const rawColumn =
-          (startColumn * (cardWidth + cardGap) + gesture.dx) /
-          (cardWidth + cardGap);
-        const rawRow =
-          (startRow * (cardHeight + cardGap) + gesture.dy) /
-          (cardHeight + cardGap);
-        const lastRow = Math.floor(lastPreviewIndex.current / columnCount);
-        const lastColumn = lastPreviewIndex.current % columnCount;
-        let targetColumn = lastColumn;
-        let targetRow = lastRow;
-
-        while (rawColumn > targetColumn + 0.6) targetColumn += 1;
-        while (rawColumn < targetColumn - 0.6) targetColumn -= 1;
-        while (rawRow > targetRow + 0.6) targetRow += 1;
-        while (rawRow < targetRow - 0.6) targetRow -= 1;
-
-        targetColumn = Math.max(0, Math.min(columnCount - 1, targetColumn));
-        targetRow = Math.max(0, targetRow);
-        const targetIndex = Math.min(
-          itemCount - 1,
-          targetRow * columnCount + targetColumn,
+        lastGesture.current = { dx: gesture.dx, dy: gesture.dy };
+        updateDrag(
+          gesture.dx,
+          gesture.dy,
+          latestOptions.current.getScrollOffset(),
         );
-        pan.setValue({ x: gesture.dx, y: gesture.dy });
-
-        if (targetIndex !== lastPreviewIndex.current) {
-          lastPreviewIndex.current = targetIndex;
-          handleDragPreview(shortcutId, targetIndex);
-        }
+        latestOptions.current.onDragPosition(gesture.moveY);
       },
       onPanResponderRelease: () => {
+        responderActive.current = false;
         const {
           columns: columnCount,
           width: cardWidth,
@@ -164,11 +292,14 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
           onDragEnd: handleDragEnd,
           onCardTouchEnd: handleCardTouchEnd,
         } = latestOptions.current;
-        handleCardTouchEnd();
+        if (touchArmed.current) clearHold();
+        else handleCardTouchEnd();
+        lastGesture.current = null;
         // Touches that never crossed the move threshold were taps, not
         // drags: there is nothing to settle or persist.
         if (!dragStarted.current) return;
         dragStarted.current = false;
+        lastGesture.current = null;
         handleDragEnd();
         const targetPosition = getGridPosition(
           lastPreviewIndex.current,
@@ -193,13 +324,15 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
         });
       },
       onPanResponderTerminate: () => {
+        responderActive.current = false;
         const {
           onDragCancel: handleDragCancel,
           onCardTouchEnd: handleCardTouchEnd,
         } = latestOptions.current;
         dragStarted.current = false;
         handleDragCancel();
-        handleCardTouchEnd();
+        if (touchArmed.current) clearHold();
+        else handleCardTouchEnd();
         Animated.spring(pan, {
           toValue: { x: 0, y: 0 },
           useNativeDriver: false,
@@ -208,5 +341,20 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
     }),
   );
 
-  return { dragging, pan, position, panHandlers: panResponder.panHandlers };
+  return {
+    dragging,
+    holding,
+    wiggle,
+    pan,
+    position,
+    panHandlers: {
+      ...panResponder.panHandlers,
+      onTouchEnd: () => {
+        if (touchGesture.current) clearHold();
+      },
+      onTouchCancel: () => {
+        if (touchGesture.current) clearHold();
+      },
+    },
+  };
 };
