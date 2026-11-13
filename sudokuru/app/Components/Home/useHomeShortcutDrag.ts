@@ -5,6 +5,7 @@ import {
   PanResponder,
   Platform,
 } from "react-native";
+import type { GestureResponderEvent } from "react-native";
 import type { HomeShortcutId } from "../../Api/HomeShortcuts";
 
 export interface HomeShortcutDragOptions {
@@ -87,9 +88,11 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
       dragStarted.current = false;
       lastGesture.current = null;
       latestOptions.current.onDragCancel();
+      pan.stopAnimation();
+      pan.setValue({ x: 0, y: 0 });
       setDragging(false);
     }
-  }, [clearHold, editing]);
+  }, [clearHold, editing, pan]);
 
   React.useEffect(() => {
     if (!holding) {
@@ -349,11 +352,21 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
     position,
     panHandlers: {
       ...panResponder.panHandlers,
-      onTouchEnd: () => {
-        if (touchGesture.current) clearHold();
+      onTouchEnd: (event: GestureResponderEvent) => {
+        if (
+          touchGesture.current &&
+          !responderActive.current &&
+          event.nativeEvent.touches.length === 0
+        )
+          clearHold();
       },
-      onTouchCancel: () => {
-        if (touchGesture.current) clearHold();
+      onTouchCancel: (event: GestureResponderEvent) => {
+        if (
+          touchGesture.current &&
+          !responderActive.current &&
+          event.nativeEvent.touches.length === 0
+        )
+          clearHold();
       },
     },
   };

@@ -34,6 +34,8 @@ export const useDragAutoScroll = (
 
   const reset = React.useCallback(() => {
     stopAutoScroll();
+    scrollOffset.current = 0;
+    contentHeight.current = 0;
     setIsTouchHeld(false);
   }, [stopAutoScroll]);
 
@@ -109,6 +111,7 @@ export const useDragAutoScroll = (
       },
       onDragCancel: () => {
         stopAutoScroll();
+        setIsTouchHeld(false);
         onDragCancel();
       },
       onCardTouchStart: () => setIsTouchHeld(true),
