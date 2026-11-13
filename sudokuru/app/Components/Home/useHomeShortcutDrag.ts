@@ -344,6 +344,16 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
     }),
   );
 
+  const handleTouchFinish = (event: GestureResponderEvent) => {
+    if (
+      touchGesture.current &&
+      !responderActive.current &&
+      event.nativeEvent.touches.length === 0
+    ) {
+      clearHold();
+    }
+  };
+
   return {
     dragging,
     holding,
@@ -352,22 +362,8 @@ export const useHomeShortcutDrag = (options: HomeShortcutDragOptions) => {
     position,
     panHandlers: {
       ...panResponder.panHandlers,
-      onTouchEnd: (event: GestureResponderEvent) => {
-        if (
-          touchGesture.current &&
-          !responderActive.current &&
-          event.nativeEvent.touches.length === 0
-        )
-          clearHold();
-      },
-      onTouchCancel: (event: GestureResponderEvent) => {
-        if (
-          touchGesture.current &&
-          !responderActive.current &&
-          event.nativeEvent.touches.length === 0
-        )
-          clearHold();
-      },
+      onTouchEnd: handleTouchFinish,
+      onTouchCancel: handleTouchFinish,
     },
   };
 };
