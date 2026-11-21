@@ -6,13 +6,18 @@ import hashlib
 import html
 import json
 import math
+import os
 from pathlib import Path
 import struct
 import zlib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "sudokuru" / ".assets" / "FocusFog"
+# Textures are the only files that belong in the app asset directory.
+DEFAULT_TEXTURE_DIR = ROOT / "sudokuru" / ".assets" / "FocusFog"
+# Review artifacts (preview page, contact sheet, provenance manifest) are
+# committed documentation, never app assets.
+DEFAULT_PREVIEW_DIR = ROOT / "docs" / "DesignDecisions" / "fog-textures"
 PRESETS = {
     "haze": {
         "label": "Subtle haze",
@@ -160,11 +165,11 @@ def make_contact_sheet(textures, size):
     return encode_png(width, pixels, height)
 
 
-def make_preview(names, seed, size):
+def make_preview(names, seed, size, texture_prefix):
     cards = []
     for name in names:
         label = html.escape(PRESETS[name]["label"])
-        source = f"fog-{name}.png"
+        source = f"{texture_prefix}/fog-{name}.png"
         samples = "".join(
             f'<div><h3>{theme}</h3><div class="sample {theme.lower()}">'
             f'<img src="{source}" alt="{label} on {theme} background">'
@@ -210,12 +215,24 @@ def main():
     parser.add_argument("--seed", type=int, default=42, help="Deterministic seed (default: 42)")
     parser.add_argument("--size", type=int, default=512, help="Square PNG size, 64–2048 (default: 512)")
     parser.add_argument("--preset", choices=["all", *PRESETS], default="all")
-    parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--texture-dir",
+        type=Path,
+        default=DEFAULT_TEXTURE_DIR,
+        help="Directory for the generated PNG app assets",
+    )
+    parser.add_argument(
+        "--preview-dir",
+        type=Path,
+        default=DEFAULT_PREVIEW_DIR,
+        help="Directory for the committed review artifacts (preview page, contact sheet, manifest)",
+    )
     args = parser.parse_args()
     if not 64 <= args.size <= 2048:
         parser.error("--size must be between 64 and 2048")
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    args.texture_dir.mkdir(parents=True, exist_ok=True)
+    args.preview_dir.mkdir(parents=True, exist_ok=True)
     names = list(PRESETS) if args.preset == "all" else [args.preset]
     manifest = {"generator_version": 1, "seed": args.seed, "size": args.size, "textures": {}}
     textures = {}
@@ -223,7 +240,7 @@ def main():
         pixels = generate_texture(args.size, args.seed, PRESETS[name])
         textures[name] = pixels
         encoded = encode_png(args.size, pixels)
-        path = args.output_dir / f"fog-{name}.png"
+        path = args.texture_dir / f"fog-{name}.png"
         path.write_bytes(encoded)
         manifest["textures"][name] = {
             "file": path.name,
@@ -232,12 +249,15 @@ def main():
             "png_sha256": hashlib.sha256(encoded).hexdigest(),
         }
         print(f"Created {path} ({len(encoded):,} bytes)")
-    (args.output_dir / "preview.png").write_bytes(make_contact_sheet(textures, args.size))
-    (args.output_dir / "manifest.json").write_text(
+    (args.preview_dir / "preview.png").write_bytes(make_contact_sheet(textures, args.size))
+    (args.preview_dir / "manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )
-    preview = args.output_dir / "preview.html"
-    preview.write_text(make_preview(names, args.seed, args.size), encoding="utf-8")
+    texture_prefix = Path(os.path.relpath(args.texture_dir, args.preview_dir)).as_posix()
+    preview = args.preview_dir / "preview.html"
+    preview.write_text(
+        make_preview(names, args.seed, args.size, texture_prefix), encoding="utf-8"
+    )
     print(f"Preview: {preview}")
 
 

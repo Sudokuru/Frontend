@@ -37,28 +37,39 @@ const StatisticsPage = () => {
   const showWarningButton = () => setWarningVisible(true);
   const hideWarningButton = () => setWarningVisible(false);
 
+  // Only the newest outstanding load may commit results or clear loading.
+  const loadIdRef = React.useRef(0);
+
+  const loadStatistics = React.useCallback(
+    (key: string, showSpinner = true) => {
+      const loadId = ++loadIdRef.current;
+      if (showSpinner) setLoading(true);
+      return getStatistics(key).then((res: any) => {
+        if (loadId !== loadIdRef.current) return;
+        if (res) {
+          setTotalStatistics(res);
+        } else {
+          console.log("Cannot get user statistics!");
+        }
+        setLoading(false);
+      });
+    },
+    [],
+  );
+
   async function deleteUserStatistics() {
     await deleteStatistics().then(() => {
       updateLearnedLessons(["NONE"]);
     });
-    await getUserStatistics();
+    // Load quietly so the confirm modal stays open over the previous totals
+    // until the refreshed ones commit, matching the original delete behavior.
+    await loadStatistics(statisticsKey, false);
   }
-
-  const getUserStatistics = React.useCallback(async () => {
-    await getStatistics(statisticsKey).then((res: any) => {
-      if (res) {
-        setTotalStatistics(res);
-      } else {
-        console.log("Cannot get user statistics!");
-      }
-      setLoading(false);
-    });
-  }, [statisticsKey]);
 
   useFocusEffect(
     React.useCallback(() => {
-      getUserStatistics();
-    }, [getUserStatistics]),
+      loadStatistics(statisticsKey);
+    }, [loadStatistics, statisticsKey]),
   );
 
   const isFocused = useIsFocused();
@@ -86,8 +97,11 @@ const StatisticsPage = () => {
             }}
             value={statisticsKey}
             onValueChange={(value) => {
-              setLoading(true);
-              setStatisticsKey(value);
+              // Re-clicking the selected segment must not trigger a reload:
+              // the state bailout would leave the page stuck loading.
+              if (value !== statisticsKey) {
+                setStatisticsKey(value);
+              }
             }}
             buttons={[
               { value: "statistics", label: "Classic" },
