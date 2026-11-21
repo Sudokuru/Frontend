@@ -85,6 +85,7 @@ export interface SudokuVariantMethods {
   ): BoardObjectProps;
   getGuidance(board: BoardObjectProps): PersistedHintPayload | undefined;
   getDisplayHint(board: BoardObjectProps): ActiveHintState | null;
+  usesSelectionHighlights(): boolean;
   isCellExposed(board: BoardObjectProps, r: number, c: number): boolean;
   getNavigatedCells(
     board: BoardObjectProps,
@@ -150,6 +151,9 @@ const defaultMethods: SudokuVariantMethods = {
   prepareBoard: (board) => board,
   getGuidance: () => undefined,
   getDisplayHint: (board) => board.activeHint,
+  usesSelectionHighlights(): boolean {
+    return true;
+  },
   isCellExposed: () => true,
   getNavigatedCells: (board, direction) =>
     board.selectedCells.map((cell) => ({
@@ -312,6 +316,9 @@ const exposeFocusSelection = (board: BoardObjectProps): BoardObjectProps =>
   keepFocusSelectionExposed(board, (r, c) => isFocusCellExposed(board, r, c));
 
 const focusMethods: Partial<SudokuVariantMethods> = {
+  // The visible region already conveys the relevant peers, and identical
+  // values are mostly masked; selection tints would only add noise.
+  usesSelectionHighlights: () => false,
   isCellExposed: isFocusCellExposed,
   getNavigatedCells: (board, direction) =>
     navigateFocusCells(board, direction, (r, c) =>

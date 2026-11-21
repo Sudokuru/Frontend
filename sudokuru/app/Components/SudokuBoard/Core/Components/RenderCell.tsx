@@ -38,6 +38,7 @@ const RenderCell = (
     c,
     boardMethods.doesCellHaveConflict,
     theme,
+    boardMethods.usesSelectionHighlights(),
   );
   const disable: boolean = isBoardDisabled(sudokuHint);
   const noteColor: string[] = getCellNotesColor(displayHint, r, c, theme);

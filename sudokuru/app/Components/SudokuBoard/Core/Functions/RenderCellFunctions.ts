@@ -85,6 +85,7 @@ export const useCellBackgroundColor = (
     c: number,
   ) => boolean,
   theme: Theme,
+  selectionHighlightsEnabled = true,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);
@@ -94,19 +95,21 @@ export const useCellBackgroundColor = (
     sudokuBoard,
     sudokuBoard.puzzleState[r][c],
   );
+  const showPeer = selectionHighlightsEnabled && peer;
+  const showIdenticalValue = selectionHighlightsEnabled && identicalValue;
 
   let cellBackgroundColor;
   if (conflict && !selected) {
     cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
   } else if (conflict && selected) {
     cellBackgroundColor = SELECTED_CONFLICT_COLOR;
-  } else if (selected && identicalValue) {
+  } else if (selected && showIdenticalValue) {
     cellBackgroundColor = SELECTED_IDENTICAL_VALUE_COLOR;
   } else if (selected) {
     cellBackgroundColor = SELECTED_COLOR;
-  } else if (identicalValue) {
+  } else if (showIdenticalValue) {
     cellBackgroundColor = IDENTICAL_VALUE_COLOR;
-  } else if (peer) {
+  } else if (showPeer) {
     cellBackgroundColor = PEER_SELECTED_COLOR;
   } else {
     cellBackgroundColor = theme.semantic.text.inverse;
