@@ -33,4 +33,6 @@ export const PreferencesContext = React.createContext({
   strategyHintOrderSetting: returnSudokuStrategyArray(),
   updateFocusBackground: (props: string) => {},
   focusBackgroundSetting: "dense-classic",
+  toggleFocusManualNoteValueMode: () => {},
+  focusManualNoteValueModeSetting: false,
 });

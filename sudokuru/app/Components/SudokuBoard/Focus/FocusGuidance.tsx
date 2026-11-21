@@ -1,6 +1,7 @@
 import React from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
+import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { BoardObjectProps } from "../../../Functions/LocalDatabase";
 import { formatOneLessonName } from "../../../Functions/learnedLessons";
 import { useTheme } from "../../../Contexts/ThemeContext";
@@ -20,7 +21,6 @@ const findInformationArea = (
   unused: boolean[][],
   size: number,
   titleLength: number,
-  contentLength: number,
 ): InformationArea | undefined => {
   let best: InformationArea | undefined;
   let bestDistance = Infinity;
@@ -28,8 +28,7 @@ const findInformationArea = (
   const inset = Math.max(4, size * 0.12);
   const padding = Math.max(10, size * 0.2);
   const titleFontSize = Math.max(14, size * 0.43);
-  const bodyFontSize = Math.max(12, size * 0.31);
-  const buttonSize = Math.max(32, Math.min(44, size * 0.82));
+  const expandIconSize = Math.max(18, Math.min(28, size * 0.4));
   for (let top = 0; top < 9; top++) {
     const availableColumns = Array<boolean>(9).fill(true);
     for (let bottom = top; bottom < 9; bottom++) {
@@ -44,30 +43,17 @@ const findInformationArea = (
         const width = column - start + 1;
         const height = bottom - top + 1;
         const contentWidth = width * size - 2 * (inset + padding + 1);
-        const titleLines =
-          Math.ceil(
-            titleLength /
-              Math.max(1, Math.floor(contentWidth / (titleFontSize * 0.6))),
-          ) + 1;
-        const bodyLines =
-          Math.ceil(
-            contentLength /
-              Math.max(1, Math.floor(contentWidth / (bodyFontSize * 0.6))),
-          ) + 1;
-        // Reserve the larger explanation/action and all hint controls up front.
-        // Prefer a full-width card below the board over clipped or scrolling text.
+        // The collapsed card shows only the title beside the expand chevron.
+        const titleWidth = contentWidth - expandIconSize - 8;
+        const titleLines = Math.ceil(
+          titleLength /
+            Math.max(1, Math.floor(titleWidth / (titleFontSize * 0.55))),
+        );
         const requiredHeight =
           2 * (inset + padding + 1) +
-          titleLines * titleFontSize * 1.3 +
-          8 +
-          bodyLines * Math.max(17, size * 0.44) +
-          buttonSize +
-          20;
-        if (
-          contentWidth < buttonSize * 3 + 24 ||
-          height * size < requiredHeight
-        )
-          continue;
+          Math.max(titleLines * titleFontSize * 1.3, expandIconSize) +
+          4;
+        if (height * size < requiredHeight) continue;
         const distance =
           (top + height / 2 - 4.5) ** 2 + (start + width / 2 - 4.5) ** 2;
         const score =
@@ -88,18 +74,17 @@ const findInformationArea = (
   return best;
 };
 
-/** Static guidance on a clean card within the inactive fogged grid. */
+/** Collapsed strategy card on the fogged area; the description expands inline. */
 const FocusGuidance = ({
   sudokuBoard,
   methods,
-  children,
 }: {
   sudokuBoard: BoardObjectProps;
   methods: SudokuVariantMethods;
-  children?: React.ReactNode;
 }) => {
   const { theme } = useTheme();
   const size = useCellSize();
+  const [expanded, setExpanded] = React.useState(false);
   const hint = methods.getGuidance(sudokuBoard);
   const displayHint = methods.getDisplayHint(sudokuBoard);
   if (!hint || !displayHint) return null;
@@ -108,14 +93,13 @@ const FocusGuidance = ({
     row.map((_, c) => !methods.isCellExposed(sudokuBoard, r, c)),
   );
   const title = formatOneLessonName(hint.strategy);
-  const area = findInformationArea(
-    unused,
-    size,
-    title.length,
-    Math.max(hint.info.length, hint.action.length),
-  );
+  const area = findInformationArea(unused, size, title.length);
   const appearance = getFocusAppearance(theme);
   const inset = Math.max(4, size * 0.12);
+  const expandIconSize = Math.max(18, Math.min(28, size * 0.4));
+  const expandIconColor = theme.useDarkTheme
+    ? theme.semantic.text.inverse
+    : theme.semantic.text.info;
 
   return (
     <View
@@ -129,7 +113,6 @@ const FocusGuidance = ({
               width: area.width * size,
               height: area.height * size,
               padding: inset,
-              justifyContent: "center",
             }
           : { width: size * 9, padding: inset }
       }
@@ -145,23 +128,41 @@ const FocusGuidance = ({
           borderWidth: 1,
         }}
       >
-        <Text
-          style={{
-            textAlign: "center",
-            color: theme.useDarkTheme
-              ? theme.colors.primary
-              : theme.semantic.text.tertiary,
-            fontSize: Math.max(14, size * 0.43),
-            lineHeight: Math.max(14, size * 0.43) * 1.3,
-            fontWeight: "bold",
-            marginBottom: 8,
-          }}
+        <Pressable
+          testID="focusGuidanceExpand"
+          accessibilityRole="button"
+          accessibilityLabel={
+            expanded
+              ? "Collapse strategy description"
+              : "Expand strategy description"
+          }
+          accessibilityState={{ expanded }}
+          onPress={() => setExpanded(!expanded)}
+          hitSlop={12}
+          style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
         >
-          {title}
-        </Text>
-        {sudokuBoard.activeHint ? (
-          children
-        ) : (
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                color: theme.useDarkTheme
+                  ? theme.colors.primary
+                  : theme.semantic.text.tertiary,
+                fontSize: Math.max(14, size * 0.43),
+                lineHeight: Math.max(14, size * 0.43) * 1.3,
+                fontWeight: "bold",
+              }}
+            >
+              {title}
+            </Text>
+          </View>
+          <MaterialCommunityIcons
+            name={expanded ? "chevron-up" : "chevron-down"}
+            size={expandIconSize}
+            color={expandIconColor}
+          />
+        </Pressable>
+        {expanded && (
           <Text
             style={{
               textAlign: "center",
@@ -170,6 +171,7 @@ const FocusGuidance = ({
                 : theme.semantic.text.info,
               fontSize: Math.max(12, size * 0.31),
               lineHeight: Math.max(17, size * 0.44),
+              marginTop: 8,
             }}
           >
             {hint.info}

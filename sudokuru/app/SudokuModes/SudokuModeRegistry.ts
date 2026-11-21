@@ -30,8 +30,10 @@ export type DashboardIcon =
 
 export type HomeShortcutCategory =
   | "activities"
-  | "difficulties"
-  | "strategies"
+  | "classic"
+  | "focus-classic"
+  | "classic-drill"
+  | "focus-drill"
   | "account";
 
 export interface SudokuModeFlags {
@@ -111,8 +113,6 @@ type FocusDrillStrategyHomeShortcutId =
   `focus-drill-${KebabCase<DrillStrategy>}`;
 export type SudokuModeShortcutId =
   | "drill"
-  | "focus-classic"
-  | "focus-drill"
   | ClassicHomeShortcutId
   | FocusClassicHomeShortcutId
   | DrillStrategyHomeShortcutId
@@ -179,7 +179,7 @@ const CLASSIC_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] =
     testID: `HomeClassic${toTitle(difficulty).replaceAll(" ", "")}Shortcut`,
     badge: "Classic",
     status: "available",
-    shortcutCategory: "difficulties",
+    shortcutCategory: "classic",
     homeOrder: 100 + index,
     action: {
       screen: "SudokuPage",
@@ -197,7 +197,7 @@ const FOCUS_CLASSIC_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] =
     testID: `HomeFocusClassic${toTitle(difficulty).replaceAll(" ", "")}Shortcut`,
     badge: "Focus",
     status: "available" as const,
-    shortcutCategory: "difficulties" as const,
+    shortcutCategory: "focus-classic" as const,
     homeOrder: 110 + index,
     action: {
       screen: "SudokuPage",
@@ -231,7 +231,7 @@ const DRILL_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] = [
     testID: `Home${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
     badge: "Drill",
     status: "available" as const,
-    shortcutCategory: "strategies" as const,
+    shortcutCategory: "classic-drill" as const,
     homeOrder: 200 + index,
     action: {
       screen: "DrillGame",
@@ -250,7 +250,7 @@ const FOCUS_DRILL_SHORTCUTS: readonly SudokuModeShortcutDescriptor[] = [
     testID: `HomeFocus${toTitle(strategy).replaceAll(" ", "")}DrillShortcut`,
     badge: "Focus",
     status: "available" as const,
-    shortcutCategory: "strategies" as const,
+    shortcutCategory: "focus-drill" as const,
     homeOrder: 210 + index,
     action: {
       screen: "DrillGame",
@@ -358,24 +358,7 @@ const SUDOKU_MODE_REGISTRY = {
         params: { focus: "true" },
       },
     },
-    shortcuts: [
-      {
-        id: "focus-classic",
-        title: "Focus Mode Classic",
-        description: "Solve a guided Sudoku puzzle, one strategy at a time.",
-        icon: "image-filter-center-focus",
-        testID: "HomeFocusClassicButton",
-        status: "available",
-        shortcutCategory: "activities",
-        homeOrder: 21,
-        action: {
-          screen: "PlayPage",
-          currentPage: "PlayPage",
-          params: { focus: "true" },
-        },
-      },
-      ...FOCUS_CLASSIC_SHORTCUTS,
-    ],
+    shortcuts: FOCUS_CLASSIC_SHORTCUTS,
     getResumeCard: (game) => ({
       id: "focus-classic",
       title: "Focus Mode Classic",
@@ -410,26 +393,7 @@ const SUDOKU_MODE_REGISTRY = {
         params: { focus: "true" },
       },
     },
-    shortcuts: [
-      {
-        id: "focus-drill",
-        title: "Focus Mode Drill",
-        description:
-          "Practice a strategy with its explanation and region always shown.",
-        icon: "target",
-        testID: "HomeFocusDrillButton",
-        badge: "Preview",
-        status: "available",
-        shortcutCategory: "activities",
-        homeOrder: 22,
-        action: {
-          screen: "DrillPage",
-          currentPage: "DrillPage",
-          params: { focus: "true" },
-        },
-      },
-      ...FOCUS_DRILL_SHORTCUTS,
-    ],
+    shortcuts: FOCUS_DRILL_SHORTCUTS,
     getResumeCard: (game) => ({
       id: "focus-drill",
       title: "Focus Mode Drill",

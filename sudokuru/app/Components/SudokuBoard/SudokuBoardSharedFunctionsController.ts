@@ -58,10 +58,12 @@ import {
   getActiveFocusDrillGame,
 } from "../../Api/Puzzles";
 import {
+  applyAutoNoteMode,
   createClassicFocusStep,
   getFocusActionHint,
   createFocusStep,
   focusCellHasConflict,
+  getStepNoteMode,
   getFocusStep,
   updateClassicFocus,
 } from "./Focus/FocusFunctions";
@@ -82,6 +84,7 @@ export interface SudokuVariantMethods {
   prepareBoard(
     board: BoardObjectProps,
     strategies: SudokuStrategy[],
+    autoModeSwitch: boolean,
   ): BoardObjectProps;
   getGuidance(board: BoardObjectProps): PersistedHintPayload | undefined;
   getDisplayHint(board: BoardObjectProps): ActiveHintState | null;
@@ -119,6 +122,7 @@ export interface SudokuVariantMethods {
     board: Board,
     initializeNotes: boolean,
     strategies: SudokuStrategy[],
+    autoModeSwitch: boolean,
   ): Promise<BoardObjectProps | null>;
   handlePause(sudokuBoard: BoardObjectProps, navigation: any): void;
   getEndGameModal({
@@ -383,10 +387,16 @@ export const boardMethods: Record<GameVariant, SudokuVariantMethods> = {
   "focus-classic": {
     ...defaultMethods,
     ...focusMethods,
-    prepareBoard(board: BoardObjectProps, strategies: SudokuStrategy[]) {
+    prepareBoard(
+      board: BoardObjectProps,
+      strategies: SudokuStrategy[],
+      autoModeSwitch: boolean,
+    ) {
       if ("initialPuzzleState" in board)
         throw new Error("Expected classic board");
-      return exposeFocusSelection(updateClassicFocus(board, strategies));
+      return exposeFocusSelection(
+        updateClassicFocus(board, strategies, autoModeSwitch),
+      );
     },
     handlePause(board: BoardObjectProps, navigation: any) {
       coreHandlePause(board, {
@@ -400,11 +410,15 @@ export const boardMethods: Record<GameVariant, SudokuVariantMethods> = {
       board: ClassicBoard,
       initializeNotes: boolean,
       strategies: SudokuStrategy[],
+      autoModeSwitch: boolean,
     ) {
       if (board.action === "ResumeGame") {
         const saved = await getActiveFocusClassicGame();
         if (saved)
-          return exposeFocusSelection(updateClassicFocus(saved, strategies));
+          return applyAutoNoteMode(
+            exposeFocusSelection(updateClassicFocus(saved, strategies)),
+            autoModeSwitch,
+          );
       }
       const game = await coreGenerateGame(
         { ...board, type: "classic", action: "StartGame" },
@@ -415,9 +429,13 @@ export const boardMethods: Record<GameVariant, SudokuVariantMethods> = {
         ...game,
         variant: "focus-classic",
       };
+      const firstStep = createClassicFocusStep(focusBoard, strategies);
       return {
         ...focusBoard,
-        focus: { steps: [createClassicFocusStep(focusBoard, strategies)] },
+        focus: { steps: [firstStep] },
+        ...(autoModeSwitch
+          ? { inNoteMode: getStepNoteMode(firstStep.hint) }
+          : {}),
       };
     },
     getSudokuBoardHint(board: BoardObjectProps, strategies: SudokuStrategy[]) {
@@ -459,10 +477,12 @@ export const boardMethods: Record<GameVariant, SudokuVariantMethods> = {
       board: DrillBoard,
       initializeNotes: boolean,
       strategies: SudokuStrategy[],
+      autoModeSwitch: boolean,
     ) {
       if (board.action === "ResumeGame") {
         const saved = await getActiveFocusDrillGame();
-        if (saved) return exposeFocusSelection(saved);
+        if (saved)
+          return applyAutoNoteMode(exposeFocusSelection(saved), autoModeSwitch);
       }
       const game = await drillGenerateGame(
         { ...board, type: "drill", action: "StartGame" },
@@ -478,6 +498,7 @@ export const boardMethods: Record<GameVariant, SudokuVariantMethods> = {
         focus: {
           steps: [createFocusStep(focusBoard, hint, game.puzzleSolution)],
         },
+        ...(autoModeSwitch ? { inNoteMode: getStepNoteMode(hint) } : {}),
       };
     },
     getSudokuBoardHint(board: BoardObjectProps, strategies: SudokuStrategy[]) {

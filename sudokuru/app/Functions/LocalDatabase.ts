@@ -324,6 +324,7 @@ export const ProfileSchema = z.object({
     z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]),
   ),
   focusBackground: z.string().optional(),
+  focusManualNoteValueMode: z.boolean().default(false),
 });
 
 export const StatisticsSchema = z.object({

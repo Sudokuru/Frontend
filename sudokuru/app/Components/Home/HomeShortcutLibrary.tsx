@@ -14,8 +14,10 @@ const SHORTCUT_LIBRARY_CATEGORIES: {
   title: string;
 }[] = [
   { id: "activities", title: "Activities" },
-  { id: "difficulties", title: "Classic Difficulties" },
-  { id: "strategies", title: "Strategy Practice" },
+  { id: "classic", title: "Classic" },
+  { id: "focus-classic", title: "Focus Mode Classic" },
+  { id: "classic-drill", title: "Classic Drill" },
+  { id: "focus-drill", title: "Focus Mode Drill" },
   { id: "account", title: "Account" },
 ];
 

@@ -66,5 +66,6 @@ export interface Profile {
   simplifyNotes: boolean;
   previewMode: boolean;
   focusBackground?: string;
+  focusManualNoteValueMode?: boolean;
   strategyHintOrder: SudokuStrategy[];
 }

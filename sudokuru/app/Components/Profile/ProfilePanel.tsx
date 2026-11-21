@@ -31,6 +31,8 @@ const ProfilePanel = (props: any) => {
     toggleSimplifyNotes,
     toggleFeaturePreview,
     featurePreviewSetting,
+    toggleFocusManualNoteValueMode,
+    focusManualNoteValueModeSetting,
   } = React.useContext(PreferencesContext);
 
   const highlightMode = () => {
@@ -218,10 +220,10 @@ const ProfilePanel = (props: any) => {
     </View>,
   );
 
-  // Focus Background Pane
+  // Focus Mode Pane
   paneArray.push(
     <View
-      key="focusBackgroundPane"
+      key="focusModePane"
       style={{
         backgroundColor: theme.colors.surface,
         borderRadius: 10,
@@ -231,19 +233,42 @@ const ProfilePanel = (props: any) => {
       }}
     >
       <Text style={{ fontSize: 25, color: theme.semantic.text.quaternary }}>
-        Focus Mode Background:
+        Focus Mode:
       </Text>
-      <Text
-        style={{
-          fontSize: 14,
-          color: theme.semantic.text.primary,
-          marginTop: 4,
-        }}
-      >
-        Choose how inactive areas look while playing Focus Mode. This does not
-        change your app theme.
-      </Text>
-      <FocusBackgroundPicker />
+      <View style={{ marginTop: 10 }}>
+        <ProfileToggle
+          name="Manual Note/Value Mode"
+          value={focusManualNoteValueModeSetting}
+          valueToggle={toggleFocusManualNoteValueMode}
+          testIdPrefix="ManualNoteValueMode"
+        ></ProfileToggle>
+        <Text
+          style={{
+            fontSize: 14,
+            color: theme.semantic.text.primary,
+            marginTop: 2,
+          }}
+        >
+          Turn on to control the note/value toggle yourself. Focus Mode
+          otherwise switches it automatically to match each step.
+        </Text>
+      </View>
+      <View style={{ marginTop: 12 }}>
+        <Text style={{ fontSize: 25, color: theme.semantic.text.quaternary }}>
+          Background:
+        </Text>
+        <Text
+          style={{
+            fontSize: 14,
+            color: theme.semantic.text.primary,
+            marginTop: 4,
+          }}
+        >
+          Choose how inactive areas look while playing Focus Mode. This does not
+          change your app theme.
+        </Text>
+        <FocusBackgroundPicker />
+      </View>
     </View>,
   );
 

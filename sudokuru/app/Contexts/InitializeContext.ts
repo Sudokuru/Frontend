@@ -39,6 +39,9 @@ const InitializeContext = () => {
     DEFAULT_FOCUS_BACKGROUND_ID,
   );
 
+  const [focusManualNoteValueModeSetting, setFocusManualNoteValueModeSetting] =
+    React.useState(false);
+
   // set initial values of theme
   React.useEffect(() => {
     getProfile().then((data: Profile) => {
@@ -54,6 +57,9 @@ const InitializeContext = () => {
       setSimplifyNotesSetting(data.simplifyNotes);
       setFocusBackgroundSetting(
         data.focusBackground ?? DEFAULT_FOCUS_BACKGROUND_ID,
+      );
+      setFocusManualNoteValueModeSetting(
+        data.focusManualNoteValueMode ?? false,
       );
     });
   }, []);
@@ -137,6 +143,11 @@ const InitializeContext = () => {
     [focusBackgroundSetting],
   );
 
+  const toggleFocusManualNoteValueMode = React.useCallback(() => {
+    setProfileValue("focusManualNoteValueMode");
+    return setFocusManualNoteValueModeSetting(!focusManualNoteValueModeSetting);
+  }, [focusManualNoteValueModeSetting]);
+
   const preferences = React.useMemo(
     () => ({
       updateCurrentPage,
@@ -165,6 +176,8 @@ const InitializeContext = () => {
       strategyHintOrderSetting,
       updateFocusBackground,
       focusBackgroundSetting,
+      toggleFocusManualNoteValueMode,
+      focusManualNoteValueModeSetting,
     }),
     [
       updateCurrentPage,
@@ -193,6 +206,8 @@ const InitializeContext = () => {
       strategyHintOrderSetting,
       updateFocusBackground,
       focusBackgroundSetting,
+      toggleFocusManualNoteValueMode,
+      focusManualNoteValueModeSetting,
     ],
   );
 

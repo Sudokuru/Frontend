@@ -15,7 +15,8 @@ type profileValue =
   | "simplifyNotes"
   | "previewMode"
   | "strategyHintOrder"
-  | "focusBackground";
+  | "focusBackground"
+  | "focusManualNoteValueMode";
 
 export const getProfile = async (): Promise<Profile> => {
   const value = await getKeyJSON("profile", ProfileSchema);
@@ -36,6 +37,7 @@ export const getProfile = async (): Promise<Profile> => {
     previewMode: false,
     strategyHintOrder: sudokuStrategyArray,
     focusBackground: DEFAULT_FOCUS_BACKGROUND_ID,
+    focusManualNoteValueMode: false,
   };
 
   if (value == null) {
@@ -97,6 +99,9 @@ export const setProfileValue = async (
       break;
     case "focusBackground":
       value.focusBackground = newValue;
+      break;
+    case "focusManualNoteValueMode":
+      value.focusManualNoteValueMode = !value.focusManualNoteValueMode;
       break;
   }
   setProfile(value);

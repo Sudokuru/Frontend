@@ -350,10 +350,26 @@ export const focusCellHasConflict = (
   return true;
 };
 
+/** Value placements need value mode; every other step edits notes. */
+export const getStepNoteMode = (hint: PersistedHintPayload): boolean =>
+  hint.placements.length === 0;
+
+/** Apply the current step's note/value mode when a game starts or resumes. */
+export const applyAutoNoteMode = (
+  board: BoardObjectProps,
+  autoModeSwitch: boolean,
+): BoardObjectProps => {
+  const step = getFocusStep(board);
+  if (!autoModeSwitch || !step) return board;
+  return { ...board, inNoteMode: getStepNoteMode(step.hint) };
+};
+
 export const updateClassicFocus = (
   board: ClassicObjectProps,
   strategies: SudokuStrategy[],
+  autoModeSwitch = false,
 ): BoardObjectProps => {
+  const previousHint = board.focus?.steps.at(-1)?.hint;
   const steps = (board.focus?.steps ?? []).map((step) =>
     addFocusApplications(step, board.puzzleSolution),
   );
@@ -389,6 +405,16 @@ export const updateClassicFocus = (
       ),
     );
     if (!solved) steps.push(createClassicFocusStep(board, strategies, step));
+  }
+  // Switch the note/value mode only when the active step changes, so a
+  // mid-step manual toggle survives until the next step begins.
+  const activeStep = steps[steps.length - 1];
+  if (autoModeSwitch && activeStep && previousHint !== activeStep.hint) {
+    return {
+      ...board,
+      focus: { steps },
+      inNoteMode: getStepNoteMode(activeStep.hint),
+    };
   }
   return { ...board, focus: { steps } };
 };

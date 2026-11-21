@@ -79,7 +79,11 @@ const SudokuBoard = (props: Board) => {
     simplifyNotesSetting,
     progressIndicatorSetting,
     focusBackgroundSetting,
+    focusManualNoteValueModeSetting,
   } = React.useContext(PreferencesContext);
+
+  // Automatic note/value mode switching is on unless the player opts out.
+  const autoNoteModeSwitch = !focusManualNoteValueModeSetting;
 
   // Call keyboard hotkeys hook early (before early returns) to satisfy React hooks rules
   const {
@@ -112,6 +116,7 @@ const SudokuBoard = (props: Board) => {
         props,
         boardMethods[props.type].initializeNotes(initializeNotes),
         [...strategyHintOrderSetting],
+        autoNoteModeSwitch,
       );
       if (game == null) {
         return;
@@ -211,6 +216,7 @@ const SudokuBoard = (props: Board) => {
           actionHistory: currentBoard.actionHistory.slice(0, -1),
         },
         [...strategyHintOrderSetting],
+        autoNoteModeSwitch,
       );
       saveGame(nextBoard);
       return nextBoard;
@@ -434,9 +440,11 @@ const SudokuBoard = (props: Board) => {
     // Storing old value in actionHistory
     nextBoard.actionHistory.push(newActionHistory);
 
-    const preparedBoard = boardMethods[props.type].prepareBoard(nextBoard, [
-      ...strategyHintOrderSetting,
-    ]);
+    const preparedBoard = boardMethods[props.type].prepareBoard(
+      nextBoard,
+      [...strategyHintOrderSetting],
+      autoNoteModeSwitch,
+    );
 
     if (
       isGameSolved(preparedBoard) &&
@@ -554,9 +562,7 @@ const SudokuBoard = (props: Board) => {
         <FocusGuidance
           sudokuBoard={sudokuBoard}
           methods={boardMethods[props.type]}
-        >
-          {renderHint(true)}
-        </FocusGuidance>
+        />
       </View>
     );
   };
@@ -655,7 +661,7 @@ const SudokuBoard = (props: Board) => {
    * The incrementStage function is used to update the stage of the hint.
    * @returns The hint component if sudokuHint is not null.
    */
-  const renderHint = (embedded = false) => {
+  const renderHint = () => {
     if (!sudokuBoard.activeHint) {
       return;
     }
@@ -664,7 +670,6 @@ const SudokuBoard = (props: Board) => {
 
     return (
       <Hint
-        embedded={embedded}
         hint={activeHint.hint}
         stage={activeHint.stage}
         maxStage={activeHint.maxStage}
@@ -749,9 +754,11 @@ const SudokuBoard = (props: Board) => {
           ? sudokuBoard.actionHistory
           : [...sudokuBoard.actionHistory, hintAction];
       nextBoard.activeHint = null;
-      const preparedBoard = boardMethods[props.type].prepareBoard(nextBoard, [
-        ...strategyHintOrderSetting,
-      ]);
+      const preparedBoard = boardMethods[props.type].prepareBoard(
+        nextBoard,
+        [...strategyHintOrderSetting],
+        autoNoteModeSwitch,
+      );
 
       if (isGameSolved(preparedBoard)) {
         preparedBoard.statistics = finishSudokuGame(
@@ -793,7 +800,7 @@ const SudokuBoard = (props: Board) => {
       {renderPuzzle()}
       {renderActions()}
       {renderNumberControl()}
-      {!boardMethods[props.type].getGuidance(sudokuBoard) && renderHint()}
+      {renderHint()}
     </View>
   );
 };
