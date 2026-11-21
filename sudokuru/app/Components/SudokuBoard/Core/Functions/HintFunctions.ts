@@ -1,4 +1,4 @@
-import { getHint, SudokuStrategy } from "sudokuru";
+import { getHint, getApplicableHints, SudokuStrategy } from "sudokuru";
 import {
   CellProps,
   ClassicObjectProps,
@@ -40,6 +40,23 @@ export const getSudokuHint = (
   }
   hint = hintInjections(hint);
   return { ...hint, simplifyNotesAfterPlacement: false };
+};
+
+/** All applications of the requested strategies, using the same conversions as normal hints. */
+export const getApplicableSudokuHints = (
+  puzzle: CellProps[][],
+  strategies: SudokuStrategy[],
+  solution?: number[][],
+): PersistedHintPayload[] => {
+  const state = convertPuzzleStateToSudokuruFormat(puzzle);
+  return getApplicableHints(
+    state.puzzleValues,
+    state.puzzleNotes,
+    strategies,
+    solution ? convertPuzzleSolutionToSudokuruFormat(solution) : undefined,
+  ).map((hint) =>
+    hintInjections({ ...hint, simplifyNotesAfterPlacement: true }),
+  );
 };
 
 /**
@@ -116,12 +133,15 @@ const convertPuzzleStateToSudokuruFormat = (puzzle: CellProps[][]) => {
 export const getSudokuBoardHint = (
   sudokuBoard: ClassicObjectProps,
   strategyArray: SudokuStrategy[],
+  suppliedHint?: PersistedHintPayload,
 ) => {
-  const hint = getSudokuHint(
-    sudokuBoard.puzzleState,
-    ["AMEND_NOTES", "SIMPLIFY_NOTES", ...strategyArray],
-    sudokuBoard.puzzleSolution,
-  );
+  const hint =
+    suppliedHint ??
+    getSudokuHint(
+      sudokuBoard.puzzleState,
+      ["AMEND_NOTES", "SIMPLIFY_NOTES", ...strategyArray],
+      sudokuBoard.puzzleSolution,
+    );
 
   const strategyIndex =
     sudokuBoard.statistics.numHintsUsedPerStrategy.findIndex(

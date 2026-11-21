@@ -1,6 +1,11 @@
 import React from "react";
 import { Modal, ScrollView, View } from "react-native";
-import { Button, ActivityIndicator, Text } from "react-native-paper";
+import {
+  Button,
+  ActivityIndicator,
+  Text,
+  SegmentedButtons,
+} from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
@@ -11,6 +16,7 @@ import { useTheme } from "../Contexts/ThemeContext";
 
 const StatisticsPage = () => {
   const { theme } = useTheme();
+  const [statisticsKey, setStatisticsKey] = React.useState("statistics");
 
   const { updateLearnedLessons } = React.useContext(PreferencesContext);
 
@@ -38,8 +44,8 @@ const StatisticsPage = () => {
     await getUserStatistics();
   }
 
-  async function getUserStatistics() {
-    await getStatistics().then((res: any) => {
+  const getUserStatistics = React.useCallback(async () => {
+    await getStatistics(statisticsKey).then((res: any) => {
       if (res) {
         setTotalStatistics(res);
       } else {
@@ -47,12 +53,12 @@ const StatisticsPage = () => {
       }
       setLoading(false);
     });
-  }
+  }, [statisticsKey]);
 
   useFocusEffect(
     React.useCallback(() => {
       getUserStatistics();
-    }, []),
+    }, [getUserStatistics]),
   );
 
   const isFocused = useIsFocused();
@@ -70,6 +76,29 @@ const StatisticsPage = () => {
             justifyContent: "center",
           }}
         >
+          <SegmentedButtons
+            theme={{
+              colors: {
+                onSurface: theme.semantic.text.tertiary,
+                secondaryContainer: theme.colors.primary,
+                onSecondaryContainer: theme.semantic.text.info,
+              },
+            }}
+            value={statisticsKey}
+            onValueChange={(value) => {
+              setLoading(true);
+              setStatisticsKey(value);
+            }}
+            buttons={[
+              { value: "statistics", label: "Classic" },
+              {
+                value: "focus_classic_statistics",
+                label: "Focus Mode Classic",
+                style: { minWidth: 180 },
+              },
+            ]}
+            style={{ marginVertical: 12, width: "95%", maxWidth: 520 }}
+          />
           <TotalStatistics
             totalScore={totalStatistics.totalScore}
             numGamesPlayed={totalStatistics.numGamesPlayed}

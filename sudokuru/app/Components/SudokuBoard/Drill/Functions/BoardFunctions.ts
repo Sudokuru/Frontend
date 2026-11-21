@@ -19,7 +19,7 @@ export function finishSudokuGame(
 
 export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
-  navigation.navigate("DrillPage");
+  navigation.navigate("DrillPage", { focus: "false" });
 }
 
 /** Returns an independent cell-by-cell copy of the initial puzzle state. */

@@ -10,11 +10,15 @@ import {
   useMinWindowDimensions,
   useNewWindowDimensions,
 } from "../Functions/WindowDimensions";
-import { getActiveClassicGame } from "../Api/Puzzles";
+import {
+  getActiveClassicGame,
+  getActiveFocusClassicGame,
+} from "../Api/Puzzles";
 import DifficultyPanel from "../Components/Home/DifficultyPanel";
 import { useTheme } from "../Contexts/ThemeContext";
 
-const PlayPage = () => {
+const PlayPage = ({ route }: any) => {
+  const focus = route.params?.focus === "true";
   const navigation: any = useNavigation();
 
   const windowSize = useNewWindowDimensions();
@@ -26,8 +30,10 @@ const PlayPage = () => {
   const [resumeVisible, setResumeVisible] = React.useState(false);
 
   // This determines if user has active game and displays resume button conditionally.
-  async function showOrHideResumeButton() {
-    const game = await getActiveClassicGame();
+  const showOrHideResumeButton = React.useCallback(async () => {
+    const game = await (focus
+      ? getActiveFocusClassicGame()
+      : getActiveClassicGame());
     if (game != null) {
       setResumeVisible(true);
       return true;
@@ -35,12 +41,12 @@ const PlayPage = () => {
       setResumeVisible(false);
       return false;
     }
-  }
+  }, [focus]);
 
   useFocusEffect(
     React.useCallback(() => {
       showOrHideResumeButton();
-    }, []),
+    }, [showOrHideResumeButton]),
   );
 
   const isFocused = useIsFocused();
@@ -84,6 +90,18 @@ const PlayPage = () => {
             </Text>
           </View>
           <View style={{ alignItems: "center", alignSelf: "center" }}>
+            <Text
+              testID="playPageVariant"
+              accessibilityRole="header"
+              style={{
+                color: theme.semantic.text.tertiary,
+                fontSize: 24,
+                fontWeight: "800",
+                marginTop: 8,
+              }}
+            >
+              {focus ? "Focus Mode Classic" : "Classic"}
+            </Text>
             {resumeVisible ? (
               <Button
                 style={{ margin: newSize / 4 }}
@@ -93,11 +111,12 @@ const PlayPage = () => {
                   if (game) {
                     navigation.navigate("SudokuPage", {
                       action: "ResumeGame",
+                      focus: String(focus),
                     });
                   }
                 }}
               >
-                Resume Puzzle
+                {focus ? "Resume Focus Mode Classic" : "Resume Puzzle"}
               </Button>
             ) : (
               <></>
@@ -113,6 +132,7 @@ const PlayPage = () => {
                 width={windowSize.width}
                 height={windowSize.height}
                 navigation={navigation}
+                focus={focus}
               />
             </View>
           </View>

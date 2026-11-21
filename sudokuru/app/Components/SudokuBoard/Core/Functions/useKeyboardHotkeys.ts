@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { Platform } from "react-native";
-import { doesBoardHaveConflict, wrapDigit } from "../../SudokuBoardFunctions";
+import { doesBoardHaveConflict } from "../../SudokuBoardFunctions";
+import type { SudokuVariantMethods } from "../../SudokuBoardSharedFunctionsController";
 import {
   BoardObjectProps,
   CellLocation,
@@ -10,7 +11,7 @@ import {
 interface UseKeyboardHotkeysProps {
   boardType: GameVariant;
   navigation: any;
-  boardMethods: any;
+  boardMethods: Record<GameVariant, SudokuVariantMethods>;
 }
 
 /**
@@ -118,42 +119,37 @@ export const useKeyboardHotkeys = ({
 
   const handleNavigation = useCallback(
     (inputValue: string, board: BoardObjectProps) => {
-      const updatedSelectedCells: CellLocation[] = [];
-
-      for (const cellLocation of board.selectedCells) {
-        let newCol = cellLocation.c;
-        let newRow = cellLocation.r;
-        switch (inputValue) {
-          case "ArrowLeft":
-          case "a":
-          case "A":
-            newCol = wrapDigit(newCol - 1);
-            break;
-          case "ArrowRight":
-          case "d":
-          case "D":
-            newCol = wrapDigit(newCol + 1);
-            break;
-          case "ArrowUp":
-          case "w":
-          case "W":
-            newRow = wrapDigit(newRow - 1);
-            break;
-          case "ArrowDown":
-          case "s":
-          case "S":
-            newRow = wrapDigit(newRow + 1);
-            break;
-          default:
-            return false;
-        }
-        updatedSelectedCells.push({ r: newRow, c: newCol });
+      let direction: CellLocation;
+      switch (inputValue) {
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          direction = { r: 0, c: -1 };
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          direction = { r: 0, c: 1 };
+          break;
+        case "ArrowUp":
+        case "w":
+        case "W":
+          direction = { r: -1, c: 0 };
+          break;
+        case "ArrowDown":
+        case "s":
+        case "S":
+          direction = { r: 1, c: 0 };
+          break;
+        default:
+          return false;
       }
-
-      setBoardSelectedCellsRef.current?.(updatedSelectedCells);
+      setBoardSelectedCellsRef.current?.(
+        boardMethods[boardType].getNavigatedCells(board, direction),
+      );
       return true;
     },
-    [],
+    [boardMethods, boardType],
   );
 
   const handleKeyDown = useCallback(

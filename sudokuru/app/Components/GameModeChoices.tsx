@@ -1,45 +1,30 @@
 import React from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { Pressable, View } from "react-native";
 import MaterialCommunityIcons from "@react-native-vector-icons/material-design-icons";
 import { Surface, Text } from "react-native-paper";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
 import type {
   DashboardNavigationAction,
   SudokuModeCardDescriptor,
 } from "../SudokuModes/SudokuModeRegistry";
-import { getSudokuModeCatalogue } from "../SudokuModes/SudokuModeRegistry";
-import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useTheme } from "../Contexts/ThemeContext";
-import { useNewWindowDimensions } from "../Functions/WindowDimensions";
 
-const PlayModesPage = () => {
-  const navigation: any = useNavigation();
+interface GameModeChoicesProps {
+  choices: SudokuModeCardDescriptor[];
+  onChoose: (action: DashboardNavigationAction) => void;
+}
+
+/** Shared game/variant choice cards used by the navigation pages. */
+const GameModeChoices = ({ choices, onChoose }: GameModeChoicesProps) => {
   const { theme } = useTheme();
+  const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
   const cardSurfaceColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
   const cardTextColor = theme.useDarkTheme
     ? theme.semantic.text.inverse
     : theme.semantic.text.quaternary;
-  const { featurePreviewSetting, drillModeSetting, updateCurrentPage } =
-    React.useContext(PreferencesContext);
-  const windowSize = useNewWindowDimensions();
-  const [focusedChoice, setFocusedChoice] = React.useState<string | null>(null);
-  const variants = getSudokuModeCatalogue({
-    featurePreview: featurePreviewSetting,
-    drillMode: drillModeSetting,
-  });
-  const horizontalPadding = windowSize.width < 760 ? 18 : 32;
-  const isFocused = useIsFocused();
 
-  const navigateTo = (action: DashboardNavigationAction) => {
-    updateCurrentPage(action.currentPage);
-    navigation.navigate(action.screen, action.params);
-  };
-
-  if (!isFocused) return <Text>Error Loading Page</Text>;
-
-  const renderChoices = (choices: SudokuModeCardDescriptor[]) => (
+  return (
     <Surface
       elevation={2}
       style={{
@@ -65,7 +50,7 @@ const PlayModesPage = () => {
             disabled={disabled}
             onFocus={() => setFocusedChoice(choice.id)}
             onBlur={() => setFocusedChoice(null)}
-            onPress={() => choice.action && navigateTo(choice.action)}
+            onPress={() => choice.action && onChoose(choice.action)}
           >
             {({ hovered, pressed }) => {
               let opacity = 1;
@@ -140,60 +125,6 @@ const PlayModesPage = () => {
       })}
     </Surface>
   );
-
-  return (
-    <ScrollView
-      testID="PlayModesPage"
-      style={{
-        width: windowSize.width,
-        height: windowSize.height,
-        backgroundColor: theme.colors.bg,
-      }}
-      contentContainerStyle={{
-        alignItems: "center",
-        paddingHorizontal: horizontalPadding,
-        paddingTop: 24,
-        paddingBottom: 44,
-      }}
-    >
-      <View style={{ width: "100%", maxWidth: 860 }}>
-        <Text
-          accessibilityRole="header"
-          style={{
-            color: theme.semantic.text.primary,
-            fontSize: windowSize.width < 760 ? 36 : 48,
-            lineHeight: windowSize.width < 760 ? 40 : 52,
-            fontWeight: "800",
-            letterSpacing: -1.2,
-          }}
-        >
-          Choose{" "}
-          <Text
-            style={{
-              color: theme.useDarkTheme
-                ? theme.semantic.text.inverse
-                : theme.semantic.text.info,
-              letterSpacing: -1.2,
-            }}
-          >
-            a game
-          </Text>
-        </Text>
-        <Text
-          accessibilityRole="header"
-          variant="titleLarge"
-          style={{
-            marginTop: 24,
-            color: theme.semantic.text.tertiary,
-            fontWeight: "800",
-          }}
-        >
-          Sudoku variants
-        </Text>
-        {renderChoices(variants)}
-      </View>
-    </ScrollView>
-  );
 };
 
-export default PlayModesPage;
+export default GameModeChoices;

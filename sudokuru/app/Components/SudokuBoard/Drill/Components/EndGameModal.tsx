@@ -10,8 +10,10 @@ import { useTheme } from "../../../../Contexts/ThemeContext";
 
 export const EndGameModal = ({
   statistics,
+  focus = false,
 }: {
   statistics: DrillGameStatistics;
+  focus?: boolean;
 }) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
@@ -43,7 +45,7 @@ export const EndGameModal = ({
           marginBottom: 10,
         }}
       >
-        Drill Results
+        {focus ? "Focus Mode Drill Results" : "Classic Drill Results"}
       </Text>
       <View
         style={{
@@ -87,7 +89,9 @@ export const EndGameModal = ({
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
           contentStyle={{ paddingHorizontal: 16 }}
-          onPress={() => navigation.navigate("DrillPage")}
+          onPress={() =>
+            navigation.navigate("DrillPage", { focus: String(focus) })
+          }
           style={{ marginTop: 16, alignSelf: "center" }}
         >
           Change Strategy
@@ -107,6 +111,7 @@ export const EndGameModal = ({
                   params: {
                     params: statistics.difficulty,
                     action: "StartGame",
+                    focus: String(focus),
                   },
                 },
               ],

@@ -8,6 +8,7 @@ import { PreferencesContext } from "../../Contexts/PreferencesContext";
 import { calculateCardsPerRow } from "../Home/Cards";
 import { useTheme } from "../../Contexts/ThemeContext";
 import { THEME_OPTIONS } from "../../Styling/theme";
+import FocusBackgroundPicker from "./FocusBackgroundPicker";
 
 const ProfilePanel = (props: any) => {
   const {
@@ -214,6 +215,35 @@ const ProfilePanel = (props: any) => {
       }}
     >
       <StrategyOrder></StrategyOrder>
+    </View>,
+  );
+
+  // Focus Background Pane
+  paneArray.push(
+    <View
+      key="focusBackgroundPane"
+      style={{
+        backgroundColor: theme.colors.surface,
+        borderRadius: 10,
+        padding: 20,
+        margin: 20,
+        minWidth: 280,
+      }}
+    >
+      <Text style={{ fontSize: 25, color: theme.semantic.text.quaternary }}>
+        Focus Mode Background:
+      </Text>
+      <Text
+        style={{
+          fontSize: 14,
+          color: theme.semantic.text.primary,
+          marginTop: 4,
+        }}
+      >
+        Choose how inactive areas look while playing Focus Mode. This does not
+        change your app theme.
+      </Text>
+      <FocusBackgroundPicker />
     </View>,
   );
 

@@ -112,7 +112,7 @@ export const useCellBackgroundColor = (
     cellBackgroundColor = theme.semantic.text.inverse;
   }
 
-  if (sudokuHint) {
+  if (sudokuHint && !(conflict && !sudokuBoard.activeHint)) {
     const hintCause = isCellAHintCause(sudokuHint, r, c);
     const hintFocus = isCellAHintFocus(sudokuHint, r, c);
 
@@ -155,8 +155,8 @@ const isCellAHintCause = (
  * @param c The column coordinate of the cell to check.
  * @returns True if the cell is a focus of the hint, false otherwise.
  */
-const isCellAHintFocus = (
-  sudokuHint: ActiveHintState | null,
+export const isCellAHintFocus = (
+  sudokuHint: Pick<ActiveHintState, "stage" | "hint"> | null,
   r: number,
   c: number,
 ): boolean => {

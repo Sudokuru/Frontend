@@ -43,15 +43,16 @@ const STATIC_HOME_SHORTCUTS = (
   {
     id: "play",
     title: "Play",
-    description: "Choose a Sudoku variant.",
+    description: "Choose Classic or Focus Mode Sudoku.",
     icon: "play",
     testID: "HomePlayButton",
     status: "available",
     shortcutCategory: "activities",
     homeOrder: 0,
     action: {
-      screen: "PlayModesPage",
-      currentPage: "PlayModesPage",
+      screen: "ModeVariantsPage",
+      currentPage: "PlayPage",
+      params: { game: "play" },
     },
   },
   {

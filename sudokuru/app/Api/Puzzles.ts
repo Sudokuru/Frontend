@@ -5,6 +5,8 @@ import {
   SudokuBoardDrillGameSchema,
   ClassicObjectProps,
   DrillObjectProps,
+  SudokuBoardFocusClassicGameSchema,
+  SudokuBoardFocusDrillGameSchema,
 } from "../Functions/LocalDatabase";
 import { getKeyJSON, removeData, storeData } from "../Functions/AsyncStorage";
 
@@ -38,6 +40,24 @@ export const saveGame = (game: BoardObjectProps) => {
   storeData(`active_${game.variant}_game`, JSON.stringify([game]));
 };
 
+export const getActiveFocusClassicGame =
+  async (): Promise<ClassicObjectProps | null> => {
+    const games = await getKeyJSON(
+      "active_focus-classic_game",
+      SudokuBoardFocusClassicGameSchema,
+    );
+    return games?.[0] ?? null;
+  };
+
+export const getActiveFocusDrillGame =
+  async (): Promise<DrillObjectProps | null> => {
+    const games = await getKeyJSON(
+      "active_focus-drill_game",
+      SudokuBoardFocusDrillGameSchema,
+    );
+    return games?.[0] ?? null;
+  };
+
 /**
  * Completes the game by removing the active game from storage and updating user statistics.
  *
@@ -61,12 +81,13 @@ export const finishGame = async (
   time: number,
   score: number,
   variant: GameVariant,
+  statisticsKey = "statistics",
 ) => {
   // remove the game from storage
   await removeData(`active_${variant}_game`);
 
   // Create or update user's statistics
-  let statistics: Statistics = await getStatistics();
+  let statistics: Statistics = await getStatistics(statisticsKey);
 
   statistics.totalScore += score;
   if (time < statistics.fastestSolveTime || statistics.fastestSolveTime === 0) {
@@ -96,5 +117,5 @@ export const finishGame = async (
     }
   }
 
-  saveStatisitics(statistics);
+  saveStatisitics(statistics, statisticsKey);
 };

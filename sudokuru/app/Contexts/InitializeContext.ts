@@ -2,6 +2,7 @@ import React from "react";
 import { getProfile, setProfileValue } from "../Api/Profile";
 import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { Profile } from "../Api/Puzzle.Types";
+import { DEFAULT_FOCUS_BACKGROUND_ID } from "../Functions/FocusBackgrounds";
 
 // Example commit containing change to add context everywhere it needs to be:
 // https://github.com/Sudokuru/Frontend/commit/0e6470735ab4c75a21e2fa61878f207b08bd3995
@@ -34,6 +35,10 @@ const InitializeContext = () => {
   const [strategyHintOrderSetting, setStrategyHintOrderSetting] =
     React.useState<SudokuStrategy[]>(SUDOKU_STRATEGY_ARRAY);
 
+  const [focusBackgroundSetting, setFocusBackgroundSetting] = React.useState(
+    DEFAULT_FOCUS_BACKGROUND_ID,
+  );
+
   // set initial values of theme
   React.useEffect(() => {
     getProfile().then((data: Profile) => {
@@ -47,6 +52,9 @@ const InitializeContext = () => {
       setProgressIndicatorSetting(data.progressIndicator);
       setInitializeNotesSetting(data.initializeNotes);
       setSimplifyNotesSetting(data.simplifyNotes);
+      setFocusBackgroundSetting(
+        data.focusBackground ?? DEFAULT_FOCUS_BACKGROUND_ID,
+      );
     });
   }, []);
 
@@ -120,6 +128,15 @@ const InitializeContext = () => {
     [strategyHintOrderSetting],
   );
 
+  const updateFocusBackground = React.useCallback(
+    (props: string) => {
+      setProfileValue("focusBackground", props);
+      return setFocusBackgroundSetting(props);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [focusBackgroundSetting],
+  );
+
   const preferences = React.useMemo(
     () => ({
       updateCurrentPage,
@@ -146,6 +163,8 @@ const InitializeContext = () => {
       featurePreviewSetting,
       updateStrategyHintOrder,
       strategyHintOrderSetting,
+      updateFocusBackground,
+      focusBackgroundSetting,
     }),
     [
       updateCurrentPage,
@@ -172,6 +191,8 @@ const InitializeContext = () => {
       featurePreviewSetting,
       updateStrategyHintOrder,
       strategyHintOrderSetting,
+      updateFocusBackground,
+      focusBackgroundSetting,
     ],
   );
 

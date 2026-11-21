@@ -4,7 +4,7 @@ import { View, ImageURISource } from "react-native";
 import { Button } from "react-native-paper";
 import { difficulty, getDifficultyColor } from "./Cards";
 import { toTitle } from "../../Functions/Utils";
-import { getActiveDrillGame } from "../../Api/Puzzles";
+import { getActiveDrillGame, getActiveFocusDrillGame } from "../../Api/Puzzles";
 import { useMinWindowDimensions } from "../../Functions/WindowDimensions";
 import { useTheme } from "../../Contexts/ThemeContext";
 import ListPanel from "./ListPanel";
@@ -55,6 +55,7 @@ function getDrillDifficultyImage(level: difficulty): ImageURISource {
 interface DrillPanelProps {
   width: number;
   height: number;
+  focus?: boolean;
 }
 
 interface DrillCardItem {
@@ -62,7 +63,7 @@ interface DrillCardItem {
   difficulty: difficulty;
 }
 
-const DrillPanel = ({ width, height }: DrillPanelProps) => {
+const DrillPanel = ({ width, height, focus = false }: DrillPanelProps) => {
   const navigation: any = useNavigation();
   const { theme } = useTheme();
 
@@ -72,8 +73,10 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
   const newSize = minWindowSize / 25;
 
   // This determines if user has active game and displays resume button conditionally.
-  async function showOrHideResumeButton() {
-    const game = await getActiveDrillGame();
+  const showOrHideResumeButton = React.useCallback(async () => {
+    const game = await (focus
+      ? getActiveFocusDrillGame()
+      : getActiveDrillGame());
     if (game != null) {
       setResumeVisible(true);
       return true;
@@ -81,12 +84,12 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
       setResumeVisible(false);
       return false;
     }
-  }
+  }, [focus]);
 
   useFocusEffect(
     React.useCallback(() => {
       showOrHideResumeButton();
-    }, []),
+    }, [showOrHideResumeButton]),
   );
 
   const drillItems: DrillCardItem[] = DRILL_STRATEGIES.map((strategy) => ({
@@ -105,11 +108,12 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
             if (game) {
               navigation.navigate("DrillGame", {
                 action: "ResumeGame",
+                focus: String(focus),
               });
             }
           }}
         >
-          Resume Drill
+          {focus ? "Resume Focus Mode Drill" : "Resume Classic Drill"}
         </Button>
       ) : (
         <></>
@@ -130,6 +134,7 @@ const DrillPanel = ({ width, height }: DrillPanelProps) => {
           navigation.navigate("DrillGame", {
             params: item.strategy,
             action: "StartGame",
+            focus: String(focus),
           });
         }}
       />

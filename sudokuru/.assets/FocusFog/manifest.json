@@ -1,0 +1,52 @@
+{
+  "generator_version": 1,
+  "seed": 42,
+  "size": 512,
+  "textures": {
+    "haze": {
+      "file": "fog-haze.png",
+      "settings": {
+        "label": "Subtle haze",
+        "frequency": 2,
+        "persistence": 0.45,
+        "warp": 0.13,
+        "contrast": 1.4,
+        "gamma": 1.0,
+        "opacity_min": 0.08,
+        "opacity_max": 0.42
+      },
+      "rgba_sha256": "f819129e5e6ef95ed2af1785c4e5c194a15bb369252c7d709ed7befc2a4ecef2",
+      "png_sha256": "a24867d58a22f5b1f62f7ecef53bf7ae0b8e37a03c9152403ede6d1591cf013f"
+    },
+    "clouds": {
+      "file": "fog-clouds.png",
+      "settings": {
+        "label": "Medium clouds",
+        "frequency": 3,
+        "persistence": 0.5,
+        "warp": 0.12,
+        "contrast": 2.2,
+        "gamma": 1.0,
+        "opacity_min": 0.06,
+        "opacity_max": 0.82
+      },
+      "rgba_sha256": "ed03e62003311d25adb2d05a0b6f7f9cae1d4f186bbf746fcac6fdd37fee279a",
+      "png_sha256": "7961ce60cccef9847fdb742b72b47c8a3f23e3ff677877c6624d4fd1960771dd"
+    },
+    "dense": {
+      "file": "fog-dense.png",
+      "settings": {
+        "label": "Dense fog",
+        "frequency": 4,
+        "persistence": 0.55,
+        "warp": 0.15,
+        "contrast": 2.7,
+        "gamma": 0.7,
+        "opacity_min": 0.22,
+        "opacity_max": 0.96
+      },
+      "rgba_sha256": "1e46d96bf68e8da89258f81d718943f2cf664df277062f0963801dcc86ce44b6",
+      "png_sha256": "bbfdb531a0f7254bdc3a417ebce2bc6724caef9c45656e78c12e93061cfc4314"
+    }
+  }
+}

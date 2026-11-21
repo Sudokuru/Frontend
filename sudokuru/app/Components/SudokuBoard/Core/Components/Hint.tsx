@@ -17,6 +17,9 @@ interface HintProps
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => void;
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
+  minStage: number;
+  showTitle: boolean;
+  embedded?: boolean;
 }
 
 interface NavButtonProps {
@@ -72,7 +75,15 @@ const NavButton = ({
 );
 
 const Hint = (hintProps: HintProps) => {
-  const { stage, hint, maxStage, incrementStage, finishSudokuGame } = hintProps;
+  const {
+    stage,
+    hint,
+    maxStage,
+    minStage,
+    incrementStage,
+    finishSudokuGame,
+    embedded = false,
+  } = hintProps;
 
   const cellSize = useCellSize();
   const { height } = useWindowDimensions();
@@ -87,7 +98,9 @@ const Hint = (hintProps: HintProps) => {
       (MAX_HEIGHT_FOR_SCALE - MIN_HEIGHT_FOR_SCALE);
   const hintScale = Math.max(1, Math.min(2, rawScale));
   const strategyFontSize = 18 * hintScale;
-  const contentFontSize = 14 * hintScale;
+  const contentFontSize = embedded
+    ? Math.max(12, cellSize * 0.31)
+    : 14 * hintScale;
 
   const hintTitle = (
     <Text
@@ -119,12 +132,13 @@ const Hint = (hintProps: HintProps) => {
     const config = STAGE_CONFIG[stage];
     return (
       <>
-        {config.title && hintTitle}
+        {config.title && hintProps.showTitle && hintTitle}
         {config.content && (
           <Text
             style={{
               textAlign: "center",
               fontSize: contentFontSize,
+              lineHeight: embedded ? Math.max(17, cellSize * 0.44) : undefined,
               color: theme.useDarkTheme
                 ? theme.semantic.text.inverse
                 : theme.semantic.text.info,
@@ -150,7 +164,7 @@ const Hint = (hintProps: HintProps) => {
     maxStage: number,
   ): [ButtonConfig, ButtonConfig] => {
     const leftButton: ButtonConfig =
-      stage === 1
+      stage === minStage
         ? { testId: "hintExit", icon: "close", action: 0 }
         : { testId: "hintArrowLeft", icon: "arrow-left", action: -1 };
 
@@ -169,7 +183,9 @@ const Hint = (hintProps: HintProps) => {
     return baseSize * multiplier;
   };
 
-  const navButtonSize = getResponsiveSize(0.82);
+  const navButtonSize = embedded
+    ? Math.max(32, Math.min(44, getResponsiveSize(0.82)))
+    : getResponsiveSize(0.82);
   const navButtonGap = getResponsiveSize(0.12);
   const navIconSize = navButtonSize * 0.72;
   const navIconColor = theme.useDarkTheme
@@ -185,11 +201,48 @@ const Hint = (hintProps: HintProps) => {
   const navButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
-  const showHintExit = stage > 1;
+  const showHintExit = stage > minStage;
   const leftButtonHitSlop = showHintExit
     ? { top: 12, right: 12, bottom: 0, left: 12 }
     : 12;
   const exitButtonHitSlop = { top: 0, right: 12, bottom: 12, left: 12 };
+
+  if (embedded) {
+    const buttons: ButtonConfig[] = [leftButton];
+    if (showHintExit)
+      buttons.push({ testId: "hintExit", icon: "close", action: 0 });
+    buttons.push(rightButton);
+    return (
+      <View style={{ width: "100%", alignItems: "center" }}>
+        {hintContent}
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 12,
+            marginTop: 16,
+            marginBottom: 4,
+          }}
+        >
+          {buttons.map((button) => (
+            <NavButton
+              key={button.testId}
+              testID={button.testId}
+              icon={button.icon}
+              onPress={() => incrementStage(button.action, finishSudokuGame)}
+              hitSlop={6}
+              buttonSize={navButtonSize}
+              backgroundColor={navButtonBackgroundColor}
+              iconColor={navIconColor}
+              iconSize={navIconSize}
+              iconStyle={navIconStyle}
+            />
+          ))}
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View

@@ -3,6 +3,7 @@ import SudokuBoard from "../Components/SudokuBoard/SudokuBoard";
 import { StatusBar } from "expo-status-bar";
 import { useIsFocused } from "@react-navigation/native";
 import { Text } from "react-native-paper";
+import { getClassicVariant } from "../Components/SudokuBoard/SudokuBoardSharedFunctionsController";
 
 const SudokuPage = ({ route }: any) => {
   const { action } = route.params;
@@ -13,7 +14,11 @@ const SudokuPage = ({ route }: any) => {
 
   return (
     <>
-      <SudokuBoard type="classic" action={action} difficulty={difficulty} />
+      <SudokuBoard
+        type={getClassicVariant(route.params.focus === "true")}
+        action={action}
+        difficulty={difficulty}
+      />
       <StatusBar style="auto" />
     </>
   );

@@ -10,8 +10,10 @@ import { ClassicGameStatistics } from "../../../../Functions/LocalDatabase";
 
 export const EndGameModal = ({
   statistics,
+  focus = false,
 }: {
   statistics: ClassicGameStatistics;
+  focus?: boolean;
 }) => {
   const { theme } = useTheme();
   const size = useWindowDimensions();
@@ -43,7 +45,7 @@ export const EndGameModal = ({
           marginBottom: 10,
         }}
       >
-        Game Results
+        {focus ? "Focus Mode Classic Results" : "Game Results"}
       </Text>
       <View
         style={{
@@ -91,7 +93,9 @@ export const EndGameModal = ({
           textColor={theme.semantic.text.inverse}
           labelStyle={{ fontSize: 20, fontWeight: "700" }}
           contentStyle={{ paddingHorizontal: 16 }}
-          onPress={() => navigation.navigate("PlayPage")}
+          onPress={() =>
+            navigation.navigate("PlayPage", { focus: String(focus) })
+          }
           style={{ marginTop: 16, alignSelf: "center" }}
         >
           Change Difficulty
@@ -111,6 +115,7 @@ export const EndGameModal = ({
                   params: {
                     action: "StartGame",
                     difficulty: statistics.difficulty,
+                    focus: String(focus),
                   },
                 },
               ],
