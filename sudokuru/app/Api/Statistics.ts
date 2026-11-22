@@ -32,15 +32,17 @@ export const saveLearnedLessons = (learnedLessons: string[]) => {
   storeData("learned_lessons", JSON.stringify(learnedLessons));
 };
 
-export const saveStatisitics = (statistics: Statistics) => {
-  storeData("statistics", JSON.stringify(statistics));
+export const saveStatisitics = (statistics: Statistics, key = "statistics") => {
+  storeData(key, JSON.stringify(statistics));
 };
 
 /**
  * returns all statistics objects for given user
  */
-export const getStatistics = async (): Promise<Statistics> => {
-  const value = await getKeyJSON("statistics", StatisticsSchema);
+export const getStatistics = async (
+  key = "statistics",
+): Promise<Statistics> => {
+  const value = await getKeyJSON(key, StatisticsSchema);
   if (value == null) {
     const statistics: Statistics = {
       version: 1,
@@ -53,7 +55,7 @@ export const getStatistics = async (): Promise<Statistics> => {
       numHintsUsedPerStrategy: [],
       numWrongCellsPlayed: 0,
     };
-    saveStatisitics(statistics);
+    saveStatisitics(statistics, key);
     return statistics;
   }
   return value;
@@ -64,6 +66,7 @@ export const getStatistics = async (): Promise<Statistics> => {
  */
 export const deleteStatistics = async () => {
   await removeData("statistics");
+  await removeData("focus_classic_statistics");
   await removeData("learned_lessons");
   await removeData("dismissDrillTutorial");
 };

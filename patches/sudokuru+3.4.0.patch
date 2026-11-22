@@ -1,0 +1,417 @@
+diff --git a/node_modules/sudokuru/Generator/Solver.ts b/node_modules/sudokuru/Generator/Solver.ts
+index 2406de4..193177c 100644
+--- a/node_modules/sudokuru/Generator/Solver.ts
++++ b/node_modules/sudokuru/Generator/Solver.ts
+@@ -95,6 +95,12 @@ export class Solver{
+         return this.allHints;
+     }
+ 
++    /** Unlike getAllHints, returns every occurrence of the requested strategies. */
++    public getApplicableHints(): Hint[] {
++        const strategy = new Strategy(this.cellBoard, this.board, this.emptyCells, this.solution);
++        return this.algorithm.reduce((hints: Hint[], type) => hints.concat(strategy.getApplicableHints(type)), []);
++    }
++
+     /**
+      * Creates a Hint object for each strategy that can be used at this step and adds it to allHints
+      */
+diff --git a/node_modules/sudokuru/Generator/Strategy.ts b/node_modules/sudokuru/Generator/Strategy.ts
+index 41eb6ed..741c828 100644
+--- a/node_modules/sudokuru/Generator/Strategy.ts
++++ b/node_modules/sudokuru/Generator/Strategy.ts
+@@ -262,6 +262,56 @@ export class Strategy{
+         return this.drillHint;
+     }
+ 
++    /** Enumerates every application without applying a hint or using drill uniqueness rules. */
++    public getApplicableHints(strategyType: StrategyEnum): Hint[] {
++        const hints: Hint[] = [];
++        const seen = new Set<string>();
++        const candidate = () => new Strategy(this.cellBoard, this.board, this.emptyCells, this.solution);
++        const record = (strategy: Strategy) => {
++            strategy.strategyType = strategyType;
++            strategy.identified = true;
++            const hint = new Hint(strategy);
++            const normalize = (entries: number[][]) => entries.map(entry => entry.join(",")).sort();
++            const key = JSON.stringify([normalize(hint.getCause()), normalize(hint.getGroups()), normalize(hint.getPlacements()), normalize(hint.getRemovals())]);
++            if (!seen.has(key)) {
++                seen.add(key);
++                hints.push(hint);
++            }
++        };
++        if (strategyType === StrategyEnum.AMEND_NOTES || strategyType === StrategyEnum.SIMPLIFY_NOTES) {
++            for (let row = 0; row < this.emptyCells.length; row++) {
++                for (let cell = 0; cell < this.emptyCells[row].length; cell++) {
++                    const strategy = candidate();
++                    if (strategyType === StrategyEnum.AMEND_NOTES ? strategy.isAmendNotes(row, cell, true) : strategy.isSimplifyNotes(row, cell)) record(strategy);
++                }
++            }
++        } else if (this.isObviousSetStrategy(strategyType) || this.isHiddenSetStrategy(strategyType)) {
++            const tuple = this.getStrategyTuple(strategyType);
++            const subsets = Group.getSubset(tuple);
++            for (let group = 0; group < GroupEnum.COUNT; group++) {
++                for (let index = 0; index < SudokuEnum.ROW_LENGTH; index++) {
++                    const cells = this.cellBoard.getEmptyCellsInGroup(group, index);
++                    if (cells.length < tuple) continue;
++                    for (const subset of subsets) {
++                        const strategy = candidate();
++                        if (this.isObviousSetStrategy(strategyType)
++                            ? strategy.isObviousSet(tuple, group, index, cells, subset)
++                            : strategy.isHiddenSet(tuple, group, index, cells, subset)) record(strategy);
++                    }
++                }
++            }
++        } else if (strategyType === StrategyEnum.POINTING_PAIR || strategyType === StrategyEnum.POINTING_TRIPLET) {
++            const expected = strategyType === StrategyEnum.POINTING_PAIR ? TupleEnum.PAIR : TupleEnum.TRIPLET;
++            for (let box = 0; box < SudokuEnum.ROW_LENGTH; box++) {
++                for (let note = 0; note < SudokuEnum.ROW_LENGTH; note++) {
++                    const strategy = candidate();
++                    if (strategy.isPointingSet(box, note) === expected) record(strategy);
++                }
++            }
++        }
++        return hints;
++    }
++
+     /**
+      * Gets cells that "cause" strategy to be applicable
+      * @returns cells
+@@ -540,10 +590,11 @@ export class Strategy{
+      * @param box - index of box being checked
+      * @returns set tuple e.g. pair if its pointing pair or triplet if its pointing triplet, null if no pointing set found
+      */
+-    private isPointingSet(box: number):TupleEnum {
++    private isPointingSet(box: number, onlyNote?: number):TupleEnum {
+         // Check if each note is the basis for a pointing set
+         let placedValues = this.cellBoard.getValuesPlaced(GroupEnum.BOX, box);
+         for (let note:number = 0; note < SudokuEnum.ROW_LENGTH; note++) {
++            if (onlyNote !== undefined && note !== onlyNote) continue;
+             if (placedValues.contains(note)) {
+                 continue;
+             }
+@@ -706,7 +757,7 @@ export class Strategy{
+      * @param c - corresponds to an index in an array in emptyCells
+      * @returns true if strategy is amend notes
+      */
+-    private isAmendNotes(r: number, c: number):boolean {
++    private isAmendNotes(r: number, c: number, preserveNotes: boolean = false):boolean {
+         let cell:Cell = this.emptyCells[r][c];
+         // Following check shouldn't be needed outside of tests but good to be certain
+         if (!cell.isEmpty()) {
+@@ -715,10 +766,11 @@ export class Strategy{
+         let row:number = cell.getRow();
+         let column:number = cell.getColumn();
+         // Checks if correct number has been wrongly removed from a cell and if so removes all notes from it so it is amended in next if
+-        if (this.solution !== undefined && !(cell.getNotes()).contains(this.solution[row][column])) {
++        const needsRepair = this.solution !== undefined && !(cell.getNotes()).contains(this.solution[row][column]);
++        if (needsRepair && !preserveNotes) {
+             cell.removeNotes(new Group(true));
+         }
+-        if ((cell.getNotes()).getSize() === 0) {
++        if (needsRepair || (cell.getNotes()).getSize() === 0) {
+             // Add back in all notes then remove the ones that can be simplified away
+             let box: number = cell.getBox();
+             let boxRowStart: number = Cell.getBoxRowStart(box);
+diff --git a/node_modules/sudokuru/dist/Generator/Solver.d.ts b/node_modules/sudokuru/dist/Generator/Solver.d.ts
+index 561de95..59e5dad 100644
+--- a/node_modules/sudokuru/dist/Generator/Solver.d.ts
++++ b/node_modules/sudokuru/dist/Generator/Solver.d.ts
+@@ -13,6 +13,7 @@ export declare class Solver {
+     constructor(board: string[][], algorithm?: StrategyEnum[], notes?: string[][], solution?: string[][]);
+     nextStep(): Hint;
+     getAllHints(): Hint[];
++    getApplicableHints(): Hint[];
+     private setAllHints;
+     private setEmptyCells;
+     private isFinished;
+diff --git a/node_modules/sudokuru/dist/Generator/Solver.js b/node_modules/sudokuru/dist/Generator/Solver.js
+index 8dc2206..b890b98 100644
+--- a/node_modules/sudokuru/dist/Generator/Solver.js
++++ b/node_modules/sudokuru/dist/Generator/Solver.js
+@@ -57,6 +57,10 @@ class Solver {
+         }
+         return this.allHints;
+     }
++    getApplicableHints() {
++        const strategy = new Strategy_1.Strategy(this.cellBoard, this.board, this.emptyCells, this.solution);
++        return this.algorithm.reduce((hints, type) => hints.concat(strategy.getApplicableHints(type)), []);
++    }
+     setAllHints() {
+         this.allHints = new Array();
+         let strategyObj = new Strategy_1.Strategy(this.cellBoard, this.board, this.emptyCells, this.solution);
+diff --git a/node_modules/sudokuru/dist/Generator/Strategy.d.ts b/node_modules/sudokuru/dist/Generator/Strategy.d.ts
+index 71f855f..8623ec8 100644
+--- a/node_modules/sudokuru/dist/Generator/Strategy.d.ts
++++ b/node_modules/sudokuru/dist/Generator/Strategy.d.ts
+@@ -23,6 +23,7 @@ export declare class Strategy {
+     isHiddenSetStrategy(strategyType: StrategyEnum): boolean;
+     isStrategy(strategyType: StrategyEnum, drill?: boolean): boolean;
+     getDrillHint(): Hint;
++    getApplicableHints(strategyType: StrategyEnum): Hint[];
+     getCause(): Cell[];
+     getGroups(): number[][];
+     getValuesToPlace(): Cell[];
+diff --git a/node_modules/sudokuru/dist/Generator/Strategy.js b/node_modules/sudokuru/dist/Generator/Strategy.js
+index 812b242..9546d3f 100644
+--- a/node_modules/sudokuru/dist/Generator/Strategy.js
++++ b/node_modules/sudokuru/dist/Generator/Strategy.js
+@@ -182,6 +182,60 @@ class Strategy {
+     getDrillHint() {
+         return this.drillHint;
+     }
++    getApplicableHints(strategyType) {
++        const hints = [];
++        const seen = new Set();
++        const candidate = () => new Strategy(this.cellBoard, this.board, this.emptyCells, this.solution);
++        const record = (strategy) => {
++            strategy.strategyType = strategyType;
++            strategy.identified = true;
++            const hint = new Hint_1.Hint(strategy);
++            const normalize = (entries) => entries.map(entry => entry.join(",")).sort();
++            const key = JSON.stringify([normalize(hint.getCause()), normalize(hint.getGroups()), normalize(hint.getPlacements()), normalize(hint.getRemovals())]);
++            if (!seen.has(key)) {
++                seen.add(key);
++                hints.push(hint);
++            }
++        };
++        if (strategyType === Sudoku_1.StrategyEnum.AMEND_NOTES || strategyType === Sudoku_1.StrategyEnum.SIMPLIFY_NOTES) {
++            for (let row = 0; row < this.emptyCells.length; row++) {
++                for (let cell = 0; cell < this.emptyCells[row].length; cell++) {
++                    const strategy = candidate();
++                    if (strategyType === Sudoku_1.StrategyEnum.AMEND_NOTES ? strategy.isAmendNotes(row, cell, true) : strategy.isSimplifyNotes(row, cell))
++                        record(strategy);
++                }
++            }
++        }
++        else if (this.isObviousSetStrategy(strategyType) || this.isHiddenSetStrategy(strategyType)) {
++            const tuple = this.getStrategyTuple(strategyType);
++            const subsets = Group_1.Group.getSubset(tuple);
++            for (let group = 0; group < Sudoku_1.GroupEnum.COUNT; group++) {
++                for (let index = 0; index < Sudoku_1.SudokuEnum.ROW_LENGTH; index++) {
++                    const cells = this.cellBoard.getEmptyCellsInGroup(group, index);
++                    if (cells.length < tuple)
++                        continue;
++                    for (const subset of subsets) {
++                        const strategy = candidate();
++                        if (this.isObviousSetStrategy(strategyType)
++                            ? strategy.isObviousSet(tuple, group, index, cells, subset)
++                            : strategy.isHiddenSet(tuple, group, index, cells, subset))
++                            record(strategy);
++                    }
++                }
++            }
++        }
++        else if (strategyType === Sudoku_1.StrategyEnum.POINTING_PAIR || strategyType === Sudoku_1.StrategyEnum.POINTING_TRIPLET) {
++            const expected = strategyType === Sudoku_1.StrategyEnum.POINTING_PAIR ? Sudoku_1.TupleEnum.PAIR : Sudoku_1.TupleEnum.TRIPLET;
++            for (let box = 0; box < Sudoku_1.SudokuEnum.ROW_LENGTH; box++) {
++                for (let note = 0; note < Sudoku_1.SudokuEnum.ROW_LENGTH; note++) {
++                    const strategy = candidate();
++                    if (strategy.isPointingSet(box, note) === expected)
++                        record(strategy);
++                }
++            }
++        }
++        return hints;
++    }
+     getCause() {
+         this.verifyIdentified();
+         return this.cause;
+@@ -358,9 +412,11 @@ class Strategy {
+         }
+         return true;
+     }
+-    isPointingSet(box) {
++    isPointingSet(box, onlyNote) {
+         let placedValues = this.cellBoard.getValuesPlaced(Sudoku_1.GroupEnum.BOX, box);
+         for (let note = 0; note < Sudoku_1.SudokuEnum.ROW_LENGTH; note++) {
++            if (onlyNote !== undefined && note !== onlyNote)
++                continue;
+             if (placedValues.contains(note)) {
+                 continue;
+             }
+@@ -493,17 +549,18 @@ class Strategy {
+         }
+         return this.identified;
+     }
+-    isAmendNotes(r, c) {
++    isAmendNotes(r, c, preserveNotes = false) {
+         let cell = this.emptyCells[r][c];
+         if (!cell.isEmpty()) {
+             return false;
+         }
+         let row = cell.getRow();
+         let column = cell.getColumn();
+-        if (this.solution !== undefined && !(cell.getNotes()).contains(this.solution[row][column])) {
++        const needsRepair = this.solution !== undefined && !(cell.getNotes()).contains(this.solution[row][column]);
++        if (needsRepair && !preserveNotes) {
+             cell.removeNotes(new Group_1.Group(true));
+         }
+-        if ((cell.getNotes()).getSize() === 0) {
++        if (needsRepair || (cell.getNotes()).getSize() === 0) {
+             let box = cell.getBox();
+             let boxRowStart = Cell_1.Cell.getBoxRowStart(box);
+             let boxColumnStart = Cell_1.Cell.getBoxColumnStart(box);
+diff --git a/node_modules/sudokuru/dist/index.d.ts b/node_modules/sudokuru/dist/index.d.ts
+index fe228b3..8eaba01 100644
+--- a/node_modules/sudokuru/dist/index.d.ts
++++ b/node_modules/sudokuru/dist/index.d.ts
+@@ -1,9 +1,9 @@
+ import { Board } from "./Generator/Board";
+ import { StrategyEnum } from "./Generator/Sudoku";
+-import { getHint } from "./lib/Hint";
++import { getHint, getApplicableHints, ApplicableHint } from "./lib/Hint";
+ import { getPuzzleData } from "./lib/PuzzleData";
+ import { getDrillPuzzleString } from "./lib/Drill";
+ import { SudokuStrategy, SUDOKU_STRATEGY_ARRAY } from "./lib/Api";
+ export { Board, StrategyEnum };
+-export { getHint, getPuzzleData, getDrillPuzzleString };
++export { getHint, getApplicableHints, ApplicableHint, getPuzzleData, getDrillPuzzleString };
+ export { SudokuStrategy, SUDOKU_STRATEGY_ARRAY };
+diff --git a/node_modules/sudokuru/dist/index.js b/node_modules/sudokuru/dist/index.js
+index 6ee19e7..03a9c53 100644
+--- a/node_modules/sudokuru/dist/index.js
++++ b/node_modules/sudokuru/dist/index.js
+@@ -1,12 +1,13 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.SUDOKU_STRATEGY_ARRAY = exports.getDrillPuzzleString = exports.getPuzzleData = exports.getHint = exports.StrategyEnum = exports.Board = void 0;
++exports.SUDOKU_STRATEGY_ARRAY = exports.getDrillPuzzleString = exports.getPuzzleData = exports.getApplicableHints = exports.getHint = exports.StrategyEnum = exports.Board = void 0;
+ const Board_1 = require("./Generator/Board");
+ Object.defineProperty(exports, "Board", { enumerable: true, get: function () { return Board_1.Board; } });
+ const Sudoku_1 = require("./Generator/Sudoku");
+ Object.defineProperty(exports, "StrategyEnum", { enumerable: true, get: function () { return Sudoku_1.StrategyEnum; } });
+ const Hint_1 = require("./lib/Hint");
+ Object.defineProperty(exports, "getHint", { enumerable: true, get: function () { return Hint_1.getHint; } });
++Object.defineProperty(exports, "getApplicableHints", { enumerable: true, get: function () { return Hint_1.getApplicableHints; } });
+ const PuzzleData_1 = require("./lib/PuzzleData");
+ Object.defineProperty(exports, "getPuzzleData", { enumerable: true, get: function () { return PuzzleData_1.getPuzzleData; } });
+ const Drill_1 = require("./lib/Drill");
+diff --git a/node_modules/sudokuru/dist/lib/Hint.d.ts b/node_modules/sudokuru/dist/lib/Hint.d.ts
+index 727dbd5..c70527a 100644
+--- a/node_modules/sudokuru/dist/lib/Hint.d.ts
++++ b/node_modules/sudokuru/dist/lib/Hint.d.ts
+@@ -1,4 +1,14 @@
+ import { StrategyEnum } from "../Generator/Sudoku";
+ import { SudokuStrategy } from "./Api";
++export interface ApplicableHint {
++    strategy: SudokuStrategy;
++    cause: number[][];
++    groups: number[][];
++    placements: number[][];
++    removals: number[][];
++    info: string;
++    action: string;
++}
++export declare function getApplicableHints(board: string[][], notes: string[][], strategies?: SudokuStrategy[], solution?: string[][]): ApplicableHint[];
+ export declare function _getHint(board: string[][], algorithm: StrategyEnum[], notes: string[][], solution?: string[][]): JSON;
+ export declare function getHint(board: string[][], notes: string[][], strategies?: SudokuStrategy[], solution?: string[][]): JSON;
+diff --git a/node_modules/sudokuru/dist/lib/Hint.js b/node_modules/sudokuru/dist/lib/Hint.js
+index b3803fe..be1cb57 100644
+--- a/node_modules/sudokuru/dist/lib/Hint.js
++++ b/node_modules/sudokuru/dist/lib/Hint.js
+@@ -1,8 +1,29 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.getHint = exports._getHint = void 0;
++exports.getApplicableHints = getApplicableHints;
++exports._getHint = _getHint;
++exports.getHint = getHint;
+ const Solver_1 = require("../Generator/Solver");
+ const Sudoku_1 = require("../Generator/Sudoku");
++const Api_1 = require("./Api");
++function getApplicableHints(board, notes, strategies, solution) {
++    const algorithm = (strategies ?? Api_1.SUDOKU_STRATEGY_ARRAY).map(strategy => Sudoku_1.StrategyEnum[strategy]);
++    const solver = new Solver_1.Solver(board, algorithm, notes, solution);
++    return solver.getApplicableHints().map(hint => {
++        const strategy = Api_1.SUDOKU_STRATEGY_ARRAY.find(strategy => Sudoku_1.StrategyEnum[strategy] === hint.getStrategyType());
++        if (strategy === undefined)
++            throw new Error("Unsupported hint strategy");
++        return {
++            strategy,
++            cause: hint.getCause(),
++            groups: hint.getGroups(),
++            placements: hint.getPlacements(),
++            removals: hint.getRemovals(),
++            info: hint.getInfo(),
++            action: hint.getAction(),
++        };
++    });
++}
+ function _getHint(board, algorithm, notes, solution) {
+     let solver = new Solver_1.Solver(board, algorithm, notes, solution);
+     let hint = solver.nextStep();
+@@ -16,7 +37,6 @@ function _getHint(board, algorithm, notes, solution) {
+         "action": hint.getAction()
+     };
+ }
+-exports._getHint = _getHint;
+ function getHint(board, notes, strategies, solution) {
+     let algorithm = undefined;
+     if (strategies !== undefined) {
+@@ -27,4 +47,3 @@ function getHint(board, notes, strategies, solution) {
+     }
+     return _getHint(board, algorithm, notes, solution);
+ }
+-exports.getHint = getHint;
+diff --git a/node_modules/sudokuru/index.ts b/node_modules/sudokuru/index.ts
+index 78d9fa3..a985557 100644
+--- a/node_modules/sudokuru/index.ts
++++ b/node_modules/sudokuru/index.ts
+@@ -2,7 +2,7 @@
+ import {Board} from "./Generator/Board";
+ import {StrategyEnum} from "./Generator/Sudoku";
+ // Functions
+-import { getHint } from "./lib/Hint";
++import { getHint, getApplicableHints, ApplicableHint } from "./lib/Hint";
+ import { getPuzzleData } from "./lib/PuzzleData";
+ import { getDrillPuzzleString } from "./lib/Drill";
+ // Types
+@@ -11,5 +11,5 @@ import {SudokuStrategy, SUDOKU_STRATEGY_ARRAY } from "./lib/Api";
+ 
+ // Exports
+ export { Board, StrategyEnum };
+-export { getHint, getPuzzleData, getDrillPuzzleString };
++export { getHint, getApplicableHints, ApplicableHint, getPuzzleData, getDrillPuzzleString };
+ export { SudokuStrategy, SUDOKU_STRATEGY_ARRAY };
+diff --git a/node_modules/sudokuru/lib/Hint.ts b/node_modules/sudokuru/lib/Hint.ts
+index 67100d2..32ea7a5 100644
+--- a/node_modules/sudokuru/lib/Hint.ts
++++ b/node_modules/sudokuru/lib/Hint.ts
+@@ -1,7 +1,36 @@
+ import { Hint } from "../Generator/Hint";
+ import { Solver } from "../Generator/Solver";
+ import { StrategyEnum } from "../Generator/Sudoku";
+-import { SudokuStrategy } from "./Api";
++import { SudokuStrategy, SUDOKU_STRATEGY_ARRAY } from "./Api";
++
++export interface ApplicableHint {
++    strategy: SudokuStrategy;
++    cause: number[][];
++    groups: number[][];
++    placements: number[][];
++    removals: number[][];
++    info: string;
++    action: string;
++}
++
++/** Returns every applicable hint on the supplied board without applying any of them. */
++export function getApplicableHints(board: string[][], notes: string[][], strategies?: SudokuStrategy[], solution?: string[][]): ApplicableHint[] {
++    const algorithm = (strategies ?? SUDOKU_STRATEGY_ARRAY).map(strategy => StrategyEnum[strategy]);
++    const solver = new Solver(board, algorithm, notes, solution);
++    return solver.getApplicableHints().map(hint => {
++        const strategy = SUDOKU_STRATEGY_ARRAY.find(strategy => StrategyEnum[strategy] === hint.getStrategyType());
++        if (strategy === undefined) throw new Error("Unsupported hint strategy");
++        return {
++            strategy,
++            cause: hint.getCause(),
++            groups: hint.getGroups(),
++            placements: hint.getPlacements(),
++            removals: hint.getRemovals(),
++            info: hint.getInfo(),
++            action: hint.getAction(),
++        };
++    });
++}
+ 
+ /**
+  * Internal function to simplify generation of hint in JSON format to provide externally

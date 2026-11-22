@@ -18,11 +18,13 @@ interface PuzzleProps {
     c: number,
     boardMethods: SudokuVariantMethods,
     theme: Theme,
+    focusBackground?: string,
   ) => JSX.Element | undefined;
   sudokuBoard: BoardObjectProps;
   setBoardSelectedCells: (cells: CellLocation[]) => void;
   sudokuHint: ActiveHintState | null;
   boardMethods: SudokuVariantMethods;
+  focusBackground?: string;
 }
 
 const Puzzle = (props: PuzzleProps) => {
@@ -33,6 +35,7 @@ const Puzzle = (props: PuzzleProps) => {
     setBoardSelectedCells,
     sudokuHint,
     boardMethods,
+    focusBackground,
   } = props;
 
   const renderAllRows = [];
@@ -48,6 +51,7 @@ const Puzzle = (props: PuzzleProps) => {
           c,
           boardMethods,
           theme,
+          focusBackground,
         ),
       );
     }

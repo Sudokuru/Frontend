@@ -101,6 +101,8 @@ const NoteGrid = (props: {
  */
 const Cell = (props: {
   disable: boolean;
+  masked?: boolean;
+  maskedBackgroundColor?: string;
   entry: any;
   type: CellType;
   onClick: (r: number, c: number, event: any) => void;
@@ -112,6 +114,8 @@ const Cell = (props: {
 }) => {
   const {
     disable,
+    masked = false,
+    maskedBackgroundColor,
     entry,
     type,
     onClick,
@@ -160,7 +164,7 @@ const Cell = (props: {
           display: "flex",
           justifyContent: "center",
           borderWidth: cellSize ? cellSize / 40 : fallbackHeight / 40,
-          backgroundColor: backgroundColor,
+          backgroundColor: masked ? maskedBackgroundColor : backgroundColor,
           outlineWidth: 0,
         },
         c % 3 === 0 ? { borderLeftWidth: getOutsideBorderWidth() } : null,
@@ -169,9 +173,10 @@ const Cell = (props: {
         r === 8 ? { borderBottomWidth: getOutsideBorderWidth() } : null,
       ]}
       testID={"cellr" + r + "c" + c + getCellContents()}
-      disabled={disable}
+      disabled={disable || masked}
+      accessible={!masked}
     >
-      {type === "note" ? (
+      {masked ? null : type === "note" ? (
         <NoteGrid
           cellSize={cellSize}
           entry={entry}

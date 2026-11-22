@@ -17,6 +17,8 @@ interface HintProps
     finishSudokuGame: SudokuVariantMethods["finishSudokuGame"],
   ) => void;
   finishSudokuGame: SudokuVariantMethods["finishSudokuGame"];
+  minStage: number;
+  showTitle: boolean;
 }
 
 interface NavButtonProps {
@@ -72,7 +74,8 @@ const NavButton = ({
 );
 
 const Hint = (hintProps: HintProps) => {
-  const { stage, hint, maxStage, incrementStage, finishSudokuGame } = hintProps;
+  const { stage, hint, maxStage, minStage, incrementStage, finishSudokuGame } =
+    hintProps;
 
   const cellSize = useCellSize();
   const { height } = useWindowDimensions();
@@ -119,7 +122,7 @@ const Hint = (hintProps: HintProps) => {
     const config = STAGE_CONFIG[stage];
     return (
       <>
-        {config.title && hintTitle}
+        {config.title && hintProps.showTitle && hintTitle}
         {config.content && (
           <Text
             style={{
@@ -150,7 +153,7 @@ const Hint = (hintProps: HintProps) => {
     maxStage: number,
   ): [ButtonConfig, ButtonConfig] => {
     const leftButton: ButtonConfig =
-      stage === 1
+      stage === minStage
         ? { testId: "hintExit", icon: "close", action: 0 }
         : { testId: "hintArrowLeft", icon: "arrow-left", action: -1 };
 
@@ -185,7 +188,7 @@ const Hint = (hintProps: HintProps) => {
   const navButtonBackgroundColor = theme.useDarkTheme
     ? theme.colors.surfaceAlt
     : theme.colors.surface;
-  const showHintExit = stage > 1;
+  const showHintExit = stage > minStage;
   const leftButtonHitSlop = showHintExit
     ? { top: 12, right: 12, bottom: 0, left: 12 }
     : 12;

@@ -1,6 +1,11 @@
 import React from "react";
 import { Modal, ScrollView, View } from "react-native";
-import { Button, ActivityIndicator, Text } from "react-native-paper";
+import {
+  Button,
+  ActivityIndicator,
+  Text,
+  SegmentedButtons,
+} from "react-native-paper";
 import { PreferencesContext } from "../Contexts/PreferencesContext";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { deleteStatistics, getStatistics } from "../Api/Statistics";
@@ -11,6 +16,7 @@ import { useTheme } from "../Contexts/ThemeContext";
 
 const StatisticsPage = () => {
   const { theme } = useTheme();
+  const [statisticsKey, setStatisticsKey] = React.useState("statistics");
 
   const { updateLearnedLessons } = React.useContext(PreferencesContext);
 
@@ -31,28 +37,39 @@ const StatisticsPage = () => {
   const showWarningButton = () => setWarningVisible(true);
   const hideWarningButton = () => setWarningVisible(false);
 
+  // Only the newest outstanding load may commit results or clear loading.
+  const loadIdRef = React.useRef(0);
+
+  const loadStatistics = React.useCallback(
+    (key: string, showSpinner = true) => {
+      const loadId = ++loadIdRef.current;
+      if (showSpinner) setLoading(true);
+      return getStatistics(key).then((res: any) => {
+        if (loadId !== loadIdRef.current) return;
+        if (res) {
+          setTotalStatistics(res);
+        } else {
+          console.log("Cannot get user statistics!");
+        }
+        setLoading(false);
+      });
+    },
+    [],
+  );
+
   async function deleteUserStatistics() {
     await deleteStatistics().then(() => {
       updateLearnedLessons(["NONE"]);
     });
-    await getUserStatistics();
-  }
-
-  async function getUserStatistics() {
-    await getStatistics().then((res: any) => {
-      if (res) {
-        setTotalStatistics(res);
-      } else {
-        console.log("Cannot get user statistics!");
-      }
-      setLoading(false);
-    });
+    // Load quietly so the confirm modal stays open over the previous totals
+    // until the refreshed ones commit, matching the original delete behavior.
+    await loadStatistics(statisticsKey, false);
   }
 
   useFocusEffect(
     React.useCallback(() => {
-      getUserStatistics();
-    }, []),
+      loadStatistics(statisticsKey);
+    }, [loadStatistics, statisticsKey]),
   );
 
   const isFocused = useIsFocused();
@@ -70,6 +87,32 @@ const StatisticsPage = () => {
             justifyContent: "center",
           }}
         >
+          <SegmentedButtons
+            theme={{
+              colors: {
+                onSurface: theme.semantic.text.tertiary,
+                secondaryContainer: theme.colors.primary,
+                onSecondaryContainer: theme.semantic.text.info,
+              },
+            }}
+            value={statisticsKey}
+            onValueChange={(value) => {
+              // Re-clicking the selected segment must not trigger a reload:
+              // the state bailout would leave the page stuck loading.
+              if (value !== statisticsKey) {
+                setStatisticsKey(value);
+              }
+            }}
+            buttons={[
+              { value: "statistics", label: "Classic" },
+              {
+                value: "focus_classic_statistics",
+                label: "Focus Mode Classic",
+                style: { minWidth: 180 },
+              },
+            ]}
+            style={{ marginVertical: 12, width: "95%", maxWidth: 520 }}
+          />
           <TotalStatistics
             totalScore={totalStatistics.totalScore}
             numGamesPlayed={totalStatistics.numGamesPlayed}

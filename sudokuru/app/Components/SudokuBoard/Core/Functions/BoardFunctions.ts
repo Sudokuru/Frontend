@@ -1,4 +1,6 @@
 import { useWindowDimensions, Platform } from "react-native";
+import { useContext } from "react";
+import { BoardLayoutContext } from "./BoardLayoutContext";
 import {
   BoardObjectProps,
   CellProps,
@@ -38,6 +40,7 @@ const BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE = 0.98;
  */
 export function useCellSize(): number {
   const { width, height } = useWindowDimensions();
+  const extraHeight = useContext(BoardLayoutContext);
 
   // Web uses a single monotonic sizing rule (no breakpoint branches), so
   // board size never increases while viewport width is shrinking.
@@ -46,7 +49,8 @@ export function useCellSize(): number {
       HEADER_ROW_HEIGHT_IN_CELLS_MOBILE +
       PUZZLE_HEIGHT_IN_CELLS +
       ACTION_ROW_HEIGHT_IN_CELLS_MOBILE +
-      NUMBER_CONTROL_HEIGHT_IN_CELLS;
+      NUMBER_CONTROL_HEIGHT_IN_CELLS +
+      extraHeight;
     const maxCellSizeFromWidth =
       Math.min(Math.max(width - BOARD_EDGE_PADDING, 0), MAX_BOARD_SIZE) / 9;
 
@@ -72,7 +76,8 @@ export function useCellSize(): number {
     headerRowHeightInCells +
     PUZZLE_HEIGHT_IN_CELLS +
     actionRowHeightInCells +
-    NUMBER_CONTROL_HEIGHT_IN_CELLS;
+    NUMBER_CONTROL_HEIGHT_IN_CELLS +
+    extraHeight;
 
   const boardVerticalViewportFraction = isMobileSizingLayout
     ? BOARD_VERTICAL_VIEWPORT_FRACTION_MOBILE
@@ -121,6 +126,7 @@ export const isValueCorrect = (
 export function finishSudokuGame(
   statistics: ClassicGameStatistics,
   variant: GameVariant,
+  statisticsKey = "statistics",
 ): ClassicGameStatistics {
   // calculate score
   const score = calculateGameScore(
@@ -138,6 +144,7 @@ export function finishSudokuGame(
     statistics.time,
     score,
     variant,
+    statisticsKey,
   );
 
   statistics.score = score;
@@ -160,5 +167,5 @@ export function finishSudokuGame(
  */
 export function handlePause(sudokuBoard: BoardObjectProps, navigation: any) {
   saveGame(sudokuBoard);
-  navigation.navigate("PlayPage");
+  navigation.navigate("PlayPage", { focus: "false" });
 }

@@ -85,6 +85,7 @@ export const useCellBackgroundColor = (
     c: number,
   ) => boolean,
   theme: Theme,
+  selectionHighlightsEnabled = true,
 ): string => {
   const selectedCell = sudokuBoard.selectedCells;
   const selected: boolean = isCellSelected(selectedCell, r, c);
@@ -94,25 +95,27 @@ export const useCellBackgroundColor = (
     sudokuBoard,
     sudokuBoard.puzzleState[r][c],
   );
+  const showPeer = selectionHighlightsEnabled && peer;
+  const showIdenticalValue = selectionHighlightsEnabled && identicalValue;
 
   let cellBackgroundColor;
   if (conflict && !selected) {
     cellBackgroundColor = NOT_SELECTED_CONFLICT_COLOR;
   } else if (conflict && selected) {
     cellBackgroundColor = SELECTED_CONFLICT_COLOR;
-  } else if (selected && identicalValue) {
+  } else if (selected && showIdenticalValue) {
     cellBackgroundColor = SELECTED_IDENTICAL_VALUE_COLOR;
   } else if (selected) {
     cellBackgroundColor = SELECTED_COLOR;
-  } else if (identicalValue) {
+  } else if (showIdenticalValue) {
     cellBackgroundColor = IDENTICAL_VALUE_COLOR;
-  } else if (peer) {
+  } else if (showPeer) {
     cellBackgroundColor = PEER_SELECTED_COLOR;
   } else {
     cellBackgroundColor = theme.semantic.text.inverse;
   }
 
-  if (sudokuHint) {
+  if (sudokuHint && !(conflict && !sudokuBoard.activeHint)) {
     const hintCause = isCellAHintCause(sudokuHint, r, c);
     const hintFocus = isCellAHintFocus(sudokuHint, r, c);
 
@@ -155,8 +158,8 @@ const isCellAHintCause = (
  * @param c The column coordinate of the cell to check.
  * @returns True if the cell is a focus of the hint, false otherwise.
  */
-const isCellAHintFocus = (
-  sudokuHint: ActiveHintState | null,
+export const isCellAHintFocus = (
+  sudokuHint: Pick<ActiveHintState, "stage" | "hint"> | null,
   r: number,
   c: number,
 ): boolean => {

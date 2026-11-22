@@ -31,4 +31,8 @@ export const PreferencesContext = React.createContext({
   simplifyNotesSetting: true,
   updateStrategyHintOrder: (props: SudokuStrategy[]) => {},
   strategyHintOrderSetting: returnSudokuStrategyArray(),
+  updateFocusBackground: (props: string) => {},
+  focusBackgroundSetting: "dense-classic",
+  toggleFocusManualNoteValueMode: () => {},
+  focusManualNoteValueModeSetting: false,
 });

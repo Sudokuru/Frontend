@@ -2,6 +2,7 @@ import { Profile } from "./Puzzle.Types";
 import { getKeyJSON, storeData } from "../Functions/AsyncStorage";
 import { returnSudokuStrategyArray } from "../Contexts/PreferencesContext";
 import { ProfileSchema } from "../Functions/LocalDatabase";
+import { DEFAULT_FOCUS_BACKGROUND_ID } from "../Functions/FocusBackgrounds";
 
 type profileValue =
   | "highlightBox"
@@ -13,7 +14,9 @@ type profileValue =
   | "initializeNotes"
   | "simplifyNotes"
   | "previewMode"
-  | "strategyHintOrder";
+  | "strategyHintOrder"
+  | "focusBackground"
+  | "focusManualNoteValueMode";
 
 export const getProfile = async (): Promise<Profile> => {
   const value = await getKeyJSON("profile", ProfileSchema);
@@ -33,6 +36,8 @@ export const getProfile = async (): Promise<Profile> => {
     simplifyNotes: true,
     previewMode: false,
     strategyHintOrder: sudokuStrategyArray,
+    focusBackground: DEFAULT_FOCUS_BACKGROUND_ID,
+    focusManualNoteValueMode: false,
   };
 
   if (value == null) {
@@ -91,6 +96,12 @@ export const setProfileValue = async (
       break;
     case "strategyHintOrder":
       value.strategyHintOrder = newValue;
+      break;
+    case "focusBackground":
+      value.focusBackground = newValue;
+      break;
+    case "focusManualNoteValueMode":
+      value.focusManualNoteValueMode = !value.focusManualNoteValueMode;
       break;
   }
   setProfile(value);

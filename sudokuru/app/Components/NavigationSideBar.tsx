@@ -52,7 +52,7 @@ const NavigationSideBar = (props: any) => {
           active={currentPage === "DrillPage"}
           onPress={() => {
             updateCurrentPage("DrillPage");
-            navigation.navigate("DrillPage");
+            navigation.navigate("ModeVariantsPage", { game: "drill" });
           }}
         />
       )}
@@ -60,10 +60,10 @@ const NavigationSideBar = (props: any) => {
         icon={"play"}
         testID="PlayButton"
         label="Play"
-        active={currentPage === "PlayModesPage"}
+        active={currentPage === "PlayPage"}
         onPress={() => {
-          updateCurrentPage("PlayModesPage");
-          navigation.navigate("PlayModesPage");
+          updateCurrentPage("PlayPage");
+          navigation.navigate("ModeVariantsPage", { game: "play" });
         }}
       />
       <Drawer.Item

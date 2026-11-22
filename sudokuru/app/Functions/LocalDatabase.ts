@@ -3,8 +3,10 @@ import { SUDOKU_STRATEGY_ARRAY, SudokuStrategy } from "sudokuru";
 import { z } from "zod";
 import { ThemeName, ThemeNames } from "../Styling/theme";
 
-export interface DrillObjectProps extends SudokuObjectProps<"drill"> {
-  variant: "drill";
+export interface DrillObjectProps
+  extends SudokuObjectProps<"drill" | "focus-drill"> {
+  variant: "drill" | "focus-drill";
+  focus?: FocusState;
   version: number;
   activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
@@ -23,8 +25,10 @@ export interface DrillGameStatistics {
   hintUsed: boolean;
 }
 
-export interface ClassicObjectProps extends SudokuObjectProps<"classic"> {
-  variant: "classic";
+export interface ClassicObjectProps
+  extends SudokuObjectProps<"classic" | "focus-classic"> {
+  variant: "classic" | "focus-classic";
+  focus?: FocusState;
   version: number;
   activeHint: ActiveHintState | null;
   selectedCells: CellLocation[];
@@ -70,9 +74,14 @@ export interface ClassicGameStatistics {
   }[];
 }
 
-export type GameVariant = "drill" | "classic";
+export type GameVariant = "drill" | "classic" | "focus-classic" | "focus-drill";
 
-export const SUDOKU_GAME_VARIANTS = ["drill", "classic"];
+export const SUDOKU_GAME_VARIANTS = [
+  "drill",
+  "classic",
+  "focus-classic",
+  "focus-drill",
+];
 
 export type CellProps = CellWithValue | CellWithNotes;
 
@@ -106,6 +115,21 @@ export interface ActiveHintState {
   maxStage: 5;
   hint: PersistedHintPayload;
   puzzleStateBeforeHint: CellProps[][];
+}
+
+export interface FocusStep {
+  startActionIndex: number;
+  hint: PersistedHintPayload;
+  puzzleStateBeforeStep: CellProps[][];
+  targetPuzzleState: CellProps[][];
+  applications?: {
+    hint: PersistedHintPayload;
+    targetPuzzleState: CellProps[][];
+  }[];
+}
+
+export interface FocusState {
+  steps: FocusStep[];
 }
 
 const SudokuBoardCellSchema = z.union([
@@ -242,6 +266,47 @@ export const SudokuBoardDrillSchema = z.object({
 export const SudokuBoardActiveGameSchema = z.array(SudokuBoardClassicSchema);
 export const SudokuBoardDrillGameSchema = z.array(SudokuBoardDrillSchema);
 
+const FocusStateSchema = z.object({
+  steps: z
+    .array(
+      z.object({
+        startActionIndex: z.number().int().nonnegative(),
+        hint: PersistedHintPayloadSchema,
+        puzzleStateBeforeStep: z
+          .array(z.array(SudokuBoardCellSchema).length(9))
+          .length(9),
+        targetPuzzleState: z
+          .array(z.array(SudokuBoardCellSchema).length(9))
+          .length(9),
+        applications: z
+          .array(
+            z.object({
+              hint: PersistedHintPayloadSchema,
+              targetPuzzleState: z
+                .array(z.array(SudokuBoardCellSchema).length(9))
+                .length(9),
+            }),
+          )
+          .min(1)
+          .optional(),
+      }),
+    )
+    .min(1),
+});
+
+export const SudokuBoardFocusClassicGameSchema = z.array(
+  SudokuBoardClassicSchema.extend({
+    variant: z.literal("focus-classic"),
+    focus: FocusStateSchema,
+  }),
+);
+export const SudokuBoardFocusDrillGameSchema = z.array(
+  SudokuBoardDrillSchema.extend({
+    variant: z.literal("focus-drill"),
+    focus: FocusStateSchema,
+  }),
+);
+
 export const ThemeSchema = z.enum(ThemeNames as [ThemeName, ...ThemeName[]]);
 
 export const ProfileSchema = z.object({
@@ -258,6 +323,8 @@ export const ProfileSchema = z.object({
   strategyHintOrder: z.array(
     z.enum(Object.values(SUDOKU_STRATEGY_ARRAY) as [string, ...string[]]),
   ),
+  focusBackground: z.string().optional(),
+  focusManualNoteValueMode: z.boolean().default(false),
 });
 
 export const StatisticsSchema = z.object({

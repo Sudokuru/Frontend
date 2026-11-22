@@ -34,6 +34,7 @@ interface DifficultyPanelProps {
   width: number;
   height: number;
   navigation: any;
+  focus?: boolean;
 }
 
 function getDifficultyCardData(level: GameDifficulty): {
@@ -102,6 +103,7 @@ const DifficultyPanel = (props: DifficultyPanelProps) => {
         props.navigation.navigate("SudokuPage", {
           action: "StartGame",
           difficulty: level,
+          focus: String(!!props.focus),
         });
       }}
     />
