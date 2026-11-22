@@ -210,6 +210,14 @@ def make_preview(names, seed, size, texture_prefix):
 """
 
 
+def output_dir(parser, raw, option):
+    """Resolve an LLM- or user-supplied output directory, keeping it inside the repository."""
+    resolved = Path(raw).resolve()
+    if not resolved.is_relative_to(ROOT):
+        parser.error(f"{option} must resolve inside the repository: {ROOT}")
+    return resolved
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=42, help="Deterministic seed (default: 42)")
@@ -230,9 +238,11 @@ def main():
     args = parser.parse_args()
     if not 64 <= args.size <= 2048:
         parser.error("--size must be between 64 and 2048")
+    texture_dir = output_dir(parser, args.texture_dir, "--texture-dir")
+    preview_dir = output_dir(parser, args.preview_dir, "--preview-dir")
 
-    args.texture_dir.mkdir(parents=True, exist_ok=True)
-    args.preview_dir.mkdir(parents=True, exist_ok=True)
+    texture_dir.mkdir(parents=True, exist_ok=True)
+    preview_dir.mkdir(parents=True, exist_ok=True)
     names = list(PRESETS) if args.preset == "all" else [args.preset]
     manifest = {"generator_version": 1, "seed": args.seed, "size": args.size, "textures": {}}
     textures = {}
@@ -240,7 +250,7 @@ def main():
         pixels = generate_texture(args.size, args.seed, PRESETS[name])
         textures[name] = pixels
         encoded = encode_png(args.size, pixels)
-        path = args.texture_dir / f"fog-{name}.png"
+        path = texture_dir / f"fog-{name}.png"
         path.write_bytes(encoded)
         manifest["textures"][name] = {
             "file": path.name,
@@ -249,12 +259,12 @@ def main():
             "png_sha256": hashlib.sha256(encoded).hexdigest(),
         }
         print(f"Created {path} ({len(encoded):,} bytes)")
-    (args.preview_dir / "preview.png").write_bytes(make_contact_sheet(textures, args.size))
-    (args.preview_dir / "manifest.json").write_text(
+    (preview_dir / "preview.png").write_bytes(make_contact_sheet(textures, args.size))
+    (preview_dir / "manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )
-    texture_prefix = Path(os.path.relpath(args.texture_dir, args.preview_dir)).as_posix()
-    preview = args.preview_dir / "preview.html"
+    texture_prefix = Path(os.path.relpath(texture_dir, preview_dir)).as_posix()
+    preview = preview_dir / "preview.html"
     preview.write_text(
         make_preview(names, args.seed, args.size, texture_prefix), encoding="utf-8"
     )
